@@ -31,7 +31,7 @@ CV Note: 计算机视觉笔记
 - Improved GAN: 改进的 GAN 模型
 ## 📊 Graph Replications
 复现以下图神经网络模型：
-
+ 
 - GAT: 图注意力网络
  - GIN: 图同构网络
 - GraphQ
