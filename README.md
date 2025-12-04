@@ -1,5 +1,5 @@
  
-# 🧠 Deep Learning Repository
+# Deep Learning Repository
 此仓库包含关于机器学习、深度学习、计算机视觉、自然语言处理、爬虫等领域的各种项目学习资料和代码。  
 ## 📝 Clip
 包含论文解析以及概念整理。  
