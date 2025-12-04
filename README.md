@@ -19,7 +19,7 @@
 - Pointnet/Pointnet2: 点云网络
 - Reading Comprehension: 阅读理解
 - RetinaNet: 视网膜网网络
-- Swin: Swin Transformer
+- Swin: Swin Transformer 
 - T5: Text-to-Text Transfer Transformer
 - Text Generation TF: 基于TensorFlow的文本生成
 - VAE: 变分自编码器
@@ -45,7 +45,7 @@ CV Note: 计算机视觉笔记
 - RGCN
 - SDNE
 ## 🧮 LLMs
-Large Model Notes: 大模型相关的 50 篇笔记
+Large Model Notes: 大模型相关的 50 篇
 ## 🕵️ Machine Learning Algorithms
 Fraud Detection: 欺诈检测算法
 ## 🔄 ONNX
