@@ -14,7 +14,7 @@
   - Keras Text Classification：Keras 文本分类
   - Lebert NER：基于 Lebert 的命名实体识别
   - Mnist：LeNet、AlexNet、GoogLeNet 等模型实现
-  - NER：命名实体识别
+  - NER：实体识别
   - Pointnet/Pointnet2：点云网络
   - Reading Comprehension：阅读理解
   - RetinaNet：单阶段目标检测
