@@ -1,9 +1,10 @@
 """ Original Author: Haoqiang Fan """
 import numpy as np
-import ctypes as ct
 import cv2
 import sys
 import os
+
+from render_balls import render_ball
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 showsz = 800
@@ -24,9 +25,6 @@ def onmouse(*args):
 cv2.namedWindow('show3d')
 cv2.moveWindow('show3d', 0, 0)
 cv2.setMouseCallback('show3d', onmouse)
-
-dll = np.ctypeslib.load_library(os.path.join(BASE_DIR, 'render_balls_so'), '.')
-
 
 def showpoints(xyz, c_gt=None, c_pred=None, waittime=0, showrot=False, magnifyBlue=0, freezerot=False,
                background=(0, 0, 0), normalizecolor=True, ballradius=10):
@@ -79,16 +77,15 @@ def showpoints(xyz, c_gt=None, c_pred=None, waittime=0, showrot=False, magnifyBl
 
         ixyz = nxyz.astype('int32')
         show[:] = background
-        dll.render_ball(
-            ct.c_int(show.shape[0]),
-            ct.c_int(show.shape[1]),
-            show.ctypes.data_as(ct.c_void_p),
-            ct.c_int(ixyz.shape[0]),
-            ixyz.ctypes.data_as(ct.c_void_p),
-            c0.ctypes.data_as(ct.c_void_p),
-            c1.ctypes.data_as(ct.c_void_p),
-            c2.ctypes.data_as(ct.c_void_p),
-            ct.c_int(ballradius)
+        render_ball(
+            show.shape[0],
+            show.shape[1],
+            show,
+            ixyz,
+            c0,
+            c1,
+            c2,
+            ballradius,
         )
 
         if magnifyBlue > 0:
@@ -221,5 +218,4 @@ if __name__ == '__main__':
     pred = cmap[seg, :]
     showpoints(point_set, gt, c_pred=pred, waittime=0, showrot=False, magnifyBlue=0, freezerot=False,
                background=(255, 255, 255), normalizecolor=True, ballradius=opt.ballradius)
-
 
