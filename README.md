@@ -1,6 +1,6 @@
 # Deep Learning  
 
-此仓库收录了机器学习、深度学习、计算机视觉、自然语言处理和爬虫等方向的示例代码与学习资料，便于快速检索和复现。
+此仓库收录了机器学习、深度学习、计算机视觉、自然语言处理等方向的示例代码与学习资料，便于快速检索和复现。
 
 ## 项目导航
 - **Clip**：论文解析与核心概念整理。
@@ -27,11 +27,10 @@
 - **GAN**：WGAN、Improved GAN 等生成对抗网络实现。
 - **Graph Replications**：GAT、GIN、GraphSAGE、Label Propagation、LINE、Metapath2Vec、MPNN、PinSAGE、PyGCN、RGCN、SDNE 等图模型复现。
 - **LLMs**：大模型相关的 50 余篇资料。
-- **Machine Learning Algorithms**：欺诈检测等传统机器学习算法。
+- **Machine Learning Algorithms**：欺诈检测等传统机器学习算法案例。
 - **ONNX**：Sklearn ONNX 转换、ONNX Runtime、PNNX 等工具示例。
-- **Optimization**：Matlab 优化实现。
-- **Spider**：Requests 与 Scrapy 示例。
-- **SQL**：SQL 学习笔记。
+- **Optimization**：优化算法实现（包含 Python 与 Matlab 版本）。
+- **ML Algorithms (Python)**：经典机器学习算法的 NumPy 实现（SVM、朴素贝叶斯、树模型、聚类、GMM、MLP 等）。
 - **Transformer**：Transformer 模型解读。
 - **LangChain**：LangChain 相关资料。
 
