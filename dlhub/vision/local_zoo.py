@@ -6,20 +6,34 @@ from dataclasses import dataclass
 from torch import nn
 
 from .backbones import (
+    build_alexnet_classifier,
     build_convmixer_classifier,
     build_convnext_classifier,
+    build_cspdarknet_classifier,
+    build_darknet_classifier,
     build_densenet_classifier,
     build_efficientnet_classifier,
+    build_ghostnet_classifier,
+    build_googlenet_classifier,
+    build_lenet_classifier,
     build_mlp_mixer_classifier,
     build_mobilenet_v1_classifier,
     build_mobilenet_v2_classifier,
     build_mobilenet_v3_classifier,
+    build_mnasnet_classifier,
+    build_mobileone_classifier,
+    build_nin_classifier,
+    build_regnet_classifier,
     build_repvgg_classifier,
     build_resnet_classifier,
+    build_shufflenet_v1_classifier,
     build_shufflenet_v2_classifier,
     build_squeezenet_classifier,
+    build_swin_classifier,
     build_vgg_classifier,
     build_vit_classifier,
+    build_xception_classifier,
+    build_zfnet_classifier,
 )
 
 
@@ -60,6 +74,49 @@ def _registry() -> dict[str, Builder]:
             in_channels=cfg.in_channels,
             num_classes=cfg.num_classes,
             variant=vgg,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
+    # Early / classic CNNs
+    r["lenet5"] = lambda cfg: build_lenet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+    )
+    r["alexnet"] = lambda cfg: build_alexnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+    )
+    r["zfnet"] = lambda cfg: build_zfnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+    )
+    r["nin"] = lambda cfg: build_nin_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+    )
+    r["googlenet"] = lambda cfg: build_googlenet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+    )
+
+    # Xception
+    for v in ["tiny", "small", "base"]:
+        name = "xception" if v == "base" else f"xception_{v}"
+        r[name] = lambda cfg, v=v: build_xception_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=v,
             width_mult=cfg.width_mult,
             dropout=cfg.dropout,
         )
@@ -172,6 +229,55 @@ def _registry() -> dict[str, Builder]:
         width_per_group=64,
     )
 
+    # RegNet (X/Y)
+    for size in [
+        "200mf",
+        "400mf",
+        "600mf",
+        "800mf",
+        "1_6gf",
+        "2_4gf",
+        "3_2gf",
+        "4gf",
+        "6_4gf",
+        "8gf",
+        "12gf",
+        "16gf",
+        "32gf",
+    ]:
+        r[f"regnetx_{size}"] = lambda cfg, size=size: build_regnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=f"regnetx_{size}",
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+        r[f"regnety_{size}"] = lambda cfg, size=size: build_regnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=f"regnety_{size}",
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
+    # DarkNet / CSPDarkNet
+    for v in ["darknet_tiny", "darknet19", "darknet53"]:
+        r[v] = lambda cfg, v=v: build_darknet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+    for v in ["cspdarknet53", "cspdarknet_small", "cspdarknet_tiny"]:
+        r[v] = lambda cfg, v=v: build_cspdarknet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
     # DenseNet
     for dn in ["densenet121", "densenet169", "densenet201", "densenet264"]:
         r[dn] = lambda cfg, dn=dn: build_densenet_classifier(
@@ -212,6 +318,16 @@ def _registry() -> dict[str, Builder]:
             dropout=cfg.dropout,
         )
 
+    # ShuffleNetV1
+    for v in ["shufflenetv1_0_5", "shufflenetv1_1_0", "shufflenetv1_1_5", "shufflenetv1_2_0"]:
+        r[v] = lambda cfg, v=v: build_shufflenet_v1_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
     # MobileNet
     r["mobilenet_v1"] = lambda cfg: build_mobilenet_v1_classifier(
         in_channels=cfg.in_channels, num_classes=cfg.num_classes, width_mult=cfg.width_mult, dropout=cfg.dropout
@@ -233,6 +349,54 @@ def _registry() -> dict[str, Builder]:
         width_mult=cfg.width_mult,
         dropout=cfg.dropout,
     )
+
+    # MNASNet
+    for v in ["mnasnet0_5", "mnasnet0_75", "mnasnet1_0", "mnasnet1_3"]:
+        r[v] = lambda cfg, v=v: build_mnasnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
+    # GhostNet
+    for v in [
+        "ghostnet_0_5",
+        "ghostnet_0_75",
+        "ghostnet_1_0",
+        "ghostnet_1_3",
+        "ghostnet_1_5",
+        "ghostnetv2_1_0",
+        "ghostnetv2_1_3",
+    ]:
+        r[v] = lambda cfg, v=v: build_ghostnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
+    # MobileOne
+    for v in [
+        "mobileone_s0",
+        "mobileone_s1",
+        "mobileone_s2",
+        "mobileone_s3",
+        "mobileone_s4",
+        "mobileone_s1_se",
+        "mobileone_s2_se",
+        "mobileone_s3_se",
+        "mobileone_s4_se",
+    ]:
+        r[v] = lambda cfg, v=v: build_mobileone_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
 
     # EfficientNet
     for b in ["b0", "b1", "b2", "b3", "b4"]:
@@ -267,6 +431,16 @@ def _registry() -> dict[str, Builder]:
         )
 
     # --- Transformer-ish families (many variants to hit >= 100 ids)
+    for v in ["swin_tiny", "swin_small", "swin_base", "swin_tiny_w2"]:
+        r[v] = lambda cfg, v=v: build_swin_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            image_size=cfg.image_size,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
     vit_specs: dict[str, tuple[int, int, int]] = {
         # name: (embed_dim, num_heads, num_layers)
         "vit_tiny": (192, 3, 6),
@@ -327,15 +501,25 @@ def _registry() -> dict[str, Builder]:
                 )
 
     # Aliases
+    r["lenet"] = r["lenet5"]
+    r["inception"] = r["googlenet"]
+    r["inception_v1"] = r["googlenet"]
     r["vgg"] = r["vgg11"]
     r["densenet"] = r["densenet121"]
     r["squeezenet"] = r["squeezenet1_0"]
+    r["shufflenetv1"] = r["shufflenetv1_1_0"]
     r["shufflenetv2"] = r["shufflenetv2_1_0"]
     r["mobilenetv1"] = r["mobilenet_v1"]
     r["mobilenetv2"] = r["mobilenet_v2"]
+    r["mnasnet"] = r["mnasnet1_0"]
+    r["ghostnet"] = r["ghostnet_1_0"]
+    r["mobileone"] = r["mobileone_s0"]
     r["efficientnetb0"] = r["efficientnet_b0"]
     r["resnext50"] = r["resnext50_32x4d"]
     r["revgg"] = r["repvgg"]
+    r["darknet"] = r["darknet53"]
+    r["cspdarknet"] = r["cspdarknet53"]
+    r["swin"] = r["swin_tiny"]
 
     return r
 
