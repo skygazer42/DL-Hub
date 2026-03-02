@@ -29,6 +29,8 @@ def test_local_vision_zoo_lists_200_plus_arches() -> None:
     assert "dl:res2net50" in arches
     assert "dl:eca_resnet18" in arches
     assert "dl:cbam_resnet18" in arches
+    assert "dl:sk_resnet50" in arches
+    assert "dl:resnest50" in arches
 
 
 @pytest.mark.parametrize("arch_id", ["dl:resnet18", "dl:vgg16", "dl:vit_tiny"])
@@ -74,6 +76,9 @@ def test_local_vision_zoo_can_build_classifier_smoke(arch_id: str) -> None:
         ("dl:res2next50", 0.5),
         ("dl:eca_resnet", 0.5),
         ("dl:cbam_resnet", 0.5),
+        ("dl:sk_resnet", 0.5),
+        ("dl:sk_resnext50", 0.5),
+        ("dl:resnest", 0.5),
     ],
 )
 def test_local_vision_zoo_more_arches_smoke(arch_id: str, width_mult: float) -> None:

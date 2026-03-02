@@ -188,6 +188,58 @@ def _registry() -> dict[str, Builder]:
         width_per_group=4,
     )
 
+    # SKNet / ResNeSt (attention bottlenecks)
+    for name, layers in {
+        "sk_resnet50": (3, 4, 6, 3),
+        "sk_resnet101": (3, 4, 23, 3),
+        "sk_resnet152": (3, 8, 36, 3),
+    }.items():
+        r[name] = lambda cfg, layers=layers: build_resnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            layers=layers,
+            variant="sk_bottleneck",
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+            groups=1,
+            width_per_group=64,
+        )
+    r["sk_resnext50_32x4d"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(3, 4, 6, 3),
+        variant="sk_bottleneck",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+        groups=32,
+        width_per_group=4,
+    )
+
+    for name, layers in {
+        "resnest50": (3, 4, 6, 3),
+        "resnest101": (3, 4, 23, 3),
+    }.items():
+        r[name] = lambda cfg, layers=layers: build_resnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            layers=layers,
+            variant="resnest_bottleneck",
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+            groups=1,
+            width_per_group=64,
+        )
+    r["resnest50_32x4d"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(3, 4, 6, 3),
+        variant="resnest_bottleneck",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+        groups=32,
+        width_per_group=4,
+    )
+
     # ECA/CBAM ResNet
     r["eca_resnet18"] = lambda cfg: build_resnet_classifier(
         in_channels=cfg.in_channels,
@@ -704,6 +756,9 @@ def _registry() -> dict[str, Builder]:
     r["coatnet"] = r["coatnet_tiny"]
     r["fnet"] = r["fnet_tiny"]
     r["pvt"] = r["pvt_tiny"]
+    r["sk_resnet"] = r["sk_resnet50"]
+    r["sk_resnext50"] = r["sk_resnext50_32x4d"]
+    r["resnest"] = r["resnest50"]
     r["eca_resnet"] = r["eca_resnet18"]
     r["cbam_resnet"] = r["cbam_resnet18"]
 
