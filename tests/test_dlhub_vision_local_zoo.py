@@ -22,6 +22,9 @@ def test_local_vision_zoo_lists_200_plus_arches() -> None:
     assert "dl:poolformer_tiny" in arches
     assert "dl:gmlp_tiny" in arches
     assert "dl:resmlp_tiny" in arches
+    assert "dl:mobilevit_tiny" in arches
+    assert "dl:coatnet_tiny" in arches
+    assert "dl:fnet_tiny" in arches
     assert "dl:eca_resnet18" in arches
     assert "dl:cbam_resnet18" in arches
 
@@ -59,6 +62,10 @@ def test_local_vision_zoo_can_build_classifier_smoke(arch_id: str) -> None:
         ("dl:gmlp", 0.5),
         ("dl:resmlp", 0.5),
         ("dl:gmlp_tiny_p16", 0.5),
+        ("dl:mobilevit", 0.5),
+        ("dl:coatnet", 0.5),
+        ("dl:fnet", 0.5),
+        ("dl:fnet_tiny_p16", 0.5),
         ("dl:eca_resnet", 0.5),
         ("dl:cbam_resnet", 0.5),
     ],

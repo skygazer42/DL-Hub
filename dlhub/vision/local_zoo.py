@@ -7,12 +7,14 @@ from torch import nn
 
 from .backbones import (
     build_alexnet_classifier,
+    build_coatnet_classifier,
     build_convmixer_classifier,
     build_convnext_classifier,
     build_cspdarknet_classifier,
     build_darknet_classifier,
     build_densenet_classifier,
     build_efficientnet_classifier,
+    build_fnet_classifier,
     build_gmlp_classifier,
     build_ghostnet_classifier,
     build_googlenet_classifier,
@@ -21,6 +23,7 @@ from .backbones import (
     build_mobilenet_v1_classifier,
     build_mobilenet_v2_classifier,
     build_mobilenet_v3_classifier,
+    build_mobilevit_classifier,
     build_mnasnet_classifier,
     build_mobileone_classifier,
     build_nin_classifier,
@@ -539,6 +542,39 @@ def _registry() -> dict[str, Builder]:
                 dropout=cfg.dropout,
             )
 
+    # Hybrid-ish families
+    for v in ["mobilevit_tiny", "mobilevit_small", "mobilevit_base"]:
+        r[v] = lambda cfg, v=v: build_mobilevit_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            image_size=cfg.image_size,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
+    for v in ["coatnet_tiny", "coatnet_small", "coatnet_base"]:
+        r[v] = lambda cfg, v=v: build_coatnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            image_size=cfg.image_size,
+            variant=v,
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+        )
+
+    for base_name in ["fnet_tiny", "fnet_small", "fnet_base"]:
+        for patch_size in [4, 8, 16]:
+            name = base_name if patch_size == 8 else f"{base_name}_p{patch_size}"
+            r[name] = lambda cfg, name=name: build_fnet_classifier(
+                in_channels=cfg.in_channels,
+                num_classes=cfg.num_classes,
+                image_size=cfg.image_size,
+                variant=name,
+                width_mult=cfg.width_mult,
+                dropout=cfg.dropout,
+            )
+
     vit_specs: dict[str, tuple[int, int, int]] = {
         # name: (embed_dim, num_heads, num_layers)
         "vit_tiny": (192, 3, 6),
@@ -621,6 +657,9 @@ def _registry() -> dict[str, Builder]:
     r["poolformer"] = r["poolformer_tiny"]
     r["gmlp"] = r["gmlp_tiny"]
     r["resmlp"] = r["resmlp_tiny"]
+    r["mobilevit"] = r["mobilevit_tiny"]
+    r["coatnet"] = r["coatnet_tiny"]
+    r["fnet"] = r["fnet_tiny"]
     r["eca_resnet"] = r["eca_resnet18"]
     r["cbam_resnet"] = r["cbam_resnet18"]
 
