@@ -1,4 +1,5 @@
 """A minimal two-layer MLP classifier in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -12,7 +13,7 @@ class MLPClassifier:
     learning_rate: float = 1e-2
     epochs: int = 500
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "MLPClassifier":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> MLPClassifier:
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y)
         self.classes_ = np.unique(y)

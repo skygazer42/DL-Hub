@@ -1,4 +1,5 @@
 """Learning-rate schedulers commonly used in deep learning."""
+
 from __future__ import annotations
 
 import math
@@ -31,7 +32,7 @@ class StepDecay(LRScheduler):
 
     def get_lr(self) -> float:
         drops = self.state.step // self.drop_every
-        return self.base_lr * (self.drop_factor ** drops)
+        return self.base_lr * (self.drop_factor**drops)
 
 
 class ExponentialDecay(LRScheduler):
@@ -40,7 +41,7 @@ class ExponentialDecay(LRScheduler):
         self.decay_rate = float(decay_rate)
 
     def get_lr(self) -> float:
-        return self.base_lr * (self.decay_rate ** self.state.step)
+        return self.base_lr * (self.decay_rate**self.state.step)
 
 
 class CosineAnnealing(LRScheduler):
@@ -56,7 +57,9 @@ class CosineAnnealing(LRScheduler):
 
 
 class WarmupCosine(LRScheduler):
-    def __init__(self, base_lr: float, warmup_steps: int, max_steps: int, min_lr: float = 0.0) -> None:
+    def __init__(
+        self, base_lr: float, warmup_steps: int, max_steps: int, min_lr: float = 0.0
+    ) -> None:
         super().__init__(base_lr)
         self.warmup_steps = int(warmup_steps)
         self.max_steps = int(max_steps)

@@ -1,4 +1,5 @@
 """Linear SVM classifier (hinge loss) in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -12,7 +13,7 @@ class LinearSVM:
     epochs: int = 1000
     regularization: float = 1e-2
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "LinearSVM":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> LinearSVM:
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y, dtype=np.float64)
         y = np.where(y <= 0, -1.0, 1.0)

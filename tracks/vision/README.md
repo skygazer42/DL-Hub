@@ -1,0 +1,15 @@
+# Vision 轨（计算机视觉）
+
+目标：从最小的分类任务开始，掌握数据、模型、训练、评估与实验习惯，再逐步扩展到更复杂的视觉任务。
+
+## Lessons
+
+- `lesson_01_mnist_lenet/`：MNIST + LeNet（入门闭环）
+- `lesson_02_mnist_mlp/`：MNIST + MLP（全连接基线）
+- `lesson_03_mnist_alexnet/`：MNIST + AlexNet（简化实现）
+- `lesson_04_synthetic_detection_fcos/`：合成目标检测（FCOS 风格，anchor-free，纯 torch）
+- `lesson_05_vit_toy_classification/`：ViT（toy 合成分类，纯 torch）
+- `lesson_06_swin_toy_classification/`：Swin 风格（window attention + shifted windows，toy 合成分类，纯 torch）
+- `lesson_07_toy_keypoint_regression/`：toy 关键点回归（合成数据，坐标回归 + 误差指标，纯 torch）
+- `lesson_08_synthetic_segmentation_unet/`：合成分割（Tiny U-Net + torchvision 分割模型 zoo，二分类 mask，loss + IoU）
+- `lesson_09_cnn_backbones_toy_classification/`：CNN 主干网络（本地实现 + torchvision zoo，toy 合成分类）

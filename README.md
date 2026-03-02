@@ -1,66 +1,49 @@
-# Deep Learning  
+# DL-Hub（PyTorch 统一学习项目）
 
-此仓库收录了机器学习、深度学习、计算机视觉、自然语言处理等方向的示例代码与学习资料，便于快速检索和复现。
+这个仓库正在被重置为一个 **PyTorch 主线 + 多轨课程（tracks）** 的学习项目：统一代码风格、统一训练/评估脚手架、统一运行方式，让学习者真正能“循序渐进跑通 → 改得动 → 能验收”。
 
-## 项目导航
-- **Clip**：论文解析与核心概念整理。
-- **Deep Projects**：
-  - 3D Keypoint：3D 关键点检测
-  - Data Preprocessing for NLP：NLP 数据预处理
-  - DGCNN：动态图卷积神经网络
-  - ERNerClassification：实体识别与分类
-  - FCOS_Pytorch_Case：FCOS 目标检测 Pytorch 实现
-  - Fraud Prediction：欺诈预测
-  - Keras Text Classification：Keras 文本分类
-  - Lebert NER：基于 Lebert 的命名实体识别
-  - Mnist：LeNet、AlexNet、GoogLeNet 等模型实现
-  - NER：实体识别
-  - Pointnet/Pointnet2：点云网络
-  - Reading Comprehension：阅读理解
-  - RetinaNet：单阶段目标检测
-  - Swin：Swin Transformer
-  - T5：Text-to-Text Transfer Transformer
-  - Text Generation TF：TensorFlow 文本生成
-  - VAE：变分自编码器
-  - YOLOv5：目标检测 + 量化感知训练 + 教师模型 + 剪枝
-- **Deep Learning Notes**：计算机视觉相关笔记。
-- **GAN**：WGAN、Improved GAN 等生成对抗网络实现。
-- **Graph Replications**：GAT、GIN、GraphSAGE、Label Propagation、LINE、Metapath2Vec、MPNN、PinSAGE、PyGCN、RGCN、SDNE 等图模型复现。
-- **LLMs**：大模型相关的 50 余篇资料。
-- **Machine Learning Algorithms**：欺诈检测等传统机器学习算法案例。
-- **ONNX**：Sklearn ONNX 转换、ONNX Runtime、PNNX 等工具示例。
-- **Optimization**：优化算法实现（包含 Python 与 Matlab 版本）。
-- **ML Algorithms (Python)**：经典机器学习算法的 NumPy 实现（SVM、朴素贝叶斯、树模型、聚类、GMM、MLP 等）。
-- **Transformer**：Transformer 模型解读。
-- **LangChain**：LangChain 相关资料。
+> 重要：仓库内的 PDF 资料（例如 `resources/pdfs/llms/`）会完整保留；非 PDF 的旧实现会被逐步重写吸收进新的课程结构，等新实现验收通过后再删除旧版本（Git 历史可追溯）。
 
-## 示例：在 MNIST 上训练 LeNet
-位于 `Deep_project/Mnist/LeNet/Mnist_LeNet.py` 的脚本提供了可配置的训练与评估流程，支持 GPU/CPU 自动切换，并允许通过命令行快速做小批量验证。
+## 快速开始（2 分钟跑通）
 
-### 依赖
-- Python 3.10+
-- PyTorch、TorchVision
-- Matplotlib、NumPy
-
-使用 pip 安装核心依赖：
+1) 冒烟验证（不下载数据）：
 
 ```bash
-pip install torch torchvision matplotlib numpy
+python scripts/smoke_check.py
 ```
 
-### 快速运行
-下载数据并训练 1 个 epoch，同时限制训练/验证批次数以快速验证流程：
+2) 跑通第一个 PyTorch lesson（fake 模式，不下载 MNIST）：
 
 ```bash
-python Deep_project/Mnist/LeNet/Mnist_LeNet.py \
-  --epochs 1 \
-  --max-train-batches 5 \
-  --max-eval-batches 2
+python -m tracks.vision.lesson_01_mnist_lenet.train --dataset fake --epochs 1 --max-train-batches 2 --max-eval-batches 2
 ```
 
-脚本会输出每轮准确率，并在运行结束后保存：
-- 训练曲线：`lenet_accuracy.png`
-- 模型权重：`LeNet.pth`
+## 你应该从哪里开始
 
-## 反馈
-欢迎通过 Issue 或 Pull Request 提出建议与改进，让这些资源更好地服务学习与研究。
+- 路线图：`docs/ROADMAP.md`
+- 仓库结构：`docs/STRUCTURE.md`
+- 如何运行：`docs/RUNNING.md`
+- 代码规范：`docs/STYLEGUIDE.md`
+- 运行约定：`docs/CONVENTIONS.md`
+
+## Tracks（课程轨道）
+
+已落地（可运行）：
+
+- `tracks/foundations/`：基础（张量、autograd、训练循环入门）
+- `tracks/vision/`：视觉（MNIST 入门闭环）
+- `tracks/gnn/`：图神经网络（toy 图任务 → Cora：GCN/LP/GraphSAGE 最小实现）
+- `tracks/nlp/`：NLP（toy 文本分类 → 逐步走向 transformer/NER/阅读理解）
+- `tracks/llm/`：LLM（toy causal LM → 生成 → 记录产物）
+- `tracks/generative/`：生成模型（VAE/GAN 最小实现，支持 `--dataset fake` 离线冒烟）
+- `tracks/pointcloud/`：点云（PointNet toy 分类，后续扩展到 DGCNN/PointNet2）
+
+规划中（会逐步补齐到同一套脚手架）：
+
+（暂无）
+
+## 旧目录（正在迁移重写，不作为主入口）
+
+历史资料已集中到 `resources/`，会作为参考素材逐步吸收进 `tracks/`，不再作为主入口：
+
+- `resources/pdfs/` 下的论文/笔记/报告等

@@ -1,4 +1,5 @@
 """Perceptron classifier in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -11,7 +12,7 @@ class Perceptron:
     learning_rate: float = 1e-2
     epochs: int = 1000
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "Perceptron":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> Perceptron:
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y)
         y = np.where(y <= 0, -1.0, 1.0)

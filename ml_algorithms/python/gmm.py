@@ -1,4 +1,5 @@
 """Gaussian Mixture Model with diagonal covariance in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -13,7 +14,7 @@ class GaussianMixture:
     tol: float = 1e-4
     random_state: int | None = None
 
-    def fit(self, x: np.ndarray) -> "GaussianMixture":
+    def fit(self, x: np.ndarray) -> GaussianMixture:
         rng = np.random.default_rng(self.random_state)
         x = np.asarray(x, dtype=np.float64)
         n_samples, n_features = x.shape
@@ -28,9 +29,12 @@ class GaussianMixture:
             self.weights_ = effective_n / n_samples
             self.means_ = (resp.T @ x) / effective_n[:, None]
             diff = x[:, None, :] - self.means_[None, :, :]
-            self.covariances_ = (resp[:, :, None] * diff ** 2).sum(axis=0) / effective_n[:, None]
+            self.covariances_ = (resp[:, :, None] * diff**2).sum(axis=0) / effective_n[:, None]
             log_likelihood = np.sum(np.log(resp.sum(axis=1) + 1e-12))
-            if log_likelihood_prev is not None and abs(log_likelihood - log_likelihood_prev) < self.tol:
+            if (
+                log_likelihood_prev is not None
+                and abs(log_likelihood - log_likelihood_prev) < self.tol
+            ):
                 break
             log_likelihood_prev = log_likelihood
         return self

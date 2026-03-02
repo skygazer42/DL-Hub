@@ -1,4 +1,5 @@
 """Principal component analysis in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,7 +11,7 @@ import numpy as np
 class PCA:
     n_components: int
 
-    def fit(self, x: np.ndarray) -> "PCA":
+    def fit(self, x: np.ndarray) -> PCA:
         x = np.asarray(x, dtype=np.float64)
         self.mean_ = x.mean(axis=0)
         centered = x - self.mean_

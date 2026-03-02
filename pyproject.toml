@@ -1,0 +1,23 @@
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+# This repo is a multi-project learning hub. Keep linting focused on the reusable,
+# repo-root runnable code and avoid scanning large paper/replication directories by default.
+extend-exclude = [
+  "outputs",
+  "resources",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "UP"]
+ignore = [
+  "E501", # line length handled by black
+]

@@ -1,4 +1,5 @@
 """Simple NumPy implementations of classic linear models."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -11,7 +12,7 @@ class LinearRegression:
     learning_rate: float = 1e-2
     epochs: int = 1000
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "LinearRegression":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> LinearRegression:
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y, dtype=np.float64).reshape(-1, 1)
         x_bias = np.c_[np.ones((x.shape[0], 1)), x]
@@ -33,7 +34,7 @@ class LogisticRegression:
     learning_rate: float = 1e-2
     epochs: int = 1000
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "LogisticRegression":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> LogisticRegression:
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y, dtype=np.float64).reshape(-1, 1)
         x_bias = np.c_[np.ones((x.shape[0], 1)), x]

@@ -1,4 +1,5 @@
 """K-nearest neighbors classifier and regressor."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,7 +11,7 @@ import numpy as np
 class KNNClassifier:
     k: int = 5
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "KNNClassifier":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> KNNClassifier:
         self.x_ = np.asarray(x, dtype=np.float64)
         self.y_ = np.asarray(y)
         return self
@@ -32,7 +33,7 @@ class KNNClassifier:
 class KNNRegressor:
     k: int = 5
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "KNNRegressor":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> KNNRegressor:
         self.x_ = np.asarray(x, dtype=np.float64)
         self.y_ = np.asarray(y, dtype=np.float64)
         return self

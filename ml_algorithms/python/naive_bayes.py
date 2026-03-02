@@ -1,4 +1,5 @@
 """Naive Bayes classifiers in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -8,7 +9,7 @@ import numpy as np
 
 @dataclass
 class GaussianNB:
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "GaussianNB":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> GaussianNB:
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y)
         self.classes_ = np.unique(y)
@@ -40,7 +41,7 @@ class GaussianNB:
 class MultinomialNB:
     alpha: float = 1.0
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "MultinomialNB":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> MultinomialNB:
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y)
         self.classes_ = np.unique(y)

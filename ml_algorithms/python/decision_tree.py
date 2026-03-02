@@ -1,26 +1,27 @@
 """Decision tree classifier and regressor (CART-style) in NumPy."""
+
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Optional
 
 import numpy as np
 
 
 @dataclass
 class Node:
-    feature_index: Optional[int] = None
-    threshold: Optional[float] = None
-    left: Optional["Node"] = None
-    right: Optional["Node"] = None
-    value: Optional[float] = None
+    feature_index: int | None = None
+    threshold: float | None = None
+    left: Node | None = None
+    right: Node | None = None
+    value: float | None = None
 
 
 class DecisionTreeBase:
     def __init__(self, max_depth: int = 5, min_samples_split: int = 2) -> None:
         self.max_depth = max_depth
         self.min_samples_split = min_samples_split
-        self.root: Optional[Node] = None
+        self.root: Node | None = None
 
     def _best_split(self, x: np.ndarray, y: np.ndarray, criterion: Callable[[np.ndarray], float]):
         best_feature = None
@@ -47,11 +48,7 @@ class DecisionTreeBase:
         return best_feature, best_threshold
 
     def _build_tree(self, x: np.ndarray, y: np.ndarray, depth: int):
-        if (
-            depth >= self.max_depth
-            or len(y) < self.min_samples_split
-            or len(np.unique(y)) == 1
-        ):
+        if depth >= self.max_depth or len(y) < self.min_samples_split or len(np.unique(y)) == 1:
             return Node(value=self._leaf_value(y))
         feature, threshold = self._best_split(x, y, self._criterion)
         if feature is None:
@@ -93,7 +90,7 @@ class DecisionTreeClassifier(DecisionTreeBase):
     def _criterion(self, y: np.ndarray) -> float:
         _, counts = np.unique(y, return_counts=True)
         prob = counts / counts.sum()
-        return 1.0 - np.sum(prob ** 2)
+        return 1.0 - np.sum(prob**2)
 
     def _leaf_value(self, y: np.ndarray):
         values, counts = np.unique(y, return_counts=True)

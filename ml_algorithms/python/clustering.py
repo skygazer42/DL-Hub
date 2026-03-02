@@ -1,4 +1,5 @@
 """Additional clustering algorithms in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -11,7 +12,7 @@ class DBSCAN:
     eps: float = 0.5
     min_samples: int = 5
 
-    def fit(self, x: np.ndarray) -> "DBSCAN":
+    def fit(self, x: np.ndarray) -> DBSCAN:
         x = np.asarray(x, dtype=np.float64)
         n_samples = x.shape[0]
         labels = np.full(n_samples, -1, dtype=int)

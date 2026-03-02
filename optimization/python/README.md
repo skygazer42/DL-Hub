@@ -28,12 +28,15 @@ losses, and metrics commonly used in deep learning experiments.
 - `r2_score`
 
 ## Example
+
+Run from the repository root so imports work:
+
 ```python
 import numpy as np
-from optimizers import Adam
-from lr_schedulers import WarmupCosine
-from losses import mean_squared_error
-from metrics import r2_score
+from optimization.python.lr_schedulers import WarmupCosine
+from optimization.python.losses import mean_squared_error
+from optimization.python.metrics import r2_score
+from optimization.python.optimizers import Adam
 
 params = {"w": np.random.randn(3, 3), "b": np.zeros(3)}
 opt = Adam(learning_rate=1e-3)

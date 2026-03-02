@@ -1,0 +1,4 @@
+# Vision track dependencies.
+torch
+torchvision
+timm

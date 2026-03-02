@@ -1,0 +1,51 @@
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local data / downloads
+.data/
+data/
+datasets/
+
+# Training outputs / experiment tracking
+runs/
+wandb/
+*.log
+
+# Standard project outputs
+outputs/
+checkpoints/
+logs/
+
+# Model / artifact files
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

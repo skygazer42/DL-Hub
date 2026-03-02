@@ -19,12 +19,15 @@ repository focused on core ML/DL fundamentals.
 - MLP classifier
 
 ## Example
+
+Run from the repository root so imports work:
+
 ```python
 import numpy as np
-from linear_models import LogisticRegression
-from kmeans import KMeans
-from svm import LinearSVM
-from mlp import MLPClassifier
+from ml_algorithms.python.linear_models import LogisticRegression
+from ml_algorithms.python.kmeans import KMeans
+from ml_algorithms.python.mlp import MLPClassifier
+from ml_algorithms.python.svm import LinearSVM
 
 x = np.random.randn(200, 4)
 labels = (x[:, 0] + x[:, 1] > 0).astype(int)

@@ -1,0 +1,6 @@
+# Minimal runtime dependencies for the shared utilities.
+#
+# Note: PyTorch/torchvision installation is platform-dependent.
+# See docs/INSTALL.md for guidance.
+numpy>=1.24
+

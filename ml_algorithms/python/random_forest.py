@@ -1,11 +1,10 @@
 """Random forest classifier and regressor in NumPy."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
 
 import numpy as np
-
 from decision_tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 
@@ -17,11 +16,11 @@ class RandomForestClassifier:
     max_features: int | None = None
     random_state: int | None = None
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "RandomForestClassifier":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> RandomForestClassifier:
         rng = np.random.default_rng(self.random_state)
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y)
-        self.trees_: List[DecisionTreeClassifier] = []
+        self.trees_: list[DecisionTreeClassifier] = []
         n_samples, n_features = x.shape
         max_features = self.max_features or int(np.sqrt(n_features))
         for _ in range(self.n_estimators):
@@ -59,11 +58,11 @@ class RandomForestRegressor:
     max_features: int | None = None
     random_state: int | None = None
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> "RandomForestRegressor":
+    def fit(self, x: np.ndarray, y: np.ndarray) -> RandomForestRegressor:
         rng = np.random.default_rng(self.random_state)
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y, dtype=np.float64)
-        self.trees_: List[DecisionTreeRegressor] = []
+        self.trees_: list[DecisionTreeRegressor] = []
         n_samples, n_features = x.shape
         max_features = self.max_features or int(np.sqrt(n_features))
         for _ in range(self.n_estimators):
