@@ -11,3 +11,4 @@
 - `lesson_01_pointnet_toy_classification/`：PointNet 分类（toy 数据：Cube vs Sphere）
 - `lesson_02_dgcnn_toy_classification/`：DGCNN 分类（toy 数据：Cube vs Sphere）
 - `lesson_03_pointnet2_toy_classification/`：PointNet2 分类（toy 数据：Cube vs Sphere）
+- `lesson_04_pointcloud_zoo_toy_classification/`：统一入口切换多种点云 backbone（toy 数据：Cube vs Sphere）

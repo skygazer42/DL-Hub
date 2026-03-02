@@ -240,6 +240,41 @@ def main() -> int:
         assert (swin_paths.run_dir / "metrics.jsonl").is_file()
         assert (swin_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
+        # 4.3) PointCloud lesson: local zoo (torch-only, synthetic data).
+        from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.data import DataConfig as PCData
+        from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train import (
+            TrainConfig as PCTrain,
+            run_training as run_pc,
+        )
+
+        run_pc(
+            PCTrain(
+                epochs=1,
+                learning_rate=1e-3,
+                seed=0,
+                device="cpu",
+                max_train_batches=1,
+                max_eval_batches=1,
+                run_name="smoke",
+                arch="pc:pointnet",
+                width_mult=0.5,
+                dropout=0.1,
+            ),
+            PCData(
+                num_samples=256,
+                num_points=64,
+                batch_size=32,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
+        )
+
+        pc_paths = build_run_paths(track="pointcloud", lesson="lesson_04_pointcloud_zoo_toy_classification", run_name="smoke")
+        assert (pc_paths.run_dir / "config.json").is_file()
+        assert (pc_paths.run_dir / "metrics.jsonl").is_file()
+        assert (pc_paths.checkpoints_dir / "checkpoint.pt").is_file()
+
         # 4.2e) Vision lesson: toy keypoint regression (torch-only).
         from tracks.vision.lesson_07_toy_keypoint_regression.data import DataConfig as KptData
         from tracks.vision.lesson_07_toy_keypoint_regression.train import (
