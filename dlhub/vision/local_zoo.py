@@ -28,6 +28,7 @@ from .backbones import (
     build_mobileone_classifier,
     build_nin_classifier,
     build_poolformer_classifier,
+    build_pvt_classifier,
     build_regnet_classifier,
     build_repvgg_classifier,
     build_resnet_classifier,
@@ -575,6 +576,19 @@ def _registry() -> dict[str, Builder]:
                 dropout=cfg.dropout,
             )
 
+    # PVT (pyramid transformer)
+    for base_name in ["pvt_tiny", "pvt_small", "pvt_base"]:
+        for patch_size in [4, 8]:
+            name = base_name if patch_size == 4 else f"{base_name}_p{patch_size}"
+            r[name] = lambda cfg, name=name: build_pvt_classifier(
+                in_channels=cfg.in_channels,
+                num_classes=cfg.num_classes,
+                image_size=cfg.image_size,
+                variant=name,
+                width_mult=cfg.width_mult,
+                dropout=cfg.dropout,
+            )
+
     vit_specs: dict[str, tuple[int, int, int]] = {
         # name: (embed_dim, num_heads, num_layers)
         "vit_tiny": (192, 3, 6),
@@ -660,6 +674,7 @@ def _registry() -> dict[str, Builder]:
     r["mobilevit"] = r["mobilevit_tiny"]
     r["coatnet"] = r["coatnet_tiny"]
     r["fnet"] = r["fnet_tiny"]
+    r["pvt"] = r["pvt_tiny"]
     r["eca_resnet"] = r["eca_resnet18"]
     r["cbam_resnet"] = r["cbam_resnet18"]
 
