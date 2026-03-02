@@ -49,13 +49,10 @@ python -m tracks.vision.lesson_09_cnn_backbones_toy_classification.train --list-
 
 支持（本地实现）：
 
-- `--arch vgg`
-- `--arch resnet18` / `--arch resnet34` / `--arch resnet50` / `--arch resnext50`
-- `--arch densenet`
-- `--arch squeezenet` / `--arch shufflenetv2`
-- `--arch mobilenetv1` / `--arch mobilenetv2`
-- `--arch efficientnetb0`（或 `efficientnet`）
-- `--arch repvgg`（或 `revgg`）
+- **200+** 个本地实现主干（由 `dlhub.vision.local_zoo` 提供）。
+- 示例：`--arch lenet` / `--arch alexnet` / `--arch vgg16` / `--arch resnet50` / `--arch regnetx_400mf` / `--arch swin_tiny`
+- 也支持 MLP/池化系：`--arch poolformer_tiny` / `--arch gmlp_tiny` / `--arch resmlp_tiny`
+- 运行 `--list-arch` 查看完整列表（同时包含 torchvision/timm zoo 的可用项）。
 
 支持（torchvision zoo）：
 

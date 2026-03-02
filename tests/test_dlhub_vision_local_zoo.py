@@ -4,11 +4,11 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_local_vision_zoo_lists_100_plus_arches() -> None:
+def test_local_vision_zoo_lists_200_plus_arches() -> None:
     from dlhub.vision.local_zoo import list_local_arches
 
     arches = list_local_arches()
-    assert len(arches) >= 100
+    assert len(arches) >= 200
     assert "dl:lenet5" in arches
     assert "dl:alexnet" in arches
     assert "dl:resnet18" in arches
@@ -19,6 +19,9 @@ def test_local_vision_zoo_lists_100_plus_arches() -> None:
     assert "dl:googlenet" in arches
     assert "dl:regnetx_400mf" in arches
     assert "dl:swin_tiny" in arches
+    assert "dl:poolformer_tiny" in arches
+    assert "dl:gmlp_tiny" in arches
+    assert "dl:resmlp_tiny" in arches
 
 
 @pytest.mark.parametrize("arch_id", ["dl:resnet18", "dl:vgg16", "dl:vit_tiny"])
@@ -50,6 +53,10 @@ def test_local_vision_zoo_can_build_classifier_smoke(arch_id: str) -> None:
         ("dl:ghostnet", 0.5),
         ("dl:mobileone", 0.5),
         ("dl:swin", 0.5),
+        ("dl:poolformer", 0.5),
+        ("dl:gmlp", 0.5),
+        ("dl:resmlp", 0.5),
+        ("dl:gmlp_tiny_p16", 0.5),
     ],
 )
 def test_local_vision_zoo_more_arches_smoke(arch_id: str, width_mult: float) -> None:

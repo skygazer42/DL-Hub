@@ -55,7 +55,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--arch",
         type=str,
         default="resnet18",
-        help="local: vgg | resnet18 | resnet34 | resnet50 | resnext50 | densenet | squeezenet | shufflenetv2 | mobilenetv1 | mobilenetv2 | efficientnetb0 | repvgg; zoo: tv:<name> | tvq:<name> | timm:<name>",
+        help="local: any id from dlhub.vision.local_zoo (try --list-arch); zoo: tv:<name> | tvq:<name> | timm:<name>",
     )
     parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
     parser.add_argument(

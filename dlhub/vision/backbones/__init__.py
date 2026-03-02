@@ -32,6 +32,7 @@ from .extra_cnn import (
     build_xception_classifier,
     build_zfnet_classifier,
 )
+from .mixers import build_gmlp_classifier, build_poolformer_classifier, build_resmlp_classifier
 from .swin import build_swin_classifier
 from .transformers import build_convmixer_classifier, build_mlp_mixer_classifier, build_vit_classifier
 
@@ -46,6 +47,7 @@ __all__ = [
     "build_ghostnet_classifier",
     "build_googlenet_classifier",
     "build_lenet_classifier",
+    "build_gmlp_classifier",
     "build_mlp_mixer_classifier",
     "build_mobilenet_v1_classifier",
     "build_mobilenet_v2_classifier",
@@ -53,9 +55,11 @@ __all__ = [
     "build_mnasnet_classifier",
     "build_mobileone_classifier",
     "build_nin_classifier",
+    "build_poolformer_classifier",
     "build_regnet_classifier",
     "build_repvgg_classifier",
     "build_resnet_classifier",
+    "build_resmlp_classifier",
     "build_shufflenet_v1_classifier",
     "build_shufflenet_v2_classifier",
     "build_squeezenet_classifier",

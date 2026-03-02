@@ -13,6 +13,7 @@ from .backbones import (
     build_darknet_classifier,
     build_densenet_classifier,
     build_efficientnet_classifier,
+    build_gmlp_classifier,
     build_ghostnet_classifier,
     build_googlenet_classifier,
     build_lenet_classifier,
@@ -23,9 +24,11 @@ from .backbones import (
     build_mnasnet_classifier,
     build_mobileone_classifier,
     build_nin_classifier,
+    build_poolformer_classifier,
     build_regnet_classifier,
     build_repvgg_classifier,
     build_resnet_classifier,
+    build_resmlp_classifier,
     build_shufflenet_v1_classifier,
     build_shufflenet_v2_classifier,
     build_squeezenet_classifier,
@@ -441,6 +444,43 @@ def _registry() -> dict[str, Builder]:
             dropout=cfg.dropout,
         )
 
+    # PoolFormer / gMLP / ResMLP
+    for base_name in ["poolformer_tiny", "poolformer_small", "poolformer_base"]:
+        for patch_size in [4, 8]:
+            name = base_name if patch_size == 4 else f"{base_name}_p{patch_size}"
+            r[name] = lambda cfg, name=name: build_poolformer_classifier(
+                in_channels=cfg.in_channels,
+                num_classes=cfg.num_classes,
+                image_size=cfg.image_size,
+                variant=name,
+                width_mult=cfg.width_mult,
+                dropout=cfg.dropout,
+            )
+
+    for base_name in ["gmlp_tiny", "gmlp_small", "gmlp_base"]:
+        for patch_size in [4, 8, 16]:
+            name = base_name if patch_size == 8 else f"{base_name}_p{patch_size}"
+            r[name] = lambda cfg, name=name: build_gmlp_classifier(
+                in_channels=cfg.in_channels,
+                num_classes=cfg.num_classes,
+                image_size=cfg.image_size,
+                variant=name,
+                width_mult=cfg.width_mult,
+                dropout=cfg.dropout,
+            )
+
+    for base_name in ["resmlp_tiny", "resmlp_small", "resmlp_base"]:
+        for patch_size in [4, 8, 16]:
+            name = base_name if patch_size == 8 else f"{base_name}_p{patch_size}"
+            r[name] = lambda cfg, name=name: build_resmlp_classifier(
+                in_channels=cfg.in_channels,
+                num_classes=cfg.num_classes,
+                image_size=cfg.image_size,
+                variant=name,
+                width_mult=cfg.width_mult,
+                dropout=cfg.dropout,
+            )
+
     vit_specs: dict[str, tuple[int, int, int]] = {
         # name: (embed_dim, num_heads, num_layers)
         "vit_tiny": (192, 3, 6),
@@ -520,6 +560,9 @@ def _registry() -> dict[str, Builder]:
     r["darknet"] = r["darknet53"]
     r["cspdarknet"] = r["cspdarknet53"]
     r["swin"] = r["swin_tiny"]
+    r["poolformer"] = r["poolformer_tiny"]
+    r["gmlp"] = r["gmlp_tiny"]
+    r["resmlp"] = r["resmlp_tiny"]
 
     return r
 

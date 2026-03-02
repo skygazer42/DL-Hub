@@ -13,7 +13,7 @@
 
 <br/>
 
-<code>35 Lessons</code> · <code>7 Learning Tracks</code> · <code>13+ ML Algorithms</code> · <code>190+ Vision Backbones</code> · <code>30+ Tests</code>
+<code>35 Lessons</code> · <code>7 Learning Tracks</code> · <code>13+ ML Algorithms</code> · <code>200+ Vision Backbones</code> · <code>30+ Tests</code>
 
 <br/>
 
