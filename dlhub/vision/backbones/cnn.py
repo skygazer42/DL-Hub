@@ -535,6 +535,107 @@ class CBAMBottleneck(nn.Module):
         return self.relu(out)
 
 
+class Res2NetBottleneck(nn.Module):
+    """Res2Net bottleneck (simplified, CPU-friendly).
+
+    Notes:
+    - Keeps the external ResNet API unchanged; used as a drop-in bottleneck block.
+    - For `stride=2`, uses an average-pool downsample inside the split path for shape alignment.
+    """
+
+    expansion = 4
+
+    def __init__(
+        self,
+        in_ch: int,
+        out_ch: int,
+        stride: int,
+        *,
+        groups: int = 1,
+        width_per_group: int = 64,
+        scale: int = 4,
+    ) -> None:
+        super().__init__()
+        g = int(groups)
+        wpg = int(width_per_group)
+        s = int(stride)
+        if g <= 0:
+            raise ValueError("groups must be >= 1")
+        if wpg <= 0:
+            raise ValueError("width_per_group must be >= 1")
+        if s not in {1, 2}:
+            raise ValueError("stride must be 1 or 2")
+
+        sc = int(scale)
+        if sc < 2:
+            raise ValueError("scale must be >= 2")
+        self.scale = sc
+
+        width = int(out_ch) * wpg // 64 * g
+        width = max(8, width)
+        if width % sc != 0:
+            width = int(((width + sc - 1) // sc) * sc)
+        self.width = int(width)
+        self.split_width = int(width // sc)
+
+        self.conv1 = _conv1x1(in_ch, int(width), stride=1)
+        self.bn1 = nn.BatchNorm2d(int(width))
+        self.relu = nn.ReLU(inplace=True)
+
+        # When downsampling, pool the split streams (once) so addition aligns.
+        self.pool = nn.AvgPool2d(kernel_size=3, stride=s, padding=1) if s != 1 else nn.Identity()
+
+        conv_groups = g if (self.split_width % g == 0) else 1
+        self.convs = nn.ModuleList(
+            [
+                nn.Sequential(
+                    _conv3x3(self.split_width, self.split_width, stride=1, groups=int(conv_groups)),
+                    nn.BatchNorm2d(self.split_width),
+                    nn.ReLU(inplace=True),
+                )
+                for _ in range(sc - 1)
+            ]
+        )
+
+        self.conv3 = _conv1x1(int(width), int(out_ch) * self.expansion, stride=1)
+        self.bn3 = nn.BatchNorm2d(int(out_ch) * self.expansion)
+
+        self.downsample: nn.Module | None = None
+        if s != 1 or int(in_ch) != int(out_ch) * self.expansion:
+            self.downsample = nn.Sequential(
+                _conv1x1(int(in_ch), int(out_ch) * self.expansion, stride=s),
+                nn.BatchNorm2d(int(out_ch) * self.expansion),
+            )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        identity = x
+
+        out = self.relu(self.bn1(self.conv1(x)))
+        splits = torch.split(out, self.split_width, dim=1)
+        if len(splits) != self.scale:
+            raise RuntimeError("Res2Net split failed; width must be divisible by scale")
+        splits = [self.pool(s) for s in splits]
+
+        ys: list[torch.Tensor] = [splits[0]]
+        prev = splits[0]
+        for i in range(1, self.scale):
+            cur = splits[i]
+            if i > 1:
+                cur = cur + prev
+            cur = self.convs[i - 1](cur)
+            ys.append(cur)
+            prev = cur
+
+        out = torch.cat(ys, dim=1)
+        out = self.bn3(self.conv3(out))
+
+        if self.downsample is not None:
+            identity = self.downsample(identity)
+
+        out = out + identity
+        return self.relu(out)
+
+
 class SEBottleneck(nn.Module):
     expansion = 4
 
@@ -743,6 +844,8 @@ def build_resnet_classifier(
         block: type[nn.Module] = BasicBlock
     elif name == "bottleneck":
         block = Bottleneck
+    elif name == "res2net_bottleneck":
+        block = Res2NetBottleneck
     elif name == "eca_basic":
         block = ECABasicBlock
     elif name == "eca_bottleneck":
@@ -761,7 +864,7 @@ def build_resnet_classifier(
         block = PreActBottleneck
     else:
         raise ValueError(
-            "Unknown ResNet variant. Supported: basic, bottleneck, eca_basic, eca_bottleneck, cbam_basic, cbam_bottleneck, se_basic, se_bottleneck, preact_basic, preact_bottleneck"
+            "Unknown ResNet variant. Supported: basic, bottleneck, res2net_bottleneck, eca_basic, eca_bottleneck, cbam_basic, cbam_bottleneck, se_basic, se_bottleneck, preact_basic, preact_bottleneck"
         )
 
     return ResNetClassifier(

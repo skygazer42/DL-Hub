@@ -26,6 +26,7 @@ def test_local_vision_zoo_lists_200_plus_arches() -> None:
     assert "dl:coatnet_tiny" in arches
     assert "dl:fnet_tiny" in arches
     assert "dl:pvt_tiny" in arches
+    assert "dl:res2net50" in arches
     assert "dl:eca_resnet18" in arches
     assert "dl:cbam_resnet18" in arches
 
@@ -69,6 +70,8 @@ def test_local_vision_zoo_can_build_classifier_smoke(arch_id: str) -> None:
         ("dl:fnet_tiny_p16", 0.5),
         ("dl:pvt", 0.5),
         ("dl:pvt_tiny_p8", 0.5),
+        ("dl:res2net", 0.5),
+        ("dl:res2next50", 0.5),
         ("dl:eca_resnet", 0.5),
         ("dl:cbam_resnet", 0.5),
     ],

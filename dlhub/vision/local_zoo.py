@@ -161,6 +161,33 @@ def _registry() -> dict[str, Builder]:
             width_per_group=64,
         )
 
+    # Res2Net / Res2NeXt (multi-scale bottleneck)
+    for name, layers in {
+        "res2net50": (3, 4, 6, 3),
+        "res2net101": (3, 4, 23, 3),
+        "res2net152": (3, 8, 36, 3),
+    }.items():
+        r[name] = lambda cfg, layers=layers: build_resnet_classifier(
+            in_channels=cfg.in_channels,
+            num_classes=cfg.num_classes,
+            layers=layers,
+            variant="res2net_bottleneck",
+            width_mult=cfg.width_mult,
+            dropout=cfg.dropout,
+            groups=1,
+            width_per_group=64,
+        )
+    r["res2next50_32x4d"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(3, 4, 6, 3),
+        variant="res2net_bottleneck",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+        groups=32,
+        width_per_group=4,
+    )
+
     # ECA/CBAM ResNet
     r["eca_resnet18"] = lambda cfg: build_resnet_classifier(
         in_channels=cfg.in_channels,
@@ -664,6 +691,8 @@ def _registry() -> dict[str, Builder]:
     r["mobileone"] = r["mobileone_s0"]
     r["efficientnetb0"] = r["efficientnet_b0"]
     r["resnext50"] = r["resnext50_32x4d"]
+    r["res2net"] = r["res2net50"]
+    r["res2next50"] = r["res2next50_32x4d"]
     r["revgg"] = r["repvgg"]
     r["darknet"] = r["darknet53"]
     r["cspdarknet"] = r["cspdarknet53"]
