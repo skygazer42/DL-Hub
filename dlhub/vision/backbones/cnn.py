@@ -163,6 +163,86 @@ class SqueezeExcite(nn.Module):
         return x * s
 
 
+class ECALayer(nn.Module):
+    """Efficient Channel Attention (ECA).
+
+    Minimal, CPU-friendly implementation:
+    - Global average pool -> 1D conv over channels -> sigmoid gate.
+    """
+
+    def __init__(self, channels: int, *, kernel_size: int = 3) -> None:
+        super().__init__()
+        c = int(channels)
+        k = int(kernel_size)
+        if c <= 0:
+            raise ValueError("channels must be > 0")
+        if k <= 0 or k % 2 == 0:
+            raise ValueError("kernel_size must be a positive odd integer")
+        self.pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.conv = nn.Conv1d(1, 1, kernel_size=k, padding=k // 2, bias=False)
+        self.gate = nn.Sigmoid()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # x: (B, C, H, W)
+        y = self.pool(x)  # (B, C, 1, 1)
+        y = y.squeeze(-1).transpose(1, 2)  # (B, 1, C)
+        y = self.conv(y)
+        y = self.gate(y).transpose(1, 2).unsqueeze(-1)  # (B, C, 1, 1)
+        return x * y
+
+
+class _CBAMChannelAttention(nn.Module):
+    def __init__(self, channels: int, *, reduction: int = 16) -> None:
+        super().__init__()
+        c = int(channels)
+        r = max(1, int(reduction))
+        hidden = max(8, c // r)
+
+        self.avg = nn.AdaptiveAvgPool2d((1, 1))
+        self.max = nn.AdaptiveMaxPool2d((1, 1))
+        self.mlp = nn.Sequential(
+            nn.Conv2d(c, hidden, kernel_size=1, bias=True),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(hidden, c, kernel_size=1, bias=True),
+        )
+        self.gate = nn.Sigmoid()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        a = self.mlp(self.avg(x))
+        m = self.mlp(self.max(x))
+        return x * self.gate(a + m)
+
+
+class _CBAMSpatialAttention(nn.Module):
+    def __init__(self, *, kernel_size: int = 7) -> None:
+        super().__init__()
+        k = int(kernel_size)
+        if k <= 0 or k % 2 == 0:
+            raise ValueError("kernel_size must be a positive odd integer")
+        self.conv = nn.Conv2d(2, 1, kernel_size=k, padding=k // 2, bias=False)
+        self.gate = nn.Sigmoid()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        avg = x.mean(dim=1, keepdim=True)
+        mx = x.amax(dim=1, keepdim=True)
+        attn = self.conv(torch.cat([avg, mx], dim=1))
+        return x * self.gate(attn)
+
+
+class CBAM(nn.Module):
+    """Convolutional Block Attention Module (CBAM), simplified."""
+
+    def __init__(self, channels: int, *, reduction: int = 16, spatial_kernel: int = 7) -> None:
+        super().__init__()
+        self.ca = _CBAMChannelAttention(int(channels), reduction=int(reduction))
+        self.sa = _CBAMSpatialAttention(kernel_size=int(spatial_kernel))
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.ca(x)
+        x = self.sa(x)
+        return x
+
+
 class BasicBlock(nn.Module):
     expansion = 1
 
@@ -188,6 +268,80 @@ class BasicBlock(nn.Module):
 
         out = self.relu(self.bn1(self.conv1(x)))
         out = self.bn2(self.conv2(out))
+
+        if self.downsample is not None:
+            identity = self.downsample(identity)
+
+        out = out + identity
+        return self.relu(out)
+
+
+class ECABasicBlock(nn.Module):
+    expansion = 1
+
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64, eca_kernel: int = 3
+    ) -> None:
+        super().__init__()
+        _ = int(groups)
+        _ = int(width_per_group)
+        self.conv1 = _conv3x3(in_ch, out_ch, stride=stride, groups=1)
+        self.bn1 = nn.BatchNorm2d(int(out_ch))
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = _conv3x3(out_ch, out_ch, stride=1, groups=1)
+        self.bn2 = nn.BatchNorm2d(int(out_ch))
+        self.eca = ECALayer(int(out_ch), kernel_size=int(eca_kernel))
+
+        self.downsample: nn.Module | None = None
+        if int(stride) != 1 or int(in_ch) != int(out_ch):
+            self.downsample = nn.Sequential(
+                _conv1x1(int(in_ch), int(out_ch), stride=int(stride)),
+                nn.BatchNorm2d(int(out_ch)),
+            )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        identity = x
+
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        out = self.eca(out)
+
+        if self.downsample is not None:
+            identity = self.downsample(identity)
+
+        out = out + identity
+        return self.relu(out)
+
+
+class CBAMBasicBlock(nn.Module):
+    expansion = 1
+
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64, reduction: int = 16
+    ) -> None:
+        super().__init__()
+        _ = int(groups)
+        _ = int(width_per_group)
+        self.conv1 = _conv3x3(in_ch, out_ch, stride=stride, groups=1)
+        self.bn1 = nn.BatchNorm2d(int(out_ch))
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = _conv3x3(out_ch, out_ch, stride=1, groups=1)
+        self.bn2 = nn.BatchNorm2d(int(out_ch))
+        self.cbam = CBAM(int(out_ch), reduction=int(reduction))
+
+        self.downsample: nn.Module | None = None
+        if int(stride) != 1 or int(in_ch) != int(out_ch):
+            self.downsample = nn.Sequential(
+                _conv1x1(int(in_ch), int(out_ch), stride=int(stride)),
+                nn.BatchNorm2d(int(out_ch)),
+            )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        identity = x
+
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        out = self.cbam(out)
 
         if self.downsample is not None:
             identity = self.downsample(identity)
@@ -270,6 +424,109 @@ class Bottleneck(nn.Module):
         out = self.relu(self.bn1(self.conv1(x)))
         out = self.relu(self.bn2(self.conv2(out)))
         out = self.bn3(self.conv3(out))
+
+        if self.downsample is not None:
+            identity = self.downsample(identity)
+
+        out = out + identity
+        return self.relu(out)
+
+
+class ECABottleneck(nn.Module):
+    expansion = 4
+
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64, eca_kernel: int = 3
+    ) -> None:
+        super().__init__()
+        g = int(groups)
+        wpg = int(width_per_group)
+        if g <= 0:
+            raise ValueError("groups must be >= 1")
+        if wpg <= 0:
+            raise ValueError("width_per_group must be >= 1")
+
+        width = int(out_ch) * wpg // 64 * g
+        width = max(g, width)
+
+        self.conv1 = _conv1x1(in_ch, width, stride=1)
+        self.bn1 = nn.BatchNorm2d(width)
+        self.conv2 = _conv3x3(width, width, stride=stride, groups=g)
+        self.bn2 = nn.BatchNorm2d(width)
+        self.conv3 = _conv1x1(width, int(out_ch) * self.expansion, stride=1)
+        self.bn3 = nn.BatchNorm2d(int(out_ch) * self.expansion)
+        self.eca = ECALayer(int(out_ch) * self.expansion, kernel_size=int(eca_kernel))
+        self.relu = nn.ReLU(inplace=True)
+
+        self.downsample: nn.Module | None = None
+        if int(stride) != 1 or int(in_ch) != int(out_ch) * self.expansion:
+            self.downsample = nn.Sequential(
+                _conv1x1(int(in_ch), int(out_ch) * self.expansion, stride=int(stride)),
+                nn.BatchNorm2d(int(out_ch) * self.expansion),
+            )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        identity = x
+
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.relu(self.bn2(self.conv2(out)))
+        out = self.bn3(self.conv3(out))
+        out = self.eca(out)
+
+        if self.downsample is not None:
+            identity = self.downsample(identity)
+
+        out = out + identity
+        return self.relu(out)
+
+
+class CBAMBottleneck(nn.Module):
+    expansion = 4
+
+    def __init__(
+        self,
+        in_ch: int,
+        out_ch: int,
+        stride: int,
+        *,
+        groups: int = 1,
+        width_per_group: int = 64,
+        reduction: int = 16,
+    ) -> None:
+        super().__init__()
+        g = int(groups)
+        wpg = int(width_per_group)
+        if g <= 0:
+            raise ValueError("groups must be >= 1")
+        if wpg <= 0:
+            raise ValueError("width_per_group must be >= 1")
+
+        width = int(out_ch) * wpg // 64 * g
+        width = max(g, width)
+
+        self.conv1 = _conv1x1(in_ch, width, stride=1)
+        self.bn1 = nn.BatchNorm2d(width)
+        self.conv2 = _conv3x3(width, width, stride=stride, groups=g)
+        self.bn2 = nn.BatchNorm2d(width)
+        self.conv3 = _conv1x1(width, int(out_ch) * self.expansion, stride=1)
+        self.bn3 = nn.BatchNorm2d(int(out_ch) * self.expansion)
+        self.cbam = CBAM(int(out_ch) * self.expansion, reduction=int(reduction))
+        self.relu = nn.ReLU(inplace=True)
+
+        self.downsample: nn.Module | None = None
+        if int(stride) != 1 or int(in_ch) != int(out_ch) * self.expansion:
+            self.downsample = nn.Sequential(
+                _conv1x1(int(in_ch), int(out_ch) * self.expansion, stride=int(stride)),
+                nn.BatchNorm2d(int(out_ch) * self.expansion),
+            )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        identity = x
+
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.relu(self.bn2(self.conv2(out)))
+        out = self.bn3(self.conv3(out))
+        out = self.cbam(out)
 
         if self.downsample is not None:
             identity = self.downsample(identity)
@@ -486,6 +743,14 @@ def build_resnet_classifier(
         block: type[nn.Module] = BasicBlock
     elif name == "bottleneck":
         block = Bottleneck
+    elif name == "eca_basic":
+        block = ECABasicBlock
+    elif name == "eca_bottleneck":
+        block = ECABottleneck
+    elif name == "cbam_basic":
+        block = CBAMBasicBlock
+    elif name == "cbam_bottleneck":
+        block = CBAMBottleneck
     elif name == "se_basic":
         block = SEBasicBlock
     elif name == "se_bottleneck":
@@ -496,7 +761,7 @@ def build_resnet_classifier(
         block = PreActBottleneck
     else:
         raise ValueError(
-            "Unknown ResNet variant. Supported: basic, bottleneck, se_basic, se_bottleneck, preact_basic, preact_bottleneck"
+            "Unknown ResNet variant. Supported: basic, bottleneck, eca_basic, eca_bottleneck, cbam_basic, cbam_bottleneck, se_basic, se_bottleneck, preact_basic, preact_bottleneck"
         )
 
     return ResNetClassifier(

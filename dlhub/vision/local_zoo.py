@@ -157,6 +157,44 @@ def _registry() -> dict[str, Builder]:
             width_per_group=64,
         )
 
+    # ECA/CBAM ResNet
+    r["eca_resnet18"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(2, 2, 2, 2),
+        variant="eca_basic",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+    )
+    r["cbam_resnet18"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(2, 2, 2, 2),
+        variant="cbam_basic",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+    )
+    r["eca_resnet50"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(3, 4, 6, 3),
+        variant="eca_bottleneck",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+        groups=1,
+        width_per_group=64,
+    )
+    r["cbam_resnet50"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(3, 4, 6, 3),
+        variant="cbam_bottleneck",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+        groups=1,
+        width_per_group=64,
+    )
+
     # SE-ResNet
     for name, layers, variant in [
         ("se_resnet50", (3, 4, 6, 3), "se_bottleneck"),
@@ -196,6 +234,26 @@ def _registry() -> dict[str, Builder]:
         num_classes=cfg.num_classes,
         layers=(3, 4, 6, 3),
         variant="bottleneck",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+        groups=32,
+        width_per_group=4,
+    )
+    r["eca_resnext50_32x4d"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(3, 4, 6, 3),
+        variant="eca_bottleneck",
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
+        groups=32,
+        width_per_group=4,
+    )
+    r["cbam_resnext50_32x4d"] = lambda cfg: build_resnet_classifier(
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        layers=(3, 4, 6, 3),
+        variant="cbam_bottleneck",
         width_mult=cfg.width_mult,
         dropout=cfg.dropout,
         groups=32,
@@ -563,6 +621,8 @@ def _registry() -> dict[str, Builder]:
     r["poolformer"] = r["poolformer_tiny"]
     r["gmlp"] = r["gmlp_tiny"]
     r["resmlp"] = r["resmlp_tiny"]
+    r["eca_resnet"] = r["eca_resnet18"]
+    r["cbam_resnet"] = r["cbam_resnet18"]
 
     return r
 
