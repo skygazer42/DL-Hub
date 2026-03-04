@@ -633,3 +633,42 @@ def test_pointcloud_lesson_19_dinov2_ssl_forward_loss_backward_smoke() -> None:
         center_momentum=0.9,
     )
     model.momentum_update_teacher(ema_decay=0.99)
+
+
+def test_pointcloud_lesson_20_ijepa_ssl_forward_loss_backward_smoke() -> None:
+    from tracks.pointcloud.lesson_20_pointcloud_selfsupervised_ijepa.data import DataConfig, get_dataloaders
+    from tracks.pointcloud.lesson_20_pointcloud_selfsupervised_ijepa.model import ModelConfig, build_model
+    from dlhub.pointcloud.selfsupervised.ijepa import ijepa_patch_loss
+
+    train_loader, _ = get_dataloaders(
+        DataConfig(
+            num_samples=64,
+            num_points=96,
+            batch_size=4,
+            val_fraction=0.2,
+            seed=0,
+            num_workers=0,
+            p_sphere=0.5,
+            jitter_std=0.01,
+            drop_p=0.0,
+        )
+    )
+    points, y = next(iter(train_loader))
+    assert points.shape == (4, 96, 3)
+    assert y.shape == (4,)
+
+    model = build_model(
+        ModelConfig(
+            arch="ijepa_pointmae:ijepa_pointmae_tiny",
+            variant="",
+            in_channels=3,
+            dropout=0.0,
+        )
+    )
+    with torch.no_grad():
+        target_patch = model.forward_teacher(points)["patch"]
+    out = model.forward_student(points, mask_ratio=0.5)
+    loss = ijepa_patch_loss(out["pred"], target_patch, out["mask_idx"])
+    assert torch.isfinite(loss)
+    loss.backward()
+    model.momentum_update_teacher(ema_decay=0.99)

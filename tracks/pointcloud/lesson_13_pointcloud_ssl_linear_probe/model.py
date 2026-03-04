@@ -21,6 +21,7 @@ def list_supported_ssl_arches() -> list[str]:
     from dlhub.pointcloud.selfsupervised.byol import _VARIANTS as byol
     from dlhub.pointcloud.selfsupervised.dino import _VARIANTS as dino
     from dlhub.pointcloud.selfsupervised.dinov2 import _VARIANTS as dinov2
+    from dlhub.pointcloud.selfsupervised.ijepa import _VARIANTS as ijepa
     from dlhub.pointcloud.selfsupervised.simclr import _VARIANTS as simclr
     from dlhub.pointcloud.selfsupervised.swav import _VARIANTS as swav
     from dlhub.pointcloud.selfsupervised.vicreg import _VARIANTS as vicreg
@@ -30,6 +31,7 @@ def list_supported_ssl_arches() -> list[str]:
     out += [f"byol_pointnet:{k}" for k in sorted(byol)]
     out += [f"dino_pointnet:{k}" for k in sorted(dino)]
     out += [f"dinov2_pointmae:{k}" for k in sorted(dinov2)]
+    out += [f"ijepa_pointmae:{k}" for k in sorted(ijepa)]
     out += [f"swav_pointnet:{k}" for k in sorted(swav)]
     out += [f"barlowtwins_pointnet:{k}" for k in sorted(barlow)]
     out += [f"vicreg_pointnet:{k}" for k in sorted(vicreg)]
@@ -83,6 +85,15 @@ def _build_ssl_model(*, ssl_arch: str, in_channels: int, dropout: float) -> nn.M
             dropout=float(dropout),
         )
 
+    if pref in {"ijepa_pointmae", "ijepa"}:
+        from dlhub.pointcloud.selfsupervised.ijepa import build_ijepa_pointmae
+
+        return build_ijepa_pointmae(
+            in_channels=int(in_channels),
+            variant=str(variant) if variant else "ijepa_pointmae_small",
+            dropout=float(dropout),
+        )
+
     if pref in {"vicreg_pointnet", "vicreg"}:
         from dlhub.pointcloud.selfsupervised.vicreg import build_vicreg_pointnet
 
@@ -112,7 +123,7 @@ def _build_ssl_model(*, ssl_arch: str, in_channels: int, dropout: float) -> nn.M
 
     raise ValueError(
         "Unknown ssl_arch: "
-        f"{ssl_arch!r}. Supported prefixes: simclr_pointnet / byol_pointnet / dino_pointnet / dinov2_pointmae / swav_pointnet / barlowtwins_pointnet / vicreg_pointnet"
+        f"{ssl_arch!r}. Supported prefixes: simclr_pointnet / byol_pointnet / dino_pointnet / dinov2_pointmae / ijepa_pointmae / swav_pointnet / barlowtwins_pointnet / vicreg_pointnet"
     )
 
 

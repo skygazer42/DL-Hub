@@ -109,7 +109,11 @@ def farthest_point_sample(xyz: torch.Tensor, npoint: int) -> torch.Tensor:
     xyz = xyz.to(torch.float32)
     centroids = torch.zeros((b, npoint), dtype=torch.long, device=xyz.device)
     distance = torch.full((b, n), 1e10, device=xyz.device, dtype=xyz.dtype)
-    farthest = torch.randint(0, n, (b,), device=xyz.device)
+    # Deterministic init (important when two networks must sample aligned patches,
+    # e.g. student/teacher SSL with masked patch distillation).
+    centroid0 = xyz.mean(dim=1, keepdim=True)  # (B, 1, 3)
+    dist0 = ((xyz - centroid0) ** 2).sum(dim=-1)  # (B, N)
+    farthest = dist0.max(dim=1).indices  # (B,)
     batch_indices = torch.arange(b, device=xyz.device)
 
     for i in range(npoint):
