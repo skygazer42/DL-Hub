@@ -8,13 +8,15 @@ Conventions:
 from .fcos import FCOSDetector, build_fcos_detector
 from .retinanet import RetinaNetDetector, build_retinanet_detector
 from .centernet import CenterNetDetector, build_centernet_detector
+from .yolo import YOLOv1Detector, build_yolo_v1_detector
 
 __all__ = [
     "CenterNetDetector",
     "FCOSDetector",
     "RetinaNetDetector",
+    "YOLOv1Detector",
     "build_centernet_detector",
     "build_fcos_detector",
     "build_retinanet_detector",
+    "build_yolo_v1_detector",
 ]
-

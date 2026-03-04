@@ -15,7 +15,7 @@
 
 <br/>
 
-<code>57 Lessons</code> · <code>7 Learning Tracks</code> · <code>13 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>40+ Tests</code>
+<code>58 Lessons</code> · <code>7 Learning Tracks</code> · <code>13 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>40+ Tests</code>
 
 <br/>
 
@@ -178,7 +178,7 @@ python scripts/run_lesson.py --list
 <tr>
 <td><b>Full Curriculum</b></td>
 <td>4-6 周</td>
-<td>57 lessons</td>
+<td>58 lessons</td>
 <td>按顺序完成全部 7 个 track 的所有 lesson<br/><sub>系统掌握从经典 ML 到前沿深度学习的完整技能树</sub></td>
 </tr>
 </table>
@@ -193,7 +193,7 @@ python scripts/run_lesson.py --list
 <table>
 <tr>
 <td align="center" width="14%"><b>Foundations</b><br/><sub>2 lessons</sub></td>
-<td align="center" width="14%"><b>Vision</b><br/><sub>11 lessons</sub></td>
+<td align="center" width="14%"><b>Vision</b><br/><sub>12 lessons</sub></td>
 <td align="center" width="14%"><b>NLP</b><br/><sub>7 lessons</sub></td>
 <td align="center" width="14%"><b>GNN</b><br/><sub>11 lessons</sub></td>
 <td align="center" width="14%"><b>Point Cloud</b><br/><sub>23 lessons</sub></td>

@@ -9,6 +9,7 @@ def test_dlhub_vision_detection_models_forward_backward_smoke() -> None:
         build_centernet_detector,
         build_fcos_detector,
         build_retinanet_detector,
+        build_yolo_v1_detector,
     )
 
     x = torch.randn(2, 3, 64, 64)
@@ -42,6 +43,15 @@ def test_dlhub_vision_detection_models_forward_backward_smoke() -> None:
     loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
     loss.backward()
 
+    yolo = build_yolo_v1_detector(in_channels=3, num_classes=2, variant="yolo_v1_tiny", width_mult=0.5)
+    out = yolo(x)
+    assert set(out.keys()) == {"obj_logits", "cls_logits", "bbox"}
+    assert tuple(out["obj_logits"].shape) == (2, 1, 16, 16)
+    assert tuple(out["cls_logits"].shape) == (2, 2, 16, 16)
+    assert tuple(out["bbox"].shape) == (2, 4, 16, 16)
+    loss = out["obj_logits"].mean() + out["cls_logits"].mean() + out["bbox"].mean()
+    loss.backward()
+
 
 def test_dlhub_vision_segmentation_models_forward_backward_smoke() -> None:
     from dlhub.vision.segmentation import build_deeplabv3plus_segmenter, build_pspnet_segmenter, build_unet_segmenter
@@ -57,4 +67,3 @@ def test_dlhub_vision_segmentation_models_forward_backward_smoke() -> None:
         assert tuple(y.shape) == (2, 2, 64, 64)
         loss = y.mean()
         loss.backward()
-
