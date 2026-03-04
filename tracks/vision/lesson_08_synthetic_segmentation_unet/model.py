@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import torch
 from torch import nn
 
+from dlhub.vision.segmentation.unet import UNetSegmenter
+
 
 class ConvBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int) -> None:
@@ -33,40 +35,18 @@ class ModelConfig:
 class TinyUNet(nn.Module):
     def __init__(self, cfg: ModelConfig) -> None:
         super().__init__()
-        base = int(cfg.base_channels)
-
-        self.down1 = ConvBlock(int(cfg.in_channels), base)
-        self.pool1 = nn.MaxPool2d(2)
-        self.down2 = ConvBlock(base, base * 2)
-        self.pool2 = nn.MaxPool2d(2)
-
-        self.bottleneck = ConvBlock(base * 2, base * 4)
-
-        self.up2 = nn.ConvTranspose2d(base * 4, base * 2, kernel_size=2, stride=2)
-        self.dec2 = ConvBlock(base * 4, base * 2)
-        self.up1 = nn.ConvTranspose2d(base * 2, base, kernel_size=2, stride=2)
-        self.dec1 = ConvBlock(base * 2, base)
-
-        self.drop = nn.Dropout2d(p=float(cfg.dropout))
-        self.out = nn.Conv2d(base, 1, kernel_size=1)
+        # Reuse the library U-Net while keeping the lesson API stable.
+        # The original TinyUNet had 2 downsamples -> levels=3 here.
+        self.model = UNetSegmenter(
+            in_channels=int(cfg.in_channels),
+            num_classes=1,
+            base_channels=int(cfg.base_channels),
+            levels=3,
+            dropout=float(cfg.dropout),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = x.to(torch.float32)
-
-        e1 = self.down1(x)  # (B, C, H, W)
-        e2 = self.down2(self.pool1(e1))
-        b = self.bottleneck(self.pool2(e2))
-
-        d2 = self.up2(b)
-        d2 = torch.cat([d2, e2], dim=1)
-        d2 = self.dec2(d2)
-
-        d1 = self.up1(d2)
-        d1 = torch.cat([d1, e1], dim=1)
-        d1 = self.dec1(d1)
-        d1 = self.drop(d1)
-
-        return self.out(d1)  # logits (B, 1, H, W)
+        return self.model(x)  # logits (B, 1, H, W)
 
 class _TorchvisionSegmentationAdapter(nn.Module):
     def __init__(self, model: nn.Module, *, in_channels: int) -> None:

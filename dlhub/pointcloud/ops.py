@@ -148,11 +148,38 @@ def edge_features(x: torch.Tensor, idx: torch.Tensor) -> torch.Tensor:
     return torch.cat([central, neighbors - central], dim=-1)
 
 
+def chamfer_distance(pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+    """Compute Chamfer Distance between two point clouds (batched).
+
+    Args:
+        pred: (B, N, 3)
+        target: (B, M, 3)
+
+    Returns:
+        scalar Tensor (mean over batch)
+    """
+
+    if pred.ndim != 3 or pred.shape[-1] != 3:
+        raise ValueError(f"pred must be (B, N, 3), got {tuple(pred.shape)}")
+    if target.ndim != 3 or target.shape[-1] != 3:
+        raise ValueError(f"target must be (B, M, 3), got {tuple(target.shape)}")
+    if pred.shape[0] != target.shape[0]:
+        raise ValueError("pred and target batch size mismatch")
+
+    pred = pred.to(torch.float32)
+    target = target.to(torch.float32)
+    dist = torch.cdist(pred, target)  # (B, N, M)
+    dist2 = dist * dist
+    min_pred = dist2.min(dim=2).values  # (B, N)
+    min_target = dist2.min(dim=1).values  # (B, M)
+    return (min_pred.mean(dim=1) + min_target.mean(dim=1)).mean()
+
+
 __all__ = [
+    "chamfer_distance",
     "edge_features",
     "farthest_point_sample",
     "index_points",
     "knn_indices",
     "knn_query",
 ]
-

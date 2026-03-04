@@ -72,6 +72,193 @@ def _split_arch_id(arch_id: str) -> tuple[str, str]:
 Builder = Callable[[BuildConfig], nn.Module]
 
 
+def _extract_variants_from_source(src: str) -> list[str] | None:
+    """Extract `_VARIANTS` keys from a backbone module source without importing it."""
+
+    import ast
+
+    try:
+        tree = ast.parse(src)
+    except SyntaxError:
+        return None
+
+    for node in tree.body:
+        target_name: str | None = None
+        value = None
+
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            target_name = node.target.id
+            value = node.value
+        elif isinstance(node, ast.Assign):
+            for t in node.targets:
+                if isinstance(t, ast.Name):
+                    target_name = t.id
+                    break
+            value = node.value
+
+        if target_name != "_VARIANTS" or not isinstance(value, ast.Dict):
+            continue
+
+        keys: list[str] = []
+        for k in value.keys:
+            if isinstance(k, ast.Constant) and isinstance(k.value, str):
+                keys.append(k.value)
+        return keys or None
+
+    return None
+
+
+def _make_lazy_backbone_builder(module_name: str, *, variant: str | None) -> Builder:
+    """Create a registry Builder that imports the module on first use."""
+
+    module_name = str(module_name).strip()
+    builder_name = f"build_{module_name}_classifier"
+
+    def _builder(cfg: BuildConfig) -> nn.Module:
+        import importlib
+        import inspect
+
+        mod = importlib.import_module(f"dlhub.vision.backbones.{module_name}")
+        fn = getattr(mod, builder_name, None)
+        if fn is None:
+            raise RuntimeError(f"Backbone module {module_name!r} missing {builder_name}()")
+
+        kwargs: dict[str, object] = {
+            "in_channels": int(cfg.in_channels),
+            "num_classes": int(cfg.num_classes),
+        }
+
+        sig = None
+        try:
+            sig = inspect.signature(fn)
+        except (TypeError, ValueError):
+            sig = None
+
+        if sig is not None:
+            params = sig.parameters
+
+            if "width_mult" in params:
+                kwargs["width_mult"] = float(cfg.width_mult)
+            if "dropout" in params:
+                kwargs["dropout"] = float(cfg.dropout)
+
+            if "image_size" in params:
+                kwargs["image_size"] = int(cfg.image_size)
+            elif "img_size" in params:
+                kwargs["img_size"] = int(cfg.image_size)
+            elif "input_size" in params:
+                kwargs["input_size"] = int(cfg.image_size)
+
+            if variant is not None:
+                for key in ("variant", "arch", "model", "name", "version"):
+                    if key in params:
+                        kwargs[key] = str(variant)
+                        break
+        elif variant is not None:
+            kwargs["variant"] = str(variant)
+
+        try:
+            return fn(**kwargs)
+        except TypeError:
+            # Fallback: drop optional kwargs progressively for compatibility.
+            for k in ("image_size", "img_size", "input_size", "width_mult", "dropout"):
+                if k in kwargs:
+                    kwargs.pop(k, None)
+                    try:
+                        return fn(**kwargs)
+                    except TypeError:
+                        continue
+            raise
+
+    return _builder
+
+
+def _extend_registry_with_discovered_backbones(r: dict[str, Builder]) -> None:
+    """Add (module, variant) backbones to the registry as `dl:<variant_name>` ids.
+
+    Notes:
+    - This is best-effort and never overwrites existing names in `r`.
+    - Builders are lazy-imported so `dlhub.vision.local_zoo` stays cheap to import.
+    """
+
+    from pathlib import Path
+
+    here = Path(__file__).resolve().parent
+    backbones_dir = here / "backbones"
+
+    hidden = {
+        "__init__",
+        "catalog",
+        "_blocks",
+        "_transformer",
+        # legacy aggregator modules
+        "cnn",
+        "extra_cnn",
+        "transformers",
+        "mixers",
+        "hybrids",
+    }
+
+    generic_variants = {
+        "tiny",
+        "small",
+        "base",
+        "large",
+        "xlarge",
+        "xxlarge",
+        "huge",
+        "giant",
+        "b0",
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "s",
+        "m",
+        "l",
+        "xl",
+        "xs",
+        "xxs",
+    }
+
+    for py in sorted(backbones_dir.glob("*.py")):
+        module_name = py.stem
+        if module_name in hidden or module_name.startswith("_"):
+            continue
+
+        try:
+            src = py.read_text(encoding="utf-8")
+        except OSError:
+            continue
+
+        if f"def build_{module_name}_classifier" not in src:
+            continue
+
+        variants = _extract_variants_from_source(src)
+        has_explicit_variants = variants is not None
+        if variants is None:
+            variants = [module_name]
+
+        for v in variants:
+            base = str(v).lower().strip()
+            if not base:
+                continue
+
+            name = base
+            # Avoid extremely generic ids like `dl:tiny` / `dl:b0`.
+            if module_name not in base and (base in generic_variants or len(base) <= 4):
+                name = f"{module_name}_{base}"
+            if name in r:
+                name = f"{module_name}_{base}"
+            if name in r:
+                continue
+
+            r[name] = _make_lazy_backbone_builder(module_name, variant=v if has_explicit_variants else None)
+
+
 def _registry() -> dict[str, Builder]:
     r: dict[str, Builder] = {}
 
@@ -761,6 +948,8 @@ def _registry() -> dict[str, Builder]:
     r["resnest"] = r["resnest50"]
     r["eca_resnet"] = r["eca_resnet18"]
     r["cbam_resnet"] = r["cbam_resnet18"]
+
+    _extend_registry_with_discovered_backbones(r)
 
     return r
 

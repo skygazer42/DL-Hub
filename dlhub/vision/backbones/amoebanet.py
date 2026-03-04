@@ -1,0 +1,100 @@
+from __future__ import annotations
+
+import torch
+from torch import nn
+
+from dlhub.vision.backbones._nas import Genotype, NASNetworkClassifier
+
+
+_AMOEBANET = Genotype(
+    # AmoebaNet tends to mix separable convs, dilated convs, and pooling.
+    normal=(
+        ("sep_conv_3x3", 0),
+        ("dil_conv_3x3", 1),
+        ("avg_pool_3x3", 0),
+        ("sep_conv_5x5", 2),
+        ("sep_conv_3x3", 1),
+        ("skip_connect", 0),
+        ("max_pool_3x3", 0),
+        ("sep_conv_3x3", 0),
+    ),
+    normal_concat=(2, 3, 4, 5),
+    reduce=(
+        ("max_pool_3x3", 0),
+        ("sep_conv_3x3", 1),
+        ("sep_conv_5x5", 0),
+        ("dil_conv_3x3", 2),
+        ("avg_pool_3x3", 0),
+        ("skip_connect", 2),
+        ("sep_conv_3x3", 1),
+        ("avg_pool_3x3", 0),
+    ),
+    reduce_concat=(2, 3, 4, 5),
+)
+
+
+class AmoebaNetClassifier(NASNetworkClassifier):
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        init_channels: int = 16,
+        num_cells: int = 8,
+        stem_multiplier: int = 3,
+        width_mult: float = 1.0,
+        drop_path: float = 0.1,
+        dropout: float = 0.1,
+    ) -> None:
+        super().__init__(
+            in_channels=int(in_channels),
+            num_classes=int(num_classes),
+            genotype=_AMOEBANET,
+            init_channels=int(init_channels),
+            num_cells=int(num_cells),
+            stem_multiplier=int(stem_multiplier),
+            width_mult=float(width_mult),
+            drop_path=float(drop_path),
+            dropout=float(dropout),
+        )
+
+
+_VARIANTS: dict[str, dict] = {
+    "amoebanet_tiny": {"init_channels": 12, "num_cells": 6, "stem_multiplier": 3},
+    "amoebanet_small": {"init_channels": 16, "num_cells": 8, "stem_multiplier": 3},
+    "amoebanet_base": {"init_channels": 24, "num_cells": 12, "stem_multiplier": 3},
+}
+
+
+def build_amoebanet_classifier(
+    *,
+    in_channels: int,
+    num_classes: int,
+    variant: str = "amoebanet_small",
+    width_mult: float = 1.0,
+    drop_path: float = 0.1,
+    dropout: float = 0.1,
+) -> nn.Module:
+    name = str(variant).lower().strip()
+    if name not in _VARIANTS:
+        raise ValueError(f"Unknown AmoebaNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+    spec = _VARIANTS[name]
+    return AmoebaNetClassifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        init_channels=int(spec["init_channels"]),
+        num_cells=int(spec["num_cells"]),
+        stem_multiplier=int(spec["stem_multiplier"]),
+        width_mult=float(width_mult),
+        drop_path=float(drop_path),
+        dropout=float(dropout),
+    )
+
+
+if __name__ == "__main__":
+    torch.manual_seed(0)
+    x = torch.randn(2, 3, 64, 64)
+    m = build_amoebanet_classifier(in_channels=3, num_classes=10, variant="amoebanet_tiny", width_mult=0.5)
+    y = m(x)
+    print("amoebanet_tiny", tuple(y.shape))
+

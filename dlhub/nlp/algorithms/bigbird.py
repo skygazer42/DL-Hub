@@ -1,0 +1,104 @@
+from __future__ import annotations
+
+import torch
+from torch import nn
+
+from dlhub.nlp.algorithms._helpers import make_builder
+from dlhub.nlp.types import Builder
+
+from ._transformer_core import TransformerConfig, TransformerTextClassifier
+
+
+class BigBirdClassifier(TransformerTextClassifier):
+    pass
+
+
+def build_bigbird_classifier(
+    *,
+    vocab_size: int,
+    pad_id: int,
+    max_length: int,
+    num_classes: int,
+    width_mult: float = 1.0,
+    dropout: float = 0.1,
+    variant: str,
+) -> nn.Module:
+    name = str(variant).lower().strip()
+    if name in {"bigbird_tiny", "bigbird"}:
+        embed_dim, heads, layers, window, rnd = 192, 4, 2, 4, 4
+    elif name in {"bigbird_small"}:
+        embed_dim, heads, layers, window, rnd = 256, 4, 3, 6, 6
+    elif name in {"bigbird_base"}:
+        embed_dim, heads, layers, window, rnd = 320, 5, 4, 8, 8
+    else:
+        raise ValueError("Unknown BigBird variant. Supported: bigbird_tiny|bigbird_small|bigbird_base")
+
+    return BigBirdClassifier(
+        TransformerConfig(
+            vocab_size=int(vocab_size),
+            pad_id=int(pad_id),
+            max_length=int(max_length),
+            num_classes=int(num_classes),
+            width_mult=float(width_mult),
+            dropout=float(dropout),
+            embed_dim=int(embed_dim),
+            num_heads=int(heads),
+            num_layers=int(layers),
+            pos="learned",
+            rope=False,
+            alibi=False,
+            rel_bias=False,
+            attn_impl="bigbird",
+            num_kv_heads=None,
+            linformer_k=32,
+            longformer_window=8,
+            ffn_kind="gelu",
+            norm_kind="layer",
+            prenorm=True,
+            causal=False,
+            pool="cls",
+            share_layers=False,
+            bigbird_window=int(window),
+            bigbird_num_random=int(rnd),
+        )
+    )
+
+def registry() -> dict[str, Builder]:
+    r: dict[str, Builder] = {}
+    r["bigbird"] = make_builder(build_bigbird_classifier, variant="bigbird_tiny")
+    for name in ("bigbird_tiny", "bigbird_small", "bigbird_base"):
+        r[name] = make_builder(build_bigbird_classifier, variant=name)
+    return r
+
+
+def _smoke() -> None:
+    vocab_size = 128
+    pad_id = 0
+    max_length = 32
+    num_classes = 4
+
+    model = build_bigbird_classifier(
+        vocab_size=vocab_size,
+        pad_id=pad_id,
+        max_length=max_length,
+        num_classes=num_classes,
+        width_mult=0.5,
+        dropout=0.1,
+        variant="bigbird_tiny",
+    )
+    model.eval()
+
+    x = torch.randint(0, vocab_size, (2, max_length), dtype=torch.long)
+    attention_mask = torch.ones((2, max_length), dtype=torch.float32)
+    with torch.no_grad():
+        y = model({"input_ids": x, "attention_mask": attention_mask})
+
+    n_params = sum(int(p.numel()) for p in model.parameters())
+    print(f"smoke_ok: y.shape={tuple(y.shape)} params={n_params}")
+
+
+if __name__ == "__main__":
+    _smoke()
+
+
+__all__ = ["BigBirdClassifier", "build_bigbird_classifier", "registry"]
