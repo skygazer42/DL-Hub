@@ -8,6 +8,7 @@ from .dinov2 import DINOV2PointMAE, build_dinov2_pointmae, dino_cross_view_loss,
 from .ijepa import IJEPAPointMAE, build_ijepa_pointmae, ijepa_patch_loss
 from .msn import MSNPointMAE, build_msn_pointmae, msn_loss
 from .moco import MoCoPointNet, build_moco_pointnet, moco_logits
+from .ressl import ReSSLPointNet, build_ressl_pointnet, ressl_loss
 from .simclr import SimCLRPointNet, build_simclr_pointnet, nt_xent_loss
 from .simsiam import SimSiamPointNet, build_simsiam_pointnet, negative_cosine_similarity, simsiam_loss
 from .swav import SwAVPointNet, build_swav_pointnet, sinkhorn_knopp, swav_loss
@@ -24,6 +25,7 @@ __all__ = [
     "MSNPointMAE",
     "MoCoPointNet",
     "PointMAEPretrainer",
+    "ReSSLPointNet",
     "SimCLRPointNet",
     "SimSiamPointNet",
     "SwAVPointNet",
@@ -38,6 +40,7 @@ __all__ = [
     "build_msn_pointmae",
     "build_moco_pointnet",
     "build_pointmae_pretrainer",
+    "build_ressl_pointnet",
     "build_simclr_pointnet",
     "build_simsiam_pointnet",
     "build_swav_pointnet",
@@ -53,6 +56,7 @@ __all__ = [
     "moco_logits",
     "negative_cosine_similarity",
     "nt_xent_loss",
+    "ressl_loss",
     "simsiam_loss",
     "sinkhorn_knopp",
     "swav_loss",

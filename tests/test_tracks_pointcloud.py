@@ -788,3 +788,45 @@ def test_pointcloud_lesson_22_data2vec_ssl_forward_loss_backward_smoke() -> None
     assert torch.isfinite(loss)
     loss.backward()
     model.momentum_update_teacher(ema_decay=0.99)
+
+
+def test_pointcloud_lesson_23_ressl_ssl_forward_loss_backward_smoke() -> None:
+    from tracks.pointcloud.lesson_23_pointcloud_selfsupervised_ressl.data import DataConfig, get_dataloaders
+    from tracks.pointcloud.lesson_23_pointcloud_selfsupervised_ressl.model import ModelConfig, build_model
+    from dlhub.pointcloud.selfsupervised.ressl import ressl_loss
+
+    train_loader, _ = get_dataloaders(
+        DataConfig(
+            num_samples=64,
+            num_points=64,
+            batch_size=8,
+            val_fraction=0.2,
+            seed=0,
+            num_workers=0,
+            p_sphere=0.5,
+            strong_jitter_std=0.02,
+            strong_drop_p=0.2,
+            weak_jitter_std=0.005,
+            weak_drop_p=0.0,
+        )
+    )
+    v_strong, v_weak, y = next(iter(train_loader))
+    assert v_strong.shape == (8, 64, 3)
+    assert v_weak.shape == (8, 64, 3)
+    assert y.shape == (8,)
+
+    model = build_model(
+        ModelConfig(
+            arch="ressl_pointnet:ressl_pointnet_tiny",
+            variant="",
+            in_channels=3,
+            dropout=0.0,
+            queue_size=128,
+        )
+    )
+    out = model(v_strong, v_weak, student_temperature=0.2, teacher_temperature=0.04)
+    loss = ressl_loss(out["student_logits"], out["teacher_logits"])
+    assert torch.isfinite(loss)
+    loss.backward()
+    model.momentum_update_teacher(ema_decay=0.99)
+    model.dequeue_and_enqueue(out["teacher_z"])
