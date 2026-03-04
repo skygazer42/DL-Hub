@@ -2,6 +2,7 @@
 
 from .barlowtwins import BarlowTwinsPointNet, barlow_twins_loss, build_barlowtwins_pointnet
 from .byol import BYOLPointNet, build_byol_pointnet, byol_loss, cosine_similarity_loss
+from .data2vec import Data2VecPointMAE, build_data2vec_pointmae, data2vec_loss
 from .dino import DINOPointNet, build_dino_pointnet, dino_loss
 from .dinov2 import DINOV2PointMAE, build_dinov2_pointmae, dino_cross_view_loss, ibot_patch_loss
 from .ijepa import IJEPAPointMAE, build_ijepa_pointmae, ijepa_patch_loss
@@ -16,6 +17,7 @@ from .vicreg import VICRegPointNet, build_vicreg_pointnet, vicreg_loss
 __all__ = [
     "BarlowTwinsPointNet",
     "BYOLPointNet",
+    "Data2VecPointMAE",
     "DINOPointNet",
     "DINOV2PointMAE",
     "IJEPAPointMAE",
@@ -27,6 +29,7 @@ __all__ = [
     "SwAVPointNet",
     "VICRegPointNet",
     "barlow_twins_loss",
+    "build_data2vec_pointmae",
     "build_dinov2_pointmae",
     "build_barlowtwins_pointnet",
     "build_byol_pointnet",
@@ -41,6 +44,7 @@ __all__ = [
     "build_vicreg_pointnet",
     "byol_loss",
     "cosine_similarity_loss",
+    "data2vec_loss",
     "dino_cross_view_loss",
     "dino_loss",
     "ibot_patch_loss",

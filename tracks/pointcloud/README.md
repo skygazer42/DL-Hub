@@ -29,3 +29,4 @@
 - `lesson_19_pointcloud_selfsupervised_dinov2/`：点云自监督（DINOv2-style：DINO + iBOT patch，toy 数据）
 - `lesson_20_pointcloud_selfsupervised_ijepa/`：点云自监督（I-JEPA-style masked prediction，toy 数据）
 - `lesson_21_pointcloud_selfsupervised_msn/`：点云自监督（MSN-style masked distillation + prototype balance，toy 数据）
+- `lesson_22_pointcloud_selfsupervised_data2vec/`：点云自监督（data2vec-style masked representation regression，toy 数据）

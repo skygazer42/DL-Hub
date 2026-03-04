@@ -725,3 +725,66 @@ def test_pointcloud_lesson_21_msn_ssl_forward_loss_backward_smoke() -> None:
     loss.backward()
     model.update_center([t1, t2], center_momentum=0.9)
     model.momentum_update_teacher(ema_decay=0.99)
+
+
+def test_pointcloud_lesson_22_data2vec_ssl_forward_loss_backward_smoke() -> None:
+    from tracks.pointcloud.lesson_22_pointcloud_selfsupervised_data2vec.data import DataConfig, get_dataloaders
+    from tracks.pointcloud.lesson_22_pointcloud_selfsupervised_data2vec.model import ModelConfig, build_model
+    from dlhub.pointcloud.selfsupervised.data2vec import data2vec_loss
+
+    train_loader, _ = get_dataloaders(
+        DataConfig(
+            num_samples=64,
+            num_points=96,
+            batch_size=4,
+            val_fraction=0.2,
+            seed=0,
+            num_workers=0,
+            p_sphere=0.5,
+            jitter_std=0.01,
+            drop_p=0.1,
+        )
+    )
+    v1, v2, y = next(iter(train_loader))
+    assert v1.shape == (4, 96, 3)
+    assert v2.shape == (4, 96, 3)
+    assert y.shape == (4,)
+
+    model = build_model(
+        ModelConfig(
+            arch="data2vec_pointmae:data2vec_pointmae_tiny",
+            variant="",
+            in_channels=3,
+            dropout=0.0,
+        )
+    )
+    with torch.no_grad():
+        t1 = model.forward_teacher(v1)
+        t2 = model.forward_teacher(v2)
+
+    s1 = model.forward_student(v1, mask_ratio=0.5)
+    s2 = model.forward_student(v2, mask_ratio=0.5)
+
+    loss = 0.5 * (
+        data2vec_loss(
+            pred_cls=s1["pred_cls"],
+            target_cls=t1["cls"],
+            pred_patch=s1["pred_patch"],
+            target_patch=t1["patch"],
+            mask_idx=s1["mask_idx"],
+            cls_weight=1.0,
+            patch_weight=1.0,
+        )
+        + data2vec_loss(
+            pred_cls=s2["pred_cls"],
+            target_cls=t2["cls"],
+            pred_patch=s2["pred_patch"],
+            target_patch=t2["patch"],
+            mask_idx=s2["mask_idx"],
+            cls_weight=1.0,
+            patch_weight=1.0,
+        )
+    )
+    assert torch.isfinite(loss)
+    loss.backward()
+    model.momentum_update_teacher(ema_decay=0.99)
