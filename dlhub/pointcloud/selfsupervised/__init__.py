@@ -5,6 +5,7 @@ from .byol import BYOLPointNet, build_byol_pointnet, byol_loss, cosine_similarit
 from .dino import DINOPointNet, build_dino_pointnet, dino_loss
 from .dinov2 import DINOV2PointMAE, build_dinov2_pointmae, dino_cross_view_loss, ibot_patch_loss
 from .ijepa import IJEPAPointMAE, build_ijepa_pointmae, ijepa_patch_loss
+from .msn import MSNPointMAE, build_msn_pointmae, msn_loss
 from .moco import MoCoPointNet, build_moco_pointnet, moco_logits
 from .simclr import SimCLRPointNet, build_simclr_pointnet, nt_xent_loss
 from .simsiam import SimSiamPointNet, build_simsiam_pointnet, negative_cosine_similarity, simsiam_loss
@@ -18,6 +19,7 @@ __all__ = [
     "DINOPointNet",
     "DINOV2PointMAE",
     "IJEPAPointMAE",
+    "MSNPointMAE",
     "MoCoPointNet",
     "PointMAEPretrainer",
     "SimCLRPointNet",
@@ -30,6 +32,7 @@ __all__ = [
     "build_byol_pointnet",
     "build_dino_pointnet",
     "build_ijepa_pointmae",
+    "build_msn_pointmae",
     "build_moco_pointnet",
     "build_pointmae_pretrainer",
     "build_simclr_pointnet",
@@ -42,6 +45,7 @@ __all__ = [
     "dino_loss",
     "ibot_patch_loss",
     "ijepa_patch_loss",
+    "msn_loss",
     "moco_logits",
     "negative_cosine_similarity",
     "nt_xent_loss",

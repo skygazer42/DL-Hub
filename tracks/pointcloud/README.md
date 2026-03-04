@@ -28,3 +28,4 @@
 - `lesson_18_pointcloud_selfsupervised_dino/`：点云自监督（DINO teacher/student + centering，toy 数据）
 - `lesson_19_pointcloud_selfsupervised_dinov2/`：点云自监督（DINOv2-style：DINO + iBOT patch，toy 数据）
 - `lesson_20_pointcloud_selfsupervised_ijepa/`：点云自监督（I-JEPA-style masked prediction，toy 数据）
+- `lesson_21_pointcloud_selfsupervised_msn/`：点云自监督（MSN-style masked distillation + prototype balance，toy 数据）

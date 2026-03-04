@@ -672,3 +672,56 @@ def test_pointcloud_lesson_20_ijepa_ssl_forward_loss_backward_smoke() -> None:
     assert torch.isfinite(loss)
     loss.backward()
     model.momentum_update_teacher(ema_decay=0.99)
+
+
+def test_pointcloud_lesson_21_msn_ssl_forward_loss_backward_smoke() -> None:
+    from tracks.pointcloud.lesson_21_pointcloud_selfsupervised_msn.data import DataConfig, get_dataloaders
+    from tracks.pointcloud.lesson_21_pointcloud_selfsupervised_msn.model import ModelConfig, build_model
+    from dlhub.pointcloud.selfsupervised.msn import msn_loss
+
+    train_loader, _ = get_dataloaders(
+        DataConfig(
+            num_samples=64,
+            num_points=96,
+            batch_size=4,
+            val_fraction=0.2,
+            seed=0,
+            num_workers=0,
+            p_sphere=0.5,
+            jitter_std=0.01,
+            drop_p=0.1,
+        )
+    )
+    v1, v2, y = next(iter(train_loader))
+    assert v1.shape == (4, 96, 3)
+    assert v2.shape == (4, 96, 3)
+    assert y.shape == (4,)
+
+    model = build_model(
+        ModelConfig(
+            arch="msn_pointmae:msn_pointmae_tiny",
+            variant="",
+            in_channels=3,
+            dropout=0.0,
+            out_dim=64,
+        )
+    )
+    with torch.no_grad():
+        t1 = model.forward_teacher(v1)["cls_logits"]
+        t2 = model.forward_teacher(v2)["cls_logits"]
+
+    s1 = model.forward_student(v1, mask_ratio=0.5)["cls_logits"]
+    s2 = model.forward_student(v2, mask_ratio=0.5)["cls_logits"]
+
+    loss = msn_loss(
+        student_logits=[s1, s2],
+        teacher_logits=[t1, t2],
+        student_temperature=0.1,
+        teacher_temperature=0.04,
+        center=model.center,
+        entropy_weight=1.0,
+    )
+    assert torch.isfinite(loss)
+    loss.backward()
+    model.update_center([t1, t2], center_momentum=0.9)
+    model.momentum_update_teacher(ema_decay=0.99)

@@ -15,7 +15,7 @@
 
 <br/>
 
-<code>54 Lessons</code> · <code>7 Learning Tracks</code> · <code>13 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>40+ Tests</code>
+<code>55 Lessons</code> · <code>7 Learning Tracks</code> · <code>13 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>40+ Tests</code>
 
 <br/>
 
@@ -196,7 +196,7 @@ python scripts/run_lesson.py --list
 <td align="center" width="14%"><b>Vision</b><br/><sub>11 lessons</sub></td>
 <td align="center" width="14%"><b>NLP</b><br/><sub>7 lessons</sub></td>
 <td align="center" width="14%"><b>GNN</b><br/><sub>11 lessons</sub></td>
-<td align="center" width="14%"><b>Point Cloud</b><br/><sub>20 lessons</sub></td>
+<td align="center" width="14%"><b>Point Cloud</b><br/><sub>21 lessons</sub></td>
 <td align="center" width="14%"><b>Generative</b><br/><sub>2 lessons</sub></td>
 <td align="center" width="14%"><b>LLM</b><br/><sub>1 lesson</sub></td>
 </tr>
