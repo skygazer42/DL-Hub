@@ -9,10 +9,12 @@ from .bm3d import BM3D, build_bm3d_denoiser
 from .bsn import BlindSpotNet, build_bsn_denoiser
 from .cbdnet import CBDNet, build_cbdnet_denoiser
 from .ddpm_unet import DDPMUNet, DDPMUNetDenoiser, build_ddpm_unet_denoiser
+from .dbsn import DBSN, build_dbsn_denoiser
 from .didn import DIDN, build_didn_denoiser
 from .dncnn import DnCNN, DnCNNDenoiser, build_dncnn_denoiser
 from .drunet import DRUNet, build_drunet_denoiser
 from .ffdnet import FFDNetDenoiser, build_ffdnet_denoiser
+from .gated_pixelcnn_bsn import GatedPixelCNNBSN, build_gated_pixelcnn_bsn_denoiser
 from .mirnet import MIRNet, build_mirnet_denoiser
 from .mprnet import MPRNet, build_mprnet_denoiser
 from .nafnet import NAFNet, build_nafnet_denoiser
@@ -30,11 +32,13 @@ __all__ = [
     "CBDNet",
     "DDPMUNet",
     "DDPMUNetDenoiser",
+    "DBSN",
     "DIDN",
     "DnCNN",
     "DnCNNDenoiser",
     "DRUNet",
     "FFDNetDenoiser",
+    "GatedPixelCNNBSN",
     "MIRNet",
     "MPRNet",
     "NAFNet",
@@ -49,10 +53,12 @@ __all__ = [
     "build_bsn_denoiser",
     "build_cbdnet_denoiser",
     "build_ddpm_unet_denoiser",
+    "build_dbsn_denoiser",
     "build_didn_denoiser",
     "build_dncnn_denoiser",
     "build_drunet_denoiser",
     "build_ffdnet_denoiser",
+    "build_gated_pixelcnn_bsn_denoiser",
     "build_mirnet_denoiser",
     "build_mprnet_denoiser",
     "build_nafnet_denoiser",

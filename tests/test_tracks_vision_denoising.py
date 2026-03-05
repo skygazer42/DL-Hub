@@ -8,12 +8,15 @@ torch = pytest.importorskip("torch")
     "noise_type,kwargs",
     [
         ("gaussian", {}),
+        ("gaussian_var", {"noise_std_min": 0.05, "noise_std_max": 0.2}),
         ("gaussian_impulse", {"impulse_prob": 0.03}),
         ("poisson", {"poisson_peak": 30.0}),
         ("impulse", {"impulse_prob": 0.05}),
         ("shot_read", {"shot_noise": 0.2, "read_noise": 0.02}),
         ("speckle", {"speckle_std": 0.15}),
+        ("speckle_read", {"speckle_std": 0.15, "read_noise": 0.02}),
         ("stripe", {"stripe_amplitude": 0.12, "stripe_period": 8}),
+        ("stripe", {"stripe_amplitude": 0.12, "stripe_period": 8, "stripe_direction": "random"}),
     ],
 )
 def test_vision_denoising_noise_models_dataloader_smoke(noise_type: str, kwargs: dict) -> None:
@@ -84,6 +87,8 @@ def test_vision_denoising_supervised_forward_loss_backward_smoke() -> None:
         "rcan:rcan_tiny",
         "bsn:bsn_tiny",
         "pixelcnn_bsn:pixelcnn_bsn_tiny",
+        "dbsn:dbsn_tiny",
+        "gated_pixelcnn_bsn:gated_pixelcnn_bsn_tiny",
     ]:
         model = build_model(ModelConfig(arch=arch, variant="", in_channels=1, sigma=0.15))
         pred = model(noisy)

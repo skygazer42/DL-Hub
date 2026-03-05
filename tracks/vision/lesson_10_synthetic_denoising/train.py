@@ -47,17 +47,19 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--noise-type",
         type=str,
         default="gaussian",
-        help="gaussian | gaussian_impulse | poisson | impulse | shot_read | speckle | stripe",
+        help="gaussian | gaussian_var | gaussian_impulse | poisson | impulse | shot_read | speckle | speckle_read | stripe",
     )
     parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
+    parser.add_argument("--noise-std-min", type=float, default=0.05, help="Min Gaussian std (used when noise-type=gaussian_var)")
+    parser.add_argument("--noise-std-max", type=float, default=0.2, help="Max Gaussian std (used when noise-type=gaussian_var)")
     parser.add_argument("--poisson-peak", type=float, default=30.0, help="Poisson peak photons (used when noise-type=poisson)")
     parser.add_argument("--impulse-prob", type=float, default=0.03, help="Salt & pepper prob (used when noise-type=impulse)")
     parser.add_argument("--shot-noise", type=float, default=0.2, help="Shot noise factor (used when noise-type=shot_read)")
     parser.add_argument("--read-noise", type=float, default=0.02, help="Read noise std (used when noise-type=shot_read)")
-    parser.add_argument("--speckle-std", type=float, default=0.15, help="Speckle std (used when noise-type=speckle)")
+    parser.add_argument("--speckle-std", type=float, default=0.15, help="Speckle std (used when noise-type=speckle/speckle_read)")
     parser.add_argument("--stripe-amplitude", type=float, default=0.12, help="Stripe amplitude (used when noise-type=stripe)")
     parser.add_argument("--stripe-period", type=int, default=8, help="Stripe period in pixels (used when noise-type=stripe)")
-    parser.add_argument("--stripe-direction", type=str, default="vertical", help="vertical | horizontal (used when noise-type=stripe)")
+    parser.add_argument("--stripe-direction", type=str, default="vertical", help="vertical | horizontal | random (used when noise-type=stripe)")
     parser.add_argument("--min-square", type=int, default=8)
     parser.add_argument("--max-square", type=int, default=24)
     parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot")
@@ -108,6 +110,8 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         in_channels=args.in_channels,
         noise_type=args.noise_type,
         noise_std=args.noise_std,
+        noise_std_min=args.noise_std_min,
+        noise_std_max=args.noise_std_max,
         poisson_peak=args.poisson_peak,
         impulse_prob=args.impulse_prob,
         shot_noise=args.shot_noise,

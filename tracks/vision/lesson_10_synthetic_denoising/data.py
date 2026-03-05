@@ -19,8 +19,10 @@ class DataConfig:
 
     in_channels: int = 1
     # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
-    noise_type: str = "gaussian"  # gaussian | gaussian_impulse | poisson | impulse | shot_read | speckle | stripe
+    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | impulse | shot_read | speckle | speckle_read | stripe
     noise_std: float = 0.1  # Gaussian std in [0,1] scale
+    noise_std_min: float = 0.05  # used when noise_type=gaussian_var
+    noise_std_max: float = 0.2  # used when noise_type=gaussian_var
     poisson_peak: float = 30.0  # Peak photons for Poisson noise (higher = less noise)
     impulse_prob: float = 0.03  # Salt & pepper probability
     shot_noise: float = 0.2  # Heteroscedastic term (variance ~ shot_noise * signal)
@@ -28,7 +30,7 @@ class DataConfig:
     speckle_std: float = 0.15  # Multiplicative noise scale (used when noise-type=speckle)
     stripe_amplitude: float = 0.12  # Stripe noise amplitude (used when noise-type=stripe)
     stripe_period: int = 8  # Stripe spatial period in pixels (used when noise-type=stripe)
-    stripe_direction: str = "vertical"  # vertical | horizontal
+    stripe_direction: str = "vertical"  # vertical | horizontal | random
     min_square: int = 8
     max_square: int = 24
     train_mode: str = "supervised"  # supervised | noise2noise | blindspot
@@ -113,6 +115,16 @@ class ToyDenoisingSquares(Dataset):
             noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(cfg.noise_std)
             return (clean + noise).clamp(0.0, 1.0)
 
+        if noise_type in {"gaussian_var", "gaussian_range", "gaussian_uniform"}:
+            mn = float(cfg.noise_std_min)
+            mx = float(cfg.noise_std_max)
+            if mn < 0.0 or mx < 0.0 or mx < mn:
+                raise ValueError("noise_std_min/max must satisfy 0 <= min <= max")
+            g = self._generator(idx, stream=stream, salt=6)
+            sigma = mn + float(torch.rand((), generator=g).item()) * (mx - mn)
+            noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(sigma)
+            return (clean + noise).clamp(0.0, 1.0)
+
         if noise_type in {"gaussian_impulse", "gaussian+impulse", "gauss_impulse"}:
             # Apply Gaussian, then salt & pepper.
             g = self._generator(idx, stream=stream, salt=0)
@@ -183,6 +195,18 @@ class ToyDenoisingSquares(Dataset):
             noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * sstd
             return (clean + clean * noise).clamp(0.0, 1.0)
 
+        if noise_type in {"speckle_read", "speckle+read"}:
+            sstd = float(cfg.speckle_std)
+            read = float(cfg.read_noise)
+            if sstd < 0.0:
+                raise ValueError("speckle_std must be >= 0")
+            if read < 0.0:
+                raise ValueError("read_noise must be >= 0")
+            g = self._generator(idx, stream=stream, salt=7)
+            speckle = torch.randn((c, h, w), generator=g, dtype=torch.float32) * sstd
+            read_n = torch.randn((c, h, w), generator=g, dtype=torch.float32) * read
+            return (clean + clean * speckle + read_n).clamp(0.0, 1.0)
+
         if noise_type in {"stripe", "stripes", "banding"}:
             amp = float(cfg.stripe_amplitude)
             if amp < 0.0:
@@ -191,11 +215,14 @@ class ToyDenoisingSquares(Dataset):
             if period <= 1:
                 raise ValueError("stripe_period must be > 1")
             direction = str(cfg.stripe_direction).lower().strip()
-            if direction not in {"vertical", "horizontal"}:
-                raise ValueError("stripe_direction must be 'vertical' or 'horizontal'")
+            if direction not in {"vertical", "horizontal", "random"}:
+                raise ValueError("stripe_direction must be 'vertical', 'horizontal', or 'random'")
 
             g = self._generator(idx, stream=stream, salt=5)
             phase = float(torch.rand((), generator=g).item()) * 2.0 * 3.141592653589793
+
+            if direction == "random":
+                direction = "vertical" if float(torch.rand((), generator=g).item()) < 0.5 else "horizontal"
 
             if direction == "vertical":
                 coord = torch.arange(w, dtype=torch.float32)[None, None, :]  # (1,1,W)
@@ -211,7 +238,7 @@ class ToyDenoisingSquares(Dataset):
             return (clean + amp * stripe).clamp(0.0, 1.0)
 
         raise ValueError(
-            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_impulse | poisson | impulse | shot_read | speckle | stripe"
+            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | impulse | shot_read | speckle | speckle_read | stripe"
         )
 
     def _blindspot_mask(self, idx: int) -> torch.Tensor:

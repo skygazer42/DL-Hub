@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | bsn | pixelcnn_bsn
+    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -19,10 +19,12 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
+    from dlhub.vision.denoising.dbsn import _VARIANTS as dbsn_variants
     from dlhub.vision.denoising.didn import _VARIANTS as didn_variants
     from dlhub.vision.denoising.dncnn import _VARIANTS as dncnn_variants
     from dlhub.vision.denoising.drunet import _VARIANTS as drunet_variants
     from dlhub.vision.denoising.ffdnet import _VARIANTS as ffdnet_variants
+    from dlhub.vision.denoising.gated_pixelcnn_bsn import _VARIANTS as gated_pixelcnn_bsn_variants
     from dlhub.vision.denoising.mirnet import _VARIANTS as mirnet_variants
     from dlhub.vision.denoising.mprnet import _VARIANTS as mprnet_variants
     from dlhub.vision.denoising.nafnet import _VARIANTS as nafnet_variants
@@ -47,12 +49,14 @@ def list_supported_arches() -> list[str]:
     out.extend([f"bsn:{k}" for k in sorted(bsn_variants)])
     out.extend([f"cbdnet:{k}" for k in sorted(cbdnet_variants)])
     out.extend([f"ddpm_unet:{k}" for k in sorted(ddpm_unet_variants)])
+    out.extend([f"dbsn:{k}" for k in sorted(dbsn_variants)])
     out.extend([f"didn:{k}" for k in sorted(didn_variants)])
     out.extend([f"mirnet:{k}" for k in sorted(mirnet_variants)])
     out.extend([f"mprnet:{k}" for k in sorted(mprnet_variants)])
     out.extend([f"rcan:{k}" for k in sorted(rcan_variants)])
     out.extend([f"uformer:{k}" for k in sorted(uformer_variants)])
     out.extend([f"pixelcnn_bsn:{k}" for k in sorted(pixelcnn_bsn_variants)])
+    out.extend([f"gated_pixelcnn_bsn:{k}" for k in sorted(gated_pixelcnn_bsn_variants)])
     return out
 
 
@@ -154,10 +158,20 @@ def build_model(cfg: ModelConfig) -> nn.Module:
 
         return build_bsn_denoiser(in_channels=in_channels, variant=variant)
 
+    if arch in {"dbsn"}:
+        from dlhub.vision.denoising.dbsn import build_dbsn_denoiser
+
+        return build_dbsn_denoiser(in_channels=in_channels, variant=variant)
+
     if arch in {"pixelcnn_bsn", "pcbsn"}:
         from dlhub.vision.denoising.pixelcnn_bsn import build_pixelcnn_bsn_denoiser
 
         return build_pixelcnn_bsn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"gated_pixelcnn_bsn", "gpcbsn"}:
+        from dlhub.vision.denoising.gated_pixelcnn_bsn import build_gated_pixelcnn_bsn_denoiser
+
+        return build_gated_pixelcnn_bsn_denoiser(in_channels=in_channels, variant=variant)
 
     raise ValueError(
         f"Unknown arch: {arch_raw!r}. Examples: dncnn:dncnn_17 | restormer:restormer_tiny | bm3d:bm3d_fast"
