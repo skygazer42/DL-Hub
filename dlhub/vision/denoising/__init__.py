@@ -6,7 +6,9 @@ Conventions:
 """
 
 from .attention_unet import AttentionUNet, build_attention_unet_denoiser
+from .anisotropic_diffusion import AnisotropicDiffusion, build_anisotropic_diffusion_denoiser
 from .aspp_unet import ASPPUNet, build_aspp_unet_denoiser
+from .bilateral_filter import BilateralFilter, build_bilateral_filter_denoiser
 from .bm3d import BM3D, build_bm3d_denoiser
 from .brdnet import BRDNet, build_brdnet_denoiser
 from .bsn import BlindSpotNet, build_bsn_denoiser
@@ -25,14 +27,17 @@ from .drunet import DRUNet, build_drunet_denoiser
 from .edsr import EDSR, build_edsr_denoiser
 from .ffdnet import FFDNetDenoiser, build_ffdnet_denoiser
 from .gated_pixelcnn_bsn import GatedPixelCNNBSN, build_gated_pixelcnn_bsn_denoiser
+from .guided_filter import GuidedFilter, build_guided_filter_denoiser
 from .hinet import HINet, build_hinet_denoiser
 from .ircnn import IRCNN, build_ircnn_denoiser
+from .median_filter import MedianFilter, build_median_filter_denoiser
 from .memnet import MemNet, build_memnet_denoiser
 from .mirnet import MIRNet, build_mirnet_denoiser
 from .mprnet import MPRNet, build_mprnet_denoiser
 from .mwcnn import MWCNN, build_mwcnn_denoiser
 from .nafnet import NAFNet, build_nafnet_denoiser
 from .nlrn import NLRN, build_nlrn_denoiser
+from .non_local_means import NonLocalMeans, build_non_local_means_denoiser
 from .noise2noise import Noise2NoiseUNet, build_noise2noise_denoiser
 from .pixelcnn_bsn import PixelCNNBSN, build_pixelcnn_bsn_denoiser
 from .pridnet import PRIDNet, build_pridnet_denoiser
@@ -46,13 +51,18 @@ from .ridnet import RIDNetDenoiser, build_ridnet_denoiser
 from .rrdbnet import RRDBNet, build_rrdbnet_denoiser
 from .scunet import SCUNet, build_scunet_denoiser
 from .swinir import SwinIR, build_swinir_denoiser
+from .total_variation import TotalVariationDenoiser, build_total_variation_denoiser
 from .unet3plus import UNet3Plus, build_unet3plus_denoiser
 from .unetpp import UNetPlusPlus, build_unetpp_denoiser
 from .uformer import UFormer, build_uformer_denoiser
+from .wavelet_shrinkage import WaveletShrinkage, build_wavelet_shrinkage_denoiser
+from .wiener_filter import WienerFilter, build_wiener_filter_denoiser
 
 __all__ = [
     "AttentionUNet",
+    "AnisotropicDiffusion",
     "ASPPUNet",
+    "BilateralFilter",
     "BM3D",
     "BRDNet",
     "BlindSpotNet",
@@ -73,14 +83,17 @@ __all__ = [
     "EDSR",
     "FFDNetDenoiser",
     "GatedPixelCNNBSN",
+    "GuidedFilter",
     "HINet",
     "IRCNN",
+    "MedianFilter",
     "MemNet",
     "MIRNet",
     "MPRNet",
     "MWCNN",
     "NAFNet",
     "NLRN",
+    "NonLocalMeans",
     "Noise2NoiseUNet",
     "PixelCNNBSN",
     "PRIDNet",
@@ -94,11 +107,16 @@ __all__ = [
     "RRDBNet",
     "SCUNet",
     "SwinIR",
+    "TotalVariationDenoiser",
     "UNet3Plus",
     "UNetPlusPlus",
     "UFormer",
+    "WaveletShrinkage",
+    "WienerFilter",
     "build_attention_unet_denoiser",
+    "build_anisotropic_diffusion_denoiser",
     "build_aspp_unet_denoiser",
+    "build_bilateral_filter_denoiser",
     "build_bm3d_denoiser",
     "build_brdnet_denoiser",
     "build_bsn_denoiser",
@@ -117,14 +135,17 @@ __all__ = [
     "build_edsr_denoiser",
     "build_ffdnet_denoiser",
     "build_gated_pixelcnn_bsn_denoiser",
+    "build_guided_filter_denoiser",
     "build_hinet_denoiser",
     "build_ircnn_denoiser",
+    "build_median_filter_denoiser",
     "build_memnet_denoiser",
     "build_mirnet_denoiser",
     "build_mprnet_denoiser",
     "build_mwcnn_denoiser",
     "build_nafnet_denoiser",
     "build_nlrn_denoiser",
+    "build_non_local_means_denoiser",
     "build_noise2noise_denoiser",
     "build_pixelcnn_bsn_denoiser",
     "build_pridnet_denoiser",
@@ -138,7 +159,10 @@ __all__ = [
     "build_rrdbnet_denoiser",
     "build_scunet_denoiser",
     "build_swinir_denoiser",
+    "build_total_variation_denoiser",
     "build_unet3plus_denoiser",
     "build_unetpp_denoiser",
     "build_uformer_denoiser",
+    "build_wavelet_shrinkage_denoiser",
+    "build_wiener_filter_denoiser",
 ]

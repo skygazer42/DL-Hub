@@ -8,15 +8,17 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | median_filter | wiener_filter | guided_filter | bilateral_filter | non_local_means | total_variation | anisotropic_diffusion | wavelet_shrinkage | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
 
 
 def list_supported_arches() -> list[str]:
+    from dlhub.vision.denoising.anisotropic_diffusion import _VARIANTS as anisodiff_variants
     from dlhub.vision.denoising.attention_unet import _VARIANTS as attention_unet_variants
     from dlhub.vision.denoising.aspp_unet import _VARIANTS as aspp_unet_variants
+    from dlhub.vision.denoising.bilateral_filter import _VARIANTS as bilateral_variants
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
     from dlhub.vision.denoising.brdnet import _VARIANTS as brdnet_variants
     from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
@@ -35,14 +37,17 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.edsr import _VARIANTS as edsr_variants
     from dlhub.vision.denoising.ffdnet import _VARIANTS as ffdnet_variants
     from dlhub.vision.denoising.gated_pixelcnn_bsn import _VARIANTS as gated_pixelcnn_bsn_variants
+    from dlhub.vision.denoising.guided_filter import _VARIANTS as guided_filter_variants
     from dlhub.vision.denoising.hinet import _VARIANTS as hinet_variants
     from dlhub.vision.denoising.ircnn import _VARIANTS as ircnn_variants
+    from dlhub.vision.denoising.median_filter import _VARIANTS as median_filter_variants
     from dlhub.vision.denoising.memnet import _VARIANTS as memnet_variants
     from dlhub.vision.denoising.mirnet import _VARIANTS as mirnet_variants
     from dlhub.vision.denoising.mprnet import _VARIANTS as mprnet_variants
     from dlhub.vision.denoising.mwcnn import _VARIANTS as mwcnn_variants
     from dlhub.vision.denoising.nafnet import _VARIANTS as nafnet_variants
     from dlhub.vision.denoising.nlrn import _VARIANTS as nlrn_variants
+    from dlhub.vision.denoising.non_local_means import _VARIANTS as non_local_means_variants
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
     from dlhub.vision.denoising.pixelcnn_bsn import _VARIANTS as pixelcnn_bsn_variants
     from dlhub.vision.denoising.pridnet import _VARIANTS as pridnet_variants
@@ -56,9 +61,12 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.rrdbnet import _VARIANTS as rrdbnet_variants
     from dlhub.vision.denoising.scunet import _VARIANTS as scunet_variants
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
+    from dlhub.vision.denoising.total_variation import _VARIANTS as total_variation_variants
     from dlhub.vision.denoising.unet3plus import _VARIANTS as unet3plus_variants
     from dlhub.vision.denoising.unetpp import _VARIANTS as unetpp_variants
     from dlhub.vision.denoising.uformer import _VARIANTS as uformer_variants
+    from dlhub.vision.denoising.wavelet_shrinkage import _VARIANTS as wavelet_shrinkage_variants
+    from dlhub.vision.denoising.wiener_filter import _VARIANTS as wiener_filter_variants
 
     out: list[str] = []
     out.extend([f"dncnn:{k}" for k in sorted(dncnn_variants)])
@@ -88,6 +96,14 @@ def list_supported_arches() -> list[str]:
     out.extend([f"drunet:{k}" for k in sorted(drunet_variants)])
     out.extend([f"noise2noise_unet:{k}" for k in sorted(n2n_variants)])
     out.extend([f"bm3d:{k}" for k in sorted(bm3d_variants)])
+    out.extend([f"median_filter:{k}" for k in sorted(median_filter_variants)])
+    out.extend([f"wiener_filter:{k}" for k in sorted(wiener_filter_variants)])
+    out.extend([f"guided_filter:{k}" for k in sorted(guided_filter_variants)])
+    out.extend([f"bilateral_filter:{k}" for k in sorted(bilateral_variants)])
+    out.extend([f"non_local_means:{k}" for k in sorted(non_local_means_variants)])
+    out.extend([f"total_variation:{k}" for k in sorted(total_variation_variants)])
+    out.extend([f"anisotropic_diffusion:{k}" for k in sorted(anisodiff_variants)])
+    out.extend([f"wavelet_shrinkage:{k}" for k in sorted(wavelet_shrinkage_variants)])
     out.extend([f"bsn:{k}" for k in sorted(bsn_variants)])
     out.extend([f"cbdnet:{k}" for k in sorted(cbdnet_variants)])
     out.extend([f"ddpm_unet:{k}" for k in sorted(ddpm_unet_variants)])
@@ -255,6 +271,46 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.bm3d import build_bm3d_denoiser
 
         return build_bm3d_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"median_filter", "median"}:
+        from dlhub.vision.denoising.median_filter import build_median_filter_denoiser
+
+        return build_median_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"wiener_filter", "wiener"}:
+        from dlhub.vision.denoising.wiener_filter import build_wiener_filter_denoiser
+
+        return build_wiener_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"guided_filter", "guided"}:
+        from dlhub.vision.denoising.guided_filter import build_guided_filter_denoiser
+
+        return build_guided_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"bilateral_filter", "bilateral"}:
+        from dlhub.vision.denoising.bilateral_filter import build_bilateral_filter_denoiser
+
+        return build_bilateral_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"non_local_means", "nlm"}:
+        from dlhub.vision.denoising.non_local_means import build_non_local_means_denoiser
+
+        return build_non_local_means_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"total_variation", "tv"}:
+        from dlhub.vision.denoising.total_variation import build_total_variation_denoiser
+
+        return build_total_variation_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"anisotropic_diffusion", "anisodiff"}:
+        from dlhub.vision.denoising.anisotropic_diffusion import build_anisotropic_diffusion_denoiser
+
+        return build_anisotropic_diffusion_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"wavelet_shrinkage", "wavelet"}:
+        from dlhub.vision.denoising.wavelet_shrinkage import build_wavelet_shrinkage_denoiser
+
+        return build_wavelet_shrinkage_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
 
     if arch in {"ddpm_unet", "ddpm"}:
         from dlhub.vision.denoising.ddpm_unet import build_ddpm_unet_denoiser

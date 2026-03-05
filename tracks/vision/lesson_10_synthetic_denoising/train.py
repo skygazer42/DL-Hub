@@ -232,15 +232,15 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         },
     )
 
-    # BM3D is a non-learnable baseline; just evaluate and exit.
-    if str(train_cfg.arch).lower().strip().startswith("bm3d:"):
+    # Non-learnable baselines (e.g., BM3D / TV / NLM): evaluate and exit.
+    if not any(p.requires_grad for p in model.parameters()):
         mse, psnr = evaluate_denoiser(
             model=model,
             loader=val_loader,
             device=device_info.torch_device,
             max_batches=train_cfg.max_eval_batches,
         )
-        logger.info("BM3D eval | mse %.6f | psnr %.2f dB", mse, psnr)
+        logger.info("Baseline eval (%s) | mse %.6f | psnr %.2f dB", train_cfg.arch, mse, psnr)
         write_json(paths.run_dir / "metrics.json", {"eval_mse": mse, "eval_psnr": psnr})
         return 0
 

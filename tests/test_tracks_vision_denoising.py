@@ -235,3 +235,31 @@ def test_vision_denoising_bm3d_forward_smoke() -> None:
     assert tuple(out.shape) == tuple(noisy.shape)
     loss = torch.nn.MSELoss()(out, clean)
     assert torch.isfinite(loss)
+
+
+@pytest.mark.parametrize(
+    "arch",
+    [
+        "median_filter:median_tiny",
+        "wiener_filter:wiener_tiny",
+        "guided_filter:guided_filter_tiny",
+        "bilateral_filter:bilateral_fast",
+        "non_local_means:nlm_fast",
+        "total_variation:tv_fast",
+        "anisotropic_diffusion:anisodiff_fast",
+        "wavelet_shrinkage:wavelet_tiny",
+    ],
+)
+def test_vision_denoising_classical_baselines_forward_smoke(arch: str) -> None:
+    from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
+
+    torch.manual_seed(0)
+    clean = torch.rand(2, 1, 32, 32)
+    noisy = (clean + torch.randn_like(clean) * 0.12).clamp(0.0, 1.0)
+
+    model = build_model(ModelConfig(arch=arch, variant="", in_channels=1, sigma=0.12))
+    out = model(noisy)
+    assert tuple(out.shape) == tuple(noisy.shape)
+
+    loss = torch.nn.MSELoss()(out, clean)
+    assert torch.isfinite(loss)
