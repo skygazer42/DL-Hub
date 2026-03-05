@@ -1,6 +1,6 @@
 # Lesson 10：图像去噪（Synthetic, toy-first）
 
-目标：把”输入带噪图 → 输出干净图”的回归式训练闭环跑通，并对比 **26 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 12 种噪声模型。
+目标：把”输入带噪图 → 输出干净图”的回归式训练闭环跑通，并对比 **32 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 15 种噪声模型。
 
 ## 运行
 
@@ -29,7 +29,7 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 
 ## 模型一览
 
-本课包含 26 个去噪算法族，按设计思路分为 5 类：
+本课包含 32 个去噪算法族，按设计思路分为 5 类：
 
 ### 传统方法
 
@@ -56,6 +56,12 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 | **RDN** | 残差密集块（dense 连接） | 多级特征拼接融合，细节恢复强 |
 | **PRIDNet** | 金字塔分支 + 注意力 | 多感受野融合，适合纹理/细节 |
 | **DHDN** | 普通卷积 + 膨胀卷积混合 | 同时抓局部与更大上下文 |
+| **EDSR** | 深残差块（无 BN） | 经典强 CNN backbone（SR/denoise 通用） |
+| **ResUNet** | 残差 U-Net | 结构简单稳定，baseline 很好用 |
+| **Attention U-Net** | 注意力门控 skip connection | 让 skip 更“选择性”地传递信息 |
+| **U-Net++** | 嵌套/密集 skip connection | 更强的多尺度融合（更吃算力） |
+| **MWCNN** | Haar wavelet 多尺度特征 | wavelet 下采样/上采样，结构高效 |
+| **HINet** | Half InstanceNorm 残差块 | 纹理/细节恢复常用技巧（toy 版） |
 
 ### 噪声条件化
 
@@ -122,7 +128,7 @@ BSN/DBSN/PixelCNN-BSN 等网络从**结构上**保证盲点性质，可以搭配
 
 ## 噪声模型
 
-本课支持 12 种噪声模型，通过 `--noise-type` 切换：
+本课支持 15 种噪声模型，通过 `--noise-type` 切换：
 
 | 噪声类型 | 说明 | 关键参数 |
 |---|---|---|
@@ -138,6 +144,9 @@ BSN/DBSN/PixelCNN-BSN 等网络从**结构上**保证盲点性质，可以搭配
 | `stripe` | 条纹/带状噪声 | `--stripe-amplitude 0.12 --stripe-period 8 --stripe-direction vertical` |
 | `correlated_gaussian` | 空间相关高斯噪声（模糊相关） | `--noise-std 0.1` |
 | `quantization` | 量化噪声（ADC / bit-depth） | `--quant-bits 8 --no-quant-dither` |
+| `dead_hot` | 传感器坏点（dead/hot pixels） | `--defect-prob 0.002 --defect-hot-ratio 0.5` |
+| `rowcol_bias` | 行/列随机偏置（非周期 banding / FPN） | `--row-bias-std 0.02 --col-bias-std 0.02` |
+| `mixed` | 混合噪声（shot+read → impulse → quant） | `--shot-noise 0.2 --read-noise 0.02 --impulse-prob 0.03 --quant-bits 8` |
 
 示例：
 

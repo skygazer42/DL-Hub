@@ -20,6 +20,9 @@ torch = pytest.importorskip("torch")
         ("stripe", {"stripe_amplitude": 0.12, "stripe_period": 8, "stripe_direction": "random"}),
         ("correlated_gaussian", {}),
         ("quantization", {"quant_bits": 6, "quant_dither": False}),
+        ("dead_hot", {"defect_prob": 0.01, "defect_hot_ratio": 0.3}),
+        ("rowcol_bias", {"row_bias_std": 0.02, "col_bias_std": 0.02}),
+        ("mixed", {"shot_noise": 0.2, "read_noise": 0.02, "impulse_prob": 0.03, "quant_bits": 8}),
     ],
 )
 def test_vision_denoising_noise_models_dataloader_smoke(noise_type: str, kwargs: dict) -> None:
@@ -74,6 +77,12 @@ def test_vision_denoising_supervised_forward_loss_backward_smoke() -> None:
 
     for arch in [
         "dncnn:dncnn_tiny",
+        "edsr:edsr_tiny",
+        "resunet:resunet_tiny",
+        "attention_unet:attention_unet_tiny",
+        "unetpp:unetpp_tiny",
+        "mwcnn:mwcnn_tiny",
+        "hinet:hinet_tiny",
         "restormer:restormer_tiny",
         "nafnet:nafnet_tiny",
         "swinir:swinir_tiny",

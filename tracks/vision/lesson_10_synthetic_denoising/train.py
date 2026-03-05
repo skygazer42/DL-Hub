@@ -47,7 +47,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--noise-type",
         type=str,
         default="gaussian",
-        help="gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization",
+        help="gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization | dead_hot | rowcol_bias | mixed",
     )
     parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
     parser.add_argument("--noise-std-min", type=float, default=0.05, help="Min Gaussian std (used when noise-type=gaussian_var)")
@@ -67,6 +67,15 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default=True,
         help="Enable uniform dither before quantization (used when noise-type=quantization)",
     )
+    parser.add_argument("--defect-prob", type=float, default=0.002, help="Defect pixel probability (used when noise-type=dead_hot)")
+    parser.add_argument(
+        "--defect-hot-ratio",
+        type=float,
+        default=0.5,
+        help="Fraction of defect pixels that are hot (1.0). The rest are dead (0.0). (used when noise-type=dead_hot)",
+    )
+    parser.add_argument("--row-bias-std", type=float, default=0.02, help="Row bias std (used when noise-type=rowcol_bias)")
+    parser.add_argument("--col-bias-std", type=float, default=0.02, help="Col bias std (used when noise-type=rowcol_bias)")
     parser.add_argument("--min-square", type=int, default=8)
     parser.add_argument("--max-square", type=int, default=24)
     parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot")
@@ -129,6 +138,10 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         stripe_direction=args.stripe_direction,
         quant_bits=args.quant_bits,
         quant_dither=args.quant_dither,
+        defect_prob=args.defect_prob,
+        defect_hot_ratio=args.defect_hot_ratio,
+        row_bias_std=args.row_bias_std,
+        col_bias_std=args.col_bias_std,
         min_square=args.min_square,
         max_square=args.max_square,
         train_mode=args.train_mode,

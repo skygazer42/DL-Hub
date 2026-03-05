@@ -19,7 +19,7 @@ class DataConfig:
 
     in_channels: int = 1
     # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
-    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization
+    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization | dead_hot | rowcol_bias | mixed
     noise_std: float = 0.1  # Gaussian std in [0,1] scale
     noise_std_min: float = 0.05  # used when noise_type=gaussian_var
     noise_std_max: float = 0.2  # used when noise_type=gaussian_var
@@ -33,6 +33,10 @@ class DataConfig:
     stripe_direction: str = "vertical"  # vertical | horizontal | random
     quant_bits: int = 8  # used when noise_type=quantization
     quant_dither: bool = True  # whether to add uniform dither before quantization
+    defect_prob: float = 0.002  # used when noise_type=dead_hot (sensor defect pixels)
+    defect_hot_ratio: float = 0.5  # fraction of defect pixels that are "hot" (1.0), rest are "dead" (0.0)
+    row_bias_std: float = 0.02  # used when noise_type=rowcol_bias
+    col_bias_std: float = 0.02  # used when noise_type=rowcol_bias
     min_square: int = 8
     max_square: int = 24
     train_mode: str = "supervised"  # supervised | noise2noise | blindspot
@@ -285,8 +289,90 @@ class ToyDenoisingSquares(Dataset):
             out = torch.round(out * levels) / levels
             return out.clamp(0.0, 1.0)
 
+        if noise_type in {"dead_hot", "dead_hot_pixels", "defects", "defect_pixels"}:
+            p = float(cfg.defect_prob)
+            r = float(cfg.defect_hot_ratio)
+            if not (0.0 <= p < 1.0):
+                raise ValueError("defect_prob must be in [0, 1)")
+            if not (0.0 <= r <= 1.0):
+                raise ValueError("defect_hot_ratio must be in [0, 1]")
+            if p == 0.0:
+                return clean
+
+            # Deterministic per-sample pattern (independent of stream): simulates fixed sensor defects.
+            g = self._generator(idx, stream=0, salt=14)
+            u = torch.rand((1, h, w), generator=g, dtype=torch.float32)
+            defect = u < p
+
+            g2 = self._generator(idx, stream=0, salt=15)
+            hot = torch.rand((1, h, w), generator=g2, dtype=torch.float32) < r
+
+            if c != 1:
+                defect = defect.repeat(c, 1, 1)
+                hot = hot.repeat(c, 1, 1)
+
+            out = clean.clone()
+            out[defect & hot] = 1.0
+            out[defect & (~hot)] = 0.0
+            return out.clamp(0.0, 1.0)
+
+        if noise_type in {"rowcol_bias", "row_col_bias", "fpn"}:
+            rstd = float(cfg.row_bias_std)
+            cstd = float(cfg.col_bias_std)
+            if rstd < 0.0 or cstd < 0.0:
+                raise ValueError("row_bias_std/col_bias_std must be >= 0")
+            if rstd == 0.0 and cstd == 0.0:
+                return clean
+            g = self._generator(idx, stream=stream, salt=16)
+            row = torch.randn((1, h, 1), generator=g, dtype=torch.float32) * rstd
+            col = torch.randn((1, 1, w), generator=g, dtype=torch.float32) * cstd
+            bias = row + col  # (1, H, W)
+            if c != 1:
+                bias = bias.repeat(c, 1, 1)
+            return (clean + bias).clamp(0.0, 1.0)
+
+        if noise_type in {"mixed", "realistic_mixed", "sensor_mixed"}:
+            # A simple sensor-ish pipeline: shot+read (heteroscedastic) -> impulse -> quantization.
+            shot = float(cfg.shot_noise)
+            read = float(cfg.read_noise)
+            p = float(cfg.impulse_prob)
+            if shot < 0.0:
+                raise ValueError("shot_noise must be >= 0")
+            if read < 0.0:
+                raise ValueError("read_noise must be >= 0")
+            if not (0.0 <= p < 1.0):
+                raise ValueError("impulse_prob must be in [0, 1)")
+
+            g = self._generator(idx, stream=stream, salt=17)
+            std = torch.sqrt(clean.clamp_min(0.0) * shot + (read * read))
+            out = clean + torch.randn((c, h, w), generator=g, dtype=torch.float32) * std
+            out = out.clamp(0.0, 1.0)
+
+            if p > 0.0:
+                g2 = self._generator(idx, stream=stream, salt=18)
+                u = torch.rand((1, h, w), generator=g2, dtype=torch.float32)
+                salt = u < (p * 0.5)
+                pepper = (u >= (p * 0.5)) & (u < p)
+                if c != 1:
+                    salt = salt.repeat(c, 1, 1)
+                    pepper = pepper.repeat(c, 1, 1)
+                out = out.clone()
+                out[salt] = 1.0
+                out[pepper] = 0.0
+
+            bits = int(cfg.quant_bits)
+            if bits < 2 or bits > 16:
+                raise ValueError("quant_bits must be in [2, 16]")
+            levels = float((1 << bits) - 1)
+            if bool(cfg.quant_dither):
+                g3 = self._generator(idx, stream=stream, salt=19)
+                dither = (torch.rand((c, h, w), generator=g3, dtype=torch.float32) - 0.5) / levels
+                out = (out + dither).clamp(0.0, 1.0)
+            out = torch.round(out * levels) / levels
+            return out.clamp(0.0, 1.0)
+
         raise ValueError(
-            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization"
+            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization | dead_hot | rowcol_bias | mixed"
         )
 
     def _blindspot_mask(self, idx: int) -> torch.Tensor:
