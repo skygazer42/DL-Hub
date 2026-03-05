@@ -14,6 +14,9 @@
 - **MIRNet**：多尺度特征融合的 restoration 网络（toy 版）
 - **MPRNet**：多阶段逐步细化的 restoration 网络（toy 版）
 - **UFormer**：U 形 Transformer restoration 网络（toy 版）
+- **CBDNet**：blind denoising（噪声估计 + 条件化去噪，toy 版）
+- **DIDN**：Densely connected Iterative Down-Up Network（blind denoising，toy 版）
+- **RCAN**：Residual Channel Attention Network（restoration/denoising，toy 版）
 
 ## 快速开始
 
@@ -63,6 +66,15 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 ```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch uformer:uformer_tiny \
+  --train-mode supervised \
+  --epochs 5
+```
+
+### 6) 训练 Blind Denoising（CBDNet / DIDN / RCAN）
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch cbdnet:cbdnet_tiny \
   --train-mode supervised \
   --epochs 5
 ```

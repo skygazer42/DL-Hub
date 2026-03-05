@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer
+    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -16,7 +16,9 @@ class ModelConfig:
 
 def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
+    from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
+    from dlhub.vision.denoising.didn import _VARIANTS as didn_variants
     from dlhub.vision.denoising.dncnn import _VARIANTS as dncnn_variants
     from dlhub.vision.denoising.drunet import _VARIANTS as drunet_variants
     from dlhub.vision.denoising.ffdnet import _VARIANTS as ffdnet_variants
@@ -24,6 +26,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.mprnet import _VARIANTS as mprnet_variants
     from dlhub.vision.denoising.nafnet import _VARIANTS as nafnet_variants
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
+    from dlhub.vision.denoising.rcan import _VARIANTS as rcan_variants
     from dlhub.vision.denoising.restormer import _VARIANTS as restormer_variants
     from dlhub.vision.denoising.ridnet import _VARIANTS as ridnet_variants
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
@@ -39,9 +42,12 @@ def list_supported_arches() -> list[str]:
     out.extend([f"drunet:{k}" for k in sorted(drunet_variants)])
     out.extend([f"noise2noise_unet:{k}" for k in sorted(n2n_variants)])
     out.extend([f"bm3d:{k}" for k in sorted(bm3d_variants)])
+    out.extend([f"cbdnet:{k}" for k in sorted(cbdnet_variants)])
     out.extend([f"ddpm_unet:{k}" for k in sorted(ddpm_unet_variants)])
+    out.extend([f"didn:{k}" for k in sorted(didn_variants)])
     out.extend([f"mirnet:{k}" for k in sorted(mirnet_variants)])
     out.extend([f"mprnet:{k}" for k in sorted(mprnet_variants)])
+    out.extend([f"rcan:{k}" for k in sorted(rcan_variants)])
     out.extend([f"uformer:{k}" for k in sorted(uformer_variants)])
     return out
 
@@ -123,6 +129,21 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.uformer import build_uformer_denoiser
 
         return build_uformer_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"cbdnet"}:
+        from dlhub.vision.denoising.cbdnet import build_cbdnet_denoiser
+
+        return build_cbdnet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"didn"}:
+        from dlhub.vision.denoising.didn import build_didn_denoiser
+
+        return build_didn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"rcan"}:
+        from dlhub.vision.denoising.rcan import build_rcan_denoiser
+
+        return build_rcan_denoiser(in_channels=in_channels, variant=variant)
 
     raise ValueError(
         f"Unknown arch: {arch_raw!r}. Examples: dncnn:dncnn_17 | restormer:restormer_tiny | bm3d:bm3d_fast"
