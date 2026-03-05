@@ -11,6 +11,9 @@
 - **RIDNet**：残差注意力 CNN 去噪
 - **FFDNet / DRUNet**：噪声强度条件化去噪（sigma map）
 - **DDPM U-Net**：扩散模型常用的噪声条件 U-Net（toy 版，这里作为条件化残差去噪网络）
+- **MIRNet**：多尺度特征融合的 restoration 网络（toy 版）
+- **MPRNet**：多阶段逐步细化的 restoration 网络（toy 版）
+- **UFormer**：U 形 Transformer restoration 网络（toy 版）
 
 ## 快速开始
 
@@ -51,6 +54,15 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 ```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch ddpm_unet:ddpm_unet_tiny \
+  --train-mode supervised \
+  --epochs 5
+```
+
+### 5) 训练 MIRNet / MPRNet / UFormer（toy supervised）
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch uformer:uformer_tiny \
   --train-mode supervised \
   --epochs 5
 ```
