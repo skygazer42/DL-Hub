@@ -6,6 +6,7 @@ Conventions:
 """
 
 from .bm3d import BM3D, build_bm3d_denoiser
+from .ddpm_unet import DDPMUNet, DDPMUNetDenoiser, build_ddpm_unet_denoiser
 from .dncnn import DnCNN, DnCNNDenoiser, build_dncnn_denoiser
 from .drunet import DRUNet, build_drunet_denoiser
 from .ffdnet import FFDNetDenoiser, build_ffdnet_denoiser
@@ -17,6 +18,8 @@ from .swinir import SwinIR, build_swinir_denoiser
 
 __all__ = [
     "BM3D",
+    "DDPMUNet",
+    "DDPMUNetDenoiser",
     "DnCNN",
     "DnCNNDenoiser",
     "DRUNet",
@@ -27,6 +30,7 @@ __all__ = [
     "RIDNetDenoiser",
     "SwinIR",
     "build_bm3d_denoiser",
+    "build_ddpm_unet_denoiser",
     "build_dncnn_denoiser",
     "build_drunet_denoiser",
     "build_ffdnet_denoiser",

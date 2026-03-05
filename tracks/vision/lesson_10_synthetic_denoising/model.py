@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet
+    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -16,6 +16,7 @@ class ModelConfig:
 
 def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
+    from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
     from dlhub.vision.denoising.dncnn import _VARIANTS as dncnn_variants
     from dlhub.vision.denoising.drunet import _VARIANTS as drunet_variants
     from dlhub.vision.denoising.ffdnet import _VARIANTS as ffdnet_variants
@@ -35,6 +36,7 @@ def list_supported_arches() -> list[str]:
     out.extend([f"drunet:{k}" for k in sorted(drunet_variants)])
     out.extend([f"noise2noise_unet:{k}" for k in sorted(n2n_variants)])
     out.extend([f"bm3d:{k}" for k in sorted(bm3d_variants)])
+    out.extend([f"ddpm_unet:{k}" for k in sorted(ddpm_unet_variants)])
     return out
 
 
@@ -95,6 +97,11 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.bm3d import build_bm3d_denoiser
 
         return build_bm3d_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"ddpm_unet", "ddpm"}:
+        from dlhub.vision.denoising.ddpm_unet import build_ddpm_unet_denoiser
+
+        return build_ddpm_unet_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
 
     raise ValueError(
         f"Unknown arch: {arch_raw!r}. Examples: dncnn:dncnn_17 | restormer:restormer_tiny | bm3d:bm3d_fast"

@@ -36,6 +36,7 @@ def test_vision_denoising_supervised_forward_loss_backward_smoke() -> None:
         "ffdnet:ffdnet_tiny",
         "drunet:drunet_tiny",
         "noise2noise_unet:n2n_unet_tiny",
+        "ddpm_unet:ddpm_unet_tiny",
     ]:
         model = build_model(ModelConfig(arch=arch, variant="", in_channels=1, sigma=0.15))
         pred = model(noisy)

@@ -10,6 +10,7 @@
 - **SwinIR**：窗口注意力 Transformer 去噪（toy 版）
 - **RIDNet**：残差注意力 CNN 去噪
 - **FFDNet / DRUNet**：噪声强度条件化去噪（sigma map）
+- **DDPM U-Net**：扩散模型常用的噪声条件 U-Net（toy 版，这里作为条件化残差去噪网络）
 
 ## 快速开始
 
@@ -43,6 +44,15 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch bm3d:bm3d_fast \
   --sigma 0.1
+```
+
+### 4) 训练 DDPM U-Net（toy supervised）
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch ddpm_unet:ddpm_unet_tiny \
+  --train-mode supervised \
+  --epochs 5
 ```
 
 ## 代码位置
