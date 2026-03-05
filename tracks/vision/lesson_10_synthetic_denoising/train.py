@@ -57,7 +57,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--arch",
         type=str,
         default="dncnn:dncnn_9",
-        help="One of: dncnn:<variant> | restormer:<variant> | noise2noise_unet:<variant> | bm3d:<variant>",
+        help="One of: dncnn:<variant> | restormer:<variant> | nafnet:<variant> | swinir:<variant> | ridnet:<variant> | ffdnet:<variant> | drunet:<variant> | noise2noise_unet:<variant> | bm3d:<variant>",
     )
     parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
     parser.add_argument("--sigma", type=float, default=0.1, help="Noise sigma for BM3D baseline (in [0,1] scale).")
@@ -240,4 +240,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

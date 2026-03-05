@@ -13,6 +13,6 @@
 - `lesson_07_toy_keypoint_regression/`：toy 关键点回归（合成数据，坐标回归 + 误差指标，纯 torch）
 - `lesson_08_synthetic_segmentation_unet/`：合成分割（Tiny U-Net + torchvision 分割模型 zoo，二分类 mask，loss + IoU）
 - `lesson_09_cnn_backbones_toy_classification/`：CNN 主干网络（本地实现 + torchvision zoo，toy 合成分类）
-- `lesson_10_synthetic_denoising/`：图像去噪（BM3D / DnCNN / Restormer / Noise2Noise，toy 合成数据，回归闭环）
+- `lesson_10_synthetic_denoising/`：图像去噪（BM3D / DnCNN / Restormer / Noise2Noise / NAFNet / SwinIR / RIDNet / FFDNet / DRUNet，toy 合成数据，回归闭环）
 - `lesson_11_synthetic_instance_segmentation_yolact/`：实例分割（YOLACT-style：prototypes + coefficients，toy 合成数据）
 - `lesson_12_synthetic_detection_yolo/`：合成目标检测（YOLOv1-style，grid/objectness + bbox，纯 torch）

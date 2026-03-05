@@ -27,7 +27,16 @@ def test_vision_denoising_supervised_forward_loss_backward_smoke() -> None:
     assert tuple(noisy.shape) == (4, 1, 32, 32)
     assert tuple(clean.shape) == (4, 1, 32, 32)
 
-    for arch in ["dncnn:dncnn_tiny", "restormer:restormer_tiny", "noise2noise_unet:n2n_unet_tiny"]:
+    for arch in [
+        "dncnn:dncnn_tiny",
+        "restormer:restormer_tiny",
+        "nafnet:nafnet_tiny",
+        "swinir:swinir_tiny",
+        "ridnet:ridnet_tiny",
+        "ffdnet:ffdnet_tiny",
+        "drunet:drunet_tiny",
+        "noise2noise_unet:n2n_unet_tiny",
+    ]:
         model = build_model(ModelConfig(arch=arch, variant="", in_channels=1, sigma=0.15))
         pred = model(noisy)
         assert tuple(pred.shape) == (4, 1, 32, 32)
@@ -96,4 +105,3 @@ def test_vision_denoising_bm3d_forward_smoke() -> None:
     assert tuple(out.shape) == tuple(noisy.shape)
     loss = torch.nn.MSELoss()(out, clean)
     assert torch.isfinite(loss)
-

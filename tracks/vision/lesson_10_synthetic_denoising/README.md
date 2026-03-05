@@ -6,6 +6,10 @@
 - **DnCNN**：工程上很常用的卷积去噪网络
 - **Restormer**：强效果（更吃算力）
 - **Noise2Noise**：不需要干净标注（训练时用两份独立噪声图配对）
+- **NAFNet**：现代高效 restoration 网络（纯卷积/门控，效果强）
+- **SwinIR**：窗口注意力 Transformer 去噪（toy 版）
+- **RIDNet**：残差注意力 CNN 去噪
+- **FFDNet / DRUNet**：噪声强度条件化去噪（sigma map）
 
 ## 快速开始
 
@@ -47,4 +51,3 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 - 模型：`tracks/vision/lesson_10_synthetic_denoising/model.py`
 - 训练：`tracks/vision/lesson_10_synthetic_denoising/train.py`
 - 算法实现：`dlhub/vision/denoising/*.py`
-
