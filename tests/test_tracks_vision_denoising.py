@@ -87,6 +87,47 @@ def test_vision_denoising_noise2noise_training_pair_smoke() -> None:
     assert tuple(clean.shape) == (4, 1, 32, 32)
 
 
+def test_vision_denoising_blindspot_fit_regression_smoke() -> None:
+    from dlhub.training.loop import fit_regression
+    from tracks.vision.lesson_10_synthetic_denoising.data import DataConfig, get_dataloaders
+    from tracks.vision.lesson_10_synthetic_denoising.losses import MaskedMSELoss
+    from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
+
+    train_loader, _ = get_dataloaders(
+        DataConfig(
+            num_samples=64,
+            batch_size=4,
+            image_size=32,
+            val_fraction=0.2,
+            seed=0,
+            num_workers=0,
+            in_channels=1,
+            noise_std=0.15,
+            min_square=6,
+            max_square=10,
+            train_mode="blindspot",
+            blindspot_prob=0.1,
+        )
+    )
+    masked_noisy, target = next(iter(train_loader))
+    assert tuple(masked_noisy.shape) == (4, 1, 32, 32)
+    assert set(target.keys()) == {"target", "mask"}
+    assert tuple(target["target"].shape) == (4, 1, 32, 32)
+    assert tuple(target["mask"].shape) == (4, 1, 32, 32)
+
+    model = build_model(ModelConfig(arch="dncnn:dncnn_tiny", variant="", in_channels=1, sigma=0.15))
+    opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+    stats = fit_regression(
+        model=model,
+        loader=train_loader,
+        optimizer=opt,
+        criterion=MaskedMSELoss(),
+        device=torch.device("cpu"),
+        max_batches=1,
+    )
+    assert stats.loss >= 0.0
+
+
 def test_vision_denoising_bm3d_forward_smoke() -> None:
     from tracks.vision.lesson_10_synthetic_denoising.data import DataConfig, get_dataloaders
     from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model

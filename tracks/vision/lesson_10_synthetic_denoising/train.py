@@ -46,7 +46,8 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--noise-std", type=float, default=0.1)
     parser.add_argument("--min-square", type=int, default=8)
     parser.add_argument("--max-square", type=int, default=24)
-    parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise")
+    parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot")
+    parser.add_argument("--blindspot-prob", type=float, default=0.1, help="Masking probability for blindspot mode (0,1).")
 
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--learning-rate", type=float, default=2e-3)
@@ -57,7 +58,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--arch",
         type=str,
         default="dncnn:dncnn_9",
-        help="One of: dncnn:<variant> | restormer:<variant> | nafnet:<variant> | swinir:<variant> | ridnet:<variant> | ffdnet:<variant> | drunet:<variant> | noise2noise_unet:<variant> | bm3d:<variant>",
+        help="Examples: dncnn:dncnn_17 | restormer:restormer_tiny | noise2noise_unet:n2n_unet_tiny | bm3d:bm3d_fast | cbdnet:cbdnet_tiny",
     )
     parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
     parser.add_argument("--sigma", type=float, default=0.1, help="Noise sigma for BM3D baseline (in [0,1] scale).")
@@ -95,6 +96,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         min_square=args.min_square,
         max_square=args.max_square,
         train_mode=args.train_mode,
+        blindspot_prob=args.blindspot_prob,
     )
     return train_cfg, data_cfg
 
@@ -177,7 +179,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         write_json(paths.run_dir / "metrics.json", {"eval_mse": mse, "eval_psnr": psnr})
         return 0
 
-    criterion = torch.nn.MSELoss()
+    if str(data_cfg.train_mode).lower().strip() == "blindspot":
+        from .losses import MaskedMSELoss
+
+        criterion = MaskedMSELoss()
+    else:
+        criterion = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=float(train_cfg.learning_rate))
 
     metrics_path = paths.run_dir / "metrics.jsonl"

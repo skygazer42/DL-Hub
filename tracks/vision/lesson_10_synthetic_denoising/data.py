@@ -21,7 +21,8 @@ class DataConfig:
     noise_std: float = 0.1
     min_square: int = 8
     max_square: int = 24
-    train_mode: str = "supervised"  # supervised | noise2noise
+    train_mode: str = "supervised"  # supervised | noise2noise | blindspot
+    blindspot_prob: float = 0.1  # fraction of pixels to mask for blind-spot training
 
 
 class ToyDenoisingSquares(Dataset):
@@ -30,8 +31,8 @@ class ToyDenoisingSquares(Dataset):
     def __init__(self, cfg: DataConfig, *, mode: str) -> None:
         self.cfg = cfg
         self.mode = str(mode).lower().strip()
-        if self.mode not in {"supervised", "noise2noise"}:
-            raise ValueError(f"Unknown mode: {mode!r}. Expected 'supervised' | 'noise2noise'.")
+        if self.mode not in {"supervised", "noise2noise", "blindspot"}:
+            raise ValueError(f"Unknown mode: {mode!r}. Expected 'supervised' | 'noise2noise' | 'blindspot'.")
 
         s = int(cfg.image_size)
         if s < 16:
@@ -89,7 +90,46 @@ class ToyDenoisingSquares(Dataset):
         s = int(self.cfg.image_size)
         return torch.randn((c, s, s), generator=g, dtype=torch.float32) * float(self.cfg.noise_std)
 
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor]:
+    def _blindspot_mask(self, idx: int) -> torch.Tensor:
+        cfg = self.cfg
+        s = int(cfg.image_size)
+        c = int(cfg.in_channels)
+        p = float(cfg.blindspot_prob)
+        if not (0.0 < p < 1.0):
+            raise ValueError("blindspot_prob must be in (0, 1)")
+
+        g = torch.Generator().manual_seed(int(cfg.seed) * 1_000_003 + int(idx) * 17 + 2)
+        m = (torch.rand((1, s, s), generator=g, dtype=torch.float32) < p).to(torch.float32)
+        if c == 1:
+            return m
+        return m.repeat(c, 1, 1)
+
+    def _blindspot_masked_input(self, noisy: torch.Tensor, idx: int) -> torch.Tensor:
+        """Noise2Void-style masking: replace masked pixels with random neighbor pixels."""
+
+        if noisy.ndim != 3:
+            raise ValueError(f"Expected (C, H, W) noisy tensor, got {tuple(noisy.shape)}")
+
+        mask = self._blindspot_mask(idx)  # (C, H, W)
+        if mask.shape != noisy.shape:
+            raise ValueError("blindspot mask shape mismatch")
+
+        # Randomly choose replacement direction per pixel (shared across channels).
+        cfg = self.cfg
+        s = int(cfg.image_size)
+        g = torch.Generator().manual_seed(int(cfg.seed) * 1_000_003 + int(idx) * 17 + 3)
+        sel = torch.randint(0, 4, (1, s, s), generator=g, dtype=torch.long)
+
+        up = torch.roll(noisy, shifts=1, dims=1)
+        down = torch.roll(noisy, shifts=-1, dims=1)
+        left = torch.roll(noisy, shifts=1, dims=2)
+        right = torch.roll(noisy, shifts=-1, dims=2)
+
+        rep = torch.where(sel == 0, up, torch.where(sel == 1, down, torch.where(sel == 2, left, right)))
+        masked = noisy * (1.0 - mask) + rep * mask
+        return masked
+
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor] | tuple[torch.Tensor, dict[str, torch.Tensor]]:
         i = int(idx)
         clean = self._clean(i)
 
@@ -100,7 +140,14 @@ class ToyDenoisingSquares(Dataset):
         # noise2noise: two independent noise realizations of the same clean signal
         noisy1 = (clean + self._noise(i, stream=0)).clamp(0.0, 1.0)
         noisy2 = (clean + self._noise(i, stream=1)).clamp(0.0, 1.0)
-        return noisy1, noisy2
+        if self.mode == "noise2noise":
+            return noisy1, noisy2
+
+        # blindspot: self-supervised via masking (target is the *noisy* image; loss only on masked pixels)
+        noisy = noisy1
+        masked_noisy = self._blindspot_masked_input(noisy, i)
+        mask = self._blindspot_mask(i)
+        return masked_noisy, {"target": noisy, "mask": mask}
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
@@ -132,4 +179,3 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
 
 
 __all__ = ["DataConfig", "ToyDenoisingSquares", "get_dataloaders"]
-

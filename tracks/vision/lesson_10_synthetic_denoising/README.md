@@ -6,6 +6,7 @@
 - **DnCNN**：工程上很常用的卷积去噪网络
 - **Restormer**：强效果（更吃算力）
 - **Noise2Noise**：不需要干净标注（训练时用两份独立噪声图配对）
+- **Blind-Spot (Noise2Self/Noise2Void)**：不需要干净标注（训练时随机遮挡像素，只在遮挡位置计算重建损失）
 - **NAFNet**：现代高效 restoration 网络（纯卷积/门控，效果强）
 - **SwinIR**：窗口注意力 Transformer 去噪（toy 版）
 - **RIDNet**：残差注意力 CNN 去噪
@@ -41,6 +42,16 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch noise2noise_unet:n2n_unet_tiny \
   --train-mode noise2noise \
+  --epochs 5
+```
+
+### 2.5) 训练 Blind-Spot（Noise2Self/Noise2Void，完全不需要干净数据）
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch dncnn:dncnn_tiny \
+  --train-mode blindspot \
+  --blindspot-prob 0.1 \
   --epochs 5
 ```
 

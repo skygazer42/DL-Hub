@@ -353,9 +353,28 @@ def fit_regression(
     max_batches: int | None = None,
     hooks: Sequence[Hook] | None = None,
 ) -> RegressionStats:
+    import torch
+
     model.train()
     total_loss = 0.0
     total = 0
+
+    def infer_batch_size(x) -> int | None:
+        if torch.is_tensor(x):
+            return int(x.shape[0]) if x.ndim >= 1 else 1
+        if isinstance(x, dict):
+            for v in x.values():
+                bs = infer_batch_size(v)
+                if bs is not None:
+                    return bs
+            return None
+        if isinstance(x, (list, tuple)):
+            for v in x:
+                bs = infer_batch_size(v)
+                if bs is not None:
+                    return bs
+            return None
+        return None
 
     for batch_idx, (inputs, targets) in enumerate(loader):
         if max_batches is not None and batch_idx >= max_batches:
@@ -371,7 +390,11 @@ def fit_regression(
         optimizer.step()
 
         batch_loss = float(loss.item())
-        batch_size = int(targets.size(0))
+        batch_size = infer_batch_size(targets)
+        if batch_size is None:
+            batch_size = infer_batch_size(inputs)
+        if batch_size is None:
+            batch_size = 0
         total += batch_size
         total_loss += batch_loss * batch_size
         if hooks:
@@ -398,6 +421,23 @@ def evaluate_regression(
     total_loss = 0.0
     total = 0
 
+    def infer_batch_size(x) -> int | None:
+        if torch.is_tensor(x):
+            return int(x.shape[0]) if x.ndim >= 1 else 1
+        if isinstance(x, dict):
+            for v in x.values():
+                bs = infer_batch_size(v)
+                if bs is not None:
+                    return bs
+            return None
+        if isinstance(x, (list, tuple)):
+            for v in x:
+                bs = infer_batch_size(v)
+                if bs is not None:
+                    return bs
+            return None
+        return None
+
     with torch.no_grad():
         for batch_idx, (inputs, targets) in enumerate(loader):
             if max_batches is not None and batch_idx >= max_batches:
@@ -409,7 +449,11 @@ def evaluate_regression(
             loss = criterion(preds, targets)
 
             batch_loss = float(loss.item())
-            batch_size = int(targets.size(0))
+            batch_size = infer_batch_size(targets)
+            if batch_size is None:
+                batch_size = infer_batch_size(inputs)
+            if batch_size is None:
+                batch_size = 0
             total += batch_size
             total_loss += batch_loss * batch_size
             if hooks:
