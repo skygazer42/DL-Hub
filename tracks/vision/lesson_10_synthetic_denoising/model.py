@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | bsn
+    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | bsn | pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -27,6 +27,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.mprnet import _VARIANTS as mprnet_variants
     from dlhub.vision.denoising.nafnet import _VARIANTS as nafnet_variants
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
+    from dlhub.vision.denoising.pixelcnn_bsn import _VARIANTS as pixelcnn_bsn_variants
     from dlhub.vision.denoising.rcan import _VARIANTS as rcan_variants
     from dlhub.vision.denoising.restormer import _VARIANTS as restormer_variants
     from dlhub.vision.denoising.ridnet import _VARIANTS as ridnet_variants
@@ -51,6 +52,7 @@ def list_supported_arches() -> list[str]:
     out.extend([f"mprnet:{k}" for k in sorted(mprnet_variants)])
     out.extend([f"rcan:{k}" for k in sorted(rcan_variants)])
     out.extend([f"uformer:{k}" for k in sorted(uformer_variants)])
+    out.extend([f"pixelcnn_bsn:{k}" for k in sorted(pixelcnn_bsn_variants)])
     return out
 
 
@@ -151,6 +153,11 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.bsn import build_bsn_denoiser
 
         return build_bsn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"pixelcnn_bsn", "pcbsn"}:
+        from dlhub.vision.denoising.pixelcnn_bsn import build_pixelcnn_bsn_denoiser
+
+        return build_pixelcnn_bsn_denoiser(in_channels=in_channels, variant=variant)
 
     raise ValueError(
         f"Unknown arch: {arch_raw!r}. Examples: dncnn:dncnn_17 | restormer:restormer_tiny | bm3d:bm3d_fast"

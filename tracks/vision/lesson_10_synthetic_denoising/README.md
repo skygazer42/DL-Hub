@@ -19,6 +19,7 @@
 - **DIDN**：Densely connected Iterative Down-Up Network（blind denoising，toy 版）
 - **RCAN**：Residual Channel Attention Network（restoration/denoising，toy 版）
 - **BSN (Blind-Spot Network)**：方向性盲点网络结构（更“结构化”的 blind-spot，toy 版）
+- **PixelCNN-BSN**：PixelCNN masked-conv + 旋转融合的盲点网络（toy 版）
 
 ## 快速开始
 
@@ -65,6 +66,28 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --train-mode blindspot \
   --noise-type poisson \
   --poisson-peak 30 \
+  --epochs 5
+```
+
+也可以试试混合/结构噪声：
+
+```bash
+# Gaussian + impulse（更接近真实传感器/压缩噪声的混合）
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch pixelcnn_bsn:pixelcnn_bsn_tiny \
+  --train-mode blindspot \
+  --noise-type gaussian_impulse \
+  --noise-std 0.1 \
+  --impulse-prob 0.03 \
+  --epochs 5
+
+# Stripe / banding（条纹/带状噪声）
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch dncnn:dncnn_tiny \
+  --train-mode supervised \
+  --noise-type stripe \
+  --stripe-amplitude 0.12 \
+  --stripe-period 8 \
   --epochs 5
 ```
 

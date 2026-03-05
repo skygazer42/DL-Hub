@@ -43,12 +43,21 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--data-seed", type=int, default=0)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--in-channels", type=int, default=1)
-    parser.add_argument("--noise-type", type=str, default="gaussian", help="gaussian | poisson | impulse | shot_read")
+    parser.add_argument(
+        "--noise-type",
+        type=str,
+        default="gaussian",
+        help="gaussian | gaussian_impulse | poisson | impulse | shot_read | speckle | stripe",
+    )
     parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
     parser.add_argument("--poisson-peak", type=float, default=30.0, help="Poisson peak photons (used when noise-type=poisson)")
     parser.add_argument("--impulse-prob", type=float, default=0.03, help="Salt & pepper prob (used when noise-type=impulse)")
     parser.add_argument("--shot-noise", type=float, default=0.2, help="Shot noise factor (used when noise-type=shot_read)")
     parser.add_argument("--read-noise", type=float, default=0.02, help="Read noise std (used when noise-type=shot_read)")
+    parser.add_argument("--speckle-std", type=float, default=0.15, help="Speckle std (used when noise-type=speckle)")
+    parser.add_argument("--stripe-amplitude", type=float, default=0.12, help="Stripe amplitude (used when noise-type=stripe)")
+    parser.add_argument("--stripe-period", type=int, default=8, help="Stripe period in pixels (used when noise-type=stripe)")
+    parser.add_argument("--stripe-direction", type=str, default="vertical", help="vertical | horizontal (used when noise-type=stripe)")
     parser.add_argument("--min-square", type=int, default=8)
     parser.add_argument("--max-square", type=int, default=24)
     parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot")
@@ -103,6 +112,10 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         impulse_prob=args.impulse_prob,
         shot_noise=args.shot_noise,
         read_noise=args.read_noise,
+        speckle_std=args.speckle_std,
+        stripe_amplitude=args.stripe_amplitude,
+        stripe_period=args.stripe_period,
+        stripe_direction=args.stripe_direction,
         min_square=args.min_square,
         max_square=args.max_square,
         train_mode=args.train_mode,

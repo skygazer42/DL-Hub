@@ -17,6 +17,7 @@ from .mirnet import MIRNet, build_mirnet_denoiser
 from .mprnet import MPRNet, build_mprnet_denoiser
 from .nafnet import NAFNet, build_nafnet_denoiser
 from .noise2noise import Noise2NoiseUNet, build_noise2noise_denoiser
+from .pixelcnn_bsn import PixelCNNBSN, build_pixelcnn_bsn_denoiser
 from .rcan import RCAN, build_rcan_denoiser
 from .restormer import Restormer, build_restormer_denoiser
 from .ridnet import RIDNetDenoiser, build_ridnet_denoiser
@@ -38,6 +39,7 @@ __all__ = [
     "MPRNet",
     "NAFNet",
     "Noise2NoiseUNet",
+    "PixelCNNBSN",
     "RCAN",
     "Restormer",
     "RIDNetDenoiser",
@@ -55,6 +57,7 @@ __all__ = [
     "build_mprnet_denoiser",
     "build_nafnet_denoiser",
     "build_noise2noise_denoiser",
+    "build_pixelcnn_bsn_denoiser",
     "build_rcan_denoiser",
     "build_restormer_denoiser",
     "build_ridnet_denoiser",
