@@ -18,7 +18,13 @@ class DataConfig:
     num_workers: int = 0
 
     in_channels: int = 1
-    noise_std: float = 0.1
+    # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
+    noise_type: str = "gaussian"  # gaussian | poisson | impulse | shot_read
+    noise_std: float = 0.1  # Gaussian std in [0,1] scale
+    poisson_peak: float = 30.0  # Peak photons for Poisson noise (higher = less noise)
+    impulse_prob: float = 0.03  # Salt & pepper probability
+    shot_noise: float = 0.2  # Heteroscedastic term (variance ~ shot_noise * signal)
+    read_noise: float = 0.02  # Additive read noise (std in [0,1] scale)
     min_square: int = 8
     max_square: int = 24
     train_mode: str = "supervised"  # supervised | noise2noise | blindspot
@@ -83,12 +89,66 @@ class ToyDenoisingSquares(Dataset):
             return img
         return img.repeat(c, 1, 1)
 
-    def _noise(self, idx: int, *, stream: int) -> torch.Tensor:
+    def _generator(self, idx: int, *, stream: int, salt: int) -> torch.Generator:
         # Per-sample RNG: deterministic across dataloader workers.
-        g = torch.Generator().manual_seed(int(self.cfg.seed) * 1_000_003 + int(idx) * 17 + int(stream))
-        c = int(self.cfg.in_channels)
-        s = int(self.cfg.image_size)
-        return torch.randn((c, s, s), generator=g, dtype=torch.float32) * float(self.cfg.noise_std)
+        seed = int(self.cfg.seed) * 1_000_003 + int(idx) * 17 + int(stream) * 101 + int(salt)
+        return torch.Generator().manual_seed(seed)
+
+    def _make_noisy(self, clean: torch.Tensor, idx: int, *, stream: int) -> torch.Tensor:
+        """Apply the configured noise model to a clean image (C,H,W) -> noisy (C,H,W)."""
+
+        if clean.ndim != 3:
+            raise ValueError(f"Expected clean tensor shape (C, H, W), got {tuple(clean.shape)}")
+
+        cfg = self.cfg
+        noise_type = str(cfg.noise_type).lower().strip()
+        c, h, w = clean.shape
+
+        if noise_type in {"gaussian", "normal"}:
+            g = self._generator(idx, stream=stream, salt=0)
+            noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(cfg.noise_std)
+            return (clean + noise).clamp(0.0, 1.0)
+
+        if noise_type in {"poisson"}:
+            peak = float(cfg.poisson_peak)
+            if peak <= 0:
+                raise ValueError("poisson_peak must be > 0")
+            rate = (clean.clamp(0.0, 1.0) * peak).clamp_min(0.0)
+            g = self._generator(idx, stream=stream, salt=1)
+            noisy = torch.poisson(rate, generator=g) / peak
+            return noisy.clamp(0.0, 1.0)
+
+        if noise_type in {"impulse", "saltpepper", "salt_pepper"}:
+            p = float(cfg.impulse_prob)
+            if not (0.0 <= p < 1.0):
+                raise ValueError("impulse_prob must be in [0, 1)")
+            if p == 0.0:
+                return clean
+            g = self._generator(idx, stream=stream, salt=2)
+            u = torch.rand((1, h, w), generator=g, dtype=torch.float32)
+            salt = u < (p * 0.5)
+            pepper = (u >= (p * 0.5)) & (u < p)
+            if c != 1:
+                salt = salt.repeat(c, 1, 1)
+                pepper = pepper.repeat(c, 1, 1)
+            noisy = clean.clone()
+            noisy[salt] = 1.0
+            noisy[pepper] = 0.0
+            return noisy.clamp(0.0, 1.0)
+
+        if noise_type in {"shot_read", "shot+read", "heteroscedastic"}:
+            shot = float(cfg.shot_noise)
+            read = float(cfg.read_noise)
+            if shot < 0.0:
+                raise ValueError("shot_noise must be >= 0")
+            if read < 0.0:
+                raise ValueError("read_noise must be >= 0")
+            g = self._generator(idx, stream=stream, salt=3)
+            std = torch.sqrt(clean.clamp_min(0.0) * shot + (read * read))
+            noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * std
+            return (clean + noise).clamp(0.0, 1.0)
+
+        raise ValueError(f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | poisson | impulse | shot_read")
 
     def _blindspot_mask(self, idx: int) -> torch.Tensor:
         cfg = self.cfg
@@ -98,7 +158,7 @@ class ToyDenoisingSquares(Dataset):
         if not (0.0 < p < 1.0):
             raise ValueError("blindspot_prob must be in (0, 1)")
 
-        g = torch.Generator().manual_seed(int(cfg.seed) * 1_000_003 + int(idx) * 17 + 2)
+        g = self._generator(idx, stream=0, salt=10)
         m = (torch.rand((1, s, s), generator=g, dtype=torch.float32) < p).to(torch.float32)
         if c == 1:
             return m
@@ -117,7 +177,7 @@ class ToyDenoisingSquares(Dataset):
         # Randomly choose replacement direction per pixel (shared across channels).
         cfg = self.cfg
         s = int(cfg.image_size)
-        g = torch.Generator().manual_seed(int(cfg.seed) * 1_000_003 + int(idx) * 17 + 3)
+        g = self._generator(idx, stream=0, salt=11)
         sel = torch.randint(0, 4, (1, s, s), generator=g, dtype=torch.long)
 
         up = torch.roll(noisy, shifts=1, dims=1)
@@ -134,12 +194,12 @@ class ToyDenoisingSquares(Dataset):
         clean = self._clean(i)
 
         if self.mode == "supervised":
-            noisy = (clean + self._noise(i, stream=0)).clamp(0.0, 1.0)
+            noisy = self._make_noisy(clean, i, stream=0)
             return noisy, clean
 
         # noise2noise: two independent noise realizations of the same clean signal
-        noisy1 = (clean + self._noise(i, stream=0)).clamp(0.0, 1.0)
-        noisy2 = (clean + self._noise(i, stream=1)).clamp(0.0, 1.0)
+        noisy1 = self._make_noisy(clean, i, stream=0)
+        noisy2 = self._make_noisy(clean, i, stream=1)
         if self.mode == "noise2noise":
             return noisy1, noisy2
 

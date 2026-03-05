@@ -6,6 +6,7 @@ Conventions:
 """
 
 from .bm3d import BM3D, build_bm3d_denoiser
+from .bsn import BlindSpotNet, build_bsn_denoiser
 from .cbdnet import CBDNet, build_cbdnet_denoiser
 from .ddpm_unet import DDPMUNet, DDPMUNetDenoiser, build_ddpm_unet_denoiser
 from .didn import DIDN, build_didn_denoiser
@@ -24,6 +25,7 @@ from .uformer import UFormer, build_uformer_denoiser
 
 __all__ = [
     "BM3D",
+    "BlindSpotNet",
     "CBDNet",
     "DDPMUNet",
     "DDPMUNetDenoiser",
@@ -42,6 +44,7 @@ __all__ = [
     "SwinIR",
     "UFormer",
     "build_bm3d_denoiser",
+    "build_bsn_denoiser",
     "build_cbdnet_denoiser",
     "build_ddpm_unet_denoiser",
     "build_didn_denoiser",

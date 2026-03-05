@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan
+    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -16,6 +16,7 @@ class ModelConfig:
 
 def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
+    from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
     from dlhub.vision.denoising.didn import _VARIANTS as didn_variants
@@ -42,6 +43,7 @@ def list_supported_arches() -> list[str]:
     out.extend([f"drunet:{k}" for k in sorted(drunet_variants)])
     out.extend([f"noise2noise_unet:{k}" for k in sorted(n2n_variants)])
     out.extend([f"bm3d:{k}" for k in sorted(bm3d_variants)])
+    out.extend([f"bsn:{k}" for k in sorted(bsn_variants)])
     out.extend([f"cbdnet:{k}" for k in sorted(cbdnet_variants)])
     out.extend([f"ddpm_unet:{k}" for k in sorted(ddpm_unet_variants)])
     out.extend([f"didn:{k}" for k in sorted(didn_variants)])
@@ -144,6 +146,11 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.rcan import build_rcan_denoiser
 
         return build_rcan_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"bsn", "blindspotnet", "blind_spot_net"}:
+        from dlhub.vision.denoising.bsn import build_bsn_denoiser
+
+        return build_bsn_denoiser(in_channels=in_channels, variant=variant)
 
     raise ValueError(
         f"Unknown arch: {arch_raw!r}. Examples: dncnn:dncnn_17 | restormer:restormer_tiny | bm3d:bm3d_fast"

@@ -18,6 +18,7 @@
 - **CBDNet**：blind denoising（噪声估计 + 条件化去噪，toy 版）
 - **DIDN**：Densely connected Iterative Down-Up Network（blind denoising，toy 版）
 - **RCAN**：Residual Channel Attention Network（restoration/denoising，toy 版）
+- **BSN (Blind-Spot Network)**：方向性盲点网络结构（更“结构化”的 blind-spot，toy 版）
 
 ## 快速开始
 
@@ -52,6 +53,18 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch dncnn:dncnn_tiny \
   --train-mode blindspot \
   --blindspot-prob 0.1 \
+  --epochs 5
+```
+
+### 2.6) 选择更真实的噪声模型（Poisson / Impulse / Shot+Read）
+
+```bash
+# Poisson noise (典型 photon noise)
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch bsn:bsn_tiny \
+  --train-mode blindspot \
+  --noise-type poisson \
+  --poisson-peak 30 \
   --epochs 5
 ```
 

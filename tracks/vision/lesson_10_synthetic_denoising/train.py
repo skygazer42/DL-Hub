@@ -43,7 +43,12 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--data-seed", type=int, default=0)
     parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--in-channels", type=int, default=1)
-    parser.add_argument("--noise-std", type=float, default=0.1)
+    parser.add_argument("--noise-type", type=str, default="gaussian", help="gaussian | poisson | impulse | shot_read")
+    parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
+    parser.add_argument("--poisson-peak", type=float, default=30.0, help="Poisson peak photons (used when noise-type=poisson)")
+    parser.add_argument("--impulse-prob", type=float, default=0.03, help="Salt & pepper prob (used when noise-type=impulse)")
+    parser.add_argument("--shot-noise", type=float, default=0.2, help="Shot noise factor (used when noise-type=shot_read)")
+    parser.add_argument("--read-noise", type=float, default=0.02, help="Read noise std (used when noise-type=shot_read)")
     parser.add_argument("--min-square", type=int, default=8)
     parser.add_argument("--max-square", type=int, default=24)
     parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot")
@@ -92,7 +97,12 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         seed=args.data_seed,
         num_workers=args.num_workers,
         in_channels=args.in_channels,
+        noise_type=args.noise_type,
         noise_std=args.noise_std,
+        poisson_peak=args.poisson_peak,
+        impulse_prob=args.impulse_prob,
+        shot_noise=args.shot_noise,
+        read_noise=args.read_noise,
         min_square=args.min_square,
         max_square=args.max_square,
         train_mode=args.train_mode,
