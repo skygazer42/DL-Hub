@@ -23,6 +23,8 @@ torch = pytest.importorskip("torch")
         ("dead_hot", {"defect_prob": 0.01, "defect_hot_ratio": 0.3}),
         ("rowcol_bias", {"row_bias_std": 0.02, "col_bias_std": 0.02}),
         ("mixed", {"shot_noise": 0.2, "read_noise": 0.02, "impulse_prob": 0.03, "quant_bits": 8}),
+        ("colored_gaussian", {"color_rho": 0.6}),
+        ("line_defect", {"line_prob": 0.03, "line_hot_ratio": 0.3}),
     ],
 )
 def test_vision_denoising_noise_models_dataloader_smoke(noise_type: str, kwargs: dict) -> None:
@@ -83,6 +85,12 @@ def test_vision_denoising_supervised_forward_loss_backward_smoke() -> None:
         "unetpp:unetpp_tiny",
         "mwcnn:mwcnn_tiny",
         "hinet:hinet_tiny",
+        "ircnn:ircnn_tiny",
+        "nlrn:nlrn_tiny",
+        "scunet:scunet_tiny",
+        "convnext_unet:convnext_unet_tiny",
+        "aspp_unet:aspp_unet_tiny",
+        "cbam_unet:cbam_unet_tiny",
         "restormer:restormer_tiny",
         "nafnet:nafnet_tiny",
         "swinir:swinir_tiny",

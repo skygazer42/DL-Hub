@@ -1,6 +1,6 @@
 # Lesson 10：图像去噪（Synthetic, toy-first）
 
-目标：把”输入带噪图 → 输出干净图”的回归式训练闭环跑通，并对比 **32 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 15 种噪声模型。
+目标：把”输入带噪图 → 输出干净图”的回归式训练闭环跑通，并对比 **38 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 17 种噪声模型。
 
 ## 运行
 
@@ -29,7 +29,7 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 
 ## 模型一览
 
-本课包含 32 个去噪算法族，按设计思路分为 5 类：
+本课包含 38 个去噪算法族，按设计思路分为 5 类：
 
 ### 传统方法
 
@@ -62,6 +62,12 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 | **U-Net++** | 嵌套/密集 skip connection | 更强的多尺度融合（更吃算力） |
 | **MWCNN** | Haar wavelet 多尺度特征 | wavelet 下采样/上采样，结构高效 |
 | **HINet** | Half InstanceNorm 残差块 | 纹理/细节恢复常用技巧（toy 版） |
+| **IRCNN** | 膨胀卷积残差 CNN | 常用作 PnP/先验的 dilated denoiser |
+| **NLRN** | Non-local + recurrent | 显式引入全局 self-attention（toy 版） |
+| **SCUNet** | Conv U-Net + window attention | 混合结构，兼顾局部与全局（toy 版） |
+| **ConvNeXt-UNet** | ConvNeXt blocks 的 encoder-decoder | 现代卷积块做 restoration（toy 版） |
+| **ASPP U-Net** | U-Net + ASPP bottleneck | 多膨胀率上下文聚合（toy 版） |
+| **CBAM U-Net** | U-Net + CBAM（通道+空间注意力） | 更强特征选择性（toy 版） |
 
 ### 噪声条件化
 
@@ -128,7 +134,7 @@ BSN/DBSN/PixelCNN-BSN 等网络从**结构上**保证盲点性质，可以搭配
 
 ## 噪声模型
 
-本课支持 15 种噪声模型，通过 `--noise-type` 切换：
+本课支持 17 种噪声模型，通过 `--noise-type` 切换：
 
 | 噪声类型 | 说明 | 关键参数 |
 |---|---|---|
@@ -143,8 +149,10 @@ BSN/DBSN/PixelCNN-BSN 等网络从**结构上**保证盲点性质，可以搭配
 | `speckle_read` | 散斑 + 读出噪声 | `--speckle-std 0.15 --read-noise 0.02` |
 | `stripe` | 条纹/带状噪声 | `--stripe-amplitude 0.12 --stripe-period 8 --stripe-direction vertical` |
 | `correlated_gaussian` | 空间相关高斯噪声（模糊相关） | `--noise-std 0.1` |
+| `colored_gaussian` | 跨通道相关高斯噪声（RGB 相关） | `--noise-std 0.1 --color-rho 0.5` |
 | `quantization` | 量化噪声（ADC / bit-depth） | `--quant-bits 8 --no-quant-dither` |
 | `dead_hot` | 传感器坏点（dead/hot pixels） | `--defect-prob 0.002 --defect-hot-ratio 0.5` |
+| `line_defect` | 行/列坏线（stuck rows/cols） | `--line-prob 0.01 --line-hot-ratio 0.5` |
 | `rowcol_bias` | 行/列随机偏置（非周期 banding / FPN） | `--row-bias-std 0.02 --col-bias-std 0.02` |
 | `mixed` | 混合噪声（shot+read → impulse → quant） | `--shot-noise 0.2 --read-noise 0.02 --impulse-prob 0.03 --quant-bits 8` |
 

@@ -19,7 +19,7 @@ class DataConfig:
 
     in_channels: int = 1
     # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
-    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization | dead_hot | rowcol_bias | mixed
+    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
     noise_std: float = 0.1  # Gaussian std in [0,1] scale
     noise_std_min: float = 0.05  # used when noise_type=gaussian_var
     noise_std_max: float = 0.2  # used when noise_type=gaussian_var
@@ -31,10 +31,13 @@ class DataConfig:
     stripe_amplitude: float = 0.12  # Stripe noise amplitude (used when noise-type=stripe)
     stripe_period: int = 8  # Stripe spatial period in pixels (used when noise-type=stripe)
     stripe_direction: str = "vertical"  # vertical | horizontal | random
+    color_rho: float = 0.5  # used when noise_type=colored_gaussian (cross-channel correlation)
     quant_bits: int = 8  # used when noise_type=quantization
     quant_dither: bool = True  # whether to add uniform dither before quantization
     defect_prob: float = 0.002  # used when noise_type=dead_hot (sensor defect pixels)
     defect_hot_ratio: float = 0.5  # fraction of defect pixels that are "hot" (1.0), rest are "dead" (0.0)
+    line_prob: float = 0.01  # used when noise_type=line_defect (stuck rows/cols)
+    line_hot_ratio: float = 0.5  # fraction of defective lines that are "hot" (1.0), rest are "dead" (0.0)
     row_bias_std: float = 0.02  # used when noise_type=rowcol_bias
     col_bias_std: float = 0.02  # used when noise_type=rowcol_bias
     min_square: int = 8
@@ -276,6 +279,27 @@ class ToyDenoisingSquares(Dataset):
             ).squeeze(0)
             return (clean + noise_corr).clamp(0.0, 1.0)
 
+        if noise_type in {"colored_gaussian", "color_gaussian", "rgb_gaussian"}:
+            rho = float(cfg.color_rho)
+            if c == 1:
+                g = self._generator(idx, stream=stream, salt=20)
+                noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(cfg.noise_std)
+                return (clean + noise).clamp(0.0, 1.0)
+
+            # Equicorrelated Gaussian across channels: Sigma = (1-rho)I + rho*11^T
+            # PSD condition: -1/(C-1) <= rho < 1
+            min_rho = -1.0 / float(c - 1)
+            if not (min_rho <= rho < 1.0):
+                raise ValueError(f"color_rho must satisfy {min_rho:.4f} <= rho < 1 for C={c}, got {rho}")
+
+            sigma = (1.0 - rho) * torch.eye(c, dtype=torch.float32) + rho * torch.ones((c, c), dtype=torch.float32)
+            L = torch.linalg.cholesky(sigma)  # (C,C)
+
+            g = self._generator(idx, stream=stream, salt=20)
+            z = torch.randn((c, h * w), generator=g, dtype=torch.float32)
+            corr = (L @ z).view(c, h, w) * float(cfg.noise_std)
+            return (clean + corr).clamp(0.0, 1.0)
+
         if noise_type in {"quantization", "quant", "adc"}:
             bits = int(cfg.quant_bits)
             if bits < 2 or bits > 16:
@@ -314,6 +338,32 @@ class ToyDenoisingSquares(Dataset):
             out = clean.clone()
             out[defect & hot] = 1.0
             out[defect & (~hot)] = 0.0
+            return out.clamp(0.0, 1.0)
+
+        if noise_type in {"line_defect", "line_defects", "stuck_lines"}:
+            p = float(cfg.line_prob)
+            r = float(cfg.line_hot_ratio)
+            if not (0.0 <= p < 1.0):
+                raise ValueError("line_prob must be in [0, 1)")
+            if not (0.0 <= r <= 1.0):
+                raise ValueError("line_hot_ratio must be in [0, 1]")
+            if p == 0.0:
+                return clean
+
+            # Deterministic per-sample line defects (fixed-pattern).
+            g = self._generator(idx, stream=0, salt=21)
+            row_def = torch.rand((h,), generator=g, dtype=torch.float32) < p
+            col_def = torch.rand((w,), generator=g, dtype=torch.float32) < p
+
+            g2 = self._generator(idx, stream=0, salt=22)
+            row_hot = (torch.rand((h,), generator=g2, dtype=torch.float32) < r).to(torch.float32)
+            col_hot = (torch.rand((w,), generator=g2, dtype=torch.float32) < r).to(torch.float32)
+
+            out = clean.clone()
+            if bool(row_def.any().item()):
+                out[:, row_def, :] = row_hot[row_def].view(1, -1, 1)
+            if bool(col_def.any().item()):
+                out[:, :, col_def] = col_hot[col_def].view(1, 1, -1)
             return out.clamp(0.0, 1.0)
 
         if noise_type in {"rowcol_bias", "row_col_bias", "fpn"}:
@@ -372,7 +422,7 @@ class ToyDenoisingSquares(Dataset):
             return out.clamp(0.0, 1.0)
 
         raise ValueError(
-            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization | dead_hot | rowcol_bias | mixed"
+            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed"
         )
 
     def _blindspot_mask(self, idx: int) -> torch.Tensor:

@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | edsr | resunet | attention_unet | unetpp | mwcnn | hinet | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    arch: str = "dncnn"  # dncnn | edsr | resunet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -16,9 +16,12 @@ class ModelConfig:
 
 def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.attention_unet import _VARIANTS as attention_unet_variants
+    from dlhub.vision.denoising.aspp_unet import _VARIANTS as aspp_unet_variants
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
     from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
+    from dlhub.vision.denoising.cbam_unet import _VARIANTS as cbam_unet_variants
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
+    from dlhub.vision.denoising.convnext_unet import _VARIANTS as convnext_unet_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
     from dlhub.vision.denoising.dhdn import _VARIANTS as dhdn_variants
     from dlhub.vision.denoising.dbsn import _VARIANTS as dbsn_variants
@@ -30,11 +33,13 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.ffdnet import _VARIANTS as ffdnet_variants
     from dlhub.vision.denoising.gated_pixelcnn_bsn import _VARIANTS as gated_pixelcnn_bsn_variants
     from dlhub.vision.denoising.hinet import _VARIANTS as hinet_variants
+    from dlhub.vision.denoising.ircnn import _VARIANTS as ircnn_variants
     from dlhub.vision.denoising.memnet import _VARIANTS as memnet_variants
     from dlhub.vision.denoising.mirnet import _VARIANTS as mirnet_variants
     from dlhub.vision.denoising.mprnet import _VARIANTS as mprnet_variants
     from dlhub.vision.denoising.mwcnn import _VARIANTS as mwcnn_variants
     from dlhub.vision.denoising.nafnet import _VARIANTS as nafnet_variants
+    from dlhub.vision.denoising.nlrn import _VARIANTS as nlrn_variants
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
     from dlhub.vision.denoising.pixelcnn_bsn import _VARIANTS as pixelcnn_bsn_variants
     from dlhub.vision.denoising.pridnet import _VARIANTS as pridnet_variants
@@ -44,6 +49,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.resunet import _VARIANTS as resunet_variants
     from dlhub.vision.denoising.restormer import _VARIANTS as restormer_variants
     from dlhub.vision.denoising.ridnet import _VARIANTS as ridnet_variants
+    from dlhub.vision.denoising.scunet import _VARIANTS as scunet_variants
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
     from dlhub.vision.denoising.unetpp import _VARIANTS as unetpp_variants
     from dlhub.vision.denoising.uformer import _VARIANTS as uformer_variants
@@ -56,6 +62,12 @@ def list_supported_arches() -> list[str]:
     out.extend([f"unetpp:{k}" for k in sorted(unetpp_variants)])
     out.extend([f"mwcnn:{k}" for k in sorted(mwcnn_variants)])
     out.extend([f"hinet:{k}" for k in sorted(hinet_variants)])
+    out.extend([f"ircnn:{k}" for k in sorted(ircnn_variants)])
+    out.extend([f"nlrn:{k}" for k in sorted(nlrn_variants)])
+    out.extend([f"scunet:{k}" for k in sorted(scunet_variants)])
+    out.extend([f"convnext_unet:{k}" for k in sorted(convnext_unet_variants)])
+    out.extend([f"aspp_unet:{k}" for k in sorted(aspp_unet_variants)])
+    out.extend([f"cbam_unet:{k}" for k in sorted(cbam_unet_variants)])
     out.extend([f"restormer:{k}" for k in sorted(restormer_variants)])
     out.extend([f"nafnet:{k}" for k in sorted(nafnet_variants)])
     out.extend([f"swinir:{k}" for k in sorted(swinir_variants)])
@@ -131,6 +143,36 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.hinet import build_hinet_denoiser
 
         return build_hinet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"ircnn"}:
+        from dlhub.vision.denoising.ircnn import build_ircnn_denoiser
+
+        return build_ircnn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"nlrn"}:
+        from dlhub.vision.denoising.nlrn import build_nlrn_denoiser
+
+        return build_nlrn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"scunet"}:
+        from dlhub.vision.denoising.scunet import build_scunet_denoiser
+
+        return build_scunet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"convnext_unet", "convnextunet"}:
+        from dlhub.vision.denoising.convnext_unet import build_convnext_unet_denoiser
+
+        return build_convnext_unet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"aspp_unet", "asppunet"}:
+        from dlhub.vision.denoising.aspp_unet import build_aspp_unet_denoiser
+
+        return build_aspp_unet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"cbam_unet", "cbamunet"}:
+        from dlhub.vision.denoising.cbam_unet import build_cbam_unet_denoiser
+
+        return build_cbam_unet_denoiser(in_channels=in_channels, variant=variant)
 
     if arch in {"restormer"}:
         from dlhub.vision.denoising.restormer import build_restormer_denoiser

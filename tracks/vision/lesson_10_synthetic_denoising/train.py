@@ -47,7 +47,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--noise-type",
         type=str,
         default="gaussian",
-        help="gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization | dead_hot | rowcol_bias | mixed",
+        help="gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed",
     )
     parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
     parser.add_argument("--noise-std-min", type=float, default=0.05, help="Min Gaussian std (used when noise-type=gaussian_var)")
@@ -60,6 +60,12 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--stripe-amplitude", type=float, default=0.12, help="Stripe amplitude (used when noise-type=stripe)")
     parser.add_argument("--stripe-period", type=int, default=8, help="Stripe period in pixels (used when noise-type=stripe)")
     parser.add_argument("--stripe-direction", type=str, default="vertical", help="vertical | horizontal | random (used when noise-type=stripe)")
+    parser.add_argument(
+        "--color-rho",
+        type=float,
+        default=0.5,
+        help="Cross-channel correlation rho (used when noise-type=colored_gaussian)",
+    )
     parser.add_argument("--quant-bits", type=int, default=8, help="Quantization bits (used when noise-type=quantization)")
     parser.add_argument(
         "--quant-dither",
@@ -73,6 +79,13 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         type=float,
         default=0.5,
         help="Fraction of defect pixels that are hot (1.0). The rest are dead (0.0). (used when noise-type=dead_hot)",
+    )
+    parser.add_argument("--line-prob", type=float, default=0.01, help="Line defect probability (used when noise-type=line_defect)")
+    parser.add_argument(
+        "--line-hot-ratio",
+        type=float,
+        default=0.5,
+        help="Fraction of defective lines that are hot (1.0). The rest are dead (0.0). (used when noise-type=line_defect)",
     )
     parser.add_argument("--row-bias-std", type=float, default=0.02, help="Row bias std (used when noise-type=rowcol_bias)")
     parser.add_argument("--col-bias-std", type=float, default=0.02, help="Col bias std (used when noise-type=rowcol_bias)")
@@ -136,10 +149,13 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         stripe_amplitude=args.stripe_amplitude,
         stripe_period=args.stripe_period,
         stripe_direction=args.stripe_direction,
+        color_rho=args.color_rho,
         quant_bits=args.quant_bits,
         quant_dither=args.quant_dither,
         defect_prob=args.defect_prob,
         defect_hot_ratio=args.defect_hot_ratio,
+        line_prob=args.line_prob,
+        line_hot_ratio=args.line_hot_ratio,
         row_bias_std=args.row_bias_std,
         col_bias_std=args.col_bias_std,
         min_square=args.min_square,
