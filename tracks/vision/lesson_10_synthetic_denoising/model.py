@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | edsr | resunet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -18,13 +18,16 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.attention_unet import _VARIANTS as attention_unet_variants
     from dlhub.vision.denoising.aspp_unet import _VARIANTS as aspp_unet_variants
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
+    from dlhub.vision.denoising.brdnet import _VARIANTS as brdnet_variants
     from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
+    from dlhub.vision.denoising.carn import _VARIANTS as carn_variants
     from dlhub.vision.denoising.cbam_unet import _VARIANTS as cbam_unet_variants
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.convnext_unet import _VARIANTS as convnext_unet_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
     from dlhub.vision.denoising.dhdn import _VARIANTS as dhdn_variants
     from dlhub.vision.denoising.dbsn import _VARIANTS as dbsn_variants
+    from dlhub.vision.denoising.denseunet import _VARIANTS as denseunet_variants
     from dlhub.vision.denoising.didn import _VARIANTS as didn_variants
     from dlhub.vision.denoising.dncnn import _VARIANTS as dncnn_variants
     from dlhub.vision.denoising.drrn import _VARIANTS as drrn_variants
@@ -43,21 +46,30 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
     from dlhub.vision.denoising.pixelcnn_bsn import _VARIANTS as pixelcnn_bsn_variants
     from dlhub.vision.denoising.pridnet import _VARIANTS as pridnet_variants
+    from dlhub.vision.denoising.r2unet import _VARIANTS as r2unet_variants
     from dlhub.vision.denoising.rcan import _VARIANTS as rcan_variants
     from dlhub.vision.denoising.rdn import _VARIANTS as rdn_variants
     from dlhub.vision.denoising.rednet import _VARIANTS as rednet_variants
     from dlhub.vision.denoising.resunet import _VARIANTS as resunet_variants
     from dlhub.vision.denoising.restormer import _VARIANTS as restormer_variants
     from dlhub.vision.denoising.ridnet import _VARIANTS as ridnet_variants
+    from dlhub.vision.denoising.rrdbnet import _VARIANTS as rrdbnet_variants
     from dlhub.vision.denoising.scunet import _VARIANTS as scunet_variants
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
+    from dlhub.vision.denoising.unet3plus import _VARIANTS as unet3plus_variants
     from dlhub.vision.denoising.unetpp import _VARIANTS as unetpp_variants
     from dlhub.vision.denoising.uformer import _VARIANTS as uformer_variants
 
     out: list[str] = []
     out.extend([f"dncnn:{k}" for k in sorted(dncnn_variants)])
     out.extend([f"edsr:{k}" for k in sorted(edsr_variants)])
+    out.extend([f"rrdbnet:{k}" for k in sorted(rrdbnet_variants)])
+    out.extend([f"carn:{k}" for k in sorted(carn_variants)])
     out.extend([f"resunet:{k}" for k in sorted(resunet_variants)])
+    out.extend([f"unet3plus:{k}" for k in sorted(unet3plus_variants)])
+    out.extend([f"r2unet:{k}" for k in sorted(r2unet_variants)])
+    out.extend([f"denseunet:{k}" for k in sorted(denseunet_variants)])
+    out.extend([f"brdnet:{k}" for k in sorted(brdnet_variants)])
     out.extend([f"attention_unet:{k}" for k in sorted(attention_unet_variants)])
     out.extend([f"unetpp:{k}" for k in sorted(unetpp_variants)])
     out.extend([f"mwcnn:{k}" for k in sorted(mwcnn_variants)])
@@ -119,10 +131,40 @@ def build_model(cfg: ModelConfig) -> nn.Module:
 
         return build_edsr_denoiser(in_channels=in_channels, variant=variant)
 
+    if arch in {"rrdbnet"}:
+        from dlhub.vision.denoising.rrdbnet import build_rrdbnet_denoiser
+
+        return build_rrdbnet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"carn"}:
+        from dlhub.vision.denoising.carn import build_carn_denoiser
+
+        return build_carn_denoiser(in_channels=in_channels, variant=variant)
+
     if arch in {"resunet"}:
         from dlhub.vision.denoising.resunet import build_resunet_denoiser
 
         return build_resunet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"unet3plus", "unet3+", "unet3_plus"}:
+        from dlhub.vision.denoising.unet3plus import build_unet3plus_denoiser
+
+        return build_unet3plus_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"r2unet", "r2u", "r2u_net"}:
+        from dlhub.vision.denoising.r2unet import build_r2unet_denoiser
+
+        return build_r2unet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"denseunet", "dense_u_net"}:
+        from dlhub.vision.denoising.denseunet import build_denseunet_denoiser
+
+        return build_denseunet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"brdnet"}:
+        from dlhub.vision.denoising.brdnet import build_brdnet_denoiser
+
+        return build_brdnet_denoiser(in_channels=in_channels, variant=variant)
 
     if arch in {"attention_unet", "attn_unet", "attention"}:
         from dlhub.vision.denoising.attention_unet import build_attention_unet_denoiser

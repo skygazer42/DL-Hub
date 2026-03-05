@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import torch
+import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset, Subset
 
 from dlhub.data.splits import train_val_split_indices
@@ -19,18 +20,22 @@ class DataConfig:
 
     in_channels: int = 1
     # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
-    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
+    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | clustered_impulse | shot_read | speckle | speckle_read | stripe | block_bias | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
     noise_std: float = 0.1  # Gaussian std in [0,1] scale
     noise_std_min: float = 0.05  # used when noise_type=gaussian_var
     noise_std_max: float = 0.2  # used when noise_type=gaussian_var
     poisson_peak: float = 30.0  # Peak photons for Poisson noise (higher = less noise)
     impulse_prob: float = 0.03  # Salt & pepper probability
+    cluster_prob: float = 0.002  # used when noise_type=clustered_impulse
+    cluster_size: int = 5  # used when noise_type=clustered_impulse (approx cluster diameter)
     shot_noise: float = 0.2  # Heteroscedastic term (variance ~ shot_noise * signal)
     read_noise: float = 0.02  # Additive read noise (std in [0,1] scale)
     speckle_std: float = 0.15  # Multiplicative noise scale (used when noise-type=speckle)
     stripe_amplitude: float = 0.12  # Stripe noise amplitude (used when noise-type=stripe)
     stripe_period: int = 8  # Stripe spatial period in pixels (used when noise-type=stripe)
     stripe_direction: str = "vertical"  # vertical | horizontal | random
+    block_size: int = 8  # used when noise_type=block_bias (block side length in pixels)
+    block_std: float = 0.05  # used when noise_type=block_bias (bias std in [0,1] scale)
     color_rho: float = 0.5  # used when noise_type=colored_gaussian (cross-channel correlation)
     quant_bits: int = 8  # used when noise_type=quantization
     quant_dither: bool = True  # whether to add uniform dither before quantization
@@ -198,6 +203,62 @@ class ToyDenoisingSquares(Dataset):
             noisy[salt] = 1.0
             noisy[pepper] = 0.0
             return noisy.clamp(0.0, 1.0)
+
+        if noise_type in {"clustered_impulse", "impulse_cluster", "cluster_impulse"}:
+            p = float(cfg.impulse_prob)
+            cp = float(cfg.cluster_prob)
+            k = int(cfg.cluster_size)
+            if not (0.0 <= p < 1.0):
+                raise ValueError("impulse_prob must be in [0, 1)")
+            if not (0.0 <= cp < 1.0):
+                raise ValueError("cluster_prob must be in [0, 1)")
+            if k < 1:
+                raise ValueError("cluster_size must be >= 1")
+
+            # Sample sparse cluster centers, then dilate to square "blobs" using max_pool2d.
+            g1 = self._generator(idx, stream=stream, salt=21)
+            centers = (torch.rand((1, h, w), generator=g1, dtype=torch.float32) < cp).to(torch.float32)
+            if k == 1:
+                cluster = centers > 0.0
+            else:
+                # Ensure odd kernel for symmetric padding.
+                kk = k if (k % 2 == 1) else (k + 1)
+                pooled = F.max_pool2d(centers.unsqueeze(0), kernel_size=kk, stride=1, padding=kk // 2)
+                cluster = pooled.squeeze(0) > 0.0  # (1,H,W)
+
+            if p == 0.0 or not bool(cluster.any().item()):
+                return clean
+
+            g2 = self._generator(idx, stream=stream, salt=22)
+            u = torch.rand((1, h, w), generator=g2, dtype=torch.float32)
+            salt = cluster & (u < (p * 0.5))
+            pepper = cluster & (u >= (p * 0.5)) & (u < p)
+            if c != 1:
+                salt = salt.repeat(c, 1, 1)
+                pepper = pepper.repeat(c, 1, 1)
+            noisy = clean.clone()
+            noisy[salt] = 1.0
+            noisy[pepper] = 0.0
+            return noisy.clamp(0.0, 1.0)
+
+        if noise_type in {"block_bias", "blocking_bias", "blockwise_bias"}:
+            bs = int(cfg.block_size)
+            std = float(cfg.block_std)
+            if bs <= 0:
+                raise ValueError("block_size must be > 0")
+            if std < 0.0:
+                raise ValueError("block_std must be >= 0")
+            if std == 0.0:
+                return clean
+
+            gh = (h + bs - 1) // bs
+            gw = (w + bs - 1) // bs
+            g = self._generator(idx, stream=stream, salt=23)
+            bias = torch.randn((1, gh, gw), generator=g, dtype=torch.float32) * std
+            bias = bias.repeat_interleave(bs, dim=1).repeat_interleave(bs, dim=2)[:, :h, :w]
+            if c != 1:
+                bias = bias.repeat(c, 1, 1)
+            return (clean + bias).clamp(0.0, 1.0)
 
         if noise_type in {"shot_read", "shot+read", "heteroscedastic"}:
             shot = float(cfg.shot_noise)
