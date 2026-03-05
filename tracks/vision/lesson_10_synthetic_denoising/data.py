@@ -19,7 +19,7 @@ class DataConfig:
 
     in_channels: int = 1
     # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
-    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | impulse | shot_read | speckle | speckle_read | stripe
+    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization
     noise_std: float = 0.1  # Gaussian std in [0,1] scale
     noise_std_min: float = 0.05  # used when noise_type=gaussian_var
     noise_std_max: float = 0.2  # used when noise_type=gaussian_var
@@ -31,6 +31,8 @@ class DataConfig:
     stripe_amplitude: float = 0.12  # Stripe noise amplitude (used when noise-type=stripe)
     stripe_period: int = 8  # Stripe spatial period in pixels (used when noise-type=stripe)
     stripe_direction: str = "vertical"  # vertical | horizontal | random
+    quant_bits: int = 8  # used when noise_type=quantization
+    quant_dither: bool = True  # whether to add uniform dither before quantization
     min_square: int = 8
     max_square: int = 24
     train_mode: str = "supervised"  # supervised | noise2noise | blindspot
@@ -157,6 +159,21 @@ class ToyDenoisingSquares(Dataset):
             noisy = torch.poisson(rate, generator=g) / peak
             return noisy.clamp(0.0, 1.0)
 
+        if noise_type in {"poisson_gaussian", "poisson+gaussian", "poisson_gauss"}:
+            peak = float(cfg.poisson_peak)
+            read = float(cfg.read_noise)
+            if peak <= 0:
+                raise ValueError("poisson_peak must be > 0")
+            if read < 0.0:
+                raise ValueError("read_noise must be >= 0")
+            rate = (clean.clamp(0.0, 1.0) * peak).clamp_min(0.0)
+            g1 = self._generator(idx, stream=stream, salt=8)
+            noisy = torch.poisson(rate, generator=g1) / peak
+            if read > 0.0:
+                g2 = self._generator(idx, stream=stream, salt=9)
+                noisy = noisy + torch.randn((c, h, w), generator=g2, dtype=torch.float32) * read
+            return noisy.clamp(0.0, 1.0)
+
         if noise_type in {"impulse", "saltpepper", "salt_pepper"}:
             p = float(cfg.impulse_prob)
             if not (0.0 <= p < 1.0):
@@ -237,8 +254,39 @@ class ToyDenoisingSquares(Dataset):
                 stripe = stripe.repeat(c, 1, 1)
             return (clean + amp * stripe).clamp(0.0, 1.0)
 
+        if noise_type in {"correlated_gaussian", "gaussian_correlated", "gauss_corr"}:
+            g = self._generator(idx, stream=stream, salt=12)
+            noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(cfg.noise_std)
+
+            # Simple 3x3 Gaussian-ish blur kernel (normalized).
+            k = torch.tensor([[1.0, 2.0, 1.0], [2.0, 4.0, 2.0], [1.0, 2.0, 1.0]], dtype=torch.float32)
+            k = k / k.sum()
+            weight = k.view(1, 1, 3, 3).repeat(c, 1, 1, 1)  # (C,1,3,3)
+            noise_corr = torch.nn.functional.conv2d(
+                noise.unsqueeze(0),
+                weight,
+                bias=None,
+                stride=1,
+                padding=1,
+                groups=c,
+            ).squeeze(0)
+            return (clean + noise_corr).clamp(0.0, 1.0)
+
+        if noise_type in {"quantization", "quant", "adc"}:
+            bits = int(cfg.quant_bits)
+            if bits < 2 or bits > 16:
+                raise ValueError("quant_bits must be in [2, 16]")
+            levels = float((1 << bits) - 1)
+            out = clean.clamp(0.0, 1.0)
+            if bool(cfg.quant_dither):
+                g = self._generator(idx, stream=stream, salt=13)
+                dither = (torch.rand((c, h, w), generator=g, dtype=torch.float32) - 0.5) / levels
+                out = (out + dither).clamp(0.0, 1.0)
+            out = torch.round(out * levels) / levels
+            return out.clamp(0.0, 1.0)
+
         raise ValueError(
-            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | impulse | shot_read | speckle | speckle_read | stripe"
+            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization"
         )
 
     def _blindspot_mask(self, idx: int) -> torch.Tensor:

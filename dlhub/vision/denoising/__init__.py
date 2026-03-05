@@ -9,18 +9,24 @@ from .bm3d import BM3D, build_bm3d_denoiser
 from .bsn import BlindSpotNet, build_bsn_denoiser
 from .cbdnet import CBDNet, build_cbdnet_denoiser
 from .ddpm_unet import DDPMUNet, DDPMUNetDenoiser, build_ddpm_unet_denoiser
+from .dhdn import DHDN, build_dhdn_denoiser
 from .dbsn import DBSN, build_dbsn_denoiser
 from .didn import DIDN, build_didn_denoiser
 from .dncnn import DnCNN, DnCNNDenoiser, build_dncnn_denoiser
+from .drrn import DRRN, build_drrn_denoiser
 from .drunet import DRUNet, build_drunet_denoiser
 from .ffdnet import FFDNetDenoiser, build_ffdnet_denoiser
 from .gated_pixelcnn_bsn import GatedPixelCNNBSN, build_gated_pixelcnn_bsn_denoiser
+from .memnet import MemNet, build_memnet_denoiser
 from .mirnet import MIRNet, build_mirnet_denoiser
 from .mprnet import MPRNet, build_mprnet_denoiser
 from .nafnet import NAFNet, build_nafnet_denoiser
 from .noise2noise import Noise2NoiseUNet, build_noise2noise_denoiser
 from .pixelcnn_bsn import PixelCNNBSN, build_pixelcnn_bsn_denoiser
+from .pridnet import PRIDNet, build_pridnet_denoiser
 from .rcan import RCAN, build_rcan_denoiser
+from .rdn import RDN, build_rdn_denoiser
+from .rednet import REDNet, build_rednet_denoiser
 from .restormer import Restormer, build_restormer_denoiser
 from .ridnet import RIDNetDenoiser, build_ridnet_denoiser
 from .swinir import SwinIR, build_swinir_denoiser
@@ -32,19 +38,25 @@ __all__ = [
     "CBDNet",
     "DDPMUNet",
     "DDPMUNetDenoiser",
+    "DHDN",
     "DBSN",
     "DIDN",
     "DnCNN",
     "DnCNNDenoiser",
+    "DRRN",
     "DRUNet",
     "FFDNetDenoiser",
     "GatedPixelCNNBSN",
+    "MemNet",
     "MIRNet",
     "MPRNet",
     "NAFNet",
     "Noise2NoiseUNet",
     "PixelCNNBSN",
+    "PRIDNet",
     "RCAN",
+    "RDN",
+    "REDNet",
     "Restormer",
     "RIDNetDenoiser",
     "SwinIR",
@@ -53,18 +65,24 @@ __all__ = [
     "build_bsn_denoiser",
     "build_cbdnet_denoiser",
     "build_ddpm_unet_denoiser",
+    "build_dhdn_denoiser",
     "build_dbsn_denoiser",
     "build_didn_denoiser",
     "build_dncnn_denoiser",
+    "build_drrn_denoiser",
     "build_drunet_denoiser",
     "build_ffdnet_denoiser",
     "build_gated_pixelcnn_bsn_denoiser",
+    "build_memnet_denoiser",
     "build_mirnet_denoiser",
     "build_mprnet_denoiser",
     "build_nafnet_denoiser",
     "build_noise2noise_denoiser",
     "build_pixelcnn_bsn_denoiser",
+    "build_pridnet_denoiser",
     "build_rcan_denoiser",
+    "build_rdn_denoiser",
+    "build_rednet_denoiser",
     "build_restormer_denoiser",
     "build_ridnet_denoiser",
     "build_swinir_denoiser",

@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    arch: str = "dncnn"  # dncnn | restormer | noise2noise_unet | bm3d | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -19,18 +19,24 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
+    from dlhub.vision.denoising.dhdn import _VARIANTS as dhdn_variants
     from dlhub.vision.denoising.dbsn import _VARIANTS as dbsn_variants
     from dlhub.vision.denoising.didn import _VARIANTS as didn_variants
     from dlhub.vision.denoising.dncnn import _VARIANTS as dncnn_variants
+    from dlhub.vision.denoising.drrn import _VARIANTS as drrn_variants
     from dlhub.vision.denoising.drunet import _VARIANTS as drunet_variants
     from dlhub.vision.denoising.ffdnet import _VARIANTS as ffdnet_variants
     from dlhub.vision.denoising.gated_pixelcnn_bsn import _VARIANTS as gated_pixelcnn_bsn_variants
+    from dlhub.vision.denoising.memnet import _VARIANTS as memnet_variants
     from dlhub.vision.denoising.mirnet import _VARIANTS as mirnet_variants
     from dlhub.vision.denoising.mprnet import _VARIANTS as mprnet_variants
     from dlhub.vision.denoising.nafnet import _VARIANTS as nafnet_variants
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
     from dlhub.vision.denoising.pixelcnn_bsn import _VARIANTS as pixelcnn_bsn_variants
+    from dlhub.vision.denoising.pridnet import _VARIANTS as pridnet_variants
     from dlhub.vision.denoising.rcan import _VARIANTS as rcan_variants
+    from dlhub.vision.denoising.rdn import _VARIANTS as rdn_variants
+    from dlhub.vision.denoising.rednet import _VARIANTS as rednet_variants
     from dlhub.vision.denoising.restormer import _VARIANTS as restormer_variants
     from dlhub.vision.denoising.ridnet import _VARIANTS as ridnet_variants
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
@@ -54,6 +60,12 @@ def list_supported_arches() -> list[str]:
     out.extend([f"mirnet:{k}" for k in sorted(mirnet_variants)])
     out.extend([f"mprnet:{k}" for k in sorted(mprnet_variants)])
     out.extend([f"rcan:{k}" for k in sorted(rcan_variants)])
+    out.extend([f"rdn:{k}" for k in sorted(rdn_variants)])
+    out.extend([f"memnet:{k}" for k in sorted(memnet_variants)])
+    out.extend([f"drrn:{k}" for k in sorted(drrn_variants)])
+    out.extend([f"rednet:{k}" for k in sorted(rednet_variants)])
+    out.extend([f"pridnet:{k}" for k in sorted(pridnet_variants)])
+    out.extend([f"dhdn:{k}" for k in sorted(dhdn_variants)])
     out.extend([f"uformer:{k}" for k in sorted(uformer_variants)])
     out.extend([f"pixelcnn_bsn:{k}" for k in sorted(pixelcnn_bsn_variants)])
     out.extend([f"gated_pixelcnn_bsn:{k}" for k in sorted(gated_pixelcnn_bsn_variants)])
@@ -152,6 +164,36 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.rcan import build_rcan_denoiser
 
         return build_rcan_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"rdn"}:
+        from dlhub.vision.denoising.rdn import build_rdn_denoiser
+
+        return build_rdn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"memnet"}:
+        from dlhub.vision.denoising.memnet import build_memnet_denoiser
+
+        return build_memnet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"drrn"}:
+        from dlhub.vision.denoising.drrn import build_drrn_denoiser
+
+        return build_drrn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"rednet"}:
+        from dlhub.vision.denoising.rednet import build_rednet_denoiser
+
+        return build_rednet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"pridnet"}:
+        from dlhub.vision.denoising.pridnet import build_pridnet_denoiser
+
+        return build_pridnet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"dhdn"}:
+        from dlhub.vision.denoising.dhdn import build_dhdn_denoiser
+
+        return build_dhdn_denoiser(in_channels=in_channels, variant=variant)
 
     if arch in {"bsn", "blindspotnet", "blind_spot_net"}:
         from dlhub.vision.denoising.bsn import build_bsn_denoiser

@@ -47,7 +47,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--noise-type",
         type=str,
         default="gaussian",
-        help="gaussian | gaussian_var | gaussian_impulse | poisson | impulse | shot_read | speckle | speckle_read | stripe",
+        help="gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | quantization",
     )
     parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
     parser.add_argument("--noise-std-min", type=float, default=0.05, help="Min Gaussian std (used when noise-type=gaussian_var)")
@@ -60,6 +60,13 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--stripe-amplitude", type=float, default=0.12, help="Stripe amplitude (used when noise-type=stripe)")
     parser.add_argument("--stripe-period", type=int, default=8, help="Stripe period in pixels (used when noise-type=stripe)")
     parser.add_argument("--stripe-direction", type=str, default="vertical", help="vertical | horizontal | random (used when noise-type=stripe)")
+    parser.add_argument("--quant-bits", type=int, default=8, help="Quantization bits (used when noise-type=quantization)")
+    parser.add_argument(
+        "--quant-dither",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Enable uniform dither before quantization (used when noise-type=quantization)",
+    )
     parser.add_argument("--min-square", type=int, default=8)
     parser.add_argument("--max-square", type=int, default=24)
     parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot")
@@ -120,6 +127,8 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         stripe_amplitude=args.stripe_amplitude,
         stripe_period=args.stripe_period,
         stripe_direction=args.stripe_direction,
+        quant_bits=args.quant_bits,
+        quant_dither=args.quant_dither,
         min_square=args.min_square,
         max_square=args.max_square,
         train_mode=args.train_mode,
