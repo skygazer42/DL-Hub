@@ -6,6 +6,7 @@ Conventions:
 """
 
 from .attention_unet import AttentionUNet, build_attention_unet_denoiser
+from .anscombe_wiener import AnscombeWiener, build_anscombe_wiener_denoiser
 from .anisotropic_diffusion import AnisotropicDiffusion, build_anisotropic_diffusion_denoiser
 from .aspp_unet import ASPPUNet, build_aspp_unet_denoiser
 from .bilateral_filter import BilateralFilter, build_bilateral_filter_denoiser
@@ -30,6 +31,8 @@ from .gated_pixelcnn_bsn import GatedPixelCNNBSN, build_gated_pixelcnn_bsn_denoi
 from .guided_filter import GuidedFilter, build_guided_filter_denoiser
 from .hinet import HINet, build_hinet_denoiser
 from .ircnn import IRCNN, build_ircnn_denoiser
+from .kuan_filter import KuanFilter, build_kuan_filter_denoiser
+from .lee_filter import LeeFilter, build_lee_filter_denoiser
 from .median_filter import MedianFilter, build_median_filter_denoiser
 from .memnet import MemNet, build_memnet_denoiser
 from .mirnet import MIRNet, build_mirnet_denoiser
@@ -51,6 +54,7 @@ from .ridnet import RIDNetDenoiser, build_ridnet_denoiser
 from .rrdbnet import RRDBNet, build_rrdbnet_denoiser
 from .scunet import SCUNet, build_scunet_denoiser
 from .swinir import SwinIR, build_swinir_denoiser
+from .stripe_remover import StripeRemover, build_stripe_remover_denoiser
 from .total_variation import TotalVariationDenoiser, build_total_variation_denoiser
 from .unet3plus import UNet3Plus, build_unet3plus_denoiser
 from .unetpp import UNetPlusPlus, build_unetpp_denoiser
@@ -60,6 +64,7 @@ from .wiener_filter import WienerFilter, build_wiener_filter_denoiser
 
 __all__ = [
     "AttentionUNet",
+    "AnscombeWiener",
     "AnisotropicDiffusion",
     "ASPPUNet",
     "BilateralFilter",
@@ -86,6 +91,8 @@ __all__ = [
     "GuidedFilter",
     "HINet",
     "IRCNN",
+    "KuanFilter",
+    "LeeFilter",
     "MedianFilter",
     "MemNet",
     "MIRNet",
@@ -107,6 +114,7 @@ __all__ = [
     "RRDBNet",
     "SCUNet",
     "SwinIR",
+    "StripeRemover",
     "TotalVariationDenoiser",
     "UNet3Plus",
     "UNetPlusPlus",
@@ -114,6 +122,7 @@ __all__ = [
     "WaveletShrinkage",
     "WienerFilter",
     "build_attention_unet_denoiser",
+    "build_anscombe_wiener_denoiser",
     "build_anisotropic_diffusion_denoiser",
     "build_aspp_unet_denoiser",
     "build_bilateral_filter_denoiser",
@@ -138,6 +147,8 @@ __all__ = [
     "build_guided_filter_denoiser",
     "build_hinet_denoiser",
     "build_ircnn_denoiser",
+    "build_kuan_filter_denoiser",
+    "build_lee_filter_denoiser",
     "build_median_filter_denoiser",
     "build_memnet_denoiser",
     "build_mirnet_denoiser",
@@ -159,6 +170,7 @@ __all__ = [
     "build_rrdbnet_denoiser",
     "build_scunet_denoiser",
     "build_swinir_denoiser",
+    "build_stripe_remover_denoiser",
     "build_total_variation_denoiser",
     "build_unet3plus_denoiser",
     "build_unetpp_denoiser",

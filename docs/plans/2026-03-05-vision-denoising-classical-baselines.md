@@ -1,4 +1,4 @@
-# Vision Denoising: Classical Baselines (8 算法族)
+# Vision Denoising: Classical Baselines (12 算法族)
 
 **Goal:** 在 `dlhub/vision/denoising/` 增加一批「CPU 友好、纯 torch、toy-first」的传统/非学习型去噪基线，用于快速对照与课程实验。
 
@@ -12,6 +12,10 @@
 - `total_variation.py` — TV/ROF 去噪（Chambolle 迭代）
 - `anisotropic_diffusion.py` — 各向异性扩散（Perona–Malik）
 - `wavelet_shrinkage.py` — Haar 小波阈值（软阈值收缩）
+- `anscombe_wiener.py` — Anscombe 变换 + Wiener（Poisson-ish 噪声基线）
+- `lee_filter.py` — Lee speckle filter（乘性噪声 / speckle）
+- `kuan_filter.py` — Kuan speckle filter（乘性噪声 / speckle）
+- `stripe_remover.py` — 条纹/带状噪声去除（stripe / banding）
 
 **Integration:**
 - 统一 builder 风格：每个文件都提供 `_VARIANTS` + `build_*_denoiser(...)` + `__main__` smoke。
@@ -19,4 +23,3 @@
 
 **Verification:**
 - `pytest -q`（新增 `tests/test_tracks_vision_denoising.py` baseline forward smoke）
-

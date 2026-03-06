@@ -248,6 +248,10 @@ def test_vision_denoising_bm3d_forward_smoke() -> None:
         "total_variation:tv_fast",
         "anisotropic_diffusion:anisodiff_fast",
         "wavelet_shrinkage:wavelet_tiny",
+        "anscombe_wiener:anscombe_wiener_tiny",
+        "lee_filter:lee_tiny",
+        "kuan_filter:kuan_tiny",
+        "stripe_remover:stripe_remover_tiny",
     ],
 )
 def test_vision_denoising_classical_baselines_forward_smoke(arch: str) -> None:
