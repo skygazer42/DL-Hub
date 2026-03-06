@@ -38,6 +38,25 @@ def _sum_tensor_means(x):
         ("build_mask2former_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "mask2former_tiny", "width_mult": 0.5}),
         ("build_detr_mask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "detr_mask_tiny", "width_mult": 0.5}),
         ("build_blendmask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "blendmask_tiny", "width_mult": 0.5}),
+        ("build_bcnet_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "bcnet_tiny", "width_mult": 0.5}),
+        ("build_cfm_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "cfm_tiny", "width_mult": 0.5}),
+        ("build_dct_mask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "dct_mask_tiny", "width_mult": 0.5}),
+        ("build_deepmask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "deepmask_tiny", "width_mult": 0.5}),
+        ("build_sipmask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "sipmask_tiny", "width_mult": 0.5}),
+        ("build_mask_dino_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "mask_dino_tiny", "width_mult": 0.5}),
+        ("build_deepsnake_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "deepsnake_tiny", "width_mult": 0.5}),
+        ("build_dynamicinst_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "dynamicinst_tiny", "width_mult": 0.5}),
+        ("build_e2ec_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "e2ec_tiny", "width_mult": 0.5}),
+        ("build_fastinst_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "fastinst_tiny", "width_mult": 0.5}),
+        ("build_instancefcn_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "instancefcn_tiny", "width_mult": 0.5}),
+        ("build_meinst_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "meinst_tiny", "width_mult": 0.5}),
+        ("build_mnc_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "mnc_tiny", "width_mult": 0.5}),
+        ("build_orienmask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "orienmask_tiny", "width_mult": 0.5}),
+        ("build_panet_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "panet_tiny", "width_mult": 0.5}),
+        ("build_refinemask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "refinemask_tiny", "width_mult": 0.5}),
+        ("build_rtmdet_ins_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "rtmdet_ins_tiny", "width_mult": 0.5}),
+        ("build_shapemask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "shapemask_tiny", "width_mult": 0.5}),
+        ("build_sharpmask_instance_segmenter", {"in_channels": 3, "num_classes": 2, "variant": "sharpmask_tiny", "width_mult": 0.5}),
     ],
 )
 def test_instance_segmentation_algorithms_forward_backward_smoke(builder_name: str, kwargs: dict) -> None:
@@ -50,4 +69,3 @@ def test_instance_segmentation_algorithms_forward_backward_smoke(builder_name: s
     loss = _sum_tensor_means(out)
     assert torch.isfinite(loss)
     loss.backward()
-

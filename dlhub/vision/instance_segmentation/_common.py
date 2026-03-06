@@ -68,6 +68,52 @@ class BackboneLowDet(nn.Module):
         return low, det
 
 
+class BackbonePyramid(nn.Module):
+    """Compact backbone that returns three pyramid levels at /4, /8 and /16."""
+
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        stem_channels: int,
+        p2_channels: int,
+        p3_channels: int,
+        p4_channels: int,
+        depth: int = 1,
+        act: str = "relu",
+    ) -> None:
+        super().__init__()
+        c_in = int(in_channels)
+        stem = int(stem_channels)
+        c2 = int(p2_channels)
+        c3 = int(p3_channels)
+        c4 = int(p4_channels)
+        d = int(depth)
+        if d <= 0:
+            raise ValueError("depth must be > 0")
+
+        self.stem = ConvBNAct(c_in, stem, kernel_size=3, stride=2, act=act)  # /2
+        self.p2 = nn.Sequential(
+            ConvBNAct(stem, c2, kernel_size=3, stride=2, act=act),  # /4
+            ConvTower(c2, num_convs=d, act=act),
+        )
+        self.p3 = nn.Sequential(
+            ConvBNAct(c2, c3, kernel_size=3, stride=2, act=act),  # /8
+            ConvTower(c3, num_convs=d, act=act),
+        )
+        self.p4 = nn.Sequential(
+            ConvBNAct(c3, c4, kernel_size=3, stride=2, act=act),  # /16
+            ConvTower(c4, num_convs=d, act=act),
+        )
+
+    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        x = self.stem(x)
+        p2 = self.p2(x)
+        p3 = self.p3(p2)
+        p4 = self.p4(p3)
+        return p2, p3, p4
+
+
 class ProtoNet(nn.Module):
     """Prototype mask generator used by YOLACT/CondInst/BlendMask-style models."""
 
@@ -137,6 +183,62 @@ class DensePredHead(nn.Module):
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         t = self.tower(x)
         return self.cls_logits(t), self.box_pred(t), self.mask_coeff(t)
+
+
+class InstanceTokenHead(nn.Module):
+    """Generate per-instance latent tokens from a feature map."""
+
+    def __init__(self, in_ch: int, hidden_ch: int, num_tokens: int, *, depth: int = 2) -> None:
+        super().__init__()
+        c_in = int(in_ch)
+        c_hidden = int(hidden_ch)
+        n = int(num_tokens)
+        d = int(depth)
+        if c_hidden <= 0:
+            raise ValueError("hidden_ch must be > 0")
+        if n <= 0:
+            raise ValueError("num_tokens must be > 0")
+        if d <= 0:
+            raise ValueError("depth must be > 0")
+
+        self.pool_proj = nn.Linear(c_in, c_hidden)
+        self.query_embed = nn.Parameter(torch.randn(n, c_hidden) * 0.02)
+        self.layers = nn.ModuleList(nn.Linear(c_hidden, c_hidden) for _ in range(d))
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        b, c, _, _ = x.shape
+        pooled = F.adaptive_avg_pool2d(x, (1, 1)).view(b, c)
+        h = self.pool_proj(pooled).unsqueeze(1) + self.query_embed.unsqueeze(0)
+        for layer in self.layers:
+            h = h + torch.relu(layer(h))
+        return h
+
+
+class ContourDecoder(nn.Module):
+    """Decode latent tokens into coarse contours and mask logits."""
+
+    def __init__(self, hidden_ch: int, *, num_vertices: int, mask_size: int) -> None:
+        super().__init__()
+        c_hidden = int(hidden_ch)
+        v = int(num_vertices)
+        ms = int(mask_size)
+        if c_hidden <= 0:
+            raise ValueError("hidden_ch must be > 0")
+        if v <= 2:
+            raise ValueError("num_vertices must be > 2")
+        if ms <= 0:
+            raise ValueError("mask_size must be > 0")
+
+        self.poly_head = nn.Linear(c_hidden, v * 2)
+        self.mask_head = nn.Linear(c_hidden, ms * ms)
+        self.num_vertices = v
+        self.mask_size = ms
+
+    def forward(self, tokens: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        b, n, _ = tokens.shape
+        polygons = torch.tanh(self.poly_head(tokens)).view(b, n, self.num_vertices, 2)
+        mask_logits = self.mask_head(tokens).view(b, n, self.mask_size, self.mask_size)
+        return polygons, mask_logits
 
 
 def upsample_like(x: torch.Tensor, ref: torch.Tensor) -> torch.Tensor:

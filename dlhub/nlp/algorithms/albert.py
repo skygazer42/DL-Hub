@@ -13,6 +13,11 @@ class AlbertClassifier(TransformerTextClassifier):
     pass
 
 
+_VARIANTS: dict[str, dict[str, int | bool]] = {
+    "albert_tiny": {"embed_dim": 192, "num_heads": 4, "num_layers": 4, "share_layers": True},
+}
+
+
 def build_albert_classifier(
     *,
     vocab_size: int,
@@ -24,10 +29,11 @@ def build_albert_classifier(
     variant: str,
 ) -> nn.Module:
     name = str(variant).lower().strip()
-    if name not in {"albert_tiny", "albert"}:
-        raise ValueError("Unknown ALBERT variant. Supported: albert_tiny")
-
-    embed_dim, heads, layers = 192, 4, 4
+    if name == "albert":
+        name = "albert_tiny"
+    if name not in _VARIANTS:
+        raise ValueError(f"Unknown ALBERT variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+    spec = _VARIANTS[name]
 
     return AlbertClassifier(
         TransformerConfig(
@@ -37,9 +43,9 @@ def build_albert_classifier(
             num_classes=int(num_classes),
             width_mult=float(width_mult),
             dropout=float(dropout),
-            embed_dim=int(embed_dim),
-            num_heads=int(heads),
-            num_layers=int(layers),
+            embed_dim=int(spec["embed_dim"]),
+            num_heads=int(spec["num_heads"]),
+            num_layers=int(spec["num_layers"]),
             pos="learned",
             rope=False,
             alibi=False,
@@ -53,12 +59,17 @@ def build_albert_classifier(
             prenorm=False,  # post-norm encoder style
             causal=False,
             pool="cls",
-            share_layers=True,
+            share_layers=bool(spec["share_layers"]),
         )
     )
 
+
 def registry() -> dict[str, Builder]:
-    return {"albert_tiny": make_builder(build_albert_classifier, variant="albert_tiny")}
+    return {
+        "albert": make_builder(build_albert_classifier, variant="albert_tiny"),
+        "albert_tiny": make_builder(build_albert_classifier, variant="albert_tiny"),
+    }
+
 
 def _smoke() -> None:
     vocab_size = 128

@@ -50,6 +50,7 @@ def __dir__() -> list[str]:  # pragma: no cover
 __all__ = [
     # Builders are exposed via __getattr__ (lazy), but listing common ones here improves discoverability.
     "build_centernet_detector",
+    "build_dino_detector",
     "build_dssd_detector",
     "build_efficientdet_detector",
     "build_fcos_detector",
@@ -57,4 +58,5 @@ __all__ = [
     "build_ssd_detector",
     "build_squeezedet_detector",
     "build_yolo_v1_detector",
+    "build_yolov8_detector",
 ]

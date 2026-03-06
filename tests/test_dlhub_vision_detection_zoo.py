@@ -20,12 +20,19 @@ def test_detection_zoo_list_and_build_smoke() -> None:
     arches = list_local_arches()
     assert "dldet:ssd_tiny" in arches
     assert "dldet:detr_tiny" in arches
+    assert "dldet:dino_tiny" in arches
+    assert "dldet:yolov8_tiny" in arches
 
-    for arch_id in ["dldet:ssd_tiny", "dldet:detr_tiny", "dldet:yolo_v1_tiny"]:
+    for arch_id in [
+        "dldet:ssd_tiny",
+        "dldet:detr_tiny",
+        "dldet:dino_tiny",
+        "dldet:yolov8_tiny",
+        "dldet:yolo_v1_tiny",
+    ]:
         model = build_local_model(arch_id, in_channels=3, num_classes=2, width_mult=0.5)
         x = torch.randn(2, 3, 64, 64)
         out = model(x)
         loss = _sum_tensor_means(out)
         assert torch.isfinite(loss)
         loss.backward()
-

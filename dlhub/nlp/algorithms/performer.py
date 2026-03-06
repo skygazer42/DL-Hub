@@ -13,6 +13,13 @@ class PerformerClassifier(TransformerTextClassifier):
     pass
 
 
+_VARIANTS: dict[str, dict[str, int | str]] = {
+    "performer_tiny": {"embed_dim": 192, "num_heads": 4, "num_layers": 2},
+    "performer_small": {"embed_dim": 256, "num_heads": 4, "num_layers": 3},
+    "performer_base": {"embed_dim": 320, "num_heads": 5, "num_layers": 4},
+}
+
+
 def build_performer_classifier(
     *,
     vocab_size: int,
@@ -24,16 +31,11 @@ def build_performer_classifier(
     variant: str,
 ) -> nn.Module:
     name = str(variant).lower().strip()
-    if name in {"performer_tiny", "performer"}:
-        embed_dim, heads, layers = 192, 4, 2
-    elif name in {"performer_small"}:
-        embed_dim, heads, layers = 256, 4, 3
-    elif name in {"performer_base"}:
-        embed_dim, heads, layers = 320, 5, 4
-    else:
-        raise ValueError(
-            "Unknown Performer variant. Supported: performer_tiny|performer_small|performer_base"
-        )
+    if name == "performer":
+        name = "performer_tiny"
+    if name not in _VARIANTS:
+        raise ValueError(f"Unknown Performer variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+    spec = _VARIANTS[name]
 
     return PerformerClassifier(
         TransformerConfig(
@@ -43,9 +45,9 @@ def build_performer_classifier(
             num_classes=int(num_classes),
             width_mult=float(width_mult),
             dropout=float(dropout),
-            embed_dim=int(embed_dim),
-            num_heads=int(heads),
-            num_layers=int(layers),
+            embed_dim=int(spec["embed_dim"]),
+            num_heads=int(spec["num_heads"]),
+            num_layers=int(spec["num_layers"]),
             pos="sin",
             rope=False,
             alibi=False,
@@ -66,7 +68,7 @@ def build_performer_classifier(
 def registry() -> dict[str, Builder]:
     r: dict[str, Builder] = {}
     r["performer"] = make_builder(build_performer_classifier, variant="performer_tiny")
-    for name in ("performer_tiny", "performer_small", "performer_base"):
+    for name in _VARIANTS:
         r[name] = make_builder(build_performer_classifier, variant=name)
     return r
 

@@ -25,9 +25,9 @@ Thumbs.db
 .vscode/
 
 # Local data / downloads
-.data/
-data/
-datasets/
+/.data/
+/data/
+/datasets/
 
 # Training outputs / experiment tracking
 runs/

@@ -13,6 +13,13 @@ class BertClassifier(TransformerTextClassifier):
     pass
 
 
+_VARIANTS: dict[str, dict[str, int | str]] = {
+    "bert_tiny": {"embed_dim": 192, "num_heads": 4, "num_layers": 2},
+    "bert_small": {"embed_dim": 256, "num_heads": 4, "num_layers": 3},
+    "bert_base": {"embed_dim": 320, "num_heads": 5, "num_layers": 4},
+}
+
+
 def build_bert_classifier(
     *,
     vocab_size: int,
@@ -24,14 +31,11 @@ def build_bert_classifier(
     variant: str,
 ) -> nn.Module:
     name = str(variant).lower().strip()
-    if name in {"bert_tiny", "bert"}:
-        embed_dim, heads, layers = 192, 4, 2
-    elif name in {"bert_small"}:
-        embed_dim, heads, layers = 256, 4, 3
-    elif name in {"bert_base"}:
-        embed_dim, heads, layers = 320, 5, 4
-    else:
-        raise ValueError("Unknown BERT variant. Supported: bert_tiny|bert_small|bert_base")
+    if name == "bert":
+        name = "bert_tiny"
+    if name not in _VARIANTS:
+        raise ValueError(f"Unknown BERT variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+    spec = _VARIANTS[name]
 
     return BertClassifier(
         TransformerConfig(
@@ -41,9 +45,9 @@ def build_bert_classifier(
             num_classes=int(num_classes),
             width_mult=float(width_mult),
             dropout=float(dropout),
-            embed_dim=int(embed_dim),
-            num_heads=int(heads),
-            num_layers=int(layers),
+            embed_dim=int(spec["embed_dim"]),
+            num_heads=int(spec["num_heads"]),
+            num_layers=int(spec["num_layers"]),
             pos="learned",
             rope=False,
             alibi=False,
@@ -67,7 +71,7 @@ def registry() -> dict[str, Builder]:
     # Family alias (historically `nl:bert`)
     r["bert"] = make_builder(build_bert_classifier, variant="bert_tiny")
 
-    for name in ("bert_tiny", "bert_small", "bert_base"):
+    for name in _VARIANTS:
         r[name] = make_builder(build_bert_classifier, variant=name)
 
     return r
