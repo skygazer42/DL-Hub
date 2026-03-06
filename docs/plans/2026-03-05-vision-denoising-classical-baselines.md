@@ -1,4 +1,4 @@
-# Vision Denoising: Classical Baselines (12 算法族)
+# Vision Denoising: Classical Baselines (17 算法族)
 
 **Goal:** 在 `dlhub/vision/denoising/` 增加一批「CPU 友好、纯 torch、toy-first」的传统/非学习型去噪基线，用于快速对照与课程实验。
 
@@ -16,6 +16,11 @@
 - `lee_filter.py` — Lee speckle filter（乘性噪声 / speckle）
 - `kuan_filter.py` — Kuan speckle filter（乘性噪声 / speckle）
 - `stripe_remover.py` — 条纹/带状噪声去除（stripe / banding）
+- `dead_hot_pixel_corrector.py` — dead/hot pixels 坏点修复（局部中值替换）
+- `line_defect_corrector.py` — 行/列坏线修复（stuck rows/cols）
+- `rowcol_bias_corrector.py` — 行/列固定模式偏置（row/col bias / FPN）
+- `block_bias_corrector.py` — 块状偏置（block-wise bias / blocking）
+- `debanding_filter.py` — 去 banding / 去量化（flat 区域轻度平滑）
 
 **Integration:**
 - 统一 builder 风格：每个文件都提供 `_VARIANTS` + `build_*_denoiser(...)` + `__main__` smoke。

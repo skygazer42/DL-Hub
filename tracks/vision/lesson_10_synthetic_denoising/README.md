@@ -1,6 +1,6 @@
 # Lesson 10：图像去噪（Synthetic, toy-first）
 
-目标：把”输入带噪图 → 输出干净图”的回归式训练闭环跑通，并对比 **56 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 19 种噪声模型。
+目标：把”输入带噪图 → 输出干净图”的回归式训练闭环跑通，并对比 **61 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 19 种噪声模型。
 
 ## 运行
 
@@ -29,7 +29,7 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 
 ## 模型一览
 
-本课包含 56 个去噪算法族，按设计思路分为 5 类：
+本课包含 61 个去噪算法族，按设计思路分为 5 类：
 
 ### 传统方法
 

@@ -8,7 +8,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | median_filter | wiener_filter | guided_filter | bilateral_filter | non_local_means | total_variation | anisotropic_diffusion | wavelet_shrinkage | anscombe_wiener | lee_filter | kuan_filter | stripe_remover | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | median_filter | wiener_filter | guided_filter | bilateral_filter | non_local_means | total_variation | anisotropic_diffusion | wavelet_shrinkage | anscombe_wiener | lee_filter | kuan_filter | stripe_remover | dead_hot_pixel_corrector | line_defect_corrector | rowcol_bias_corrector | block_bias_corrector | debanding_filter | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -20,6 +20,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.attention_unet import _VARIANTS as attention_unet_variants
     from dlhub.vision.denoising.aspp_unet import _VARIANTS as aspp_unet_variants
     from dlhub.vision.denoising.bilateral_filter import _VARIANTS as bilateral_variants
+    from dlhub.vision.denoising.block_bias_corrector import _VARIANTS as block_bias_corrector_variants
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
     from dlhub.vision.denoising.brdnet import _VARIANTS as brdnet_variants
     from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
@@ -28,6 +29,8 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.convnext_unet import _VARIANTS as convnext_unet_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
+    from dlhub.vision.denoising.dead_hot_pixel_corrector import _VARIANTS as dead_hot_pixel_corrector_variants
+    from dlhub.vision.denoising.debanding_filter import _VARIANTS as debanding_filter_variants
     from dlhub.vision.denoising.dhdn import _VARIANTS as dhdn_variants
     from dlhub.vision.denoising.dbsn import _VARIANTS as dbsn_variants
     from dlhub.vision.denoising.denseunet import _VARIANTS as denseunet_variants
@@ -43,6 +46,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.ircnn import _VARIANTS as ircnn_variants
     from dlhub.vision.denoising.kuan_filter import _VARIANTS as kuan_filter_variants
     from dlhub.vision.denoising.lee_filter import _VARIANTS as lee_filter_variants
+    from dlhub.vision.denoising.line_defect_corrector import _VARIANTS as line_defect_corrector_variants
     from dlhub.vision.denoising.median_filter import _VARIANTS as median_filter_variants
     from dlhub.vision.denoising.memnet import _VARIANTS as memnet_variants
     from dlhub.vision.denoising.mirnet import _VARIANTS as mirnet_variants
@@ -65,6 +69,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.scunet import _VARIANTS as scunet_variants
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
     from dlhub.vision.denoising.stripe_remover import _VARIANTS as stripe_remover_variants
+    from dlhub.vision.denoising.rowcol_bias_corrector import _VARIANTS as rowcol_bias_corrector_variants
     from dlhub.vision.denoising.total_variation import _VARIANTS as total_variation_variants
     from dlhub.vision.denoising.unet3plus import _VARIANTS as unet3plus_variants
     from dlhub.vision.denoising.unetpp import _VARIANTS as unetpp_variants
@@ -112,6 +117,11 @@ def list_supported_arches() -> list[str]:
     out.extend([f"lee_filter:{k}" for k in sorted(lee_filter_variants)])
     out.extend([f"kuan_filter:{k}" for k in sorted(kuan_filter_variants)])
     out.extend([f"stripe_remover:{k}" for k in sorted(stripe_remover_variants)])
+    out.extend([f"dead_hot_pixel_corrector:{k}" for k in sorted(dead_hot_pixel_corrector_variants)])
+    out.extend([f"line_defect_corrector:{k}" for k in sorted(line_defect_corrector_variants)])
+    out.extend([f"rowcol_bias_corrector:{k}" for k in sorted(rowcol_bias_corrector_variants)])
+    out.extend([f"block_bias_corrector:{k}" for k in sorted(block_bias_corrector_variants)])
+    out.extend([f"debanding_filter:{k}" for k in sorted(debanding_filter_variants)])
     out.extend([f"bsn:{k}" for k in sorted(bsn_variants)])
     out.extend([f"cbdnet:{k}" for k in sorted(cbdnet_variants)])
     out.extend([f"ddpm_unet:{k}" for k in sorted(ddpm_unet_variants)])
@@ -339,6 +349,31 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.stripe_remover import build_stripe_remover_denoiser
 
         return build_stripe_remover_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"dead_hot_pixel_corrector", "dead_hot_pixel", "dead_hot"}:
+        from dlhub.vision.denoising.dead_hot_pixel_corrector import build_dead_hot_pixel_corrector_denoiser
+
+        return build_dead_hot_pixel_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"line_defect_corrector", "line_defect", "stuck_line"}:
+        from dlhub.vision.denoising.line_defect_corrector import build_line_defect_corrector_denoiser
+
+        return build_line_defect_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"rowcol_bias_corrector", "rowcol_bias", "rowcol"}:
+        from dlhub.vision.denoising.rowcol_bias_corrector import build_rowcol_bias_corrector_denoiser
+
+        return build_rowcol_bias_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"block_bias_corrector", "block_bias"}:
+        from dlhub.vision.denoising.block_bias_corrector import build_block_bias_corrector_denoiser
+
+        return build_block_bias_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+
+    if arch in {"debanding_filter", "debanding", "deband"}:
+        from dlhub.vision.denoising.debanding_filter import build_debanding_filter_denoiser
+
+        return build_debanding_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
 
     if arch in {"ddpm_unet", "ddpm"}:
         from dlhub.vision.denoising.ddpm_unet import build_ddpm_unet_denoiser

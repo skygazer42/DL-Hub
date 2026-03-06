@@ -252,6 +252,11 @@ def test_vision_denoising_bm3d_forward_smoke() -> None:
         "lee_filter:lee_tiny",
         "kuan_filter:kuan_tiny",
         "stripe_remover:stripe_remover_tiny",
+        "dead_hot_pixel_corrector:dead_hot_tiny",
+        "line_defect_corrector:line_defect_tiny",
+        "rowcol_bias_corrector:rowcol_bias_tiny",
+        "block_bias_corrector:block_bias_tiny",
+        "debanding_filter:deband_tiny",
     ],
 )
 def test_vision_denoising_classical_baselines_forward_smoke(arch: str) -> None:
@@ -267,3 +272,62 @@ def test_vision_denoising_classical_baselines_forward_smoke(arch: str) -> None:
 
     loss = torch.nn.MSELoss()(out, clean)
     assert torch.isfinite(loss)
+
+
+def test_vision_denoising_defect_baselines_reduce_error_smoke() -> None:
+    from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
+
+    torch.manual_seed(0)
+
+    # --- dead/hot pixel correction
+    clean = torch.zeros(1, 1, 32, 32)
+    clean[:, :, 8:24, 8:24] = 1.0
+    noisy = clean.clone()
+    noisy[:, :, 5, 5] = 1.0
+    noisy[:, :, 6, 7] = 1.0
+    noisy[:, :, 10, 10] = 0.0
+
+    model = build_model(ModelConfig(arch="dead_hot_pixel_corrector:dead_hot_tiny", variant="", in_channels=1, sigma=0.1))
+    out = model(noisy)
+    assert (out - clean).abs().mean().item() < (noisy - clean).abs().mean().item()
+
+    # --- stuck rows/cols correction
+    clean2 = clean.clone()
+    noisy2 = clean2.clone()
+    noisy2[:, :, 3, :] = 1.0  # hot row
+    noisy2[:, :, :, 4] = 1.0  # hot col
+
+    model = build_model(ModelConfig(arch="line_defect_corrector:line_defect_tiny", variant="", in_channels=1, sigma=0.1))
+    out2 = model(noisy2)
+    assert (out2 - clean2).abs().mean().item() < (noisy2 - clean2).abs().mean().item()
+
+    # --- row/col fixed-pattern bias correction
+    clean3 = torch.full((1, 1, 32, 32), 0.5)
+    row_bias = torch.randn(1, 1, 32, 1) * 0.04
+    col_bias = torch.randn(1, 1, 1, 32) * 0.04
+    noisy3 = (clean3 + row_bias + col_bias).clamp(0.0, 1.0)
+
+    model = build_model(ModelConfig(arch="rowcol_bias_corrector:rowcol_bias_tiny", variant="", in_channels=1, sigma=0.1))
+    out3 = model(noisy3)
+    assert (out3 - clean3).abs().mean().item() < (noisy3 - clean3).abs().mean().item()
+
+    # --- block-wise bias correction
+    clean4 = torch.full((1, 1, 32, 32), 0.5)
+    block_bias = torch.randn(1, 1, 4, 4) * 0.05
+    block_bias = block_bias.repeat_interleave(8, dim=-2).repeat_interleave(8, dim=-1)
+    noisy4 = (clean4 + block_bias).clamp(0.0, 1.0)
+
+    model = build_model(ModelConfig(arch="block_bias_corrector:block_bias_tiny", variant="", in_channels=1, sigma=0.1))
+    out4 = model(noisy4)
+    assert (out4 - clean4).abs().mean().item() < (noisy4 - clean4).abs().mean().item()
+
+    # --- debanding / dequantization
+    h, w = 64, 64
+    ramp = torch.linspace(0.0, 1.0, w).view(1, 1, 1, w).expand(1, 1, h, w)
+    bits = 5
+    levels = float((1 << bits) - 1)
+    noisy5 = torch.round(ramp * levels) / levels
+
+    model = build_model(ModelConfig(arch="debanding_filter:deband_tiny", variant="", in_channels=1, sigma=0.1))
+    out5 = model(noisy5)
+    assert (out5 - ramp).abs().mean().item() < (noisy5 - ramp).abs().mean().item()
