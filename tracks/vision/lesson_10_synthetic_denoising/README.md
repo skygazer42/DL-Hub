@@ -1,6 +1,6 @@
 # Lesson 10：图像去噪（Synthetic, toy-first）
 
-目标：把”输入带噪图 → 输出干净图”的回归式训练闭环跑通，并对比 **61 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 19 种噪声模型。
+目标：把"输入带噪图 → 输出干净图"的回归式训练闭环跑通，并对比 **61 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 19 种噪声模型。
 
 ## 运行
 
@@ -27,47 +27,133 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch restormer:restormer_tiny --epochs 5
 ```
 
+## 核心概念
+
+**残差学习**：DnCNN 等网络学的不是干净图本身，而是噪声残差 `noise = noisy - clean`。网络输出残差后做减法得到干净图，收敛更快。
+
+**训练范式的理论基础**：
+
+- Supervised：有 `(noisy, clean)` 配对，MSE 损失的最优解就是干净图
+- Noise2Noise：有 `(noisy₁, noisy₂)` 配对（同一干净图的两次独立噪声），MSE 最优解的期望仍是干净图（因为 `E[noisy] = clean`）
+- Blind-Spot：只有单张噪声图，靠遮住当前像素、用邻居像素预测。只要噪声是像素级独立的，模型只能学到信号而非噪声
+
+**噪声条件化**：FFDNet / DRUNet 等把 sigma map 显式输入网络，让一个模型处理不同噪声强度。相比为每个 sigma 训练一个模型，更灵活更省空间。
+
+**PSNR**：`10 * log10(1 / MSE)`，单位 dB，越高越好。toy 数据上通常 20–40 dB。注意 PSNR 只衡量像素级误差，不直接反映人眼感知质量。
+
+## 方法选择指南
+
+```
+你的场景是什么？
+│
+├─ 有 (noisy, clean) 配对数据
+│   ├─ 噪声强度已知且固定 → DnCNN / NAFNet / Restormer
+│   ├─ 噪声强度未知或变化 → FFDNet / DRUNet（条件化）
+│   ├─ 噪声类型未知       → CBDNet（自动估噪声 level）
+│   └─ 想要最强效果       → Restormer / MPRNet / SwinIR
+│
+├─ 有两份独立噪声观测（无干净图）
+│   └─ Noise2Noise
+│
+├─ 只有单张噪声图（无任何干净数据）
+│   ├─ 噪声像素级独立     → Blind-Spot（BSN / DBSN / PixelCNN-BSN）
+│   └─ 噪声有空间相关性   → 需要更强假设，先试 BSN 看效果
+│
+├─ 不想训练 / 只需要基线
+│   ├─ 高斯噪声           → BM3D
+│   ├─ 椒盐噪声           → Median Filter
+│   ├─ Poisson 噪声       → Anscombe + Wiener
+│   ├─ 散斑噪声（SAR）    → Lee / Kuan Filter
+│   └─ 通用保边去噪       → Bilateral / Non-Local Means
+│
+└─ 传感器缺陷（非随机噪声）
+    ├─ 坏点 (dead/hot)    → Dead/Hot Pixel Corrector
+    ├─ 坏行/坏列          → Line Defect Corrector
+    ├─ 条纹噪声           → Stripe Remover
+    ├─ 行列偏置 (FPN)     → Row/Col Bias Corrector
+    └─ 量化色带           → Debanding Filter
+```
+
 ## 模型一览
 
-本课包含 61 个去噪算法族，按设计思路分为 5 类：
+本课包含 61 个去噪算法族，按设计思路分为 6 类：
 
-### 传统方法
+### 传统方法（无需训练）
 
 | 算法 | 核心思路 | 特点 |
 |---|---|---|
-| **BM3D** | 块匹配 + 3D 协同滤波 | 无需训练，CPU 直接跑，经典基线 |
+| **BM3D** | 块匹配 + 3D 协同滤波 | 经典基线，效果好 |
+| **Median Filter** | 中值滤波 | 对椒盐噪声特别有效 |
+| **Wiener Filter** | 频域最优线性滤波 | 需要噪声功率谱先验 |
+| **Guided Filter** | 引导滤波（局部线性模型） | 保边平滑，速度快 |
+| **Bilateral Filter** | 双边滤波（空间+像素值加权） | 经典保边去噪 |
+| **Non-Local Means** | 非局部均值（块相似度加权） | 利用图像自相似性 |
+| **Total Variation** | 全变分正则化（最小化梯度 L1） | 分段常数先验，适合卡通图 |
+| **Anisotropic Diffusion** | 各向异性扩散（Perona-Malik） | 沿边缘方向扩散，跨边缘抑制 |
+| **Wavelet Shrinkage** | 小波阈值收缩 | 多尺度频域去噪 |
+| **Anscombe + Wiener** | Anscombe 变换 + Wiener 滤波 | 针对 Poisson 噪声的经典流程 |
+| **Lee Filter** | Lee 滤波（局部统计自适应） | 适合 SAR 散斑噪声 |
+| **Kuan Filter** | Kuan 滤波（改进 Lee） | 乘性噪声模型更精确 |
 
 ### 有监督 CNN / Transformer
+
+**残差 / 注意力 CNN**
 
 | 算法 | 核心思路 | 特点 |
 |---|---|---|
 | **DnCNN** | 残差学习（学噪声而非干净图） | 工程常用，结构简单，训练快 |
+| **IRCNN** | 膨胀卷积残差 CNN | 常用作 PnP/先验的 dilated denoiser |
 | **RIDNet** | 残差 + 通道注意力 CNN | 特征自适应加权 |
-| **NAFNet** | 纯卷积 + 门控（无 attention/norm） | 现代高效 restoration，效果强 |
-| **Restormer** | 转置注意力 Transformer | 效果好，算力需求高 |
-| **SwinIR** | 窗口注意力 Transformer | Swin Transformer 做 restoration |
-| **MIRNet** | 多尺度残差 + 跨尺度特征融合 | 同时利用高/低分辨率信息 |
-| **MPRNet** | 多阶段逐步细化 | 每阶段从粗到精恢复 |
-| **UFormer** | U 形 Transformer（窗口注意力） | 编码器-解码器 + skip connection |
-| **RCAN** | 残差通道注意力网络（深层残差） | 超分辨率/去噪通用 backbone |
-| **REDNet** | 对称卷积/反卷积自编码器 + skip | 经典 encoder-decoder restoration |
 | **DRRN** | 递归残差单元（权重共享） | 参数少、深度靠 recursion 堆出来 |
 | **MemNet** | 持久记忆块（短期+长期融合） | 通过 memory 复用多层特征 |
-| **RDN** | 残差密集块（dense 连接） | 多级特征拼接融合，细节恢复强 |
+| **BRDNet** | 双路径残差网络（BN + dilated） | 两个互补分支融合去噪 |
 | **PRIDNet** | 金字塔分支 + 注意力 | 多感受野融合，适合纹理/细节 |
 | **DHDN** | 普通卷积 + 膨胀卷积混合 | 同时抓局部与更大上下文 |
+
+**密集连接 / 深残差**
+
+| 算法 | 核心思路 | 特点 |
+|---|---|---|
 | **EDSR** | 深残差块（无 BN） | 经典强 CNN backbone（SR/denoise 通用） |
+| **RDN** | 残差密集块（dense 连接） | 多级特征拼接融合，细节恢复强 |
+| **RRDBNet** | 残差中残差密集块 | ESRGAN backbone，特征复用极深 |
+| **CARN** | 级联残差网络（group conv） | 轻量高效，参数少 |
+| **RCAN** | 残差通道注意力网络（深层残差） | 超分辨率/去噪通用 backbone |
+
+**U-Net 变体**
+
+| 算法 | 核心思路 | 特点 |
+|---|---|---|
 | **ResUNet** | 残差 U-Net | 结构简单稳定，baseline 很好用 |
-| **Attention U-Net** | 注意力门控 skip connection | 让 skip 更“选择性”地传递信息 |
+| **Attention U-Net** | 注意力门控 skip connection | 让 skip 更"选择性"地传递信息 |
 | **U-Net++** | 嵌套/密集 skip connection | 更强的多尺度融合（更吃算力） |
+| **U-Net 3+** | 全尺度 skip connection | 比 U-Net++ 更激进的多尺度融合 |
+| **R2U-Net** | 循环残差 U-Net | 递归卷积 + 残差连接 |
+| **Dense U-Net** | 密集连接 U-Net | DenseNet 风格的编码器-解码器 |
+| **REDNet** | 对称卷积/反卷积自编码器 + skip | 经典 encoder-decoder restoration |
+| **ASPP U-Net** | U-Net + ASPP bottleneck | 多膨胀率上下文聚合 |
+| **CBAM U-Net** | U-Net + CBAM（通道+空间注意力） | 更强特征选择性 |
+| **ConvNeXt-UNet** | ConvNeXt blocks 的 encoder-decoder | 现代卷积块做 restoration |
+
+**Transformer / 混合结构**
+
+| 算法 | 核心思路 | 特点 |
+|---|---|---|
+| **Restormer** | 转置注意力 Transformer | 效果好，算力需求高 |
+| **SwinIR** | 窗口注意力 Transformer | Swin Transformer 做 restoration |
+| **UFormer** | U 形 Transformer（窗口注意力） | 编码器-解码器 + skip connection |
+| **SCUNet** | Conv U-Net + window attention | 混合结构，兼顾局部与全局 |
+| **NLRN** | Non-local + recurrent | 显式引入全局 self-attention |
+
+**多尺度 / 特殊结构**
+
+| 算法 | 核心思路 | 特点 |
+|---|---|---|
+| **NAFNet** | 纯卷积 + 门控（无 attention/norm） | 现代高效 restoration，效果强 |
+| **MIRNet** | 多尺度残差 + 跨尺度特征融合 | 同时利用高/低分辨率信息 |
+| **MPRNet** | 多阶段逐步细化 | 每阶段从粗到精恢复 |
 | **MWCNN** | Haar wavelet 多尺度特征 | wavelet 下采样/上采样，结构高效 |
-| **HINet** | Half InstanceNorm 残差块 | 纹理/细节恢复常用技巧（toy 版） |
-| **IRCNN** | 膨胀卷积残差 CNN | 常用作 PnP/先验的 dilated denoiser |
-| **NLRN** | Non-local + recurrent | 显式引入全局 self-attention（toy 版） |
-| **SCUNet** | Conv U-Net + window attention | 混合结构，兼顾局部与全局（toy 版） |
-| **ConvNeXt-UNet** | ConvNeXt blocks 的 encoder-decoder | 现代卷积块做 restoration（toy 版） |
-| **ASPP U-Net** | U-Net + ASPP bottleneck | 多膨胀率上下文聚合（toy 版） |
-| **CBAM U-Net** | U-Net + CBAM（通道+空间注意力） | 更强特征选择性（toy 版） |
+| **HINet** | Half InstanceNorm 残差块 | 纹理/细节恢复常用技巧 |
 
 ### 噪声条件化
 
@@ -93,6 +179,17 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 | **PixelCNN-BSN** | PixelCNN masked-conv + 旋转融合 | 自回归风格的盲点 |
 | **Gated PixelCNN-BSN** | 带门控的 PixelCNN masked-conv | 门控提升表达力 |
 | **DBSN** | 多膨胀率方向盲点特征融合 | 更大感受野的盲点网络 |
+
+### 传感器缺陷校正（无需训练）
+
+| 算法 | 核心思路 | 特点 |
+|---|---|---|
+| **Stripe Remover** | 条纹/带状噪声去除 | 针对 stripe 型固定模式噪声 |
+| **Dead/Hot Pixel Corrector** | 坏点检测 + 邻域插值 | 修复传感器 dead/hot 像素 |
+| **Line Defect Corrector** | 坏行/坏列检测 + 修复 | 修复整行/整列的固定缺陷 |
+| **Row/Col Bias Corrector** | 行列偏置校正（FPN） | 去除固定模式噪声 |
+| **Block Bias Corrector** | 块级偏置校正 | 去除块状固定模式噪声 |
+| **Debanding Filter** | 色带/量化带消除 | 平滑量化阶梯伪影 |
 
 ## 三种训练范式
 
@@ -120,7 +217,7 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 
 ### 3) Blind-Spot（Noise2Self / Noise2Void）
 
-完全不需要干净数据。随机遮挡部分像素，用邻居像素替代，只在被遮挡位置计算重建损失（`MaskedMSELoss`）。模型无法”作弊”直接拷贝输入，只能学会去噪。
+完全不需要干净数据。随机遮挡部分像素，用邻居像素替代，只在被遮挡位置计算重建损失（`MaskedMSELoss`）。模型无法"作弊"直接拷贝输入，只能学会去噪。
 
 ```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
@@ -134,97 +231,120 @@ BSN/DBSN/PixelCNN-BSN 等网络从**结构上**保证盲点性质，可以搭配
 
 ## 噪声模型
 
-本课支持 19 种噪声模型，通过 `--noise-type` 切换：
+本课支持 19 种噪声模型，通过 `--noise-type` 切换。
+
+### 加性噪声
 
 | 噪声类型 | 说明 | 关键参数 |
 |---|---|---|
 | `gaussian`（默认） | 加性高斯白噪声 | `--noise-std 0.1` |
 | `gaussian_var` | 高斯噪声，sigma 在范围内随机 | `--noise-std-min 0.05 --noise-std-max 0.2` |
-| `gaussian_impulse` | 高斯 + 椒盐 | `--noise-std 0.1 --impulse-prob 0.03` |
-| `poisson` | 泊松噪声（光子噪声） | `--poisson-peak 30` |
-| `poisson_gaussian` | 泊松 + 读出高斯（Poisson-Gaussian） | `--poisson-peak 30 --read-noise 0.02` |
-| `impulse` | 纯椒盐噪声 | `--impulse-prob 0.03` |
-| `shot_read` | 散粒噪声 + 读出噪声（异方差） | `--shot-noise 0.2 --read-noise 0.02` |
-| `speckle` | 乘性散斑噪声 | `--speckle-std 0.15` |
-| `speckle_read` | 散斑 + 读出噪声 | `--speckle-std 0.15 --read-noise 0.02` |
-| `stripe` | 条纹/带状噪声 | `--stripe-amplitude 0.12 --stripe-period 8 --stripe-direction vertical` |
 | `correlated_gaussian` | 空间相关高斯噪声（模糊相关） | `--noise-std 0.1` |
 | `colored_gaussian` | 跨通道相关高斯噪声（RGB 相关） | `--noise-std 0.1 --color-rho 0.5` |
-| `quantization` | 量化噪声（ADC / bit-depth） | `--quant-bits 8 --no-quant-dither` |
+| `poisson` | 泊松噪声（光子噪声） | `--poisson-peak 30` |
+| `poisson_gaussian` | 泊松 + 读出高斯（Poisson-Gaussian） | `--poisson-peak 30 --read-noise 0.02` |
+
+### 脉冲 / 乘性噪声
+
+| 噪声类型 | 说明 | 关键参数 |
+|---|---|---|
+| `impulse` | 纯椒盐噪声 | `--impulse-prob 0.03` |
+| `clustered_impulse` | 聚集椒盐噪声（坏点簇） | `--impulse-prob 0.03 --cluster-prob 0.002 --cluster-size 5` |
+| `gaussian_impulse` | 高斯 + 椒盐 | `--noise-std 0.1 --impulse-prob 0.03` |
+| `speckle` | 乘性散斑噪声 | `--speckle-std 0.15` |
+| `speckle_read` | 散斑 + 读出噪声 | `--speckle-std 0.15 --read-noise 0.02` |
+
+### 传感器 / 结构噪声
+
+| 噪声类型 | 说明 | 关键参数 |
+|---|---|---|
+| `shot_read` | 散粒噪声 + 读出噪声（异方差） | `--shot-noise 0.2 --read-noise 0.02` |
+| `stripe` | 条纹/带状噪声 | `--stripe-amplitude 0.12 --stripe-period 8 --stripe-direction vertical` |
+| `block_bias` | 块级偏置噪声（分块固定模式） | `--block-size 8 --block-std 0.05` |
 | `dead_hot` | 传感器坏点（dead/hot pixels） | `--defect-prob 0.002 --defect-hot-ratio 0.5` |
 | `line_defect` | 行/列坏线（stuck rows/cols） | `--line-prob 0.01 --line-hot-ratio 0.5` |
 | `rowcol_bias` | 行/列随机偏置（非周期 banding / FPN） | `--row-bias-std 0.02 --col-bias-std 0.02` |
+| `quantization` | 量化噪声（ADC / bit-depth） | `--quant-bits 8 --no-quant-dither` |
+
+### 混合噪声
+
+| 噪声类型 | 说明 | 关键参数 |
+|---|---|---|
 | `mixed` | 混合噪声（shot+read → impulse → quant） | `--shot-noise 0.2 --read-noise 0.02 --impulse-prob 0.03 --quant-bits 8` |
 
-示例：
+### 噪声示例
+
+Poisson noise（典型 photon noise）：
 
 ```bash
-# Poisson noise（典型 photon noise）
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
-  --arch bsn:bsn_tiny \
-  --train-mode blindspot \
-  --noise-type poisson \
-  --poisson-peak 30 \
-  --epochs 5
+  --arch bsn:bsn_tiny --train-mode blindspot \
+  --noise-type poisson --poisson-peak 30 --epochs 5
+```
 
-# Gaussian sigma range（同一个 batch 内每张图噪声强度不同）
-python -m tracks.vision.lesson_10_synthetic_denoising.train \
-  --arch dbsn:dbsn_tiny \
-  --train-mode blindspot \
-  --noise-type gaussian_var \
-  --noise-std-min 0.05 \
-  --noise-std-max 0.2 \
-  --epochs 5
+Gaussian sigma range（同一个 batch 内每张图噪声强度不同）：
 
-# Gaussian + impulse（更接近真实传感器/压缩噪声的混合）
+```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
-  --arch pixelcnn_bsn:pixelcnn_bsn_tiny \
-  --train-mode blindspot \
-  --noise-type gaussian_impulse \
-  --noise-std 0.1 \
-  --impulse-prob 0.03 \
-  --epochs 5
+  --arch dbsn:dbsn_tiny --train-mode blindspot \
+  --noise-type gaussian_var --noise-std-min 0.05 --noise-std-max 0.2 --epochs 5
+```
 
-# Speckle + read（乘性 speckle + 加性读出噪声）
-python -m tracks.vision.lesson_10_synthetic_denoising.train \
-  --arch gated_pixelcnn_bsn:gated_pixelcnn_bsn_tiny \
-  --train-mode blindspot \
-  --noise-type speckle_read \
-  --speckle-std 0.15 \
-  --read-noise 0.02 \
-  --epochs 5
+Speckle + read（乘性 speckle + 加性读出噪声）：
 
-# Stripe / banding（条纹/带状噪声）
+```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
-  --arch dncnn:dncnn_tiny \
-  --train-mode supervised \
-  --noise-type stripe \
-  --stripe-amplitude 0.12 \
-  --stripe-period 8 \
-  --stripe-direction random \
-  --epochs 5
+  --arch gated_pixelcnn_bsn:gated_pixelcnn_bsn_tiny --train-mode blindspot \
+  --noise-type speckle_read --speckle-std 0.15 --read-noise 0.02 --epochs 5
+```
+
+Stripe / banding（条纹/带状噪声）：
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch dncnn:dncnn_tiny --train-mode supervised \
+  --noise-type stripe --stripe-amplitude 0.12 --stripe-period 8 --stripe-direction random --epochs 5
+```
+
+Mixed（模拟真实传感器的复合噪声流水线）：
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch nafnet:nafnet_tiny --train-mode supervised \
+  --noise-type mixed --shot-noise 0.2 --read-noise 0.02 --impulse-prob 0.02 --quant-bits 8 --epochs 5
 ```
 
 ## 更多示例
 
-### BM3D 基线（无需训练）
+### 传统滤波基线（无需训练）
 
 ```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
-  --arch bm3d:bm3d_fast \
-  --sigma 0.1
+  --arch bm3d:bm3d_fast --sigma 0.1
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch median_filter:median_3x3 --sigma 0.1
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch bilateral_filter:bilateral_default --sigma 0.1
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch non_local_means:nlm_default --sigma 0.1
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch total_variation:tv_default --sigma 0.1
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch wavelet_shrinkage:wavelet_default --sigma 0.1
 ```
 
-### DDPM U-Net（噪声条件化）
+### 噪声条件化模型
 
 ```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
-  --arch ddpm_unet:ddpm_unet_tiny \
-  --train-mode supervised \
-  --epochs 5
+  --arch ffdnet:ffdnet_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch drunet:drunet_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch ddpm_unet:ddpm_unet_tiny --train-mode supervised --epochs 5
 ```
 
-### MIRNet / MPRNet / UFormer
+### 多尺度 / 多阶段 Restoration
 
 ```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
@@ -235,7 +355,7 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch uformer:uformer_tiny --train-mode supervised --epochs 5
 ```
 
-### CBDNet / DIDN / RCAN（blind denoising）
+### Blind Denoising
 
 ```bash
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
@@ -244,6 +364,46 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch didn:didn_tiny --train-mode supervised --epochs 5
 python -m tracks.vision.lesson_10_synthetic_denoising.train \
   --arch rcan:rcan_tiny --train-mode supervised --epochs 5
+```
+
+### U-Net 变体
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch resunet:resunet_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch attention_unet:attention_unet_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch unetpp:unetpp_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch unet3plus:unet3plus_tiny --train-mode supervised --epochs 5
+```
+
+### 更多深度学习模型
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch rrdbnet:rrdbnet_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch carn:carn_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch brdnet:brdnet_tiny --train-mode supervised --epochs 5
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch scunet:scunet_tiny --train-mode supervised --epochs 5
+```
+
+### 传感器缺陷校正（无需训练）
+
+```bash
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch dead_hot_pixel_corrector:dead_hot_default \
+  --noise-type dead_hot --defect-prob 0.005 --sigma 0.1
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch stripe_remover:stripe_default \
+  --noise-type stripe --stripe-amplitude 0.15 --sigma 0.1
+python -m tracks.vision.lesson_10_synthetic_denoising.train \
+  --arch rowcol_bias_corrector:rowcol_default \
+  --noise-type rowcol_bias --row-bias-std 0.03 --sigma 0.1
 ```
 
 ## 评估指标
@@ -268,8 +428,12 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 2. **训练范式对比**：固定 `dncnn:dncnn_tiny`，分别用 `--train-mode supervised / noise2noise / blindspot` 训练，对比三种范式在相同 epoch 下的 PSNR
 3. **噪声鲁棒性**：用 `gaussian_var`（随机 sigma）训练一个模型，然后用固定 sigma 测试，看模型能否泛化到不同噪声强度
 4. **条件化 vs 非条件化**：对比 `dncnn`（不感知 sigma）和 `ffdnet`（拼接 sigma map）在 `gaussian_var` 噪声下的表现
-5. **结构盲点 vs 训练盲点**：对比 `bsn:bsn_tiny --train-mode supervised` 和 `dncnn:dncnn_tiny --train-mode blindspot`，理解”结构保证”和”训练技巧”两条路的区别
+5. **结构盲点 vs 训练盲点**：对比 `bsn:bsn_tiny --train-mode supervised` 和 `dncnn:dncnn_tiny --train-mode blindspot`，理解"结构保证"和"训练技巧"两条路的区别
 6. **噪声模型探索**：用 `stripe` 噪声训练，观察方向性噪声对不同模型的影响
+7. **传统滤波器横评**：对同一张噪声图，依次跑 `median_filter`、`bilateral_filter`、`non_local_means`、`bm3d`，对比 PSNR 和运行时间
+8. **传感器缺陷修复**：用 `--noise-type dead_hot` 生成带坏点的数据，分别用 `dead_hot_pixel_corrector`（传统）和 `dncnn`（学习）去处理，对比效果
+9. **U-Net 变体对比**：用 `resunet` / `attention_unet` / `unetpp` / `unet3plus` 四种 U-Net 变体在同一数据上训练，对比结构差异带来的 PSNR 变化
+10. **混合噪声挑战**：用 `--noise-type mixed` 训练和测试，看哪种模型对复杂真实噪声最鲁棒
 
 ## 代码位置
 
