@@ -1,21 +1,17 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
+import warnings
 from dataclasses import dataclass
 
-import torch
-
-from dlhub.checkpoint import save_checkpoint
-from dlhub.config import append_jsonl, dataclass_to_dict, write_json
-from dlhub.device import resolve_device
-from dlhub.logging import get_logger
-from dlhub.paths import build_run_paths
-from dlhub.seed import set_seed
-from dlhub.training.loop import fit_regression
-
-from .data import DataConfig, get_dataloaders
-from .model import DenoiserAdapter, ModelConfig, build_model, list_supported_arches
+# Keep CLI output clean: importing torch may emit a noisy FutureWarning about `pynvml`.
+warnings.filterwarnings(
+    "ignore",
+    message=r"The pynvml package is deprecated\..*",
+    category=FutureWarning,
+)
 
 
 @dataclass(frozen=True)
@@ -47,19 +43,31 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         "--noise-type",
         type=str,
         default="gaussian",
-        help="gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed",
+        help="Noise model name. See --list-noise-types for all options.",
     )
     parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
     parser.add_argument("--noise-std-min", type=float, default=0.05, help="Min Gaussian std (used when noise-type=gaussian_var)")
     parser.add_argument("--noise-std-max", type=float, default=0.2, help="Max Gaussian std (used when noise-type=gaussian_var)")
     parser.add_argument("--poisson-peak", type=float, default=30.0, help="Poisson peak photons (used when noise-type=poisson)")
     parser.add_argument("--impulse-prob", type=float, default=0.03, help="Salt & pepper prob (used when noise-type=impulse)")
+    parser.add_argument("--cluster-prob", type=float, default=0.002, help="Cluster center prob (used when noise-type=clustered_impulse)")
+    parser.add_argument("--cluster-size", type=int, default=5, help="Cluster diameter in pixels (used when noise-type=clustered_impulse)")
     parser.add_argument("--shot-noise", type=float, default=0.2, help="Shot noise factor (used when noise-type=shot_read)")
     parser.add_argument("--read-noise", type=float, default=0.02, help="Read noise std (used when noise-type=shot_read)")
     parser.add_argument("--speckle-std", type=float, default=0.15, help="Speckle std (used when noise-type=speckle/speckle_read)")
     parser.add_argument("--stripe-amplitude", type=float, default=0.12, help="Stripe amplitude (used when noise-type=stripe)")
     parser.add_argument("--stripe-period", type=int, default=8, help="Stripe period in pixels (used when noise-type=stripe)")
     parser.add_argument("--stripe-direction", type=str, default="vertical", help="vertical | horizontal | random (used when noise-type=stripe)")
+    parser.add_argument("--rain-count", type=int, default=40, help="Number of rain streaks (used when noise-type=rain)")
+    parser.add_argument("--rain-length-min", type=int, default=10, help="Min rain streak length in px (used when noise-type=rain)")
+    parser.add_argument("--rain-length-max", type=int, default=24, help="Max rain streak length in px (used when noise-type=rain)")
+    parser.add_argument("--rain-width", type=int, default=1, help="Rain streak thickness in px (used when noise-type=rain)")
+    parser.add_argument("--rain-intensity-min", type=float, default=0.06, help="Min rain intensity (used when noise-type=rain)")
+    parser.add_argument("--rain-intensity-max", type=float, default=0.16, help="Max rain intensity (used when noise-type=rain)")
+    parser.add_argument("--rain-angle-deg", type=float, default=75.0, help="Rain angle in degrees (0=→, 90=↓) (used when noise-type=rain)")
+    parser.add_argument("--rain-angle-jitter-deg", type=float, default=15.0, help="Uniform angle jitter in degrees (used when noise-type=rain)")
+    parser.add_argument("--block-size", type=int, default=8, help="Block side length in pixels (used when noise-type=block_bias)")
+    parser.add_argument("--block-std", type=float, default=0.05, help="Block bias std (used when noise-type=block_bias)")
     parser.add_argument(
         "--color-rho",
         type=float,
@@ -106,6 +114,38 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         help="Examples: dncnn:dncnn_17 | restormer:restormer_tiny | noise2noise_unet:n2n_unet_tiny | bm3d:bm3d_fast | cbdnet:cbdnet_tiny",
     )
     parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--arch-family",
+        type=str,
+        default=None,
+        help="Optional filter used with --list-arch (e.g. --list-arch --arch-family dncnn).",
+    )
+    parser.add_argument(
+        "--arch-match",
+        type=str,
+        default=None,
+        help="Optional substring filter used with --list-arch (e.g. --list-arch --arch-match tiny).",
+    )
+    parser.add_argument(
+        "--list-arch-families",
+        action="store_true",
+        help="Print supported architecture families (e.g. dncnn, restormer, bm3d) and exit.",
+    )
+    parser.add_argument("--list-noise-types", action="store_true", help="Print supported noise types and exit.")
+    parser.add_argument("--print-config", action="store_true", help="Print the resolved train/data config as JSON and exit.")
+    parser.add_argument(
+        "--list-limit",
+        type=int,
+        default=None,
+        help="Optional max number of lines printed by --list-* flags (e.g. --list-arch --list-limit 20).",
+    )
+    parser.add_argument(
+        "--list-sort",
+        type=str,
+        default="none",
+        choices=["none", "alpha"],
+        help="Optional sorting for --list-* outputs: none (default) | alpha.",
+    )
     parser.add_argument("--sigma", type=float, default=0.1, help="Noise sigma for BM3D baseline (in [0,1] scale).")
 
     parser.add_argument("--max-train-batches", type=int, default=None)
@@ -113,8 +153,71 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--run-name", type=str, default="dev")
     args = parser.parse_args()
 
+    any_list_flag = bool(args.list_arch or args.list_arch_families or args.list_noise_types)
+    if args.arch_family is not None and not args.list_arch:
+        parser.error("--arch-family is only valid with --list-arch.")
+    if args.arch_match is not None and not args.list_arch:
+        parser.error("--arch-match is only valid with --list-arch.")
+    if args.list_limit is not None and not any_list_flag:
+        parser.error("--list-limit is only valid with --list-arch / --list-arch-families / --list-noise-types.")
+    if str(args.list_sort).lower().strip() != "none" and not any_list_flag:
+        parser.error("--list-sort is only valid with --list-arch / --list-arch-families / --list-noise-types.")
+
     if args.list_arch:
-        print("\n".join(list_supported_arches()))
+        from .model import list_supported_arches
+
+        arches = list_supported_arches()
+        if args.arch_family is not None:
+            fam = str(args.arch_family).strip().lower()
+            arches = [a for a in arches if str(a).split(":", 1)[0].strip().lower() == fam]
+            if len(arches) == 0:
+                parser.error(f"Unknown arch family: {args.arch_family!r}. Use --list-arch-families.")
+        if args.arch_match is not None:
+            needle = str(args.arch_match).strip().lower()
+            arches = [a for a in arches if needle in str(a).lower()]
+            if len(arches) == 0:
+                parser.error(f"No arches matched: {args.arch_match!r}. Use --list-arch to see all options.")
+        if str(args.list_sort).lower().strip() == "alpha":
+            arches = sorted(arches, key=lambda s: str(s).lower())
+        if args.list_limit is not None:
+            n = int(args.list_limit)
+            if n < 0:
+                parser.error("--list-limit must be >= 0")
+            arches = arches[:n]
+        print("\n".join(arches))
+        raise SystemExit(0)
+    if args.list_arch_families:
+        from .model import list_supported_arches
+
+        fams: list[str] = []
+        seen: set[str] = set()
+        for spec in list_supported_arches():
+            fam = str(spec).split(":", 1)[0].strip()
+            if not fam:
+                continue
+            if fam not in seen:
+                seen.add(fam)
+                fams.append(fam)
+        lines = sorted(fams)
+        if args.list_limit is not None:
+            n = int(args.list_limit)
+            if n < 0:
+                parser.error("--list-limit must be >= 0")
+            lines = lines[:n]
+        print("\n".join(lines))
+        raise SystemExit(0)
+    if args.list_noise_types:
+        from .noise_types import list_supported_noise_types
+
+        lines = list_supported_noise_types()
+        if str(args.list_sort).lower().strip() == "alpha":
+            lines = sorted(lines, key=lambda s: str(s).lower())
+        if args.list_limit is not None:
+            n = int(args.list_limit)
+            if n < 0:
+                parser.error("--list-limit must be >= 0")
+            lines = lines[:n]
+        print("\n".join(lines))
         raise SystemExit(0)
 
     train_cfg = TrainConfig(
@@ -129,6 +232,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         in_channels=args.in_channels,
         sigma=args.sigma,
     )
+
+    from .data import DataConfig
+
     data_cfg = DataConfig(
         num_samples=args.num_samples,
         batch_size=args.batch_size,
@@ -143,12 +249,24 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         noise_std_max=args.noise_std_max,
         poisson_peak=args.poisson_peak,
         impulse_prob=args.impulse_prob,
+        cluster_prob=args.cluster_prob,
+        cluster_size=args.cluster_size,
         shot_noise=args.shot_noise,
         read_noise=args.read_noise,
         speckle_std=args.speckle_std,
         stripe_amplitude=args.stripe_amplitude,
         stripe_period=args.stripe_period,
         stripe_direction=args.stripe_direction,
+        rain_count=args.rain_count,
+        rain_length_min=args.rain_length_min,
+        rain_length_max=args.rain_length_max,
+        rain_width=args.rain_width,
+        rain_intensity_min=args.rain_intensity_min,
+        rain_intensity_max=args.rain_intensity_max,
+        rain_angle_deg=args.rain_angle_deg,
+        rain_angle_jitter_deg=args.rain_angle_jitter_deg,
+        block_size=args.block_size,
+        block_std=args.block_std,
         color_rho=args.color_rho,
         quant_bits=args.quant_bits,
         quant_dither=args.quant_dither,
@@ -163,10 +281,25 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         train_mode=args.train_mode,
         blindspot_prob=args.blindspot_prob,
     )
+
+    if args.print_config:
+        import torch
+
+        from dlhub.config import dataclass_to_dict
+
+        payload = {
+            "train": dataclass_to_dict(train_cfg),
+            "data": dataclass_to_dict(data_cfg),
+            "versions": {"python": sys.version, "torch": torch.__version__},
+        }
+        print(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
+        raise SystemExit(0)
     return train_cfg, data_cfg
 
 
 def _psnr(pred: torch.Tensor, target: torch.Tensor, *, max_val: float = 1.0) -> torch.Tensor:
+    import torch
+
     mse = torch.mean((pred - target).pow(2), dim=(1, 2, 3))
     psnr = 10.0 * torch.log10((max_val * max_val) / mse.clamp_min(1e-10))
     return psnr
@@ -180,6 +313,8 @@ def evaluate_denoiser(
     max_batches: int | None = None,
 ) -> tuple[float, float]:
     """Return (mse, psnr) averaged over the loader."""
+
+    import torch
 
     model.eval()
     total_mse = 0.0
@@ -206,6 +341,19 @@ def evaluate_denoiser(
 
 
 def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
+    import torch
+
+    from dlhub.checkpoint import save_checkpoint
+    from dlhub.config import append_jsonl, dataclass_to_dict, write_json
+    from dlhub.device import resolve_device
+    from dlhub.logging import get_logger
+    from dlhub.paths import build_run_paths
+    from dlhub.seed import set_seed
+    from dlhub.training.loop import fit_regression
+
+    from .data import get_dataloaders
+    from .model import DenoiserAdapter, ModelConfig, build_model
+
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
