@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 import ast
 from pathlib import Path
@@ -8,6 +7,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 CONVENTION_DIRS = (
+    REPO_ROOT / "dlhub/vision/action_recognition",
     REPO_ROOT / "dlhub/vision/detection",
     REPO_ROOT / "dlhub/vision/denoising",
     REPO_ROOT / "dlhub/vision/fine_grained_recognition",
@@ -15,6 +15,7 @@ CONVENTION_DIRS = (
     REPO_ROOT / "dlhub/vision/panoptic_segmentation",
     REPO_ROOT / "dlhub/vision/segmentation",
     REPO_ROOT / "dlhub/pointcloud/detection3d",
+    REPO_ROOT / "dlhub/pointcloud/tracking3d",
     REPO_ROOT / "dlhub/pointcloud/segmentation3d",
     REPO_ROOT / "dlhub/pointcloud/instance_segmentation3d",
 )
