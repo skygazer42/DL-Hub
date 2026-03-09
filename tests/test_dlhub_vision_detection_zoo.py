@@ -18,10 +18,18 @@ def test_detection_zoo_list_and_build_smoke() -> None:
     from dlhub.vision.detection_zoo import build_local_model, list_local_arches
 
     arches = list_local_arches()
+    assert len(arches) >= 277
     assert "dldet:ssd_tiny" in arches
     assert "dldet:detr_tiny" in arches
     assert "dldet:dino_tiny" in arches
     assert "dldet:yolov8_tiny" in arches
+    assert "dldet:yolov4_tiny" in arches
+    assert "dldet:yolov10_tiny" in arches
+    assert "dldet:rcnn_tiny" in arches
+    assert "dldet:densebox_tiny" in arches
+    assert "dldet:anchor_detr_tiny" in arches
+    assert "dldet:glip_tiny" in arches
+    assert "dldet:yolo_world_tiny" in arches
 
     for arch_id in [
         "dldet:ssd_tiny",
@@ -29,6 +37,11 @@ def test_detection_zoo_list_and_build_smoke() -> None:
         "dldet:dino_tiny",
         "dldet:yolov8_tiny",
         "dldet:yolo_v1_tiny",
+        "dldet:yolov4_tiny",
+        "dldet:rcnn_tiny",
+        "dldet:densebox_tiny",
+        "dldet:anchor_detr_tiny",
+        "dldet:glip_tiny",
     ]:
         model = build_local_model(arch_id, in_channels=3, num_classes=2, width_mult=0.5)
         x = torch.randn(2, 3, 64, 64)

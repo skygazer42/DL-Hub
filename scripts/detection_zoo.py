@@ -1,7 +1,9 @@
+
 from __future__ import annotations
 
 import argparse
 import sys
+import warnings
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -50,6 +52,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--list", action="store_true", help="List available architecture ids.")
     parser.add_argument("--search", type=str, default=None, help="Filter list by substring (case-insensitive).")
     parser.add_argument("--limit", type=int, default=80, help="Max lines to print when listing.")
+    parser.add_argument("--timeline", action="store_true", help="Print a best-effort detection family timeline (by year).")
 
     parser.add_argument("--smoke", type=str, default=None, metavar="ARCH_ID", help="Run a forward smoke on an arch id.")
     parser.add_argument("--batch-size", type=int, default=2, help="Batch size for smoke inputs.")
@@ -64,19 +67,26 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     _ensure_repo_root_on_path()
 
+    warnings.filterwarnings(
+        "ignore",
+        message=r"The pynvml package is deprecated\..*",
+        category=FutureWarning,
+    )
+
     from dlhub.vision.detection_zoo import build_local_model, list_local_arches
 
     args = parse_args()
 
-    if not args.list and args.smoke is None:
+    if not args.list and not args.timeline and args.smoke is None:
         print("Nothing to do. Try one of:")
         print("- python scripts/detection_zoo.py --list")
+        print("- python scripts/detection_zoo.py --timeline")
         print("- python scripts/detection_zoo.py --smoke dldet:ssd_tiny")
         return 2
 
     arches = list_local_arches()
-    if args.search:
-        needle = str(args.search).lower()
+    needle = str(args.search).lower() if args.search else None
+    if needle:
         arches = [a for a in arches if needle in a.lower()]
 
     if args.list:
@@ -84,6 +94,64 @@ def main() -> int:
         print(f"- total_arches={len(arches)}")
         print("")
         _print_lines(arches, limit=int(args.limit))
+
+    if args.timeline:
+        from dlhub.vision.detection._timeline import (
+            ARCHIVE_END_YEAR,
+            ARCHIVE_START_YEAR,
+            entries,
+            example_arch_id,
+            family_series_label,
+        )
+
+        archive_entries = entries()
+        if needle:
+            archive_entries = [
+                entry
+                for entry in archive_entries
+                if needle in entry.family.lower()
+                or needle in entry.method.lower()
+                or needle in entry.group.lower()
+                or needle in family_series_label(entry.family).lower()
+            ]
+
+        timeline = sorted(
+            archive_entries,
+            key=lambda entry: (
+                9999 if entry.year is None else int(entry.year),
+                entry.group,
+                entry.family,
+            ),
+        )
+
+        print("Detection timeline (best-effort)")
+        print(f"- total_families={len(timeline)}")
+        print(f"- total_arches={len(arches)}")
+
+        by_year: dict[int | str, list] = {}
+        for entry in timeline:
+            key: int | str = "unknown" if entry.year is None else int(entry.year)
+            by_year.setdefault(key, []).append(entry)
+
+        for year in range(ARCHIVE_START_YEAR, ARCHIVE_END_YEAR + 1):
+            print("")
+            print(year)
+            year_entries = by_year.get(year, [])
+            if not year_entries:
+                print("- no archived family metadata yet")
+                continue
+            for entry in year_entries:
+                series = family_series_label(entry.family)
+                example = example_arch_id(entry.family)
+                print(f"- {entry.family} [{entry.group}] {{{series}}}: {entry.method} -> {example}")
+
+        if by_year.get("unknown"):
+            print("")
+            print("unknown")
+            for entry in by_year["unknown"]:
+                series = family_series_label(entry.family)
+                example = example_arch_id(entry.family)
+                print(f"- {entry.family} [{entry.group}] {{{series}}}: {entry.method} -> {example}")
 
     if args.smoke is not None:
         arch_id = str(args.smoke).strip()
@@ -112,4 +180,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

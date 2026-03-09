@@ -61,6 +61,17 @@ def _sum_tensor_means(x):
         ("build_mask_rcnn_detector", {"in_channels": 3, "num_classes": 2, "variant": "mask_rcnn_tiny", "width_mult": 0.5}),
         ("build_cascade_rcnn_detector", {"in_channels": 3, "num_classes": 2, "variant": "cascade_rcnn_tiny", "width_mult": 0.5}),
         ("build_rfcn_detector", {"in_channels": 3, "num_classes": 2, "variant": "rfcn_tiny", "width_mult": 0.5}),
+        # 50-family archive expansion representatives.
+        ("build_overfeat_detector", {"in_channels": 3, "num_classes": 2, "variant": "overfeat_tiny", "width_mult": 0.5}),
+        ("build_yolov7_detector", {"in_channels": 3, "num_classes": 2, "variant": "yolov7_tiny", "width_mult": 0.5}),
+        ("build_rcnn_detector", {"in_channels": 3, "num_classes": 2, "variant": "rcnn_tiny", "width_mult": 0.5}),
+        ("build_grid_rcnn_detector", {"in_channels": 3, "num_classes": 2, "variant": "grid_rcnn_tiny", "width_mult": 0.5}),
+        ("build_densebox_detector", {"in_channels": 3, "num_classes": 2, "variant": "densebox_tiny", "width_mult": 0.5}),
+        ("build_centernet2_detector", {"in_channels": 3, "num_classes": 2, "variant": "centernet2_tiny", "width_mult": 0.5}),
+        ("build_anchor_detr_detector", {"in_channels": 3, "num_classes": 2, "variant": "anchor_detr_tiny", "width_mult": 0.5}),
+        ("build_co_detr_detector", {"in_channels": 3, "num_classes": 2, "variant": "co_detr_tiny", "width_mult": 0.5}),
+        ("build_glip_detector", {"in_channels": 3, "num_classes": 2, "variant": "glip_tiny", "width_mult": 0.5}),
+        ("build_yolo_world_detector", {"in_channels": 3, "num_classes": 2, "variant": "yolo_world_tiny", "width_mult": 0.5}),
     ],
 )
 def test_detection_algorithms_forward_backward_smoke(builder_name: str, kwargs: dict) -> None:
