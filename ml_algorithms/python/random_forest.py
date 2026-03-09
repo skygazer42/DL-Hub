@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
-from decision_tree import DecisionTreeClassifier, DecisionTreeRegressor
+from .decision_tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 
 @dataclass

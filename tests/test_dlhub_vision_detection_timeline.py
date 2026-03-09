@@ -11,7 +11,7 @@ def test_detection_timeline_metadata_covers_archive() -> None:
     from dlhub.vision.detection._timeline import by_family, entries
 
     timeline = entries()
-    assert len(timeline) >= 92
+    assert len(timeline) >= 101
 
     groups = {entry.group for entry in timeline}
     assert groups == {
@@ -29,6 +29,12 @@ def test_detection_timeline_metadata_covers_archive() -> None:
     assert mapping["centernet2"].group == "keypoint_anchor_free"
     assert mapping["co_detr"].group == "transformer_query"
     assert mapping["glip"].group == "open_vocabulary_multimodal"
+    assert mapping["yolo11"].year == 2024
+    assert mapping["d_fine"].group == "transformer_query"
+    assert mapping["ovlw_detr"].group == "open_vocabulary_multimodal"
+    assert mapping["rtgen"].year == 2025
+    assert mapping["sa_detr"].group == "transformer_query"
+    assert mapping["yolo26"].year == 2026
     assert mapping["yolo_world"].year >= 2024
 
 
@@ -44,7 +50,9 @@ def test_detection_zoo_script_timeline() -> None:
     assert "Detection timeline" in proc.stdout
     assert "total_families=" in proc.stdout
     assert "\n2014\n" in proc.stdout
+    assert "\n2026\n" in proc.stdout
     assert "rcnn [two_stage]" in proc.stdout
     assert "yolov4 [single_stage]" in proc.stdout
     assert "co_detr [transformer_query]" in proc.stdout
     assert "glip [open_vocabulary_multimodal]" in proc.stdout
+    assert "yolo26 [single_stage]" in proc.stdout

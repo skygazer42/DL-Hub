@@ -15,7 +15,7 @@
 
 <br/>
 
-<code>58 Lessons</code> · <code>7 Learning Tracks</code> · <code>13 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>40+ Tests</code>
+<code>58 Lessons</code> · <code>7 Learning Tracks</code> · <code>13 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>650+ Tests</code>
 
 <br/>
 
@@ -50,7 +50,7 @@
 <td align="center" width="20%">
 <br/>
 <b>Point Cloud</b><br/>
-<sub>从 PointNet 到 PCT，<br/>64 架构 · 3D 点云分类 / 分割 / 重建</sub>
+<sub>从 PointNet 到 PCT，<br/>64 架构 · 分类 / 部件分割 / 重建 / 15 种自监督</sub>
 </td>
 <td align="center" width="20%">
 <br/>
@@ -384,6 +384,31 @@ python scripts/vision_zoo.py --search convnext
 # 冒烟测试
 python scripts/vision_zoo.py --smoke resnet50
 ```
+
+#### Fine-Grained Recognition (FGVC) Local Zoo
+
+> 细粒度视觉识别（FGVC）模型族补充：Bilinear / Part-based / Transformer / Prompt / CLIP / MLLM reasoning（toy-first, no downloads）
+
+```bash
+python scripts/fine_grained_recognition_zoo.py --list
+python scripts/fine_grained_recognition_zoo.py --search transfg
+python scripts/fine_grained_recognition_zoo.py --smoke dlfgvc:fine_r1_tiny
+```
+
+> 时间线与方法说明见 `dlhub/vision/fine_grained_recognition/README.md`
+
+#### Action Recognition (Video + Skeleton) Local Zoo
+
+> 行为识别（动作识别）模型族补充：Video (NCTHW) + Skeleton (NCTV)，toy-first, no downloads
+
+```bash
+python scripts/action_recognition_zoo.py --list
+python scripts/action_recognition_zoo.py --search stgcn
+python scripts/action_recognition_zoo.py --smoke dlactv:c3d_tiny
+python scripts/action_recognition_zoo.py --smoke dlacts:stgcn_tiny
+```
+
+> 时间线与方法说明见 `dlhub/vision/action_recognition/README.md`
 
 <details>
 <summary><b>主要架构分类</b></summary>

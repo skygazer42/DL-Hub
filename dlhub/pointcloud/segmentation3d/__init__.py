@@ -8,7 +8,6 @@ This package uses **lazy imports** so `import dlhub.pointcloud.segmentation3d` s
 even as the zoo grows.
 """
 
-from __future__ import annotations
 
 from importlib import import_module
 from typing import Any

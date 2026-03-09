@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 from dataclasses import dataclass
 
@@ -7,6 +6,8 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset, Subset
 
 from dlhub.data.splits import train_val_split_indices
+
+from .noise_types import SUPPORTED_NOISE_TYPES
 
 
 @dataclass(frozen=True)
@@ -20,7 +21,7 @@ class DataConfig:
 
     in_channels: int = 1
     # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
-    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | clustered_impulse | shot_read | speckle | speckle_read | stripe | block_bias | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
+    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | clustered_impulse | shot_read | speckle | speckle_read | stripe | rain | block_bias | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
     noise_std: float = 0.1  # Gaussian std in [0,1] scale
     noise_std_min: float = 0.05  # used when noise_type=gaussian_var
     noise_std_max: float = 0.2  # used when noise_type=gaussian_var
@@ -34,6 +35,14 @@ class DataConfig:
     stripe_amplitude: float = 0.12  # Stripe noise amplitude (used when noise-type=stripe)
     stripe_period: int = 8  # Stripe spatial period in pixels (used when noise-type=stripe)
     stripe_direction: str = "vertical"  # vertical | horizontal | random
+    rain_count: int = 40  # used when noise_type=rain (number of rain streaks)
+    rain_length_min: int = 10  # used when noise_type=rain (min streak length in px)
+    rain_length_max: int = 24  # used when noise_type=rain (max streak length in px)
+    rain_width: int = 1  # used when noise_type=rain (streak thickness in px)
+    rain_intensity_min: float = 0.06  # used when noise_type=rain (min additive intensity per streak)
+    rain_intensity_max: float = 0.16  # used when noise_type=rain (max additive intensity per streak)
+    rain_angle_deg: float = 75.0  # used when noise_type=rain (0=→, 90=↓)
+    rain_angle_jitter_deg: float = 15.0  # used when noise_type=rain
     block_size: int = 8  # used when noise_type=block_bias (block side length in pixels)
     block_std: float = 0.05  # used when noise_type=block_bias (bias std in [0,1] scale)
     color_rho: float = 0.5  # used when noise_type=colored_gaussian (cross-channel correlation)
@@ -322,6 +331,75 @@ class ToyDenoisingSquares(Dataset):
                 stripe = stripe.repeat(c, 1, 1)
             return (clean + amp * stripe).clamp(0.0, 1.0)
 
+        if noise_type in {"rain", "derain", "rain_streak", "rain_streaks"}:
+            import math
+
+            count = int(cfg.rain_count)
+            if count < 0:
+                raise ValueError("rain_count must be >= 0")
+            if count == 0:
+                return clean
+
+            lmin = int(cfg.rain_length_min)
+            lmax = int(cfg.rain_length_max)
+            if lmin < 1 or lmax < lmin:
+                raise ValueError("rain_length_min/max must satisfy 1 <= min <= max")
+
+            width = int(cfg.rain_width)
+            if width < 1:
+                raise ValueError("rain_width must be >= 1")
+
+            imin = float(cfg.rain_intensity_min)
+            imax = float(cfg.rain_intensity_max)
+            if imin < 0.0 or imax < 0.0 or imax < imin:
+                raise ValueError("rain_intensity_min/max must satisfy 0 <= min <= max")
+            if imax == 0.0:
+                return clean
+
+            angle = float(cfg.rain_angle_deg)
+            jitter = float(cfg.rain_angle_jitter_deg)
+            if not (0.0 <= angle <= 180.0):
+                raise ValueError("rain_angle_deg must be in [0, 180] (0=→, 90=↓)")
+            if jitter < 0.0:
+                raise ValueError("rain_angle_jitter_deg must be >= 0")
+
+            g = self._generator(idx, stream=stream, salt=24)
+            xs = torch.randint(0, w, (count,), generator=g, dtype=torch.long)
+            ys = torch.randint(0, h, (count,), generator=g, dtype=torch.long)
+            lens = torch.randint(lmin, lmax + 1, (count,), generator=g, dtype=torch.long)
+            intens = imin + torch.rand((count,), generator=g, dtype=torch.float32) * (imax - imin)
+            ang = angle + (torch.rand((count,), generator=g, dtype=torch.float32) * 2.0 - 1.0) * jitter
+            rad = ang * (math.pi / 180.0)
+
+            dxs = torch.cos(rad).tolist()
+            dys = torch.sin(rad).tolist()
+
+            rain = torch.zeros((1, h, w), dtype=torch.float32)
+            hw = width // 2
+            for i in range(count):
+                x0 = int(xs[i].item())
+                y0 = int(ys[i].item())
+                L = int(lens[i].item())
+                dx = float(dxs[i])
+                dy = float(dys[i])
+                val = float(intens[i].item())
+                if val <= 0.0:
+                    continue
+                for t in range(L):
+                    x = int(round(x0 + float(t) * dx))
+                    y = int(round(y0 + float(t) * dy))
+                    if x < 0 or x >= w or y < 0 or y >= h:
+                        continue
+                    x1 = max(0, x - hw)
+                    x2 = min(w, x + hw + 1)
+                    y1 = max(0, y - hw)
+                    y2 = min(h, y + hw + 1)
+                    rain[:, y1:y2, x1:x2] += val
+
+            if c != 1:
+                rain = rain.repeat(c, 1, 1)
+            return (clean + rain.clamp(0.0, 1.0)).clamp(0.0, 1.0)
+
         if noise_type in {"correlated_gaussian", "gaussian_correlated", "gauss_corr"}:
             g = self._generator(idx, stream=stream, salt=12)
             noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(cfg.noise_std)
@@ -483,7 +561,7 @@ class ToyDenoisingSquares(Dataset):
             return out.clamp(0.0, 1.0)
 
         raise ValueError(
-            f"Unknown noise_type: {cfg.noise_type!r}. Supported: gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | shot_read | speckle | speckle_read | stripe | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed"
+            f"Unknown noise_type: {cfg.noise_type!r}. Supported: {' | '.join(SUPPORTED_NOISE_TYPES)}"
         )
 
     def _blindspot_mask(self, idx: int) -> torch.Tensor:

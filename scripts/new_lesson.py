@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
@@ -52,7 +51,6 @@ def main() -> int:
     )
     write_file(
         lesson_dir / "model.py",
-        "from __future__ import annotations\n\n"
         "import torch\n"
         "import torch.nn as nn\n\n\n"
         "class Model(nn.Module):\n"
@@ -64,7 +62,6 @@ def main() -> int:
     )
     write_file(
         lesson_dir / "data.py",
-        "from __future__ import annotations\n\n"
         "from dataclasses import dataclass\n\n"
         "from torch.utils.data import DataLoader\n\n\n"
         "@dataclass(frozen=True)\n"
@@ -77,7 +74,6 @@ def main() -> int:
     )
     write_file(
         lesson_dir / "train.py",
-        "from __future__ import annotations\n\n"
         "import argparse\n\n\n"
         "def main() -> int:\n"
         "    if __package__ is None:\n"

@@ -19,6 +19,7 @@ torch = pytest.importorskip("torch")
         ("speckle_read", {"speckle_std": 0.15, "read_noise": 0.02}),
         ("stripe", {"stripe_amplitude": 0.12, "stripe_period": 8}),
         ("stripe", {"stripe_amplitude": 0.12, "stripe_period": 8, "stripe_direction": "random"}),
+        ("rain", {"rain_count": 24, "rain_length_min": 8, "rain_length_max": 18, "rain_intensity_min": 0.05, "rain_intensity_max": 0.14}),
         ("block_bias", {"block_size": 8, "block_std": 0.05}),
         ("correlated_gaussian", {}),
         ("quantization", {"quant_bits": 6, "quant_dither": False}),
@@ -94,6 +95,9 @@ def test_vision_denoising_supervised_forward_loss_backward_smoke() -> None:
         "mwcnn:mwcnn_tiny",
         "hinet:hinet_tiny",
         "ircnn:ircnn_tiny",
+        "jorder:jorder_tiny",
+        "rescan:rescan_tiny",
+        "prenet:prenet_tiny",
         "nlrn:nlrn_tiny",
         "scunet:scunet_tiny",
         "convnext_unet:convnext_unet_tiny",
@@ -331,3 +335,325 @@ def test_vision_denoising_defect_baselines_reduce_error_smoke() -> None:
     model = build_model(ModelConfig(arch="debanding_filter:deband_tiny", variant="", in_channels=1, sigma=0.1))
     out5 = model(noisy5)
     assert (out5 - ramp).abs().mean().item() < (noisy5 - ramp).abs().mean().item()
+
+
+def test_vision_denoising_train_parse_args_wires_clustered_impulse_params(monkeypatch: pytest.MonkeyPatch) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "prog",
+            "--noise-type",
+            "clustered_impulse",
+            "--cluster-prob",
+            "0.123",
+            "--cluster-size",
+            "7",
+        ],
+    )
+    _, data_cfg = parse_args()
+    assert data_cfg.noise_type == "clustered_impulse"
+    assert data_cfg.cluster_prob == pytest.approx(0.123)
+    assert data_cfg.cluster_size == 7
+
+
+def test_vision_denoising_train_parse_args_wires_block_bias_params(monkeypatch: pytest.MonkeyPatch) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "prog",
+            "--noise-type",
+            "block_bias",
+            "--block-size",
+            "4",
+            "--block-std",
+            "0.07",
+        ],
+    )
+    _, data_cfg = parse_args()
+    assert data_cfg.noise_type == "block_bias"
+    assert data_cfg.block_size == 4
+    assert data_cfg.block_std == pytest.approx(0.07)
+
+
+def test_vision_denoising_train_parse_args_wires_rain_params(monkeypatch: pytest.MonkeyPatch) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "prog",
+            "--noise-type",
+            "rain",
+            "--rain-count",
+            "12",
+            "--rain-length-min",
+            "6",
+            "--rain-length-max",
+            "14",
+            "--rain-intensity-min",
+            "0.04",
+            "--rain-intensity-max",
+            "0.12",
+            "--rain-angle-deg",
+            "80",
+            "--rain-angle-jitter-deg",
+            "8",
+        ],
+    )
+    _, data_cfg = parse_args()
+    assert data_cfg.noise_type == "rain"
+    assert data_cfg.rain_count == 12
+    assert data_cfg.rain_length_min == 6
+    assert data_cfg.rain_length_max == 14
+    assert data_cfg.rain_intensity_min == pytest.approx(0.04)
+    assert data_cfg.rain_intensity_max == pytest.approx(0.12)
+    assert data_cfg.rain_angle_deg == pytest.approx(80.0)
+    assert data_cfg.rain_angle_jitter_deg == pytest.approx(8.0)
+
+
+def test_vision_denoising_train_parse_args_list_noise_types(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-noise-types"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 0
+    out = capsys.readouterr().out.strip().splitlines()
+    assert "gaussian" in out
+    assert "mixed" in out
+    assert len(out) >= 19
+
+
+def test_vision_denoising_train_parse_args_list_arch_families(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-arch-families"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 0
+    out = capsys.readouterr().out.strip().splitlines()
+    assert "dncnn" in out
+    assert "bm3d" in out
+    assert "jorder" in out
+    assert "rescan" in out
+    assert "prenet" in out
+    assert len(out) >= 10
+
+
+def test_vision_denoising_train_parse_args_list_arch_filters_by_family(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-arch", "--arch-family", "dncnn"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 0
+    out = [ln.strip() for ln in capsys.readouterr().out.splitlines() if ln.strip()]
+    assert any(ln.startswith("dncnn:") for ln in out)
+    assert all(ln.startswith("dncnn:") for ln in out)
+
+
+def test_vision_denoising_train_parse_args_list_arch_filters_by_match(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-arch", "--arch-match", "tiny"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 0
+    out = [ln.strip() for ln in capsys.readouterr().out.splitlines() if ln.strip()]
+    assert any(ln == "dncnn:dncnn_tiny" for ln in out)
+    assert all("tiny" in ln for ln in out)
+
+
+def test_vision_denoising_train_parse_args_list_arch_respects_list_limit(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-arch", "--arch-family", "dncnn", "--list-limit", "2"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 0
+    out = [ln.strip() for ln in capsys.readouterr().out.splitlines() if ln.strip()]
+    assert len(out) == 2
+    assert all(ln.startswith("dncnn:") for ln in out)
+
+
+def test_vision_denoising_train_parse_args_arch_family_requires_list_arch(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--arch-family", "dncnn"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 2
+    assert "--arch-family" in capsys.readouterr().err
+
+
+def test_vision_denoising_train_parse_args_arch_match_requires_list_arch(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--arch-match", "tiny"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 2
+    assert "--arch-match" in capsys.readouterr().err
+
+
+def test_vision_denoising_train_parse_args_list_limit_requires_list_flag(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-limit", "3"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 2
+    assert "--list-limit" in capsys.readouterr().err
+
+
+def test_vision_denoising_train_parse_args_list_noise_types_sorts_alpha(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-noise-types", "--list-sort", "alpha"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 0
+    out = [ln.strip() for ln in capsys.readouterr().out.splitlines() if ln.strip()]
+    assert out == sorted(out)
+
+
+def test_vision_denoising_train_parse_args_list_sort_requires_list_flag(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-sort", "alpha"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 2
+    assert "--list-sort" in capsys.readouterr().err
+
+
+def test_vision_denoising_train_parse_args_print_config_json(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
+    import json
+    import sys
+
+    from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--print-config", "--epochs", "3", "--noise-type", "gaussian"])
+
+    with pytest.raises(SystemExit) as exc:
+        parse_args()
+
+    assert exc.value.code == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["train"]["epochs"] == 3
+    assert payload["data"]["noise_type"] == "gaussian"
+
+
+def test_vision_denoising_cli_list_noise_types_does_not_print_pynvml_warning() -> None:
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    repo_root = Path(__file__).resolve().parents[1]
+    proc = subprocess.run(
+        [sys.executable, "-m", "tracks.vision.lesson_10_synthetic_denoising.train", "--list-noise-types"],
+        cwd=str(repo_root),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0
+    assert "pynvml package is deprecated" not in proc.stderr
+
+
+def test_vision_denoising_cli_print_config_does_not_print_pynvml_warning_and_is_json() -> None:
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    repo_root = Path(__file__).resolve().parents[1]
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "tracks.vision.lesson_10_synthetic_denoising.train",
+            "--print-config",
+            "--epochs",
+            "1",
+            "--noise-type",
+            "gaussian",
+        ],
+        cwd=str(repo_root),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0
+    assert "pynvml package is deprecated" not in proc.stderr
+    payload = json.loads(proc.stdout)
+    assert payload["train"]["epochs"] == 1

@@ -7,7 +7,6 @@ Conventions:
 This package uses **lazy imports** so `import dlhub.vision.detection` stays lightweight even as the zoo grows.
 """
 
-from __future__ import annotations
 
 from importlib import import_module
 from typing import Any

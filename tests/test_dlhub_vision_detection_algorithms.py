@@ -72,6 +72,15 @@ def _sum_tensor_means(x):
         ("build_co_detr_detector", {"in_channels": 3, "num_classes": 2, "variant": "co_detr_tiny", "width_mult": 0.5}),
         ("build_glip_detector", {"in_channels": 3, "num_classes": 2, "variant": "glip_tiny", "width_mult": 0.5}),
         ("build_yolo_world_detector", {"in_channels": 3, "num_classes": 2, "variant": "yolo_world_tiny", "width_mult": 0.5}),
+        # Recent archive expansion representatives.
+        ("build_yolo11_detector", {"in_channels": 3, "num_classes": 2, "variant": "yolo11_tiny", "width_mult": 0.5}),
+        ("build_yolo13_detector", {"in_channels": 3, "num_classes": 2, "variant": "yolo13_tiny", "width_mult": 0.5}),
+        ("build_d_fine_detector", {"in_channels": 3, "num_classes": 2, "variant": "d_fine_tiny", "width_mult": 0.5}),
+        ("build_lw_detr_detector", {"in_channels": 3, "num_classes": 2, "variant": "lw_detr_tiny", "width_mult": 0.5}),
+        ("build_ovlw_detr_detector", {"in_channels": 3, "num_classes": 2, "variant": "ovlw_detr_tiny", "width_mult": 0.5}),
+        ("build_rtgen_detector", {"in_channels": 3, "num_classes": 2, "variant": "rtgen_tiny", "width_mult": 0.5}),
+        ("build_sa_detr_detector", {"in_channels": 3, "num_classes": 2, "variant": "sa_detr_tiny", "width_mult": 0.5}),
+        ("build_yolo26_detector", {"in_channels": 3, "num_classes": 2, "variant": "yolo26_tiny", "width_mult": 0.5}),
     ],
 )
 def test_detection_algorithms_forward_backward_smoke(builder_name: str, kwargs: dict) -> None:

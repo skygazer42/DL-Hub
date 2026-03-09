@@ -7,7 +7,6 @@ Conventions:
 This package uses **lazy imports** so `import dlhub.pointcloud.instance_segmentation3d` stays lightweight.
 """
 
-from __future__ import annotations
 
 from importlib import import_module
 from typing import Any

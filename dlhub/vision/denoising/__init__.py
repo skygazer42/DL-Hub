@@ -34,6 +34,7 @@ from .gated_pixelcnn_bsn import GatedPixelCNNBSN, build_gated_pixelcnn_bsn_denoi
 from .guided_filter import GuidedFilter, build_guided_filter_denoiser
 from .hinet import HINet, build_hinet_denoiser
 from .ircnn import IRCNN, build_ircnn_denoiser
+from .jorder import JORDER, build_jorder_denoiser
 from .kuan_filter import KuanFilter, build_kuan_filter_denoiser
 from .lee_filter import LeeFilter, build_lee_filter_denoiser
 from .line_defect_corrector import LineDefectCorrector, build_line_defect_corrector_denoiser
@@ -47,12 +48,14 @@ from .nlrn import NLRN, build_nlrn_denoiser
 from .non_local_means import NonLocalMeans, build_non_local_means_denoiser
 from .noise2noise import Noise2NoiseUNet, build_noise2noise_denoiser
 from .pixelcnn_bsn import PixelCNNBSN, build_pixelcnn_bsn_denoiser
+from .prenet import PReNet, build_prenet_denoiser
 from .pridnet import PRIDNet, build_pridnet_denoiser
 from .r2unet import R2UNet, build_r2unet_denoiser
 from .rcan import RCAN, build_rcan_denoiser
 from .rdn import RDN, build_rdn_denoiser
 from .rednet import REDNet, build_rednet_denoiser
 from .resunet import ResUNet, build_resunet_denoiser
+from .rescan import RESCAN, build_rescan_denoiser
 from .restormer import Restormer, build_restormer_denoiser
 from .ridnet import RIDNetDenoiser, build_ridnet_denoiser
 from .rrdbnet import RRDBNet, build_rrdbnet_denoiser
@@ -99,6 +102,7 @@ __all__ = [
     "GuidedFilter",
     "HINet",
     "IRCNN",
+    "JORDER",
     "KuanFilter",
     "LeeFilter",
     "LineDefectCorrector",
@@ -112,12 +116,14 @@ __all__ = [
     "NonLocalMeans",
     "Noise2NoiseUNet",
     "PixelCNNBSN",
+    "PReNet",
     "PRIDNet",
     "R2UNet",
     "RCAN",
     "RDN",
     "REDNet",
     "ResUNet",
+    "RESCAN",
     "Restormer",
     "RIDNetDenoiser",
     "RRDBNet",
@@ -160,6 +166,7 @@ __all__ = [
     "build_guided_filter_denoiser",
     "build_hinet_denoiser",
     "build_ircnn_denoiser",
+    "build_jorder_denoiser",
     "build_kuan_filter_denoiser",
     "build_lee_filter_denoiser",
     "build_line_defect_corrector_denoiser",
@@ -173,12 +180,14 @@ __all__ = [
     "build_non_local_means_denoiser",
     "build_noise2noise_denoiser",
     "build_pixelcnn_bsn_denoiser",
+    "build_prenet_denoiser",
     "build_pridnet_denoiser",
     "build_r2unet_denoiser",
     "build_rcan_denoiser",
     "build_rdn_denoiser",
     "build_rednet_denoiser",
     "build_resunet_denoiser",
+    "build_rescan_denoiser",
     "build_restormer_denoiser",
     "build_ridnet_denoiser",
     "build_rrdbnet_denoiser",

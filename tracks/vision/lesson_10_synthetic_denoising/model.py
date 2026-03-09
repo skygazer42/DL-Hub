@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 from dataclasses import dataclass
 
@@ -8,7 +7,7 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | median_filter | wiener_filter | guided_filter | bilateral_filter | non_local_means | total_variation | anisotropic_diffusion | wavelet_shrinkage | anscombe_wiener | lee_filter | kuan_filter | stripe_remover | dead_hot_pixel_corrector | line_defect_corrector | rowcol_bias_corrector | block_bias_corrector | debanding_filter | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | jorder | rescan | prenet | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | median_filter | wiener_filter | guided_filter | bilateral_filter | non_local_means | total_variation | anisotropic_diffusion | wavelet_shrinkage | anscombe_wiener | lee_filter | kuan_filter | stripe_remover | dead_hot_pixel_corrector | line_defect_corrector | rowcol_bias_corrector | block_bias_corrector | debanding_filter | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -44,6 +43,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.guided_filter import _VARIANTS as guided_filter_variants
     from dlhub.vision.denoising.hinet import _VARIANTS as hinet_variants
     from dlhub.vision.denoising.ircnn import _VARIANTS as ircnn_variants
+    from dlhub.vision.denoising.jorder import _VARIANTS as jorder_variants
     from dlhub.vision.denoising.kuan_filter import _VARIANTS as kuan_filter_variants
     from dlhub.vision.denoising.lee_filter import _VARIANTS as lee_filter_variants
     from dlhub.vision.denoising.line_defect_corrector import _VARIANTS as line_defect_corrector_variants
@@ -57,12 +57,14 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.non_local_means import _VARIANTS as non_local_means_variants
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
     from dlhub.vision.denoising.pixelcnn_bsn import _VARIANTS as pixelcnn_bsn_variants
+    from dlhub.vision.denoising.prenet import _VARIANTS as prenet_variants
     from dlhub.vision.denoising.pridnet import _VARIANTS as pridnet_variants
     from dlhub.vision.denoising.r2unet import _VARIANTS as r2unet_variants
     from dlhub.vision.denoising.rcan import _VARIANTS as rcan_variants
     from dlhub.vision.denoising.rdn import _VARIANTS as rdn_variants
     from dlhub.vision.denoising.rednet import _VARIANTS as rednet_variants
     from dlhub.vision.denoising.resunet import _VARIANTS as resunet_variants
+    from dlhub.vision.denoising.rescan import _VARIANTS as rescan_variants
     from dlhub.vision.denoising.restormer import _VARIANTS as restormer_variants
     from dlhub.vision.denoising.ridnet import _VARIANTS as ridnet_variants
     from dlhub.vision.denoising.rrdbnet import _VARIANTS as rrdbnet_variants
@@ -92,6 +94,9 @@ def list_supported_arches() -> list[str]:
     out.extend([f"mwcnn:{k}" for k in sorted(mwcnn_variants)])
     out.extend([f"hinet:{k}" for k in sorted(hinet_variants)])
     out.extend([f"ircnn:{k}" for k in sorted(ircnn_variants)])
+    out.extend([f"jorder:{k}" for k in sorted(jorder_variants)])
+    out.extend([f"rescan:{k}" for k in sorted(rescan_variants)])
+    out.extend([f"prenet:{k}" for k in sorted(prenet_variants)])
     out.extend([f"nlrn:{k}" for k in sorted(nlrn_variants)])
     out.extend([f"scunet:{k}" for k in sorted(scunet_variants)])
     out.extend([f"convnext_unet:{k}" for k in sorted(convnext_unet_variants)])
@@ -224,6 +229,21 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.ircnn import build_ircnn_denoiser
 
         return build_ircnn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"jorder"}:
+        from dlhub.vision.denoising.jorder import build_jorder_denoiser
+
+        return build_jorder_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"rescan"}:
+        from dlhub.vision.denoising.rescan import build_rescan_denoiser
+
+        return build_rescan_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"prenet", "pre_net"}:
+        from dlhub.vision.denoising.prenet import build_prenet_denoiser
+
+        return build_prenet_denoiser(in_channels=in_channels, variant=variant)
 
     if arch in {"nlrn"}:
         from dlhub.vision.denoising.nlrn import build_nlrn_denoiser

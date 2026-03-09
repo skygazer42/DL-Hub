@@ -1,4 +1,3 @@
-from __future__ import annotations
 
 from ..toy_graphs import DataConfig, get_dataloaders
 
