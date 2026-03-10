@@ -16,3 +16,4 @@
 - `lesson_10_synthetic_denoising/`：图像去噪（BM3D / DnCNN / Restormer / Noise2Noise / NAFNet / SwinIR / RIDNet / FFDNet / DRUNet，toy 合成数据，回归闭环）
 - `lesson_11_synthetic_instance_segmentation_yolact/`：实例分割（YOLACT-style：prototypes + coefficients，toy 合成数据）
 - `lesson_12_synthetic_detection_yolo/`：合成目标检测（YOLOv1-style，grid/objectness + bbox，纯 torch）
+- `lesson_13_synthetic_pedestrian_detection_fcos/`：合成行人检测（FCOS-style，anchor-free，纯 torch + local zoo `dldet:pedestrian_fcos`）
