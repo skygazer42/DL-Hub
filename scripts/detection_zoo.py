@@ -61,12 +61,28 @@ def parse_args() -> argparse.Namespace:
         help="Print a best-effort detection family timeline (by year).",
     )
 
-    parser.add_argument(
+    smoke_group = parser.add_mutually_exclusive_group()
+    smoke_group.add_argument(
         "--smoke",
         type=str,
         default=None,
         metavar="ARCH_ID",
-        help="Run a forward smoke on an arch id.",
+        help="Run a smoke on a single arch id.",
+    )
+    smoke_group.add_argument(
+        "--smoke-all",
+        action="store_true",
+        help="Smoke all arches (optionally filtered by --search).",
+    )
+    parser.add_argument(
+        "--backward",
+        action="store_true",
+        help="Also run loss.backward() to validate gradient flow during smoke.",
+    )
+    parser.add_argument(
+        "--keep-going",
+        action="store_true",
+        help="When used with --smoke-all, continue after failures and return non-zero if any fail.",
     )
     parser.add_argument("--batch-size", type=int, default=2, help="Batch size for smoke inputs.")
     parser.add_argument("--image-size", type=int, default=64, help="Image size for smoke inputs.")
@@ -94,11 +110,12 @@ def main() -> int:
 
     args = parse_args()
 
-    if not args.list and not args.timeline and args.smoke is None:
+    if not args.list and not args.timeline and args.smoke is None and not args.smoke_all:
         print("Nothing to do. Try one of:")
         print("- python scripts/detection_zoo.py --list")
         print("- python scripts/detection_zoo.py --timeline")
         print("- python scripts/detection_zoo.py --smoke dldet:ssd_tiny")
+        print("- python scripts/detection_zoo.py --smoke-all --search pedestrian")
         return 2
 
     arches = list_local_arches()
@@ -170,8 +187,19 @@ def main() -> int:
                 example = example_arch_id(entry.family)
                 print(f"- {entry.family} [{entry.group}] {{{series}}}: {entry.method} -> {example}")
 
-    if args.smoke is not None:
-        arch_id = str(args.smoke).strip()
+    def _sum_output_means(x):
+        import torch
+
+        if isinstance(x, torch.Tensor):
+            return x.to(torch.float32).mean()
+        if isinstance(x, dict):
+            return sum((_sum_output_means(v) for v in x.values()), start=torch.tensor(0.0))
+        if isinstance(x, list | tuple):
+            return sum((_sum_output_means(v) for v in x), start=torch.tensor(0.0))
+        raise TypeError(f"Unsupported smoke output type: {type(x)!r}")
+
+    def _run_smoke(arch: str) -> None:
+        arch_id = str(arch).strip()
         if ":" not in arch_id:
             arch_id = f"dldet:{arch_id}"
 
@@ -187,12 +215,50 @@ def main() -> int:
             width_mult=float(args.width_mult),
         )
         model.eval()
-        with torch.no_grad():
+
+        if args.backward:
+            model.zero_grad(set_to_none=True)
             out = model(x)
+            loss = _sum_output_means(out)
+            if not torch.isfinite(loss):
+                raise RuntimeError(f"Non-finite smoke loss for {arch_id}: {loss}")
+            loss.backward()
+        else:
+            with torch.no_grad():
+                out = model(x)
 
         print("")
         print(f"smoke: {arch_id}")
         print(f"- output={_summarize(out)}")
+        if args.backward:
+            print("- backward=ok")
+
+    if args.smoke is not None:
+        _run_smoke(args.smoke)
+
+    if args.smoke_all:
+        failures: list[tuple[str, Exception]] = []
+        for arch_id in arches:
+            try:
+                _run_smoke(arch_id)
+            except Exception as exc:
+                failures.append((str(arch_id), exc))
+                print("")
+                print(f"smoke: {arch_id}")
+                print(f"- status=FAIL ({type(exc).__name__}: {exc})")
+                if not args.keep_going:
+                    return 1
+
+        if failures:
+            print("")
+            print(f"smoke-all: FAIL ({len(failures)}/{len(arches)} arches)")
+            for arch_id, exc in failures[:10]:
+                print(f"- {arch_id}: {type(exc).__name__}: {exc}")
+            if len(failures) > 10:
+                print(f"... ({len(failures) - 10} more) ...")
+            return 1
+        print("")
+        print(f"smoke-all: OK ({len(arches)} arches)")
 
     return 0
 
