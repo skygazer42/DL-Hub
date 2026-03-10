@@ -189,6 +189,118 @@ def diou_nms(boxes: torch.Tensor, scores: torch.Tensor, *, threshold: float = 0.
 
     return torch.stack(keep).to(torch.int64)
 
+def nms(boxes: torch.Tensor, scores: torch.Tensor, *, iou_threshold: float = 0.5) -> torch.Tensor:
+    """Standard IoU-based NMS for xyxy boxes.
 
-__all__ = ["diou_nms", "soft_nms"]
+    Args:
+        boxes: (N,4) in xyxy.
+        scores: (N,)
+        iou_threshold: suppress boxes with IoU > iou_threshold.
 
+    Returns:
+        keep_indices: int64 tensor of kept indices (sorted by descending score).
+    """
+
+    boxes, scores = _validate_boxes_scores(boxes, scores)
+    n = int(boxes.shape[0])
+    if n == 0:
+        return torch.empty((0,), device=boxes.device, dtype=torch.int64)
+
+    thr = float(iou_threshold)
+    if not math.isfinite(thr):
+        raise ValueError("iou_threshold must be finite")
+
+    order = scores.argsort(descending=True)
+    keep: list[torch.Tensor] = []
+
+    while int(order.numel()) > 0:
+        i = order[0]
+        keep.append(i)
+        if int(order.numel()) == 1:
+            break
+
+        rest = order[1:]
+        iou = _box_iou_xyxy(boxes[i], boxes[rest])
+        order = rest[iou <= thr]
+
+    return torch.stack(keep).to(torch.int64)
+
+
+def weighted_box_fusion(
+    boxes: torch.Tensor,
+    scores: torch.Tensor,
+    *,
+    iou_threshold: float = 0.55,
+    score_threshold: float = 0.0,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Weighted Box Fusion (WBF) for a single set of xyxy boxes.
+
+    This is a toy-first implementation that clusters boxes by IoU and fuses each cluster by
+    score-weighted averaging of coordinates.
+
+    Args:
+        boxes: (N,4) in xyxy.
+        scores: (N,)
+        iou_threshold: cluster boxes with IoU >= threshold.
+        score_threshold: drop boxes with scores <= threshold before fusion.
+
+    Returns:
+        boxes_fused: (M,4) fused boxes (xyxy).
+        scores_fused: (M,) fused scores (mean of cluster scores).
+    """
+
+    boxes, scores = _validate_boxes_scores(boxes, scores)
+    thr = float(iou_threshold)
+    if not math.isfinite(thr):
+        raise ValueError("iou_threshold must be finite")
+    score_threshold = float(score_threshold)
+
+    if int(boxes.shape[0]) == 0:
+        empty_boxes = torch.empty((0, 4), device=boxes.device, dtype=torch.float32)
+        empty_scores = torch.empty((0,), device=boxes.device, dtype=torch.float32)
+        return empty_boxes, empty_scores
+
+    keep_mask = scores > score_threshold
+    if int(keep_mask.sum().item()) == 0:
+        empty_boxes = torch.empty((0, 4), device=boxes.device, dtype=torch.float32)
+        empty_scores = torch.empty((0,), device=boxes.device, dtype=torch.float32)
+        return empty_boxes, empty_scores
+
+    boxes_work = boxes[keep_mask]
+    scores_work = scores[keep_mask]
+
+    order = scores_work.argsort(descending=True)
+    boxes_work = boxes_work[order]
+    scores_work = scores_work[order]
+
+    fused_boxes: list[torch.Tensor] = []
+    fused_scores: list[torch.Tensor] = []
+
+    remaining = torch.ones((int(scores_work.shape[0]),), device=boxes.device, dtype=torch.bool)
+    while bool(remaining.any().item()):
+        idx = int(torch.nonzero(remaining, as_tuple=False)[0].item())
+        ref_box = boxes_work[idx]
+
+        active = torch.nonzero(remaining, as_tuple=False).squeeze(1)
+        active_boxes = boxes_work[active]
+        ious = _box_iou_xyxy(ref_box, active_boxes)
+
+        cluster_mask = ious >= thr
+        cluster_idx = active[cluster_mask]
+        remaining[cluster_idx] = False
+
+        cluster_boxes = boxes_work[cluster_idx]
+        cluster_scores = scores_work[cluster_idx]
+
+        w = cluster_scores.clamp(min=0.0)
+        denom = w.sum().clamp(min=1e-12)
+        fused = (cluster_boxes * w[:, None]).sum(dim=0) / denom
+        fused_boxes.append(fused)
+        fused_scores.append(cluster_scores.mean())
+
+    boxes_out = torch.stack(fused_boxes, dim=0)
+    scores_out = torch.stack(fused_scores, dim=0)
+    sort = scores_out.argsort(descending=True)
+    return boxes_out[sort], scores_out[sort]
+
+__all__ = ["diou_nms", "nms", "soft_nms", "weighted_box_fusion"]
