@@ -11,4 +11,3 @@ __all__ = [
     "PointNetAutoEncoder",
     "build_pointnet_autoencoder",
 ]
-

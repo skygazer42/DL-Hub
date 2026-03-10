@@ -11,8 +11,8 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -85,8 +85,12 @@ class TwoStreamVideoClassifier(nn.Module):
         dropout: float,
     ) -> None:
         super().__init__()
-        self.rgb = TinyFrameCNN(in_channels=int(in_channels), width=int(width), depth=int(depth), dropout=float(dropout))
-        self.motion = TinyFrameCNN(in_channels=int(in_channels), width=int(width), depth=int(depth), dropout=float(dropout))
+        self.rgb = TinyFrameCNN(
+            in_channels=int(in_channels), width=int(width), depth=int(depth), dropout=float(dropout)
+        )
+        self.motion = TinyFrameCNN(
+            in_channels=int(in_channels), width=int(width), depth=int(depth), dropout=float(dropout)
+        )
         fused = int(self.rgb.out_dim + self.motion.out_dim)
         self.dropout = nn.Dropout(float(dropout))
         self.classifier = nn.Linear(fused, int(num_classes))
@@ -142,10 +146,11 @@ def build_two_stream_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_two_stream_video_classifier(in_channels=3, num_classes=6, variant="two_stream_tiny", width_mult=0.5, dropout=0.0)
+    m = build_two_stream_video_classifier(
+        in_channels=3, num_classes=6, variant="two_stream_tiny", width_mult=0.5, dropout=0.0
+    )
     y = m(x)
     print("two_stream_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

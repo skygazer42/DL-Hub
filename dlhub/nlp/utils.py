@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -109,4 +108,3 @@ __all__ = [
     "masked_mean_pool",
     "sequence_lengths",
 ]
-

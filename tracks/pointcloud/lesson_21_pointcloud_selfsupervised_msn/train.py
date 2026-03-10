@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -41,7 +40,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 21 (PointCloud): self-supervised MSN (toy-first).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 21 (PointCloud): self-supervised MSN (toy-first)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--num-points", type=int, default=128)
@@ -66,7 +67,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="msn_pointmae:msn_pointmae_small",
         help="Supported: msn_pointmae:<variant> (try --list-arch)",
     )
-    parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--list-arch", action="store_true", help="Print supported architectures and exit."
+    )
     parser.add_argument("--dropout", type=float, default=0.0)
     parser.add_argument("--out-dim", type=int, default=None)
 
@@ -162,7 +165,10 @@ def _run_epoch(
             loss.backward()
             optimizer.step()
             model.momentum_update_teacher(ema_decay=float(train_cfg.ema_decay))
-            model.update_center([t1["cls_logits"], t2["cls_logits"]], center_momentum=float(train_cfg.center_momentum))
+            model.update_center(
+                [t1["cls_logits"], t2["cls_logits"]],
+                center_momentum=float(train_cfg.center_momentum),
+            )
 
         bs = int(v1.size(0))
         total += bs
@@ -245,7 +251,10 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             model=model,
             optimizer=optimizer,
             epoch=epoch,
-            extra={"train_cfg": dataclass_to_dict(train_cfg), "data_cfg": dataclass_to_dict(data_cfg)},
+            extra={
+                "train_cfg": dataclass_to_dict(train_cfg),
+                "data_cfg": dataclass_to_dict(data_cfg),
+            },
         )
 
     logger.info("Done. Run dir: %s", paths.run_dir)
@@ -255,4 +264,3 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
 if __name__ == "__main__":
     cfg_train, cfg_data = parse_args()
     raise SystemExit(run_training(cfg_train, cfg_data))
-

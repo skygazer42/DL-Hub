@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -187,4 +186,3 @@ if __name__ == "__main__":
 
 
 __all__ = ["ResCNNTextClassifier", "ResCNNConfig", "build_rescnn_classifier", "registry"]
-

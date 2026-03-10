@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -78,29 +77,101 @@ class GoogLeNetClassifier(nn.Module):
         )
 
         # Inception stack (classic-ish channel sizes, scaled by width_mult).
-        self.inception3a = InceptionModule(stem3, ch1x1=c(64), ch3x3_reduce=c(96), ch3x3=c(128), ch5x5_reduce=c(16), ch5x5=c(32), pool_proj=c(32))
+        self.inception3a = InceptionModule(
+            stem3,
+            ch1x1=c(64),
+            ch3x3_reduce=c(96),
+            ch3x3=c(128),
+            ch5x5_reduce=c(16),
+            ch5x5=c(32),
+            pool_proj=c(32),
+        )
         c3a = c(64) + c(128) + c(32) + c(32)
-        self.inception3b = InceptionModule(c3a, ch1x1=c(128), ch3x3_reduce=c(128), ch3x3=c(192), ch5x5_reduce=c(32), ch5x5=c(96), pool_proj=c(64))
+        self.inception3b = InceptionModule(
+            c3a,
+            ch1x1=c(128),
+            ch3x3_reduce=c(128),
+            ch3x3=c(192),
+            ch5x5_reduce=c(32),
+            ch5x5=c(96),
+            pool_proj=c(64),
+        )
         c3b = c(128) + c(192) + c(96) + c(64)
 
         self.pool3 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        self.inception4a = InceptionModule(c3b, ch1x1=c(192), ch3x3_reduce=c(96), ch3x3=c(208), ch5x5_reduce=c(16), ch5x5=c(48), pool_proj=c(64))
+        self.inception4a = InceptionModule(
+            c3b,
+            ch1x1=c(192),
+            ch3x3_reduce=c(96),
+            ch3x3=c(208),
+            ch5x5_reduce=c(16),
+            ch5x5=c(48),
+            pool_proj=c(64),
+        )
         c4a = c(192) + c(208) + c(48) + c(64)
-        self.inception4b = InceptionModule(c4a, ch1x1=c(160), ch3x3_reduce=c(112), ch3x3=c(224), ch5x5_reduce=c(24), ch5x5=c(64), pool_proj=c(64))
+        self.inception4b = InceptionModule(
+            c4a,
+            ch1x1=c(160),
+            ch3x3_reduce=c(112),
+            ch3x3=c(224),
+            ch5x5_reduce=c(24),
+            ch5x5=c(64),
+            pool_proj=c(64),
+        )
         c4b = c(160) + c(224) + c(64) + c(64)
-        self.inception4c = InceptionModule(c4b, ch1x1=c(128), ch3x3_reduce=c(128), ch3x3=c(256), ch5x5_reduce=c(24), ch5x5=c(64), pool_proj=c(64))
+        self.inception4c = InceptionModule(
+            c4b,
+            ch1x1=c(128),
+            ch3x3_reduce=c(128),
+            ch3x3=c(256),
+            ch5x5_reduce=c(24),
+            ch5x5=c(64),
+            pool_proj=c(64),
+        )
         c4c = c(128) + c(256) + c(64) + c(64)
-        self.inception4d = InceptionModule(c4c, ch1x1=c(112), ch3x3_reduce=c(144), ch3x3=c(288), ch5x5_reduce=c(32), ch5x5=c(64), pool_proj=c(64))
+        self.inception4d = InceptionModule(
+            c4c,
+            ch1x1=c(112),
+            ch3x3_reduce=c(144),
+            ch3x3=c(288),
+            ch5x5_reduce=c(32),
+            ch5x5=c(64),
+            pool_proj=c(64),
+        )
         c4d = c(112) + c(288) + c(64) + c(64)
-        self.inception4e = InceptionModule(c4d, ch1x1=c(256), ch3x3_reduce=c(160), ch3x3=c(320), ch5x5_reduce=c(32), ch5x5=c(128), pool_proj=c(128))
+        self.inception4e = InceptionModule(
+            c4d,
+            ch1x1=c(256),
+            ch3x3_reduce=c(160),
+            ch3x3=c(320),
+            ch5x5_reduce=c(32),
+            ch5x5=c(128),
+            pool_proj=c(128),
+        )
         c4e = c(256) + c(320) + c(128) + c(128)
 
         self.pool4 = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        self.inception5a = InceptionModule(c4e, ch1x1=c(256), ch3x3_reduce=c(160), ch3x3=c(320), ch5x5_reduce=c(32), ch5x5=c(128), pool_proj=c(128))
+        self.inception5a = InceptionModule(
+            c4e,
+            ch1x1=c(256),
+            ch3x3_reduce=c(160),
+            ch3x3=c(320),
+            ch5x5_reduce=c(32),
+            ch5x5=c(128),
+            pool_proj=c(128),
+        )
         c5a = c(256) + c(320) + c(128) + c(128)
-        self.inception5b = InceptionModule(c5a, ch1x1=c(384), ch3x3_reduce=c(192), ch3x3=c(384), ch5x5_reduce=c(48), ch5x5=c(128), pool_proj=c(128))
+        self.inception5b = InceptionModule(
+            c5a,
+            ch1x1=c(384),
+            ch3x3_reduce=c(192),
+            ch3x3=c(384),
+            ch5x5_reduce=c(48),
+            ch5x5=c(128),
+            pool_proj=c(128),
+        )
         c5b = c(384) + c(384) + c(128) + c(128)
 
         self.head = nn.Sequential(
@@ -151,4 +222,3 @@ if __name__ == "__main__":
         m = build_googlenet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=1.0)
         y = m(x)
         print(v, tuple(y.shape))
-

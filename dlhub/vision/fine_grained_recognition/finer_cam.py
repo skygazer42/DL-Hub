@@ -1,4 +1,3 @@
-
 """Finer-CAM (toy-first) for FGVC.
 
 Reference:
@@ -15,12 +14,18 @@ Toy interpretation in this repo (offline, no pretrained weights):
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyPatchEncoder, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyPatchEncoder,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class FinerCAMFGVC(nn.Module):
@@ -79,7 +84,9 @@ class FinerCAMFGVC(nn.Module):
             contrast = F.normalize(prompts - neg, dim=-1)
 
         # CAM-like patch weights from contrast prompts.
-        diff_map = torch.einsum("bne,ke->bnk", patches, contrast) / math.sqrt(max(int(patches.shape[-1]), 1))
+        diff_map = torch.einsum("bne,ke->bnk", patches, contrast) / math.sqrt(
+            max(int(patches.shape[-1]), 1)
+        )
         weights = torch.softmax(diff_map, dim=1)  # (B, N, K)
 
         pooled = torch.einsum("bnk,bne->bke", weights, patches)  # (B, K, E)
@@ -89,11 +96,19 @@ class FinerCAMFGVC(nn.Module):
         logits = scale * torch.einsum("bke,ke->bk", pooled, prompts)  # (B, K)
 
         # Also expose the "vanilla" prompt CAM for comparison/debugging.
-        base_map = torch.einsum("bne,ke->bnk", patches, prompts) / math.sqrt(max(int(patches.shape[-1]), 1))
+        base_map = torch.einsum("bne,ke->bnk", patches, prompts) / math.sqrt(
+            max(int(patches.shape[-1]), 1)
+        )
         base_weights = torch.softmax(base_map, dim=1)
 
-        prompt_cam = base_weights.transpose(1, 2).contiguous().view(x.shape[0], k, int(self.grid), int(self.grid))
-        finer_cam = weights.transpose(1, 2).contiguous().view(x.shape[0], k, int(self.grid), int(self.grid))
+        prompt_cam = (
+            base_weights.transpose(1, 2)
+            .contiguous()
+            .view(x.shape[0], k, int(self.grid), int(self.grid))
+        )
+        finer_cam = (
+            weights.transpose(1, 2).contiguous().view(x.shape[0], k, int(self.grid), int(self.grid))
+        )
 
         embedding = F.normalize(torch.tanh(cls), dim=-1)
         return {
@@ -134,4 +149,3 @@ def build_finer_cam_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_finer_cam_fgvc_classifier, "finer_cam_tiny")
-

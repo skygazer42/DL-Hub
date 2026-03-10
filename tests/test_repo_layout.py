@@ -1,4 +1,3 @@
-
 import subprocess
 from pathlib import Path
 
@@ -6,7 +5,15 @@ from pathlib import Path
 def test_dlhub_data_package_is_not_gitignored() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     proc = subprocess.run(
-        ["git", "check-ignore", "-v", "dlhub/data", "dlhub/data/__init__.py", "dlhub/data/splits.py", "dlhub/data/toy.py"],
+        [
+            "git",
+            "check-ignore",
+            "-v",
+            "dlhub/data",
+            "dlhub/data/__init__.py",
+            "dlhub/data/splits.py",
+            "dlhub/data/toy.py",
+        ],
         cwd=repo_root,
         text=True,
         capture_output=True,

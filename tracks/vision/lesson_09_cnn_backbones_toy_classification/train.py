@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -33,7 +32,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 09 (Vision): CNN backbones on a toy dataset.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 09 (Vision): CNN backbones on a toy dataset."
+    )
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -56,7 +57,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="resnet18",
         help="local: any id from dlhub.vision.local_zoo (try --list-arch); zoo: tv:<name> | tvq:<name> | timm:<name>",
     )
-    parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--list-arch", action="store_true", help="Print supported architectures and exit."
+    )
     parser.add_argument(
         "--include-timm",
         action="store_true",
@@ -107,7 +110,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="vision", lesson="lesson_09_cnn_backbones_toy_classification", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="vision",
+        lesson="lesson_09_cnn_backbones_toy_classification",
+        run_name=train_cfg.run_name,
+    )
     logger = get_logger("vision.cnn_backbones", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)

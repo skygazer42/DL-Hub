@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _ResBlock(nn.Module):
@@ -14,7 +13,9 @@ class _ResBlock(nn.Module):
 
         self.conv1 = nn.Conv2d(c_in, c_out, kernel_size=3, padding=1, bias=True)
         self.conv2 = nn.Conv2d(c_out, c_out, kernel_size=3, padding=1, bias=True)
-        self.skip = nn.Identity() if c_in == c_out else nn.Conv2d(c_in, c_out, kernel_size=1, bias=True)
+        self.skip = (
+            nn.Identity() if c_in == c_out else nn.Conv2d(c_in, c_out, kernel_size=1, bias=True)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         y = F.relu(self.conv1(x), inplace=True)
@@ -25,7 +26,9 @@ class _ResBlock(nn.Module):
 class _Down(nn.Module):
     def __init__(self, in_ch: int, out_ch: int) -> None:
         super().__init__()
-        self.down = nn.Conv2d(int(in_ch), int(out_ch), kernel_size=3, stride=2, padding=1, bias=True)
+        self.down = nn.Conv2d(
+            int(in_ch), int(out_ch), kernel_size=3, stride=2, padding=1, bias=True
+        )
         self.block = _ResBlock(int(out_ch), int(out_ch))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -137,4 +140,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

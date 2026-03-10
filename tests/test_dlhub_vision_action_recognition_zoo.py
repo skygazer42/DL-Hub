@@ -1,10 +1,8 @@
-
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
-
 
 torch = pytest.importorskip("torch")
 
@@ -79,7 +77,9 @@ def test_action_recognition_zoo_build_and_backward_smoke(arch_id: str) -> None:
     loss.backward()
 
 
-@pytest.mark.parametrize("arch_id", ["dlactv:timesformer_small", "dlacts:poseformer_base", "dlacts:ctr_gcn_small"])
+@pytest.mark.parametrize(
+    "arch_id", ["dlactv:timesformer_small", "dlacts:poseformer_base", "dlacts:ctr_gcn_small"]
+)
 def test_action_recognition_zoo_builds_non_tiny_variants(arch_id: str) -> None:
     from dlhub.vision.action_recognition_zoo import build_local_model
 

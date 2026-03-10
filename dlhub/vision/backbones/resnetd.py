@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -41,7 +40,9 @@ class BottleneckD(nn.Module):
             # ResNet-D downsample: AvgPool -> 1x1 conv
             ops: list[nn.Module] = []
             if int(stride) != 1:
-                ops.append(nn.AvgPool2d(kernel_size=2, stride=2, ceil_mode=True, count_include_pad=False))
+                ops.append(
+                    nn.AvgPool2d(kernel_size=2, stride=2, ceil_mode=True, count_include_pad=False)
+                )
                 stride = 1
             ops.append(_conv1x1(in_ch, out_exp, stride=int(stride)))
             ops.append(nn.BatchNorm2d(out_exp))
@@ -142,4 +143,3 @@ if __name__ == "__main__":
     m = build_resnetd_classifier(in_channels=3, num_classes=10, variant="resnetd50", width_mult=0.5)
     y = m(x)
     print("resnetd50", tuple(y.shape))
-

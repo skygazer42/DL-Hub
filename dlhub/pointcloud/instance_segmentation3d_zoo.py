@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -101,7 +100,9 @@ def _make_lazy_builder(module_name: str, *, builder_name: str, variant: str) -> 
         mod = importlib.import_module(f"dlhub.pointcloud.instance_segmentation3d.{module_name}")
         fn = getattr(mod, builder_name, None)
         if fn is None:
-            raise RuntimeError(f"3D instance segmentation module {module_name!r} missing {builder_name}()")
+            raise RuntimeError(
+                f"3D instance segmentation module {module_name!r} missing {builder_name}()"
+            )
 
         kwargs: dict[str, object] = {
             "in_channels": int(cfg.in_channels),
@@ -191,7 +192,9 @@ def build_local_model(
     if prefix in {"inst3d", "pcinst", "pcins"}:
         prefix = "pcinst3d"
     if prefix not in {"pcinst3d", "local"}:
-        raise ValueError(f"Unsupported 3D instance segmentation prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported 3D instance segmentation prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
 
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
@@ -216,4 +219,3 @@ __all__ = [
     "build_local_model",
     "list_local_arches",
 ]
-

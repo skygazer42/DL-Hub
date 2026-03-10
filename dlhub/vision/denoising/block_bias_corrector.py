@@ -1,10 +1,11 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
-def _pad_to_multiple_hw(x: torch.Tensor, multiple: int, *, mode: str = "replicate") -> tuple[torch.Tensor, tuple[int, int]]:
+def _pad_to_multiple_hw(
+    x: torch.Tensor, multiple: int, *, mode: str = "replicate"
+) -> tuple[torch.Tensor, tuple[int, int]]:
     if x.ndim != 4:
         raise ValueError(f"Expected NCHW, got {tuple(x.shape)}")
     m = int(multiple)
@@ -90,9 +91,13 @@ def build_block_bias_corrector_denoiser(
     _ = float(sigma)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown BlockBiasCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown BlockBiasCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return BlockBiasCorrector(block_size=int(spec["block"]), strength=1.0, padding="replicate", clamp=True)
+    return BlockBiasCorrector(
+        block_size=int(spec["block"]), strength=1.0, padding="replicate", clamp=True
+    )
 
 
 if __name__ == "__main__":
@@ -106,4 +111,3 @@ if __name__ == "__main__":
     m = build_block_bias_corrector_denoiser(in_channels=1, variant="block_bias_tiny")
     out = m(noisy)
     print("block_bias_tiny", tuple(out.shape), float((out - clean).pow(2).mean().item()))
-

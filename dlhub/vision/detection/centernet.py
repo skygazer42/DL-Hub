@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -140,4 +139,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

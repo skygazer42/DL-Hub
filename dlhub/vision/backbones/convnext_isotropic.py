@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -14,7 +13,9 @@ class ConvNeXtIsoBlock(nn.Module):
         self.pw1 = nn.Linear(d, 4 * d)
         self.act = nn.GELU()
         self.pw2 = nn.Linear(4 * d, d)
-        self.gamma = nn.Parameter(layer_scale_init * torch.ones(d)) if float(layer_scale_init) > 0 else None
+        self.gamma = (
+            nn.Parameter(layer_scale_init * torch.ones(d)) if float(layer_scale_init) > 0 else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -47,7 +48,9 @@ class ConvNeXtIsotropicClassifier(nn.Module):
         super().__init__()
         d = scale_channels(int(dim), float(width_mult), min_ch=16, divisor=8)
         p = int(patch_size)
-        self.patch = nn.Sequential(nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d, eps=1e-6))
+        self.patch = nn.Sequential(
+            nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d, eps=1e-6)
+        )
         self.blocks = nn.Sequential(*[ConvNeXtIsoBlock(d) for _ in range(int(depth))])
         self.norm = nn.LayerNorm(d, eps=1e-6)
         self.drop = nn.Dropout(p=float(dropout))
@@ -98,7 +101,8 @@ def build_convnext_isotropic_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_convnext_isotropic_classifier(in_channels=3, num_classes=10, variant="convnext_iso_tiny", width_mult=0.5)
+    m = build_convnext_isotropic_classifier(
+        in_channels=3, num_classes=10, variant="convnext_iso_tiny", width_mult=0.5
+    )
     y = m(x)
     print("convnext_iso_tiny", tuple(y.shape))
-

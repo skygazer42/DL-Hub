@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, scale_channels
+from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, scale_channels
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -21,14 +20,22 @@ def _to_map(t: torch.Tensor, hw: tuple[int, int]) -> torch.Tensor:
 
 
 class VisformerStage(nn.Module):
-    def __init__(self, dim: int, *, depth: int, heads: int, drop_path: float, dropout: float) -> None:
+    def __init__(
+        self, dim: int, *, depth: int, heads: int, drop_path: float, dropout: float
+    ) -> None:
         super().__init__()
         d = int(dim)
         dep = int(depth)
         dp_rates = torch.linspace(0.0, float(drop_path), steps=max(1, dep)).tolist()
         self.blocks = nn.Sequential(
             *[
-                TransformerEncoderBlock(d, int(heads), mlp_ratio=4.0, dropout=float(dropout), drop_path=float(dp_rates[i]))
+                TransformerEncoderBlock(
+                    d,
+                    int(heads),
+                    mlp_ratio=4.0,
+                    dropout=float(dropout),
+                    drop_path=float(dp_rates[i]),
+                )
                 for i in range(dep)
             ]
         )
@@ -66,11 +73,20 @@ class VisformerClassifier(nn.Module):
 
         dp1, dp2 = float(drop_path) * 0.5, float(drop_path)
 
-        self.stage1 = nn.Sequential(*[ConvBNAct(dims[0], dims[0], kernel_size=3, stride=1, act="relu") for _ in range(depths[0])])
+        self.stage1 = nn.Sequential(
+            *[
+                ConvBNAct(dims[0], dims[0], kernel_size=3, stride=1, act="relu")
+                for _ in range(depths[0])
+            ]
+        )
         self.down2 = ConvBNAct(dims[0], dims[1], kernel_size=3, stride=2, act="relu")
-        self.stage2 = VisformerStage(dims[1], depth=depths[1], heads=heads[0], drop_path=float(dp1), dropout=float(dropout))
+        self.stage2 = VisformerStage(
+            dims[1], depth=depths[1], heads=heads[0], drop_path=float(dp1), dropout=float(dropout)
+        )
         self.down3 = ConvBNAct(dims[1], dims[2], kernel_size=3, stride=2, act="relu")
-        self.stage3 = VisformerStage(dims[2], depth=depths[2], heads=heads[1], drop_path=float(dp2), dropout=float(dropout))
+        self.stage3 = VisformerStage(
+            dims[2], depth=depths[2], heads=heads[1], drop_path=float(dp2), dropout=float(dropout)
+        )
 
         self.head = GlobalAvgPoolHead(dims[2], int(num_classes), dropout=float(dropout))
 
@@ -120,6 +136,8 @@ def build_visformer_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_visformer_classifier(in_channels=3, num_classes=10, variant="visformer_tiny", width_mult=0.5)
+    m = build_visformer_classifier(
+        in_channels=3, num_classes=10, variant="visformer_tiny", width_mult=0.5
+    )
     y = m(x)
     print("visformer_tiny", tuple(y.shape))

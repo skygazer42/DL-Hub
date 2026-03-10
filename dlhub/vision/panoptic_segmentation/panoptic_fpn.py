@@ -1,11 +1,10 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.panoptic_segmentation._common import (
-    BackboneC2C3C4C5,
     FPN4,
+    BackboneC2C3C4C5,
     ProtoNet,
     check_nchw,
     fuse_panoptic,
@@ -63,7 +62,11 @@ class PanopticFPN(nn.Module):
             depth=int(depth),
             act="relu",
         )
-        self.fpn = FPN4((int(c2_channels), int(c3_channels), int(c4_channels), int(c5_channels)), fpn, act="relu")
+        self.fpn = FPN4(
+            (int(c2_channels), int(c3_channels), int(c4_channels), int(c5_channels)),
+            fpn,
+            act="relu",
+        )
 
         # Semantic head at P2.
         self.semantic_head = nn.Sequential(
@@ -92,7 +95,9 @@ class PanopticFPN(nn.Module):
         p2, _, _, _ = self.fpn(c2, c3, c4, c5)
 
         semantic_logits = self.semantic_head(p2)  # (B, nt+ns, H/4, W/4)
-        semantic_logits = torch.nn.functional.interpolate(semantic_logits, size=(h, w), mode="nearest")
+        semantic_logits = torch.nn.functional.interpolate(
+            semantic_logits, size=(h, w), mode="nearest"
+        )
 
         proto = self.proto(p2)  # (B, P, H/4, W/4)
         pooled = torch.nn.functional.adaptive_avg_pool2d(p2, (1, 1)).view(b, -1)
@@ -107,7 +112,9 @@ class PanopticFPN(nn.Module):
 
         # A toy panoptic map for convenience (not used in losses by default).
         scores = query_cls_logits.softmax(dim=-1).max(dim=-1).values
-        panoptic_map = fuse_panoptic(semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes))
+        panoptic_map = fuse_panoptic(
+            semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes)
+        )
 
         return {
             "semantic_logits": semantic_logits,
@@ -119,9 +126,39 @@ class PanopticFPN(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "panoptic_fpn_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "fpn": 64, "instances": 16, "protos": 16},
-    "panoptic_fpn_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "instances": 32, "protos": 32},
-    "panoptic_fpn_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "fpn": 128, "instances": 64, "protos": 48},
+    "panoptic_fpn_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "fpn": 64,
+        "instances": 16,
+        "protos": 16,
+    },
+    "panoptic_fpn_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "instances": 32,
+        "protos": 32,
+    },
+    "panoptic_fpn_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "fpn": 128,
+        "instances": 64,
+        "protos": 48,
+    },
 }
 
 
@@ -135,7 +172,9 @@ def build_panoptic_fpn_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown PanopticFPN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown PanopticFPN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     def sc(v: int, *, min_ch: int = 16) -> int:
@@ -170,11 +209,19 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_panoptic_fpn_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="panoptic_fpn_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="panoptic_fpn_tiny",
+        width_mult=0.5,
     )
     out = m(x)
-    print("panoptic_fpn_tiny", {k: (tuple(v.shape) if torch.is_tensor(v) else type(v)) for k, v in out.items()})
-    loss = out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    print(
+        "panoptic_fpn_tiny",
+        {k: (tuple(v.shape) if torch.is_tensor(v) else type(v)) for k, v in out.items()},
+    )
+    loss = (
+        out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    )
     loss.backward()
     print("ok")
-

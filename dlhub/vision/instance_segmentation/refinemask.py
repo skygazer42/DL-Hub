@@ -1,10 +1,13 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.instance_segmentation._common import BackbonePyramid, InstanceTokenHead, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackbonePyramid,
+    InstanceTokenHead,
+    check_nchw,
+)
 
 
 class RefineMask(nn.Module):
@@ -37,7 +40,9 @@ class RefineMask(nn.Module):
             ConvBNAct(int(p2_channels), int(hidden_channels), kernel_size=3, stride=1, act="relu"),
             nn.Conv2d(int(hidden_channels), int(hidden_channels), kernel_size=1),
         )
-        self.tokens = InstanceTokenHead(int(p4_channels), int(hidden_channels), int(num_instances), depth=2)
+        self.tokens = InstanceTokenHead(
+            int(p4_channels), int(hidden_channels), int(num_instances), depth=2
+        )
         self.cls_head = nn.Linear(int(hidden_channels), int(num_classes))
         self.box_head = nn.Linear(int(hidden_channels), 4)
         self.coarse_head = nn.Linear(int(hidden_channels), int(mask_size) * int(mask_size))
@@ -54,8 +59,15 @@ class RefineMask(nn.Module):
         proposal_boxes = torch.sigmoid(self.box_head(tokens))
         coarse_mask_logits = self.coarse_head(tokens).view(b, k, self.mask_size, self.mask_size)
         delta_logits = self.delta_head(tokens).view(b, k, self.mask_size, self.mask_size)
-        refined_mask_logits = F.interpolate(coarse_mask_logits + 0.5 * delta_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False)
-        refined_mask_logits = refined_mask_logits + self.refine_proj(p2).mean(dim=1, keepdim=True).expand(-1, k, -1, -1)
+        refined_mask_logits = F.interpolate(
+            coarse_mask_logits + 0.5 * delta_logits,
+            size=p2.shape[-2:],
+            mode="bilinear",
+            align_corners=False,
+        )
+        refined_mask_logits = refined_mask_logits + self.refine_proj(p2).mean(
+            dim=1, keepdim=True
+        ).expand(-1, k, -1, -1)
         return {
             "cls_logits": cls_logits,
             "proposal_boxes": proposal_boxes,
@@ -65,9 +77,36 @@ class RefineMask(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "refinemask_tiny": {"stem": 24, "p2": 40, "p3": 64, "p4": 96, "hidden": 96, "depth": 1, "instances": 16, "mask": 16},
-    "refinemask_small": {"stem": 24, "p2": 48, "p3": 80, "p4": 128, "hidden": 128, "depth": 2, "instances": 24, "mask": 16},
-    "refinemask_base": {"stem": 32, "p2": 64, "p3": 96, "p4": 160, "hidden": 160, "depth": 3, "instances": 32, "mask": 28},
+    "refinemask_tiny": {
+        "stem": 24,
+        "p2": 40,
+        "p3": 64,
+        "p4": 96,
+        "hidden": 96,
+        "depth": 1,
+        "instances": 16,
+        "mask": 16,
+    },
+    "refinemask_small": {
+        "stem": 24,
+        "p2": 48,
+        "p3": 80,
+        "p4": 128,
+        "hidden": 128,
+        "depth": 2,
+        "instances": 24,
+        "mask": 16,
+    },
+    "refinemask_base": {
+        "stem": 32,
+        "p2": 64,
+        "p3": 96,
+        "p4": 160,
+        "hidden": 160,
+        "depth": 3,
+        "instances": 32,
+        "mask": 28,
+    },
 }
 
 
@@ -91,7 +130,9 @@ def build_refinemask_instance_segmenter(
         p2_channels=scale_channels(int(spec["p2"]), float(width_mult), min_ch=16, divisor=8),
         p3_channels=scale_channels(int(spec["p3"]), float(width_mult), min_ch=16, divisor=8),
         p4_channels=scale_channels(int(spec["p4"]), float(width_mult), min_ch=16, divisor=8),
-        hidden_channels=scale_channels(int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8),
+        hidden_channels=scale_channels(
+            int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8
+        ),
         backbone_depth=int(spec["depth"]),
         num_instances=int(spec["instances"]) if num_instances is None else int(num_instances),
         mask_size=int(spec["mask"]),
@@ -101,7 +142,9 @@ def build_refinemask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_refinemask_instance_segmenter(in_channels=3, num_classes=3, variant="refinemask_tiny", width_mult=0.5)
+    m = build_refinemask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="refinemask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("refinemask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

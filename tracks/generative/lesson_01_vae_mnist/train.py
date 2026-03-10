@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -14,7 +13,7 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import DataConfig, get_dataloaders
-from .model import ModelConfig, VAE, vae_loss
+from .model import VAE, ModelConfig, vae_loss
 
 
 @dataclass(frozen=True)
@@ -38,7 +37,9 @@ def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 01 (Generative): MLP VAE on MNIST (or fake).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 01 (Generative): MLP VAE on MNIST (or fake)."
+    )
 
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--learning-rate", type=float, default=1e-3)
@@ -93,7 +94,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="generative", lesson="lesson_01_vae_mnist", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="generative", lesson="lesson_01_vae_mnist", run_name=train_cfg.run_name
+    )
     logger = get_logger("generative.vae_mnist", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -156,7 +159,10 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
         val_seen = 0
         with torch.no_grad():
             for batch_idx, images in enumerate(val_loader):
-                if train_cfg.max_eval_batches is not None and batch_idx >= train_cfg.max_eval_batches:
+                if (
+                    train_cfg.max_eval_batches is not None
+                    and batch_idx >= train_cfg.max_eval_batches
+                ):
                     break
                 images = images.to(device_info.torch_device)
                 x = _flatten_images(images)

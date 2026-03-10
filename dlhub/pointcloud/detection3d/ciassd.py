@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -7,8 +6,7 @@ from torch.nn import functional as F
 
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 
-from ._common import PointNetEncoder, check_points, mlp, split_xyz_features
-
+from ._common import PointNetEncoder, check_points, split_xyz_features
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "ciassd_tiny": {"width": 64, "keypoints": 64},
@@ -20,11 +18,24 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class CIASSD(nn.Module):
     """CIA-SSD (toy): context-aware gating on keypoint features."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, keypoints: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        keypoints: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.keypoints = int(keypoints)
         self.enc = PointNetEncoder(int(in_channels), width=int(width), dropout=float(dropout))
-        self.gate = nn.Sequential(nn.Linear(int(width), int(width)), nn.ReLU(inplace=True), nn.Linear(int(width), int(width)), nn.Sigmoid())
+        self.gate = nn.Sequential(
+            nn.Linear(int(width), int(width)),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(width), int(width)),
+            nn.Sigmoid(),
+        )
         self.cls = nn.Linear(int(width), int(num_classes))
         self.box = nn.Linear(int(width), 7)
 
@@ -76,4 +87,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

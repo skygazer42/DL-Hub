@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -132,7 +131,9 @@ class LinearProbeClassifier(nn.Module):
     We use the encoder features `h` from the SSL model (SimCLR/BYOL/VICReg).
     """
 
-    def __init__(self, *, ssl_model: nn.Module, feature_dim: int, num_classes: int, freeze_ssl: bool) -> None:
+    def __init__(
+        self, *, ssl_model: nn.Module, feature_dim: int, num_classes: int, freeze_ssl: bool
+    ) -> None:
         super().__init__()
         self.ssl = ssl_model
         self.freeze_ssl = bool(freeze_ssl)
@@ -159,7 +160,9 @@ class LinearProbeClassifier(nn.Module):
 
 
 def build_model(cfg: ModelConfig) -> LinearProbeClassifier:
-    ssl = _build_ssl_model(ssl_arch=str(cfg.ssl_arch), in_channels=int(cfg.in_channels), dropout=float(cfg.ssl_dropout))
+    ssl = _build_ssl_model(
+        ssl_arch=str(cfg.ssl_arch), in_channels=int(cfg.in_channels), dropout=float(cfg.ssl_dropout)
+    )
 
     # Infer feature dim using a cheap forward on CPU.
     with torch.no_grad():

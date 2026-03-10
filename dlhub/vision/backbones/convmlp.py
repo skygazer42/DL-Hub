@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -12,7 +11,9 @@ class ConvMLPBlock(nn.Module):
         self.norm1 = LayerNorm2d(d)
         self.mix = nn.Conv2d(d, d, kernel_size=3, padding=1, groups=d, bias=False)
         self.norm2 = LayerNorm2d(d)
-        self.mlp = nn.Sequential(nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1))
+        self.mlp = nn.Sequential(
+            nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x + self.mix(self.norm1(x))
@@ -36,11 +37,17 @@ class ConvMLPClassifier(nn.Module):
         dims = tuple(scale_channels(int(d), float(width_mult), min_ch=16, divisor=8) for d in dims)
         depths = tuple(int(x) for x in depths)
         p = int(patch_size)
-        self.stem = nn.Sequential(nn.Conv2d(int(in_channels), dims[0], kernel_size=p, stride=p), LayerNorm2d(dims[0]))
+        self.stem = nn.Sequential(
+            nn.Conv2d(int(in_channels), dims[0], kernel_size=p, stride=p), LayerNorm2d(dims[0])
+        )
         self.stage1 = nn.Sequential(*[ConvMLPBlock(dims[0]) for _ in range(depths[0])])
-        self.down1 = nn.Sequential(LayerNorm2d(dims[0]), nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2))
+        self.down1 = nn.Sequential(
+            LayerNorm2d(dims[0]), nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2)
+        )
         self.stage2 = nn.Sequential(*[ConvMLPBlock(dims[1]) for _ in range(depths[1])])
-        self.down2 = nn.Sequential(LayerNorm2d(dims[1]), nn.Conv2d(dims[1], dims[2], kernel_size=2, stride=2))
+        self.down2 = nn.Sequential(
+            LayerNorm2d(dims[1]), nn.Conv2d(dims[1], dims[2], kernel_size=2, stride=2)
+        )
         self.stage3 = nn.Sequential(*[ConvMLPBlock(dims[2]) for _ in range(depths[2])])
         self.head = GlobalAvgPoolHead(dims[2], int(num_classes), dropout=float(dropout))
 
@@ -87,7 +94,8 @@ def build_convmlp_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_convmlp_classifier(in_channels=3, num_classes=10, variant="convmlp_tiny", width_mult=0.5)
+    m = build_convmlp_classifier(
+        in_channels=3, num_classes=10, variant="convmlp_tiny", width_mult=0.5
+    )
     y = m(x)
     print("convmlp_tiny", tuple(y.shape))
-

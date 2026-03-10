@@ -1,7 +1,5 @@
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from ._utils import pad_to_multiple, unpad
 
@@ -70,7 +68,9 @@ def _window_partition(x: torch.Tensor, window_size: int) -> torch.Tensor:
     return x.view(b * (h // ws) * (w // ws), ws * ws, c)
 
 
-def _window_reverse(windows: torch.Tensor, window_size: int, *, b: int, h: int, w: int, c: int) -> torch.Tensor:
+def _window_reverse(
+    windows: torch.Tensor, window_size: int, *, b: int, h: int, w: int, c: int
+) -> torch.Tensor:
     # windows: (B*nW, ws*ws, C) -> (B, H, W, C)
     ws = int(window_size)
     x = windows.view(b, h // ws, w // ws, ws, ws, c)
@@ -223,4 +223,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

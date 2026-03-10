@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import MLPPointEncoder, YOLACTHead
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "yolact3d_tiny": {"width": 64, "instances": 16, "prototypes": 8},
@@ -67,4 +65,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

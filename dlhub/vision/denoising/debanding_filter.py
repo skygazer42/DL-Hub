@@ -1,10 +1,11 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
-def _gaussian_kernel1d(k: int, sigma: float, *, device: torch.device, dtype: torch.dtype) -> torch.Tensor:
+def _gaussian_kernel1d(
+    k: int, sigma: float, *, device: torch.device, dtype: torch.dtype
+) -> torch.Tensor:
     k = int(k)
     if k < 1 or k % 2 == 0:
         raise ValueError("k must be odd and >= 1")
@@ -96,7 +97,9 @@ class DebandingFilter(nn.Module):
             dy = F.pad(dy, (0, 0, 0, 1))
             grad = (dx.abs() + dy.abs()).mean(dim=1, keepdim=True)  # (B,1,H,W)
 
-            smooth = _gaussian_blur(y, k=int(self.kernel_size), sigma=float(self.sigma), padding=self.padding)
+            smooth = _gaussian_blur(
+                y, k=int(self.kernel_size), sigma=float(self.sigma), padding=self.padding
+            )
             mask = grad < float(self.grad_threshold)
             y = torch.where(mask, smooth, y)
 
@@ -119,7 +122,9 @@ def build_debanding_filter_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown DebandingFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown DebandingFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     # Heuristic: with higher noise sigma, allow smoothing in slightly higher-gradient regions.

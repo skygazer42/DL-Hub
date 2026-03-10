@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -67,7 +66,9 @@ class DNDETRDetector(nn.Module):
         x = check_nchw(x)
         b = x.shape[0]
         c3, c4, c5 = self.backbone(x)
-        memory = torch.cat([flatten_hw(self.p3(c3)), flatten_hw(self.p4(c4)), flatten_hw(self.p5(c5))], dim=1)
+        memory = torch.cat(
+            [flatten_hw(self.p3(c3)), flatten_hw(self.p4(c4)), flatten_hw(self.p5(c5))], dim=1
+        )
         queries = self.query_embed.unsqueeze(0).expand(b, -1, -1).contiguous()
         hs = self.transformer(memory, queries)
         class_logits = self.class_head(hs)
@@ -77,9 +78,42 @@ class DNDETRDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "dn_detr_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "d_model": 96, "heads": 4, "q": 50, "enc": 1, "dec": 1},
-    "dn_detr_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "d_model": 128, "heads": 4, "q": 100, "enc": 2, "dec": 2},
-    "dn_detr_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "d_model": 192, "heads": 6, "q": 300, "enc": 3, "dec": 3},
+    "dn_detr_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "d_model": 96,
+        "heads": 4,
+        "q": 50,
+        "enc": 1,
+        "dec": 1,
+    },
+    "dn_detr_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "d_model": 128,
+        "heads": 4,
+        "q": 100,
+        "enc": 2,
+        "dec": 2,
+    },
+    "dn_detr_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "d_model": 192,
+        "heads": 6,
+        "q": 300,
+        "enc": 3,
+        "dec": 3,
+    },
 }
 
 
@@ -122,4 +156,3 @@ if __name__ == "__main__":
     loss = out["class_logits"].mean() + out["boxes"].mean() + out["dn_zero"]
     loss.backward()
     print("ok")
-

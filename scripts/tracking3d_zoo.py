@@ -44,12 +44,22 @@ def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Tracking3D local model zoo utilities (no downloads).")
+    parser = argparse.ArgumentParser(
+        description="Tracking3D local model zoo utilities (no downloads)."
+    )
     parser.add_argument("--list", action="store_true", help="List available architecture ids.")
     parser.add_argument("--search", type=str, default=None, help="Filter list by substring.")
     parser.add_argument("--limit", type=int, default=80, help="Max lines to print when listing.")
-    parser.add_argument("--timeline", action="store_true", help="Print a best-effort Tracking3D timeline.")
-    parser.add_argument("--smoke", type=str, default=None, metavar="ARCH_ID", help="Run a short sequence smoke on an arch id.")
+    parser.add_argument(
+        "--timeline", action="store_true", help="Print a best-effort Tracking3D timeline."
+    )
+    parser.add_argument(
+        "--smoke",
+        type=str,
+        default=None,
+        metavar="ARCH_ID",
+        help="Run a short sequence smoke on an arch id.",
+    )
     parser.add_argument("--batch-size", type=int, default=2, help="Batch size.")
     parser.add_argument("--seq-len", type=int, default=4, help="Tracking sequence length.")
     parser.add_argument("--num-points", type=int, default=128, help="Number of points per frame.")
@@ -88,13 +98,19 @@ def main() -> int:
         timeline = entries()
         if needle:
             timeline = [
-                e for e in timeline if needle in e.family.lower() or needle in e.method.lower() or needle in e.group.lower()
+                e
+                for e in timeline
+                if needle in e.family.lower()
+                or needle in e.method.lower()
+                or needle in e.group.lower()
             ]
         print("Tracking3D timeline")
         print(f"- total_families={len(timeline)}")
         print(f"- total_arches={len(arches)}")
         current_year = None
-        for e in sorted(timeline, key=lambda x: (9999 if x.year is None else x.year, x.group, x.family)):
+        for e in sorted(
+            timeline, key=lambda x: (9999 if x.year is None else x.year, x.group, x.family)
+        ):
             y = "unknown" if e.year is None else str(e.year)
             if y != current_year:
                 print("")
@@ -108,7 +124,9 @@ def main() -> int:
         arch_id = str(args.smoke).strip()
         if ":" not in arch_id:
             arch_id = f"pctrk3d:{arch_id}"
-        x = torch.randn(int(args.batch_size), int(args.seq_len), int(args.num_points), int(args.in_channels))
+        x = torch.randn(
+            int(args.batch_size), int(args.seq_len), int(args.num_points), int(args.in_channels)
+        )
         model = build_local_model(
             arch_id,
             in_channels=int(args.in_channels),

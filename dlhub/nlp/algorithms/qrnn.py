@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -41,7 +40,9 @@ class QRNNLayer(nn.Module):
         self.conv = nn.Conv1d(self.in_dim, 3 * self.hidden_dim, kernel_size=k, padding=k // 2)
         self.drop = nn.Dropout(p=float(dropout))
 
-    def _pool(self, z: torch.Tensor, f: torch.Tensor, o: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    def _pool(
+        self, z: torch.Tensor, f: torch.Tensor, o: torch.Tensor, mask: torch.Tensor
+    ) -> torch.Tensor:
         # z,f,o: (B, T, H), mask: (B, T)
         b, t, h = z.shape
         c = torch.zeros((b, h), device=z.device, dtype=torch.float32)

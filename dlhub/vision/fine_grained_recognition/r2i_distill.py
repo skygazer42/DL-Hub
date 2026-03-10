@@ -1,4 +1,3 @@
-
 """Zooming without Zooming / Region-to-Image Distillation (toy-first) for FGVC.
 
 Reference:
@@ -12,12 +11,18 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyPatchEncoder, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyPatchEncoder,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class R2IDistillFGVC(nn.Module):
@@ -118,4 +123,3 @@ def build_r2i_distill_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_r2i_distill_fgvc_classifier, "r2i_distill_tiny")
-

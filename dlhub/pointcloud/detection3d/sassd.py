@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -8,7 +7,6 @@ from torch.nn import functional as F
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 
 from ._common import PointNetEncoder, TinyTransformerEncoder, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "sassd_tiny": {"width": 64, "keypoints": 64, "layers": 1},
@@ -33,7 +31,9 @@ class SASSD(nn.Module):
         super().__init__()
         self.keypoints = int(keypoints)
         self.enc = PointNetEncoder(int(in_channels), width=int(width), dropout=float(dropout))
-        self.attn = TinyTransformerEncoder(int(width), nhead=4, num_layers=int(layers), dropout=float(dropout))
+        self.attn = TinyTransformerEncoder(
+            int(width), nhead=4, num_layers=int(layers), dropout=float(dropout)
+        )
         self.cls = nn.Linear(int(width), int(num_classes))
         self.box = nn.Linear(int(width), 7)
 
@@ -84,4 +84,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

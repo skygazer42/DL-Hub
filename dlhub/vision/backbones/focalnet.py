@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -74,13 +73,28 @@ class FocalNetClassifier(nn.Module):
         dp_iter = iter(dp_rates)
 
         self.down = nn.ModuleList()
-        self.down.append(nn.Sequential(nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), LayerNorm2d(dims[0])))
+        self.down.append(
+            nn.Sequential(
+                nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), LayerNorm2d(dims[0])
+            )
+        )
         for i in range(3):
-            self.down.append(nn.Sequential(LayerNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)))
+            self.down.append(
+                nn.Sequential(
+                    LayerNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)
+                )
+            )
 
         self.stages = nn.ModuleList()
         for i in range(4):
-            self.stages.append(nn.Sequential(*[FocalNetBlock(dims[i], drop_path=float(next(dp_iter))) for _ in range(depths[i])]))
+            self.stages.append(
+                nn.Sequential(
+                    *[
+                        FocalNetBlock(dims[i], drop_path=float(next(dp_iter)))
+                        for _ in range(depths[i])
+                    ]
+                )
+            )
         self.head = GlobalAvgPoolHead(dims[-1], int(num_classes), dropout=float(dropout))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -124,7 +138,8 @@ def build_focalnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_focalnet_classifier(in_channels=3, num_classes=10, variant="focalnet_tiny", width_mult=0.5)
+    m = build_focalnet_classifier(
+        in_channels=3, num_classes=10, variant="focalnet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("focalnet_tiny", tuple(y.shape))
-

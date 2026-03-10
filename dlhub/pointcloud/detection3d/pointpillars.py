@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
-from ._common import BEVBoxSpec, BEVAnchorFreeDetector3D
-
+from ._common import BEVAnchorFreeDetector3D, BEVBoxSpec
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointpillars_tiny": {"width": 48, "bev_h": 32, "bev_w": 32, "topk": 64},
@@ -69,4 +67,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].abs().mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

@@ -1,6 +1,5 @@
 """Learning-rate schedulers commonly used in deep learning."""
 
-
 import math
 from dataclasses import dataclass
 

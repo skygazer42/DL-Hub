@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
-from ._common import BEVBoxSpec, BEVAnchorFreeDetector3D
-
+from ._common import BEVAnchorFreeDetector3D, BEVBoxSpec
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pixor_tiny": {"width": 48, "bev_h": 48, "bev_w": 48, "topk": 64},
@@ -32,7 +30,9 @@ class PIXOR(nn.Module):
             in_channels=int(in_channels),
             num_classes=int(num_classes),
             width=int(width),
-            bev=BEVBoxSpec(h=int(bev_h), w=int(bev_w), x_min=-20.0, x_max=20.0, y_min=-20.0, y_max=20.0),
+            bev=BEVBoxSpec(
+                h=int(bev_h), w=int(bev_w), x_min=-20.0, x_max=20.0, y_min=-20.0, y_max=20.0
+            ),
             topk=int(topk),
             with_yaw=True,
             dropout=float(dropout),
@@ -70,4 +70,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

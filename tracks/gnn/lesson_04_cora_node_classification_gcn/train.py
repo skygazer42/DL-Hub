@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -30,7 +29,9 @@ class TrainConfig:
 
 
 def parse_args() -> TrainConfig:
-    parser = argparse.ArgumentParser(description="Lesson 04 (GNN): Cora node classification with GCN.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 04 (GNN): Cora node classification with GCN."
+    )
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--learning-rate", type=float, default=0.01)
     parser.add_argument("--weight-decay", type=float, default=5e-4)
@@ -110,10 +111,16 @@ def run_training(cfg: TrainConfig) -> int:
         model.eval()
         with torch.no_grad():
             logits = model(features, adj)
-            train_acc = float((logits[idx_train].argmax(dim=1) == labels[idx_train]).float().mean().item())
+            train_acc = float(
+                (logits[idx_train].argmax(dim=1) == labels[idx_train]).float().mean().item()
+            )
             val_loss = float(criterion(logits[idx_val], labels[idx_val]).item())
-            val_acc = float((logits[idx_val].argmax(dim=1) == labels[idx_val]).float().mean().item())
-            test_acc = float((logits[idx_test].argmax(dim=1) == labels[idx_test]).float().mean().item())
+            val_acc = float(
+                (logits[idx_val].argmax(dim=1) == labels[idx_val]).float().mean().item()
+            )
+            test_acc = float(
+                (logits[idx_test].argmax(dim=1) == labels[idx_test]).float().mean().item()
+            )
 
         logger.info(
             "Epoch %d/%d | train loss %.4f acc %.3f | val loss %.4f acc %.3f | test acc %.3f",
@@ -161,4 +168,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

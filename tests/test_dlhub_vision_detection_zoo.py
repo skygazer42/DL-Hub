@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -9,7 +8,7 @@ def _sum_tensor_means(x):
         return x.to(torch.float32).mean()
     if isinstance(x, dict):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
-    if isinstance(x, (list, tuple)):
+    if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
     raise TypeError(f"Unsupported output type in detection zoo smoke: {type(x)!r}")
 

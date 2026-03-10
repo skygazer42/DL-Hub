@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.pointcloud.selfsupervised.dinov2 import PatchTransformer
 
@@ -201,7 +200,9 @@ class MSNPointMAE(nn.Module):
         _ema_update(self.student_head, self.teacher_head)
 
     @torch.no_grad()
-    def update_center(self, teacher_logits: list[torch.Tensor], *, center_momentum: float = 0.9) -> None:
+    def update_center(
+        self, teacher_logits: list[torch.Tensor], *, center_momentum: float = 0.9
+    ) -> None:
         cm = float(center_momentum)
         if not (0.0 <= cm < 1.0):
             raise ValueError("center_momentum must be in [0, 1)")
@@ -211,10 +212,19 @@ class MSNPointMAE(nn.Module):
         c = cat.mean(dim=0, keepdim=True)
         self.center.mul_(cm).add_(c, alpha=(1.0 - cm))
 
-    def forward_student(self, points: torch.Tensor, *, mask_ratio: float = 0.5) -> dict[str, torch.Tensor]:
-        out = self.student_backbone(points, mask_ratio=float(mask_ratio), mask_token=self.mask_token)
+    def forward_student(
+        self, points: torch.Tensor, *, mask_ratio: float = 0.5
+    ) -> dict[str, torch.Tensor]:
+        out = self.student_backbone(
+            points, mask_ratio=float(mask_ratio), mask_token=self.mask_token
+        )
         head = self.student_head(out["cls"])
-        return {"cls": out["cls"], "z": head["z"], "cls_logits": head["logits"], "mask_idx": out["mask_idx"]}
+        return {
+            "cls": out["cls"],
+            "z": head["z"],
+            "cls_logits": head["logits"],
+            "mask_idx": out["mask_idx"],
+        }
 
     @torch.no_grad()
     def forward_teacher(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
@@ -312,4 +322,3 @@ if __name__ == "__main__":
     m.update_center([t1, t2], center_momentum=0.9)
     m.momentum_update_teacher(ema_decay=0.99)
     print("ok", float(loss.item()))
-

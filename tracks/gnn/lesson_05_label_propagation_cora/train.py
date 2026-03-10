@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -11,7 +10,6 @@ from dlhub.device import resolve_device
 from dlhub.logging import get_logger
 from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
-
 from tracks.gnn.datasets.cora import load_cora
 
 from .model import LabelPropagation, LabelPropagationConfig
@@ -60,7 +58,9 @@ def run_training(cfg: TrainConfig) -> int:
     set_seed(cfg.seed)
     device_info = resolve_device(cfg.device)
 
-    paths = build_run_paths(track="gnn", lesson="lesson_05_label_propagation_cora", run_name=cfg.run_name)
+    paths = build_run_paths(
+        track="gnn", lesson="lesson_05_label_propagation_cora", run_name=cfg.run_name
+    )
     logger = get_logger("gnn.cora_lp", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -142,4 +142,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

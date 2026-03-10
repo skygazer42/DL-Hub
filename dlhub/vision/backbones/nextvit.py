@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    make_divisible,
+)
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -10,7 +14,14 @@ class NextViTStage(nn.Module):
     def __init__(self, dim: int, *, num_heads: int, depth: int) -> None:
         super().__init__()
         d = int(dim)
-        self.blocks = nn.Sequential(*[TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0) for _ in range(int(depth))])
+        self.blocks = nn.Sequential(
+            *[
+                TransformerEncoderBlock(
+                    d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0
+                )
+                for _ in range(int(depth))
+            ]
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         b, c, h, w = x.shape
@@ -41,10 +52,22 @@ class NextViTClassifier(nn.Module):
             ConvBNAct(int(in_channels), c(32), kernel_size=3, stride=2, act="silu"),
             InvertedResidual(c(32), c(64), stride=2, expand_ratio=4.0, se_ratio=0.25, act="silu"),
         )
-        self.stage1 = nn.Sequential(InvertedResidual(c(64), c(128), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"), NextViTStage(c(128), num_heads=4, depth=int(depths[0])))
-        self.stage2 = nn.Sequential(InvertedResidual(c(128), c(192), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"), NextViTStage(c(192), num_heads=6, depth=int(depths[1])))
-        self.stage3 = nn.Sequential(InvertedResidual(c(192), c(256), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"), NextViTStage(c(256), num_heads=8, depth=int(depths[2])))
-        self.head = nn.Sequential(ConvBNAct(c(256), c(1024), kernel_size=1, stride=1, padding=0, act="silu"), GlobalAvgPoolHead(c(1024), int(num_classes), dropout=float(dropout)))
+        self.stage1 = nn.Sequential(
+            InvertedResidual(c(64), c(128), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"),
+            NextViTStage(c(128), num_heads=4, depth=int(depths[0])),
+        )
+        self.stage2 = nn.Sequential(
+            InvertedResidual(c(128), c(192), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"),
+            NextViTStage(c(192), num_heads=6, depth=int(depths[1])),
+        )
+        self.stage3 = nn.Sequential(
+            InvertedResidual(c(192), c(256), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"),
+            NextViTStage(c(256), num_heads=8, depth=int(depths[2])),
+        )
+        self.head = nn.Sequential(
+            ConvBNAct(c(256), c(1024), kernel_size=1, stride=1, padding=0, act="silu"),
+            GlobalAvgPoolHead(c(1024), int(num_classes), dropout=float(dropout)),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -88,4 +111,3 @@ if __name__ == "__main__":
     m = build_nextvit_classifier(in_channels=3, num_classes=10, variant="nextvit_s")
     y = m(x)
     print("nextvit_s", tuple(y.shape))
-

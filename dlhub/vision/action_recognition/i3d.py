@@ -9,8 +9,8 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -173,10 +173,11 @@ def build_i3d_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_i3d_video_classifier(in_channels=3, num_classes=6, variant="i3d_tiny", width_mult=0.75, dropout=0.0)
+    m = build_i3d_video_classifier(
+        in_channels=3, num_classes=6, variant="i3d_tiny", width_mult=0.75, dropout=0.0
+    )
     y = m(x)
     print("i3d_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DepthwiseSeparableConv, scale_channels
+from dlhub.vision.backbones._blocks import DepthwiseSeparableConv, scale_channels
 from dlhub.vision.detection._common import BackboneC3C5, check_nchw
 from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_hw
 
@@ -82,9 +80,45 @@ class RTDETRDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "rtdetr_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "d_model": 96, "heads": 4, "q": 50, "enc": 1, "dec": 1, "conv": 1},
-    "rtdetr_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "d_model": 128, "heads": 4, "q": 100, "enc": 1, "dec": 2, "conv": 2},
-    "rtdetr_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "d_model": 192, "heads": 6, "q": 300, "enc": 2, "dec": 3, "conv": 2},
+    "rtdetr_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "d_model": 96,
+        "heads": 4,
+        "q": 50,
+        "enc": 1,
+        "dec": 1,
+        "conv": 1,
+    },
+    "rtdetr_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "d_model": 128,
+        "heads": 4,
+        "q": 100,
+        "enc": 1,
+        "dec": 2,
+        "conv": 2,
+    },
+    "rtdetr_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "d_model": 192,
+        "heads": 6,
+        "q": 300,
+        "enc": 2,
+        "dec": 3,
+        "conv": 2,
+    },
 }
 
 
@@ -128,4 +162,3 @@ if __name__ == "__main__":
     loss = out["class_logits"].mean() + out["boxes"].mean()
     loss.backward()
     print("ok")
-

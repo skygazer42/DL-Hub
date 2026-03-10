@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -133,7 +132,9 @@ def build_fasttext_ngram_classifier(
 def registry() -> dict[str, Builder]:
     return {
         "fasttext_bigram": make_builder(build_fasttext_ngram_classifier, variant="fasttext_bigram"),
-        "fasttext_trigram": make_builder(build_fasttext_ngram_classifier, variant="fasttext_trigram"),
+        "fasttext_trigram": make_builder(
+            build_fasttext_ngram_classifier, variant="fasttext_trigram"
+        ),
         "fasttext_bi_tri": make_builder(build_fasttext_ngram_classifier, variant="fasttext_bi_tri"),
     }
 

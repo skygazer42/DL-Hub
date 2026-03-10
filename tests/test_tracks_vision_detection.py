@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -37,7 +36,9 @@ def test_vision_synth_fcos_shapes_and_loss_smoke() -> None:
     reg_target = targets["reg_target"]
     pos_mask = targets["pos_mask"]
 
-    cls_loss = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([30.0]))(out["cls_logits"], cls_target)
+    cls_loss = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([30.0]))(
+        out["cls_logits"], cls_target
+    )
     pred_pos = (out["reg"] * pos_mask).sum(dim=(2, 3))
     target_pos = (reg_target * pos_mask).sum(dim=(2, 3))
     reg_loss = torch.nn.SmoothL1Loss()(pred_pos, target_pos)
@@ -81,8 +82,12 @@ def test_vision_synth_yolo_shapes_and_loss_smoke() -> None:
     bbox_target = targets["bbox_target"]
     pos_mask = targets["pos_mask"]
 
-    obj_loss = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([20.0]))(out["obj_logits"], obj_target)
-    cls_loss = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([20.0]))(out["cls_logits"], cls_target)
+    obj_loss = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([20.0]))(
+        out["obj_logits"], obj_target
+    )
+    cls_loss = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([20.0]))(
+        out["cls_logits"], cls_target
+    )
     pred_pos = (out["bbox"] * pos_mask).sum(dim=(2, 3))
     target_pos = (bbox_target * pos_mask).sum(dim=(2, 3))
     box_loss = torch.nn.SmoothL1Loss()(pred_pos, target_pos)

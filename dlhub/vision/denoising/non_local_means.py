@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _shift2d(x: torch.Tensor, *, dy: int, dx: int) -> torch.Tensor:
@@ -165,4 +164,3 @@ if __name__ == "__main__":
     m = build_non_local_means_denoiser(in_channels=1, sigma=0.12, variant="nlm_fast")
     y = m(noisy)
     print("nlm_fast", tuple(y.shape), float((y - x).pow(2).mean().item()))
-

@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -172,4 +171,3 @@ if __name__ == "__main__":
     loss = y.mean()
     loss.backward()
     print("ok")
-

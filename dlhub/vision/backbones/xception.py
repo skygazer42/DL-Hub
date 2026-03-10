@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -6,7 +5,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 
 class SeparableConvBNAct(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, act: str = "relu") -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, act: str = "relu"
+    ) -> None:
         super().__init__()
         k = int(kernel_size)
         self.depthwise = nn.Conv2d(
@@ -33,7 +34,9 @@ class SeparableConvBNAct(nn.Module):
 
 
 class XceptionBlock(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, reps: int, stride: int, grow_first: bool, dropout: float) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, reps: int, stride: int, grow_first: bool, dropout: float
+    ) -> None:
         super().__init__()
         reps = int(reps)
         stride = int(stride)
@@ -44,7 +47,9 @@ class XceptionBlock(nn.Module):
         c = int(in_ch)
         for i in range(reps):
             if i == 0 and grow_first:
-                layers.append(SeparableConvBNAct(c, int(out_ch), kernel_size=3, stride=1, act="relu"))
+                layers.append(
+                    SeparableConvBNAct(c, int(out_ch), kernel_size=3, stride=1, act="relu")
+                )
                 c = int(out_ch)
             else:
                 layers.append(SeparableConvBNAct(c, c, kernel_size=3, stride=1, act="relu"))
@@ -53,7 +58,9 @@ class XceptionBlock(nn.Module):
             c = int(out_ch)
 
         self.sep = nn.Sequential(*layers)
-        self.pool = nn.MaxPool2d(kernel_size=3, stride=stride, padding=1) if stride != 1 else nn.Identity()
+        self.pool = (
+            nn.MaxPool2d(kernel_size=3, stride=stride, padding=1) if stride != 1 else nn.Identity()
+        )
         self.drop = nn.Dropout2d(p=float(dropout))
 
         self.shortcut: nn.Module | None = None
@@ -109,14 +116,24 @@ class XceptionClassifier(nn.Module):
         in_ch = stem
         for out_base, reps in entry:
             out_ch = scale_channels(out_base, w, min_ch=32, divisor=8)
-            blocks.append(XceptionBlock(in_ch, out_ch, reps=int(reps), stride=2, grow_first=True, dropout=float(dropout)))
+            blocks.append(
+                XceptionBlock(
+                    in_ch, out_ch, reps=int(reps), stride=2, grow_first=True, dropout=float(dropout)
+                )
+            )
             in_ch = out_ch
 
         for _ in range(int(middle_reps)):
-            blocks.append(XceptionBlock(in_ch, in_ch, reps=3, stride=1, grow_first=True, dropout=float(dropout)))
+            blocks.append(
+                XceptionBlock(
+                    in_ch, in_ch, reps=3, stride=1, grow_first=True, dropout=float(dropout)
+                )
+            )
 
         out_ch = scale_channels(int(exit_ch), w, min_ch=64, divisor=8)
-        blocks.append(XceptionBlock(in_ch, out_ch, reps=2, stride=2, grow_first=False, dropout=float(dropout)))
+        blocks.append(
+            XceptionBlock(in_ch, out_ch, reps=2, stride=2, grow_first=False, dropout=float(dropout))
+        )
         self.blocks = nn.Sequential(*blocks)
 
         self.head = nn.Sequential(
@@ -158,4 +175,3 @@ if __name__ == "__main__":
         m = build_xception_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.5)
         y = m(x)
         print(f"xception_{v}", tuple(y.shape))
-

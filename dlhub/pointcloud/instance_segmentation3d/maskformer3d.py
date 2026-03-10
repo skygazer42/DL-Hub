@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import PrototypeMaskHead, TransformerPointEncoder
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "maskformer3d_tiny": {"d_model": 64, "depth": 2, "prototypes": 16},
@@ -26,8 +24,15 @@ class MaskFormer3D(nn.Module):
         dropout: float = 0.0,
     ) -> None:
         super().__init__()
-        self.enc = TransformerPointEncoder(int(in_channels), int(d_model), depth=int(depth), dropout=float(dropout))
-        self.head = PrototypeMaskHead(int(d_model), int(num_classes), num_prototypes=int(num_prototypes), dropout=float(dropout))
+        self.enc = TransformerPointEncoder(
+            int(in_channels), int(d_model), depth=int(depth), dropout=float(dropout)
+        )
+        self.head = PrototypeMaskHead(
+            int(d_model),
+            int(num_classes),
+            num_prototypes=int(num_prototypes),
+            dropout=float(dropout),
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -56,9 +61,10 @@ def build_maskformer3d_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_maskformer3d_instance_segmenter3d(in_channels=3, num_classes=6, variant="maskformer3d_tiny")
+    m = build_maskformer3d_instance_segmenter3d(
+        in_channels=3, num_classes=6, variant="maskformer3d_tiny"
+    )
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _median_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -79,8 +78,12 @@ class DeadHotPixelCorrector(nn.Module):
             p = k // 2
             b, c, _, _ = y.shape
             ones = torch.ones((c, 1, k, k), device=y.device, dtype=y.dtype)
-            hot_count = F.conv2d(F.pad(hot.to(y.dtype), (p, p, p, p), mode=self.padding), ones, groups=c)
-            dead_count = F.conv2d(F.pad(dead.to(y.dtype), (p, p, p, p), mode=self.padding), ones, groups=c)
+            hot_count = F.conv2d(
+                F.pad(hot.to(y.dtype), (p, p, p, p), mode=self.padding), ones, groups=c
+            )
+            dead_count = F.conv2d(
+                F.pad(dead.to(y.dtype), (p, p, p, p), mode=self.padding), ones, groups=c
+            )
             isolated = torch.where(hot, hot_count, dead_count) <= float(self.max_support)
 
             mask = extreme & isolated & (diff > float(self.diff_threshold))
@@ -105,7 +108,9 @@ def build_dead_hot_pixel_corrector_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown DeadHotPixelCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown DeadHotPixelCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     # Use sigma to scale the defect detection strictness (larger sigma -> tolerate bigger deviations).

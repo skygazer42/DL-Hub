@@ -1,4 +1,3 @@
-
 """Fine-R1 (MLLM reasoning for fine-grained recognition) - toy-first FGVC classifier.
 
 References:
@@ -14,12 +13,18 @@ This repo keeps it offline and lightweight:
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyPatchEncoder, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyPatchEncoder,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class _ReasoningBlock(nn.Module):
@@ -92,7 +97,12 @@ class FineR1(nn.Module):
         # Keep reasoning shallow; the goal is an offline-friendly architectural sketch.
         reason_depth = max(1, int(spec["depth"]) // 2)
         heads = max(1, min(int(spec["heads"]), 8))
-        self.blocks = nn.ModuleList([_ReasoningBlock(embed_dim=int(embed), heads=int(heads)) for _ in range(int(reason_depth))])
+        self.blocks = nn.ModuleList(
+            [
+                _ReasoningBlock(embed_dim=int(embed), heads=int(heads))
+                for _ in range(int(reason_depth))
+            ]
+        )
 
         self.proj = nn.Linear(int(embed), int(embed))
         self.dropout = nn.Dropout(float(dropout))
@@ -153,4 +163,3 @@ def build_fine_r1_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_fine_r1_fgvc_classifier, "fine_r1_tiny")
-

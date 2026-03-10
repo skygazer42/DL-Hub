@@ -1,21 +1,18 @@
-
 import torch
 from torch import nn
 
 from ._common import (
     BEVBoxSpec,
-    BEVTwoStageDetector3D,
+    DenseBEVHead,
     PointNetEncoder,
     TinyBEVBackbone,
     check_points,
+    decode_bev_boxes,
     roi_pool_knn,
     scatter_mean_2d,
     split_xyz_features,
     topk_heatmap,
-    decode_bev_boxes,
-    DenseBEVHead,
 )
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "avod_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 48, "roi_k": 8},
@@ -113,4 +110,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

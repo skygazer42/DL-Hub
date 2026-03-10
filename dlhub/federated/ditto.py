@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class DittoStrategy(FederatedStrategy):
@@ -13,7 +18,11 @@ class DittoStrategy(FederatedStrategy):
     def simulate_round(self, *, seed: int = 0) -> dict[str, torch.Tensor]:
         state = self._sample_round_state(seed=seed)
         global_update = weighted_average(state.raw_updates, state.client_weights)
-        personalized = state.server_params.unsqueeze(0) + state.raw_updates - self.lam * global_update.unsqueeze(0)
+        personalized = (
+            state.server_params.unsqueeze(0)
+            + state.raw_updates
+            - self.lam * global_update.unsqueeze(0)
+        )
         server_params = state.server_params + global_update
         return {
             "server_params": server_params,

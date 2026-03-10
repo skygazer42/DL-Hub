@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -10,7 +9,9 @@ class SplitIndices:
     val: list[int]
 
 
-def train_val_split_indices(*, n: int, val_fraction: float = 0.2, seed: int = 0) -> tuple[list[int], list[int]]:
+def train_val_split_indices(
+    *, n: int, val_fraction: float = 0.2, seed: int = 0
+) -> tuple[list[int], list[int]]:
     """Return deterministic train/val indices for a dataset of size `n`.
 
     This helper is intentionally NumPy-only so it works even when torch isn't installed.

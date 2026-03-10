@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -36,7 +35,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 13 (PointCloud): linear probe on SSL encoders (toy-first).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 13 (PointCloud): linear probe on SSL encoders (toy-first)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--num-points", type=int, default=128)
@@ -59,10 +60,22 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="simclr_pointnet:simclr_pointnet_small",
         help="Supported: simclr_pointnet:<variant> | byol_pointnet:<variant> | vicreg_pointnet:<variant>",
     )
-    parser.add_argument("--ssl-checkpoint", type=str, default="", help="Path to a checkpoint.pt from lesson 09/11/12.")
+    parser.add_argument(
+        "--ssl-checkpoint",
+        type=str,
+        default="",
+        help="Path to a checkpoint.pt from lesson 09/11/12.",
+    )
     parser.add_argument("--ssl-dropout", type=float, default=0.0)
-    parser.add_argument("--freeze-ssl", type=int, default=1, help="1=freeze SSL backbone (linear probe), 0=fine-tune.")
-    parser.add_argument("--list-ssl-arch", action="store_true", help="Print supported SSL arch IDs and exit.")
+    parser.add_argument(
+        "--freeze-ssl",
+        type=int,
+        default=1,
+        help="1=freeze SSL backbone (linear probe), 0=fine-tune.",
+    )
+    parser.add_argument(
+        "--list-ssl-arch", action="store_true", help="Print supported SSL arch IDs and exit."
+    )
 
     args = parser.parse_args()
 
@@ -99,7 +112,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="pointcloud", lesson="lesson_13_pointcloud_ssl_linear_probe", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="pointcloud",
+        lesson="lesson_13_pointcloud_ssl_linear_probe",
+        run_name=train_cfg.run_name,
+    )
     logger = get_logger("pointcloud.ssl_linear_probe", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -135,7 +152,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         ckpt_path = Path(train_cfg.ssl_checkpoint)
         if not ckpt_path.exists():
             raise FileNotFoundError(f"--ssl-checkpoint not found: {str(ckpt_path)}")
-        load_checkpoint(ckpt_path, model=model.ssl, optimizer=None, map_location=device_info.torch_device)
+        load_checkpoint(
+            ckpt_path, model=model.ssl, optimizer=None, map_location=device_info.torch_device
+        )
         logger.info("Loaded SSL weights from %s", ckpt_path)
 
     criterion = torch.nn.CrossEntropyLoss()
@@ -208,4 +227,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

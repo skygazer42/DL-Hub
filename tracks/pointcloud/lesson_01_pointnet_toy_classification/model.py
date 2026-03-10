@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -49,4 +48,3 @@ class PointNetClassifier(nn.Module):
         x = self.mlp(x)  # (B, C, N)
         x = torch.max(x, dim=2).values  # (B, C)
         return self.head(x)
-

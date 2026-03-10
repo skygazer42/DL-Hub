@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -51,7 +50,9 @@ class PointNetPartSeg(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or points.shape[-1] != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, {self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, {self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
 
         x = points.to(torch.float32).transpose(1, 2)  # (B, C, N)
         feat = self.mlp(x)  # (B, F, N)
@@ -63,4 +64,3 @@ class PointNetPartSeg(nn.Module):
 
 
 __all__ = ["ModelConfig", "PointNetPartSeg"]
-

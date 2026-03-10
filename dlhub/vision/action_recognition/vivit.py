@@ -99,7 +99,9 @@ class ViViTVideoClassifier(nn.Module):
         frames = x.permute(0, 2, 1, 3, 4).reshape(b * t, c, h, w)
         tok = self.patch_embed(frames).flatten(2).transpose(1, 2)  # (BT, N, E)
         if int(tok.shape[1]) != int(self.num_patches):
-            raise ValueError(f"Unexpected patch token count: got N={tok.shape[1]}, expected {self.num_patches}")
+            raise ValueError(
+                f"Unexpected patch token count: got N={tok.shape[1]}, expected {self.num_patches}"
+            )
         tok = tok + self.pos_spatial
         tok = self.spatial(tok)
 
@@ -155,10 +157,17 @@ def build_vivit_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_vivit_video_classifier(in_channels=3, num_classes=6, variant="vivit_tiny", image_size=64, frames=8, width_mult=0.5, dropout=0.0)
+    m = build_vivit_video_classifier(
+        in_channels=3,
+        num_classes=6,
+        variant="vivit_tiny",
+        image_size=64,
+        frames=8,
+        width_mult=0.5,
+        dropout=0.0,
+    )
     y = m(x)
     print("vivit_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

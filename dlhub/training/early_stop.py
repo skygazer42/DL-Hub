@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 from typing import Literal
 
@@ -55,4 +54,3 @@ class EarlyStopping:
 
         self.bad_epochs += 1
         return self.bad_epochs >= int(self.patience)
-

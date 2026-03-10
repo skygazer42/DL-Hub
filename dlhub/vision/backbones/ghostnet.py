@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -9,7 +8,9 @@ def _c(ch: int, width_mult: float) -> int:
     return scale_channels(int(ch), float(width_mult), min_ch=8, divisor=8)
 
 
-def _cheap_depthwise(in_ch: int, out_ch: int, *, kernel_size: int = 3, stride: int = 1) -> nn.Sequential:
+def _cheap_depthwise(
+    in_ch: int, out_ch: int, *, kernel_size: int = 3, stride: int = 1
+) -> nn.Sequential:
     return nn.Sequential(
         nn.Conv2d(
             int(in_ch),
@@ -36,7 +37,11 @@ class GhostModule(nn.Module):
             nn.BatchNorm2d(primary),
             nn.ReLU(inplace=True),
         )
-        self.cheap = _cheap_depthwise(primary, cheap, kernel_size=3, stride=1) if cheap > 0 else nn.Identity()
+        self.cheap = (
+            _cheap_depthwise(primary, cheap, kernel_size=3, stride=1)
+            if cheap > 0
+            else nn.Identity()
+        )
         self.out_ch = out_ch
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -47,25 +52,47 @@ class GhostModule(nn.Module):
 
 
 class GhostBottleneck(nn.Module):
-    def __init__(self, in_ch: int, mid_ch: int, out_ch: int, *, stride: int, se_ratio: float) -> None:
+    def __init__(
+        self, in_ch: int, mid_ch: int, out_ch: int, *, stride: int, se_ratio: float
+    ) -> None:
         super().__init__()
         self.ghost1 = GhostModule(in_ch, mid_ch)
         self.dw = (
             nn.Sequential(
-                nn.Conv2d(int(mid_ch), int(mid_ch), kernel_size=3, stride=int(stride), padding=1, groups=int(mid_ch), bias=False),
+                nn.Conv2d(
+                    int(mid_ch),
+                    int(mid_ch),
+                    kernel_size=3,
+                    stride=int(stride),
+                    padding=1,
+                    groups=int(mid_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(mid_ch)),
             )
             if int(stride) != 1
             else nn.Identity()
         )
-        self.se = SqueezeExcite(int(mid_ch), se_ratio=float(se_ratio)) if float(se_ratio) > 0 else nn.Identity()
+        self.se = (
+            SqueezeExcite(int(mid_ch), se_ratio=float(se_ratio))
+            if float(se_ratio) > 0
+            else nn.Identity()
+        )
         self.ghost2 = GhostModule(mid_ch, out_ch)
 
         if int(stride) == 1 and int(in_ch) == int(out_ch):
             self.shortcut: nn.Module = nn.Identity()
         else:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(int(in_ch), int(in_ch), kernel_size=3, stride=int(stride), padding=1, groups=int(in_ch), bias=False),
+                nn.Conv2d(
+                    int(in_ch),
+                    int(in_ch),
+                    kernel_size=3,
+                    stride=int(stride),
+                    padding=1,
+                    groups=int(in_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(in_ch)),
                 nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, bias=False),
                 nn.BatchNorm2d(int(out_ch)),
@@ -80,11 +107,21 @@ class GhostBottleneck(nn.Module):
 
 
 class GhostNetClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, se_ratio: float) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width_mult: float,
+        dropout: float,
+        se_ratio: float,
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
-        self.stem = nn.Sequential(ConvBNAct(int(in_channels), _c(16, w), kernel_size=3, stride=2, act="relu"))
+        self.stem = nn.Sequential(
+            ConvBNAct(int(in_channels), _c(16, w), kernel_size=3, stride=2, act="relu")
+        )
 
         cfg = [
             # (exp, out, se, stride)
@@ -105,7 +142,9 @@ class GhostNetClassifier(nn.Module):
         layers: list[nn.Module] = []
         in_ch = _c(16, w)
         for exp, out, se, s in cfg:
-            layers.append(GhostBottleneck(in_ch, _c(exp, w), _c(out, w), stride=int(s), se_ratio=float(se)))
+            layers.append(
+                GhostBottleneck(in_ch, _c(exp, w), _c(out, w), stride=int(s), se_ratio=float(se))
+            )
             in_ch = _c(out, w)
         self.features = nn.Sequential(*layers)
 
@@ -169,4 +208,3 @@ if __name__ == "__main__":
         m = build_ghostnet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=1.0)
         y = m(x)
         print(v, tuple(y.shape))
-

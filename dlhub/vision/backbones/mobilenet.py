@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DepthwiseSeparableConv, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    DepthwiseSeparableConv,
+    SqueezeExcite,
+    scale_channels,
+)
 
 
 def _c(ch: int, width_mult: float, *, min_ch: int = 8, divisor: int = 8) -> int:
@@ -15,7 +19,9 @@ def _c(ch: int, width_mult: float, *, min_ch: int = 8, divisor: int = 8) -> int:
 
 
 class MobileNetV1Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -85,7 +91,9 @@ class InvertedResidualV2(nn.Module):
         layers: list[nn.Module] = []
         if int(expand_ratio) != 1:
             layers.append(ConvBNAct(in_ch, hidden, kernel_size=1, stride=1, act="relu6"))
-        layers.append(ConvBNAct(hidden, hidden, kernel_size=3, stride=int(stride), groups=hidden, act="relu6"))
+        layers.append(
+            ConvBNAct(hidden, hidden, kernel_size=3, stride=int(stride), groups=hidden, act="relu6")
+        )
         layers.append(
             nn.Sequential(
                 nn.Conv2d(hidden, int(out_ch), kernel_size=1, stride=1, padding=0, bias=False),
@@ -102,7 +110,9 @@ class InvertedResidualV2(nn.Module):
 
 
 class MobileNetV2Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -192,7 +202,11 @@ class InvertedResidualV3(nn.Module):
             groups=int(expand_ch),
             act=act,
         )
-        self.se = SqueezeExcite(int(expand_ch), se_ratio=float(se_ratio)) if float(se_ratio) > 0 else nn.Identity()
+        self.se = (
+            SqueezeExcite(int(expand_ch), se_ratio=float(se_ratio))
+            if float(se_ratio) > 0
+            else nn.Identity()
+        )
         self.project = nn.Sequential(
             nn.Conv2d(int(expand_ch), int(out_ch), kernel_size=1, stride=1, padding=0, bias=False),
             nn.BatchNorm2d(int(out_ch)),
@@ -209,7 +223,9 @@ class InvertedResidualV3(nn.Module):
 
 
 class MobileNetV3Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 

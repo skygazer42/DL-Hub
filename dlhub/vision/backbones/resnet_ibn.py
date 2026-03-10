@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -33,11 +32,15 @@ class IBN(nn.Module):
 
 
 def _conv3x3(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False
+    )
 
 
 def _conv1x1(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False
+    )
 
 
 class IBNBottleneck(nn.Module):
@@ -56,7 +59,9 @@ class IBNBottleneck(nn.Module):
         self.act = nn.ReLU(inplace=True)
         self.down: nn.Module | None = None
         if int(stride) != 1 or int(in_ch) != out_exp:
-            self.down = nn.Sequential(_conv1x1(in_ch, out_exp, stride=int(stride)), nn.BatchNorm2d(out_exp))
+            self.down = nn.Sequential(
+                _conv1x1(in_ch, out_exp, stride=int(stride)), nn.BatchNorm2d(out_exp)
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -99,7 +104,9 @@ class ResNetIBNClassifier(nn.Module):
 
     def _make_layer(self, out_ch: int, blocks: int, *, stride: int, use_ibn: bool) -> nn.Sequential:
         layers: list[nn.Module] = []
-        layers.append(IBNBottleneck(self.in_ch, int(out_ch), stride=int(stride), use_ibn=bool(use_ibn)))
+        layers.append(
+            IBNBottleneck(self.in_ch, int(out_ch), stride=int(stride), use_ibn=bool(use_ibn))
+        )
         self.in_ch = int(out_ch) * IBNBottleneck.expansion
         for _ in range(int(blocks) - 1):
             layers.append(IBNBottleneck(self.in_ch, int(out_ch), stride=1, use_ibn=bool(use_ibn)))
@@ -145,7 +152,8 @@ def build_resnet_ibn_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_resnet_ibn_classifier(in_channels=3, num_classes=10, variant="resnet_ibn50", width_mult=0.5)
+    m = build_resnet_ibn_classifier(
+        in_channels=3, num_classes=10, variant="resnet_ibn50", width_mult=0.5
+    )
     y = m(x)
     print("resnet_ibn50", tuple(y.shape))
-

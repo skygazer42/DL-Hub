@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -59,7 +58,9 @@ class WeightNetClassifier(nn.Module):
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
-        chs = tuple(scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels)
+        chs = tuple(
+            scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels
+        )
         self.stem = nn.Sequential(
             ConvBNAct(int(in_channels), chs[0], kernel_size=3, stride=2, act="relu"),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
@@ -119,7 +120,8 @@ def build_weightnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_weightnet_classifier(in_channels=3, num_classes=10, variant="weightnet_base", width_mult=0.5)
+    m = build_weightnet_classifier(
+        in_channels=3, num_classes=10, variant="weightnet_base", width_mult=0.5
+    )
     y = m(x)
     print("weightnet_base", tuple(y.shape))
-

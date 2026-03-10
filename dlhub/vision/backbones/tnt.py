@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath
-from dlhub.vision.backbones._transformer import TransformerEncoderBlock, PatchEmbed
+from dlhub.vision.backbones._transformer import PatchEmbed, TransformerEncoderBlock
 
 
 class TNTClassifier(nn.Module):
@@ -50,11 +48,29 @@ class TNTClassifier(nn.Module):
 
         # inner and outer transformers
         self.inner_blocks = nn.Sequential(
-            *[TransformerEncoderBlock(int(inner_dim), max(1, int(heads) // 2), mlp_ratio=2.0, dropout=0.0, drop_path=0.0) for _ in range(int(inner_depth))]
+            *[
+                TransformerEncoderBlock(
+                    int(inner_dim),
+                    max(1, int(heads) // 2),
+                    mlp_ratio=2.0,
+                    dropout=0.0,
+                    drop_path=0.0,
+                )
+                for _ in range(int(inner_depth))
+            ]
         )
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(outer_depth)).tolist()
         self.outer_blocks = nn.Sequential(
-            *[TransformerEncoderBlock(int(outer_dim), int(heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(dp_rates[i])) for i in range(int(outer_depth))]
+            *[
+                TransformerEncoderBlock(
+                    int(outer_dim),
+                    int(heads),
+                    mlp_ratio=4.0,
+                    dropout=0.0,
+                    drop_path=float(dp_rates[i]),
+                )
+                for i in range(int(outer_depth))
+            ]
         )
 
         self.proj_in_to_out = nn.Linear(int(inner_dim), int(outer_dim))
@@ -73,8 +89,19 @@ class TNTClassifier(nn.Module):
 
         # Group 2x2 inner tokens per outer patch: (B, H_out, 2, W_out, 2, D_in) -> (B*N_out, 4, D_in)
         h_out, w_out = self.hw_out
-        inner = inner.view(b, h_out, self.patch_size // self.inner_patch, w_out, self.patch_size // self.inner_patch, -1)
-        inner = inner.permute(0, 1, 3, 2, 4, 5).contiguous().view(b * (h_out * w_out), -1, inner.shape[-1])
+        inner = inner.view(
+            b,
+            h_out,
+            self.patch_size // self.inner_patch,
+            w_out,
+            self.patch_size // self.inner_patch,
+            -1,
+        )
+        inner = (
+            inner.permute(0, 1, 3, 2, 4, 5)
+            .contiguous()
+            .view(b * (h_out * w_out), -1, inner.shape[-1])
+        )
         inner = self.inner_blocks(inner)
         inner_summary = inner.mean(dim=1).view(b, h_out * w_out, -1)
 
@@ -128,4 +155,3 @@ if __name__ == "__main__":
     m = build_tnt_classifier(in_channels=3, num_classes=10, variant="tnt_tiny", image_size=64)
     y = m(x)
     print("tnt_tiny", tuple(y.shape))
-

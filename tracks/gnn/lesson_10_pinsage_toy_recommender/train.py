@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -161,7 +160,9 @@ def run_training(cfg: TrainConfig) -> int:
     device_info = resolve_device(cfg.device)
     device = device_info.torch_device
 
-    paths = build_run_paths(track="gnn", lesson="lesson_10_pinsage_toy_recommender", run_name=cfg.run_name)
+    paths = build_run_paths(
+        track="gnn", lesson="lesson_10_pinsage_toy_recommender", run_name=cfg.run_name
+    )
     logger = get_logger("gnn.pinsage_toy", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -174,7 +175,10 @@ def run_training(cfg: TrainConfig) -> int:
 
     model = PinSAGEItemEncoder(
         ModelConfig(
-            num_items=data.num_items, embed_dim=cfg.embed_dim, num_neighbors=cfg.num_neighbors, normalize=cfg.normalize
+            num_items=data.num_items,
+            embed_dim=cfg.embed_dim,
+            num_neighbors=cfg.num_neighbors,
+            normalize=cfg.normalize,
         )
     ).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.learning_rate)
@@ -197,8 +201,16 @@ def run_training(cfg: TrainConfig) -> int:
         total_loss = 0.0
 
         for _ in range(int(cfg.steps_per_epoch)):
-            item_ids = torch.randint(low=0, high=data.num_items, size=(int(cfg.batch_size),), generator=gen, device=device)
-            pos_ids = _sample_pos_items(item_ids=item_ids.cpu(), item_neighbors=data.item_neighbors, gen=gen).to(device)
+            item_ids = torch.randint(
+                low=0,
+                high=data.num_items,
+                size=(int(cfg.batch_size),),
+                generator=gen,
+                device=device,
+            )
+            pos_ids = _sample_pos_items(
+                item_ids=item_ids.cpu(), item_neighbors=data.item_neighbors, gen=gen
+            ).to(device)
             neg_ids = torch.randint(
                 low=0,
                 high=data.num_items,
@@ -212,7 +224,9 @@ def run_training(cfg: TrainConfig) -> int:
 
             b, k = neg_ids.shape
             neg_flat = neg_ids.reshape(-1)
-            neg_repr = model.encode(item_ids=neg_flat, neighbors=item_neighbors[neg_flat]).view(b, k, -1)
+            neg_repr = model.encode(item_ids=neg_flat, neighbors=item_neighbors[neg_flat]).view(
+                b, k, -1
+            )
 
             optimizer.zero_grad(set_to_none=True)
             loss = model.loss(center=center, pos=pos, neg=neg_repr)
@@ -223,7 +237,14 @@ def run_training(cfg: TrainConfig) -> int:
 
         avg_loss = total_loss / max(1, int(cfg.steps_per_epoch))
         recall_at_k = _eval_recall_at_k(data=data, model=model, device=device, k=int(cfg.eval_k))
-        logger.info("Epoch %d/%d | loss %.4f | recall@%d %.3f", epoch, cfg.epochs, avg_loss, cfg.eval_k, recall_at_k)
+        logger.info(
+            "Epoch %d/%d | loss %.4f | recall@%d %.3f",
+            epoch,
+            cfg.epochs,
+            avg_loss,
+            cfg.eval_k,
+            recall_at_k,
+        )
         append_jsonl(
             metrics_path,
             {
@@ -237,7 +258,9 @@ def run_training(cfg: TrainConfig) -> int:
 
     with torch.no_grad():
         item_ids = torch.arange(data.num_items, dtype=torch.long, device=device)
-        item_repr = model.encode(item_ids=item_ids, neighbors=item_neighbors[item_ids]).detach().cpu()
+        item_repr = (
+            model.encode(item_ids=item_ids, neighbors=item_neighbors[item_ids]).detach().cpu()
+        )
 
     torch.save(
         {"item_repr": item_repr, "neighbors": data.item_neighbors.cpu()},
@@ -267,4 +290,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

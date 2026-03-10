@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -90,7 +89,12 @@ class GMLPClassifier(nn.Module):
         )
         self.blocks = nn.Sequential(
             *[
-                GMLPBlock(int(embed_dim), num_tokens=int(num_tokens), ff_mult=int(ff_mult), dropout=float(dropout))
+                GMLPBlock(
+                    int(embed_dim),
+                    num_tokens=int(num_tokens),
+                    ff_mult=int(ff_mult),
+                    dropout=float(dropout),
+                )
                 for _ in range(int(depth))
             ]
         )
@@ -151,4 +155,3 @@ if __name__ == "__main__":
         m = build_gmlp_classifier(in_channels=3, num_classes=10, image_size=64, variant=v)
         y = m(x)
         print(v, tuple(y.shape))
-

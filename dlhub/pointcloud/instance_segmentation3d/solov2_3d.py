@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import GridSpec2D, Projection2DEncoder, YOLACTHead
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "solov2_3d_tiny": {"width": 64, "bev": 24, "instances": 16, "prototypes": 8},
@@ -28,7 +26,9 @@ class SOLOv2_3D(nn.Module):
     ) -> None:
         super().__init__()
         grid = GridSpec2D(h=int(bev), w=int(bev))
-        self.enc = Projection2DEncoder(int(in_channels), int(width), grid=grid, dropout=float(dropout))
+        self.enc = Projection2DEncoder(
+            int(in_channels), int(width), grid=grid, dropout=float(dropout)
+        )
         self.head = YOLACTHead(
             int(width),
             int(num_classes),
@@ -70,4 +70,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

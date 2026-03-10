@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -22,4 +21,3 @@ def test_to_device_moves_nested_structures() -> None:
     assert moved[1]["meta"]["id"] == 123
     assert moved[2][0].device == device
     assert moved[2][1] == "keep"
-

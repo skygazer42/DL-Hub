@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import PointQueryDetector3D, check_points
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "imvotenet_tiny": {"d_model": 64, "queries": 32},
@@ -15,7 +13,15 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class ImVoteNet(nn.Module):
     """ImVoteNet (toy): query-based detector (image fusion omitted in toy interface)."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, d_model: int, num_queries: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        d_model: int,
+        num_queries: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         # In real ImVoteNet, image cues influence voting. Here we keep a DETR-like head.
         self.det = PointQueryDetector3D(
@@ -59,4 +65,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

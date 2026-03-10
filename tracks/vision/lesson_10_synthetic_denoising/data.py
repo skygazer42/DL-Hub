@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -21,7 +20,9 @@ class DataConfig:
 
     in_channels: int = 1
     # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
-    noise_type: str = "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | clustered_impulse | shot_read | speckle | speckle_read | stripe | rain | block_bias | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
+    noise_type: str = (
+        "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | clustered_impulse | shot_read | speckle | speckle_read | stripe | rain | block_bias | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
+    )
     noise_std: float = 0.1  # Gaussian std in [0,1] scale
     noise_std_min: float = 0.05  # used when noise_type=gaussian_var
     noise_std_max: float = 0.2  # used when noise_type=gaussian_var
@@ -39,8 +40,12 @@ class DataConfig:
     rain_length_min: int = 10  # used when noise_type=rain (min streak length in px)
     rain_length_max: int = 24  # used when noise_type=rain (max streak length in px)
     rain_width: int = 1  # used when noise_type=rain (streak thickness in px)
-    rain_intensity_min: float = 0.06  # used when noise_type=rain (min additive intensity per streak)
-    rain_intensity_max: float = 0.16  # used when noise_type=rain (max additive intensity per streak)
+    rain_intensity_min: float = (
+        0.06  # used when noise_type=rain (min additive intensity per streak)
+    )
+    rain_intensity_max: float = (
+        0.16  # used when noise_type=rain (max additive intensity per streak)
+    )
     rain_angle_deg: float = 75.0  # used when noise_type=rain (0=→, 90=↓)
     rain_angle_jitter_deg: float = 15.0  # used when noise_type=rain
     block_size: int = 8  # used when noise_type=block_bias (block side length in pixels)
@@ -49,9 +54,13 @@ class DataConfig:
     quant_bits: int = 8  # used when noise_type=quantization
     quant_dither: bool = True  # whether to add uniform dither before quantization
     defect_prob: float = 0.002  # used when noise_type=dead_hot (sensor defect pixels)
-    defect_hot_ratio: float = 0.5  # fraction of defect pixels that are "hot" (1.0), rest are "dead" (0.0)
+    defect_hot_ratio: float = (
+        0.5  # fraction of defect pixels that are "hot" (1.0), rest are "dead" (0.0)
+    )
     line_prob: float = 0.01  # used when noise_type=line_defect (stuck rows/cols)
-    line_hot_ratio: float = 0.5  # fraction of defective lines that are "hot" (1.0), rest are "dead" (0.0)
+    line_hot_ratio: float = (
+        0.5  # fraction of defective lines that are "hot" (1.0), rest are "dead" (0.0)
+    )
     row_bias_std: float = 0.02  # used when noise_type=rowcol_bias
     col_bias_std: float = 0.02  # used when noise_type=rowcol_bias
     min_square: int = 8
@@ -67,7 +76,9 @@ class ToyDenoisingSquares(Dataset):
         self.cfg = cfg
         self.mode = str(mode).lower().strip()
         if self.mode not in {"supervised", "noise2noise", "blindspot"}:
-            raise ValueError(f"Unknown mode: {mode!r}. Expected 'supervised' | 'noise2noise' | 'blindspot'.")
+            raise ValueError(
+                f"Unknown mode: {mode!r}. Expected 'supervised' | 'noise2noise' | 'blindspot'."
+            )
 
         s = int(cfg.image_size)
         if s < 16:
@@ -92,8 +103,12 @@ class ToyDenoisingSquares(Dataset):
         lefts = torch.empty((n,), dtype=torch.long)
         for i in range(n):
             size = int(sizes[i].item())
-            top = int(torch.randint(low=0, high=max(1, s - size + 1), size=(1,), generator=g).item())
-            left = int(torch.randint(low=0, high=max(1, s - size + 1), size=(1,), generator=g).item())
+            top = int(
+                torch.randint(low=0, high=max(1, s - size + 1), size=(1,), generator=g).item()
+            )
+            left = int(
+                torch.randint(low=0, high=max(1, s - size + 1), size=(1,), generator=g).item()
+            )
             tops[i] = top
             lefts[i] = left
 
@@ -226,13 +241,17 @@ class ToyDenoisingSquares(Dataset):
 
             # Sample sparse cluster centers, then dilate to square "blobs" using max_pool2d.
             g1 = self._generator(idx, stream=stream, salt=21)
-            centers = (torch.rand((1, h, w), generator=g1, dtype=torch.float32) < cp).to(torch.float32)
+            centers = (torch.rand((1, h, w), generator=g1, dtype=torch.float32) < cp).to(
+                torch.float32
+            )
             if k == 1:
                 cluster = centers > 0.0
             else:
                 # Ensure odd kernel for symmetric padding.
                 kk = k if (k % 2 == 1) else (k + 1)
-                pooled = F.max_pool2d(centers.unsqueeze(0), kernel_size=kk, stride=1, padding=kk // 2)
+                pooled = F.max_pool2d(
+                    centers.unsqueeze(0), kernel_size=kk, stride=1, padding=kk // 2
+                )
                 cluster = pooled.squeeze(0) > 0.0  # (1,H,W)
 
             if p == 0.0 or not bool(cluster.any().item()):
@@ -316,7 +335,9 @@ class ToyDenoisingSquares(Dataset):
             phase = float(torch.rand((), generator=g).item()) * 2.0 * 3.141592653589793
 
             if direction == "random":
-                direction = "vertical" if float(torch.rand((), generator=g).item()) < 0.5 else "horizontal"
+                direction = (
+                    "vertical" if float(torch.rand((), generator=g).item()) < 0.5 else "horizontal"
+                )
 
             if direction == "vertical":
                 coord = torch.arange(w, dtype=torch.float32)[None, None, :]  # (1,1,W)
@@ -368,7 +389,10 @@ class ToyDenoisingSquares(Dataset):
             ys = torch.randint(0, h, (count,), generator=g, dtype=torch.long)
             lens = torch.randint(lmin, lmax + 1, (count,), generator=g, dtype=torch.long)
             intens = imin + torch.rand((count,), generator=g, dtype=torch.float32) * (imax - imin)
-            ang = angle + (torch.rand((count,), generator=g, dtype=torch.float32) * 2.0 - 1.0) * jitter
+            ang = (
+                angle
+                + (torch.rand((count,), generator=g, dtype=torch.float32) * 2.0 - 1.0) * jitter
+            )
             rad = ang * (math.pi / 180.0)
 
             dxs = torch.cos(rad).tolist()
@@ -405,7 +429,9 @@ class ToyDenoisingSquares(Dataset):
             noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(cfg.noise_std)
 
             # Simple 3x3 Gaussian-ish blur kernel (normalized).
-            k = torch.tensor([[1.0, 2.0, 1.0], [2.0, 4.0, 2.0], [1.0, 2.0, 1.0]], dtype=torch.float32)
+            k = torch.tensor(
+                [[1.0, 2.0, 1.0], [2.0, 4.0, 2.0], [1.0, 2.0, 1.0]], dtype=torch.float32
+            )
             k = k / k.sum()
             weight = k.view(1, 1, 3, 3).repeat(c, 1, 1, 1)  # (C,1,3,3)
             noise_corr = torch.nn.functional.conv2d(
@@ -422,16 +448,22 @@ class ToyDenoisingSquares(Dataset):
             rho = float(cfg.color_rho)
             if c == 1:
                 g = self._generator(idx, stream=stream, salt=20)
-                noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(cfg.noise_std)
+                noise = torch.randn((c, h, w), generator=g, dtype=torch.float32) * float(
+                    cfg.noise_std
+                )
                 return (clean + noise).clamp(0.0, 1.0)
 
             # Equicorrelated Gaussian across channels: Sigma = (1-rho)I + rho*11^T
             # PSD condition: -1/(C-1) <= rho < 1
             min_rho = -1.0 / float(c - 1)
             if not (min_rho <= rho < 1.0):
-                raise ValueError(f"color_rho must satisfy {min_rho:.4f} <= rho < 1 for C={c}, got {rho}")
+                raise ValueError(
+                    f"color_rho must satisfy {min_rho:.4f} <= rho < 1 for C={c}, got {rho}"
+                )
 
-            sigma = (1.0 - rho) * torch.eye(c, dtype=torch.float32) + rho * torch.ones((c, c), dtype=torch.float32)
+            sigma = (1.0 - rho) * torch.eye(c, dtype=torch.float32) + rho * torch.ones(
+                (c, c), dtype=torch.float32
+            )
             L = torch.linalg.cholesky(sigma)  # (C,C)
 
             g = self._generator(idx, stream=stream, salt=20)
@@ -599,11 +631,15 @@ class ToyDenoisingSquares(Dataset):
         left = torch.roll(noisy, shifts=1, dims=2)
         right = torch.roll(noisy, shifts=-1, dims=2)
 
-        rep = torch.where(sel == 0, up, torch.where(sel == 1, down, torch.where(sel == 2, left, right)))
+        rep = torch.where(
+            sel == 0, up, torch.where(sel == 1, down, torch.where(sel == 2, left, right))
+        )
         masked = noisy * (1.0 - mask) + rep * mask
         return masked
 
-    def __getitem__(self, idx: int) -> tuple[torch.Tensor, torch.Tensor] | tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    def __getitem__(
+        self, idx: int
+    ) -> tuple[torch.Tensor, torch.Tensor] | tuple[torch.Tensor, dict[str, torch.Tensor]]:
         i = int(idx)
         clean = self._clean(i)
 
@@ -631,7 +667,9 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     train_ds_full = ToyDenoisingSquares(cfg, mode=train_mode)
     val_ds_full = ToyDenoisingSquares(cfg, mode="supervised")
 
-    train_idx, val_idx = train_val_split_indices(n=len(train_ds_full), val_fraction=cfg.val_fraction, seed=cfg.seed)
+    train_idx, val_idx = train_val_split_indices(
+        n=len(train_ds_full), val_fraction=cfg.val_fraction, seed=cfg.seed
+    )
     train_ds = Subset(train_ds_full, train_idx)
     val_ds = Subset(val_ds_full, val_idx)
 

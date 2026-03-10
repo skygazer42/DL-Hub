@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -99,4 +98,3 @@ if __name__ == "__main__":
     m = build_kuan_filter_denoiser(in_channels=1, sigma=speckle_std, variant="kuan_tiny")
     out = m(noisy)
     print("kuan_tiny", tuple(out.shape), float((out - clean).pow(2).mean().item()))
-

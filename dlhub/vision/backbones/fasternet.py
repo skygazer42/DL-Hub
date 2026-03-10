@@ -1,8 +1,13 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    DropPath,
+    GlobalAvgPoolHead,
+    LayerNorm2d,
+    scale_channels,
+)
 
 
 class PartialConv2d(nn.Module):
@@ -139,6 +144,8 @@ def build_fasternet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_fasternet_classifier(in_channels=3, num_classes=10, variant="fasternet_t0", width_mult=0.5)
+    m = build_fasternet_classifier(
+        in_channels=3, num_classes=10, variant="fasternet_t0", width_mult=0.5
+    )
     y = m(x)
     print("fasternet_t0", tuple(y.shape))

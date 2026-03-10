@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class DPFedAvgStrategy(FederatedStrategy):
@@ -17,7 +22,9 @@ class DPFedAvgStrategy(FederatedStrategy):
         norms = state.raw_updates.norm(dim=1, keepdim=True).clamp_min(1e-6)
         clipped = state.raw_updates * (self.clip_norm / norms).clamp(max=1.0)
         noise = self.noise_std * torch.randn(self.param_dim, generator=gen)
-        server_params = state.server_params + weighted_average(clipped, state.client_weights) + noise
+        server_params = (
+            state.server_params + weighted_average(clipped, state.client_weights) + noise
+        )
         return {
             "server_params": server_params,
             "clipped_updates": clipped,

@@ -1,7 +1,7 @@
 from torch import nn
 
-from .fg_clip import FGCLIP
 from ._common import build_fgvc_model, make_fgvc_variants, smoke_test_classifier
+from .fg_clip import FGCLIP
 
 
 class MicroCLIP(FGCLIP):

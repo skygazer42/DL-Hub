@@ -1,4 +1,3 @@
-
 """PReNet (Progressive Recurrent Network) - toy-first implementation.
 
 Reference (original idea):
@@ -89,7 +88,9 @@ class PReNet(nn.Module):
             raise ValueError(f"Expected input shape (B, C, H, W), got {tuple(x.shape)}")
 
         y = x
-        h = torch.zeros((x.shape[0], int(self.hidden), x.shape[2], x.shape[3]), device=x.device, dtype=x.dtype)
+        h = torch.zeros(
+            (x.shape[0], int(self.hidden), x.shape[2], x.shape[3]), device=x.device, dtype=x.dtype
+        )
         for _ in range(int(self.stages)):
             h = self.cell(y, h)
             feat = self.refine(h)
@@ -132,4 +133,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

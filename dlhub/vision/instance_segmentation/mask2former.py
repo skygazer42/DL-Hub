@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nchw
@@ -56,7 +55,9 @@ class Mask2Former(nn.Module):
         self.det_proj = nn.Conv2d(int(det_channels), dm, kernel_size=1, bias=True)
         self.query = nn.Parameter(torch.randn(nq, dm) * 0.02)
 
-        self.cross = nn.ModuleList([nn.MultiheadAttention(dm, nh, batch_first=True) for _ in range(dl)])
+        self.cross = nn.ModuleList(
+            [nn.MultiheadAttention(dm, nh, batch_first=True) for _ in range(dl)]
+        )
         self.norm1 = nn.ModuleList([nn.LayerNorm(dm) for _ in range(dl)])
         self.ffn = nn.ModuleList(
             [
@@ -100,9 +101,36 @@ class Mask2Former(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "mask2former_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "queries": 16, "d_model": 80, "heads": 4, "layers": 2},
-    "mask2former_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "queries": 32, "d_model": 96, "heads": 4, "layers": 3},
-    "mask2former_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "queries": 64, "d_model": 128, "heads": 8, "layers": 4},
+    "mask2former_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "queries": 16,
+        "d_model": 80,
+        "heads": 4,
+        "layers": 2,
+    },
+    "mask2former_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "queries": 32,
+        "d_model": 96,
+        "heads": 4,
+        "layers": 3,
+    },
+    "mask2former_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "queries": 64,
+        "d_model": 128,
+        "heads": 8,
+        "layers": 4,
+    },
 }
 
 
@@ -115,7 +143,9 @@ def build_mask2former_instance_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Mask2Former variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Mask2Former variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -145,10 +175,11 @@ def build_mask2former_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_mask2former_instance_segmenter(in_channels=3, num_classes=3, variant="mask2former_tiny", width_mult=0.5)
+    m = build_mask2former_instance_segmenter(
+        in_channels=3, num_classes=3, variant="mask2former_tiny", width_mult=0.5
+    )
     out = m(x)
     print("mask2former_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

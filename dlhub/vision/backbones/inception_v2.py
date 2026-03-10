@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -48,7 +47,9 @@ class InceptionV2Classifier(nn.Module):
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
-        c1, c2, c3 = (scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels)
+        c1, c2, c3 = (
+            scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels
+        )
 
         self.stem = nn.Sequential(
             ConvBNAct(int(in_channels), c1, kernel_size=3, stride=2, act="relu"),
@@ -96,7 +97,9 @@ def build_inception_v2_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Inception-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Inception-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return InceptionV2Classifier(
         in_channels=int(in_channels),
@@ -110,6 +113,8 @@ def build_inception_v2_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_inception_v2_classifier(in_channels=3, num_classes=10, variant="inception_v2_tiny", width_mult=0.5)
+    m = build_inception_v2_classifier(
+        in_channels=3, num_classes=10, variant="inception_v2_tiny", width_mult=0.5
+    )
     y = m(x)
     print("inception_v2_tiny", tuple(y.shape))

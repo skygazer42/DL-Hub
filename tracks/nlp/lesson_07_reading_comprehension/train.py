@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -40,7 +39,9 @@ class Stats:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 07 (NLP): toy reading comprehension (span prediction).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 07 (NLP): toy reading comprehension (span prediction)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -151,7 +152,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="nlp", lesson="lesson_07_reading_comprehension", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="nlp", lesson="lesson_07_reading_comprehension", run_name=train_cfg.run_name
+    )
     logger = get_logger("nlp.toy_rc", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -229,7 +232,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         model=model,
         optimizer=optimizer,
         epoch=int(train_cfg.epochs),
-        extra={"track": "nlp", "lesson": "lesson_07_reading_comprehension", "vocab_size": vocab.size},
+        extra={
+            "track": "nlp",
+            "lesson": "lesson_07_reading_comprehension",
+            "vocab_size": vocab.size,
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
@@ -248,4 +255,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

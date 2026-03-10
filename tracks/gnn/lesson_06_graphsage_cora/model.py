@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -40,4 +39,3 @@ class GraphSAGE(nn.Module):
         x = torch.nn.functional.dropout(x, p=self.dropout, training=self.training)
         x = self.layer2(x, adj_row)
         return x
-

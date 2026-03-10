@@ -1,4 +1,3 @@
-
 """CTR-GCN (dynamic topology refinement) - toy-first skeleton action classifier.
 
 Reference (idea):
@@ -14,7 +13,6 @@ import math
 
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -87,7 +85,9 @@ class CTRGCNSkeletonClassifier(nn.Module):
 
         self.stem = nn.Conv2d(c_in, w, kernel_size=1, bias=True)
         attn_dim = max(8, w // 2)
-        self.blocks = nn.Sequential(*[CTRGCNBlock(channels=w, kt=int(kt), attn_dim=attn_dim) for _ in range(d)])
+        self.blocks = nn.Sequential(
+            *[CTRGCNBlock(channels=w, kt=int(kt), attn_dim=attn_dim) for _ in range(d)]
+        )
         self.dropout = nn.Dropout(float(dropout))
         self.classifier = nn.Linear(w, int(num_classes))
 
@@ -139,10 +139,17 @@ def build_ctr_gcn_skeleton_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 32, 17)
-    m = build_ctr_gcn_skeleton_classifier(in_channels=3, num_classes=6, num_joints=17, seq_len=32, variant="ctr_gcn_tiny", width_mult=0.5, dropout=0.0)
+    m = build_ctr_gcn_skeleton_classifier(
+        in_channels=3,
+        num_classes=6,
+        num_joints=17,
+        seq_len=32,
+        variant="ctr_gcn_tiny",
+        width_mult=0.5,
+        dropout=0.0,
+    )
     y = m(x)
     print("ctr_gcn_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

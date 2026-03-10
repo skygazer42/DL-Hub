@@ -1,11 +1,9 @@
-
 import math
 
 import torch
 from torch import nn
 
 from ._common import CenterProposalHead, PointNet2Encoder, l2_normalize, mlp
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "htc3d_tiny": {"width": 48, "instances": 16, "stages": 2},
@@ -30,9 +28,13 @@ class HTC3D(nn.Module):
         super().__init__()
         w = int(width)
         self.enc = PointNet2Encoder(int(in_channels), w, dropout=float(dropout))
-        self.stage1 = CenterProposalHead(w, int(num_classes), num_instances=int(num_instances), dropout=float(dropout))
+        self.stage1 = CenterProposalHead(
+            w, int(num_classes), num_instances=int(num_instances), dropout=float(dropout)
+        )
         self.stages = int(stages)
-        self.refiners = nn.ModuleList([mlp(w, [w, w], w, dropout=float(dropout)) for _ in range(self.stages)])
+        self.refiners = nn.ModuleList(
+            [mlp(w, [w, w], w, dropout=float(dropout)) for _ in range(self.stages)]
+        )
         self.cls = nn.Linear(w, int(num_classes))
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
@@ -47,7 +49,9 @@ class HTC3D(nn.Module):
             inst_feat = torch.einsum("bkn,bnd->bkd", w, feat)
             inst_feat = inst_feat + 0.1 * ref(inst_feat).tanh()
             d = feat.shape[-1]
-            mask_logits = torch.einsum("bkd,bnd->bkn", l2_normalize(inst_feat), l2_normalize(feat)) * math.sqrt(d)
+            mask_logits = torch.einsum(
+                "bkd,bnd->bkn", l2_normalize(inst_feat), l2_normalize(feat)
+            ) * math.sqrt(d)
 
         cls_logits = self.cls(inst_feat if inst_feat is not None else out["cls_logits"])
         return {"mask_logits": mask_logits, "cls_logits": cls_logits}
@@ -80,4 +84,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

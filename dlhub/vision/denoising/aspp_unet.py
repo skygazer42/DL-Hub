@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _DoubleConv(nn.Module):
@@ -45,7 +44,9 @@ class _Up(nn.Module):
 class ASPP(nn.Module):
     """Atrous Spatial Pyramid Pooling (ASPP), toy-first."""
 
-    def __init__(self, in_ch: int, out_ch: int, *, dilations: tuple[int, ...] = (1, 2, 4, 6)) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, dilations: tuple[int, ...] = (1, 2, 4, 6)
+    ) -> None:
         super().__init__()
         c_in = int(in_ch)
         c_out = int(out_ch)
@@ -58,7 +59,9 @@ class ASPP(nn.Module):
             if d == 1:
                 branches.append(nn.Conv2d(c_in, c_out, kernel_size=1, bias=True))
             else:
-                branches.append(nn.Conv2d(c_in, c_out, kernel_size=3, padding=d, dilation=d, bias=True))
+                branches.append(
+                    nn.Conv2d(c_in, c_out, kernel_size=3, padding=d, dilation=d, bias=True)
+                )
         self.branches = nn.ModuleList(branches)
 
         self.global_pool = nn.AdaptiveAvgPool2d(1)
@@ -173,4 +176,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

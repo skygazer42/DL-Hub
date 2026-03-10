@@ -1,10 +1,8 @@
-
 import torch
 from torch import nn
 from torch.nn import functional as F
 
 from ._common import PointNetEncoder, check_points, roi_pool_knn, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "point_rcnn_tiny": {"width": 64, "topk": 32, "roi_k": 8},
@@ -35,7 +33,11 @@ class PointRCNN(nn.Module):
         self.obj = nn.Linear(int(width), 1)
         self.reg = nn.Linear(int(width), 7)
 
-        self.refine = nn.Sequential(nn.Linear(int(width), int(width)), nn.ReLU(inplace=True), nn.Linear(int(width), int(width)))
+        self.refine = nn.Sequential(
+            nn.Linear(int(width), int(width)),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(width), int(width)),
+        )
         self.cls = nn.Linear(int(width), int(num_classes))
         self.box = nn.Linear(int(width), 7)
 
@@ -90,4 +92,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

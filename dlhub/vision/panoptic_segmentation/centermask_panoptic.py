@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, ProtoNet, check_nchw, fuse_panoptic
+from dlhub.vision.panoptic_segmentation._common import (
+    BackboneLowDet,
+    ProtoNet,
+    check_nchw,
+    fuse_panoptic,
+)
 
 
 class CenterMaskPanoptic(nn.Module):
@@ -55,9 +59,15 @@ class CenterMaskPanoptic(nn.Module):
 
         self.proto = ProtoNet(int(low_channels), np, depth=int(proto_depth), act="relu")
 
-        tower: list[nn.Module] = [ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")]
+        tower: list[nn.Module] = [
+            ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")
+        ]
         for _ in range(int(head_convs) - 1):
-            tower.append(ConvBNAct(int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"))
+            tower.append(
+                ConvBNAct(
+                    int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"
+                )
+            )
         self.tower = nn.Sequential(*tower)
 
         self.heatmap = nn.Conv2d(int(head_channels), nt, kernel_size=3, padding=1)
@@ -94,7 +104,9 @@ class CenterMaskPanoptic(nn.Module):
         # Scores from max heatmap per location.
         hm = heatmap.permute(0, 2, 3, 1).reshape(b, -1, int(self.num_thing_classes))
         instance_scores = hm.sigmoid().max(dim=-1).values
-        panoptic_map = fuse_panoptic(semantic_logits, mask_logits, instance_scores, thing_offset=int(self.num_stuff_classes))
+        panoptic_map = fuse_panoptic(
+            semantic_logits, mask_logits, instance_scores, thing_offset=int(self.num_stuff_classes)
+        )
 
         return {
             "semantic_logits": semantic_logits,
@@ -108,9 +120,30 @@ class CenterMaskPanoptic(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "centermask_panoptic_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "head": 80, "protos": 16},
-    "centermask_panoptic_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "head": 96, "protos": 32},
-    "centermask_panoptic_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "head": 128, "protos": 48},
+    "centermask_panoptic_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "head": 80,
+        "protos": 16,
+    },
+    "centermask_panoptic_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "head": 96,
+        "protos": 32,
+    },
+    "centermask_panoptic_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "head": 128,
+        "protos": 48,
+    },
 }
 
 
@@ -124,7 +157,9 @@ def build_centermask_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown CenterMask-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown CenterMask-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -152,11 +187,14 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_centermask_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="centermask_panoptic_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="centermask_panoptic_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("centermask_panoptic_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = out["semantic_logits"].mean() + out["heatmap"].mean() + out["mask_logits"].mean()
     loss.backward()
     print("ok")
-

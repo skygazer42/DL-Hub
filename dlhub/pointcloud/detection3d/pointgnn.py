@@ -1,12 +1,10 @@
-
 import math
 
 import torch
 from torch import nn
 from torch.nn import functional as F
 
-from ._common import EdgeConv, check_points, mlp, split_xyz_features
-
+from ._common import EdgeConv, check_points, split_xyz_features
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointgnn_tiny": {"width": 64, "k": 8, "proposals": 32},
@@ -90,4 +88,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

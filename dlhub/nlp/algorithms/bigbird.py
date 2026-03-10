@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -30,7 +29,9 @@ def build_bigbird_classifier(
     elif name in {"bigbird_base"}:
         embed_dim, heads, layers, window, rnd = 320, 5, 4, 8, 8
     else:
-        raise ValueError("Unknown BigBird variant. Supported: bigbird_tiny|bigbird_small|bigbird_base")
+        raise ValueError(
+            "Unknown BigBird variant. Supported: bigbird_tiny|bigbird_small|bigbird_base"
+        )
 
     return BigBirdClassifier(
         TransformerConfig(
@@ -61,6 +62,7 @@ def build_bigbird_classifier(
             bigbird_num_random=int(rnd),
         )
     )
+
 
 def registry() -> dict[str, Builder]:
     r: dict[str, Builder] = {}

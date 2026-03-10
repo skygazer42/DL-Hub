@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -40,7 +39,9 @@ class TransformerEncoderBlock(nn.Module):
     def __init__(self, embed_dim: int, num_heads: int, ff_dim: int, dropout: float) -> None:
         super().__init__()
         self.ln1 = nn.LayerNorm(int(embed_dim))
-        self.attn = MultiHeadSelfAttention(embed_dim=int(embed_dim), num_heads=int(num_heads), dropout=dropout)
+        self.attn = MultiHeadSelfAttention(
+            embed_dim=int(embed_dim), num_heads=int(num_heads), dropout=dropout
+        )
         self.drop1 = nn.Dropout(p=float(dropout))
 
         self.ln2 = nn.LayerNorm(int(embed_dim))
@@ -165,14 +166,25 @@ class _MLP(nn.Sequential):
 
 
 class MixerBlock(nn.Module):
-    def __init__(self, num_tokens: int, embed_dim: int, token_mlp_dim: int, channel_mlp_dim: int, dropout: float) -> None:
+    def __init__(
+        self,
+        num_tokens: int,
+        embed_dim: int,
+        token_mlp_dim: int,
+        channel_mlp_dim: int,
+        dropout: float,
+    ) -> None:
         super().__init__()
         self.ln1 = nn.LayerNorm(int(embed_dim))
-        self.token_mlp = _MLP(int(num_tokens), int(token_mlp_dim), int(num_tokens), dropout=float(dropout))
+        self.token_mlp = _MLP(
+            int(num_tokens), int(token_mlp_dim), int(num_tokens), dropout=float(dropout)
+        )
         self.drop1 = nn.Dropout(p=float(dropout))
 
         self.ln2 = nn.LayerNorm(int(embed_dim))
-        self.channel_mlp = _MLP(int(embed_dim), int(channel_mlp_dim), int(embed_dim), dropout=float(dropout))
+        self.channel_mlp = _MLP(
+            int(embed_dim), int(channel_mlp_dim), int(embed_dim), dropout=float(dropout)
+        )
         self.drop2 = nn.Dropout(p=float(dropout))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -281,7 +293,13 @@ class ConvMixerBlock(nn.Module):
     def __init__(self, dim: int, *, kernel_size: int, dropout: float) -> None:
         super().__init__()
         self.dw = nn.Sequential(
-            nn.Conv2d(int(dim), int(dim), kernel_size=int(kernel_size), padding=int(kernel_size) // 2, groups=int(dim)),
+            nn.Conv2d(
+                int(dim),
+                int(dim),
+                kernel_size=int(kernel_size),
+                padding=int(kernel_size) // 2,
+                groups=int(dim),
+            ),
             nn.GELU(),
             nn.BatchNorm2d(int(dim)),
         )
@@ -315,7 +333,9 @@ class ConvMixerClassifier(nn.Module):
         )
         self.blocks = nn.Sequential(
             *[
-                ConvMixerBlock(int(cfg.embed_dim), kernel_size=int(cfg.kernel_size), dropout=float(cfg.dropout))
+                ConvMixerBlock(
+                    int(cfg.embed_dim), kernel_size=int(cfg.kernel_size), dropout=float(cfg.dropout)
+                )
                 for _ in range(int(cfg.depth))
             ]
         )
@@ -354,4 +374,3 @@ def build_convmixer_classifier(
             num_classes=int(num_classes),
         )
     )
-

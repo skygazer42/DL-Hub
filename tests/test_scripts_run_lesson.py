@@ -1,4 +1,3 @@
-
 import subprocess
 import sys
 from pathlib import Path
@@ -44,4 +43,3 @@ def test_run_lesson_dry_run_resolves_train_module() -> None:
     )
     assert proc.returncode == 0
     assert "tracks.vision.lesson_01_mnist_lenet.train" in proc.stdout
-

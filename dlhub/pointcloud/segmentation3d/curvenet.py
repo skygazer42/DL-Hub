@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import index_points, knn_indices
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "curvenet_tiny": {"width": 64, "k": 16},
@@ -17,7 +15,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class CurveNetSeg(nn.Module):
     """CurveNet semantic segmentation (toy): ordered neighbor conv along distance."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, k: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, k: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.k = int(k)
         w = int(width)
@@ -29,7 +29,9 @@ class CurveNetSeg(nn.Module):
             nn.Conv1d(w, w, kernel_size=1),
             nn.ReLU(inplace=True),
         )
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -78,4 +80,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

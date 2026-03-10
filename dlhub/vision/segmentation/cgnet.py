@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.segmentation._common import check_nchw
@@ -37,9 +36,9 @@ class _ContextGuidedBlock(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         y = self.reduce(x)
-        l = self.local(y)
+        local_feat = self.local(y)
         s = self.context(y)
-        y = self.fuse(torch.cat([l, s], dim=1))
+        y = self.fuse(torch.cat([local_feat, s], dim=1))
         return self.act(x + y)
 
 
@@ -106,7 +105,12 @@ def build_cgnet_segmenter(
         raise ValueError(f"Unknown CGNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
     base = scale_channels(int(spec["base_channels"]), float(width_mult), min_ch=16, divisor=8)
-    return CGNet(in_channels=int(in_channels), num_classes=int(num_classes), base_channels=int(base), depth=int(spec["depth"]))
+    return CGNet(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        base_channels=int(base),
+        depth=int(spec["depth"]),
+    )
 
 
 if __name__ == "__main__":
@@ -118,4 +122,3 @@ if __name__ == "__main__":
     loss = y.mean()
     loss.backward()
     print("ok")
-

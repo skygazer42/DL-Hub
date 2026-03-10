@@ -1,4 +1,3 @@
-
 import argparse
 import importlib
 import pkgutil
@@ -63,10 +62,16 @@ def smoke_one(module_name: str, *, image_size: int = 64) -> str:
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="List/smoke local backbone modules (algorithm-family files).")
+    p = argparse.ArgumentParser(
+        description="List/smoke local backbone modules (algorithm-family files)."
+    )
     p.add_argument("--list", action="store_true", help="List available algorithm-family modules.")
-    p.add_argument("--include-aggregators", action="store_true", help="Include legacy aggregator modules.")
-    p.add_argument("--smoke", type=str, default=None, help="Smoke one module by name (e.g. resnet).")
+    p.add_argument(
+        "--include-aggregators", action="store_true", help="Include legacy aggregator modules."
+    )
+    p.add_argument(
+        "--smoke", type=str, default=None, help="Smoke one module by name (e.g. resnet)."
+    )
     p.add_argument("--image-size", type=int, default=64, help="Image size for smoke.")
     return p.parse_args()
 

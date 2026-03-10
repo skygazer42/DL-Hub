@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.detection._common import check_nchw
@@ -106,7 +105,9 @@ class YOLOv8PAN(nn.Module):
 class YOLOv8Head(nn.Module):
     """Anchor-free decoupled head with a tiny DFL-style branch."""
 
-    def __init__(self, *, channels: int, num_classes: int, reg_max: int = 8, num_convs: int = 2) -> None:
+    def __init__(
+        self, *, channels: int, num_classes: int, reg_max: int = 8, num_convs: int = 2
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -128,7 +129,9 @@ class YOLOv8Head(nn.Module):
         self.box = nn.Conv2d(c, 4, kernel_size=1)
         self.dfl = nn.Conv2d(c, 4 * rm, kernel_size=1)
 
-    def forward_single(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward_single(
+        self, x: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         x = self.stem(x)
         cls_feat = self.cls_tower(x)
         reg_feat = self.reg_tower(x)
@@ -185,9 +188,39 @@ class YOLOv8Detector(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "yolov8_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "backbone_depth": 1, "neck": 64, "neck_depth": 1, "head": 1, "reg_max": 8},
-    "yolov8_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "backbone_depth": 2, "neck": 96, "neck_depth": 1, "head": 2, "reg_max": 8},
-    "yolov8_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "backbone_depth": 3, "neck": 128, "neck_depth": 2, "head": 2, "reg_max": 12},
+    "yolov8_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "backbone_depth": 1,
+        "neck": 64,
+        "neck_depth": 1,
+        "head": 1,
+        "reg_max": 8,
+    },
+    "yolov8_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "backbone_depth": 2,
+        "neck": 96,
+        "neck_depth": 1,
+        "head": 2,
+        "reg_max": 8,
+    },
+    "yolov8_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "backbone_depth": 3,
+        "neck": 128,
+        "neck_depth": 2,
+        "head": 2,
+        "reg_max": 12,
+    },
 }
 
 

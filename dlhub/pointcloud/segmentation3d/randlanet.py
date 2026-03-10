@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import FeaturePropagation, PointMLP, SetAbstraction, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "randlanet_tiny": {"width": 32, "k": 8},
@@ -15,7 +13,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class RandLANetSeg(nn.Module):
     """RandLA-Net semantic segmentation (toy): random/decimated hierarchy + attention pooling."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, k: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, k: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         w = int(width)
         self.stem = PointMLP(int(in_channels), w, depth=2, dropout=float(dropout))
@@ -27,7 +27,9 @@ class RandLANetSeg(nn.Module):
         self.fp2 = FeaturePropagation(w * 4 + w * 2, w * 2, dropout=float(dropout))
         self.fp1 = FeaturePropagation(w * 2 + w, w, dropout=float(dropout))
         self.fp0 = FeaturePropagation(w + w, w, dropout=float(dropout))
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)

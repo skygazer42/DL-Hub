@@ -1,9 +1,8 @@
-
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -71,7 +70,9 @@ def _window_partition(x: torch.Tensor, window_size: int) -> torch.Tensor:
     return x.view(b * (h // ws) * (w // ws), ws * ws, c)
 
 
-def _window_reverse(windows: torch.Tensor, window_size: int, *, b: int, h: int, w: int, c: int) -> torch.Tensor:
+def _window_reverse(
+    windows: torch.Tensor, window_size: int, *, b: int, h: int, w: int, c: int
+) -> torch.Tensor:
     # windows: (B*nW, ws*ws, C) -> (B, H, W, C)
     ws = int(window_size)
     x = windows.view(b, h // ws, w // ws, ws, ws, c)
@@ -195,12 +196,16 @@ class SCUNet(nn.Module):
                 for i in range(ad)
             ]
         )
-        self.bottleneck_conv = nn.Conv2d(bottleneck_dim, bottleneck_dim, kernel_size=3, padding=1, bias=True)
+        self.bottleneck_conv = nn.Conv2d(
+            bottleneck_dim, bottleneck_dim, kernel_size=3, padding=1, bias=True
+        )
 
         self.ups = nn.ModuleList()
         self.decs = nn.ModuleList()
         for i in range(lv - 1, 0, -1):
-            self.ups.append(nn.ConvTranspose2d(dims[i], dims[i - 1], kernel_size=2, stride=2, bias=True))
+            self.ups.append(
+                nn.ConvTranspose2d(dims[i], dims[i - 1], kernel_size=2, stride=2, bias=True)
+            )
             self.decs.append(nn.Sequential(_ResBlock(dims[i - 1]), _ResBlock(dims[i - 1])))
 
         self.outro = nn.Conv2d(dims[0], c_in, kernel_size=3, padding=1, bias=True)
@@ -210,7 +215,6 @@ class SCUNet(nn.Module):
         if x.ndim != 4:
             raise ValueError(f"Expected input shape (B, C, H, W), got {tuple(x.shape)}")
 
-        inp = x
         x_pad, pad_hw = pad_to_multiple(x, self.pad_multiple, mode="reflect")
 
         y = F.relu(self.intro(x_pad), inplace=True)
@@ -274,4 +278,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

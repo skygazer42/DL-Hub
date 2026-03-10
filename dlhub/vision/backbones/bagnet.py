@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -57,7 +56,9 @@ class BagNetClassifier(nn.Module):
         for i, (out_ch, d) in enumerate(zip(chs, depths)):
             blocks: list[nn.Module] = []
             if i > 0:
-                blocks.append(ConvBNAct(in_ch, out_ch, kernel_size=1, stride=2, padding=0, act="relu"))
+                blocks.append(
+                    ConvBNAct(in_ch, out_ch, kernel_size=1, stride=2, padding=0, act="relu")
+                )
                 in_ch = out_ch
             for j in range(int(d)):
                 blocks.append(BagNetBlock(in_ch, use_3x3=((j % int(use_3x3_every)) == 0), drop=0.0))
@@ -109,4 +110,3 @@ if __name__ == "__main__":
         m = build_bagnet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.5)
         y = m(x)
         print(v, tuple(y.shape))
-

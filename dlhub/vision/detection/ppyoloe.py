@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, SqueezeExcite, scale_channels
 from dlhub.vision.detection._common import BackboneC3C5, ConvTower, check_nchw
@@ -29,7 +28,9 @@ class PAFPN(nn.Module):
         self.out4 = ConvBNAct(out, out, kernel_size=3, stride=1, act="silu")
         self.out5 = ConvBNAct(out, out, kernel_size=3, stride=1, act="silu")
 
-    def forward(self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         p5 = self.l5(c5)
         p4 = self.l4(c4) + F.interpolate(p5, size=c4.shape[-2:], mode="nearest")
         p3 = self.l3(c3) + F.interpolate(p4, size=c3.shape[-2:], mode="nearest")
@@ -97,7 +98,9 @@ class PPYOLOEDetector(nn.Module):
             act="silu",
         )
         self.neck = PAFPN((c3, c4, c5), out)
-        self.head = PPYOLOEHead(channels=out, num_classes=int(num_classes), num_convs=int(head_convs))
+        self.head = PPYOLOEHead(
+            channels=out, num_classes=int(num_classes), num_convs=int(head_convs)
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -152,7 +155,10 @@ if __name__ == "__main__":
     m = build_ppyoloe_detector(in_channels=3, num_classes=3, variant="ppyoloe_tiny", width_mult=0.5)
     out = m(x)
     print("ppyoloe_tiny", [tuple(t.shape) for t in out["obj_logits"]])
-    loss = sum(t.mean() for t in out["obj_logits"]) + sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
+    loss = (
+        sum(t.mean() for t in out["obj_logits"])
+        + sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["bbox_deltas"])
+    )
     loss.backward()
     print("ok")
-

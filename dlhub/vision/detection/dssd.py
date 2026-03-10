@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -62,7 +61,9 @@ class _BackboneC3C5(nn.Module):
 
 
 class DSSDHead(nn.Module):
-    def __init__(self, *, channels: int, num_classes: int, num_anchors: int, num_convs: int = 2) -> None:
+    def __init__(
+        self, *, channels: int, num_classes: int, num_anchors: int, num_convs: int = 2
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -75,13 +76,17 @@ class DSSDHead(nn.Module):
         if n <= 0:
             raise ValueError("num_convs must be > 0")
 
-        tower = nn.Sequential(*[ConvBNAct(c, c, kernel_size=3, stride=1, act="relu") for _ in range(n)])
+        tower = nn.Sequential(
+            *[ConvBNAct(c, c, kernel_size=3, stride=1, act="relu") for _ in range(n)]
+        )
         self.cls_tower = tower
         self.box_tower = tower
         self.cls = nn.Conv2d(c, na * nc, kernel_size=3, padding=1)
         self.box = nn.Conv2d(c, na * 4, kernel_size=3, padding=1)
 
-    def forward(self, feats: tuple[torch.Tensor, ...]) -> tuple[list[torch.Tensor], list[torch.Tensor]]:
+    def forward(
+        self, feats: tuple[torch.Tensor, ...]
+    ) -> tuple[list[torch.Tensor], list[torch.Tensor]]:
         cls_out: list[torch.Tensor] = []
         box_out: list[torch.Tensor] = []
         for f in feats:
@@ -178,8 +183,11 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 128, 128)
     m = build_dssd_detector(in_channels=3, num_classes=3, variant="dssd_tiny", width_mult=0.5)
     out = m(x)
-    print("dssd_tiny", [tuple(t.shape) for t in out["cls_logits"]], [tuple(t.shape) for t in out["bbox_deltas"]])
+    print(
+        "dssd_tiny",
+        [tuple(t.shape) for t in out["cls_logits"]],
+        [tuple(t.shape) for t in out["bbox_deltas"]],
+    )
     loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
     loss.backward()
     print("ok")
-

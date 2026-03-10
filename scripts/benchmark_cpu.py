@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 import time
@@ -11,7 +10,9 @@ def _ensure_repo_root_on_path() -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="DL-Hub: tiny CPU benchmark for the training loop.")
+    parser = argparse.ArgumentParser(
+        description="DL-Hub: tiny CPU benchmark for the training loop."
+    )
     parser.add_argument("--batches", type=int, default=100, help="Number of train batches to run.")
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--num-samples", type=int, default=2048)
@@ -88,4 +89,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

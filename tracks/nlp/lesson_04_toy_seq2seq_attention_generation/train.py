@@ -1,4 +1,3 @@
-
 import argparse
 import json
 import sys
@@ -40,7 +39,9 @@ class Stats:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 04 (NLP): toy seq2seq generation with attention.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 04 (NLP): toy seq2seq generation with attention."
+    )
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -175,7 +176,9 @@ def _write_samples(
     src_mask = inputs["src_mask"][:8].to(device)
     tgt_out = targets["tgt_out_ids"][:8].tolist()
 
-    pred = model.greedy_decode(src_ids=src_ids, src_mask=src_mask, max_len=int(inputs["tgt_in_ids"].shape[1]))
+    pred = model.greedy_decode(
+        src_ids=src_ids, src_mask=src_mask, max_len=int(inputs["tgt_in_ids"].shape[1])
+    )
     pred = pred.cpu().tolist()
 
     rows = []
@@ -183,7 +186,9 @@ def _write_samples(
         rows.append(
             {
                 "epoch": int(epoch),
-                "src": [vocab.id_to_token(x) for x in src_ids[i].cpu().tolist() if x != vocab.pad_id],
+                "src": [
+                    vocab.id_to_token(x) for x in src_ids[i].cpu().tolist() if x != vocab.pad_id
+                ],
                 "tgt": [vocab.id_to_token(x) for x in tgt_out[i] if x != vocab.pad_id],
                 "pred": [vocab.id_to_token(x) for x in pred[i] if x != vocab.pad_id],
             }
@@ -199,7 +204,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     device_info = resolve_device(train_cfg.device)
 
     paths = build_run_paths(
-        track="nlp", lesson="lesson_04_toy_seq2seq_attention_generation", run_name=train_cfg.run_name
+        track="nlp",
+        lesson="lesson_04_toy_seq2seq_attention_generation",
+        run_name=train_cfg.run_name,
     )
     logger = get_logger("nlp.toy_seq2seq_att", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
@@ -291,7 +298,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         model=model,
         optimizer=optimizer,
         epoch=int(train_cfg.epochs),
-        extra={"track": "nlp", "lesson": "lesson_04_toy_seq2seq_attention_generation", "vocab_size": vocab.size},
+        extra={
+            "track": "nlp",
+            "lesson": "lesson_04_toy_seq2seq_attention_generation",
+            "vocab_size": vocab.size,
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
@@ -310,4 +321,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

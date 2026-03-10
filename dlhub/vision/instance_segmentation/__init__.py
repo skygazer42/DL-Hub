@@ -9,8 +9,8 @@ from .bcnet import BCNet, build_bcnet_instance_segmenter
 from .blendmask import BlendMask, build_blendmask_instance_segmenter
 from .boxinst import BoxInst, build_boxinst_instance_segmenter
 from .cascade_mask_rcnn import CascadeMaskRCNN, build_cascade_mask_rcnn_instance_segmenter
-from .cfm import CFM, build_cfm_instance_segmenter
 from .centermask import CenterMask, build_centermask_instance_segmenter
+from .cfm import CFM, build_cfm_instance_segmenter
 from .condinst import CondInst, build_condinst_instance_segmenter
 from .dct_mask import DCTMask, build_dct_mask_instance_segmenter
 from .deepmask import DeepMask, build_deepmask_instance_segmenter
@@ -22,8 +22,8 @@ from .fastinst import FastInst, build_fastinst_instance_segmenter
 from .fcis import FCIS, build_fcis_instance_segmenter
 from .htc import HTC, build_htc_instance_segmenter
 from .instancefcn import InstanceFCN, build_instancefcn_instance_segmenter
-from .mask_dino import MaskDINO, build_mask_dino_instance_segmenter
 from .mask2former import Mask2Former, build_mask2former_instance_segmenter
+from .mask_dino import MaskDINO, build_mask_dino_instance_segmenter
 from .mask_rcnn import MaskRCNNInstanceSegmenter, build_mask_rcnn_instance_segmenter
 from .mask_scoring_rcnn import MaskScoringRCNN, build_mask_scoring_rcnn_instance_segmenter
 from .maskformer import MaskFormer, build_maskformer_instance_segmenter

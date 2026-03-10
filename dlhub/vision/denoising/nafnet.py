@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -33,7 +32,9 @@ class NAFBlock(nn.Module):
 
         self.norm1 = LayerNorm2d(c)
         self.pw1 = nn.Conv2d(c, dw_ch * 2, kernel_size=1, bias=True)
-        self.dwconv = nn.Conv2d(dw_ch * 2, dw_ch * 2, kernel_size=3, padding=1, groups=dw_ch * 2, bias=True)
+        self.dwconv = nn.Conv2d(
+            dw_ch * 2, dw_ch * 2, kernel_size=3, padding=1, groups=dw_ch * 2, bias=True
+        )
         self.sg = SimpleGate()
 
         self.sca_pool = nn.AdaptiveAvgPool2d((1, 1))
@@ -93,7 +94,12 @@ class NAFNet(nn.Module):
         self.intro = nn.Conv2d(c_in, dims[0], kernel_size=3, padding=1, bias=True)
 
         def make_stage(ch: int, depth: int) -> nn.Sequential:
-            return nn.Sequential(*[NAFBlock(ch, dw_expand=int(dw_expand), ffn_expand=int(ffn_expand)) for _ in range(int(depth))])
+            return nn.Sequential(
+                *[
+                    NAFBlock(ch, dw_expand=int(dw_expand), ffn_expand=int(ffn_expand))
+                    for _ in range(int(depth))
+                ]
+            )
 
         self.enc1 = make_stage(dims[0], depths[0])
         self.down1 = nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2, bias=True)
@@ -103,15 +109,21 @@ class NAFNet(nn.Module):
         self.down3 = nn.Conv2d(dims[2], dims[3], kernel_size=2, stride=2, bias=True)
         self.bottleneck = make_stage(dims[3], depths[3])
 
-        self.up3 = nn.Sequential(nn.Conv2d(dims[3], dims[2] * 4, kernel_size=1, bias=True), nn.PixelShuffle(2))
+        self.up3 = nn.Sequential(
+            nn.Conv2d(dims[3], dims[2] * 4, kernel_size=1, bias=True), nn.PixelShuffle(2)
+        )
         self.reduce3 = nn.Conv2d(dims[2] * 2, dims[2], kernel_size=1, bias=True)
         self.dec3 = make_stage(dims[2], max(1, depths[2] // 2))
 
-        self.up2 = nn.Sequential(nn.Conv2d(dims[2], dims[1] * 4, kernel_size=1, bias=True), nn.PixelShuffle(2))
+        self.up2 = nn.Sequential(
+            nn.Conv2d(dims[2], dims[1] * 4, kernel_size=1, bias=True), nn.PixelShuffle(2)
+        )
         self.reduce2 = nn.Conv2d(dims[1] * 2, dims[1], kernel_size=1, bias=True)
         self.dec2 = make_stage(dims[1], max(1, depths[1] // 2))
 
-        self.up1 = nn.Sequential(nn.Conv2d(dims[1], dims[0] * 4, kernel_size=1, bias=True), nn.PixelShuffle(2))
+        self.up1 = nn.Sequential(
+            nn.Conv2d(dims[1], dims[0] * 4, kernel_size=1, bias=True), nn.PixelShuffle(2)
+        )
         self.reduce1 = nn.Conv2d(dims[0] * 2, dims[0], kernel_size=1, bias=True)
         self.dec1 = make_stage(dims[0], max(1, depths[0] // 2))
 
@@ -177,4 +189,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

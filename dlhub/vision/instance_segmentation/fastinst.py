@@ -1,10 +1,13 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-from dlhub.vision.instance_segmentation._common import BackbonePyramid, InstanceTokenHead, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackbonePyramid,
+    InstanceTokenHead,
+    check_nchw,
+)
 
 
 class FastInst(nn.Module):
@@ -33,7 +36,9 @@ class FastInst(nn.Module):
             p4_channels=int(p4_channels),
             depth=int(backbone_depth),
         )
-        self.tokens = InstanceTokenHead(int(p4_channels), int(hidden_channels), int(num_queries), depth=2)
+        self.tokens = InstanceTokenHead(
+            int(p4_channels), int(hidden_channels), int(num_queries), depth=2
+        )
         self.cls_head = nn.Linear(int(hidden_channels), int(num_classes))
         self.box_head = nn.Linear(int(hidden_channels), 4)
         self.group_head = nn.Linear(int(hidden_channels), int(num_queries))
@@ -50,8 +55,13 @@ class FastInst(nn.Module):
         boxes = torch.sigmoid(self.box_head(tokens))
         group_logits = self.group_head(tokens)
         mask_logits = self.mask_head(tokens).view(b, q, self.mask_size, self.mask_size)
-        fusion = (p2.mean(dim=1, keepdim=True) + F.interpolate(p3.mean(dim=1, keepdim=True), size=p2.shape[-2:], mode="nearest")) * 0.5
-        mask_logits = F.interpolate(mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False) + fusion.expand(-1, q, -1, -1)
+        fusion = (
+            p2.mean(dim=1, keepdim=True)
+            + F.interpolate(p3.mean(dim=1, keepdim=True), size=p2.shape[-2:], mode="nearest")
+        ) * 0.5
+        mask_logits = F.interpolate(
+            mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False
+        ) + fusion.expand(-1, q, -1, -1)
         return {
             "cls_logits": cls_logits,
             "boxes": boxes,
@@ -61,9 +71,36 @@ class FastInst(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "fastinst_tiny": {"stem": 24, "p2": 40, "p3": 64, "p4": 96, "hidden": 96, "depth": 1, "queries": 16, "mask": 16},
-    "fastinst_small": {"stem": 24, "p2": 48, "p3": 80, "p4": 128, "hidden": 128, "depth": 2, "queries": 24, "mask": 16},
-    "fastinst_base": {"stem": 32, "p2": 64, "p3": 96, "p4": 160, "hidden": 160, "depth": 3, "queries": 32, "mask": 28},
+    "fastinst_tiny": {
+        "stem": 24,
+        "p2": 40,
+        "p3": 64,
+        "p4": 96,
+        "hidden": 96,
+        "depth": 1,
+        "queries": 16,
+        "mask": 16,
+    },
+    "fastinst_small": {
+        "stem": 24,
+        "p2": 48,
+        "p3": 80,
+        "p4": 128,
+        "hidden": 128,
+        "depth": 2,
+        "queries": 24,
+        "mask": 16,
+    },
+    "fastinst_base": {
+        "stem": 32,
+        "p2": 64,
+        "p3": 96,
+        "p4": 160,
+        "hidden": 160,
+        "depth": 3,
+        "queries": 32,
+        "mask": 28,
+    },
 }
 
 
@@ -87,7 +124,9 @@ def build_fastinst_instance_segmenter(
         p2_channels=scale_channels(int(spec["p2"]), float(width_mult), min_ch=16, divisor=8),
         p3_channels=scale_channels(int(spec["p3"]), float(width_mult), min_ch=16, divisor=8),
         p4_channels=scale_channels(int(spec["p4"]), float(width_mult), min_ch=16, divisor=8),
-        hidden_channels=scale_channels(int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8),
+        hidden_channels=scale_channels(
+            int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8
+        ),
         backbone_depth=int(spec["depth"]),
         num_queries=int(spec["queries"]) if num_queries is None else int(num_queries),
         mask_size=int(spec["mask"]),
@@ -97,7 +136,9 @@ def build_fastinst_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_fastinst_instance_segmenter(in_channels=3, num_classes=3, variant="fastinst_tiny", width_mult=0.5)
+    m = build_fastinst_instance_segmenter(
+        in_channels=3, num_classes=3, variant="fastinst_tiny", width_mult=0.5
+    )
     out = m(x)
     print("fastinst_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

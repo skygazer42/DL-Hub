@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.deformable_detr import build_deformable_detr_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "deta_tiny": "deformable_detr_tiny",

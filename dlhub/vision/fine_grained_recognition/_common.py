@@ -1,10 +1,9 @@
-
 import math
 from typing import Any
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -23,14 +22,68 @@ _GROUP_SPECS: dict[str, dict[str, dict[str, int]]] = {
         "base": {"stem": 32, "c2": 64, "c3": 96, "c4": 160, "embed": 160, "parts": 8, "depth": 3},
     },
     "part": {
-        "tiny": {"stem": 24, "c2": 40, "c3": 64, "c4": 96, "embed": 96, "parts": 4, "depth": 1, "glimpses": 2},
-        "small": {"stem": 24, "c2": 48, "c3": 80, "c4": 128, "embed": 128, "parts": 6, "depth": 2, "glimpses": 3},
-        "base": {"stem": 32, "c2": 64, "c3": 96, "c4": 160, "embed": 160, "parts": 8, "depth": 3, "glimpses": 4},
+        "tiny": {
+            "stem": 24,
+            "c2": 40,
+            "c3": 64,
+            "c4": 96,
+            "embed": 96,
+            "parts": 4,
+            "depth": 1,
+            "glimpses": 2,
+        },
+        "small": {
+            "stem": 24,
+            "c2": 48,
+            "c3": 80,
+            "c4": 128,
+            "embed": 128,
+            "parts": 6,
+            "depth": 2,
+            "glimpses": 3,
+        },
+        "base": {
+            "stem": 32,
+            "c2": 64,
+            "c3": 96,
+            "c4": 160,
+            "embed": 160,
+            "parts": 8,
+            "depth": 3,
+            "glimpses": 4,
+        },
     },
     "relation": {
-        "tiny": {"stem": 24, "c2": 40, "c3": 64, "c4": 96, "embed": 96, "parts": 4, "depth": 1, "slots": 4},
-        "small": {"stem": 24, "c2": 48, "c3": 80, "c4": 128, "embed": 128, "parts": 6, "depth": 2, "slots": 6},
-        "base": {"stem": 32, "c2": 64, "c3": 96, "c4": 160, "embed": 160, "parts": 8, "depth": 3, "slots": 8},
+        "tiny": {
+            "stem": 24,
+            "c2": 40,
+            "c3": 64,
+            "c4": 96,
+            "embed": 96,
+            "parts": 4,
+            "depth": 1,
+            "slots": 4,
+        },
+        "small": {
+            "stem": 24,
+            "c2": 48,
+            "c3": 80,
+            "c4": 128,
+            "embed": 128,
+            "parts": 6,
+            "depth": 2,
+            "slots": 6,
+        },
+        "base": {
+            "stem": 32,
+            "c2": 64,
+            "c3": 96,
+            "c4": 160,
+            "embed": 160,
+            "parts": 8,
+            "depth": 3,
+            "slots": 8,
+        },
     },
     "transformer": {
         "tiny": {"patch": 8, "embed": 96, "depth": 2, "heads": 4, "parts": 4},
@@ -52,7 +105,9 @@ class ConvStage(nn.Module):
         d = int(depth)
         if d <= 0:
             raise ValueError("depth must be > 0")
-        layers: list[nn.Module] = [ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), act="relu")]
+        layers: list[nn.Module] = [
+            ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), act="relu")
+        ]
         for _ in range(d):
             layers.append(ConvBNAct(int(out_ch), int(out_ch), kernel_size=3, stride=1, act="relu"))
         self.net = nn.Sequential(*layers)
@@ -64,7 +119,9 @@ class ConvStage(nn.Module):
 class TinyFGBackbone(nn.Module):
     """Compact CNN backbone that returns /4, /8, /16 feature maps."""
 
-    def __init__(self, *, in_channels: int, stem: int, c2: int, c3: int, c4: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem: int, c2: int, c3: int, c4: int, depth: int
+    ) -> None:
         super().__init__()
         self.stem = ConvBNAct(int(in_channels), int(stem), kernel_size=3, stride=2, act="relu")
         self.stage2 = ConvStage(int(stem), int(c2), depth=int(depth), stride=2)
@@ -94,13 +151,24 @@ class PartAttentionPool(nn.Module):
 
 
 class TinyPatchEncoder(nn.Module):
-    def __init__(self, *, in_channels: int, image_size: int, patch_size: int, embed_dim: int, depth: int, heads: int) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        image_size: int,
+        patch_size: int,
+        embed_dim: int,
+        depth: int,
+        heads: int,
+    ) -> None:
         super().__init__()
         img = int(image_size)
         patch = int(patch_size)
         if img % patch != 0:
             raise ValueError(f"image_size ({img}) must be divisible by patch_size ({patch})")
-        self.patch_embed = nn.Conv2d(int(in_channels), int(embed_dim), kernel_size=patch, stride=patch)
+        self.patch_embed = nn.Conv2d(
+            int(in_channels), int(embed_dim), kernel_size=patch, stride=patch
+        )
         grid = img // patch
         num_patches = grid * grid
         self.cls_token = nn.Parameter(torch.zeros(1, 1, int(embed_dim)))
@@ -150,7 +218,9 @@ class BilinearFGVCModel(nn.Module):
         embed = scale_channels(int(spec["embed"]), float(width_mult), min_ch=16, divisor=8)
         parts = int(spec["parts"])
         self.family = str(family)
-        self.backbone = TinyFGBackbone(in_channels=int(in_channels), stem=stem, c2=c2, c3=c3, c4=c4, depth=int(spec["depth"]))
+        self.backbone = TinyFGBackbone(
+            in_channels=int(in_channels), stem=stem, c2=c2, c3=c3, c4=c4, depth=int(spec["depth"])
+        )
         self.part_pool = PartAttentionPool(c3, parts)
         self.global_proj = nn.Linear(c4, embed)
         self.part_proj = nn.Linear(c3, embed)
@@ -224,7 +294,9 @@ class PartFGVCModel(nn.Module):
         parts = int(spec["parts"])
         glimpses = int(spec["glimpses"])
         self.family = str(family)
-        self.backbone = TinyFGBackbone(in_channels=int(in_channels), stem=stem, c2=c2, c3=c3, c4=c4, depth=int(spec["depth"]))
+        self.backbone = TinyFGBackbone(
+            in_channels=int(in_channels), stem=stem, c2=c2, c3=c3, c4=c4, depth=int(spec["depth"])
+        )
         self.part_pool = PartAttentionPool(c3, parts)
         self.global_proj = nn.Linear(c4, embed)
         self.part_proj = nn.Linear(c3, embed)
@@ -270,7 +342,9 @@ class PartFGVCModel(nn.Module):
         elif self.family == "s3n":
             out["snapshot_logits"] = c2.mean(dim=(2, 3))
         elif self.family == "mge_cnn":
-            out["granularity_logits"] = torch.stack([part_tokens.mean(dim=1), part_tokens.max(dim=1).values], dim=1)
+            out["granularity_logits"] = torch.stack(
+                [part_tokens.mean(dim=1), part_tokens.max(dim=1).values], dim=1
+            )
         elif self.family == "pmg":
             out["progressive_logits"] = torch.stack([global_feat, part_feat], dim=1)
         return out
@@ -298,7 +372,9 @@ class RelationFGVCModel(nn.Module):
         parts = int(spec["parts"])
         slots = int(spec["slots"])
         self.family = str(family)
-        self.backbone = TinyFGBackbone(in_channels=int(in_channels), stem=stem, c2=c2, c3=c3, c4=c4, depth=int(spec["depth"]))
+        self.backbone = TinyFGBackbone(
+            in_channels=int(in_channels), stem=stem, c2=c2, c3=c3, c4=c4, depth=int(spec["depth"])
+        )
         self.part_pool = PartAttentionPool(c3, parts)
         self.global_proj = nn.Linear(c4, embed)
         self.part_proj = nn.Linear(c3, embed)
@@ -312,7 +388,9 @@ class RelationFGVCModel(nn.Module):
         attn, part_tokens = self.part_pool(c3)
         global_feat = self.global_proj(F.adaptive_avg_pool2d(c4, (1, 1)).flatten(1))
         part_embed = self.part_proj(part_tokens)
-        relation = torch.matmul(part_embed, part_embed.transpose(1, 2)) / math.sqrt(max(part_embed.shape[-1], 1))
+        relation = torch.matmul(part_embed, part_embed.transpose(1, 2)) / math.sqrt(
+            max(part_embed.shape[-1], 1)
+        )
         proto_scores = torch.einsum("bpc,kc->bpk", part_embed, self.prototype_bank).mean(dim=1)
         embedding = torch.tanh(global_feat + part_embed.mean(dim=1))
         logits = self.classifier(self.dropout(embedding))
@@ -410,7 +488,9 @@ class TransformerFGVCModel(nn.Module):
         elif self.family == "sim_trans":
             out["similarity_logits"] = torch.matmul(selected, selected.transpose(1, 2))
         elif self.family == "pca_net":
-            out["co_attention"] = torch.softmax(torch.matmul(selected, selected.transpose(1, 2)), dim=-1)
+            out["co_attention"] = torch.softmax(
+                torch.matmul(selected, selected.transpose(1, 2)), dim=-1
+            )
         elif self.family == "metaformer_fgvc":
             out["meta_token"] = cls_token + self.meta_token.squeeze(1)
         elif self.family == "pim":
@@ -423,7 +503,9 @@ class TransformerFGVCModel(nn.Module):
 def smoke_test_classifier(builder, variant: str) -> None:
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    model = builder(in_channels=3, num_classes=5, variant=variant, image_size=64, width_mult=0.5, dropout=0.0)
+    model = builder(
+        in_channels=3, num_classes=5, variant=variant, image_size=64, width_mult=0.5, dropout=0.0
+    )
     out = model(x)
     print(variant, {k: tuple(v.shape) for k, v in out.items() if torch.is_tensor(v)})
     loss = sum(v.to(torch.float32).mean() for v in out.values() if torch.is_tensor(v))

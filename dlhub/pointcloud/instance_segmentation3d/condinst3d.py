@@ -1,11 +1,9 @@
-
 import math
 
 import torch
 from torch import nn
 
 from ._common import PointNet2Encoder, l2_normalize
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "condinst3d_tiny": {"width": 48, "instances": 16},
@@ -45,7 +43,9 @@ class CondInst3D(nn.Module):
         inst_feat = self.drop(inst_feat)
         kernel = self.kernel(inst_feat)
 
-        mask_logits = torch.einsum("bkd,bnd->bkn", l2_normalize(kernel), l2_normalize(feat)) * math.sqrt(w)
+        mask_logits = torch.einsum(
+            "bkd,bnd->bkn", l2_normalize(kernel), l2_normalize(feat)
+        ) * math.sqrt(w)
         cls_logits = self.cls(inst_feat)
         return {"mask_logits": mask_logits, "cls_logits": cls_logits}
 
@@ -71,9 +71,10 @@ def build_condinst3d_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_condinst3d_instance_segmenter3d(in_channels=3, num_classes=6, variant="condinst3d_tiny")
+    m = build_condinst3d_instance_segmenter3d(
+        in_channels=3, num_classes=6, variant="condinst3d_tiny"
+    )
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

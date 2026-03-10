@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -100,7 +99,9 @@ def build_toy_recommender_data(cfg: DataConfig) -> ToyRecData:
 
     noise = 0.10
     for u in range(num_users):
-        scores = (u_true[u].unsqueeze(0) * v_true).sum(dim=1) + noise * torch.randn((num_items,), generator=gen)
+        scores = (u_true[u].unsqueeze(0) * v_true).sum(dim=1) + noise * torch.randn(
+            (num_items,), generator=gen
+        )
         top_items = torch.topk(scores, k=n_total, largest=True).indices.to(torch.long)
         perm = torch.randperm(n_total, generator=gen)
         top_items = top_items[perm]
@@ -137,4 +138,3 @@ def build_toy_recommender_data(cfg: DataConfig) -> ToyRecData:
 
 
 __all__ = ["DataConfig", "ToyRecData", "build_toy_recommender_data"]
-

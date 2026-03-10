@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -185,4 +184,3 @@ if __name__ == "__main__":
 
 
 __all__ = ["CNNBiLSTMTextClassifier", "CNNBiLSTMConfig", "build_cnn_bilstm_classifier", "registry"]
-

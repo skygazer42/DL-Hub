@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -6,7 +5,9 @@ from dlhub.vision.backbones._blocks import GlobalAvgPoolHead, scale_channels
 
 
 class _DenseLayer(nn.Module):
-    def __init__(self, in_ch: int, growth_rate: int, *, bn_size: int = 4, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_ch: int, growth_rate: int, *, bn_size: int = 4, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         inter = int(bn_size) * int(growth_rate)
         self.norm1 = nn.BatchNorm2d(int(in_ch))
@@ -44,7 +45,9 @@ class _DenseBlock(nn.Module):
         layers: list[nn.Module] = []
         c = int(in_ch)
         for _ in range(int(num_layers)):
-            layers.append(_DenseLayer(c, int(growth_rate), bn_size=int(bn_size), dropout=float(dropout)))
+            layers.append(
+                _DenseLayer(c, int(growth_rate), bn_size=int(bn_size), dropout=float(dropout))
+            )
             c += int(growth_rate)
         self.block = nn.Sequential(*layers)
         self.out_channels = c
@@ -111,7 +114,9 @@ class DenseNetClassifier(nn.Module):
         b4 = _DenseBlock(block_layers[3], c, g, dropout=float(dropout))
         c = b4.out_channels
 
-        self.features = nn.Sequential(b1, t1, b2, t2, b3, t3, b4, nn.BatchNorm2d(c), nn.ReLU(inplace=True))
+        self.features = nn.Sequential(
+            b1, t1, b2, t2, b3, t3, b4, nn.BatchNorm2d(c), nn.ReLU(inplace=True)
+        )
         self.head = GlobalAvgPoolHead(c, int(num_classes), dropout=float(dropout))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -156,7 +161,8 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     for v in ["densenet121", "densenet201"]:
-        m = build_densenet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.5, dropout=0.1)
+        m = build_densenet_classifier(
+            in_channels=3, num_classes=10, variant=v, width_mult=0.5, dropout=0.1
+        )
         y = m(x)
         print(v, tuple(y.shape))
-

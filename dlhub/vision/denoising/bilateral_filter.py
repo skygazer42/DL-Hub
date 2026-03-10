@@ -1,12 +1,11 @@
-
-import math
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
-def _spatial_kernel(radius: int, sigma: float, *, device: torch.device, dtype: torch.dtype) -> torch.Tensor:
+def _spatial_kernel(
+    radius: int, sigma: float, *, device: torch.device, dtype: torch.dtype
+) -> torch.Tensor:
     r = int(radius)
     if r < 0:
         raise ValueError("radius must be >= 0")
@@ -68,7 +67,11 @@ class BilateralFilter(nn.Module):
         self.register_buffer("_spatial_w", torch.empty(0), persistent=False)
 
     def _get_spatial_w(self, *, device: torch.device, dtype: torch.dtype) -> torch.Tensor:
-        if self._spatial_w.numel() == 0 or self._spatial_w.device != device or self._spatial_w.dtype != dtype:
+        if (
+            self._spatial_w.numel() == 0
+            or self._spatial_w.device != device
+            or self._spatial_w.dtype != dtype
+        ):
             w = _spatial_kernel(self.radius, self.spatial_sigma, device=device, dtype=dtype)
             self._spatial_w = w
         return self._spatial_w
@@ -121,7 +124,9 @@ def build_bilateral_filter_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown BilateralFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown BilateralFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     # Heuristic mapping: use sigma as range sigma.
@@ -143,4 +148,3 @@ if __name__ == "__main__":
     m = build_bilateral_filter_denoiser(in_channels=1, sigma=0.12, variant="bilateral_fast")
     y = m(noisy)
     print("bilateral_fast", tuple(y.shape), float((y - x).pow(2).mean().item()))
-

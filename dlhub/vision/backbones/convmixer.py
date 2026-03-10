@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -44,7 +43,12 @@ class ConvMixerClassifier(nn.Module):
             raise ValueError("image_size must be divisible by patch_size")
 
         self.patch_embed = nn.Sequential(
-            nn.Conv2d(int(in_channels), int(embed_dim), kernel_size=int(patch_size), stride=int(patch_size)),
+            nn.Conv2d(
+                int(in_channels),
+                int(embed_dim),
+                kernel_size=int(patch_size),
+                stride=int(patch_size),
+            ),
             nn.GELU(),
             nn.BatchNorm2d(int(embed_dim)),
         )
@@ -106,4 +110,3 @@ if __name__ == "__main__":
         m = build_convmixer_classifier(in_channels=3, num_classes=10, variant=v, patch_size=8)
         y = m(x)
         print(f"convmixer_{v}", tuple(y.shape))
-

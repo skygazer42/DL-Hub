@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 
@@ -38,4 +37,3 @@ def unpad(
     h_end = None if pad_h == 0 else -pad_h
     w_end = None if pad_w == 0 else -pad_w
     return x[..., :h_end, :w_end]
-

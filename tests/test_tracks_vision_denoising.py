@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -19,7 +18,16 @@ torch = pytest.importorskip("torch")
         ("speckle_read", {"speckle_std": 0.15, "read_noise": 0.02}),
         ("stripe", {"stripe_amplitude": 0.12, "stripe_period": 8}),
         ("stripe", {"stripe_amplitude": 0.12, "stripe_period": 8, "stripe_direction": "random"}),
-        ("rain", {"rain_count": 24, "rain_length_min": 8, "rain_length_max": 18, "rain_intensity_min": 0.05, "rain_intensity_max": 0.14}),
+        (
+            "rain",
+            {
+                "rain_count": 24,
+                "rain_length_min": 8,
+                "rain_length_max": 18,
+                "rain_intensity_min": 0.05,
+                "rain_intensity_max": 0.14,
+            },
+        ),
         ("block_bias", {"block_size": 8, "block_std": 0.05}),
         ("correlated_gaussian", {}),
         ("quantization", {"quant_bits": 6, "quant_dither": False}),
@@ -159,7 +167,9 @@ def test_vision_denoising_noise2noise_training_pair_smoke() -> None:
     assert tuple(noisy1.shape) == (4, 1, 32, 32)
     assert tuple(noisy2.shape) == (4, 1, 32, 32)
 
-    model = build_model(ModelConfig(arch="noise2noise_unet:n2n_unet_tiny", variant="", in_channels=1, sigma=0.15))
+    model = build_model(
+        ModelConfig(arch="noise2noise_unet:n2n_unet_tiny", variant="", in_channels=1, sigma=0.15)
+    )
     pred = model(noisy1)
     loss = torch.nn.L1Loss()(pred, noisy2)
     assert torch.isfinite(loss)
@@ -291,7 +301,11 @@ def test_vision_denoising_defect_baselines_reduce_error_smoke() -> None:
     noisy[:, :, 6, 7] = 1.0
     noisy[:, :, 10, 10] = 0.0
 
-    model = build_model(ModelConfig(arch="dead_hot_pixel_corrector:dead_hot_tiny", variant="", in_channels=1, sigma=0.1))
+    model = build_model(
+        ModelConfig(
+            arch="dead_hot_pixel_corrector:dead_hot_tiny", variant="", in_channels=1, sigma=0.1
+        )
+    )
     out = model(noisy)
     assert (out - clean).abs().mean().item() < (noisy - clean).abs().mean().item()
 
@@ -301,7 +315,11 @@ def test_vision_denoising_defect_baselines_reduce_error_smoke() -> None:
     noisy2[:, :, 3, :] = 1.0  # hot row
     noisy2[:, :, :, 4] = 1.0  # hot col
 
-    model = build_model(ModelConfig(arch="line_defect_corrector:line_defect_tiny", variant="", in_channels=1, sigma=0.1))
+    model = build_model(
+        ModelConfig(
+            arch="line_defect_corrector:line_defect_tiny", variant="", in_channels=1, sigma=0.1
+        )
+    )
     out2 = model(noisy2)
     assert (out2 - clean2).abs().mean().item() < (noisy2 - clean2).abs().mean().item()
 
@@ -311,7 +329,11 @@ def test_vision_denoising_defect_baselines_reduce_error_smoke() -> None:
     col_bias = torch.randn(1, 1, 1, 32) * 0.04
     noisy3 = (clean3 + row_bias + col_bias).clamp(0.0, 1.0)
 
-    model = build_model(ModelConfig(arch="rowcol_bias_corrector:rowcol_bias_tiny", variant="", in_channels=1, sigma=0.1))
+    model = build_model(
+        ModelConfig(
+            arch="rowcol_bias_corrector:rowcol_bias_tiny", variant="", in_channels=1, sigma=0.1
+        )
+    )
     out3 = model(noisy3)
     assert (out3 - clean3).abs().mean().item() < (noisy3 - clean3).abs().mean().item()
 
@@ -321,7 +343,11 @@ def test_vision_denoising_defect_baselines_reduce_error_smoke() -> None:
     block_bias = block_bias.repeat_interleave(8, dim=-2).repeat_interleave(8, dim=-1)
     noisy4 = (clean4 + block_bias).clamp(0.0, 1.0)
 
-    model = build_model(ModelConfig(arch="block_bias_corrector:block_bias_tiny", variant="", in_channels=1, sigma=0.1))
+    model = build_model(
+        ModelConfig(
+            arch="block_bias_corrector:block_bias_tiny", variant="", in_channels=1, sigma=0.1
+        )
+    )
     out4 = model(noisy4)
     assert (out4 - clean4).abs().mean().item() < (noisy4 - clean4).abs().mean().item()
 
@@ -332,12 +358,16 @@ def test_vision_denoising_defect_baselines_reduce_error_smoke() -> None:
     levels = float((1 << bits) - 1)
     noisy5 = torch.round(ramp * levels) / levels
 
-    model = build_model(ModelConfig(arch="debanding_filter:deband_tiny", variant="", in_channels=1, sigma=0.1))
+    model = build_model(
+        ModelConfig(arch="debanding_filter:deband_tiny", variant="", in_channels=1, sigma=0.1)
+    )
     out5 = model(noisy5)
     assert (out5 - ramp).abs().mean().item() < (noisy5 - ramp).abs().mean().item()
 
 
-def test_vision_denoising_train_parse_args_wires_clustered_impulse_params(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_vision_denoising_train_parse_args_wires_clustered_impulse_params(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     import sys
 
     from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
@@ -361,7 +391,9 @@ def test_vision_denoising_train_parse_args_wires_clustered_impulse_params(monkey
     assert data_cfg.cluster_size == 7
 
 
-def test_vision_denoising_train_parse_args_wires_block_bias_params(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_vision_denoising_train_parse_args_wires_block_bias_params(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     import sys
 
     from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
@@ -385,7 +417,9 @@ def test_vision_denoising_train_parse_args_wires_block_bias_params(monkeypatch: 
     assert data_cfg.block_std == pytest.approx(0.07)
 
 
-def test_vision_denoising_train_parse_args_wires_rain_params(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_vision_denoising_train_parse_args_wires_rain_params(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     import sys
 
     from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
@@ -424,7 +458,9 @@ def test_vision_denoising_train_parse_args_wires_rain_params(monkeypatch: pytest
     assert data_cfg.rain_angle_jitter_deg == pytest.approx(8.0)
 
 
-def test_vision_denoising_train_parse_args_list_noise_types(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
+def test_vision_denoising_train_parse_args_list_noise_types(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
     import sys
 
     from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
@@ -441,7 +477,9 @@ def test_vision_denoising_train_parse_args_list_noise_types(monkeypatch: pytest.
     assert len(out) >= 19
 
 
-def test_vision_denoising_train_parse_args_list_arch_families(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
+def test_vision_denoising_train_parse_args_list_arch_families(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
     import sys
 
     from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
@@ -504,7 +542,9 @@ def test_vision_denoising_train_parse_args_list_arch_respects_list_limit(
 
     from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
 
-    monkeypatch.setattr(sys, "argv", ["prog", "--list-arch", "--arch-family", "dncnn", "--list-limit", "2"])
+    monkeypatch.setattr(
+        sys, "argv", ["prog", "--list-arch", "--arch-family", "dncnn", "--list-limit", "2"]
+    )
 
     with pytest.raises(SystemExit) as exc:
         parse_args()
@@ -596,13 +636,17 @@ def test_vision_denoising_train_parse_args_list_sort_requires_list_flag(
     assert "--list-sort" in capsys.readouterr().err
 
 
-def test_vision_denoising_train_parse_args_print_config_json(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
+def test_vision_denoising_train_parse_args_print_config_json(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
+) -> None:
     import json
     import sys
 
     from tracks.vision.lesson_10_synthetic_denoising.train import parse_args
 
-    monkeypatch.setattr(sys, "argv", ["prog", "--print-config", "--epochs", "3", "--noise-type", "gaussian"])
+    monkeypatch.setattr(
+        sys, "argv", ["prog", "--print-config", "--epochs", "3", "--noise-type", "gaussian"]
+    )
 
     with pytest.raises(SystemExit) as exc:
         parse_args()
@@ -620,7 +664,12 @@ def test_vision_denoising_cli_list_noise_types_does_not_print_pynvml_warning() -
 
     repo_root = Path(__file__).resolve().parents[1]
     proc = subprocess.run(
-        [sys.executable, "-m", "tracks.vision.lesson_10_synthetic_denoising.train", "--list-noise-types"],
+        [
+            sys.executable,
+            "-m",
+            "tracks.vision.lesson_10_synthetic_denoising.train",
+            "--list-noise-types",
+        ],
         cwd=str(repo_root),
         check=False,
         capture_output=True,

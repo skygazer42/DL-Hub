@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -145,9 +144,9 @@ def run_training(cfg: TrainConfig) -> int:
         drop_last=False,
     )
 
-    model = MetaPath2Vec(ModelConfig(num_nodes=graph.num_nodes, embed_dim=cfg.embed_dim, sparse=cfg.sparse)).to(
-        device_info.torch_device
-    )
+    model = MetaPath2Vec(
+        ModelConfig(num_nodes=graph.num_nodes, embed_dim=cfg.embed_dim, sparse=cfg.sparse)
+    ).to(device_info.torch_device)
     optimizer: torch.optim.Optimizer
     if cfg.sparse:
         optimizer = torch.optim.SparseAdam(model.parameters(), lr=cfg.learning_rate)
@@ -186,7 +185,9 @@ def run_training(cfg: TrainConfig) -> int:
 
         avg_loss = total_loss / max(1, total_steps)
         logger.info("Epoch %d/%d | loss %.4f", epoch, cfg.epochs, avg_loss)
-        append_jsonl(metrics_path, {"epoch": epoch, "loss": avg_loss, "lr": optimizer.param_groups[0]["lr"]})
+        append_jsonl(
+            metrics_path, {"epoch": epoch, "loss": avg_loss, "lr": optimizer.param_groups[0]["lr"]}
+        )
 
     torch.save(
         {

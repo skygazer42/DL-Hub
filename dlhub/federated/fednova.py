@@ -2,14 +2,21 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class FedNovaStrategy(FederatedStrategy):
     def simulate_round(self, *, seed: int = 0) -> dict[str, torch.Tensor]:
         state = self._sample_round_state(seed=seed)
         normalized_updates = state.raw_updates / state.client_steps.unsqueeze(1)
-        server_params = state.server_params + weighted_average(normalized_updates, state.client_weights)
+        server_params = state.server_params + weighted_average(
+            normalized_updates, state.client_weights
+        )
         return {
             "server_params": server_params,
             "normalized_updates": normalized_updates,

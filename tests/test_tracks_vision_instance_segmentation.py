@@ -1,11 +1,13 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
 def test_vision_synth_instance_seg_shapes_and_one_step_smoke() -> None:
-    from tracks.vision.lesson_11_synthetic_instance_segmentation_yolact.data import DataConfig, get_dataloaders
+    from tracks.vision.lesson_11_synthetic_instance_segmentation_yolact.data import (
+        DataConfig,
+        get_dataloaders,
+    )
     from tracks.vision.lesson_11_synthetic_instance_segmentation_yolact.model import (
         ModelConfig,
         TinyYOLACT,
@@ -35,7 +37,9 @@ def test_vision_synth_instance_seg_shapes_and_one_step_smoke() -> None:
     assert tuple(targets["pos_mask"].shape) == (2, 1, 8, 8)
     assert tuple(targets["mask"].shape) == (2, 1, 64, 64)
 
-    model = TinyYOLACT(ModelConfig(in_channels=1, num_classes=1, variant="yolact_tiny", width_mult=0.5))
+    model = TinyYOLACT(
+        ModelConfig(in_channels=1, num_classes=1, variant="yolact_tiny", width_mult=0.5)
+    )
     out = model(x)
     assert set(out.keys()) == {"proto", "cls_logits", "bbox_deltas", "mask_coeffs"}
 
@@ -44,7 +48,12 @@ def test_vision_synth_instance_seg_shapes_and_one_step_smoke() -> None:
     bbox = out["bbox_deltas"]
     coeffs = out["mask_coeffs"]
     assert proto.ndim == 4 and cls_logits.ndim == 4 and bbox.ndim == 4 and coeffs.ndim == 4
-    assert proto.shape[0] == 2 and cls_logits.shape[0] == 2 and bbox.shape[0] == 2 and coeffs.shape[0] == 2
+    assert (
+        proto.shape[0] == 2
+        and cls_logits.shape[0] == 2
+        and bbox.shape[0] == 2
+        and coeffs.shape[0] == 2
+    )
     assert tuple(cls_logits.shape[1:]) == (1, 8, 8)
     assert tuple(bbox.shape[1:]) == (4, 8, 8)
     assert coeffs.shape[2:] == (8, 8)
@@ -73,4 +82,3 @@ def test_vision_synth_instance_seg_shapes_and_one_step_smoke() -> None:
     loss = cls_loss + 2.0 * reg_loss + 1.0 * mask_loss
     assert torch.isfinite(loss)
     loss.backward()
-

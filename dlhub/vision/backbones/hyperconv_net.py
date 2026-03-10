@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -9,7 +8,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, scale_c
 class HyperDepthwiseConv2d(nn.Module):
     """A hypernetwork-generated depthwise conv (per-sample weights)."""
 
-    def __init__(self, channels: int, *, kernel_size: int = 3, hidden: int = 128, stride: int = 1) -> None:
+    def __init__(
+        self, channels: int, *, kernel_size: int = 3, hidden: int = 128, stride: int = 1
+    ) -> None:
         super().__init__()
         c = int(channels)
         k = int(kernel_size)
@@ -42,11 +43,17 @@ class HyperDepthwiseConv2d(nn.Module):
 class HyperConvBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int = 1, k: int = 3) -> None:
         super().__init__()
-        self.pre = ConvBNAct(int(in_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu")
-        self.dw = HyperDepthwiseConv2d(int(out_ch), kernel_size=int(k), hidden=max(64, int(out_ch) // 2), stride=int(stride))
+        self.pre = ConvBNAct(
+            int(in_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu"
+        )
+        self.dw = HyperDepthwiseConv2d(
+            int(out_ch), kernel_size=int(k), hidden=max(64, int(out_ch) // 2), stride=int(stride)
+        )
         self.bn = nn.BatchNorm2d(int(out_ch))
         self.act = nn.ReLU(inplace=True)
-        self.pw = ConvBNAct(int(out_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu")
+        self.pw = ConvBNAct(
+            int(out_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu"
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.pre(x)
@@ -67,7 +74,9 @@ class HyperConvNetClassifier(nn.Module):
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
-        chs = tuple(scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels)
+        chs = tuple(
+            scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels
+        )
         self.stem = nn.Sequential(
             ConvBNAct(int(in_channels), chs[0], kernel_size=3, stride=2, act="relu"),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
@@ -105,7 +114,9 @@ def build_hyperconv_net_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown HyperConvNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown HyperConvNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return HyperConvNetClassifier(
         in_channels=int(in_channels),
@@ -120,7 +131,8 @@ def build_hyperconv_net_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_hyperconv_net_classifier(in_channels=3, num_classes=10, variant="hyperconv_base", width_mult=0.5)
+    m = build_hyperconv_net_classifier(
+        in_channels=3, num_classes=10, variant="hyperconv_base", width_mult=0.5
+    )
     y = m(x)
     print("hyperconv_base", tuple(y.shape))
-

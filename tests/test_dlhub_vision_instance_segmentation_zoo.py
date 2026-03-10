@@ -1,8 +1,8 @@
-import pytest
 import subprocess
 import sys
 from pathlib import Path
 
+import pytest
 
 torch = pytest.importorskip("torch")
 
@@ -12,7 +12,7 @@ def _sum_tensor_means(x):
         return x.to(torch.float32).mean()
     if isinstance(x, dict):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
-    if isinstance(x, (list, tuple)):
+    if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
     raise TypeError(f"Unsupported output type in instance segmentation zoo smoke: {type(x)!r}")
 
@@ -56,7 +56,9 @@ def test_instance_segmentation_zoo_build_and_backward_smoke(arch_id: str) -> Non
     loss.backward()
 
 
-@pytest.mark.parametrize("arch_id", ["dlinst:deepmask_small", "dlinst:mask_dino_base", "dlinst:rtmdet_ins_small"])
+@pytest.mark.parametrize(
+    "arch_id", ["dlinst:deepmask_small", "dlinst:mask_dino_base", "dlinst:rtmdet_ins_small"]
+)
 def test_instance_segmentation_zoo_builds_non_tiny_variants(arch_id: str) -> None:
     from dlhub.vision.instance_segmentation_zoo import build_local_model
 
@@ -80,7 +82,12 @@ def test_instance_segmentation_zoo_script_list_and_smoke() -> None:
     assert "total_arches=120" in list_proc.stdout
 
     smoke_proc = subprocess.run(
-        [sys.executable, "scripts/instance_segmentation_zoo.py", "--smoke", "dlinst:mask_dino_tiny"],
+        [
+            sys.executable,
+            "scripts/instance_segmentation_zoo.py",
+            "--smoke",
+            "dlinst:mask_dino_tiny",
+        ],
         cwd=str(_repo_root()),
         check=False,
         capture_output=True,

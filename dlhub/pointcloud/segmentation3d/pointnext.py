@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import FeaturePropagation, PointMLP, SetAbstraction, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointnext_tiny": {"width": 32},
@@ -15,7 +13,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class PointNeXtSeg(nn.Module):
     """PointNeXt semantic segmentation (toy): PointNet++ hierarchy with residual MLPs."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         w = int(width)
         self.stem = PointMLP(int(in_channels), w, depth=2, dropout=float(dropout))
@@ -25,14 +25,20 @@ class PointNeXtSeg(nn.Module):
         self.sa3 = SetAbstraction(w * 2, w * 4, npoint=16, k=16, dropout=float(dropout))
 
         self.res1 = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, w))
-        self.res2 = nn.Sequential(nn.Linear(w * 2, w * 2), nn.ReLU(inplace=True), nn.Linear(w * 2, w * 2))
-        self.res3 = nn.Sequential(nn.Linear(w * 4, w * 4), nn.ReLU(inplace=True), nn.Linear(w * 4, w * 4))
+        self.res2 = nn.Sequential(
+            nn.Linear(w * 2, w * 2), nn.ReLU(inplace=True), nn.Linear(w * 2, w * 2)
+        )
+        self.res3 = nn.Sequential(
+            nn.Linear(w * 4, w * 4), nn.ReLU(inplace=True), nn.Linear(w * 4, w * 4)
+        )
 
         self.fp2 = FeaturePropagation(w * 4 + w * 2, w * 2, dropout=float(dropout))
         self.fp1 = FeaturePropagation(w * 2 + w, w, dropout=float(dropout))
         self.fp0 = FeaturePropagation(w + w, w, dropout=float(dropout))
 
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -63,7 +69,12 @@ def build_pointnext_segmenter3d(
 ) -> nn.Module:
     cfg = _VARIANTS[str(variant)]
     width = int(int(cfg["width"]) * float(width_mult))
-    return PointNeXtSeg(in_channels=int(in_channels), num_classes=int(num_classes), width=width, dropout=float(dropout))
+    return PointNeXtSeg(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width=width,
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -73,4 +84,3 @@ if __name__ == "__main__":
     y = model(x)
     (y.mean()).backward()
     print("logits:", tuple(y.shape))
-

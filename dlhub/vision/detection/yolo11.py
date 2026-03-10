@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.yolov8 import build_yolov8_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "yolo11_tiny": "yolov8_tiny",
@@ -31,4 +29,6 @@ def build_yolo11_detector(
 
 
 if __name__ == "__main__":
-    smoke_aliased_detector(label="yolo11_tiny", builder=build_yolo11_detector, variant="yolo11_tiny")
+    smoke_aliased_detector(
+        label="yolo11_tiny", builder=build_yolo11_detector, variant="yolo11_tiny"
+    )

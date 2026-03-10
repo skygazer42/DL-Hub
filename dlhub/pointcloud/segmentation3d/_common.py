@@ -1,4 +1,3 @@
-
 import math
 from dataclasses import dataclass
 
@@ -6,7 +5,9 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from dlhub.pointcloud.ops import farthest_point_sample, index_points, knn_indices as knn_indices_ops, knn_query
+from dlhub.pointcloud.ops import farthest_point_sample, index_points
+from dlhub.pointcloud.ops import knn_indices as knn_indices_ops
+from dlhub.pointcloud.ops import knn_query
 
 
 def check_points(points: torch.Tensor) -> None:
@@ -46,7 +47,9 @@ def mlp(in_dim: int, hidden: list[int], out_dim: int, *, dropout: float = 0.0) -
 class PointMLP(nn.Module):
     """Per-point MLP stack (B,N,C)->(B,N,D)."""
 
-    def __init__(self, in_channels: int, width: int, *, depth: int = 3, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_channels: int, width: int, *, depth: int = 3, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         c = int(in_channels)
         w = int(width)
@@ -66,7 +69,9 @@ class PointMLP(nn.Module):
 class EdgeConv(nn.Module):
     """DGCNN-style EdgeConv (toy)."""
 
-    def __init__(self, in_channels: int, out_channels: int, *, k: int = 16, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_channels: int, out_channels: int, *, k: int = 16, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.k = int(k)
         self.mlp = nn.Sequential(
@@ -89,7 +94,9 @@ class EdgeConv(nn.Module):
 
 
 class TinyTransformerEncoder(nn.Module):
-    def __init__(self, d_model: int, *, nhead: int = 4, num_layers: int = 2, dropout: float = 0.0) -> None:
+    def __init__(
+        self, d_model: int, *, nhead: int = 4, num_layers: int = 2, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         layer = nn.TransformerEncoderLayer(
             d_model=int(d_model),
@@ -142,7 +149,12 @@ class SetAbstraction(nn.Module):
         self.npoint = int(npoint)
         self.k = int(k)
         self.out_channels = int(out_channels)
-        self.local = mlp(int(in_channels) + 3, [int(out_channels), int(out_channels)], int(out_channels), dropout=float(dropout))
+        self.local = mlp(
+            int(in_channels) + 3,
+            [int(out_channels), int(out_channels)],
+            int(out_channels),
+            dropout=float(dropout),
+        )
 
     def forward(self, xyz: torch.Tensor, feats: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         # xyz: (B,N,3), feats: (B,N,C)
@@ -171,7 +183,12 @@ class FeaturePropagation(nn.Module):
 
     def __init__(self, in_channels: int, out_channels: int, *, dropout: float = 0.0) -> None:
         super().__init__()
-        self.fuse = mlp(int(in_channels), [int(out_channels), int(out_channels)], int(out_channels), dropout=float(dropout))
+        self.fuse = mlp(
+            int(in_channels),
+            [int(out_channels), int(out_channels)],
+            int(out_channels),
+            dropout=float(dropout),
+        )
 
     def forward(
         self,
@@ -265,9 +282,13 @@ class TinyUNet2D(nn.Module):
     def __init__(self, in_channels: int, width: int) -> None:
         super().__init__()
         w = int(width)
-        self.enc1 = nn.Sequential(nn.Conv2d(int(in_channels), w, 3, padding=1), nn.ReLU(inplace=True))
+        self.enc1 = nn.Sequential(
+            nn.Conv2d(int(in_channels), w, 3, padding=1), nn.ReLU(inplace=True)
+        )
         self.enc2 = nn.Sequential(nn.Conv2d(w, w, 3, stride=2, padding=1), nn.ReLU(inplace=True))
-        self.dec = nn.Sequential(nn.ConvTranspose2d(w, w, 4, stride=2, padding=1), nn.ReLU(inplace=True))
+        self.dec = nn.Sequential(
+            nn.ConvTranspose2d(w, w, 4, stride=2, padding=1), nn.ReLU(inplace=True)
+        )
         self.fuse = nn.Conv2d(w * 2, w, 1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -302,7 +323,9 @@ class GridSpec3D:
         return torch.stack([iz, iy, ix], dim=-1)
 
 
-def scatter_mean_3d(idx_dhw: torch.Tensor, values: torch.Tensor, *, d: int, h: int, w: int) -> torch.Tensor:
+def scatter_mean_3d(
+    idx_dhw: torch.Tensor, values: torch.Tensor, *, d: int, h: int, w: int
+) -> torch.Tensor:
     """Scatter mean into a (B,C,D,H,W) volume."""
 
     b, n, _ = idx_dhw.shape
@@ -347,9 +370,13 @@ class TinyUNet3D(nn.Module):
     def __init__(self, in_channels: int, width: int) -> None:
         super().__init__()
         w = int(width)
-        self.enc1 = nn.Sequential(nn.Conv3d(int(in_channels), w, 3, padding=1), nn.ReLU(inplace=True))
+        self.enc1 = nn.Sequential(
+            nn.Conv3d(int(in_channels), w, 3, padding=1), nn.ReLU(inplace=True)
+        )
         self.enc2 = nn.Sequential(nn.Conv3d(w, w, 3, stride=2, padding=1), nn.ReLU(inplace=True))
-        self.dec = nn.Sequential(nn.ConvTranspose3d(w, w, 4, stride=2, padding=1), nn.ReLU(inplace=True))
+        self.dec = nn.Sequential(
+            nn.ConvTranspose3d(w, w, 4, stride=2, padding=1), nn.ReLU(inplace=True)
+        )
         self.fuse = nn.Conv3d(w * 2, w, 1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -362,11 +389,15 @@ class TinyUNet3D(nn.Module):
 
 
 class PointNetSegBase(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.num_classes = int(num_classes)
         self.enc = PointMLP(int(in_channels), int(width), depth=int(depth), dropout=float(dropout))
-        self.fuse = mlp(int(width) * 2, [int(width), int(width)], int(width), dropout=float(dropout))
+        self.fuse = mlp(
+            int(width) * 2, [int(width), int(width)], int(width), dropout=float(dropout)
+        )
         self.cls = nn.Linear(int(width), int(num_classes))
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
@@ -379,7 +410,16 @@ class PointNetSegBase(nn.Module):
 
 
 class EdgeConvSegBase(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, k: int, depth: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        k: int,
+        depth: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         d = int(depth)
         w = int(width)
@@ -425,7 +465,9 @@ class PointNet2SegBase(nn.Module):
         self.fp1 = FeaturePropagation(w * 2 + w, w, dropout=float(dropout))
         self.fp0 = FeaturePropagation(w + w, w, dropout=float(dropout))
 
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -457,8 +499,14 @@ class TransformerSegBase(nn.Module):
         super().__init__()
         self.embed = nn.Linear(int(in_channels), int(d_model))
         self.pe = nn.Linear(3 * 2 * int(pos_feats), int(d_model))
-        self.enc = TinyTransformerEncoder(int(d_model), nhead=4, num_layers=int(depth), dropout=float(dropout))
-        self.cls = nn.Sequential(nn.Linear(int(d_model), int(d_model)), nn.ReLU(inplace=True), nn.Linear(int(d_model), int(num_classes)))
+        self.enc = TinyTransformerEncoder(
+            int(d_model), nhead=4, num_layers=int(depth), dropout=float(dropout)
+        )
+        self.cls = nn.Sequential(
+            nn.Linear(int(d_model), int(d_model)),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(d_model), int(num_classes)),
+        )
         self.pos_feats = int(pos_feats)
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
@@ -466,7 +514,9 @@ class TransformerSegBase(nn.Module):
         xyz, _ = split_xyz_features(points)
         x = points.to(torch.float32)
         tok = self.embed(x)
-        pe = self.pe(sinusoidal_positional_encoding(xyz, num_feats=int(self.pos_feats)).to(tok.dtype))
+        pe = self.pe(
+            sinusoidal_positional_encoding(xyz, num_feats=int(self.pos_feats)).to(tok.dtype)
+        )
         tok = tok + pe
         tok = self.enc(tok)
         return self.cls(tok)

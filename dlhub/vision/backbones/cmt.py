@@ -1,15 +1,16 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
-from dlhub.vision.backbones._transformer import MultiheadSelfAttention, MLP
+from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, scale_channels
+from dlhub.vision.backbones._transformer import MLP, MultiheadSelfAttention
 
 
 class CMTBlock(nn.Module):
     """CMT block (simplified): local perception + attention + MLP."""
 
-    def __init__(self, dim: int, num_heads: int, *, mlp_ratio: float = 4.0, drop_path: float = 0.0) -> None:
+    def __init__(
+        self, dim: int, num_heads: int, *, mlp_ratio: float = 4.0, drop_path: float = 0.0
+    ) -> None:
         super().__init__()
         d = int(dim)
         self.lpu = nn.Conv2d(d, d, kernel_size=3, padding=1, groups=d, bias=False)
@@ -66,11 +67,19 @@ class CMTClassifier(nn.Module):
         self.down = nn.ModuleList()
         self.down.append(nn.Identity())
         for i in range(3):
-            self.down.append(nn.Sequential(nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[i + 1])))
+            self.down.append(
+                nn.Sequential(
+                    nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2, bias=False),
+                    nn.BatchNorm2d(dims[i + 1]),
+                )
+            )
 
         self.stages = nn.ModuleList()
         for i in range(4):
-            blocks = [CMTBlock(dims[i], heads[i], drop_path=float(next(dp_iter))) for _ in range(depths[i])]
+            blocks = [
+                CMTBlock(dims[i], heads[i], drop_path=float(next(dp_iter)))
+                for _ in range(depths[i])
+            ]
             self.stages.append(nn.Sequential(*blocks))
 
         self.head = GlobalAvgPoolHead(dims[-1], int(num_classes), dropout=float(dropout))
@@ -121,4 +130,3 @@ if __name__ == "__main__":
     m = build_cmt_classifier(in_channels=3, num_classes=10, variant="cmt_tiny", width_mult=0.5)
     y = m(x)
     print("cmt_tiny", tuple(y.shape))
-

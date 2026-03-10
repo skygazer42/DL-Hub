@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, scale_channels
+from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, scale_channels
 
 
 class SparseLargeKernel(nn.Module):
@@ -65,13 +64,30 @@ class SLaKClassifier(nn.Module):
         dp_iter = iter(dp_rates)
 
         self.down = nn.ModuleList()
-        self.down.append(nn.Sequential(nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), nn.BatchNorm2d(dims[0])))
+        self.down.append(
+            nn.Sequential(
+                nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4),
+                nn.BatchNorm2d(dims[0]),
+            )
+        )
         for i in range(3):
-            self.down.append(nn.Sequential(nn.BatchNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)))
+            self.down.append(
+                nn.Sequential(
+                    nn.BatchNorm2d(dims[i]),
+                    nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2),
+                )
+            )
 
         self.stages = nn.ModuleList(
             [
-                nn.Sequential(*[SLaKBlock(dims[i], kernel_size=int(kernel_size), drop_path=float(next(dp_iter))) for _ in range(depths[i])])
+                nn.Sequential(
+                    *[
+                        SLaKBlock(
+                            dims[i], kernel_size=int(kernel_size), drop_path=float(next(dp_iter))
+                        )
+                        for _ in range(depths[i])
+                    ]
+                )
                 for i in range(4)
             ]
         )
@@ -123,4 +139,3 @@ if __name__ == "__main__":
     m = build_slak_classifier(in_channels=3, num_classes=10, variant="slak_tiny", width_mult=0.5)
     y = m(x)
     print("slak_tiny", tuple(y.shape))
-

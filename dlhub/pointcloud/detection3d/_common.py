@@ -1,4 +1,3 @@
-
 import math
 from dataclasses import dataclass
 
@@ -104,7 +103,9 @@ def knn_indices(x: torch.Tensor, k: int) -> torch.Tensor:
 class EdgeConv(nn.Module):
     """DGCNN-style EdgeConv block (toy)."""
 
-    def __init__(self, in_channels: int, out_channels: int, *, k: int = 16, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_channels: int, out_channels: int, *, k: int = 16, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.k = int(k)
         self.mlp = nn.Sequential(
@@ -119,7 +120,7 @@ class EdgeConv(nn.Module):
         # x: (B,N,C)
         idx = knn_indices(x, self.k)  # (B,N,k)
         b, n, c = x.shape
-        k = idx.shape[-1]
+        idx.shape[-1]
 
         from dlhub.pointcloud.ops import index_points
 
@@ -156,7 +157,7 @@ def roi_pool_knn(
     if xyz.shape[0] != centers.shape[0]:
         raise ValueError("xyz and centers batch mismatch")
 
-    from dlhub.pointcloud.ops import knn_query, index_points
+    from dlhub.pointcloud.ops import index_points, knn_query
 
     idx = knn_query(int(k), xyz, centers)  # (B,K,k)
     pooled = index_points(feats, idx).mean(dim=2)  # (B,K,C)
@@ -186,7 +187,9 @@ def sinusoidal_positional_encoding(x: torch.Tensor, *, num_feats: int = 64) -> t
 class TinyTransformerEncoder(nn.Module):
     """Small transformer encoder for point tokens."""
 
-    def __init__(self, d_model: int, *, nhead: int = 4, num_layers: int = 2, dropout: float = 0.0) -> None:
+    def __init__(
+        self, d_model: int, *, nhead: int = 4, num_layers: int = 2, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         layer = nn.TransformerEncoderLayer(
             d_model=int(d_model),
@@ -347,7 +350,7 @@ def decode_bev_boxes(
     """
 
     b, d, h, w = box_params.shape
-    k = iy.shape[1]
+    iy.shape[1]
     gathered = gather_bev(box_params, iy, ix)  # (B,K,D)
 
     # Map grid centers to xy in metric space.
@@ -356,7 +359,7 @@ def decode_bev_boxes(
 
     # Use gathered deltas for z/dims/yaw; keep them small and positive for sizes.
     z = gathered[..., 2:3]
-    dims = F.softplus(gathered[..., 3 : 6]) + 0.1
+    dims = F.softplus(gathered[..., 3:6]) + 0.1
     if with_yaw:
         yaw = gathered[..., 6:7].tanh() * math.pi
         return torch.cat([x.unsqueeze(-1), y.unsqueeze(-1), z, dims, yaw], dim=-1)
@@ -369,7 +372,9 @@ class QueryHead(nn.Module):
     Produces fixed K boxes from global context.
     """
 
-    def __init__(self, d_model: int, num_classes: int, *, num_queries: int, with_yaw: bool = True) -> None:
+    def __init__(
+        self, d_model: int, num_classes: int, *, num_queries: int, with_yaw: bool = True
+    ) -> None:
         super().__init__()
         self.num_queries = int(num_queries)
         self.with_yaw = bool(with_yaw)
@@ -435,7 +440,13 @@ class BEVAnchorFreeDetector3D(nn.Module):
         boxes = decode_bev_boxes(dense["box_params"], iy, ix, self.bev, with_yaw=self.with_yaw)
 
         # One-hot class logits as a simple baseline (keeps shapes consistent).
-        cls_logits = torch.zeros(points.shape[0], self.topk, dense["heatmap"].shape[1], device=points.device, dtype=points.dtype)
+        cls_logits = torch.zeros(
+            points.shape[0],
+            self.topk,
+            dense["heatmap"].shape[1],
+            device=points.device,
+            dtype=points.dtype,
+        )
         cls_logits.scatter_(-1, cls.unsqueeze(-1), scores.unsqueeze(-1))
         return {"boxes": boxes, "cls_logits": cls_logits, "scores": scores}
 
@@ -528,7 +539,9 @@ class PointQueryDetector3D(nn.Module):
             if self.use_transformer
             else nn.Identity()
         )
-        self.head = QueryHead(int(d_model), int(num_classes), num_queries=int(num_queries), with_yaw=self.with_yaw)
+        self.head = QueryHead(
+            int(d_model), int(num_classes), num_queries=int(num_queries), with_yaw=self.with_yaw
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         check_points(points)
@@ -536,7 +549,9 @@ class PointQueryDetector3D(nn.Module):
         tokens = self.point(x)  # (B,N,D)
         if self.use_transformer:
             xyz, _ = split_xyz_features(points)
-            pe = sinusoidal_positional_encoding(xyz, num_feats=int(self._pe_num_feats)).to(tokens.dtype)
+            pe = sinusoidal_positional_encoding(xyz, num_feats=int(self._pe_num_feats)).to(
+                tokens.dtype
+            )
             pe = self.pe_proj(pe)
             tokens = tokens + pe
         tokens = self.encoder(tokens)

@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.segmentation._common import BackboneC2C3C4C5, check_nchw
@@ -87,7 +86,9 @@ class DeepLabV3(nn.Module):
             act="relu",
         )
 
-        self.aspp = ASPP(int(c4_channels), int(aspp_channels), rates=tuple(int(r) for r in aspp_rates))
+        self.aspp = ASPP(
+            int(c4_channels), int(aspp_channels), rates=tuple(int(r) for r in aspp_rates)
+        )
         self.head = nn.Sequential(
             ConvBNAct(int(aspp_channels), int(aspp_channels), kernel_size=3, stride=1, act="relu"),
             nn.Conv2d(int(aspp_channels), nc, kernel_size=1, bias=True),
@@ -103,9 +104,36 @@ class DeepLabV3(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "deeplabv3_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "aspp": 96, "rates": (3, 6, 9)},
-    "deeplabv3_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "aspp": 128, "rates": (4, 8, 12)},
-    "deeplabv3_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "aspp": 160, "rates": (6, 12, 18)},
+    "deeplabv3_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "aspp": 96,
+        "rates": (3, 6, 9),
+    },
+    "deeplabv3_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "aspp": 128,
+        "rates": (4, 8, 12),
+    },
+    "deeplabv3_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "aspp": 160,
+        "rates": (6, 12, 18),
+    },
 }
 
 
@@ -145,10 +173,11 @@ def build_deeplabv3_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_deeplabv3_segmenter(in_channels=3, num_classes=4, variant="deeplabv3_tiny", width_mult=0.5)
+    m = build_deeplabv3_segmenter(
+        in_channels=3, num_classes=4, variant="deeplabv3_tiny", width_mult=0.5
+    )
     y = m(x)
     print("deeplabv3_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

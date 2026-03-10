@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -20,4 +19,3 @@ def test_foundations_lesson_02_regression_dataloaders_smoke() -> None:
     x_eval, y_eval = next(iter(eval_loader))
     assert tuple(x_eval.shape[1:]) == (2,)
     assert tuple(y_eval.shape[1:]) == (1,)
-

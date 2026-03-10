@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _RecursiveResBlock(nn.Module):
@@ -75,7 +74,11 @@ def build_drrn_denoiser(*, in_channels: int, variant: str = "drrn_small") -> nn.
     if name not in _VARIANTS:
         raise ValueError(f"Unknown DRRN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return DRRN(in_channels=int(in_channels), features=int(spec["features"]), recursions=int(spec["recursions"]))
+    return DRRN(
+        in_channels=int(in_channels),
+        features=int(spec["features"]),
+        recursions=int(spec["recursions"]),
+    )
 
 
 if __name__ == "__main__":
@@ -88,4 +91,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

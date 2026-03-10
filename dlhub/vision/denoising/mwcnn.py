@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -128,7 +127,6 @@ class MWCNN(nn.Module):
         if x.ndim != 4:
             raise ValueError(f"Expected input shape (B, C, H, W), got {tuple(x.shape)}")
 
-        inp = x
         x_pad, pad_hw = pad_to_multiple(x, 2, mode="reflect")
 
         f0 = F.relu(self.intro(x_pad), inplace=True)
@@ -174,4 +172,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

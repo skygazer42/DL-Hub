@@ -1,10 +1,11 @@
-
 import torch
 
 
 def main() -> int:
     if __package__ is None:
-        raise RuntimeError("Run from repo root as module: python -m tracks.foundations.lesson_01_tensors.run")
+        raise RuntimeError(
+            "Run from repo root as module: python -m tracks.foundations.lesson_01_tensors.run"
+        )
 
     x = torch.randn(2, 3, dtype=torch.float32)
     y = torch.randn(3, dtype=torch.float32)
@@ -30,4 +31,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

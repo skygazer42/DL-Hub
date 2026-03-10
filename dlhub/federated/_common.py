@@ -67,9 +67,13 @@ class FederatedStrategy:
         harmonic = torch.sin(phase).unsqueeze(0)
         client_scale = torch.linspace(0.4, 1.2, self.num_clients, dtype=torch.float32).unsqueeze(1)
         noise = 0.05 * torch.randn(self.num_clients, self.param_dim, generator=gen)
-        raw_updates = self.step_scale * (noise + client_scale * harmonic / client_steps.unsqueeze(1))
+        raw_updates = self.step_scale * (
+            noise + client_scale * harmonic / client_steps.unsqueeze(1)
+        )
 
-        client_repr = F.normalize(torch.randn(self.num_clients, self.hidden_dim, generator=gen), dim=-1)
+        client_repr = F.normalize(
+            torch.randn(self.num_clients, self.hidden_dim, generator=gen), dim=-1
+        )
         global_repr = F.normalize(torch.randn(self.hidden_dim, generator=gen), dim=-1)
 
         return RoundState(

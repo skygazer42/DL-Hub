@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.conditional_detr import build_conditional_detr_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "smca_detr_tiny": "conditional_detr_tiny",
@@ -31,4 +29,6 @@ def build_smca_detr_detector(
 
 
 if __name__ == "__main__":
-    smoke_aliased_detector(label="smca_detr_tiny", builder=build_smca_detr_detector, variant="smca_detr_tiny")
+    smoke_aliased_detector(
+        label="smca_detr_tiny", builder=build_smca_detr_detector, variant="smca_detr_tiny"
+    )

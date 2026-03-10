@@ -1,9 +1,7 @@
-
 import math
 
 import torch
 from torch import nn
-from torch.nn import functional as F
 
 from ._common import (
     BEVBoxSpec,
@@ -15,7 +13,6 @@ from ._common import (
     split_xyz_features,
     topk_heatmap,
 )
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "complexyolo_tiny": {"width": 64, "bev_h": 32, "bev_w": 32, "topk": 64},
@@ -86,7 +83,9 @@ class ComplexYOLO(nn.Module):
         yaw = torch.atan2(sincos[..., 0:1], sincos[..., 1:2]).clamp(-math.pi, math.pi)
         boxes = torch.cat([boxes6, yaw], dim=-1)
 
-        cls_logits = torch.zeros(points.shape[0], self.topk, self.num_classes, device=points.device, dtype=points.dtype)
+        cls_logits = torch.zeros(
+            points.shape[0], self.topk, self.num_classes, device=points.device, dtype=points.dtype
+        )
         cls_logits.scatter_(-1, cls.unsqueeze(-1), scores.unsqueeze(-1))
         return {"boxes": boxes, "cls_logits": cls_logits, "scores": scores}
 
@@ -119,4 +118,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

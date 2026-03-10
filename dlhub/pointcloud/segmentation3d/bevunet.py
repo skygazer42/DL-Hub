@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import GridSpec2D, Projection2DSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "bevunet_tiny": {"width": 48, "bev_h": 24, "bev_w": 24},
@@ -15,7 +13,16 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class BEVUNetSeg(nn.Module):
     """BEV UNet semantic segmentation (toy): XY BEV projection + 2D UNet."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, bev_h: int, bev_w: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        bev_h: int,
+        bev_w: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.net = Projection2DSegBase(
             in_channels=int(in_channels),
@@ -56,4 +63,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

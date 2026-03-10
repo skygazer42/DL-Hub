@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.dab_detr import build_dab_detr_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "adamixer_tiny": "dab_detr_tiny",
@@ -31,4 +29,6 @@ def build_adamixer_detector(
 
 
 if __name__ == "__main__":
-    smoke_aliased_detector(label="adamixer_tiny", builder=build_adamixer_detector, variant="adamixer_tiny")
+    smoke_aliased_detector(
+        label="adamixer_tiny", builder=build_adamixer_detector, variant="adamixer_tiny"
+    )

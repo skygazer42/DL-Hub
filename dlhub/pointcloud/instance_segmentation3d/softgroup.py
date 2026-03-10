@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import EdgeConvEncoder, SimilarityPivotHead
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "softgroup_tiny": {"width": 64, "depth": 2, "k": 8, "instances": 16},
@@ -27,8 +25,12 @@ class SoftGroup(nn.Module):
         dropout: float = 0.0,
     ) -> None:
         super().__init__()
-        self.enc = EdgeConvEncoder(int(in_channels), int(width), depth=int(depth), k=int(k), dropout=float(dropout))
-        self.head = SimilarityPivotHead(int(width), int(num_classes), num_instances=int(num_instances), dropout=float(dropout))
+        self.enc = EdgeConvEncoder(
+            int(in_channels), int(width), depth=int(depth), k=int(k), dropout=float(dropout)
+        )
+        self.head = SimilarityPivotHead(
+            int(width), int(num_classes), num_instances=int(num_instances), dropout=float(dropout)
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -63,4 +65,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

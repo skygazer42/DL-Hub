@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -20,7 +19,9 @@ class BiLstmNerTagger(nn.Module):
         super().__init__()
         self.cfg = cfg
 
-        self.embed = nn.Embedding(int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id))
+        self.embed = nn.Embedding(
+            int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id)
+        )
         self.dropout = nn.Dropout(p=float(cfg.dropout))
         self.lstm = nn.LSTM(
             input_size=int(cfg.embed_dim),
@@ -45,4 +46,3 @@ class BiLstmNerTagger(nn.Module):
 
 
 __all__ = ["BiLstmNerTagger", "ModelConfig"]
-

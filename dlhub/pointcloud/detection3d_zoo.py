@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -215,4 +214,3 @@ __all__ = [
     "build_local_model",
     "list_local_arches",
 ]
-

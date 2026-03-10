@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -22,10 +21,19 @@ class AllConvNetClassifier(nn.Module):
         super().__init__()
         c1, c2 = int(channels[0]), int(channels[1])
 
-        def conv(in_ch: int, out_ch: int, *, k: int = 3, s: int = 1, p: int | None = None) -> nn.Conv2d:
+        def conv(
+            in_ch: int, out_ch: int, *, k: int = 3, s: int = 1, p: int | None = None
+        ) -> nn.Conv2d:
             if p is None:
                 p = k // 2
-            return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=int(k), stride=int(s), padding=int(p), bias=True)
+            return nn.Conv2d(
+                int(in_ch),
+                int(out_ch),
+                kernel_size=int(k),
+                stride=int(s),
+                padding=int(p),
+                bias=True,
+            )
 
         self.features = nn.Sequential(
             conv(int(in_channels), c1, k=3, s=1),
@@ -91,4 +99,3 @@ if __name__ == "__main__":
         m = build_all_convnet_classifier(in_channels=3, num_classes=10, variant=v)
         y = m(x)
         print(v, tuple(y.shape))
-

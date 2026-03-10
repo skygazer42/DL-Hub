@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-from dlhub.vision.instance_segmentation._common import BackboneLowDet, DensePredHead, ProtoNet, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackboneLowDet,
+    DensePredHead,
+    ProtoNet,
+    check_nchw,
+)
 
 
 class RTMDetIns(nn.Module):
@@ -52,7 +56,9 @@ class RTMDetIns(nn.Module):
         obj_logits = self.obj_head(det)
 
         b = x.shape[0]
-        kernel_weights = F.adaptive_avg_pool2d(kernel_map, (1, 1)).view(b, self.num_anchors, self.num_basis)
+        kernel_weights = F.adaptive_avg_pool2d(kernel_map, (1, 1)).view(
+            b, self.num_anchors, self.num_basis
+        )
         mask_logits = torch.einsum("bkp,bphw->bkhw", kernel_weights, mask_basis)
         return {
             "obj_logits": obj_logits,
@@ -65,9 +71,33 @@ class RTMDetIns(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "rtmdet_ins_tiny": {"stem": 24, "low": 40, "det": 72, "head": 72, "depth": 1, "anchors": 8, "basis": 16},
-    "rtmdet_ins_small": {"stem": 24, "low": 48, "det": 96, "head": 96, "depth": 2, "anchors": 12, "basis": 24},
-    "rtmdet_ins_base": {"stem": 32, "low": 64, "det": 128, "head": 128, "depth": 3, "anchors": 16, "basis": 32},
+    "rtmdet_ins_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 72,
+        "head": 72,
+        "depth": 1,
+        "anchors": 8,
+        "basis": 16,
+    },
+    "rtmdet_ins_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "head": 96,
+        "depth": 2,
+        "anchors": 12,
+        "basis": 24,
+    },
+    "rtmdet_ins_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "head": 128,
+        "depth": 3,
+        "anchors": 16,
+        "basis": 32,
+    },
 }
 
 
@@ -100,7 +130,9 @@ def build_rtmdet_ins_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_rtmdet_ins_instance_segmenter(in_channels=3, num_classes=3, variant="rtmdet_ins_tiny", width_mult=0.5)
+    m = build_rtmdet_ins_instance_segmenter(
+        in_channels=3, num_classes=3, variant="rtmdet_ins_tiny", width_mult=0.5
+    )
     out = m(x)
     print("rtmdet_ins_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

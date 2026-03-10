@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.rfcn import build_rfcn_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "fast_rcnn_tiny": "rfcn_tiny",

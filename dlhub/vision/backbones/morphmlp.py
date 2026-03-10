@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -30,7 +29,9 @@ class MorphMLPBlock(nn.Module):
         self.norm1 = LayerNorm2d(d)
         self.mix = MorphologyMix(d, k=3)
         self.norm2 = LayerNorm2d(d)
-        self.mlp = nn.Sequential(nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1))
+        self.mlp = nn.Sequential(
+            nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x + self.mix(self.norm1(x))
@@ -53,7 +54,9 @@ class MorphMLPClassifier(nn.Module):
         super().__init__()
         d = scale_channels(int(dim), float(width_mult), min_ch=16, divisor=8)
         p = int(patch_size)
-        self.patch = nn.Sequential(nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d))
+        self.patch = nn.Sequential(
+            nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d)
+        )
         self.blocks = nn.Sequential(*[MorphMLPBlock(d) for _ in range(int(depth))])
         self.head = GlobalAvgPoolHead(d, int(num_classes), dropout=float(dropout))
 
@@ -96,7 +99,8 @@ def build_morphmlp_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_morphmlp_classifier(in_channels=3, num_classes=10, variant="morphmlp_tiny", width_mult=0.5)
+    m = build_morphmlp_classifier(
+        in_channels=3, num_classes=10, variant="morphmlp_tiny", width_mult=0.5
+    )
     y = m(x)
     print("morphmlp_tiny", tuple(y.shape))
-

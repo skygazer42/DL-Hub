@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -41,4 +40,3 @@ def test_local_segmentation3d_zoo_build_and_backward_smoke(arch_id: str) -> None
 
     loss = y.mean()
     loss.backward()
-

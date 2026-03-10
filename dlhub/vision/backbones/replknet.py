@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, scale_channels
 
 
 class RepLKBlock(nn.Module):
@@ -53,13 +52,30 @@ class RepLKNetClassifier(nn.Module):
         dp_iter = iter(dp_rates)
 
         self.down = nn.ModuleList()
-        self.down.append(nn.Sequential(nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), nn.BatchNorm2d(dims[0])))
+        self.down.append(
+            nn.Sequential(
+                nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4),
+                nn.BatchNorm2d(dims[0]),
+            )
+        )
         for i in range(3):
-            self.down.append(nn.Sequential(nn.BatchNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)))
+            self.down.append(
+                nn.Sequential(
+                    nn.BatchNorm2d(dims[i]),
+                    nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2),
+                )
+            )
 
         self.stages = nn.ModuleList(
             [
-                nn.Sequential(*[RepLKBlock(dims[i], kernel_size=int(kernel_size), drop_path=float(next(dp_iter))) for _ in range(depths[i])])
+                nn.Sequential(
+                    *[
+                        RepLKBlock(
+                            dims[i], kernel_size=int(kernel_size), drop_path=float(next(dp_iter))
+                        )
+                        for _ in range(depths[i])
+                    ]
+                )
                 for i in range(4)
             ]
         )
@@ -111,7 +127,8 @@ def build_replknet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_replknet_classifier(in_channels=3, num_classes=10, variant="replknet_tiny", width_mult=0.5)
+    m = build_replknet_classifier(
+        in_channels=3, num_classes=10, variant="replknet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("replknet_tiny", tuple(y.shape))
-

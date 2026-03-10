@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-from dlhub.vision.instance_segmentation._common import BackboneLowDet, DensePredHead, ProtoNet, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackboneLowDet,
+    DensePredHead,
+    ProtoNet,
+    check_nchw,
+)
 
 
 class DCTMask(nn.Module):
@@ -50,7 +54,9 @@ class DCTMask(nn.Module):
         cls_logits, bbox_deltas, coeff_map = self.pred_head(det)
 
         b = x.shape[0]
-        dct_coeffs = F.adaptive_avg_pool2d(coeff_map, (1, 1)).view(b, self.num_anchors, self.num_coeffs)
+        dct_coeffs = F.adaptive_avg_pool2d(coeff_map, (1, 1)).view(
+            b, self.num_anchors, self.num_coeffs
+        )
         mask_logits = torch.einsum("bkp,bphw->bkhw", dct_coeffs, basis_logits)
         return {
             "cls_logits": cls_logits,
@@ -62,9 +68,33 @@ class DCTMask(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "dct_mask_tiny": {"stem": 24, "low": 40, "det": 72, "head": 72, "depth": 1, "anchors": 8, "coeffs": 16},
-    "dct_mask_small": {"stem": 24, "low": 48, "det": 96, "head": 96, "depth": 2, "anchors": 12, "coeffs": 24},
-    "dct_mask_base": {"stem": 32, "low": 64, "det": 128, "head": 128, "depth": 3, "anchors": 16, "coeffs": 32},
+    "dct_mask_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 72,
+        "head": 72,
+        "depth": 1,
+        "anchors": 8,
+        "coeffs": 16,
+    },
+    "dct_mask_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "head": 96,
+        "depth": 2,
+        "anchors": 12,
+        "coeffs": 24,
+    },
+    "dct_mask_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "head": 128,
+        "depth": 3,
+        "anchors": 16,
+        "coeffs": 32,
+    },
 }
 
 
@@ -97,7 +127,9 @@ def build_dct_mask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_dct_mask_instance_segmenter(in_channels=3, num_classes=3, variant="dct_mask_tiny", width_mult=0.5)
+    m = build_dct_mask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="dct_mask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("dct_mask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

@@ -1,6 +1,5 @@
-
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 import torch
 from torch import nn
@@ -272,8 +271,10 @@ class LinformerSelfAttention(nn.Module):
         # x: (B, H, T, Hd) -> (B, H, K, Hd)
         b, h, t, d = x.shape
         pos = torch.linspace(0.0, 1.0, steps=t, device=x.device, dtype=x.dtype).view(1, 1, 1, t)
-        anchors = torch.sigmoid(self.anchors).to(device=x.device, dtype=x.dtype).view(
-            1, 1, self.proj_k, 1
+        anchors = (
+            torch.sigmoid(self.anchors)
+            .to(device=x.device, dtype=x.dtype)
+            .view(1, 1, self.proj_k, 1)
         )  # (1,1,K,1)
         dist2 = (pos - anchors).pow(2)  # (1,1,K,T)
 
@@ -647,7 +648,9 @@ class NystromSelfAttention(nn.Module):
         v = v.view(b, t, self.num_heads, self.head_dim).transpose(1, 2)
 
         scale = float(self.head_dim) ** -0.5
-        q_land = self._segment_mean(q, attention_mask, num_segments=self.num_landmarks)  # (B,H,M,Hd)
+        q_land = self._segment_mean(
+            q, attention_mask, num_segments=self.num_landmarks
+        )  # (B,H,M,Hd)
         k_land = self._segment_mean(k, attention_mask, num_segments=self.num_landmarks)
 
         # A: (B,H,T,M)
@@ -662,10 +665,14 @@ class NystromSelfAttention(nn.Module):
         # C: (B,H,M,T) (mask keys)
         c_scores = torch.matmul(q_land, k.transpose(-2, -1)) * scale
         key_mask = _expand_key_padding_mask(attention_mask, b=b, t=t)
-        c_scores = c_scores.masked_fill(~key_mask.view(b, 1, 1, t).expand(b, self.num_heads, -1, -1), -1e9)
+        c_scores = c_scores.masked_fill(
+            ~key_mask.view(b, 1, 1, t).expand(b, self.num_heads, -1, -1), -1e9
+        )
         if self.causal:
             causal = _make_causal_mask(t, device=x.device)
-            c_scores = c_scores.masked_fill(~causal.view(1, 1, t, t)[:, :, : self.num_landmarks], -1e9)
+            c_scores = c_scores.masked_fill(
+                ~causal.view(1, 1, t, t)[:, :, : self.num_landmarks], -1e9
+            )
         c = torch.softmax(c_scores, dim=-1)
 
         cv = torch.matmul(c, v)  # (B,H,M,Hd)
@@ -752,7 +759,9 @@ class BigBirdSelfAttention(nn.Module):
         v = v.view(b, t, self.num_heads, self.head_dim).transpose(1, 2)
 
         key_mask_full = attention_mask.to(torch.bool)  # (B,T)
-        out = torch.zeros((b, self.num_heads, t, self.head_dim), device=x.device, dtype=torch.float32)
+        out = torch.zeros(
+            (b, self.num_heads, t, self.head_dim), device=x.device, dtype=torch.float32
+        )
         scale = float(self.head_dim) ** -0.5
 
         for i in range(t):

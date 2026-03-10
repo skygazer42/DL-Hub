@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -18,7 +17,9 @@ class ShakeDrop(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         if not self.training or self.p_drop <= 0.0:
             return x
-        gate = (torch.rand(x.shape[0], 1, 1, 1, device=x.device, dtype=x.dtype) > self.p_drop).to(x.dtype)
+        gate = (torch.rand(x.shape[0], 1, 1, 1, device=x.device, dtype=x.dtype) > self.p_drop).to(
+            x.dtype
+        )
         alpha = torch.empty_like(gate).uniform_(-1.0, 1.0)
         return gate * alpha * x
 
@@ -121,7 +122,8 @@ def build_shake_drop_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_shake_drop_classifier(in_channels=3, num_classes=10, variant="shake_drop_base", width_mult=0.5)
+    m = build_shake_drop_classifier(
+        in_channels=3, num_classes=10, variant="shake_drop_base", width_mult=0.5
+    )
     y = m(x)
     print("shake_drop_base", tuple(y.shape))
-

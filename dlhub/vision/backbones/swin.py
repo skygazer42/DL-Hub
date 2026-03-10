@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -68,7 +67,9 @@ class WindowAttention(nn.Module):
             if b % nW != 0:
                 raise ValueError("attn_mask nW must divide the batch of windows")
             scores = scores.view(b // nW, nW, self.num_heads, n, n)
-            scores = scores + attn_mask.to(device=scores.device, dtype=scores.dtype).view(1, nW, 1, n, n)
+            scores = scores + attn_mask.to(device=scores.device, dtype=scores.dtype).view(
+                1, nW, 1, n, n
+            )
             scores = scores.view(b, self.num_heads, n, n)
 
         attn = torch.softmax(scores, dim=-1)
@@ -277,8 +278,18 @@ class SwinClassifier(nn.Module):
 
         self.pos_drop = nn.Dropout(p=float(cfg.dropout))
 
-        dims = [int(cfg.embed_dim), int(cfg.embed_dim) * 2, int(cfg.embed_dim) * 4, int(cfg.embed_dim) * 8]
-        resolutions = [(grid, grid), (grid // 2, grid // 2), (grid // 4, grid // 4), (grid // 8, grid // 8)]
+        dims = [
+            int(cfg.embed_dim),
+            int(cfg.embed_dim) * 2,
+            int(cfg.embed_dim) * 4,
+            int(cfg.embed_dim) * 8,
+        ]
+        resolutions = [
+            (grid, grid),
+            (grid // 2, grid // 2),
+            (grid // 4, grid // 4),
+            (grid // 8, grid // 8),
+        ]
 
         stages: list[nn.Module] = []
         for i in range(4):
@@ -368,4 +379,3 @@ def build_swin_classifier(
 
 
 __all__ = ["build_swin_classifier"]
-

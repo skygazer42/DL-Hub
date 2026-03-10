@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -38,7 +37,11 @@ class PrimaryCapsules(nn.Module):
         x = self.conv(x)  # (B, N*D, g, g)
         b, _, g1, g2 = x.shape
         x = x.view(b, self.num_capsules, self.capsule_dim, g1, g2)
-        x = x.permute(0, 3, 4, 1, 2).contiguous().view(b, g1 * g2 * self.num_capsules, self.capsule_dim)
+        x = (
+            x.permute(0, 3, 4, 1, 2)
+            .contiguous()
+            .view(b, g1 * g2 * self.num_capsules, self.capsule_dim)
+        )
         return _squash(x, dim=-1)
 
 
@@ -81,7 +84,9 @@ class DigitCapsules(nn.Module):
         W = self.W.expand(b, -1, -1, -1, -1)  # (B, No, Ni, Do, Di)
         u_hat = torch.matmul(W, x).squeeze(-1)  # (B, No, Ni, Do)
 
-        b_ij = torch.zeros(b, self.num_out_caps, self.num_in_caps, device=x.device, dtype=u_hat.dtype)
+        b_ij = torch.zeros(
+            b, self.num_out_caps, self.num_in_caps, device=x.device, dtype=u_hat.dtype
+        )
         for _ in range(self.routing_iters):
             c_ij = torch.softmax(b_ij, dim=1)  # (B, No, Ni)
             s_j = torch.sum(c_ij.unsqueeze(-1) * u_hat, dim=2)  # (B, No, Do)
@@ -174,4 +179,3 @@ if __name__ == "__main__":
         m = build_capsnet_classifier(in_channels=3, num_classes=10, variant=v, routing_iters=3)
         y = m(x)
         print(v, tuple(y.shape))
-

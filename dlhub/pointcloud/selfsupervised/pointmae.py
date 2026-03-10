@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -48,7 +47,9 @@ class PatchEmbed(nn.Module):
 
     def forward(self, points: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.in_channels}), got {tuple(points.shape)}"
+            )
 
         xyz = points[..., :3].to(torch.float32)  # (B, N, 3)
         b, n, _ = xyz.shape
@@ -56,7 +57,9 @@ class PatchEmbed(nn.Module):
         k = int(self.group_size)
 
         if n < k:
-            raise ValueError(f"group_size must be <= num_points. Got group_size={k}, num_points={n}")
+            raise ValueError(
+                f"group_size must be <= num_points. Got group_size={k}, num_points={n}"
+            )
         if s <= 0:
             raise ValueError("num_patches must be > 0")
         if s > n:
@@ -88,7 +91,7 @@ def _gather_batch(x: torch.Tensor, idx: torch.Tensor) -> torch.Tensor:
         raise ValueError("x must be at least 2D")
     if idx.ndim != 2:
         raise ValueError("idx must be (B, M)")
-    b, s = x.shape[0], x.shape[1]
+    b, _s = x.shape[0], x.shape[1]
     if idx.shape[0] != b:
         raise ValueError("Batch mismatch in _gather_batch")
     batch = torch.arange(b, device=x.device).unsqueeze(1)
@@ -164,7 +167,9 @@ class PointMAEPretrainer(nn.Module):
         self.encoder = nn.TransformerEncoder(enc_layer, num_layers=int(encoder_depth))
         self.enc_norm = nn.LayerNorm(int(d))
 
-        self.enc_to_dec = nn.Linear(int(d), int(dd), bias=True) if int(dd) != int(d) else nn.Identity()
+        self.enc_to_dec = (
+            nn.Linear(int(d), int(dd), bias=True) if int(dd) != int(d) else nn.Identity()
+        )
         self.dec_pos = nn.Sequential(
             nn.Linear(3, int(dd)),
             nn.ReLU(inplace=True),

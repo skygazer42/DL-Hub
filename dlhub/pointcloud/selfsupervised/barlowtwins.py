@@ -1,7 +1,5 @@
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 
 def _off_diagonal(x: torch.Tensor) -> torch.Tensor:
@@ -28,7 +26,9 @@ def barlow_twins_loss(
     """
 
     if z1.ndim != 2 or z2.ndim != 2:
-        raise ValueError(f"Expected z1/z2 shapes (B, D), got {tuple(z1.shape)} and {tuple(z2.shape)}")
+        raise ValueError(
+            f"Expected z1/z2 shapes (B, D), got {tuple(z1.shape)} and {tuple(z2.shape)}"
+        )
     if z1.shape != z2.shape:
         raise ValueError("z1 and z2 must have the same shape")
 
@@ -188,7 +188,9 @@ def build_barlowtwins_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown BarlowTwins-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown BarlowTwins-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     return BarlowTwinsPointNet(
@@ -211,4 +213,3 @@ if __name__ == "__main__":
     loss = barlow_twins_loss(o1["z"], o2["z"], lambda_offdiag=0.005)
     loss.backward()
     print("ok", float(loss.item()))
-

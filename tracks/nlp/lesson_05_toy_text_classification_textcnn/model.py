@@ -1,4 +1,3 @@
-
 from collections.abc import Mapping
 from dataclasses import dataclass
 
@@ -41,7 +40,9 @@ class TextCNNClassifier(nn.Module):
             ]
         )
         self.dropout = nn.Dropout(float(cfg.dropout))
-        self.classifier = nn.Linear(int(cfg.num_filters) * len(cfg.kernel_sizes), int(cfg.num_classes))
+        self.classifier = nn.Linear(
+            int(cfg.num_filters) * len(cfg.kernel_sizes), int(cfg.num_classes)
+        )
 
     def forward(self, inputs: Mapping[str, torch.Tensor]) -> torch.Tensor:
         input_ids = inputs["input_ids"].to(torch.long)
@@ -59,4 +60,3 @@ class TextCNNClassifier(nn.Module):
 
 
 __all__ = ["TextCNNClassifier", "ModelConfig"]
-

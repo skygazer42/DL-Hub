@@ -1,10 +1,15 @@
-
 import math
 
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    DropPath,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    scale_channels,
+)
 
 
 def _round_repeats(repeats: int, depth_mult: float) -> int:
@@ -178,4 +183,3 @@ if __name__ == "__main__":
         m = build_efficientnet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.75)
         y = m(x)
         print(f"efficientnet_{v}", tuple(y.shape))
-

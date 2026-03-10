@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import TransformerSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointbert_tiny": {"d_model": 64, "depth": 3},
@@ -15,7 +13,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class PointBERTSeg(nn.Module):
     """PointBERT semantic segmentation (toy): deeper transformer encoder backbone."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.net = TransformerSegBase(
             in_channels=int(in_channels),
@@ -56,4 +56,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

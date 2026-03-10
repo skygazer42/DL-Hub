@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -32,7 +31,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 07 (PointCloud): PointNet autoencoder toy reconstruction.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 07 (PointCloud): PointNet autoencoder toy reconstruction."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--num-points", type=int, default=128)
@@ -54,7 +55,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="pointnet_ae:pointnet_ae_small",
         help="Supported: pointnet_ae:<variant> (try --list-arch)",
     )
-    parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--list-arch", action="store_true", help="Print supported architectures and exit."
+    )
     parser.add_argument("--dropout", type=float, default=0.0)
 
     parser.add_argument("--max-train-batches", type=int, default=None)
@@ -137,7 +140,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="pointcloud", lesson="lesson_07_pointnet_toy_reconstruction", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="pointcloud",
+        lesson="lesson_07_pointnet_toy_reconstruction",
+        run_name=train_cfg.run_name,
+    )
     logger = get_logger("pointcloud.recon", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -186,8 +193,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             max_batches=train_cfg.max_eval_batches,
         )
 
-        logger.info("Epoch %d/%d | train CD %.6f | eval CD %.6f", epoch, train_cfg.epochs, train_cd, eval_cd)
-        append_jsonl(metrics_path, {"epoch": epoch, "train_chamfer": train_cd, "eval_chamfer": eval_cd})
+        logger.info(
+            "Epoch %d/%d | train CD %.6f | eval CD %.6f", epoch, train_cfg.epochs, train_cd, eval_cd
+        )
+        append_jsonl(
+            metrics_path, {"epoch": epoch, "train_chamfer": train_cd, "eval_chamfer": eval_cd}
+        )
 
     ckpt_path = save_checkpoint(
         paths.checkpoints_dir / "checkpoint.pt",
@@ -213,4 +224,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

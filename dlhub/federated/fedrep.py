@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class FedRepStrategy(FederatedStrategy):
@@ -12,7 +17,8 @@ class FedRepStrategy(FederatedStrategy):
         representation_update = weighted_average(state.raw_updates[:, :split], state.client_weights)
         personalized_heads = state.server_params[split:].unsqueeze(0) + state.raw_updates[:, split:]
         server_params = torch.cat(
-            [state.server_params[:split] + representation_update, state.server_params[split:]], dim=0
+            [state.server_params[:split] + representation_update, state.server_params[split:]],
+            dim=0,
         )
         return {
             "server_params": server_params,

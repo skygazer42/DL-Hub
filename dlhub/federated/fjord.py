@@ -14,7 +14,9 @@ class FjORDStrategy(FederatedStrategy):
         state = self._sample_round_state(seed=seed)
         gen = torch.Generator().manual_seed(int(seed) + 41)
         keep_prob = torch.linspace(self.dropout_floor, 1.0, self.num_clients, dtype=torch.float32)
-        mask = (torch.rand(self.num_clients, self.param_dim, generator=gen) < keep_prob.unsqueeze(1)).to(torch.float32)
+        mask = (
+            torch.rand(self.num_clients, self.param_dim, generator=gen) < keep_prob.unsqueeze(1)
+        ).to(torch.float32)
         dropped_updates = state.raw_updates * mask
         server_params = state.server_params + dropped_updates.mean(dim=0)
         return {

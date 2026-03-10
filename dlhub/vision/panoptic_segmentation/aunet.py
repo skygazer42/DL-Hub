@@ -1,10 +1,15 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-from dlhub.vision.panoptic_segmentation._common import BackboneC2C3C4C5, FPN4, ProtoNet, check_nchw, masks_from_prototypes
+from dlhub.vision.panoptic_segmentation._common import (
+    FPN4,
+    BackboneC2C3C4C5,
+    ProtoNet,
+    check_nchw,
+    masks_from_prototypes,
+)
 
 
 class _SpatialAttention(nn.Module):
@@ -61,7 +66,11 @@ class AUNet(nn.Module):
             depth=int(depth),
             act="relu",
         )
-        self.fpn = FPN4((int(c2_channels), int(c3_channels), int(c4_channels), int(c5_channels)), fpn, act="relu")
+        self.fpn = FPN4(
+            (int(c2_channels), int(c3_channels), int(c4_channels), int(c5_channels)),
+            fpn,
+            act="relu",
+        )
 
         # Attention gates (toy): use instance features to guide semantic and vice versa.
         self.inst_gate = _SpatialAttention(fpn)
@@ -108,13 +117,47 @@ class AUNet(nn.Module):
         mask_logits = masks_from_prototypes(proto, coeff)
         mask_logits = F.interpolate(mask_logits, size=(h, w), mode="nearest")
 
-        return {"semantic_logits": semantic_logits, "query_cls_logits": query_cls_logits, "mask_logits": mask_logits}
+        return {
+            "semantic_logits": semantic_logits,
+            "query_cls_logits": query_cls_logits,
+            "mask_logits": mask_logits,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
-    "aunet_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "fpn": 64, "instances": 16, "protos": 16},
-    "aunet_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "instances": 32, "protos": 32},
-    "aunet_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "fpn": 128, "instances": 64, "protos": 48},
+    "aunet_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "fpn": 64,
+        "instances": 16,
+        "protos": 16,
+    },
+    "aunet_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "instances": 32,
+        "protos": 32,
+    },
+    "aunet_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "fpn": 128,
+        "instances": 64,
+        "protos": 48,
+    },
 }
 
 
@@ -162,10 +205,17 @@ def build_aunet_panoptic_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_aunet_panoptic_segmenter(in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="aunet_tiny", width_mult=0.5)
+    m = build_aunet_panoptic_segmenter(
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="aunet_tiny",
+        width_mult=0.5,
+    )
     out = m(x)
     print("aunet_tiny", {k: tuple(v.shape) for k, v in out.items()})
-    loss = out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    loss = (
+        out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    )
     loss.backward()
     print("ok")
-

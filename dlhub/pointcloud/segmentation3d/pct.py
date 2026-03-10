@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import TransformerSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pct_tiny": {"d_model": 64, "depth": 2, "pos_feats": 8},
@@ -16,7 +14,14 @@ class PCTSeg(nn.Module):
     """PCT semantic segmentation (toy): transformer with lighter positional encoding."""
 
     def __init__(
-        self, *, in_channels: int, num_classes: int, d_model: int, depth: int, pos_feats: int, dropout: float = 0.0
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        d_model: int,
+        depth: int,
+        pos_feats: int,
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
         self.net = TransformerSegBase(
@@ -59,4 +64,3 @@ if __name__ == "__main__":
     y = model(x)
     (y.mean()).backward()
     print("logits:", tuple(y.shape))
-

@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-from dlhub.vision.instance_segmentation._common import BackboneLowDet, DensePredHead, ProtoNet, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackboneLowDet,
+    DensePredHead,
+    ProtoNet,
+    check_nchw,
+)
 
 
 class OrienMask(nn.Module):
@@ -41,7 +45,9 @@ class OrienMask(nn.Module):
             head_channels=int(head_channels),
             num_convs=2,
         )
-        self.ray_head = nn.Conv2d(int(det_channels), int(num_anchors) * int(num_rays), kernel_size=3, padding=1)
+        self.ray_head = nn.Conv2d(
+            int(det_channels), int(num_anchors) * int(num_rays), kernel_size=3, padding=1
+        )
         self.num_anchors = int(num_anchors)
         self.num_protos = int(num_protos)
         self.num_rays = int(num_rays)
@@ -56,7 +62,9 @@ class OrienMask(nn.Module):
         b = x.shape[0]
         coeff = F.adaptive_avg_pool2d(coeff_map, (1, 1)).view(b, self.num_anchors, self.num_protos)
         mask_logits = torch.einsum("bkp,bphw->bkhw", coeff, proto)
-        ray_offsets = F.adaptive_avg_pool2d(ray_offsets, (1, 1)).view(b, self.num_anchors, self.num_rays)
+        ray_offsets = F.adaptive_avg_pool2d(ray_offsets, (1, 1)).view(
+            b, self.num_anchors, self.num_rays
+        )
         return {
             "cls_logits": cls_logits,
             "bbox_deltas": bbox_deltas,
@@ -67,9 +75,36 @@ class OrienMask(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "orienmask_tiny": {"stem": 24, "low": 40, "det": 72, "head": 72, "depth": 1, "anchors": 8, "protos": 16, "rays": 18},
-    "orienmask_small": {"stem": 24, "low": 48, "det": 96, "head": 96, "depth": 2, "anchors": 12, "protos": 24, "rays": 24},
-    "orienmask_base": {"stem": 32, "low": 64, "det": 128, "head": 128, "depth": 3, "anchors": 16, "protos": 32, "rays": 36},
+    "orienmask_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 72,
+        "head": 72,
+        "depth": 1,
+        "anchors": 8,
+        "protos": 16,
+        "rays": 18,
+    },
+    "orienmask_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "head": 96,
+        "depth": 2,
+        "anchors": 12,
+        "protos": 24,
+        "rays": 24,
+    },
+    "orienmask_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "head": 128,
+        "depth": 3,
+        "anchors": 16,
+        "protos": 32,
+        "rays": 36,
+    },
 }
 
 
@@ -103,7 +138,9 @@ def build_orienmask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_orienmask_instance_segmenter(in_channels=3, num_classes=3, variant="orienmask_tiny", width_mult=0.5)
+    m = build_orienmask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="orienmask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("orienmask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

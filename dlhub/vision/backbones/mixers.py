@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -147,7 +146,9 @@ def build_poolformer_classifier(
     elif name in {"poolformer_base", "base"}:
         embed_dim, depth = 128, 12
     else:
-        raise ValueError("Unknown PoolFormer variant. Supported: poolformer_tiny|poolformer_small|poolformer_base (+ _p*)")
+        raise ValueError(
+            "Unknown PoolFormer variant. Supported: poolformer_tiny|poolformer_small|poolformer_base (+ _p*)"
+        )
 
     return PoolFormerClassifier(
         PoolFormerConfig(
@@ -410,7 +411,9 @@ def build_resmlp_classifier(
     elif name in {"resmlp_base", "base"}:
         embed_dim, depth = 256, 12
     else:
-        raise ValueError("Unknown ResMLP variant. Supported: resmlp_tiny|resmlp_small|resmlp_base (+ _p*)")
+        raise ValueError(
+            "Unknown ResMLP variant. Supported: resmlp_tiny|resmlp_small|resmlp_base (+ _p*)"
+        )
 
     return ResMLPClassifier(
         ResMLPConfig(
@@ -431,4 +434,3 @@ __all__ = [
     "build_poolformer_classifier",
     "build_resmlp_classifier",
 ]
-

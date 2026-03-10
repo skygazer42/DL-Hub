@@ -1,6 +1,11 @@
 from torch import nn
 
-from ._common import TransformerFGVCModel, build_fgvc_model, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TransformerFGVCModel,
+    build_fgvc_model,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class LateFusionTransformer(TransformerFGVCModel):
@@ -8,7 +13,9 @@ class LateFusionTransformer(TransformerFGVCModel):
         super().__init__(family=family, **kwargs)
 
 
-_VARIANTS: dict[str, dict[str, int]] = make_fgvc_variants("late_fusion_transformer", group="transformer")
+_VARIANTS: dict[str, dict[str, int]] = make_fgvc_variants(
+    "late_fusion_transformer", group="transformer"
+)
 
 
 def build_late_fusion_transformer_fgvc_classifier(

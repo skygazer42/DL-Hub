@@ -1,9 +1,18 @@
-
 import torch
 from torch import nn
 
-from ._common import BEVBoxSpec, DenseBEVHead, PointNetEncoder, PointQueryDetector3D, TinyBEVBackbone, TinyTransformerEncoder, check_points, decode_bev_boxes, scatter_mean_2d, split_xyz_features, topk_heatmap
-
+from ._common import (
+    BEVBoxSpec,
+    DenseBEVHead,
+    PointNetEncoder,
+    PointQueryDetector3D,
+    TinyBEVBackbone,
+    check_points,
+    decode_bev_boxes,
+    scatter_mean_2d,
+    split_xyz_features,
+    topk_heatmap,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "transfusion_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 48, "queries": 32},
@@ -45,7 +54,11 @@ class TransFusion(nn.Module):
             with_yaw=True,
         )
 
-        self.fuse = nn.Sequential(nn.Linear(7 + int(num_classes), 32), nn.ReLU(inplace=True), nn.Linear(32, 7 + int(num_classes)))
+        self.fuse = nn.Sequential(
+            nn.Linear(7 + int(num_classes), 32),
+            nn.ReLU(inplace=True),
+            nn.Linear(32, 7 + int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         check_points(points)
@@ -59,7 +72,13 @@ class TransFusion(nn.Module):
         dense = self.dense_head(feat)
         scores, cls, iy, ix = topk_heatmap(dense["heatmap"], k=self.topk)
         dense_boxes = decode_bev_boxes(dense["box_params"], iy, ix, self.bev, with_yaw=True)
-        dense_logits = torch.zeros(points.shape[0], self.topk, dense["heatmap"].shape[1], device=points.device, dtype=points.dtype)
+        dense_logits = torch.zeros(
+            points.shape[0],
+            self.topk,
+            dense["heatmap"].shape[1],
+            device=points.device,
+            dtype=points.dtype,
+        )
         dense_logits.scatter_(-1, cls.unsqueeze(-1), scores.unsqueeze(-1))
 
         q = self.query_det(points)
@@ -109,4 +128,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

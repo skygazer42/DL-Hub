@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -175,7 +174,9 @@ class ShuffleV2Block(nn.Module):
             self.branch1 = nn.Identity()
             self.branch2 = nn.Sequential(
                 ConvBNAct(branch_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
-                ConvBNAct(branch_ch, branch_ch, kernel_size=3, stride=1, groups=branch_ch, act="relu"),
+                ConvBNAct(
+                    branch_ch, branch_ch, kernel_size=3, stride=1, groups=branch_ch, act="relu"
+                ),
                 ConvBNAct(branch_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
             )
         else:
@@ -186,7 +187,9 @@ class ShuffleV2Block(nn.Module):
             )
             self.branch2 = nn.Sequential(
                 ConvBNAct(in_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
-                ConvBNAct(branch_ch, branch_ch, kernel_size=3, stride=2, groups=branch_ch, act="relu"),
+                ConvBNAct(
+                    branch_ch, branch_ch, kernel_size=3, stride=2, groups=branch_ch, act="relu"
+                ),
                 ConvBNAct(branch_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
             )
 
@@ -201,7 +204,9 @@ class ShuffleV2Block(nn.Module):
 
 
 class ShuffleNetV2Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
         if w <= 0.75:
@@ -291,8 +296,11 @@ def build_shufflenet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m1 = build_shufflenet_classifier(in_channels=3, num_classes=10, variant="shufflenetv1_1_0", width_mult=1.0)
-    m2 = build_shufflenet_classifier(in_channels=3, num_classes=10, variant="shufflenetv2_1_0", width_mult=1.0)
+    m1 = build_shufflenet_classifier(
+        in_channels=3, num_classes=10, variant="shufflenetv1_1_0", width_mult=1.0
+    )
+    m2 = build_shufflenet_classifier(
+        in_channels=3, num_classes=10, variant="shufflenetv2_1_0", width_mult=1.0
+    )
     print("shufflenetv1", tuple(m1(x).shape))
     print("shufflenetv2", tuple(m2(x).shape))
-

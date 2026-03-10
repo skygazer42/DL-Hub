@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -21,7 +20,9 @@ class SimpleSpanQA(nn.Module):
         super().__init__()
         self.cfg = cfg
 
-        self.embed = nn.Embedding(int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id))
+        self.embed = nn.Embedding(
+            int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id)
+        )
         self.embed_drop = nn.Dropout(float(cfg.dropout))
 
         self.ctx_enc = nn.LSTM(
@@ -89,4 +90,3 @@ class SimpleSpanQA(nn.Module):
 
 
 __all__ = ["SimpleSpanQA", "ModelConfig"]
-

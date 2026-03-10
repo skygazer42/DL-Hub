@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -59,6 +58,7 @@ def build_gpt_classifier(
             share_layers=False,
         )
     )
+
 
 def registry() -> dict[str, Builder]:
     r: dict[str, Builder] = {}

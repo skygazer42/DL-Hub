@@ -1,19 +1,9 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import (
-    CBAM,
-    CoordAttention,
-    ConvBNAct,
-    ECALayer,
-    GlobalAvgPoolHead,
-    GlobalContextBlock,
-    NonLocal2D,
-    SKConv,
-    SqueezeExcite,
-    scale_channels,
-)
+from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, scale_channels
+
+
 class _ResidualBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int, attn: nn.Module) -> None:
         super().__init__()
@@ -22,7 +12,9 @@ class _ResidualBlock(nn.Module):
             nn.BatchNorm2d(out_ch),
             nn.ReLU(inplace=True),
         )
-        self.conv2 = nn.Sequential(nn.Conv2d(out_ch, out_ch, 3, padding=1, bias=False), nn.BatchNorm2d(out_ch))
+        self.conv2 = nn.Sequential(
+            nn.Conv2d(out_ch, out_ch, 3, padding=1, bias=False), nn.BatchNorm2d(out_ch)
+        )
         self.attn = attn
         self.act = nn.ReLU(inplace=True)
 
@@ -45,9 +37,9 @@ class _ResidualBlock(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    'tiny':  {'channels': (32, 64, 128, 256), 'depths': (1, 1, 2, 1)},
-    'small': {'channels': (48, 96, 192, 384), 'depths': (2, 2, 3, 2)},
-    'base':  {'channels': (64, 128, 256, 512), 'depths': (2, 3, 4, 2)},
+    "tiny": {"channels": (32, 64, 128, 256), "depths": (1, 1, 2, 1)},
+    "small": {"channels": (48, 96, 192, 384), "depths": (2, 2, 3, 2)},
+    "base": {"channels": (64, 128, 256, 512), "depths": (2, 3, 4, 2)},
 }
 
 
@@ -57,20 +49,23 @@ class LambdaNetClassifier(nn.Module):
         *,
         in_channels: int,
         num_classes: int,
-        variant: str = 'tiny',
+        variant: str = "tiny",
         width_mult: float = 1.0,
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
         name = str(variant).lower().strip()
         if name not in _VARIANTS:
-            raise ValueError(f'Unknown variant: {variant!r}. Supported: {sorted(_VARIANTS)}')
+            raise ValueError(f"Unknown variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
 
         spec = _VARIANTS[name]
-        chans = tuple(scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in spec['channels'])
-        depths = tuple(int(d) for d in spec['depths'])
+        chans = tuple(
+            scale_channels(int(c), float(width_mult), min_ch=16, divisor=8)
+            for c in spec["channels"]
+        )
+        depths = tuple(int(d) for d in spec["depths"])
 
-        self.stem = ConvBNAct(int(in_channels), chans[0], kernel_size=3, stride=2, act='relu')
+        self.stem = ConvBNAct(int(in_channels), chans[0], kernel_size=3, stride=2, act="relu")
 
         def make_stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
             blocks: list[nn.Module] = []
@@ -101,7 +96,7 @@ def build_lambda_net_classifier(
     *,
     in_channels: int,
     num_classes: int,
-    variant: str = 'tiny',
+    variant: str = "tiny",
     width_mult: float = 1.0,
     dropout: float = 0.1,
 ) -> nn.Module:
@@ -114,9 +109,9 @@ def build_lambda_net_classifier(
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_lambda_net_classifier(in_channels=3, num_classes=10, variant='tiny', width_mult=1.0)
+    m = build_lambda_net_classifier(in_channels=3, num_classes=10, variant="tiny", width_mult=1.0)
     y = m(x)
-    print('lambda_net', tuple(y.shape))
+    print("lambda_net", tuple(y.shape))

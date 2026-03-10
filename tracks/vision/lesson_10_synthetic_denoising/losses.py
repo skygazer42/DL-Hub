@@ -1,9 +1,8 @@
-
 from collections.abc import Mapping
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class MaskedMSELoss(nn.Module):
@@ -18,12 +17,16 @@ class MaskedMSELoss(nn.Module):
         super().__init__()
         self.eps = float(eps)
 
-    def forward(self, pred: torch.Tensor, target: torch.Tensor | Mapping[str, torch.Tensor]) -> torch.Tensor:
+    def forward(
+        self, pred: torch.Tensor, target: torch.Tensor | Mapping[str, torch.Tensor]
+    ) -> torch.Tensor:
         if torch.is_tensor(target):
             return F.mse_loss(pred, target)
 
         if not isinstance(target, Mapping):
-            raise TypeError(f"MaskedMSELoss target must be a Tensor or Mapping, got: {type(target).__name__}")
+            raise TypeError(
+                f"MaskedMSELoss target must be a Tensor or Mapping, got: {type(target).__name__}"
+            )
 
         y = target.get("target", None)
         m = target.get("mask", None)
@@ -32,7 +35,9 @@ class MaskedMSELoss(nn.Module):
         if not torch.is_tensor(y) or not torch.is_tensor(m):
             raise TypeError("MaskedMSELoss expects 'target' and 'mask' to be torch Tensors")
         if pred.shape != y.shape or y.shape != m.shape:
-            raise ValueError(f"Shape mismatch: pred={tuple(pred.shape)} target={tuple(y.shape)} mask={tuple(m.shape)}")
+            raise ValueError(
+                f"Shape mismatch: pred={tuple(pred.shape)} target={tuple(y.shape)} mask={tuple(m.shape)}"
+            )
 
         pred = pred.to(torch.float32)
         y = y.to(torch.float32)
@@ -44,4 +49,3 @@ class MaskedMSELoss(nn.Module):
 
 
 __all__ = ["MaskedMSELoss"]
-

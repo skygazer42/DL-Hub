@@ -1,15 +1,19 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
 def test_nlp_lesson_01_shapes_smoke() -> None:
     from tracks.nlp.lesson_01_toy_text_classification.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_01_toy_text_classification.model import MeanPoolTextClassifier, ModelConfig
+    from tracks.nlp.lesson_01_toy_text_classification.model import (
+        MeanPoolTextClassifier,
+        ModelConfig,
+    )
 
     train_loader, _, vocab = get_dataloaders(
-        DataConfig(num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     inputs, y = next(iter(train_loader))
 
@@ -19,21 +23,28 @@ def test_nlp_lesson_01_shapes_smoke() -> None:
     assert tuple(y.shape) == (8,)
 
     model = MeanPoolTextClassifier(
-        ModelConfig(vocab_size=vocab.size, pad_id=vocab.pad_id, embed_dim=32, num_classes=2, dropout=0.1)
+        ModelConfig(
+            vocab_size=vocab.size, pad_id=vocab.pad_id, embed_dim=32, num_classes=2, dropout=0.1
+        )
     )
     logits = model(inputs)
     assert tuple(logits.shape) == (8, 2)
 
 
 def test_nlp_lesson_02_transformer_shapes_smoke() -> None:
-    from tracks.nlp.lesson_02_toy_text_classification_transformer.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_02_toy_text_classification_transformer.data import (
+        DataConfig,
+        get_dataloaders,
+    )
     from tracks.nlp.lesson_02_toy_text_classification_transformer.model import (
         ModelConfig,
         TransformerTextClassifier,
     )
 
     train_loader, _, vocab = get_dataloaders(
-        DataConfig(num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     inputs, y = next(iter(train_loader))
 
@@ -64,7 +75,9 @@ def test_nlp_lesson_03_ner_shapes_smoke() -> None:
     from tracks.nlp.lesson_03_toy_ner_bilstm.model import BiLstmNerTagger, ModelConfig
 
     train_loader, _, vocab, tag_vocab = get_dataloaders(
-        DataConfig(num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     inputs, y = next(iter(train_loader))
     assert set(inputs.keys()) == {"input_ids", "attention_mask"}
@@ -114,7 +127,9 @@ def test_nlp_lesson_07_reading_comprehension_shapes_smoke() -> None:
     assert tuple(targets["end"].shape) == (8,)
 
     model = SimpleSpanQA(
-        ModelConfig(vocab_size=vocab.size, pad_id=vocab.pad_id, embed_dim=32, hidden_dim=32, dropout=0.1)
+        ModelConfig(
+            vocab_size=vocab.size, pad_id=vocab.pad_id, embed_dim=32, hidden_dim=32, dropout=0.1
+        )
     )
     out = model(**inputs)
     assert set(out.keys()) == {"start_logits", "end_logits"}
@@ -123,8 +138,14 @@ def test_nlp_lesson_07_reading_comprehension_shapes_smoke() -> None:
 
 
 def test_nlp_lesson_04_seq2seq_attention_shapes_smoke() -> None:
-    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.model import ModelConfig, Seq2SeqWithAttention
+    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.model import (
+        ModelConfig,
+        Seq2SeqWithAttention,
+    )
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -153,7 +174,9 @@ def test_nlp_lesson_04_seq2seq_attention_shapes_smoke() -> None:
             dropout=0.1,
         )
     )
-    out = model(src_ids=inputs["src_ids"], src_mask=inputs["src_mask"], tgt_in_ids=inputs["tgt_in_ids"])
+    out = model(
+        src_ids=inputs["src_ids"], src_mask=inputs["src_mask"], tgt_in_ids=inputs["tgt_in_ids"]
+    )
     assert set(out.keys()) == {"logits", "attn"}
     assert tuple(out["logits"].shape) == (8, 9, vocab.size)
 
@@ -164,16 +187,31 @@ def test_nlp_lesson_04_seq2seq_attention_shapes_smoke() -> None:
 
 
 def test_nlp_lesson_05_textcnn_shapes_smoke() -> None:
-    from tracks.nlp.lesson_05_toy_text_classification_textcnn.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_05_toy_text_classification_textcnn.model import ModelConfig, TextCNNClassifier
+    from tracks.nlp.lesson_05_toy_text_classification_textcnn.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.nlp.lesson_05_toy_text_classification_textcnn.model import (
+        ModelConfig,
+        TextCNNClassifier,
+    )
 
     train_loader, _, vocab = get_dataloaders(
-        DataConfig(num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     inputs, y = next(iter(train_loader))
 
     model = TextCNNClassifier(
-        ModelConfig(vocab_size=vocab.size, pad_id=vocab.pad_id, embed_dim=32, num_classes=2, dropout=0.1, num_filters=16)
+        ModelConfig(
+            vocab_size=vocab.size,
+            pad_id=vocab.pad_id,
+            embed_dim=32,
+            num_classes=2,
+            dropout=0.1,
+            num_filters=16,
+        )
     )
     logits = model(inputs)
     assert tuple(logits.shape) == (8, 2)
@@ -183,10 +221,15 @@ def test_nlp_lesson_05_textcnn_shapes_smoke() -> None:
 
 def test_nlp_lesson_06_bilstm_shapes_smoke() -> None:
     from tracks.nlp.lesson_06_toy_text_classification_bilstm.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_06_toy_text_classification_bilstm.model import BiLSTMTextClassifier, ModelConfig
+    from tracks.nlp.lesson_06_toy_text_classification_bilstm.model import (
+        BiLSTMTextClassifier,
+        ModelConfig,
+    )
 
     train_loader, _, vocab = get_dataloaders(
-        DataConfig(num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=64, batch_size=8, max_length=16, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     inputs, y = next(iter(train_loader))
 

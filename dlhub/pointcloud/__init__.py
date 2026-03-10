@@ -12,4 +12,3 @@ __all__ = [
     "build_local_model",
     "list_local_arches",
 ]
-

@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _DenseBlock(nn.Module):
@@ -11,18 +10,18 @@ class _DenseBlock(nn.Module):
         super().__init__()
         c_in = int(in_ch)
         c_out = int(out_ch)
-        l = int(num_layers)
+        num_layers_int = int(num_layers)
         g = int(growth)
         if c_in <= 0 or c_out <= 0:
             raise ValueError("channels must be > 0")
-        if l <= 0:
+        if num_layers_int <= 0:
             raise ValueError("num_layers must be > 0")
         if g <= 0:
             raise ValueError("growth must be > 0")
 
         layers: list[nn.Module] = []
         ch = c_in
-        for _ in range(l):
+        for _ in range(num_layers_int):
             layers.append(nn.Conv2d(ch, g, kernel_size=3, padding=1, bias=True))
             ch += g
         self.layers = nn.ModuleList(layers)
@@ -77,8 +76,14 @@ class DenseUNet(nn.Module):
         upconvs: list[nn.Module] = []
         dec_blocks: list[nn.Module] = []
         for in_ch, out_ch in zip(reversed(channels[1:]), reversed(channels[:-1]), strict=True):
-            upconvs.append(nn.ConvTranspose2d(int(in_ch), int(out_ch), kernel_size=2, stride=2, bias=True))
-            dec_blocks.append(_DenseBlock(int(out_ch) * 2, int(out_ch), num_layers=int(num_layers), growth=int(growth)))
+            upconvs.append(
+                nn.ConvTranspose2d(int(in_ch), int(out_ch), kernel_size=2, stride=2, bias=True)
+            )
+            dec_blocks.append(
+                _DenseBlock(
+                    int(out_ch) * 2, int(out_ch), num_layers=int(num_layers), growth=int(growth)
+                )
+            )
         self.upconvs = nn.ModuleList(upconvs)
         self.dec_blocks = nn.ModuleList(dec_blocks)
 
@@ -139,4 +144,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

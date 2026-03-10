@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import index_points, knn_indices
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointweb_tiny": {"width": 64, "depth": 2, "k": 8},
@@ -17,7 +15,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class _AdaptiveAdjacency(nn.Module):
     def __init__(self, width: int) -> None:
         super().__init__()
-        self.mlp = nn.Sequential(nn.Linear(3, int(width) // 2), nn.ReLU(inplace=True), nn.Linear(int(width) // 2, 1))
+        self.mlp = nn.Sequential(
+            nn.Linear(3, int(width) // 2), nn.ReLU(inplace=True), nn.Linear(int(width) // 2, 1)
+        )
 
     def forward(self, rel: torch.Tensor) -> torch.Tensor:
         # rel: (B,N,k,3) -> (B,N,k,1)
@@ -28,7 +28,14 @@ class PointWebSeg(nn.Module):
     """PointWeb semantic segmentation (toy): adjacency learned from relative xyz."""
 
     def __init__(
-        self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int, dropout: float = 0.0
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        depth: int,
+        k: int,
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
         self.k = int(k)
@@ -37,11 +44,17 @@ class PointWebSeg(nn.Module):
         self.adj = _AdaptiveAdjacency(w)
         self.blocks = nn.ModuleList(
             [
-                nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Dropout(float(dropout)) if dropout > 0 else nn.Identity())
+                nn.Sequential(
+                    nn.Linear(w, w),
+                    nn.ReLU(inplace=True),
+                    nn.Dropout(float(dropout)) if dropout > 0 else nn.Identity(),
+                )
                 for _ in range(int(depth))
             ]
         )
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -88,4 +101,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

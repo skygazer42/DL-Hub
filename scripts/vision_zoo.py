@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from collections.abc import Iterable
@@ -71,14 +70,28 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Vision model zoo (torchvision/timm) utilities.")
 
     parser.add_argument("--list", action="store_true", help="List available architecture ids.")
-    parser.add_argument("--search", type=str, default=None, help="Filter list by substring (case-insensitive).")
+    parser.add_argument(
+        "--search", type=str, default=None, help="Filter list by substring (case-insensitive)."
+    )
     parser.add_argument("--limit", type=int, default=60, help="Max lines to print when listing.")
 
-    parser.add_argument("--smoke", type=str, default=None, metavar="ARCH_ID", help="Run a forward smoke on an arch id.")
-    parser.add_argument("--num-classes", type=int, default=None, help="Optional num_classes override when building.")
-    parser.add_argument("--batch-size", type=int, default=2, help="Batch size for smoke inputs (where applicable).")
+    parser.add_argument(
+        "--smoke",
+        type=str,
+        default=None,
+        metavar="ARCH_ID",
+        help="Run a forward smoke on an arch id.",
+    )
+    parser.add_argument(
+        "--num-classes", type=int, default=None, help="Optional num_classes override when building."
+    )
+    parser.add_argument(
+        "--batch-size", type=int, default=2, help="Batch size for smoke inputs (where applicable)."
+    )
     parser.add_argument("--image-size", type=int, default=64, help="Image size for smoke inputs.")
-    parser.add_argument("--time", type=int, default=8, help="Video time dimension for tvvideo smoke inputs.")
+    parser.add_argument(
+        "--time", type=int, default=8, help="Video time dimension for tvvideo smoke inputs."
+    )
 
     return parser.parse_args()
 

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -40,7 +39,9 @@ class TransformerEncoderBlock(nn.Module):
     def __init__(self, embed_dim: int, num_heads: int, ff_dim: int, dropout: float) -> None:
         super().__init__()
         self.ln1 = nn.LayerNorm(int(embed_dim))
-        self.attn = MultiHeadSelfAttention(embed_dim=int(embed_dim), num_heads=int(num_heads), dropout=dropout)
+        self.attn = MultiHeadSelfAttention(
+            embed_dim=int(embed_dim), num_heads=int(num_heads), dropout=dropout
+        )
         self.drop1 = nn.Dropout(p=float(dropout))
 
         self.ln2 = nn.LayerNorm(int(embed_dim))
@@ -80,7 +81,9 @@ class ViTClassifier(nn.Module):
         grid = int(cfg.image_size) // int(cfg.patch_size)
         num_patches = grid * grid
 
-        self.patch_embed = nn.Conv2d(1, int(cfg.embed_dim), kernel_size=int(cfg.patch_size), stride=int(cfg.patch_size))
+        self.patch_embed = nn.Conv2d(
+            1, int(cfg.embed_dim), kernel_size=int(cfg.patch_size), stride=int(cfg.patch_size)
+        )
         self.cls_token = nn.Parameter(torch.zeros(1, 1, int(cfg.embed_dim)))
         self.pos_embed = nn.Parameter(torch.zeros(1, 1 + num_patches, int(cfg.embed_dim)))
         self.drop = nn.Dropout(p=float(cfg.dropout))
@@ -122,4 +125,3 @@ class ViTClassifier(nn.Module):
 
 
 __all__ = ["ViTClassifier", "ModelConfig"]
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -63,7 +62,9 @@ class TransformerEncoderBlock(nn.Module):
     def __init__(self, embed_dim: int, num_heads: int, ff_dim: int, dropout: float) -> None:
         super().__init__()
         self.ln1 = nn.LayerNorm(embed_dim)
-        self.attn = MultiHeadSelfAttention(embed_dim=embed_dim, num_heads=num_heads, dropout=dropout)
+        self.attn = MultiHeadSelfAttention(
+            embed_dim=embed_dim, num_heads=num_heads, dropout=dropout
+        )
         self.drop1 = nn.Dropout(p=float(dropout))
 
         self.ln2 = nn.LayerNorm(embed_dim)
@@ -101,7 +102,9 @@ class TransformerTextClassifier(nn.Module):
         super().__init__()
         self.cfg = cfg
 
-        self.token_embed = nn.Embedding(int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id))
+        self.token_embed = nn.Embedding(
+            int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id)
+        )
         self.pos_embed = nn.Embedding(int(cfg.max_length), int(cfg.embed_dim))
         self.dropout = nn.Dropout(p=float(cfg.dropout))
 
@@ -142,4 +145,3 @@ class TransformerTextClassifier(nn.Module):
         pooled = _masked_mean_pool(x, attention_mask)
         logits = self.head(pooled)
         return logits
-

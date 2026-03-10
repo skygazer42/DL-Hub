@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class PointNetGlobalEncoder(nn.Module):
@@ -94,7 +93,9 @@ def moco_logits(
     if q.shape != k.shape:
         raise ValueError("q and k must have same shape")
     if queue.ndim != 2 or queue.shape[0] != q.shape[1]:
-        raise ValueError(f"Expected queue shape (D, K) with D={q.shape[1]}, got {tuple(queue.shape)}")
+        raise ValueError(
+            f"Expected queue shape (D, K) with D={q.shape[1]}, got {tuple(queue.shape)}"
+        )
 
     t = float(temperature)
     if t <= 0:
@@ -216,7 +217,9 @@ class MoCoPointNet(nn.Module):
 
         self.queue_ptr[0] = (ptr + bsz) % k
 
-    def forward(self, v1: torch.Tensor, v2: torch.Tensor, *, temperature: float = 0.2) -> dict[str, torch.Tensor]:
+    def forward(
+        self, v1: torch.Tensor, v2: torch.Tensor, *, temperature: float = 0.2
+    ) -> dict[str, torch.Tensor]:
         hq = self.encoder_q(v1)
         q = self.projector_q(hq)
         q = F.normalize(q, dim=1)
@@ -246,7 +249,9 @@ def build_moco_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MoCo-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MoCo-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     q = int(spec["queue"]) if queue_size is None else int(queue_size)
@@ -272,4 +277,3 @@ if __name__ == "__main__":
     loss.backward()
     m.dequeue_and_enqueue(out["k"])
     print("ok", float(loss.item()))
-

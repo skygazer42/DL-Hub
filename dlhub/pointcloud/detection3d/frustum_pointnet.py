@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import PointQueryDetector3D, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "frustum_pointnet_tiny": {"d_model": 64, "queries": 32, "use_transformer": False},
@@ -73,9 +71,10 @@ def build_frustum_pointnet_detector3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_frustum_pointnet_detector3d(in_channels=3, num_classes=3, variant="frustum_pointnet_tiny")
+    m = build_frustum_pointnet_detector3d(
+        in_channels=3, num_classes=3, variant="frustum_pointnet_tiny"
+    )
     x = torch.randn(2, 256, 3)
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

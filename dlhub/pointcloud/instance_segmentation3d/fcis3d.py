@@ -1,11 +1,7 @@
-
-import math
-
 import torch
 from torch import nn
 
-from ._common import GridSpec2D, Projection2DEncoder, PrototypeMaskHead, l2_normalize
-
+from ._common import GridSpec2D, Projection2DEncoder, PrototypeMaskHead
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "fcis3d_tiny": {"width": 64, "bev": 24, "prototypes": 16},
@@ -29,9 +25,17 @@ class FCIS3D(nn.Module):
     ) -> None:
         super().__init__()
         grid = GridSpec2D(h=int(bev), w=int(bev))
-        self.enc = Projection2DEncoder(int(in_channels), int(width), grid=grid, dropout=float(dropout))
-        self.pos = nn.Sequential(nn.Linear(3, int(width) // 2), nn.ReLU(inplace=True), nn.Linear(int(width) // 2, int(width)))
-        self.head = PrototypeMaskHead(int(width), int(num_classes), num_prototypes=int(num_prototypes), dropout=float(dropout))
+        self.enc = Projection2DEncoder(
+            int(in_channels), int(width), grid=grid, dropout=float(dropout)
+        )
+        self.pos = nn.Sequential(
+            nn.Linear(3, int(width) // 2),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(width) // 2, int(width)),
+        )
+        self.head = PrototypeMaskHead(
+            int(width), int(num_classes), num_prototypes=int(num_prototypes), dropout=float(dropout)
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -66,4 +70,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

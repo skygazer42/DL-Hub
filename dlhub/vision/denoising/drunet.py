@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -98,7 +97,9 @@ class DRUNet(nn.Module):
         x_pad, pad_hw = pad_to_multiple(x, mult, mode="reflect")
         b, _, h, w = x_pad.shape
 
-        noise_map = torch.full((b, 1, h, w), float(self.sigma), device=x_pad.device, dtype=x_pad.dtype)
+        noise_map = torch.full(
+            (b, 1, h, w), float(self.sigma), device=x_pad.device, dtype=x_pad.dtype
+        )
         h0 = self.in_conv(torch.cat([x_pad, noise_map], dim=1))
 
         skips: list[torch.Tensor] = []
@@ -110,7 +111,9 @@ class DRUNet(nn.Module):
 
         h = self.bottleneck(h)
 
-        for up, reduce, blk, skip in zip(self.ups, self.reduces, self.dec_blocks, reversed(skips), strict=True):
+        for up, reduce, blk, skip in zip(
+            self.ups, self.reduces, self.dec_blocks, reversed(skips), strict=True
+        ):
             h = up(h)
             if h.shape[-2:] != skip.shape[-2:]:
                 h = F.interpolate(h, size=skip.shape[-2:], mode="nearest")
@@ -156,4 +159,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

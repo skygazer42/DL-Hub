@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.pointcloud.ops import farthest_point_sample, index_points, knn_query
 
@@ -66,7 +65,9 @@ class PatchEmbed(nn.Module):
 
     def forward(self, points: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.in_channels}), got {tuple(points.shape)}"
+            )
 
         xyz = points[..., :3].to(torch.float32)  # (B, N, 3)
         b, n, _ = xyz.shape
@@ -74,7 +75,9 @@ class PatchEmbed(nn.Module):
         k = int(self.group_size)
 
         if n < k:
-            raise ValueError(f"group_size must be <= num_points. Got group_size={k}, num_points={n}")
+            raise ValueError(
+                f"group_size must be <= num_points. Got group_size={k}, num_points={n}"
+            )
         if s <= 0:
             raise ValueError("num_patches must be > 0")
         if s > n:
@@ -167,7 +170,11 @@ class PatchTransformer(nn.Module):
 
             if mask_token is None:
                 raise ValueError("mask_token is required when mask_ratio > 0")
-            if mask_token.ndim != 3 or int(mask_token.shape[0]) != 1 or int(mask_token.shape[1]) != 1:
+            if (
+                mask_token.ndim != 3
+                or int(mask_token.shape[0]) != 1
+                or int(mask_token.shape[1]) != 1
+            ):
                 raise ValueError("mask_token must have shape (1, 1, D)")
 
             batch = torch.arange(b, device=tokens.device).unsqueeze(1)
@@ -354,8 +361,12 @@ class DINOV2PointMAE(nn.Module):
             dropout=float(dropout),
         )
 
-        self.student_head = DINOHead(int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout))
-        self.teacher_head = DINOHead(int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout))
+        self.student_head = DINOHead(
+            int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout)
+        )
+        self.teacher_head = DINOHead(
+            int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout)
+        )
 
         self.mask_token = nn.Parameter(torch.zeros(1, 1, int(embed_dim)))
         nn.init.trunc_normal_(self.mask_token, std=0.02)
@@ -412,12 +423,18 @@ class DINOV2PointMAE(nn.Module):
             self.center_cls.mul_(cm).add_(cls_center, alpha=(1.0 - cm))
 
         if teacher_patch_logits:
-            patch_cat = torch.cat([t.detach().reshape(-1, t.shape[-1]) for t in teacher_patch_logits], dim=0)
+            patch_cat = torch.cat(
+                [t.detach().reshape(-1, t.shape[-1]) for t in teacher_patch_logits], dim=0
+            )
             patch_center = patch_cat.mean(dim=0, keepdim=True)
             self.center_patch.mul_(cm).add_(patch_center, alpha=(1.0 - cm))
 
-    def forward_student(self, points: torch.Tensor, *, mask_ratio: float = 0.5) -> dict[str, torch.Tensor]:
-        feats = self.student_backbone(points, mask_ratio=float(mask_ratio), mask_token=self.mask_token)
+    def forward_student(
+        self, points: torch.Tensor, *, mask_ratio: float = 0.5
+    ) -> dict[str, torch.Tensor]:
+        feats = self.student_backbone(
+            points, mask_ratio=float(mask_ratio), mask_token=self.mask_token
+        )
         cls = feats["cls"]
         patch = feats["patch"]
         cls_out = self.student_head(cls)
@@ -555,4 +572,3 @@ if __name__ == "__main__":
     )
     m.momentum_update_teacher(ema_decay=0.99)
     print("ok", float(loss.item()))
-

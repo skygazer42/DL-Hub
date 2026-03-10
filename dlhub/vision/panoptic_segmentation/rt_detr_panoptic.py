@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, DepthwiseSeparableConv, scale_channels
 from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_hw
@@ -115,7 +114,9 @@ class RTDETRPanoptic(nn.Module):
         mask_logits = F.interpolate(mask_logits, size=(h, w), mode="nearest")
 
         scores = query_cls_logits.softmax(dim=-1).max(dim=-1).values
-        panoptic_map = fuse_panoptic(semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes))
+        panoptic_map = fuse_panoptic(
+            semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes)
+        )
 
         return {
             "semantic_logits": semantic_logits,
@@ -127,9 +128,48 @@ class RTDETRPanoptic(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "rtdetr_panoptic_tiny": {"stem": 24, "c2": 40, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "d_model": 96, "heads": 4, "q": 25, "enc": 1, "dec": 1, "conv": 1},
-    "rtdetr_panoptic_small": {"stem": 32, "c2": 48, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "d_model": 128, "heads": 4, "q": 50, "enc": 1, "dec": 2, "conv": 2},
-    "rtdetr_panoptic_base": {"stem": 48, "c2": 64, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "d_model": 192, "heads": 6, "q": 100, "enc": 2, "dec": 3, "conv": 2},
+    "rtdetr_panoptic_tiny": {
+        "stem": 24,
+        "c2": 40,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "d_model": 96,
+        "heads": 4,
+        "q": 25,
+        "enc": 1,
+        "dec": 1,
+        "conv": 1,
+    },
+    "rtdetr_panoptic_small": {
+        "stem": 32,
+        "c2": 48,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "d_model": 128,
+        "heads": 4,
+        "q": 50,
+        "enc": 1,
+        "dec": 2,
+        "conv": 2,
+    },
+    "rtdetr_panoptic_base": {
+        "stem": 48,
+        "c2": 64,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "d_model": 192,
+        "heads": 6,
+        "q": 100,
+        "enc": 2,
+        "dec": 3,
+        "conv": 2,
+    },
 }
 
 
@@ -143,7 +183,9 @@ def build_rtdetr_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown RT-DETR-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown RT-DETR-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -177,11 +219,16 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_rtdetr_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="rtdetr_panoptic_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="rtdetr_panoptic_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("rtdetr_panoptic_tiny", {k: tuple(v.shape) for k, v in out.items()})
-    loss = out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    loss = (
+        out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    )
     loss.backward()
     print("ok")
-

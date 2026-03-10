@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
-from ._common import BEVBoxSpec, BEVTwoStageDetector3D, mlp
-
+from ._common import BEVBoxSpec, BEVTwoStageDetector3D
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "parta2_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 48, "roi_k": 8},

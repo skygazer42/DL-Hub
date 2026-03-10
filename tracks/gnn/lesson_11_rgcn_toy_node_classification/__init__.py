@@ -4,4 +4,3 @@ from .data import DataConfig, ToyRelGraph, load_toy_rel_graph
 from .model import RGCN, ModelConfig
 
 __all__ = ["DataConfig", "ToyRelGraph", "load_toy_rel_graph", "RGCN", "ModelConfig"]
-

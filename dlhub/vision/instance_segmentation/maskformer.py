@@ -1,7 +1,5 @@
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nchw
@@ -56,7 +54,9 @@ class MaskFormer(nn.Module):
         self.token_proj = nn.Conv2d(int(det_channels), dm, kernel_size=1, bias=True)
         self.query = nn.Parameter(torch.randn(nq, dm) * 0.02)
 
-        self.cross = nn.ModuleList([nn.MultiheadAttention(dm, nh, batch_first=True) for _ in range(dl)])
+        self.cross = nn.ModuleList(
+            [nn.MultiheadAttention(dm, nh, batch_first=True) for _ in range(dl)]
+        )
         self.norm1 = nn.ModuleList([nn.LayerNorm(dm) for _ in range(dl)])
         self.ffn = nn.ModuleList(
             [
@@ -97,9 +97,36 @@ class MaskFormer(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "maskformer_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "queries": 16, "d_model": 80, "heads": 4, "layers": 1},
-    "maskformer_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "queries": 32, "d_model": 96, "heads": 4, "layers": 2},
-    "maskformer_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "queries": 64, "d_model": 128, "heads": 8, "layers": 3},
+    "maskformer_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "queries": 16,
+        "d_model": 80,
+        "heads": 4,
+        "layers": 1,
+    },
+    "maskformer_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "queries": 32,
+        "d_model": 96,
+        "heads": 4,
+        "layers": 2,
+    },
+    "maskformer_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "queries": 64,
+        "d_model": 128,
+        "heads": 8,
+        "layers": 3,
+    },
 }
 
 
@@ -142,10 +169,11 @@ def build_maskformer_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_maskformer_instance_segmenter(in_channels=3, num_classes=3, variant="maskformer_tiny", width_mult=0.5)
+    m = build_maskformer_instance_segmenter(
+        in_channels=3, num_classes=3, variant="maskformer_tiny", width_mult=0.5
+    )
     out = m(x)
     print("maskformer_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

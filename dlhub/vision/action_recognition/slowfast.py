@@ -1,4 +1,3 @@
-
 """SlowFast (dual-pathway) - toy-first video action classifier.
 
 Reference:
@@ -12,8 +11,8 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -100,8 +99,12 @@ class SlowFastVideoClassifier(nn.Module):
         if self.alpha <= 0:
             raise ValueError("alpha must be > 0")
 
-        self.slow = Tiny3DPath(in_channels=int(in_channels), width=int(slow_width), depth=int(depth))
-        self.fast = Tiny3DPath(in_channels=int(in_channels), width=int(fast_width), depth=max(1, int(depth) - 1))
+        self.slow = Tiny3DPath(
+            in_channels=int(in_channels), width=int(slow_width), depth=int(depth)
+        )
+        self.fast = Tiny3DPath(
+            in_channels=int(in_channels), width=int(fast_width), depth=max(1, int(depth) - 1)
+        )
 
         fused = self.slow.out_dim + self.fast.out_dim
         self.dropout = nn.Dropout(float(dropout))
@@ -157,10 +160,11 @@ def build_slowfast_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 16, 64, 64)
-    m = build_slowfast_video_classifier(in_channels=3, num_classes=6, variant="slowfast_tiny", width_mult=0.5, dropout=0.0)
+    m = build_slowfast_video_classifier(
+        in_channels=3, num_classes=6, variant="slowfast_tiny", width_mult=0.5, dropout=0.0
+    )
     y = m(x)
     print("slowfast_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

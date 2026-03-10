@@ -9,8 +9,8 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -158,7 +158,11 @@ class X3DVideoClassifier(nn.Module):
         ch = w
         for i in range(d):
             out = ch if i == 0 else ch * 2
-            stride = (1, 1, 1) if i == 0 else (2 if i == 1 else 1, 2 if i == 1 else 1, 2 if i == 1 else 1)
+            stride = (
+                (1, 1, 1)
+                if i == 0
+                else (2 if i == 1 else 1, 2 if i == 1 else 1, 2 if i == 1 else 1)
+            )
             # Only downsample on i==1 to keep the toy fast.
             if i != 1:
                 stride = (1, 1, 1)
@@ -224,10 +228,11 @@ def build_x3d_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_x3d_video_classifier(in_channels=3, num_classes=6, variant="x3d_tiny", width_mult=0.5, dropout=0.0)
+    m = build_x3d_video_classifier(
+        in_channels=3, num_classes=6, variant="x3d_tiny", width_mult=0.5, dropout=0.0
+    )
     y = m(x)
     print("x3d_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

@@ -1,10 +1,12 @@
-
-import math
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    make_divisible,
+)
 
 
 class ReXNetClassifier(nn.Module):
@@ -104,4 +106,3 @@ if __name__ == "__main__":
     m = build_rexnet_classifier(in_channels=3, num_classes=10, variant="rexnet_small")
     y = m(x)
     print("rexnet_small", tuple(y.shape))
-

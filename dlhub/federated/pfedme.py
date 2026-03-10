@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class PFedMeStrategy(FederatedStrategy):

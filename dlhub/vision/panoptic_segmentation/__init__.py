@@ -12,10 +12,16 @@ from .bisenet_panoptic import BiSeNetPanoptic, build_bisenet_panoptic_segmenter
 from .blendmask_panoptic import BlendMaskPanoptic, build_blendmask_panoptic_segmenter
 from .boxinst_panoptic import BoxInstPanoptic, build_boxinst_panoptic_segmenter
 from .centermask_panoptic import CenterMaskPanoptic, build_centermask_panoptic_segmenter
-from .conditional_detr_panoptic import ConditionalDETRPanoptic, build_conditional_detr_panoptic_segmenter
 from .condinst_panoptic import CondInstPanoptic, build_condinst_panoptic_segmenter
+from .conditional_detr_panoptic import (
+    ConditionalDETRPanoptic,
+    build_conditional_detr_panoptic_segmenter,
+)
 from .dab_detr_panoptic import DABDETRPanoptic, build_dab_detr_panoptic_segmenter
-from .deformable_detr_panoptic import DeformableDETRPanoptic, build_deformable_detr_panoptic_segmenter
+from .deformable_detr_panoptic import (
+    DeformableDETRPanoptic,
+    build_deformable_detr_panoptic_segmenter,
+)
 from .detr_panoptic import DETRPanoptic, build_detr_panoptic_segmenter
 from .dn_detr_panoptic import DNDTRPanoptic, build_dn_detr_panoptic_segmenter
 from .efficientps import EfficientPS, build_efficientps_panoptic_segmenter

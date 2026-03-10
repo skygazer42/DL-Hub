@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -89,7 +88,8 @@ def build_sequencer_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(1, 3, 64, 64)
-    m = build_sequencer_classifier(in_channels=3, num_classes=10, variant="sequencer_tiny", width_mult=0.5)
+    m = build_sequencer_classifier(
+        in_channels=3, num_classes=10, variant="sequencer_tiny", width_mult=0.5
+    )
     y = m(x)
     print("sequencer_tiny", tuple(y.shape))
-

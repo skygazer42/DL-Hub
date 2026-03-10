@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -6,7 +5,6 @@ from torch.nn import functional as F
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 
 from ._common import PointNetEncoder, check_points, mlp, roi_pool_knn, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "h3dnet_tiny": {"width": 64, "seeds": 64, "proposals": 32, "vote_k": 16, "stages": 2},
@@ -39,7 +37,10 @@ class H3DNet(nn.Module):
 
         self.enc = PointNetEncoder(int(in_channels), width=int(width), dropout=float(dropout))
         self.vote_stages = nn.ModuleList(
-            [mlp(int(width), [int(width), int(width)], 3 + int(width), dropout=float(dropout)) for _ in range(self.stages)]
+            [
+                mlp(int(width), [int(width), int(width)], 3 + int(width), dropout=float(dropout))
+                for _ in range(self.stages)
+            ]
         )
         self.proj = nn.Linear(int(width), int(width))
         self.cls = nn.Linear(int(width), int(num_classes))
@@ -103,4 +104,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

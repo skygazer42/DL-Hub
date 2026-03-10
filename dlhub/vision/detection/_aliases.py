@@ -5,7 +5,6 @@ from collections.abc import Callable, Mapping
 import torch
 from torch import nn
 
-
 Builder = Callable[..., nn.Module]
 
 
@@ -36,7 +35,7 @@ def sum_output_means(x) -> torch.Tensor:
         return x.to(torch.float32).mean()
     if isinstance(x, dict):
         return sum((sum_output_means(v) for v in x.values()), start=torch.tensor(0.0))
-    if isinstance(x, (list, tuple)):
+    if isinstance(x, list | tuple):
         return sum((sum_output_means(v) for v in x), start=torch.tensor(0.0))
     raise TypeError(f"Unsupported output type in detection alias smoke: {type(x)!r}")
 

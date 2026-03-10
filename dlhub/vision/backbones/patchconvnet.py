@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -63,7 +62,9 @@ class PatchConvNetClassifier(nn.Module):
         self.hw = (h, w)
         self.pos = nn.Parameter(torch.zeros(1, h * w, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.ModuleList([PatchConvNetBlock(int(dim), drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [PatchConvNetBlock(int(dim), drop_path=float(dp_rates[i])) for i in range(int(depth))]
+        )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -95,7 +96,9 @@ def build_patchconvnet_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown PatchConvNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown PatchConvNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return PatchConvNetClassifier(
         in_channels=int(in_channels),
@@ -112,7 +115,8 @@ def build_patchconvnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_patchconvnet_classifier(in_channels=3, num_classes=10, variant="patchconvnet_tiny", image_size=64)
+    m = build_patchconvnet_classifier(
+        in_channels=3, num_classes=10, variant="patchconvnet_tiny", image_size=64
+    )
     y = m(x)
     print("patchconvnet_tiny", tuple(y.shape))
-

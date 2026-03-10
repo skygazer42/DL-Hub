@@ -1,6 +1,5 @@
-
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 import torch
 from torch.utils.data import DataLoader, Dataset, Subset
@@ -12,11 +11,15 @@ def _sample_sphere(*, num_points: int, g: torch.Generator, noise_std: float = 0.
     pts = torch.randn((int(num_points), 3), generator=g, dtype=torch.float32)
     pts = pts / pts.norm(dim=1, keepdim=True).clamp(min=1e-8)
     if float(noise_std) > 0:
-        pts = pts + torch.randn((int(num_points), 3), generator=g, dtype=torch.float32) * float(noise_std)
+        pts = pts + torch.randn((int(num_points), 3), generator=g, dtype=torch.float32) * float(
+            noise_std
+        )
     return pts
 
 
-def _sample_cube_surface(*, num_points: int, g: torch.Generator, noise_std: float = 0.0) -> torch.Tensor:
+def _sample_cube_surface(
+    *, num_points: int, g: torch.Generator, noise_std: float = 0.0
+) -> torch.Tensor:
     n = int(num_points)
     face = torch.randint(0, 6, (n,), generator=g, dtype=torch.long)
     pts = torch.rand((n, 3), generator=g, dtype=torch.float32) * 2.0 - 1.0
@@ -34,8 +37,12 @@ def _sample_cube_surface(*, num_points: int, g: torch.Generator, noise_std: floa
     return pts
 
 
-def _rand_uniform(g: torch.Generator, low: float, high: float, shape: tuple[int, ...] = ()) -> torch.Tensor:
-    return torch.rand(shape, generator=g, dtype=torch.float32) * (float(high) - float(low)) + float(low)
+def _rand_uniform(
+    g: torch.Generator, low: float, high: float, shape: tuple[int, ...] = ()
+) -> torch.Tensor:
+    return torch.rand(shape, generator=g, dtype=torch.float32) * (float(high) - float(low)) + float(
+        low
+    )
 
 
 def _augment(points: torch.Tensor, *, g: torch.Generator, cfg) -> torch.Tensor:
@@ -122,9 +129,13 @@ class ToyIJEPADataset(Dataset):
         label = torch.tensor(1 if is_sphere else 0, dtype=torch.long)
 
         if is_sphere:
-            base = _sample_sphere(num_points=int(cfg.num_points), g=g0, noise_std=float(cfg.surface_noise))
+            base = _sample_sphere(
+                num_points=int(cfg.num_points), g=g0, noise_std=float(cfg.surface_noise)
+            )
         else:
-            base = _sample_cube_surface(num_points=int(cfg.num_points), g=g0, noise_std=float(cfg.surface_noise))
+            base = _sample_cube_surface(
+                num_points=int(cfg.num_points), g=g0, noise_std=float(cfg.surface_noise)
+            )
 
         g_aug = torch.Generator().manual_seed(int(cfg.seed) * 1_000_003 + i * 17 + 7)
         pts = _augment(base, g=g_aug, cfg=cfg)
@@ -133,7 +144,9 @@ class ToyIJEPADataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     ds = ToyIJEPADataset(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed))
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
+    )
 
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)
@@ -163,4 +176,3 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
 
 
 __all__ = ["DataConfig", "ToyIJEPADataset", "get_dataloaders"]
-

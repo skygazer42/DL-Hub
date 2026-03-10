@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -122,4 +121,3 @@ class DGCNNPartSeg(nn.Module):
 
 
 __all__ = ["DGCNNPartSeg", "ModelConfig"]
-

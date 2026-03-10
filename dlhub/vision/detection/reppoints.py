@@ -1,15 +1,16 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.backbones._blocks import scale_channels
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class RepPointsHead(nn.Module):
     """RepPoints-style point set head (toy)."""
 
-    def __init__(self, *, channels: int, num_classes: int, num_points: int = 9, num_convs: int = 3) -> None:
+    def __init__(
+        self, *, channels: int, num_classes: int, num_points: int = 9, num_convs: int = 3
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -28,7 +29,11 @@ class RepPointsHead(nn.Module):
 
     def forward_single(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         x = self.shared(x)
-        return {"cls_logits": self.cls(x), "points_init": self.pts_init(x), "points_refine": self.pts_refine(x)}
+        return {
+            "cls_logits": self.cls(x),
+            "points_init": self.pts_init(x),
+            "points_refine": self.pts_refine(x),
+        }
 
 
 class RepPointsDetector(nn.Module):
@@ -80,9 +85,36 @@ class RepPointsDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "reppoints_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "fpn": 64, "head": 2, "points": 9},
-    "reppoints_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "head": 3, "points": 9},
-    "reppoints_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "fpn": 128, "head": 3, "points": 9},
+    "reppoints_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "fpn": 64,
+        "head": 2,
+        "points": 9,
+    },
+    "reppoints_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "head": 3,
+        "points": 9,
+    },
+    "reppoints_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "fpn": 128,
+        "head": 3,
+        "points": 9,
+    },
 }
 
 
@@ -117,10 +149,15 @@ def build_reppoints_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_reppoints_detector(in_channels=3, num_classes=3, variant="reppoints_tiny", width_mult=0.5)
+    m = build_reppoints_detector(
+        in_channels=3, num_classes=3, variant="reppoints_tiny", width_mult=0.5
+    )
     out = m(x)
     print("reppoints_tiny", [tuple(t.shape) for t in out["cls_logits"]])
-    loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["points_init"]) + sum(t.mean() for t in out["points_refine"])
+    loss = (
+        sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["points_init"])
+        + sum(t.mean() for t in out["points_refine"])
+    )
     loss.backward()
     print("ok")
-

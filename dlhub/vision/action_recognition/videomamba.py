@@ -96,7 +96,9 @@ class VideoMambaVideoClassifier(nn.Module):
         self.pos = nn.Parameter(torch.zeros(1, num_tokens, d))
 
         dp_rates = torch.linspace(0.0, float(drop_path), steps=n).tolist()
-        self.blocks = nn.Sequential(*[VideoMambaBlock(d, kernel_size=7, drop_path=float(dp_rates[i])) for i in range(n)])
+        self.blocks = nn.Sequential(
+            *[VideoMambaBlock(d, kernel_size=7, drop_path=float(dp_rates[i])) for i in range(n)]
+        )
         self.norm = nn.LayerNorm(d)
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(d, int(num_classes))
@@ -113,7 +115,9 @@ class VideoMambaVideoClassifier(nn.Module):
 
         tok = self.tubelet_embed(x).flatten(2).transpose(1, 2).contiguous()  # (B, N, D)
         if int(tok.shape[1]) != int(self.num_tokens):
-            raise ValueError(f"Unexpected token count: got N={tok.shape[1]}, expected {self.num_tokens}")
+            raise ValueError(
+                f"Unexpected token count: got N={tok.shape[1]}, expected {self.num_tokens}"
+            )
         tok = tok + self.pos
         tok = self.blocks(tok)
         tok = self.norm(tok)
@@ -161,10 +165,17 @@ def build_videomamba_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_videomamba_video_classifier(in_channels=3, num_classes=6, variant="videomamba_tiny", image_size=64, frames=8, width_mult=0.5, dropout=0.0)
+    m = build_videomamba_video_classifier(
+        in_channels=3,
+        num_classes=6,
+        variant="videomamba_tiny",
+        image_size=64,
+        frames=8,
+        width_mult=0.5,
+        dropout=0.0,
+    )
     y = m(x)
     print("videomamba_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

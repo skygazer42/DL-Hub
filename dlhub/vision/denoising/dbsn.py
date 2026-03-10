@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class DirectionalMaskedConv2d(nn.Module):
@@ -36,7 +35,9 @@ class DirectionalMaskedConv2d(nn.Module):
             raise ValueError(f"Unknown direction: {direction!r}")
 
         p = (k // 2) * d
-        self.conv = nn.Conv2d(int(in_ch), int(out_ch), kernel_size=k, padding=p, dilation=d, bias=True)
+        self.conv = nn.Conv2d(
+            int(in_ch), int(out_ch), kernel_size=k, padding=p, dilation=d, bias=True
+        )
 
         mask = torch.ones_like(self.conv.weight)
         center = k // 2
@@ -68,8 +69,12 @@ class DirectionalResBlock(nn.Module):
     def __init__(self, channels: int, *, direction: str, dilation: int) -> None:
         super().__init__()
         c = int(channels)
-        self.conv1 = DirectionalMaskedConv2d(c, c, kernel_size=3, dilation=int(dilation), direction=str(direction))
-        self.conv2 = DirectionalMaskedConv2d(c, c, kernel_size=3, dilation=int(dilation), direction=str(direction))
+        self.conv1 = DirectionalMaskedConv2d(
+            c, c, kernel_size=3, dilation=int(dilation), direction=str(direction)
+        )
+        self.conv2 = DirectionalMaskedConv2d(
+            c, c, kernel_size=3, dilation=int(dilation), direction=str(direction)
+        )
         self.act = nn.ReLU(inplace=True)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -214,4 +219,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

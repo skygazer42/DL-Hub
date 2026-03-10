@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -74,4 +73,3 @@ if __name__ == "__main__":
         m = build_lenet_classifier(in_channels=1, num_classes=10, variant=v, width_mult=1.0)
         y = m(x)
         print(v, tuple(y.shape))
-

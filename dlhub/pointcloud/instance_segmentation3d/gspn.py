@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -7,7 +6,6 @@ from torch import nn
 from dlhub.pointcloud.ops import knn_query
 
 from ._common import MLPPointEncoder, l2_normalize, mlp
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "gspn_tiny": {"width": 64, "depth": 2, "instances": 16, "vote_k": 8},
@@ -56,7 +54,9 @@ class GSPN(nn.Module):
         neigh_feat = index_points(feat, neigh).mean(dim=2)
         inst_feat = inst_feat + neigh_feat
 
-        sim = torch.einsum("bkd,bnd->bkn", l2_normalize(inst_feat), l2_normalize(feat)) * math.sqrt(w)
+        sim = torch.einsum("bkd,bnd->bkn", l2_normalize(inst_feat), l2_normalize(feat)) * math.sqrt(
+            w
+        )
         cls_logits = self.cls(inst_feat)
         return {"mask_logits": sim, "cls_logits": cls_logits}
 
@@ -89,4 +89,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

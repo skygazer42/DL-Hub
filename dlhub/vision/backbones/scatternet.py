@@ -1,6 +1,3 @@
-
-import math
-
 import torch
 from torch import nn
 
@@ -17,12 +14,12 @@ class HaarScattering2D(nn.Module):
     def __init__(self, in_channels: int, *, levels: int = 2) -> None:
         super().__init__()
         c = int(in_channels)
-        l = int(levels)
+        num_levels = int(levels)
         if c <= 0:
             raise ValueError("in_channels must be > 0")
-        if l <= 0:
+        if num_levels <= 0:
             raise ValueError("levels must be > 0")
-        self.levels = l
+        self.levels = num_levels
 
         # 2x2 Haar filters: LL, LH, HL, HH
         ll = torch.tensor([[1.0, 1.0], [1.0, 1.0]])
@@ -109,4 +106,3 @@ if __name__ == "__main__":
         m = build_scatternet_classifier(in_channels=3, num_classes=10, variant=v)
         y = m(x)
         print(v, tuple(y.shape))
-

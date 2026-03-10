@@ -1,7 +1,5 @@
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nchw
@@ -69,7 +67,9 @@ class DETRMask(nn.Module):
         self.encoder = nn.TransformerEncoder(enc_layer, num_layers=el)
 
         self.query = nn.Parameter(torch.randn(nq, dm) * 0.02)
-        self.cross = nn.ModuleList([nn.MultiheadAttention(dm, nh, batch_first=True) for _ in range(dl)])
+        self.cross = nn.ModuleList(
+            [nn.MultiheadAttention(dm, nh, batch_first=True) for _ in range(dl)]
+        )
         self.norm1 = nn.ModuleList([nn.LayerNorm(dm) for _ in range(dl)])
         self.ffn = nn.ModuleList(
             [
@@ -113,9 +113,39 @@ class DETRMask(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "detr_mask_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "queries": 16, "d_model": 80, "heads": 4, "enc": 1, "dec": 1},
-    "detr_mask_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "queries": 32, "d_model": 96, "heads": 4, "enc": 2, "dec": 2},
-    "detr_mask_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "queries": 64, "d_model": 128, "heads": 8, "enc": 3, "dec": 3},
+    "detr_mask_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "queries": 16,
+        "d_model": 80,
+        "heads": 4,
+        "enc": 1,
+        "dec": 1,
+    },
+    "detr_mask_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "queries": 32,
+        "d_model": 96,
+        "heads": 4,
+        "enc": 2,
+        "dec": 2,
+    },
+    "detr_mask_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "queries": 64,
+        "d_model": 128,
+        "heads": 8,
+        "enc": 3,
+        "dec": 3,
+    },
 }
 
 
@@ -159,10 +189,11 @@ def build_detr_mask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_detr_mask_instance_segmenter(in_channels=3, num_classes=3, variant="detr_mask_tiny", width_mult=0.5)
+    m = build_detr_mask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="detr_mask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("detr_mask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -46,9 +45,15 @@ class TensorMask(nn.Module):
         )
         self.proto = ProtoNet(int(low_channels), np, depth=int(proto_depth))
 
-        tower: list[nn.Module] = [ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")]
+        tower: list[nn.Module] = [
+            ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")
+        ]
         for _ in range(int(head_convs) - 1):
-            tower.append(ConvBNAct(int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"))
+            tower.append(
+                ConvBNAct(
+                    int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"
+                )
+            )
         self.tower = nn.Sequential(*tower)
 
         self.cls = nn.Conv2d(int(head_channels), nc, kernel_size=3, padding=1)
@@ -67,7 +72,12 @@ class TensorMask(nn.Module):
         coeff_flat = coeffs.permute(0, 2, 3, 1).reshape(b, slots, p)
         proto_flat = proto.reshape(b, p, h4 * w4)
         tensor_logits = torch.bmm(coeff_flat, proto_flat).view(b, slots, h4, w4)
-        return {"cls_logits": cls_logits, "tensor_logits": tensor_logits, "proto": proto, "mask_coeffs": coeffs}
+        return {
+            "cls_logits": cls_logits,
+            "tensor_logits": tensor_logits,
+            "proto": proto,
+            "mask_coeffs": coeffs,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
@@ -110,10 +120,11 @@ def build_tensormask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_tensormask_instance_segmenter(in_channels=3, num_classes=3, variant="tensormask_tiny", width_mult=0.5)
+    m = build_tensormask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="tensormask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("tensormask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

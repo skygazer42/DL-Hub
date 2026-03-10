@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import TransformerSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "point_transformer_tiny": {"d_model": 64, "depth": 2},
@@ -53,9 +51,10 @@ def build_point_transformer_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    model = build_point_transformer_segmenter3d(in_channels=3, num_classes=6, variant="point_transformer_tiny")
+    model = build_point_transformer_segmenter3d(
+        in_channels=3, num_classes=6, variant="point_transformer_tiny"
+    )
     x = torch.randn(2, 128, 3)
     y = model(x)
     (y.mean()).backward()
     print("logits:", tuple(y.shape))
-

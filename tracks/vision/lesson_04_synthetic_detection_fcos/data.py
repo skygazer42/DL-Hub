@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -58,7 +57,9 @@ class SyntheticRectDetection(Dataset):
         x1, y1, x2, y2 = self._sample_box()
 
         # Image: background noise + bright rectangle.
-        img = self.rng.normal(loc=0.0, scale=float(self.cfg.noise_std), size=(s, s)).astype(np.float32)
+        img = self.rng.normal(loc=0.0, scale=float(self.cfg.noise_std), size=(s, s)).astype(
+            np.float32
+        )
         img = np.clip(img, -1.0, 1.0)
         img[y1:y2, x1:x2] = 1.0
 
@@ -114,7 +115,12 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
         reg_target = torch.stack([b[1]["reg_target"] for b in batch], dim=0)
         pos_mask = torch.stack([b[1]["pos_mask"] for b in batch], dim=0)
         box = torch.stack([b[1]["box"] for b in batch], dim=0)
-        return imgs, {"cls_target": cls_target, "reg_target": reg_target, "pos_mask": pos_mask, "box": box}
+        return imgs, {
+            "cls_target": cls_target,
+            "reg_target": reg_target,
+            "pos_mask": pos_mask,
+            "box": box,
+        }
 
     train_loader = DataLoader(
         train_ds,

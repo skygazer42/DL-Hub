@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -89,7 +88,13 @@ def _build_vocab(examples: list[tuple[list[str], list[str], int, int]]) -> Vocab
 
 
 class ToyRCDataset:
-    def __init__(self, *, examples: list[tuple[list[str], list[str], int, int]], vocab: Vocab, cfg: DataConfig) -> None:
+    def __init__(
+        self,
+        *,
+        examples: list[tuple[list[str], list[str], int, int]],
+        vocab: Vocab,
+        cfg: DataConfig,
+    ) -> None:
         self.examples = list(examples)
         self.vocab = vocab
         self.cfg = cfg
@@ -127,7 +132,9 @@ def get_dataloaders(cfg: DataConfig):
     vocab = _build_vocab(examples)
     ds = ToyRCDataset(examples=examples, vocab=vocab, cfg=cfg)
 
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed))
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
+    )
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)
 
@@ -168,4 +175,3 @@ def get_dataloaders(cfg: DataConfig):
 
 
 __all__ = ["DataConfig", "Vocab", "ToyRCDataset", "get_dataloaders"]
-

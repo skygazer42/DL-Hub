@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -20,7 +19,10 @@ def test_gnn_cora_adj_row_is_row_normalized() -> None:
 
 def test_gnn_cora_label_propagation_smoke() -> None:
     from tracks.gnn.datasets.cora import load_cora
-    from tracks.gnn.lesson_05_label_propagation_cora.model import LabelPropagation, LabelPropagationConfig
+    from tracks.gnn.lesson_05_label_propagation_cora.model import (
+        LabelPropagation,
+        LabelPropagationConfig,
+    )
 
     data = load_cora()
     model = LabelPropagation(LabelPropagationConfig(num_layers=3, alpha=0.9, clamp_labeled=True))
@@ -46,4 +48,3 @@ def test_gnn_cora_graphsage_forward_shape_smoke() -> None:
     )
     logits = model(data.features, data.adj_row)
     assert logits.shape == (2708, int(data.labels.max().item()) + 1)
-

@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, scale_channels
+from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -40,7 +39,9 @@ class TransNeXtBlock(nn.Module):
     def __init__(self, dim: int, heads: int, *, drop_path: float, dropout: float) -> None:
         super().__init__()
         self.cpe = ConvPosEnc(int(dim), kernel_size=3)
-        self.block = TransformerEncoderBlock(int(dim), int(heads), mlp_ratio=4.0, dropout=float(dropout), drop_path=float(drop_path))
+        self.block = TransformerEncoderBlock(
+            int(dim), int(heads), mlp_ratio=4.0, dropout=float(dropout), drop_path=float(drop_path)
+        )
 
     def forward(self, t: torch.Tensor, *, hw: tuple[int, int]) -> torch.Tensor:
         t = self.cpe(t, hw=hw)
@@ -73,29 +74,51 @@ class TransNeXtClassifier(nn.Module):
 
         self.embed1 = PatchEmbed2D(int(in_channels), dims[0], patch_size=int(patch_size))
         self.stage1 = nn.ModuleList(
-            [TransNeXtBlock(dims[0], heads[0], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)) for _ in range(depths[0])]
+            [
+                TransNeXtBlock(
+                    dims[0], heads[0], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)
+                )
+                for _ in range(depths[0])
+            ]
         )
 
         self.down2 = nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2)
         self.stage2 = nn.ModuleList(
-            [TransNeXtBlock(dims[1], heads[1], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)) for _ in range(depths[1])]
+            [
+                TransNeXtBlock(
+                    dims[1], heads[1], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)
+                )
+                for _ in range(depths[1])
+            ]
         )
 
         self.down3 = nn.Conv2d(dims[1], dims[2], kernel_size=2, stride=2)
         self.stage3 = nn.ModuleList(
-            [TransNeXtBlock(dims[2], heads[2], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)) for _ in range(depths[2])]
+            [
+                TransNeXtBlock(
+                    dims[2], heads[2], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)
+                )
+                for _ in range(depths[2])
+            ]
         )
 
         self.down4 = nn.Conv2d(dims[2], dims[3], kernel_size=2, stride=2)
         self.stage4 = nn.ModuleList(
-            [TransNeXtBlock(dims[3], heads[3], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)) for _ in range(depths[3])]
+            [
+                TransNeXtBlock(
+                    dims[3], heads[3], drop_path=float(next(dp_iter, 0.0)), dropout=float(dropout)
+                )
+                for _ in range(depths[3])
+            ]
         )
 
         self.norm = nn.LayerNorm(dims[-1])
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(dims[-1], int(num_classes))
 
-    def _run_stage(self, t: torch.Tensor, hw: tuple[int, int], blocks: nn.ModuleList) -> torch.Tensor:
+    def _run_stage(
+        self, t: torch.Tensor, hw: tuple[int, int], blocks: nn.ModuleList
+    ) -> torch.Tensor:
         for b in blocks:
             t = b(t, hw=hw)
         return t
@@ -133,9 +156,24 @@ class TransNeXtClassifier(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "transnext_tiny": {"dims": (64, 128, 256, 384), "depths": (1, 1, 3, 1), "heads": (2, 4, 8, 12), "patch": 4},
-    "transnext_small": {"dims": (64, 160, 320, 512), "depths": (1, 2, 4, 2), "heads": (2, 5, 10, 16), "patch": 4},
-    "transnext_base": {"dims": (80, 192, 384, 640), "depths": (2, 2, 6, 2), "heads": (2, 6, 12, 20), "patch": 4},
+    "transnext_tiny": {
+        "dims": (64, 128, 256, 384),
+        "depths": (1, 1, 3, 1),
+        "heads": (2, 4, 8, 12),
+        "patch": 4,
+    },
+    "transnext_small": {
+        "dims": (64, 160, 320, 512),
+        "depths": (1, 2, 4, 2),
+        "heads": (2, 5, 10, 16),
+        "patch": 4,
+    },
+    "transnext_base": {
+        "dims": (80, 192, 384, 640),
+        "depths": (2, 2, 6, 2),
+        "heads": (2, 6, 12, 20),
+        "patch": 4,
+    },
 }
 
 
@@ -168,6 +206,8 @@ def build_transnext_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_transnext_classifier(in_channels=3, num_classes=10, variant="transnext_tiny", width_mult=0.5)
+    m = build_transnext_classifier(
+        in_channels=3, num_classes=10, variant="transnext_tiny", width_mult=0.5
+    )
     y = m(x)
     print("transnext_tiny", tuple(y.shape))

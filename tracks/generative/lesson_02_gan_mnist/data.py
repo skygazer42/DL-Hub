@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -80,7 +79,9 @@ def get_dataloader(cfg: DataConfig) -> DataLoader:
 
     # Optionally subsample for fast experimentation.
     if cfg.val_fraction > 0.0:
-        train_idx, _ = train_val_split_indices(n=len(base_ds), val_fraction=cfg.val_fraction, seed=cfg.seed)
+        train_idx, _ = train_val_split_indices(
+            n=len(base_ds), val_fraction=cfg.val_fraction, seed=cfg.seed
+        )
         base_ds = Subset(base_ds, train_idx)
 
     ds = base_ds

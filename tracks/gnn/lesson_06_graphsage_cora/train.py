@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -11,7 +10,6 @@ from dlhub.device import resolve_device
 from dlhub.logging import get_logger
 from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
-
 from tracks.gnn.datasets.cora import load_cora
 
 from .model import GraphSAGE, ModelConfig
@@ -93,7 +91,9 @@ def run_training(cfg: TrainConfig) -> int:
     ).to(device_info.torch_device)
 
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay
+    )
 
     metrics_path = paths.run_dir / "metrics.jsonl"
     for epoch in range(1, cfg.epochs + 1):
@@ -111,8 +111,12 @@ def run_training(cfg: TrainConfig) -> int:
                 (logits[idx_train].argmax(dim=1) == labels[idx_train]).float().mean().item()
             )
             val_loss = float(criterion(logits[idx_val], labels[idx_val]).item())
-            val_acc = float((logits[idx_val].argmax(dim=1) == labels[idx_val]).float().mean().item())
-            test_acc = float((logits[idx_test].argmax(dim=1) == labels[idx_test]).float().mean().item())
+            val_acc = float(
+                (logits[idx_val].argmax(dim=1) == labels[idx_val]).float().mean().item()
+            )
+            test_acc = float(
+                (logits[idx_test].argmax(dim=1) == labels[idx_test]).float().mean().item()
+            )
 
         logger.info(
             "Epoch %d/%d | train loss %.4f acc %.3f | val loss %.4f acc %.3f | test acc %.3f",
@@ -161,4 +165,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

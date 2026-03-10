@@ -1,11 +1,16 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyFGBackbone, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyFGBackbone,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class GeMPool2d(nn.Module):
@@ -107,4 +112,3 @@ def build_gem_pooling_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_gem_pooling_fgvc_classifier, "gem_pooling_tiny")
-

@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    make_divisible,
+)
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -16,7 +20,14 @@ class MobileViTBlock(nn.Module):
             ConvBNAct(d, d, kernel_size=3, stride=1, act="silu"),
             ConvBNAct(d, d, kernel_size=1, stride=1, padding=0, act="silu"),
         )
-        self.blocks = nn.Sequential(*[TransformerEncoderBlock(d, int(num_heads), mlp_ratio=2.0, dropout=0.0, drop_path=0.0) for _ in range(int(depth))])
+        self.blocks = nn.Sequential(
+            *[
+                TransformerEncoderBlock(
+                    d, int(num_heads), mlp_ratio=2.0, dropout=0.0, drop_path=0.0
+                )
+                for _ in range(int(depth))
+            ]
+        )
         self.fuse = ConvBNAct(2 * d, d, kernel_size=1, stride=1, padding=0, act="silu")
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -59,7 +70,10 @@ class MobileViTV2Classifier(nn.Module):
             InvertedResidual(c(64), c(80), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"),
             MobileViTBlock(c(80), depth=3, num_heads=5),
         )
-        self.head = nn.Sequential(ConvBNAct(c(80), c(640), kernel_size=1, stride=1, padding=0, act="silu"), GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)))
+        self.head = nn.Sequential(
+            ConvBNAct(c(80), c(640), kernel_size=1, stride=1, padding=0, act="silu"),
+            GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -86,9 +100,16 @@ def build_mobilevit_v2_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MobileViT-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MobileViT-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return MobileViTV2Classifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return MobileViTV2Classifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -97,4 +118,3 @@ if __name__ == "__main__":
     m = build_mobilevit_v2_classifier(in_channels=3, num_classes=10, variant="mobilevit_v2_xs")
     y = m(x)
     print("mobilevit_v2_xs", tuple(y.shape))
-

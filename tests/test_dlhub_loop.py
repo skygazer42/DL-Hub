@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -33,7 +32,13 @@ def test_fit_classifier_improves_on_toy_data() -> None:
     )
 
     for _ in range(15):
-        fit_classifier(model=model, loader=train_loader, optimizer=optimizer, criterion=criterion, device=device)
+        fit_classifier(
+            model=model,
+            loader=train_loader,
+            optimizer=optimizer,
+            criterion=criterion,
+            device=device,
+        )
 
     after = evaluate_classifier(
         model=model, loader=val_loader, criterion=criterion, device=device, max_batches=10

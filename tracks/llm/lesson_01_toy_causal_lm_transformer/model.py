@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -53,7 +52,9 @@ class TransformerDecoderBlock(nn.Module):
     def __init__(self, embed_dim: int, num_heads: int, ff_dim: int, dropout: float) -> None:
         super().__init__()
         self.ln1 = nn.LayerNorm(int(embed_dim))
-        self.attn = MultiHeadCausalSelfAttention(embed_dim=int(embed_dim), num_heads=int(num_heads), dropout=dropout)
+        self.attn = MultiHeadCausalSelfAttention(
+            embed_dim=int(embed_dim), num_heads=int(num_heads), dropout=dropout
+        )
         self.drop1 = nn.Dropout(p=float(dropout))
 
         self.ln2 = nn.LayerNorm(int(embed_dim))
@@ -90,7 +91,9 @@ class CausalTransformerLM(nn.Module):
         super().__init__()
         self.cfg = cfg
 
-        self.token_embed = nn.Embedding(int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id))
+        self.token_embed = nn.Embedding(
+            int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id)
+        )
         self.pos_embed = nn.Embedding(int(cfg.max_length), int(cfg.embed_dim))
         self.dropout = nn.Dropout(p=float(cfg.dropout))
 
@@ -133,4 +136,3 @@ class CausalTransformerLM(nn.Module):
 
 
 __all__ = ["CausalTransformerLM", "ModelConfig"]
-

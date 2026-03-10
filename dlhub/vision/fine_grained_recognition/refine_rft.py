@@ -1,4 +1,3 @@
-
 """ReFine-RFT / Cost of Thinking (toy-first) for FGVC.
 
 Reference:
@@ -17,12 +16,18 @@ Toy interpretation here (offline, no LLM):
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyPatchEncoder, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyPatchEncoder,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class _ReasonBlock(nn.Module):
@@ -65,7 +70,9 @@ class ReFineRFTFGVC(nn.Module):
 
         # Use a slightly longer token budget than typical part count.
         self.max_reason_len = max(4, int(spec["parts"]) + 4)
-        self.reason_tokens = nn.Parameter(torch.randn(1, int(self.max_reason_len), int(embed)) * 0.02)
+        self.reason_tokens = nn.Parameter(
+            torch.randn(1, int(self.max_reason_len), int(embed)) * 0.02
+        )
         self.gate_logits = nn.Parameter(torch.zeros(int(self.max_reason_len)))
 
         self.encoder = TinyPatchEncoder(
@@ -78,7 +85,9 @@ class ReFineRFTFGVC(nn.Module):
         )
 
         depth = max(1, int(spec["depth"]) // 2)
-        self.blocks = nn.ModuleList([_ReasonBlock(embed_dim=int(embed), heads=int(heads)) for _ in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [_ReasonBlock(embed_dim=int(embed), heads=int(heads)) for _ in range(int(depth))]
+        )
 
         self.proj = nn.Linear(int(embed), int(embed))
         self.dropout = nn.Dropout(float(dropout))
@@ -145,4 +154,3 @@ def build_refine_rft_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_refine_rft_fgvc_classifier, "refine_rft_tiny")
-

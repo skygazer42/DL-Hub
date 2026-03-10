@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -116,7 +115,8 @@ def build_shake_shake_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_shake_shake_classifier(in_channels=3, num_classes=10, variant="shake_shake_base", width_mult=0.5)
+    m = build_shake_shake_classifier(
+        in_channels=3, num_classes=10, variant="shake_shake_base", width_mult=0.5
+    )
     y = m(x)
     print("shake_shake_base", tuple(y.shape))
-

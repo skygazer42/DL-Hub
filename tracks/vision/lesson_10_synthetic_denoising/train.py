@@ -3,15 +3,11 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import warnings
 from dataclasses import dataclass
 
-# Keep CLI output clean: importing torch may emit a noisy FutureWarning about `pynvml`.
-warnings.filterwarnings(
-    "ignore",
-    message=r"The pynvml package is deprecated\..*",
-    category=FutureWarning,
-)
+import torch
+
+from .data import DataConfig
 
 
 @dataclass(frozen=True)
@@ -45,62 +41,209 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="gaussian",
         help="Noise model name. See --list-noise-types for all options.",
     )
-    parser.add_argument("--noise-std", type=float, default=0.1, help="Gaussian noise std (used when noise-type=gaussian)")
-    parser.add_argument("--noise-std-min", type=float, default=0.05, help="Min Gaussian std (used when noise-type=gaussian_var)")
-    parser.add_argument("--noise-std-max", type=float, default=0.2, help="Max Gaussian std (used when noise-type=gaussian_var)")
-    parser.add_argument("--poisson-peak", type=float, default=30.0, help="Poisson peak photons (used when noise-type=poisson)")
-    parser.add_argument("--impulse-prob", type=float, default=0.03, help="Salt & pepper prob (used when noise-type=impulse)")
-    parser.add_argument("--cluster-prob", type=float, default=0.002, help="Cluster center prob (used when noise-type=clustered_impulse)")
-    parser.add_argument("--cluster-size", type=int, default=5, help="Cluster diameter in pixels (used when noise-type=clustered_impulse)")
-    parser.add_argument("--shot-noise", type=float, default=0.2, help="Shot noise factor (used when noise-type=shot_read)")
-    parser.add_argument("--read-noise", type=float, default=0.02, help="Read noise std (used when noise-type=shot_read)")
-    parser.add_argument("--speckle-std", type=float, default=0.15, help="Speckle std (used when noise-type=speckle/speckle_read)")
-    parser.add_argument("--stripe-amplitude", type=float, default=0.12, help="Stripe amplitude (used when noise-type=stripe)")
-    parser.add_argument("--stripe-period", type=int, default=8, help="Stripe period in pixels (used when noise-type=stripe)")
-    parser.add_argument("--stripe-direction", type=str, default="vertical", help="vertical | horizontal | random (used when noise-type=stripe)")
-    parser.add_argument("--rain-count", type=int, default=40, help="Number of rain streaks (used when noise-type=rain)")
-    parser.add_argument("--rain-length-min", type=int, default=10, help="Min rain streak length in px (used when noise-type=rain)")
-    parser.add_argument("--rain-length-max", type=int, default=24, help="Max rain streak length in px (used when noise-type=rain)")
-    parser.add_argument("--rain-width", type=int, default=1, help="Rain streak thickness in px (used when noise-type=rain)")
-    parser.add_argument("--rain-intensity-min", type=float, default=0.06, help="Min rain intensity (used when noise-type=rain)")
-    parser.add_argument("--rain-intensity-max", type=float, default=0.16, help="Max rain intensity (used when noise-type=rain)")
-    parser.add_argument("--rain-angle-deg", type=float, default=75.0, help="Rain angle in degrees (0=→, 90=↓) (used when noise-type=rain)")
-    parser.add_argument("--rain-angle-jitter-deg", type=float, default=15.0, help="Uniform angle jitter in degrees (used when noise-type=rain)")
-    parser.add_argument("--block-size", type=int, default=8, help="Block side length in pixels (used when noise-type=block_bias)")
-    parser.add_argument("--block-std", type=float, default=0.05, help="Block bias std (used when noise-type=block_bias)")
+    parser.add_argument(
+        "--noise-std",
+        type=float,
+        default=0.1,
+        help="Gaussian noise std (used when noise-type=gaussian)",
+    )
+    parser.add_argument(
+        "--noise-std-min",
+        type=float,
+        default=0.05,
+        help="Min Gaussian std (used when noise-type=gaussian_var)",
+    )
+    parser.add_argument(
+        "--noise-std-max",
+        type=float,
+        default=0.2,
+        help="Max Gaussian std (used when noise-type=gaussian_var)",
+    )
+    parser.add_argument(
+        "--poisson-peak",
+        type=float,
+        default=30.0,
+        help="Poisson peak photons (used when noise-type=poisson)",
+    )
+    parser.add_argument(
+        "--impulse-prob",
+        type=float,
+        default=0.03,
+        help="Salt & pepper prob (used when noise-type=impulse)",
+    )
+    parser.add_argument(
+        "--cluster-prob",
+        type=float,
+        default=0.002,
+        help="Cluster center prob (used when noise-type=clustered_impulse)",
+    )
+    parser.add_argument(
+        "--cluster-size",
+        type=int,
+        default=5,
+        help="Cluster diameter in pixels (used when noise-type=clustered_impulse)",
+    )
+    parser.add_argument(
+        "--shot-noise",
+        type=float,
+        default=0.2,
+        help="Shot noise factor (used when noise-type=shot_read)",
+    )
+    parser.add_argument(
+        "--read-noise",
+        type=float,
+        default=0.02,
+        help="Read noise std (used when noise-type=shot_read)",
+    )
+    parser.add_argument(
+        "--speckle-std",
+        type=float,
+        default=0.15,
+        help="Speckle std (used when noise-type=speckle/speckle_read)",
+    )
+    parser.add_argument(
+        "--stripe-amplitude",
+        type=float,
+        default=0.12,
+        help="Stripe amplitude (used when noise-type=stripe)",
+    )
+    parser.add_argument(
+        "--stripe-period",
+        type=int,
+        default=8,
+        help="Stripe period in pixels (used when noise-type=stripe)",
+    )
+    parser.add_argument(
+        "--stripe-direction",
+        type=str,
+        default="vertical",
+        help="vertical | horizontal | random (used when noise-type=stripe)",
+    )
+    parser.add_argument(
+        "--rain-count",
+        type=int,
+        default=40,
+        help="Number of rain streaks (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--rain-length-min",
+        type=int,
+        default=10,
+        help="Min rain streak length in px (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--rain-length-max",
+        type=int,
+        default=24,
+        help="Max rain streak length in px (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--rain-width",
+        type=int,
+        default=1,
+        help="Rain streak thickness in px (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--rain-intensity-min",
+        type=float,
+        default=0.06,
+        help="Min rain intensity (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--rain-intensity-max",
+        type=float,
+        default=0.16,
+        help="Max rain intensity (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--rain-angle-deg",
+        type=float,
+        default=75.0,
+        help="Rain angle in degrees (0=→, 90=↓) (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--rain-angle-jitter-deg",
+        type=float,
+        default=15.0,
+        help="Uniform angle jitter in degrees (used when noise-type=rain)",
+    )
+    parser.add_argument(
+        "--block-size",
+        type=int,
+        default=8,
+        help="Block side length in pixels (used when noise-type=block_bias)",
+    )
+    parser.add_argument(
+        "--block-std",
+        type=float,
+        default=0.05,
+        help="Block bias std (used when noise-type=block_bias)",
+    )
     parser.add_argument(
         "--color-rho",
         type=float,
         default=0.5,
         help="Cross-channel correlation rho (used when noise-type=colored_gaussian)",
     )
-    parser.add_argument("--quant-bits", type=int, default=8, help="Quantization bits (used when noise-type=quantization)")
+    parser.add_argument(
+        "--quant-bits",
+        type=int,
+        default=8,
+        help="Quantization bits (used when noise-type=quantization)",
+    )
     parser.add_argument(
         "--quant-dither",
         action=argparse.BooleanOptionalAction,
         default=True,
         help="Enable uniform dither before quantization (used when noise-type=quantization)",
     )
-    parser.add_argument("--defect-prob", type=float, default=0.002, help="Defect pixel probability (used when noise-type=dead_hot)")
+    parser.add_argument(
+        "--defect-prob",
+        type=float,
+        default=0.002,
+        help="Defect pixel probability (used when noise-type=dead_hot)",
+    )
     parser.add_argument(
         "--defect-hot-ratio",
         type=float,
         default=0.5,
         help="Fraction of defect pixels that are hot (1.0). The rest are dead (0.0). (used when noise-type=dead_hot)",
     )
-    parser.add_argument("--line-prob", type=float, default=0.01, help="Line defect probability (used when noise-type=line_defect)")
+    parser.add_argument(
+        "--line-prob",
+        type=float,
+        default=0.01,
+        help="Line defect probability (used when noise-type=line_defect)",
+    )
     parser.add_argument(
         "--line-hot-ratio",
         type=float,
         default=0.5,
         help="Fraction of defective lines that are hot (1.0). The rest are dead (0.0). (used when noise-type=line_defect)",
     )
-    parser.add_argument("--row-bias-std", type=float, default=0.02, help="Row bias std (used when noise-type=rowcol_bias)")
-    parser.add_argument("--col-bias-std", type=float, default=0.02, help="Col bias std (used when noise-type=rowcol_bias)")
+    parser.add_argument(
+        "--row-bias-std",
+        type=float,
+        default=0.02,
+        help="Row bias std (used when noise-type=rowcol_bias)",
+    )
+    parser.add_argument(
+        "--col-bias-std",
+        type=float,
+        default=0.02,
+        help="Col bias std (used when noise-type=rowcol_bias)",
+    )
     parser.add_argument("--min-square", type=int, default=8)
     parser.add_argument("--max-square", type=int, default=24)
-    parser.add_argument("--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot")
-    parser.add_argument("--blindspot-prob", type=float, default=0.1, help="Masking probability for blindspot mode (0,1).")
+    parser.add_argument(
+        "--train-mode", type=str, default="supervised", help="supervised | noise2noise | blindspot"
+    )
+    parser.add_argument(
+        "--blindspot-prob",
+        type=float,
+        default=0.1,
+        help="Masking probability for blindspot mode (0,1).",
+    )
 
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--learning-rate", type=float, default=2e-3)
@@ -113,7 +256,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="dncnn:dncnn_9",
         help="Examples: dncnn:dncnn_17 | restormer:restormer_tiny | noise2noise_unet:n2n_unet_tiny | bm3d:bm3d_fast | cbdnet:cbdnet_tiny",
     )
-    parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--list-arch", action="store_true", help="Print supported architectures and exit."
+    )
     parser.add_argument(
         "--arch-family",
         type=str,
@@ -131,8 +276,14 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         action="store_true",
         help="Print supported architecture families (e.g. dncnn, restormer, bm3d) and exit.",
     )
-    parser.add_argument("--list-noise-types", action="store_true", help="Print supported noise types and exit.")
-    parser.add_argument("--print-config", action="store_true", help="Print the resolved train/data config as JSON and exit.")
+    parser.add_argument(
+        "--list-noise-types", action="store_true", help="Print supported noise types and exit."
+    )
+    parser.add_argument(
+        "--print-config",
+        action="store_true",
+        help="Print the resolved train/data config as JSON and exit.",
+    )
     parser.add_argument(
         "--list-limit",
         type=int,
@@ -146,7 +297,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         choices=["none", "alpha"],
         help="Optional sorting for --list-* outputs: none (default) | alpha.",
     )
-    parser.add_argument("--sigma", type=float, default=0.1, help="Noise sigma for BM3D baseline (in [0,1] scale).")
+    parser.add_argument(
+        "--sigma", type=float, default=0.1, help="Noise sigma for BM3D baseline (in [0,1] scale)."
+    )
 
     parser.add_argument("--max-train-batches", type=int, default=None)
     parser.add_argument("--max-eval-batches", type=int, default=None)
@@ -159,9 +312,13 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     if args.arch_match is not None and not args.list_arch:
         parser.error("--arch-match is only valid with --list-arch.")
     if args.list_limit is not None and not any_list_flag:
-        parser.error("--list-limit is only valid with --list-arch / --list-arch-families / --list-noise-types.")
+        parser.error(
+            "--list-limit is only valid with --list-arch / --list-arch-families / --list-noise-types."
+        )
     if str(args.list_sort).lower().strip() != "none" and not any_list_flag:
-        parser.error("--list-sort is only valid with --list-arch / --list-arch-families / --list-noise-types.")
+        parser.error(
+            "--list-sort is only valid with --list-arch / --list-arch-families / --list-noise-types."
+        )
 
     if args.list_arch:
         from .model import list_supported_arches
@@ -171,12 +328,16 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
             fam = str(args.arch_family).strip().lower()
             arches = [a for a in arches if str(a).split(":", 1)[0].strip().lower() == fam]
             if len(arches) == 0:
-                parser.error(f"Unknown arch family: {args.arch_family!r}. Use --list-arch-families.")
+                parser.error(
+                    f"Unknown arch family: {args.arch_family!r}. Use --list-arch-families."
+                )
         if args.arch_match is not None:
             needle = str(args.arch_match).strip().lower()
             arches = [a for a in arches if needle in str(a).lower()]
             if len(arches) == 0:
-                parser.error(f"No arches matched: {args.arch_match!r}. Use --list-arch to see all options.")
+                parser.error(
+                    f"No arches matched: {args.arch_match!r}. Use --list-arch to see all options."
+                )
         if str(args.list_sort).lower().strip() == "alpha":
             arches = sorted(arches, key=lambda s: str(s).lower())
         if args.list_limit is not None:
@@ -357,7 +518,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="vision", lesson="lesson_10_synthetic_denoising", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="vision", lesson="lesson_10_synthetic_denoising", run_name=train_cfg.run_name
+    )
     logger = get_logger("vision.denoising", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -368,7 +531,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     logger.info("Outputs: %s", paths.run_dir)
 
     train_loader, val_loader = get_dataloaders(data_cfg)
-    model_cfg = ModelConfig(arch=train_cfg.arch, variant="", in_channels=train_cfg.in_channels, sigma=train_cfg.sigma)
+    model_cfg = ModelConfig(
+        arch=train_cfg.arch, variant="", in_channels=train_cfg.in_channels, sigma=train_cfg.sigma
+    )
     model = DenoiserAdapter(build_model(model_cfg)).to(device_info.torch_device)
 
     write_json(

@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -54,7 +53,9 @@ def test_local_pointcloud_zoo_lists_30_plus_arches() -> None:
 def test_local_pointcloud_zoo_build_smoke(arch_id: str, width_mult: float) -> None:
     from dlhub.pointcloud.local_zoo import build_local_model
 
-    model = build_local_model(arch_id, in_channels=3, num_classes=4, num_points=64, width_mult=float(width_mult))
+    model = build_local_model(
+        arch_id, in_channels=3, num_classes=4, num_points=64, width_mult=float(width_mult)
+    )
     model.eval()
 
     x = torch.zeros(2, 64, 3)

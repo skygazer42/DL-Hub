@@ -10,6 +10,4 @@ Conventions:
   `build_*_skeleton_classifier(...)` factory and a `__main__` smoke test.
 """
 
-
 __all__ = []
-

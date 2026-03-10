@@ -1,14 +1,15 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.instance_segmentation._common import check_nchw
 
 
 class _BackboneStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -113,7 +114,9 @@ class CascadeMaskRCNN(nn.Module):
             stage_cls.append(cls)
             stage_boxes.append(box)
 
-        masks = self.mask_head(h).view(b, self.num_rois, self.num_classes, self.mask_size, self.mask_size)
+        masks = self.mask_head(h).view(
+            b, self.num_rois, self.num_classes, self.mask_size, self.mask_size
+        )
         return {
             "rpn_obj_logits": rpn_obj_logits,
             "rpn_bbox_deltas": rpn_bbox_deltas,
@@ -124,9 +127,30 @@ class CascadeMaskRCNN(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "cascade_mask_rcnn_tiny": {"stem": 24, "feat": 64, "depth": 1, "rois": 16, "stages": 2, "mask": 14},
-    "cascade_mask_rcnn_small": {"stem": 32, "feat": 96, "depth": 2, "rois": 32, "stages": 3, "mask": 14},
-    "cascade_mask_rcnn_base": {"stem": 48, "feat": 128, "depth": 3, "rois": 64, "stages": 3, "mask": 28},
+    "cascade_mask_rcnn_tiny": {
+        "stem": 24,
+        "feat": 64,
+        "depth": 1,
+        "rois": 16,
+        "stages": 2,
+        "mask": 14,
+    },
+    "cascade_mask_rcnn_small": {
+        "stem": 32,
+        "feat": 96,
+        "depth": 2,
+        "rois": 32,
+        "stages": 3,
+        "mask": 14,
+    },
+    "cascade_mask_rcnn_base": {
+        "stem": 48,
+        "feat": 128,
+        "depth": 3,
+        "rois": 64,
+        "stages": 3,
+        "mask": 28,
+    },
 }
 
 
@@ -139,7 +163,9 @@ def build_cascade_mask_rcnn_instance_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Cascade Mask R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Cascade Mask R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -161,9 +187,14 @@ def build_cascade_mask_rcnn_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_cascade_mask_rcnn_instance_segmenter(in_channels=3, num_classes=3, variant="cascade_mask_rcnn_tiny", width_mult=0.5)
+    m = build_cascade_mask_rcnn_instance_segmenter(
+        in_channels=3, num_classes=3, variant="cascade_mask_rcnn_tiny", width_mult=0.5
+    )
     out = m(x)
-    shapes = {k: ([tuple(t.shape) for t in v] if isinstance(v, list) else tuple(v.shape)) for k, v in out.items()}
+    shapes = {
+        k: ([tuple(t.shape) for t in v] if isinstance(v, list) else tuple(v.shape))
+        for k, v in out.items()
+    }
     print("cascade_mask_rcnn_tiny", shapes)
     loss_terms = []
     for v in out.values():
@@ -174,4 +205,3 @@ if __name__ == "__main__":
     loss = sum(loss_terms)
     loss.backward()
     print("ok")
-

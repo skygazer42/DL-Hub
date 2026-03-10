@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -32,7 +31,9 @@ class DynamicConv2d(nn.Module):
         self.num_experts = int(num_experts)
         self.temperature = float(temperature)
 
-        self.weight = nn.Parameter(torch.randn(self.num_experts, self.out_ch, self.in_ch, k, k) * 0.02)
+        self.weight = nn.Parameter(
+            torch.randn(self.num_experts, self.out_ch, self.in_ch, k, k) * 0.02
+        )
         self.bias = nn.Parameter(torch.zeros(self.num_experts, self.out_ch))
 
         self.attn = nn.Sequential(
@@ -64,10 +65,14 @@ class DynamicConv2d(nn.Module):
 class DynamicConvBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int, experts: int) -> None:
         super().__init__()
-        self.conv = DynamicConv2d(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), num_experts=int(experts))
+        self.conv = DynamicConv2d(
+            int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), num_experts=int(experts)
+        )
         self.bn = nn.BatchNorm2d(int(out_ch))
         self.act = nn.ReLU(inplace=True)
-        self.pw = ConvBNAct(int(out_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu")
+        self.pw = ConvBNAct(
+            int(out_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu"
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.conv(x)
@@ -87,7 +92,9 @@ class DynamicConvNetClassifier(nn.Module):
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
-        chs = tuple(scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels)
+        chs = tuple(
+            scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels
+        )
         self.stem = nn.Sequential(
             ConvBNAct(int(in_channels), chs[0], kernel_size=3, stride=2, act="relu"),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
@@ -125,7 +132,9 @@ def build_dynamic_conv_net_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown DynamicConvNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown DynamicConvNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return DynamicConvNetClassifier(
         in_channels=int(in_channels),
@@ -140,7 +149,8 @@ def build_dynamic_conv_net_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_dynamic_conv_net_classifier(in_channels=3, num_classes=10, variant="dynamic_conv_tiny", width_mult=0.5)
+    m = build_dynamic_conv_net_classifier(
+        in_channels=3, num_classes=10, variant="dynamic_conv_tiny", width_mult=0.5
+    )
     y = m(x)
     print("dynamic_conv_tiny", tuple(y.shape))
-

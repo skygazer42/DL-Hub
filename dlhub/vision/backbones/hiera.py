@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -14,7 +13,9 @@ class PatchMerging(nn.Module):
         self.norm = nn.LayerNorm(4 * self.dim)
         self.proj = nn.Linear(4 * self.dim, self.out_dim)
 
-    def forward(self, x: torch.Tensor, *, hw: tuple[int, int]) -> tuple[torch.Tensor, tuple[int, int]]:
+    def forward(
+        self, x: torch.Tensor, *, hw: tuple[int, int]
+    ) -> tuple[torch.Tensor, tuple[int, int]]:
         b, n, d = x.shape
         h, w = int(hw[0]), int(hw[1])
         if n != h * w:
@@ -40,7 +41,12 @@ class HieraStage(nn.Module):
         depth = int(depth)
         dp_rates = torch.linspace(0.0, float(drop_path), steps=depth).tolist()
         self.blocks = nn.Sequential(
-            *[TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(dp_rates[i])) for i in range(depth)]
+            *[
+                TransformerEncoderBlock(
+                    d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(dp_rates[i])
+                )
+                for i in range(depth)
+            ]
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -71,7 +77,13 @@ class HieraClassifier(nn.Module):
         depths = tuple(int(x) for x in depths)
         heads = tuple(int(h) for h in heads)
 
-        self.patch = nn.Conv2d(int(in_channels), dims[0], kernel_size=self.patch_size, stride=self.patch_size, bias=True)
+        self.patch = nn.Conv2d(
+            int(in_channels),
+            dims[0],
+            kernel_size=self.patch_size,
+            stride=self.patch_size,
+            bias=True,
+        )
         self.hw = (self.image_size // self.patch_size, self.image_size // self.patch_size)
 
         self.stage1 = HieraStage(dims[0], depths[0], heads[0], drop_path=float(drop_path))
@@ -139,7 +151,8 @@ def build_hiera_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_hiera_classifier(in_channels=3, num_classes=10, variant="hiera_tiny", image_size=64, width_mult=0.5)
+    m = build_hiera_classifier(
+        in_channels=3, num_classes=10, variant="hiera_tiny", image_size=64, width_mult=0.5
+    )
     y = m(x)
     print("hiera_tiny", tuple(y.shape))
-

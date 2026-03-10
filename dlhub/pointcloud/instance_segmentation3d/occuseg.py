@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import GridSpec3D, PrototypeMaskHead, Voxel3DEncoder
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "occuseg_tiny": {"width": 48, "grid": (6, 24, 24), "prototypes": 16},
@@ -27,8 +25,12 @@ class OccuSeg(nn.Module):
     ) -> None:
         super().__init__()
         d, h, w = (int(x) for x in grid)
-        self.enc = Voxel3DEncoder(int(in_channels), int(width), grid=GridSpec3D(d=d, h=h, w=w), dropout=float(dropout))
-        self.head = PrototypeMaskHead(int(width), int(num_classes), num_prototypes=int(num_prototypes), dropout=float(dropout))
+        self.enc = Voxel3DEncoder(
+            int(in_channels), int(width), grid=GridSpec3D(d=d, h=h, w=w), dropout=float(dropout)
+        )
+        self.head = PrototypeMaskHead(
+            int(width), int(num_classes), num_prototypes=int(num_prototypes), dropout=float(dropout)
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -62,4 +64,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

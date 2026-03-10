@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 
 from torch import nn
@@ -21,4 +20,3 @@ def make_builder(build_fn: Callable[..., nn.Module], *, variant: str) -> Builder
         )
 
     return _build
-

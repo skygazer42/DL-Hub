@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _DoubleConv(nn.Module):
@@ -129,10 +128,14 @@ _VARIANTS: dict[str, dict] = {
 }
 
 
-def build_attention_unet_denoiser(*, in_channels: int, variant: str = "attention_unet_small") -> nn.Module:
+def build_attention_unet_denoiser(
+    *, in_channels: int, variant: str = "attention_unet_small"
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown AttentionUNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown AttentionUNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return AttentionUNet(
         in_channels=int(in_channels),
@@ -151,4 +154,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

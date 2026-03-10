@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.segmentation._common import BackboneC2C3C4C5, check_nchw
@@ -72,9 +71,36 @@ class RefineNet(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "refinenet_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "refine": 64, "head_convs": 1},
-    "refinenet_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "refine": 96, "head_convs": 2},
-    "refinenet_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "refine": 128, "head_convs": 2},
+    "refinenet_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "refine": 64,
+        "head_convs": 1,
+    },
+    "refinenet_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "refine": 96,
+        "head_convs": 2,
+    },
+    "refinenet_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "refine": 128,
+        "head_convs": 2,
+    },
 }
 
 
@@ -114,10 +140,11 @@ def build_refinenet_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_refinenet_segmenter(in_channels=3, num_classes=4, variant="refinenet_tiny", width_mult=0.5)
+    m = build_refinenet_segmenter(
+        in_channels=3, num_classes=4, variant="refinenet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("refinenet_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

@@ -1,5 +1,5 @@
-
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 
@@ -42,7 +42,7 @@ def make_toy_classification_dataloaders(
     *,
     batch_size: int = 64,
     num_workers: int = 0,
-) -> tuple["torch.utils.data.DataLoader", "torch.utils.data.DataLoader"]:
+) -> tuple[Any, Any]:
     """Return torch DataLoaders for the toy classification dataset.
 
     Torch is imported lazily so that non-torch parts of the repo can still run.

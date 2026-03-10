@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct
 
@@ -57,7 +56,9 @@ class BackboneC2C3C4C5(nn.Module):
         self.stage4 = stage(c3, c4)
         self.stage5 = stage(c4, c5)
 
-    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         c2 = self.stem(x)
         c3 = self.stage3(c2)
         c4 = self.stage4(c3)
@@ -68,7 +69,9 @@ class BackboneC2C3C4C5(nn.Module):
 class FPN4(nn.Module):
     """Minimal 4-level FPN: (C2..C5) -> (P2..P5)."""
 
-    def __init__(self, in_channels: tuple[int, int, int, int], out_channels: int, *, act: str = "relu") -> None:
+    def __init__(
+        self, in_channels: tuple[int, int, int, int], out_channels: int, *, act: str = "relu"
+    ) -> None:
         super().__init__()
         c2, c3, c4, c5 = (int(x) for x in in_channels)
         out = int(out_channels)
@@ -165,7 +168,9 @@ class ConvTower(nn.Module):
             raise ValueError("channels must be > 0")
         if n <= 0:
             raise ValueError("num_convs must be > 0")
-        self.net = nn.Sequential(*[ConvBNAct(c, c, kernel_size=3, stride=1, act=act) for _ in range(n)])
+        self.net = nn.Sequential(
+            *[ConvBNAct(c, c, kernel_size=3, stride=1, act=act) for _ in range(n)]
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.net(x)

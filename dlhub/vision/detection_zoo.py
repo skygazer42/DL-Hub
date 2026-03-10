@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -159,7 +158,9 @@ def _extend_registry_with_discovered_detectors(r: dict[str, Builder]) -> None:
             name = str(v).lower().strip()
             if not name or name in r:
                 continue
-            r[name] = _make_lazy_detector_builder(module_name, builder_name=builder_name, variant=name)
+            r[name] = _make_lazy_detector_builder(
+                module_name, builder_name=builder_name, variant=name
+            )
 
 
 def _registry() -> dict[str, Builder]:
@@ -198,7 +199,9 @@ def build_local_model(
 
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
-        raise UnknownLocalArch(f"Unknown detection arch: {arch_id!r}. Tip: run `python scripts/detection_zoo.py --list`.")
+        raise UnknownLocalArch(
+            f"Unknown detection arch: {arch_id!r}. Tip: run `python scripts/detection_zoo.py --list`."
+        )
 
     return builder(
         BuildConfig(
@@ -215,4 +218,3 @@ __all__ = [
     "build_local_model",
     "list_local_arches",
 ]
-

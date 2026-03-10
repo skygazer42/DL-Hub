@@ -1,14 +1,15 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.instance_segmentation._common import check_nchw
 
 
 class _BackboneStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -97,9 +98,16 @@ class MaskScoringRCNN(nn.Module):
         cls_logits = self.cls(h)
         boxes = torch.sigmoid(self.box(h))
 
-        mask_logits = self.mask(h).view(b, self.num_rois, self.num_classes, self.mask_size, self.mask_size)
+        mask_logits = self.mask(h).view(
+            b, self.num_rois, self.num_classes, self.mask_size, self.mask_size
+        )
         mask_iou = torch.sigmoid(self.mask_iou(h))  # (B,R,C)
-        return {"roi_cls_logits": cls_logits, "roi_boxes": boxes, "mask_logits": mask_logits, "mask_iou": mask_iou}
+        return {
+            "roi_cls_logits": cls_logits,
+            "roi_boxes": boxes,
+            "mask_logits": mask_logits,
+            "mask_iou": mask_iou,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
@@ -118,7 +126,9 @@ def build_mask_scoring_rcnn_instance_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Mask Scoring R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Mask Scoring R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -147,4 +157,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

@@ -1,9 +1,15 @@
-
 import torch
 from torch import nn
 
-from ._common import GridSpec2D, PointMLP, TinyUNet2D, check_points, gather_2d, scatter_mean_2d, split_xyz_features
-
+from ._common import (
+    GridSpec2D,
+    PointMLP,
+    TinyUNet2D,
+    check_points,
+    gather_2d,
+    scatter_mean_2d,
+    split_xyz_features,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "simpleview_tiny": {"width": 48, "hw": 24},
@@ -15,7 +21,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class SimpleViewSeg(nn.Module):
     """SimpleView semantic segmentation (toy): fuse two orthographic projections (XY + XZ)."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, hw: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, hw: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         h = int(hw)
         w = int(hw)
@@ -25,7 +33,11 @@ class SimpleViewSeg(nn.Module):
         self.unet_xy = TinyUNet2D(int(width), int(width))
         self.unet_xz = TinyUNet2D(int(width), int(width))
         self.fuse = nn.Sequential(nn.Linear(int(width) * 2, int(width)), nn.ReLU(inplace=True))
-        self.cls = nn.Sequential(nn.Linear(int(width), int(width)), nn.ReLU(inplace=True), nn.Linear(int(width), int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(int(width), int(width)),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(width), int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -73,4 +85,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

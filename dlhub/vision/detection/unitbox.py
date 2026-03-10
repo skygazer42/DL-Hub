@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.fcos import build_fcos_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "unitbox_tiny": "fcos_tiny",
@@ -31,4 +29,6 @@ def build_unitbox_detector(
 
 
 if __name__ == "__main__":
-    smoke_aliased_detector(label="unitbox_tiny", builder=build_unitbox_detector, variant="unitbox_tiny")
+    smoke_aliased_detector(
+        label="unitbox_tiny", builder=build_unitbox_detector, variant="unitbox_tiny"
+    )

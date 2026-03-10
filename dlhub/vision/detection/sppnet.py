@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.faster_rcnn import build_faster_rcnn_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "sppnet_tiny": "faster_rcnn_tiny",
@@ -31,4 +29,6 @@ def build_sppnet_detector(
 
 
 if __name__ == "__main__":
-    smoke_aliased_detector(label="sppnet_tiny", builder=build_sppnet_detector, variant="sppnet_tiny")
+    smoke_aliased_detector(
+        label="sppnet_tiny", builder=build_sppnet_detector, variant="sppnet_tiny"
+    )

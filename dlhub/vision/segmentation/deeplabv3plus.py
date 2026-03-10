@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -33,7 +32,9 @@ class _SimpleBackboneLowHigh(nn.Module):
         )
 
         def make_stage(in_ch: int, out_ch: int) -> nn.Sequential:
-            layers: list[nn.Module] = [ConvBNAct(in_ch, out_ch, kernel_size=3, stride=2, act="relu")]
+            layers: list[nn.Module] = [
+                ConvBNAct(in_ch, out_ch, kernel_size=3, stride=2, act="relu")
+            ]
             for _ in range(d - 1):
                 layers.append(ConvBNAct(out_ch, out_ch, kernel_size=3, stride=1, act="relu"))
             return nn.Sequential(*layers)
@@ -138,7 +139,9 @@ class DeepLabV3Plus(nn.Module):
         dec_in = int(aspp_channels) + int(low_proj_channels)
         self.decoder = nn.Sequential(
             ConvBNAct(dec_in, int(decoder_channels), kernel_size=3, stride=1, act="relu"),
-            ConvBNAct(int(decoder_channels), int(decoder_channels), kernel_size=3, stride=1, act="relu"),
+            ConvBNAct(
+                int(decoder_channels), int(decoder_channels), kernel_size=3, stride=1, act="relu"
+            ),
         )
         self.classifier = nn.Conv2d(int(decoder_channels), nc, kernel_size=1, bias=True)
 
@@ -158,9 +161,33 @@ class DeepLabV3Plus(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "deeplabv3p_tiny": {"stem": 24, "low": 32, "high": 96, "depth": 1, "aspp": 96, "dec": 64, "lowproj": 24},
-    "deeplabv3p_small": {"stem": 32, "low": 48, "high": 128, "depth": 2, "aspp": 128, "dec": 96, "lowproj": 32},
-    "deeplabv3p_base": {"stem": 48, "low": 64, "high": 192, "depth": 3, "aspp": 192, "dec": 128, "lowproj": 48},
+    "deeplabv3p_tiny": {
+        "stem": 24,
+        "low": 32,
+        "high": 96,
+        "depth": 1,
+        "aspp": 96,
+        "dec": 64,
+        "lowproj": 24,
+    },
+    "deeplabv3p_small": {
+        "stem": 32,
+        "low": 48,
+        "high": 128,
+        "depth": 2,
+        "aspp": 128,
+        "dec": 96,
+        "lowproj": 32,
+    },
+    "deeplabv3p_base": {
+        "stem": 48,
+        "low": 64,
+        "high": 192,
+        "depth": 3,
+        "aspp": 192,
+        "dec": 128,
+        "lowproj": 48,
+    },
 }
 
 

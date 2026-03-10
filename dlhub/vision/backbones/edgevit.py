@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    make_divisible,
+)
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -12,7 +16,9 @@ class EdgeViTBlock(nn.Module):
     def __init__(self, dim: int, *, num_heads: int) -> None:
         super().__init__()
         d = int(dim)
-        self.attn = TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0)
+        self.attn = TransformerEncoderBlock(
+            d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         b, c, h, w = x.shape
@@ -22,7 +28,9 @@ class EdgeViTBlock(nn.Module):
 
 
 class EdgeViTClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float = 1.0, dropout: float = 0.2) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float = 1.0, dropout: float = 0.2
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -39,7 +47,10 @@ class EdgeViTClassifier(nn.Module):
             InvertedResidual(c(96), c(160), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"),
             EdgeViTBlock(c(160), num_heads=5),
         )
-        self.head = nn.Sequential(ConvBNAct(c(160), c(640), kernel_size=1, stride=1, padding=0, act="silu"), GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)))
+        self.head = nn.Sequential(
+            ConvBNAct(c(160), c(640), kernel_size=1, stride=1, padding=0, act="silu"),
+            GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -66,7 +77,12 @@ def build_edgevit_classifier(
     if name not in _VARIANTS:
         raise ValueError(f"Unknown EdgeViT variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return EdgeViTClassifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return EdgeViTClassifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -75,4 +91,3 @@ if __name__ == "__main__":
     m = build_edgevit_classifier(in_channels=3, num_classes=10, variant="edgevit_xs")
     y = m(x)
     print("edgevit_xs", tuple(y.shape))
-

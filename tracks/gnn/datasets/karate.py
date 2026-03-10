@@ -21,7 +21,9 @@ def _karate_dir() -> Path:
     return get_repo_root() / "tracks" / "gnn" / "assets" / "karate"
 
 
-def load_karate(*, dataset_dir: str | Path | None = None, add_self_loops: bool = True) -> KarateGraph:
+def load_karate(
+    *, dataset_dir: str | Path | None = None, add_self_loops: bool = True
+) -> KarateGraph:
     """Load the Karate Club edge list shipped with this repo."""
 
     import torch

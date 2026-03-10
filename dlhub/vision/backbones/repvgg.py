@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -7,7 +6,9 @@ from dlhub.vision.backbones._blocks import scale_channels
 
 def _fuse_conv_bn(conv: nn.Conv2d, bn: nn.BatchNorm2d) -> tuple[torch.Tensor, torch.Tensor]:
     w = conv.weight
-    bias = torch.zeros(w.size(0), device=w.device, dtype=w.dtype) if conv.bias is None else conv.bias
+    bias = (
+        torch.zeros(w.size(0), device=w.device, dtype=w.dtype) if conv.bias is None else conv.bias
+    )
 
     gamma = bn.weight
     beta = bn.bias
@@ -22,7 +23,9 @@ def _fuse_conv_bn(conv: nn.Conv2d, bn: nn.BatchNorm2d) -> tuple[torch.Tensor, to
     return fused_w, fused_b
 
 
-def _identity_kernel(channels: int, kernel_size: int, device: torch.device, dtype: torch.dtype) -> torch.Tensor:
+def _identity_kernel(
+    channels: int, kernel_size: int, device: torch.device, dtype: torch.dtype
+) -> torch.Tensor:
     k = torch.zeros((channels, channels, kernel_size, kernel_size), device=device, dtype=dtype)
     center = kernel_size // 2
     for i in range(channels):
@@ -31,7 +34,9 @@ def _identity_kernel(channels: int, kernel_size: int, device: torch.device, dtyp
 
 
 class RepVGGBlock(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, stride: int, *, deploy: bool, dropout: float) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, deploy: bool, dropout: float
+    ) -> None:
         super().__init__()
         self.in_ch = int(in_ch)
         self.out_ch = int(out_ch)
@@ -42,21 +47,41 @@ class RepVGGBlock(nn.Module):
         self.drop = nn.Dropout2d(p=float(dropout))
 
         if self.deploy:
-            self.rbr_reparam = nn.Conv2d(self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=True)
+            self.rbr_reparam = nn.Conv2d(
+                self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=True
+            )
             self.rbr_dense = None
             self.rbr_1x1 = None
             self.rbr_identity = None
         else:
             self.rbr_reparam = None
             self.rbr_dense = nn.Sequential(
-                nn.Conv2d(self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=False),
+                nn.Conv2d(
+                    self.in_ch,
+                    self.out_ch,
+                    kernel_size=3,
+                    stride=self.stride,
+                    padding=1,
+                    bias=False,
+                ),
                 nn.BatchNorm2d(self.out_ch),
             )
             self.rbr_1x1 = nn.Sequential(
-                nn.Conv2d(self.in_ch, self.out_ch, kernel_size=1, stride=self.stride, padding=0, bias=False),
+                nn.Conv2d(
+                    self.in_ch,
+                    self.out_ch,
+                    kernel_size=1,
+                    stride=self.stride,
+                    padding=0,
+                    bias=False,
+                ),
                 nn.BatchNorm2d(self.out_ch),
             )
-            self.rbr_identity = nn.BatchNorm2d(self.in_ch) if (self.out_ch == self.in_ch and self.stride == 1) else None
+            self.rbr_identity = (
+                nn.BatchNorm2d(self.in_ch)
+                if (self.out_ch == self.in_ch and self.stride == 1)
+                else None
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -107,7 +132,9 @@ class RepVGGBlock(nn.Module):
         if self.deploy:
             return
         kernel, bias = self.get_equivalent_kernel_bias()
-        self.rbr_reparam = nn.Conv2d(self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=True)
+        self.rbr_reparam = nn.Conv2d(
+            self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=True
+        )
         self.rbr_reparam.weight.data.copy_(kernel)
         self.rbr_reparam.bias.data.copy_(bias)
 
@@ -146,7 +173,13 @@ class RepVGGClassifier(nn.Module):
                 )
             return nn.Sequential(*layers)
 
-        self.stage0 = RepVGGBlock(in_ch=int(in_channels), out_ch=base, stride=1, deploy=bool(deploy), dropout=float(dropout))
+        self.stage0 = RepVGGBlock(
+            in_ch=int(in_channels),
+            out_ch=base,
+            stride=1,
+            deploy=bool(deploy),
+            dropout=float(dropout),
+        )
         self.stage1 = make_stage(base, base, blocks=int(stage_blocks[0]), first_stride=1)
         self.stage2 = make_stage(base, base * 2, blocks=int(stage_blocks[1]), first_stride=2)
         self.stage3 = make_stage(base * 2, base * 4, blocks=int(stage_blocks[2]), first_stride=2)
@@ -213,6 +246,8 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     for v in ["a0", "a1", "b0"]:
-        m = build_repvgg_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.75, deploy=False)
+        m = build_repvgg_classifier(
+            in_channels=3, num_classes=10, variant=v, width_mult=0.75, deploy=False
+        )
         y = m(x)
         print(f"repvgg_{v}", tuple(y.shape))

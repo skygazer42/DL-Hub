@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -13,9 +12,9 @@ def _to_tokens(x: torch.Tensor) -> tuple[torch.Tensor, int, int]:
 
 
 def _from_tokens(t: torch.Tensor, h: int, w: int) -> torch.Tensor:
-    b, l, c = t.shape
-    if l != h * w:
-        raise ValueError(f"Token length {l} does not match H*W {h*w}")
+    b, seq_len, c = t.shape
+    if seq_len != h * w:
+        raise ValueError(f"Token length {seq_len} does not match H*W {h*w}")
     return t.transpose(1, 2).contiguous().reshape(b, c, h, w)
 
 
@@ -57,7 +56,9 @@ class TransformerStage2D(nn.Module):
         d = int(depth)
         if d <= 0:
             raise ValueError("depth must be > 0")
-        self.blocks = nn.ModuleList([TransformerBlock(int(dim), num_heads=int(num_heads)) for _ in range(d)])
+        self.blocks = nn.ModuleList(
+            [TransformerBlock(int(dim), num_heads=int(num_heads)) for _ in range(d)]
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         t, h, w = _to_tokens(x)
@@ -176,4 +177,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
-from collections.abc import Sequence
 
 if TYPE_CHECKING:
     import torch
@@ -117,7 +117,9 @@ def evaluate_classifier(
             correct += batch_correct
             if hooks:
                 batch_acc = batch_correct / batch_size if batch_size else 0.0
-                log = BatchLog(stage="eval", batch_idx=batch_idx, loss=batch_loss, accuracy=batch_acc)
+                log = BatchLog(
+                    stage="eval", batch_idx=batch_idx, loss=batch_loss, accuracy=batch_acc
+                )
                 for hook in hooks:
                     hook.on_batch_end(log)
 
@@ -230,7 +232,9 @@ def evaluate_token_classifier(
             if hooks:
                 batch_loss = float(loss.item())
                 batch_acc = batch_correct / batch_tokens if batch_tokens else 0.0
-                log = BatchLog(stage="eval", batch_idx=batch_idx, loss=batch_loss, accuracy=batch_acc)
+                log = BatchLog(
+                    stage="eval", batch_idx=batch_idx, loss=batch_loss, accuracy=batch_acc
+                )
                 for hook in hooks:
                     hook.on_batch_end(log)
 
@@ -284,7 +288,9 @@ def fit_binary_segmentation(
             total_iou += float(iou.item()) * batch_size
 
         if hooks:
-            log = BatchLog(stage="train", batch_idx=batch_idx, loss=batch_loss, accuracy=float(iou.item()))
+            log = BatchLog(
+                stage="train", batch_idx=batch_idx, loss=batch_loss, accuracy=float(iou.item())
+            )
             for hook in hooks:
                 hook.on_batch_end(log)
 
@@ -334,7 +340,9 @@ def evaluate_binary_segmentation(
             total_iou += float(iou.item()) * batch_size
 
             if hooks:
-                log = BatchLog(stage="eval", batch_idx=batch_idx, loss=batch_loss, accuracy=float(iou.item()))
+                log = BatchLog(
+                    stage="eval", batch_idx=batch_idx, loss=batch_loss, accuracy=float(iou.item())
+                )
                 for hook in hooks:
                     hook.on_batch_end(log)
 
@@ -368,7 +376,7 @@ def fit_regression(
                 if bs is not None:
                     return bs
             return None
-        if isinstance(x, (list, tuple)):
+        if isinstance(x, list | tuple):
             for v in x:
                 bs = infer_batch_size(v)
                 if bs is not None:
@@ -430,7 +438,7 @@ def evaluate_regression(
                 if bs is not None:
                     return bs
             return None
-        if isinstance(x, (list, tuple)):
+        if isinstance(x, list | tuple):
             for v in x:
                 bs = infer_batch_size(v)
                 if bs is not None:

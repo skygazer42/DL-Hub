@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -51,4 +50,3 @@ class KeypointRegressor(nn.Module):
 
 
 __all__ = ["KeypointRegressor", "ModelConfig"]
-

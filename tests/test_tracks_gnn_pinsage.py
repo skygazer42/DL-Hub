@@ -1,11 +1,13 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
 def test_gnn_pinsage_encode_and_loss_smoke() -> None:
-    from tracks.gnn.lesson_10_pinsage_toy_recommender.data import DataConfig, build_toy_recommender_data
+    from tracks.gnn.lesson_10_pinsage_toy_recommender.data import (
+        DataConfig,
+        build_toy_recommender_data,
+    )
     from tracks.gnn.lesson_10_pinsage_toy_recommender.model import ModelConfig, PinSAGEItemEncoder
 
     data = build_toy_recommender_data(
@@ -33,8 +35,9 @@ def test_gnn_pinsage_encode_and_loss_smoke() -> None:
 
     neg_ids = torch.randint(low=0, high=data.num_items, size=(8, 3), dtype=torch.long)
     neg_flat = neg_ids.reshape(-1)
-    neg_repr = model.encode(item_ids=neg_flat, neighbors=data.item_neighbors[neg_flat]).view(8, 3, -1)
+    neg_repr = model.encode(item_ids=neg_flat, neighbors=data.item_neighbors[neg_flat]).view(
+        8, 3, -1
+    )
 
     loss = model.loss(center=center, pos=pos, neg=neg_repr)
     assert torch.isfinite(loss)
-

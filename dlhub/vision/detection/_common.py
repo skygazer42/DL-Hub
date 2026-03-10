@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct
 
@@ -17,7 +16,9 @@ class ConvTower(nn.Module):
             raise ValueError("channels must be > 0")
         if n <= 0:
             raise ValueError("num_convs must be > 0")
-        self.net = nn.Sequential(*[ConvBNAct(c, c, kernel_size=3, stride=1, act=act) for _ in range(n)])
+        self.net = nn.Sequential(
+            *[ConvBNAct(c, c, kernel_size=3, stride=1, act=act) for _ in range(n)]
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.net(x)
@@ -74,7 +75,9 @@ class BackboneC3C5(nn.Module):
 class FPN(nn.Module):
     """Minimal FPN for (C3, C4, C5) -> (P3, P4, P5)."""
 
-    def __init__(self, in_channels: tuple[int, int, int], out_channels: int, *, act: str = "relu") -> None:
+    def __init__(
+        self, in_channels: tuple[int, int, int], out_channels: int, *, act: str = "relu"
+    ) -> None:
         super().__init__()
         c3, c4, c5 = (int(x) for x in in_channels)
         out = int(out_channels)
@@ -86,7 +89,9 @@ class FPN(nn.Module):
         self.p4 = ConvBNAct(out, out, kernel_size=3, stride=1, act=act)
         self.p5 = ConvBNAct(out, out, kernel_size=3, stride=1, act=act)
 
-    def forward(self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         p5 = self.l5(c5)
         p4 = self.l4(c4) + F.interpolate(p5, size=c4.shape[-2:], mode="nearest")
         p3 = self.l3(c3) + F.interpolate(p4, size=c3.shape[-2:], mode="nearest")
@@ -98,4 +103,3 @@ def check_nchw(x: torch.Tensor) -> torch.Tensor:
     if x.ndim != 4:
         raise ValueError(f"Expected input shape (B, C, H, W), got {tuple(x.shape)}")
     return x
-

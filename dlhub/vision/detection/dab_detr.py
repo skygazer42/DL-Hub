@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -39,7 +38,12 @@ class DABDETRDetector(nn.Module):
             ConvBNAct(int(in_channels), int(stem_channels), kernel_size=3, stride=2, act="relu"),
             ConvBNAct(int(stem_channels), int(stem_channels), kernel_size=3, stride=2, act="relu"),
             ConvBNAct(int(stem_channels), int(feat_channels), kernel_size=3, stride=2, act="relu"),
-            *[ConvBNAct(int(feat_channels), int(feat_channels), kernel_size=3, stride=1, act="relu") for _ in range(int(backbone_depth))],
+            *[
+                ConvBNAct(
+                    int(feat_channels), int(feat_channels), kernel_size=3, stride=1, act="relu"
+                )
+                for _ in range(int(backbone_depth))
+            ],
         )
         self.proj = nn.Conv2d(int(feat_channels), dm, kernel_size=1)
         self.transformer = SimpleTransformer(
@@ -72,9 +76,36 @@ class DABDETRDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "dab_detr_tiny": {"stem": 24, "feat": 96, "depth": 1, "d_model": 96, "heads": 4, "q": 50, "enc": 1, "dec": 1},
-    "dab_detr_small": {"stem": 32, "feat": 128, "depth": 2, "d_model": 128, "heads": 4, "q": 100, "enc": 2, "dec": 2},
-    "dab_detr_base": {"stem": 48, "feat": 192, "depth": 2, "d_model": 192, "heads": 6, "q": 300, "enc": 3, "dec": 3},
+    "dab_detr_tiny": {
+        "stem": 24,
+        "feat": 96,
+        "depth": 1,
+        "d_model": 96,
+        "heads": 4,
+        "q": 50,
+        "enc": 1,
+        "dec": 1,
+    },
+    "dab_detr_small": {
+        "stem": 32,
+        "feat": 128,
+        "depth": 2,
+        "d_model": 128,
+        "heads": 4,
+        "q": 100,
+        "enc": 2,
+        "dec": 2,
+    },
+    "dab_detr_base": {
+        "stem": 48,
+        "feat": 192,
+        "depth": 2,
+        "d_model": 192,
+        "heads": 6,
+        "q": 300,
+        "enc": 3,
+        "dec": 3,
+    },
 }
 
 
@@ -109,10 +140,11 @@ def build_dab_detr_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_dab_detr_detector(in_channels=3, num_classes=2, variant="dab_detr_tiny", width_mult=0.5)
+    m = build_dab_detr_detector(
+        in_channels=3, num_classes=2, variant="dab_detr_tiny", width_mult=0.5
+    )
     out = m(x)
     print("dab_detr_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = out["class_logits"].mean() + out["boxes"].mean()
     loss.backward()
     print("ok")
-

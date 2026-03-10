@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -11,8 +10,12 @@ class Fire(nn.Module):
     def __init__(self, in_ch: int, squeeze_ch: int, expand_ch: int) -> None:
         super().__init__()
         self.squeeze = ConvBNAct(int(in_ch), int(squeeze_ch), kernel_size=1, stride=1, act="relu")
-        self.expand1 = ConvBNAct(int(squeeze_ch), int(expand_ch), kernel_size=1, stride=1, act="relu")
-        self.expand3 = ConvBNAct(int(squeeze_ch), int(expand_ch), kernel_size=3, stride=1, padding=1, act="relu")
+        self.expand1 = ConvBNAct(
+            int(squeeze_ch), int(expand_ch), kernel_size=1, stride=1, act="relu"
+        )
+        self.expand3 = ConvBNAct(
+            int(squeeze_ch), int(expand_ch), kernel_size=3, stride=1, padding=1, act="relu"
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.squeeze(x)
@@ -111,10 +114,11 @@ def build_squeezedet_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_squeezedet_detector(in_channels=3, num_classes=3, variant="squeezedet_tiny", width_mult=1.0)
+    m = build_squeezedet_detector(
+        in_channels=3, num_classes=3, variant="squeezedet_tiny", width_mult=1.0
+    )
     out = m(x)
     print("squeezedet_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

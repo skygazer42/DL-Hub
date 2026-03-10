@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -78,7 +77,11 @@ def test_vision_synth_seg_torchvision_model_forward_loss_backward_smoke() -> Non
     )
     x, y = next(iter(train_loader))
 
-    model = build_model(ModelConfig(arch="tvseg:lraspp_mobilenet_v3_large", in_channels=1, base_channels=16, dropout=0.0))
+    model = build_model(
+        ModelConfig(
+            arch="tvseg:lraspp_mobilenet_v3_large", in_channels=1, base_channels=16, dropout=0.0
+        )
+    )
     logits = model(x)
     assert tuple(logits.shape) == (2, 1, 64, 64)
 

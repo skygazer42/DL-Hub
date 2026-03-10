@@ -1,7 +1,7 @@
 """Lesson 10 (GNN): PinSAGE-style item embeddings on a toy recommender graph."""
 
 from .data import DataConfig, ToyRecData, build_toy_recommender_data
-from .model import PinSAGEItemEncoder, ModelConfig
+from .model import ModelConfig, PinSAGEItemEncoder
 
 __all__ = [
     "DataConfig",
@@ -10,4 +10,3 @@ __all__ = [
     "PinSAGEItemEncoder",
     "ModelConfig",
 ]
-

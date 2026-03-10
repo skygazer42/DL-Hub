@@ -1,9 +1,8 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
+from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet, check_nchw
 
 
@@ -78,13 +77,43 @@ class SparseInst(nn.Module):
         proto_flat = proto.view(bp, p, h4 * w4)
         mask_flat = torch.bmm(coeff, proto_flat)  # (B,N,HW)
         mask_logits = mask_flat.view(b, coeff.shape[1], h4, w4)
-        return {"query_cls_logits": cls_logits, "query_boxes": boxes, "mask_logits": mask_logits, "proto": proto, "mask_coeff": coeff}
+        return {
+            "query_cls_logits": cls_logits,
+            "query_boxes": boxes,
+            "mask_logits": mask_logits,
+            "proto": proto,
+            "mask_coeff": coeff,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
-    "sparseinst_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "instances": 16, "protos": 16, "qdim": 80},
-    "sparseinst_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "instances": 32, "protos": 32, "qdim": 96},
-    "sparseinst_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "instances": 64, "protos": 48, "qdim": 128},
+    "sparseinst_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "instances": 16,
+        "protos": 16,
+        "qdim": 80,
+    },
+    "sparseinst_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "instances": 32,
+        "protos": 32,
+        "qdim": 96,
+    },
+    "sparseinst_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "instances": 64,
+        "protos": 48,
+        "qdim": 128,
+    },
 }
 
 
@@ -124,10 +153,11 @@ def build_sparseinst_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_sparseinst_instance_segmenter(in_channels=3, num_classes=3, variant="sparseinst_tiny", width_mult=0.5)
+    m = build_sparseinst_instance_segmenter(
+        in_channels=3, num_classes=3, variant="sparseinst_tiny", width_mult=0.5
+    )
     out = m(x)
     print("sparseinst_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

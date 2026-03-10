@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -14,7 +13,9 @@ class ConvNeXtBlock(nn.Module):
         self.pw1 = nn.Linear(d, 4 * d)
         self.act = nn.GELU()
         self.pw2 = nn.Linear(4 * d, d)
-        self.gamma = nn.Parameter(layer_scale_init * torch.ones(d)) if float(layer_scale_init) > 0 else None
+        self.gamma = (
+            nn.Parameter(layer_scale_init * torch.ones(d)) if float(layer_scale_init) > 0 else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -61,7 +62,9 @@ class ConvNeXtClassifier(nn.Module):
                 )
             )
 
-        self.stages = nn.ModuleList([nn.Sequential(*[ConvNeXtBlock(dims[i]) for _ in range(depths[i])]) for i in range(4)])
+        self.stages = nn.ModuleList(
+            [nn.Sequential(*[ConvNeXtBlock(dims[i]) for _ in range(depths[i])]) for i in range(4)]
+        )
 
         self.norm = nn.LayerNorm(dims[-1], eps=1e-6)
         self.drop = nn.Dropout(p=float(dropout))
@@ -100,7 +103,9 @@ def build_convnext_classifier(
         dims = (192, 384, 768, 1536)
         depths = (3, 3, 27, 3)
     else:
-        raise ValueError("Unknown ConvNeXt variant. Supported: convnext_tiny|convnext_small|convnext_base|convnext_large")
+        raise ValueError(
+            "Unknown ConvNeXt variant. Supported: convnext_tiny|convnext_small|convnext_base|convnext_large"
+        )
 
     return ConvNeXtClassifier(
         in_channels=int(in_channels),
@@ -119,4 +124,3 @@ if __name__ == "__main__":
         m = build_convnext_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.5)
         y = m(x)
         print(v, tuple(y.shape))
-

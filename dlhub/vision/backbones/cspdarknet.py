@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -7,7 +6,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 class DarkConv(nn.Sequential):
     def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int) -> None:
-        super().__init__(ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), act="leaky"))
+        super().__init__(
+            ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), act="leaky")
+        )
 
 
 class DarkResidual(nn.Module):
@@ -106,7 +107,9 @@ def build_cspdarknet_classifier(
         stage_channels = (32, 64, 128, 256)
         stage_blocks = (1, 1, 2, 1)
     else:
-        raise ValueError("Unknown CSPDarkNet variant. Supported: cspdarknet53|cspdarknet_small|cspdarknet_tiny")
+        raise ValueError(
+            "Unknown CSPDarkNet variant. Supported: cspdarknet53|cspdarknet_small|cspdarknet_tiny"
+        )
 
     return CSPDarkNetClassifier(
         in_channels=int(in_channels),
@@ -125,4 +128,3 @@ if __name__ == "__main__":
         m = build_cspdarknet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.5)
         y = m(x)
         print(v, tuple(y.shape))
-

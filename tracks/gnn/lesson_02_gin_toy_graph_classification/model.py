@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -21,7 +20,9 @@ class ModelConfig:
 
 
 class MLP(nn.Module):
-    def __init__(self, *, in_features: int, hidden_features: int, out_features: int, num_layers: int) -> None:
+    def __init__(
+        self, *, in_features: int, hidden_features: int, out_features: int, num_layers: int
+    ) -> None:
         super().__init__()
         num_layers = int(num_layers)
         if num_layers < 1:
@@ -148,4 +149,3 @@ class GINGraphClassifier(nn.Module):
         g = _graph_pool(h, mode=self.config.graph_pooling)
         g = self.dropout(g)
         return self.head(g)
-

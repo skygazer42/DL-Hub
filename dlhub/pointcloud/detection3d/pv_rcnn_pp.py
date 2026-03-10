@@ -1,16 +1,42 @@
+import math
 
 import torch
 from torch import nn
 
-import math
-
-from ._common import BEVBoxSpec, BEVTwoStageDetector3D, check_points, mlp, roi_pool_knn, split_xyz_features
-
+from ._common import (
+    BEVBoxSpec,
+    BEVTwoStageDetector3D,
+    check_points,
+    mlp,
+    roi_pool_knn,
+    split_xyz_features,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
-    "pv_rcnn_pp_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 48, "roi_k": 8, "refine_depth": 1},
-    "pv_rcnn_pp_small": {"width": 96, "bev_h": 32, "bev_w": 32, "topk": 64, "roi_k": 16, "refine_depth": 2},
-    "pv_rcnn_pp_base": {"width": 128, "bev_h": 40, "bev_w": 40, "topk": 96, "roi_k": 24, "refine_depth": 3},
+    "pv_rcnn_pp_tiny": {
+        "width": 64,
+        "bev_h": 24,
+        "bev_w": 24,
+        "topk": 48,
+        "roi_k": 8,
+        "refine_depth": 1,
+    },
+    "pv_rcnn_pp_small": {
+        "width": 96,
+        "bev_h": 32,
+        "bev_w": 32,
+        "topk": 64,
+        "roi_k": 16,
+        "refine_depth": 2,
+    },
+    "pv_rcnn_pp_base": {
+        "width": 128,
+        "bev_h": 40,
+        "bev_w": 40,
+        "topk": 96,
+        "roi_k": 24,
+        "refine_depth": 3,
+    },
 }
 
 
@@ -43,7 +69,9 @@ class PVRCNNPlusPlus(nn.Module):
         )
 
         d = int(width)
-        blocks: list[nn.Module] = [mlp(d, [d, d], d, dropout=float(dropout)) for _ in range(int(refine_depth))]
+        blocks: list[nn.Module] = [
+            mlp(d, [d, d], d, dropout=float(dropout)) for _ in range(int(refine_depth))
+        ]
         self.extra_refine = nn.Sequential(*blocks) if blocks else nn.Identity()
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:

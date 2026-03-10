@@ -4,7 +4,6 @@ from torch import nn
 
 from ._common import BEVTracking3D, smoke_test_tracker
 
-
 _VARIANTS: dict[str, dict[str, int]] = {
     "bitrack_tiny": {"width": 64, "tracks": 24},
     "bitrack_small": {"width": 96, "tracks": 32},

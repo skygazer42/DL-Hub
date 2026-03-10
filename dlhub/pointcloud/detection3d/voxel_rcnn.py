@@ -1,9 +1,13 @@
-
 import torch
 from torch import nn
 
-from ._common import BEVBoxSpec, BEVTwoStageDetector3D, roi_pool_knn, scatter_mean_2d, split_xyz_features, check_points
-
+from ._common import (
+    BEVBoxSpec,
+    BEVTwoStageDetector3D,
+    check_points,
+    roi_pool_knn,
+    split_xyz_features,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "voxel_rcnn_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 48, "roi_k": 8},
@@ -40,7 +44,9 @@ class VoxelRCNN(nn.Module):
         )
         # A tiny extra head that mixes stage1 BEV features with ROI pooled point features.
         d = int(width)
-        self.mix = nn.Sequential(nn.Linear(d * 2, d), nn.ReLU(inplace=True), nn.Linear(d, d), nn.ReLU(inplace=True))
+        self.mix = nn.Sequential(
+            nn.Linear(d * 2, d), nn.ReLU(inplace=True), nn.Linear(d, d), nn.ReLU(inplace=True)
+        )
         self.cls = nn.Linear(d, int(num_classes))
         self.box = nn.Linear(d, 7)
 
@@ -96,4 +102,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

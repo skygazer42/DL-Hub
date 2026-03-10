@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -32,7 +31,9 @@ class TrainConfig:
 
 
 def parse_args() -> TrainConfig:
-    parser = argparse.ArgumentParser(description="Lesson 08 (GNN): LINE-style embeddings on Karate graph.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 08 (GNN): LINE-style embeddings on Karate graph."
+    )
     parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--steps-per-epoch", type=int, default=200)
     parser.add_argument("--batch-size", type=int, default=256)
@@ -73,7 +74,9 @@ def run_training(cfg: TrainConfig) -> int:
     set_seed(cfg.seed)
     device_info = resolve_device(cfg.device)
 
-    paths = build_run_paths(track="gnn", lesson="lesson_08_line_karate_embedding", run_name=cfg.run_name)
+    paths = build_run_paths(
+        track="gnn", lesson="lesson_08_line_karate_embedding", run_name=cfg.run_name
+    )
     logger = get_logger("gnn.karate_line", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -109,12 +112,16 @@ def run_training(cfg: TrainConfig) -> int:
         total_loss = 0.0
 
         for step in range(int(cfg.steps_per_epoch)):
-            edge_ids = torch.randint(0, num_edges, (int(cfg.batch_size),), device=device_info.torch_device)
+            edge_ids = torch.randint(
+                0, num_edges, (int(cfg.batch_size),), device=device_info.torch_device
+            )
             src = src_edges[edge_ids]
             dst = dst_edges[edge_ids]
 
             neg = torch.multinomial(
-                neg_probs, num_samples=int(cfg.batch_size) * int(cfg.negative_samples), replacement=True
+                neg_probs,
+                num_samples=int(cfg.batch_size) * int(cfg.negative_samples),
+                replacement=True,
             ).view(int(cfg.batch_size), int(cfg.negative_samples))
 
             optimizer.zero_grad(set_to_none=True)
@@ -126,9 +133,13 @@ def run_training(cfg: TrainConfig) -> int:
 
         avg_loss = total_loss / max(1, int(cfg.steps_per_epoch))
         logger.info("Epoch %d/%d | loss %.4f", epoch, cfg.epochs, avg_loss)
-        append_jsonl(metrics_path, {"epoch": epoch, "loss": avg_loss, "lr": optimizer.param_groups[0]["lr"]})
+        append_jsonl(
+            metrics_path, {"epoch": epoch, "loss": avg_loss, "lr": optimizer.param_groups[0]["lr"]}
+        )
 
-    payload: dict[str, torch.Tensor] = {"node_embeddings": model.node_embeddings.weight.detach().cpu()}
+    payload: dict[str, torch.Tensor] = {
+        "node_embeddings": model.node_embeddings.weight.detach().cpu()
+    }
     if model.context_embeddings is not None:
         payload["context_embeddings"] = model.context_embeddings.weight.detach().cpu()
     torch.save(payload, paths.run_dir / "embeddings.pt")
@@ -157,4 +168,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

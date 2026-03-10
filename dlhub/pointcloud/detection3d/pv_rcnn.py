@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import BEVBoxSpec, BEVTwoStageDetector3D
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pv_rcnn_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 48, "roi_k": 8},
@@ -72,4 +70,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

@@ -1,6 +1,5 @@
-
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 import torch
 from torch import nn
@@ -23,7 +22,9 @@ def _masked_max_pool_1d(x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
     return pooled
 
 
-def _kmax_pool_1d(x: torch.Tensor, mask: torch.Tensor, *, k: int) -> tuple[torch.Tensor, torch.Tensor]:
+def _kmax_pool_1d(
+    x: torch.Tensor, mask: torch.Tensor, *, k: int
+) -> tuple[torch.Tensor, torch.Tensor]:
     # x: (B, C, T), mask: (B, T) float
     if x.ndim != 3:
         raise ValueError(f"x must be (B, C, T), got {tuple(x.shape)}")
@@ -197,4 +198,3 @@ if __name__ == "__main__":
 
 
 __all__ = ["DCNNClassifier", "DCNNConfig", "build_dcnn_classifier", "registry"]
-

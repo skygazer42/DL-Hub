@@ -1,14 +1,15 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.instance_segmentation._common import check_nchw
 
 
 class _BackboneStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -97,7 +98,9 @@ class MaskRCNNInstanceSegmenter(nn.Module):
         roi_cls_logits = self.roi_cls(h)
         roi_boxes = torch.sigmoid(self.roi_box(h))
 
-        masks = self.mask_mlp(h).view(b, self.num_rois, self.num_classes, self.mask_size, self.mask_size)
+        masks = self.mask_mlp(h).view(
+            b, self.num_rois, self.num_classes, self.mask_size, self.mask_size
+        )
         return {
             "rpn_obj_logits": rpn_obj_logits,
             "rpn_bbox_deltas": rpn_bbox_deltas,
@@ -145,10 +148,11 @@ def build_mask_rcnn_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_mask_rcnn_instance_segmenter(in_channels=3, num_classes=3, variant="mask_rcnn_tiny", width_mult=0.5)
+    m = build_mask_rcnn_instance_segmenter(
+        in_channels=3, num_classes=3, variant="mask_rcnn_tiny", width_mult=0.5
+    )
     out = m(x)
     print("mask_rcnn_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

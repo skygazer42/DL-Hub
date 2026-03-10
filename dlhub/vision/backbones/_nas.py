@@ -1,6 +1,5 @@
-
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 import torch
 from torch import nn
@@ -36,10 +35,19 @@ class Zero(nn.Module):
 
 
 class ReLUConvBN(nn.Sequential):
-    def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int
+    ) -> None:
         super().__init__(
             nn.ReLU(inplace=False),
-            nn.Conv2d(int(in_ch), int(out_ch), int(kernel_size), stride=int(stride), padding=int(padding), bias=False),
+            nn.Conv2d(
+                int(in_ch),
+                int(out_ch),
+                int(kernel_size),
+                stride=int(stride),
+                padding=int(padding),
+                bias=False,
+            ),
             nn.BatchNorm2d(int(out_ch)),
         )
 
@@ -92,14 +100,18 @@ class DilConv(nn.Sequential):
         d = int(dilation)
         super().__init__(
             nn.ReLU(inplace=False),
-            nn.Conv2d(c_in, c_in, kernel_size=k, stride=s, padding=p, dilation=d, groups=c_in, bias=False),
+            nn.Conv2d(
+                c_in, c_in, kernel_size=k, stride=s, padding=p, dilation=d, groups=c_in, bias=False
+            ),
             nn.Conv2d(c_in, c_out, kernel_size=1, stride=1, padding=0, bias=False),
             nn.BatchNorm2d(c_out),
         )
 
 
 class SepConv(nn.Sequential):
-    def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int
+    ) -> None:
         c_in = int(in_ch)
         c_out = int(out_ch)
         k = int(kernel_size)
@@ -129,11 +141,17 @@ OPS: dict[str, Callable[[int, int], nn.Module]] = {
     "none": lambda c, s: Zero(stride=int(s)),
     "skip_connect": lambda c, s: Identity() if int(s) == 1 else FactorizedReduce(int(c), int(c)),
     "max_pool_3x3": lambda c, s: PoolBN(nn.MaxPool2d(3, stride=int(s), padding=1), int(c)),
-    "avg_pool_3x3": lambda c, s: PoolBN(nn.AvgPool2d(3, stride=int(s), padding=1, count_include_pad=False), int(c)),
+    "avg_pool_3x3": lambda c, s: PoolBN(
+        nn.AvgPool2d(3, stride=int(s), padding=1, count_include_pad=False), int(c)
+    ),
     "sep_conv_3x3": lambda c, s: SepConv(int(c), int(c), kernel_size=3, stride=int(s), padding=1),
     "sep_conv_5x5": lambda c, s: SepConv(int(c), int(c), kernel_size=5, stride=int(s), padding=2),
-    "dil_conv_3x3": lambda c, s: DilConv(int(c), int(c), kernel_size=3, stride=int(s), padding=2, dilation=2),
-    "dil_conv_5x5": lambda c, s: DilConv(int(c), int(c), kernel_size=5, stride=int(s), padding=4, dilation=2),
+    "dil_conv_3x3": lambda c, s: DilConv(
+        int(c), int(c), kernel_size=3, stride=int(s), padding=2, dilation=2
+    ),
+    "dil_conv_5x5": lambda c, s: DilConv(
+        int(c), int(c), kernel_size=5, stride=int(s), padding=4, dilation=2
+    ),
     "conv_3x3": lambda c, s: _conv3x3(int(c), int(s)),
     "conv_1x1": lambda c, s: _conv1x1(int(c), int(s)),
 }

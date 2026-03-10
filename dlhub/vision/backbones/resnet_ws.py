@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -26,11 +25,15 @@ def _gn(channels: int, *, groups: int = 32) -> nn.GroupNorm:
 
 
 def _ws3x3(in_ch: int, out_ch: int, *, stride: int = 1) -> WSConv2d:
-    return WSConv2d(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False)
+    return WSConv2d(
+        int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False
+    )
 
 
 def _ws1x1(in_ch: int, out_ch: int, *, stride: int = 1) -> WSConv2d:
-    return WSConv2d(int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False)
+    return WSConv2d(
+        int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False
+    )
 
 
 class WSBottleneck(nn.Module):
@@ -49,7 +52,9 @@ class WSBottleneck(nn.Module):
         self.act = nn.ReLU(inplace=True)
         self.down: nn.Module | None = None
         if int(stride) != 1 or int(in_ch) != out_exp:
-            self.down = nn.Sequential(_ws1x1(in_ch, out_exp, stride=int(stride)), _gn(out_exp, groups=int(groups)))
+            self.down = nn.Sequential(
+                _ws1x1(in_ch, out_exp, stride=int(stride)), _gn(out_exp, groups=int(groups))
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -146,7 +151,8 @@ def build_resnet_ws_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_resnet_ws_classifier(in_channels=3, num_classes=10, variant="resnet_ws50", width_mult=0.5)
+    m = build_resnet_ws_classifier(
+        in_channels=3, num_classes=10, variant="resnet_ws50", width_mult=0.5
+    )
     y = m(x)
     print("resnet_ws50", tuple(y.shape))
-

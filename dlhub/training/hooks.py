@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 
@@ -20,4 +19,3 @@ class Hook:
 
     def on_batch_end(self, log: BatchLog) -> None:  # noqa: D401 (simple hook)
         return None
-

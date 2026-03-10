@@ -1,10 +1,8 @@
-
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
-
 
 torch = pytest.importorskip("torch")
 
@@ -14,7 +12,7 @@ def _sum_tensor_means(x):
         return x.to(torch.float32).mean()
     if isinstance(x, dict):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
-    if isinstance(x, (list, tuple)):
+    if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
     raise TypeError(f"Unsupported output type in fgvc zoo smoke: {type(x)!r}")
 
@@ -76,7 +74,9 @@ def _tiny_arches() -> list[str]:
 def test_fgvc_zoo_build_and_backward_smoke(arch_id: str) -> None:
     from dlhub.vision.fine_grained_recognition_zoo import build_local_model
 
-    model = build_local_model(arch_id, in_channels=3, num_classes=5, image_size=64, width_mult=0.5, dropout=0.0)
+    model = build_local_model(
+        arch_id, in_channels=3, num_classes=5, image_size=64, width_mult=0.5, dropout=0.0
+    )
     x = torch.randn(2, 3, 64, 64)
     out = model(x)
     assert isinstance(out, dict)
@@ -87,11 +87,15 @@ def test_fgvc_zoo_build_and_backward_smoke(arch_id: str) -> None:
     loss.backward()
 
 
-@pytest.mark.parametrize("arch_id", ["dlfgvc:bilinear_cnn_small", "dlfgvc:ws_dan_base", "dlfgvc:transfg_small"])
+@pytest.mark.parametrize(
+    "arch_id", ["dlfgvc:bilinear_cnn_small", "dlfgvc:ws_dan_base", "dlfgvc:transfg_small"]
+)
 def test_fgvc_zoo_builds_non_tiny_variants(arch_id: str) -> None:
     from dlhub.vision.fine_grained_recognition_zoo import build_local_model
 
-    model = build_local_model(arch_id, in_channels=3, num_classes=5, image_size=64, width_mult=0.5, dropout=0.0)
+    model = build_local_model(
+        arch_id, in_channels=3, num_classes=5, image_size=64, width_mult=0.5, dropout=0.0
+    )
     x = torch.randn(1, 3, 64, 64)
     out = model(x)
     assert isinstance(out, dict)
@@ -117,7 +121,9 @@ def test_fgvc_zoo_builds_non_tiny_variants(arch_id: str) -> None:
 def test_fgvc_recent_zoo_builds_non_tiny_variants(arch_id: str) -> None:
     from dlhub.vision.fine_grained_recognition_zoo import build_local_model
 
-    model = build_local_model(arch_id, in_channels=3, num_classes=5, image_size=64, width_mult=0.5, dropout=0.0)
+    model = build_local_model(
+        arch_id, in_channels=3, num_classes=5, image_size=64, width_mult=0.5, dropout=0.0
+    )
     x = torch.randn(1, 3, 64, 64)
     out = model(x)
     assert isinstance(out, dict)
@@ -142,7 +148,12 @@ def test_fgvc_zoo_script_list_and_smoke() -> None:
     assert int(m.group(1)) >= 216
 
     smoke_proc = subprocess.run(
-        [sys.executable, "scripts/fine_grained_recognition_zoo.py", "--smoke", "dlfgvc:transfg_tiny"],
+        [
+            sys.executable,
+            "scripts/fine_grained_recognition_zoo.py",
+            "--smoke",
+            "dlfgvc:transfg_tiny",
+        ],
         cwd=str(_repo_root()),
         check=False,
         capture_output=True,

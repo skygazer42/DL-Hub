@@ -1,10 +1,15 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.panoptic_segmentation._common import BackboneC2C3C4C5, ProtoNet, check_nchw, fuse_panoptic, masks_from_prototypes
+from dlhub.vision.panoptic_segmentation._common import (
+    BackboneC2C3C4C5,
+    ProtoNet,
+    check_nchw,
+    fuse_panoptic,
+    masks_from_prototypes,
+)
 
 
 class PPM(nn.Module):
@@ -139,7 +144,9 @@ class UPerNetPanoptic(nn.Module):
         mask_logits = F.interpolate(mask_logits, size=(h, w), mode="nearest")
 
         scores = query_cls_logits.softmax(dim=-1).max(dim=-1).values
-        panoptic_map = fuse_panoptic(semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes))
+        panoptic_map = fuse_panoptic(
+            semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes)
+        )
 
         return {
             "semantic_logits": semantic_logits,
@@ -150,9 +157,39 @@ class UPerNetPanoptic(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "upernet_panoptic_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "fpn": 64, "instances": 16, "protos": 16},
-    "upernet_panoptic_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "instances": 32, "protos": 32},
-    "upernet_panoptic_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "fpn": 128, "instances": 64, "protos": 48},
+    "upernet_panoptic_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "fpn": 64,
+        "instances": 16,
+        "protos": 16,
+    },
+    "upernet_panoptic_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "instances": 32,
+        "protos": 32,
+    },
+    "upernet_panoptic_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "fpn": 128,
+        "instances": 64,
+        "protos": 48,
+    },
 }
 
 
@@ -166,7 +203,9 @@ def build_upernet_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown UPerNet-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown UPerNet-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -198,11 +237,16 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_upernet_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="upernet_panoptic_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="upernet_panoptic_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("upernet_panoptic_tiny", {k: tuple(v.shape) for k, v in out.items()})
-    loss = out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    loss = (
+        out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    )
     loss.backward()
     print("ok")
-

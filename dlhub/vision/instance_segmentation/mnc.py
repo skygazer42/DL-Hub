@@ -1,10 +1,13 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-from dlhub.vision.instance_segmentation._common import BackbonePyramid, InstanceTokenHead, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackbonePyramid,
+    InstanceTokenHead,
+    check_nchw,
+)
 
 
 class MNC(nn.Module):
@@ -33,7 +36,9 @@ class MNC(nn.Module):
             p4_channels=int(p4_channels),
             depth=int(backbone_depth),
         )
-        self.tokens = InstanceTokenHead(int(p4_channels), int(hidden_channels), int(num_instances), depth=3)
+        self.tokens = InstanceTokenHead(
+            int(p4_channels), int(hidden_channels), int(num_instances), depth=3
+        )
         self.stage1_head = nn.Linear(int(hidden_channels), 1 + 4)
         self.stage2_mask = nn.Linear(int(hidden_channels), int(mask_size) * int(mask_size))
         self.cls_head = nn.Linear(int(hidden_channels), int(num_classes))
@@ -50,7 +55,9 @@ class MNC(nn.Module):
         proposal_logits = stage1[..., 0]
         proposal_boxes = torch.sigmoid(stage1[..., 1:])
         stage1_mask_logits = self.stage2_mask(tokens).view(b, k, self.mask_size, self.mask_size)
-        stage2_mask_logits = F.interpolate(stage1_mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False)
+        stage2_mask_logits = F.interpolate(
+            stage1_mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False
+        )
         stage2_mask_logits = stage2_mask_logits + p2.mean(dim=1, keepdim=True).expand(-1, k, -1, -1)
 
         cls_logits = self.cls_head(tokens)
@@ -66,9 +73,36 @@ class MNC(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "mnc_tiny": {"stem": 24, "p2": 40, "p3": 64, "p4": 96, "hidden": 96, "depth": 1, "instances": 16, "mask": 16},
-    "mnc_small": {"stem": 24, "p2": 48, "p3": 80, "p4": 128, "hidden": 128, "depth": 2, "instances": 24, "mask": 16},
-    "mnc_base": {"stem": 32, "p2": 64, "p3": 96, "p4": 160, "hidden": 160, "depth": 3, "instances": 32, "mask": 28},
+    "mnc_tiny": {
+        "stem": 24,
+        "p2": 40,
+        "p3": 64,
+        "p4": 96,
+        "hidden": 96,
+        "depth": 1,
+        "instances": 16,
+        "mask": 16,
+    },
+    "mnc_small": {
+        "stem": 24,
+        "p2": 48,
+        "p3": 80,
+        "p4": 128,
+        "hidden": 128,
+        "depth": 2,
+        "instances": 24,
+        "mask": 16,
+    },
+    "mnc_base": {
+        "stem": 32,
+        "p2": 64,
+        "p3": 96,
+        "p4": 160,
+        "hidden": 160,
+        "depth": 3,
+        "instances": 32,
+        "mask": 28,
+    },
 }
 
 
@@ -92,7 +126,9 @@ def build_mnc_instance_segmenter(
         p2_channels=scale_channels(int(spec["p2"]), float(width_mult), min_ch=16, divisor=8),
         p3_channels=scale_channels(int(spec["p3"]), float(width_mult), min_ch=16, divisor=8),
         p4_channels=scale_channels(int(spec["p4"]), float(width_mult), min_ch=16, divisor=8),
-        hidden_channels=scale_channels(int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8),
+        hidden_channels=scale_channels(
+            int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8
+        ),
         backbone_depth=int(spec["depth"]),
         num_instances=int(spec["instances"]) if num_instances is None else int(num_instances),
         mask_size=int(spec["mask"]),
@@ -102,7 +138,9 @@ def build_mnc_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_mnc_instance_segmenter(in_channels=3, num_classes=3, variant="mnc_tiny", width_mult=0.5)
+    m = build_mnc_instance_segmenter(
+        in_channels=3, num_classes=3, variant="mnc_tiny", width_mult=0.5
+    )
     out = m(x)
     print("mnc_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import GlobalAvgPoolHead, scale_channels
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -29,10 +28,20 @@ class UniFormerStage(nn.Module):
         blocks: list[nn.Module] = []
         if mode == "conv":
             for _ in range(depth):
-                blocks.append(nn.Sequential(ConvTokenMixer(d), nn.Conv2d(d, d, kernel_size=1, bias=True), nn.ReLU(inplace=True)))
+                blocks.append(
+                    nn.Sequential(
+                        ConvTokenMixer(d),
+                        nn.Conv2d(d, d, kernel_size=1, bias=True),
+                        nn.ReLU(inplace=True),
+                    )
+                )
         else:
             for _ in range(depth):
-                blocks.append(TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0))
+                blocks.append(
+                    TransformerEncoderBlock(
+                        d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0
+                    )
+                )
         self.blocks = nn.Sequential(*blocks)
         self.mode = mode
 
@@ -71,9 +80,18 @@ class UniFormerClassifier(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
         )
-        self.down2 = nn.Sequential(nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[1]))
-        self.down3 = nn.Sequential(nn.Conv2d(dims[1], dims[2], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[2]))
-        self.down4 = nn.Sequential(nn.Conv2d(dims[2], dims[3], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[3]))
+        self.down2 = nn.Sequential(
+            nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2, bias=False),
+            nn.BatchNorm2d(dims[1]),
+        )
+        self.down3 = nn.Sequential(
+            nn.Conv2d(dims[1], dims[2], kernel_size=2, stride=2, bias=False),
+            nn.BatchNorm2d(dims[2]),
+        )
+        self.down4 = nn.Sequential(
+            nn.Conv2d(dims[2], dims[3], kernel_size=2, stride=2, bias=False),
+            nn.BatchNorm2d(dims[3]),
+        )
 
         self.stage1 = UniFormerStage(dim=dims[0], depth=depths[0], num_heads=heads[0], mode="conv")
         self.stage2 = UniFormerStage(dim=dims[1], depth=depths[1], num_heads=heads[1], mode="conv")
@@ -127,7 +145,8 @@ def build_uniformer_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_uniformer_classifier(in_channels=3, num_classes=10, variant="uniformer_s", width_mult=0.5)
+    m = build_uniformer_classifier(
+        in_channels=3, num_classes=10, variant="uniformer_s", width_mult=0.5
+    )
     y = m(x)
     print("uniformer_s", tuple(y.shape))
-

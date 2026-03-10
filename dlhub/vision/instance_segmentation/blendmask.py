@@ -1,9 +1,13 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.instance_segmentation._common import BackboneLowDet, DensePredHead, ProtoNet, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackboneLowDet,
+    DensePredHead,
+    ProtoNet,
+    check_nchw,
+)
 
 
 class BlendMask(nn.Module):
@@ -68,7 +72,9 @@ class BlendMask(nn.Module):
         b, p, h4, w4 = proto.shape
         a = mask_coeffs.shape[1] // p
         slots = mask_coeffs.shape[-2] * mask_coeffs.shape[-1] * a
-        coeff = mask_coeffs.view(b, a, p, mask_coeffs.shape[-2], mask_coeffs.shape[-1]).permute(0, 3, 4, 1, 2)
+        coeff = mask_coeffs.view(b, a, p, mask_coeffs.shape[-2], mask_coeffs.shape[-1]).permute(
+            0, 3, 4, 1, 2
+        )
         coeff = coeff.reshape(b, -1, p)  # (B,S,P)
         proto_flat = proto.reshape(b, p, h4 * w4)
         mask_flat = torch.bmm(coeff, proto_flat)
@@ -128,10 +134,11 @@ def build_blendmask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_blendmask_instance_segmenter(in_channels=3, num_classes=3, variant="blendmask_tiny", width_mult=0.5)
+    m = build_blendmask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="blendmask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("blendmask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

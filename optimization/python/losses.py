@@ -1,6 +1,5 @@
 """Loss functions commonly used in deep learning."""
 
-
 import numpy as np
 
 

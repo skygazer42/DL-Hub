@@ -1,15 +1,22 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_lesson_01_dataloaders_and_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_01_pointnet_toy_classification.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_01_pointnet_toy_classification.model import ModelConfig, PointNetClassifier
+    from tracks.pointcloud.lesson_01_pointnet_toy_classification.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_01_pointnet_toy_classification.model import (
+        ModelConfig,
+        PointNetClassifier,
+    )
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_samples=32, num_points=64, batch_size=8, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=32, num_points=64, batch_size=8, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     points, labels = next(iter(train_loader))
     assert points.shape == (8, 64, 3)
@@ -21,27 +28,45 @@ def test_pointcloud_lesson_01_dataloaders_and_forward_smoke() -> None:
 
 
 def test_pointcloud_lesson_02_dgcnn_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.model import DGCNNClassifier, ModelConfig
+    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.model import (
+        DGCNNClassifier,
+        ModelConfig,
+    )
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_samples=32, num_points=32, batch_size=4, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=32, num_points=32, batch_size=4, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     points, labels = next(iter(train_loader))
     assert points.shape == (4, 32, 3)
     assert labels.shape == (4,)
 
-    model = DGCNNClassifier(ModelConfig(k=5, hidden_features=16, dropout=0.0, num_classes=2, dynamic_graph=True))
+    model = DGCNNClassifier(
+        ModelConfig(k=5, hidden_features=16, dropout=0.0, num_classes=2, dynamic_graph=True)
+    )
     logits = model(points)
     assert logits.shape == (4, 2)
 
 
 def test_pointcloud_lesson_03_pointnet2_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.model import ModelConfig, PointNet2Classifier
+    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.model import (
+        ModelConfig,
+        PointNet2Classifier,
+    )
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_samples=32, num_points=64, batch_size=4, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=32, num_points=64, batch_size=4, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     points, labels = next(iter(train_loader))
     assert points.shape == (4, 64, 3)
@@ -67,13 +92,17 @@ def test_pointcloud_lesson_05_pointnet_partseg_forward_smoke() -> None:
     from tracks.pointcloud.lesson_05_pointnet_toy_partseg.model import ModelConfig, PointNetPartSeg
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_samples=16, num_points=64, batch_size=4, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=16, num_points=64, batch_size=4, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     points, labels = next(iter(train_loader))
     assert points.shape == (4, 64, 3)
     assert labels.shape == (4, 64)
 
-    model = PointNetPartSeg(ModelConfig(in_channels=3, hidden_features=32, num_classes=2, dropout=0.0))
+    model = PointNetPartSeg(
+        ModelConfig(in_channels=3, hidden_features=32, num_classes=2, dropout=0.0)
+    )
     logits = model(points)
     assert logits.shape == (4, 64, 2)
 
@@ -83,21 +112,31 @@ def test_pointcloud_lesson_06_dgcnn_partseg_forward_smoke() -> None:
     from tracks.pointcloud.lesson_06_dgcnn_toy_partseg.model import DGCNNPartSeg, ModelConfig
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_samples=16, num_points=48, batch_size=2, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=16, num_points=48, batch_size=2, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     points, labels = next(iter(train_loader))
     assert points.shape == (2, 48, 3)
     assert labels.shape == (2, 48)
 
-    model = DGCNNPartSeg(ModelConfig(k=5, hidden_features=16, dropout=0.0, num_classes=2, dynamic_graph=True))
+    model = DGCNNPartSeg(
+        ModelConfig(k=5, hidden_features=16, dropout=0.0, num_classes=2, dynamic_graph=True)
+    )
     logits = model(points)
     assert logits.shape == (2, 48, 2)
 
 
 def test_pointcloud_lesson_07_pointnet_reconstruction_forward_loss_backward_smoke() -> None:
     from dlhub.pointcloud.ops import chamfer_distance
-    from tracks.pointcloud.lesson_07_pointnet_toy_reconstruction.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_07_pointnet_toy_reconstruction.model import ModelConfig, build_model
+    from tracks.pointcloud.lesson_07_pointnet_toy_reconstruction.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_07_pointnet_toy_reconstruction.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -132,11 +171,19 @@ def test_pointcloud_lesson_07_pointnet_reconstruction_forward_loss_backward_smok
 
 
 def test_pointcloud_lesson_08_partseg_zoo_build_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_toy.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_toy.model import ModelConfig, build_model
+    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_toy.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_toy.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_samples=16, num_points=64, batch_size=2, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=16, num_points=64, batch_size=2, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     points, labels = next(iter(train_loader))
     assert points.shape == (2, 64, 3)
@@ -160,9 +207,15 @@ def test_pointcloud_lesson_08_partseg_zoo_build_forward_smoke() -> None:
 
 
 def test_pointcloud_lesson_09_simclr_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_09_pointcloud_selfsupervised_simclr.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_09_pointcloud_selfsupervised_simclr.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.simclr import nt_xent_loss
+    from tracks.pointcloud.lesson_09_pointcloud_selfsupervised_simclr.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_09_pointcloud_selfsupervised_simclr.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -201,8 +254,14 @@ def test_pointcloud_lesson_09_simclr_ssl_forward_loss_backward_smoke() -> None:
 
 def test_pointcloud_lesson_10_pointmae_ssl_forward_loss_backward_smoke() -> None:
     from dlhub.pointcloud.ops import chamfer_distance
-    from tracks.pointcloud.lesson_10_pointcloud_selfsupervised_pointmae.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_10_pointcloud_selfsupervised_pointmae.model import ModelConfig, build_model
+    from tracks.pointcloud.lesson_10_pointcloud_selfsupervised_pointmae.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_10_pointcloud_selfsupervised_pointmae.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -234,15 +293,23 @@ def test_pointcloud_lesson_10_pointmae_ssl_forward_loss_backward_smoke() -> None
     target = out["target"]
     assert pred.ndim == 4 and target.ndim == 4
     assert pred.shape == target.shape
-    loss = chamfer_distance(pred.reshape(-1, pred.shape[-2], 3), target.reshape(-1, target.shape[-2], 3))
+    loss = chamfer_distance(
+        pred.reshape(-1, pred.shape[-2], 3), target.reshape(-1, target.shape[-2], 3)
+    )
     assert torch.isfinite(loss)
     loss.backward()
 
 
 def test_pointcloud_lesson_11_byol_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_11_pointcloud_selfsupervised_byol.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_11_pointcloud_selfsupervised_byol.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.byol import byol_loss
+    from tracks.pointcloud.lesson_11_pointcloud_selfsupervised_byol.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_11_pointcloud_selfsupervised_byol.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -284,9 +351,15 @@ def test_pointcloud_lesson_11_byol_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_12_vicreg_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_12_pointcloud_selfsupervised_vicreg.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_12_pointcloud_selfsupervised_vicreg.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.vicreg import vicreg_loss
+    from tracks.pointcloud.lesson_12_pointcloud_selfsupervised_vicreg.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_12_pointcloud_selfsupervised_vicreg.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -323,11 +396,19 @@ def test_pointcloud_lesson_12_vicreg_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_13_ssl_linear_probe_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_13_pointcloud_ssl_linear_probe.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_13_pointcloud_ssl_linear_probe.model import ModelConfig, build_model
+    from tracks.pointcloud.lesson_13_pointcloud_ssl_linear_probe.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_13_pointcloud_ssl_linear_probe.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_samples=64, num_points=64, batch_size=8, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_samples=64, num_points=64, batch_size=8, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     points, labels = next(iter(train_loader))
     assert points.shape == (8, 64, 3)
@@ -350,8 +431,14 @@ def test_pointcloud_lesson_13_ssl_linear_probe_forward_loss_backward_smoke() -> 
 
 
 def test_pointcloud_lesson_14_moco_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_14_pointcloud_selfsupervised_moco.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_14_pointcloud_selfsupervised_moco.model import ModelConfig, build_model
+    from tracks.pointcloud.lesson_14_pointcloud_selfsupervised_moco.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_14_pointcloud_selfsupervised_moco.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -390,9 +477,15 @@ def test_pointcloud_lesson_14_moco_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_15_simsiam_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_15_pointcloud_selfsupervised_simsiam.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_15_pointcloud_selfsupervised_simsiam.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.simsiam import simsiam_loss
+    from tracks.pointcloud.lesson_15_pointcloud_selfsupervised_simsiam.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_15_pointcloud_selfsupervised_simsiam.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -429,9 +522,15 @@ def test_pointcloud_lesson_15_simsiam_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_16_swav_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_16_pointcloud_selfsupervised_swav.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_16_pointcloud_selfsupervised_swav.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.swav import swav_loss
+    from tracks.pointcloud.lesson_16_pointcloud_selfsupervised_swav.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_16_pointcloud_selfsupervised_swav.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -463,16 +562,24 @@ def test_pointcloud_lesson_16_swav_ssl_forward_loss_backward_smoke() -> None:
     o1 = model(v1)
     o2 = model(v2)
     assert set(o1.keys()) == {"h", "z", "scores"}
-    loss = swav_loss(o1["scores"], o2["scores"], temperature=0.1, sinkhorn_epsilon=0.05, sinkhorn_iters=2)
+    loss = swav_loss(
+        o1["scores"], o2["scores"], temperature=0.1, sinkhorn_epsilon=0.05, sinkhorn_iters=2
+    )
     assert torch.isfinite(loss)
     loss.backward()
     model.normalize_prototypes()
 
 
 def test_pointcloud_lesson_17_barlowtwins_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_17_pointcloud_selfsupervised_barlowtwins.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_17_pointcloud_selfsupervised_barlowtwins.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.barlowtwins import barlow_twins_loss
+    from tracks.pointcloud.lesson_17_pointcloud_selfsupervised_barlowtwins.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_17_pointcloud_selfsupervised_barlowtwins.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -509,9 +616,15 @@ def test_pointcloud_lesson_17_barlowtwins_ssl_forward_loss_backward_smoke() -> N
 
 
 def test_pointcloud_lesson_18_dino_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_18_pointcloud_selfsupervised_dino.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_18_pointcloud_selfsupervised_dino.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.dino import dino_loss
+    from tracks.pointcloud.lesson_18_pointcloud_selfsupervised_dino.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_18_pointcloud_selfsupervised_dino.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -560,9 +673,15 @@ def test_pointcloud_lesson_18_dino_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_19_dinov2_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_19_pointcloud_selfsupervised_dinov2.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_19_pointcloud_selfsupervised_dinov2.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.dinov2 import dino_cross_view_loss, ibot_patch_loss
+    from tracks.pointcloud.lesson_19_pointcloud_selfsupervised_dinov2.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_19_pointcloud_selfsupervised_dinov2.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -636,9 +755,15 @@ def test_pointcloud_lesson_19_dinov2_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_20_ijepa_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_20_pointcloud_selfsupervised_ijepa.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_20_pointcloud_selfsupervised_ijepa.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.ijepa import ijepa_patch_loss
+    from tracks.pointcloud.lesson_20_pointcloud_selfsupervised_ijepa.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_20_pointcloud_selfsupervised_ijepa.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -675,9 +800,15 @@ def test_pointcloud_lesson_20_ijepa_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_21_msn_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_21_pointcloud_selfsupervised_msn.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_21_pointcloud_selfsupervised_msn.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.msn import msn_loss
+    from tracks.pointcloud.lesson_21_pointcloud_selfsupervised_msn.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_21_pointcloud_selfsupervised_msn.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -728,9 +859,15 @@ def test_pointcloud_lesson_21_msn_ssl_forward_loss_backward_smoke() -> None:
 
 
 def test_pointcloud_lesson_22_data2vec_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_22_pointcloud_selfsupervised_data2vec.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_22_pointcloud_selfsupervised_data2vec.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.data2vec import data2vec_loss
+    from tracks.pointcloud.lesson_22_pointcloud_selfsupervised_data2vec.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_22_pointcloud_selfsupervised_data2vec.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -791,9 +928,15 @@ def test_pointcloud_lesson_22_data2vec_ssl_forward_loss_backward_smoke() -> None
 
 
 def test_pointcloud_lesson_23_ressl_ssl_forward_loss_backward_smoke() -> None:
-    from tracks.pointcloud.lesson_23_pointcloud_selfsupervised_ressl.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_23_pointcloud_selfsupervised_ressl.model import ModelConfig, build_model
     from dlhub.pointcloud.selfsupervised.ressl import ressl_loss
+    from tracks.pointcloud.lesson_23_pointcloud_selfsupervised_ressl.data import (
+        DataConfig,
+        get_dataloaders,
+    )
+    from tracks.pointcloud.lesson_23_pointcloud_selfsupervised_ressl.model import (
+        ModelConfig,
+        build_model,
+    )
 
     train_loader, _ = get_dataloaders(
         DataConfig(

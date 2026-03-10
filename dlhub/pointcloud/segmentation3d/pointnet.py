@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import PointNetSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointnet_tiny": {"width": 32, "depth": 2},
@@ -15,7 +13,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class PointNetSeg(nn.Module):
     """PointNet semantic segmentation (toy): point MLP + global context."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.net = PointNetSegBase(
             in_channels=int(in_channels),
@@ -55,4 +55,3 @@ if __name__ == "__main__":
     y = model(x)
     (y.mean()).backward()
     print("logits:", tuple(y.shape))
-

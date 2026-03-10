@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -79,4 +78,3 @@ def sdne_loss(
 
 
 __all__ = ["ModelConfig", "SDNE", "sdne_loss"]
-

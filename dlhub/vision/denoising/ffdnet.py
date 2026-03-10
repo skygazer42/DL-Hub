@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -95,7 +94,9 @@ class FFDNetDenoiser(nn.Module):
         x_pad, pad_hw = pad_to_multiple(x, 2, mode="reflect")
         b, _, h, w = x_pad.shape
 
-        noise_map = torch.full((b, 1, h, w), float(self.sigma), device=x_pad.device, dtype=x_pad.dtype)
+        noise_map = torch.full(
+            (b, 1, h, w), float(self.sigma), device=x_pad.device, dtype=x_pad.dtype
+        )
         x_u = self.unshuffle(x_pad)
         n_u = self.unshuffle(noise_map)
         inp = torch.cat([x_u, n_u], dim=1)

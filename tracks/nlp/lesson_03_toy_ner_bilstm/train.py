@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -82,7 +81,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="nlp", lesson="lesson_03_toy_ner_bilstm", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="nlp", lesson="lesson_03_toy_ner_bilstm", run_name=train_cfg.run_name
+    )
     logger = get_logger("nlp.toy_ner_bilstm", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -187,4 +188,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

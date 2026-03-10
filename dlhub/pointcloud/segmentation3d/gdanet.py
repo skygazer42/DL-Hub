@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import EdgeConv, TinyTransformerEncoder, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "gdanet_tiny": {"width": 64, "k": 8, "depth": 2},
@@ -16,15 +14,31 @@ class GDANetSeg(nn.Module):
     """GDANet semantic segmentation (toy): local geometry stream + global attention stream."""
 
     def __init__(
-        self, *, in_channels: int, num_classes: int, width: int, k: int, depth: int, dropout: float = 0.0
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        k: int,
+        depth: int,
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
-        self.local = nn.ModuleList([EdgeConv(w, w, k=int(k), dropout=float(dropout)) for _ in range(int(depth))])
-        self.global_attn = TinyTransformerEncoder(w, nhead=4, num_layers=max(1, int(depth) // 2), dropout=float(dropout))
+        self.local = nn.ModuleList(
+            [EdgeConv(w, w, k=int(k), dropout=float(dropout)) for _ in range(int(depth))]
+        )
+        self.global_attn = TinyTransformerEncoder(
+            w, nhead=4, num_layers=max(1, int(depth) // 2), dropout=float(dropout)
+        )
         self.fuse = nn.Sequential(nn.Linear(w * 2, w), nn.ReLU(inplace=True))
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Dropout(float(dropout)), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w),
+            nn.ReLU(inplace=True),
+            nn.Dropout(float(dropout)),
+            nn.Linear(w, int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -68,4 +82,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

@@ -22,7 +22,7 @@ def _summarize(obj) -> str:
     if isinstance(obj, dict):
         keys = ", ".join(sorted(map(str, obj.keys())))
         return f"dict(keys=[{keys}])"
-    if isinstance(obj, (list, tuple)):
+    if isinstance(obj, list | tuple):
         head = ", ".join(_summarize(x) for x in obj[:2])
         tail = "" if len(obj) <= 2 else f", ... (+{len(obj) - 2})"
         return f"{type(obj).__name__}([{head}{tail}])"
@@ -45,16 +45,32 @@ def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Federated learning local zoo utilities (no networking).")
+    parser = argparse.ArgumentParser(
+        description="Federated learning local zoo utilities (no networking)."
+    )
     parser.add_argument("--list", action="store_true", help="List available strategy ids.")
     parser.add_argument("--search", type=str, default=None, help="Filter list by substring.")
     parser.add_argument("--limit", type=int, default=80, help="Max lines to print when listing.")
-    parser.add_argument("--timeline", action="store_true", help="Print a best-effort federated timeline.")
-    parser.add_argument("--smoke", type=str, default=None, metavar="ARCH_ID", help="Run a simulated round for an arch id.")
+    parser.add_argument(
+        "--timeline", action="store_true", help="Print a best-effort federated timeline."
+    )
+    parser.add_argument(
+        "--smoke",
+        type=str,
+        default=None,
+        metavar="ARCH_ID",
+        help="Run a simulated round for an arch id.",
+    )
     parser.add_argument("--param-dim", type=int, default=16, help="Parameter vector dimension.")
-    parser.add_argument("--num-clients", type=int, default=4, help="Number of participating clients.")
-    parser.add_argument("--local-steps", type=int, default=2, help="Nominal number of client local steps.")
-    parser.add_argument("--width-mult", type=float, default=1.0, help="Width multiplier for strategy internals.")
+    parser.add_argument(
+        "--num-clients", type=int, default=4, help="Number of participating clients."
+    )
+    parser.add_argument(
+        "--local-steps", type=int, default=2, help="Nominal number of client local steps."
+    )
+    parser.add_argument(
+        "--width-mult", type=float, default=1.0, help="Width multiplier for strategy internals."
+    )
     return parser.parse_args()
 
 
@@ -88,14 +104,18 @@ def main() -> int:
             timeline = [
                 entry
                 for entry in timeline
-                if needle in entry.family.lower() or needle in entry.method.lower() or needle in entry.group.lower()
+                if needle in entry.family.lower()
+                or needle in entry.method.lower()
+                or needle in entry.group.lower()
             ]
 
         print("Federated learning timeline")
         print(f"- total_families={len(timeline)}")
         print(f"- total_arches={len(arches)}")
         current_year = None
-        for entry in sorted(timeline, key=lambda x: (9999 if x.year is None else x.year, x.group, x.family)):
+        for entry in sorted(
+            timeline, key=lambda x: (9999 if x.year is None else x.year, x.group, x.family)
+        ):
             y = "unknown" if entry.year is None else str(entry.year)
             if y != current_year:
                 print("")

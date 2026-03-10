@@ -1,10 +1,11 @@
-
 import torch
 from torch import nn
 
 
 class PointNetEncoder(nn.Module):
-    def __init__(self, *, in_channels: int, hidden_features: int, latent_dim: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, hidden_features: int, latent_dim: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         h = int(hidden_features)
@@ -41,7 +42,9 @@ class PointNetEncoder(nn.Module):
 
 
 class PointNetDecoder(nn.Module):
-    def __init__(self, *, latent_dim: int, hidden_features: int, num_points: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, latent_dim: int, hidden_features: int, num_points: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         z = int(latent_dim)
         h = int(hidden_features)
@@ -125,7 +128,9 @@ def build_pointnet_autoencoder(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown PointNet-AE variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown PointNet-AE variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     return PointNetAutoEncoder(
@@ -143,7 +148,6 @@ if __name__ == "__main__":
     m = build_pointnet_autoencoder(in_channels=3, num_points=128, variant="pointnet_ae_tiny")
     y = m(x)
     print("pointnet_ae_tiny", tuple(y.shape))
-    loss = (y.mean())
+    loss = y.mean()
     loss.backward()
     print("ok")
-

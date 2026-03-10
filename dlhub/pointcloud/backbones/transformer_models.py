@@ -1,6 +1,5 @@
-
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 import torch
 from torch import nn
@@ -60,7 +59,7 @@ class PointTransformerBlock(nn.Module):
         v = self.to_v(nbr_feat).view(b, n, int(self.k), self.num_heads, self.head_dim)
 
         pos = self.pos_mlp(rel).view(b, n, int(self.k), self.num_heads, self.head_dim)
-        attn_logits = ((q.unsqueeze(2) * (k + pos)).sum(dim=-1) * float(self.scale))  # (B, N, k, H)
+        attn_logits = (q.unsqueeze(2) * (k + pos)).sum(dim=-1) * float(self.scale)  # (B, N, k, H)
         attn = torch.softmax(attn_logits, dim=2)
 
         out = (attn.unsqueeze(-1) * (v + pos)).sum(dim=2)  # (B, N, H, D)
@@ -99,7 +98,9 @@ class PointTransformerClassifier(nn.Module):
         )
         self.blocks = nn.ModuleList(
             [
-                PointTransformerBlock(d, k=int(cfg.k), num_heads=int(cfg.num_heads), dropout=float(cfg.dropout))
+                PointTransformerBlock(
+                    d, k=int(cfg.k), num_heads=int(cfg.num_heads), dropout=float(cfg.dropout)
+                )
                 for _ in range(int(cfg.depth))
             ]
         )
@@ -113,7 +114,9 @@ class PointTransformerClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
 
         xyz = points[..., :3].to(torch.float32)
         x = points.to(torch.float32).transpose(1, 2).contiguous()  # (B, C, N)
@@ -143,7 +146,9 @@ def build_point_transformer_classifier(
     elif name in {"point_transformer_small", "pt_small"}:
         embed_dim, depth, heads, k = 160, 4, 5, 16
     else:
-        raise ValueError("Unknown PointTransformer variant. Supported: point_transformer|point_transformer_tiny|point_transformer_small")
+        raise ValueError(
+            "Unknown PointTransformer variant. Supported: point_transformer|point_transformer_tiny|point_transformer_small"
+        )
 
     return PointTransformerClassifier(
         PointTransformerConfig(
@@ -206,7 +211,9 @@ class PCTClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         x = points.to(torch.float32).transpose(1, 2).contiguous()  # (B, C, N)
         x = self.embed(x).transpose(1, 2).contiguous()  # (B, N, D)
         x = self.encoder(x)
@@ -285,7 +292,9 @@ class PatchEmbed(nn.Module):
 
     def forward(self, points: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.in_channels}), got {tuple(points.shape)}"
+            )
 
         xyz = points[..., :3].to(torch.float32)
         b, n, _ = xyz.shape

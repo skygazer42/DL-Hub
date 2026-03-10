@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.pointcloud.selfsupervised.dinov2 import PatchTransformer
 
@@ -24,7 +23,9 @@ def _gather_batch(x: torch.Tensor, idx: torch.Tensor) -> torch.Tensor:
     return x[batch, idx]
 
 
-def ijepa_patch_loss(pred: torch.Tensor, target: torch.Tensor, mask_idx: torch.Tensor) -> torch.Tensor:
+def ijepa_patch_loss(
+    pred: torch.Tensor, target: torch.Tensor, mask_idx: torch.Tensor
+) -> torch.Tensor:
     """I-JEPA-style masked prediction loss on patch embeddings.
 
     Args:
@@ -34,7 +35,9 @@ def ijepa_patch_loss(pred: torch.Tensor, target: torch.Tensor, mask_idx: torch.T
     """
 
     if pred.ndim != 3 or target.ndim != 3:
-        raise ValueError(f"Expected pred/target shapes (B, S, D), got {tuple(pred.shape)} and {tuple(target.shape)}")
+        raise ValueError(
+            f"Expected pred/target shapes (B, S, D), got {tuple(pred.shape)} and {tuple(target.shape)}"
+        )
     if pred.shape != target.shape:
         raise ValueError("pred and target must have the same shape")
     if mask_idx.ndim != 2:
@@ -146,7 +149,9 @@ class IJEPAPointMAE(nn.Module):
         for ps, pt in zip(self.student.parameters(), self.teacher.parameters(), strict=True):
             pt.data.mul_(m).add_(ps.data, alpha=(1.0 - m))
 
-    def forward_student(self, points: torch.Tensor, *, mask_ratio: float = 0.5) -> dict[str, torch.Tensor]:
+    def forward_student(
+        self, points: torch.Tensor, *, mask_ratio: float = 0.5
+    ) -> dict[str, torch.Tensor]:
         out = self.student(points, mask_ratio=float(mask_ratio), mask_token=self.mask_token)
         patch = out["patch"]  # (B, S, D)
         pred = self.predictor(patch)  # (B, S, D)
@@ -226,4 +231,3 @@ if __name__ == "__main__":
     loss.backward()
     m.momentum_update_teacher(ema_decay=0.99)
     print("ok", float(loss.item()))
-

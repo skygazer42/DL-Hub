@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -9,7 +8,9 @@ from dlhub.vision.backbones._transformer import MLP, MultiheadSelfAttention, Pat
 class DeiT3Block(nn.Module):
     """DeiT III style block with LayerScale (simplified)."""
 
-    def __init__(self, dim: int, num_heads: int, *, drop_path: float = 0.0, layer_scale: float = 1e-6) -> None:
+    def __init__(
+        self, dim: int, num_heads: int, *, drop_path: float = 0.0, layer_scale: float = 1e-6
+    ) -> None:
         super().__init__()
         d = int(dim)
         self.norm1 = nn.LayerNorm(d)
@@ -47,7 +48,12 @@ class DeiT3Classifier(nn.Module):
         w = int(image_size) // int(patch_size)
         self.pos = nn.Parameter(torch.zeros(1, h * w, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.Sequential(*[DeiT3Block(int(dim), int(heads), drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.Sequential(
+            *[
+                DeiT3Block(int(dim), int(heads), drop_path=float(dp_rates[i]))
+                for i in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -99,4 +105,3 @@ if __name__ == "__main__":
     m = build_deit3_classifier(in_channels=3, num_classes=10, variant="deit3_tiny", image_size=64)
     y = m(x)
     print("deit3_tiny", tuple(y.shape))
-

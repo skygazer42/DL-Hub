@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -83,7 +82,10 @@ class MobileViTBlock(nn.Module):
             ConvBNAct(in_ch, tdim, kernel_size=1, stride=1, padding=0, act="silu"),
         )
         self.transformer = nn.Sequential(
-            *[TransformerEncoderBlock(dim=tdim, num_heads=heads, dropout=float(dropout)) for _ in range(depth)]
+            *[
+                TransformerEncoderBlock(dim=tdim, num_heads=heads, dropout=float(dropout))
+                for _ in range(depth)
+            ]
         )
         self.proj = ConvBNAct(tdim, out_ch, kernel_size=1, stride=1, padding=0, act="silu")
         self.fuse = ConvBNAct(in_ch + out_ch, out_ch, kernel_size=3, stride=1, act="silu")
@@ -130,7 +132,9 @@ class MobileViTClassifier(nn.Module):
             transformer_dims = (128, 192)
             transformer_depths = (4, 4)
         else:
-            raise ValueError("Unknown MobileViT variant. Supported: mobilevit_tiny|mobilevit_small|mobilevit_base")
+            raise ValueError(
+                "Unknown MobileViT variant. Supported: mobilevit_tiny|mobilevit_small|mobilevit_base"
+            )
 
         w1, w2, w3, w4, w5 = (scale_channels(int(c), w, min_ch=16, divisor=8) for c in widths)
         t1, t2 = (scale_channels(int(c), w, min_ch=64, divisor=8) for c in transformer_dims)
@@ -138,7 +142,9 @@ class MobileViTClassifier(nn.Module):
 
         self.stem = ConvBNAct(int(in_channels), w1, kernel_size=3, stride=2, act="silu")
         self.stage1 = MBConv(w1, w2, stride=1, expand_ratio=2, se_ratio=0.0, dropout=float(dropout))
-        self.stage2 = MBConv(w2, w3, stride=2, expand_ratio=2, se_ratio=0.25, dropout=float(dropout))
+        self.stage2 = MBConv(
+            w2, w3, stride=2, expand_ratio=2, se_ratio=0.25, dropout=float(dropout)
+        )
         self.stage3 = nn.Sequential(
             MBConv(w3, w4, stride=2, expand_ratio=2, se_ratio=0.25, dropout=float(dropout)),
             MobileViTBlock(
@@ -202,7 +208,8 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     for v in ["mobilevit_tiny", "mobilevit_small", "mobilevit_base"]:
-        m = build_mobilevit_classifier(in_channels=3, num_classes=10, image_size=64, variant=v, width_mult=0.5)
+        m = build_mobilevit_classifier(
+            in_channels=3, num_classes=10, image_size=64, variant=v, width_mult=0.5
+        )
         y = m(x)
         print(v, tuple(y.shape))
-

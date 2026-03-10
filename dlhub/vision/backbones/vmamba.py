@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -59,7 +58,12 @@ class VMambaClassifier(nn.Module):
         self.patch = PatchEmbed(int(in_channels), int(dim), patch_size=int(patch_size))
         self.pos = nn.Parameter(torch.zeros(1, self.hw[0] * self.hw[1], int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.ModuleList([VMambaBlock(int(dim), seq_kernel=7, drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [
+                VMambaBlock(int(dim), seq_kernel=7, drop_path=float(dp_rates[i]))
+                for i in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -111,4 +115,3 @@ if __name__ == "__main__":
     m = build_vmamba_classifier(in_channels=3, num_classes=10, variant="vmamba_tiny", image_size=64)
     y = m(x)
     print("vmamba_tiny", tuple(y.shape))
-

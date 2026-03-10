@@ -4,7 +4,6 @@ from torch import nn
 
 from ._common import KalmanAssociationTracker3D, smoke_test_tracker
 
-
 _VARIANTS: dict[str, dict[str, int]] = {
     "simpletrack_tiny": {"width": 48, "tracks": 24},
     "simpletrack_small": {"width": 64, "tracks": 32},

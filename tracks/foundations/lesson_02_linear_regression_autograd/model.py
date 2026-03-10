@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 
@@ -10,4 +9,3 @@ class LinearRegressor(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.linear(x)
-

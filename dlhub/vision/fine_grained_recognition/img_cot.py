@@ -1,4 +1,3 @@
-
 """ImgCoT (toy-first) for FGVC.
 
 Reference:
@@ -14,12 +13,18 @@ This repo keeps it offline and lightweight:
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyPatchEncoder, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyPatchEncoder,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class ImgCoTFGVC(nn.Module):
@@ -55,7 +60,9 @@ class ImgCoTFGVC(nn.Module):
 
         self.q_norm = nn.LayerNorm(int(embed))
         self.kv_norm = nn.LayerNorm(int(embed))
-        self.compress_attn = nn.MultiheadAttention(int(embed), int(heads), dropout=0.0, batch_first=True)
+        self.compress_attn = nn.MultiheadAttention(
+            int(embed), int(heads), dropout=0.0, batch_first=True
+        )
         self.mlp = nn.Sequential(
             nn.LayerNorm(int(embed)),
             nn.Linear(int(embed), max(64, int(embed) * 2)),
@@ -64,7 +71,9 @@ class ImgCoTFGVC(nn.Module):
         )
 
         # Decoder-like head: reconstruct patch embeddings from latents.
-        self.recon_attn = nn.MultiheadAttention(int(embed), int(heads), dropout=0.0, batch_first=True)
+        self.recon_attn = nn.MultiheadAttention(
+            int(embed), int(heads), dropout=0.0, batch_first=True
+        )
 
         self.key_scorer = nn.Linear(int(embed), 1)
         self.proj = nn.Linear(int(embed), int(embed))
@@ -94,7 +103,9 @@ class ImgCoTFGVC(nn.Module):
         key_tokens = torch.gather(patches, 1, gather_idx)  # (B, k, E)
 
         # Reconstruction loss: can be used as an auxiliary objective in toy training.
-        recon = self.recon_attn(self.q_norm(patches), self.kv_norm(lat), self.kv_norm(lat), need_weights=False)[0]
+        recon = self.recon_attn(
+            self.q_norm(patches), self.kv_norm(lat), self.kv_norm(lat), need_weights=False
+        )[0]
         recon_loss = F.mse_loss(recon, patches, reduction="mean")
 
         # Pool compact tokens + a few key tokens.
@@ -143,4 +154,3 @@ def build_img_cot_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_img_cot_fgvc_classifier, "img_cot_tiny")
-

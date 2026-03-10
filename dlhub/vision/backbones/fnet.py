@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -72,7 +71,10 @@ class FNetClassifier(nn.Module):
         self.pos = nn.Parameter(torch.zeros(1, int(num_tokens), int(embed_dim)))
         self.drop = nn.Dropout(p=float(dropout))
         self.blocks = nn.Sequential(
-            *[FNetBlock(int(embed_dim), ff_dim=int(embed_dim) * 4, dropout=float(dropout)) for _ in range(int(depth))]
+            *[
+                FNetBlock(int(embed_dim), ff_dim=int(embed_dim) * 4, dropout=float(dropout))
+                for _ in range(int(depth))
+            ]
         )
         self.norm = nn.LayerNorm(int(embed_dim))
         self.head = nn.Linear(int(embed_dim), int(num_classes))
@@ -133,4 +135,3 @@ if __name__ == "__main__":
         m = build_fnet_classifier(in_channels=3, num_classes=10, image_size=64, variant=v)
         y = m(x)
         print(v, tuple(y.shape))
-

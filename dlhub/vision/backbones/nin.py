@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -8,10 +7,19 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 class MLPConv(nn.Module):
     """NiN MLPConv: conv + 1x1 + 1x1."""
 
-    def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int
+    ) -> None:
         super().__init__()
         self.net = nn.Sequential(
-            ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), padding=int(padding), act="relu"),
+            ConvBNAct(
+                in_ch,
+                out_ch,
+                kernel_size=int(kernel_size),
+                stride=int(stride),
+                padding=int(padding),
+                act="relu",
+            ),
             ConvBNAct(out_ch, out_ch, kernel_size=1, stride=1, padding=0, act="relu"),
             ConvBNAct(out_ch, out_ch, kernel_size=1, stride=1, padding=0, act="relu"),
         )
@@ -85,4 +93,3 @@ if __name__ == "__main__":
         m = build_nin_classifier(in_channels=3, num_classes=10, variant=v, width_mult=1.0)
         y = m(x)
         print(v, tuple(y.shape))
-

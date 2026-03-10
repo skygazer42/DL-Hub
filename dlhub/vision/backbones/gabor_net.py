@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -25,7 +24,9 @@ def _gabor_kernel(
     ct, st = math.cos(theta), math.sin(theta)
     x_theta = x * ct + y * st
     y_theta = -x * st + y * ct
-    gb = torch.exp(-(x_theta**2 + (gamma**2) * y_theta**2) / (2 * sigma**2)) * torch.cos(2 * math.pi * x_theta / lambd + psi)
+    gb = torch.exp(-(x_theta**2 + (gamma**2) * y_theta**2) / (2 * sigma**2)) * torch.cos(
+        2 * math.pi * x_theta / lambd + psi
+    )
     gb = gb - gb.mean()
     gb = gb / (gb.norm() + 1e-6)
     return gb
@@ -62,7 +63,9 @@ class FixedGaborConv(nn.Module):
         self.padding = k // 2
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return nn.functional.conv2d(x, self.weight, bias=None, stride=self.stride, padding=self.padding)
+        return nn.functional.conv2d(
+            x, self.weight, bias=None, stride=self.stride, padding=self.padding
+        )
 
 
 class GaborNetClassifier(nn.Module):
@@ -89,7 +92,9 @@ class GaborNetClassifier(nn.Module):
         )
 
         def stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
-            layers: list[nn.Module] = [ConvBNAct(in_ch, out_ch, kernel_size=3, stride=int(stride), act="relu")]
+            layers: list[nn.Module] = [
+                ConvBNAct(in_ch, out_ch, kernel_size=3, stride=int(stride), act="relu")
+            ]
             for _ in range(int(depth) - 1):
                 layers.append(ConvBNAct(out_ch, out_ch, kernel_size=3, stride=1, act="relu"))
             return nn.Sequential(*layers)
@@ -141,7 +146,8 @@ def build_gabor_net_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_gabor_net_classifier(in_channels=3, num_classes=10, variant="gabornet_base", width_mult=0.5)
+    m = build_gabor_net_classifier(
+        in_channels=3, num_classes=10, variant="gabornet_base", width_mult=0.5
+    )
     y = m(x)
     print("gabornet_base", tuple(y.shape))
-

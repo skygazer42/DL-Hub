@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -34,7 +33,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 06 (PointCloud): DGCNN toy part segmentation.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 06 (PointCloud): DGCNN toy part segmentation."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--num-points", type=int, default=256)
@@ -96,7 +97,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="pointcloud", lesson="lesson_06_dgcnn_toy_partseg", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="pointcloud", lesson="lesson_06_dgcnn_toy_partseg", run_name=train_cfg.run_name
+    )
     logger = get_logger("pointcloud.partseg_dgcnn", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -201,4 +204,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

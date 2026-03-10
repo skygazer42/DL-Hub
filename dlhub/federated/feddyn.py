@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class FedDynStrategy(FederatedStrategy):
@@ -12,7 +17,9 @@ class FedDynStrategy(FederatedStrategy):
 
     def simulate_round(self, *, seed: int = 0) -> dict[str, torch.Tensor]:
         state = self._sample_round_state(seed=seed)
-        dynamic_term = self.alpha * (state.raw_updates.mean(dim=0, keepdim=True) - state.raw_updates)
+        dynamic_term = self.alpha * (
+            state.raw_updates.mean(dim=0, keepdim=True) - state.raw_updates
+        )
         adjusted = state.raw_updates + dynamic_term
         client_params = state.server_params.unsqueeze(0) + adjusted
         server_params = weighted_average(client_params, state.client_weights)

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -41,20 +40,40 @@ class SparseRCNNDetector(nn.Module):
             raise ValueError("stages must be > 0")
 
         self.backbone = nn.Sequential(
-            ConvBNAct(int(in_channels), int(stem_channels), kernel_size=3, stride=2, act="relu"),  # /2
-            ConvBNAct(int(stem_channels), int(stem_channels), kernel_size=3, stride=2, act="relu"),  # /4
-            ConvBNAct(int(stem_channels), int(feat_channels), kernel_size=3, stride=2, act="relu"),  # /8
-            *[ConvBNAct(int(feat_channels), int(feat_channels), kernel_size=3, stride=1, act="relu") for _ in range(int(backbone_depth))],
+            ConvBNAct(
+                int(in_channels), int(stem_channels), kernel_size=3, stride=2, act="relu"
+            ),  # /2
+            ConvBNAct(
+                int(stem_channels), int(stem_channels), kernel_size=3, stride=2, act="relu"
+            ),  # /4
+            ConvBNAct(
+                int(stem_channels), int(feat_channels), kernel_size=3, stride=2, act="relu"
+            ),  # /8
+            *[
+                ConvBNAct(
+                    int(feat_channels), int(feat_channels), kernel_size=3, stride=1, act="relu"
+                )
+                for _ in range(int(backbone_depth))
+            ],
         )
         self.proj = nn.Conv2d(int(feat_channels), dm, kernel_size=1)
 
-        self.transformer = SimpleTransformer(dim=dm, num_heads=int(num_heads), num_encoder_layers=1, num_decoder_layers=1, mlp_ratio=4.0, dropout=0.0)
+        self.transformer = SimpleTransformer(
+            dim=dm,
+            num_heads=int(num_heads),
+            num_encoder_layers=1,
+            num_decoder_layers=1,
+            mlp_ratio=4.0,
+            dropout=0.0,
+        )
         self.query_embed = nn.Parameter(torch.randn(q, dm) * 0.02)
         self.proposal_boxes = nn.Parameter(torch.rand(q, 4) * 0.5)
         self.stages = s
 
         self.class_heads = nn.ModuleList([nn.Linear(dm, nc) for _ in range(s)])
-        self.delta_heads = nn.ModuleList([MLP(dm, dm, 4, num_layers=3, act="relu") for _ in range(s)])
+        self.delta_heads = nn.ModuleList(
+            [MLP(dm, dm, 4, num_layers=3, act="relu") for _ in range(s)]
+        )
         self.query_update = nn.ModuleList([nn.Linear(dm, dm) for _ in range(s)])
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
@@ -82,9 +101,33 @@ class SparseRCNNDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "sparse_rcnn_tiny": {"stem": 24, "feat": 96, "depth": 1, "d_model": 96, "heads": 4, "q": 50, "stages": 2},
-    "sparse_rcnn_small": {"stem": 32, "feat": 128, "depth": 2, "d_model": 128, "heads": 4, "q": 100, "stages": 3},
-    "sparse_rcnn_base": {"stem": 48, "feat": 192, "depth": 2, "d_model": 192, "heads": 6, "q": 300, "stages": 6},
+    "sparse_rcnn_tiny": {
+        "stem": 24,
+        "feat": 96,
+        "depth": 1,
+        "d_model": 96,
+        "heads": 4,
+        "q": 50,
+        "stages": 2,
+    },
+    "sparse_rcnn_small": {
+        "stem": 32,
+        "feat": 128,
+        "depth": 2,
+        "d_model": 128,
+        "heads": 4,
+        "q": 100,
+        "stages": 3,
+    },
+    "sparse_rcnn_base": {
+        "stem": 48,
+        "feat": 192,
+        "depth": 2,
+        "d_model": 192,
+        "heads": 6,
+        "q": 300,
+        "stages": 6,
+    },
 }
 
 
@@ -97,7 +140,9 @@ def build_sparse_rcnn_detector(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Sparse R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Sparse R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -119,10 +164,11 @@ def build_sparse_rcnn_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_sparse_rcnn_detector(in_channels=3, num_classes=2, variant="sparse_rcnn_tiny", width_mult=0.5)
+    m = build_sparse_rcnn_detector(
+        in_channels=3, num_classes=2, variant="sparse_rcnn_tiny", width_mult=0.5
+    )
     out = m(x)
     print("sparse_rcnn_tiny", len(out["class_logits"]), len(out["boxes"]))
     loss = sum(t.mean() for t in out["class_logits"]) + sum(t.mean() for t in out["boxes"])
     loss.backward()
     print("ok")
-

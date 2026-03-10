@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -17,11 +16,7 @@ def test_local_nlp_zoo_has_one_file_per_arch() -> None:
     import dlhub.nlp.algorithms as algorithms
 
     pkg_dir = Path(algorithms.__file__).resolve().parent
-    files = [
-        p
-        for p in pkg_dir.glob("*.py")
-        if p.name not in {"__init__.py"}
-    ]
+    files = [p for p in pkg_dir.glob("*.py") if p.name not in {"__init__.py"}]
     assert any(p.name == "registry.py" for p in files)
     assert any(p.name == "transformer.py" for p in files)
     assert any(p.name == "textcnn.py" for p in files)

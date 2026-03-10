@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import GridSpec3D, Voxel3DSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "voxelunet_tiny": {"width": 32, "grid": (6, 24, 24)},
@@ -64,4 +62,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

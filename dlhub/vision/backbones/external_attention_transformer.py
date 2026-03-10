@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -62,7 +61,12 @@ class ExternalAttentionTransformerClassifier(nn.Module):
         w = int(image_size) // int(patch_size)
         self.pos = nn.Parameter(torch.zeros(1, h * w, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.Sequential(*[EATBlock(int(dim), mem=int(mem), drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.Sequential(
+            *[
+                EATBlock(int(dim), mem=int(mem), drop_path=float(dp_rates[i]))
+                for i in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -111,7 +115,8 @@ def build_external_attention_transformer_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_external_attention_transformer_classifier(in_channels=3, num_classes=10, variant="eat_tiny", image_size=64)
+    m = build_external_attention_transformer_classifier(
+        in_channels=3, num_classes=10, variant="eat_tiny", image_size=64
+    )
     y = m(x)
     print("eat_tiny", tuple(y.shape))
-

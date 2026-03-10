@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -85,7 +84,9 @@ class RepViTClassifier(nn.Module):
                 layers.append(nn.BatchNorm2d(out_ch))
                 layers.append(nn.SiLU(inplace=True))
             for _ in range(int(depth)):
-                layers.append(RepViTBlock(out_ch, mlp_ratio=4.0, drop_path=float(next(dp_iter, 0.0))))
+                layers.append(
+                    RepViTBlock(out_ch, mlp_ratio=4.0, drop_path=float(next(dp_iter, 0.0)))
+                )
             return nn.Sequential(*layers)
 
         self.stage1 = make_stage(dims[0], dims[0], depths[0], stride=1)
@@ -139,6 +140,8 @@ def build_repvit_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_repvit_classifier(in_channels=3, num_classes=10, variant="repvit_tiny", width_mult=0.5)
+    m = build_repvit_classifier(
+        in_channels=3, num_classes=10, variant="repvit_tiny", width_mult=0.5
+    )
     y = m(x)
     print("repvit_tiny", tuple(y.shape))

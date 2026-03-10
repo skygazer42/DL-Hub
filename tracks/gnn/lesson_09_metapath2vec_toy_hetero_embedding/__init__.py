@@ -10,4 +10,3 @@ __all__ = [
     "MetaPath2Vec",
     "ModelConfig",
 ]
-

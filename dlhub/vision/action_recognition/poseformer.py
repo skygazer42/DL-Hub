@@ -1,4 +1,3 @@
-
 """PoseFormer - toy-first skeleton action classifier.
 
 Reference (idea):
@@ -72,7 +71,9 @@ class PoseFormerSkeletonClassifier(nn.Module):
         x = check_skeleton_input(x)  # (B,C,T,V)
         b, c, t, v = x.shape
         if int(t) != int(self.seq_len) or int(v) != int(self.num_joints):
-            raise ValueError(f"Expected (T,V)=({self.seq_len},{self.num_joints}) for this model, got (T,V)=({t},{v})")
+            raise ValueError(
+                f"Expected (T,V)=({self.seq_len},{self.num_joints}) for this model, got (T,V)=({t},{v})"
+            )
 
         # (B,C,T,V) -> (B, T*V, C)
         tokens = x.permute(0, 2, 3, 1).reshape(b, t * v, c)
@@ -124,10 +125,17 @@ def build_poseformer_skeleton_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 32, 17)
-    m = build_poseformer_skeleton_classifier(in_channels=3, num_classes=6, num_joints=17, seq_len=32, variant="poseformer_tiny", width_mult=0.5, dropout=0.0)
+    m = build_poseformer_skeleton_classifier(
+        in_channels=3,
+        num_classes=6,
+        num_joints=17,
+        seq_len=32,
+        variant="poseformer_tiny",
+        width_mult=0.5,
+        dropout=0.0,
+    )
     y = m(x)
     print("poseformer_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

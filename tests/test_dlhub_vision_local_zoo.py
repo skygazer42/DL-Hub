@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -84,7 +83,9 @@ def test_local_vision_zoo_can_build_classifier_smoke(arch_id: str) -> None:
 def test_local_vision_zoo_more_arches_smoke(arch_id: str, width_mult: float) -> None:
     from dlhub.vision.local_zoo import build_local_model
 
-    model = build_local_model(arch_id, in_channels=1, num_classes=4, image_size=64, width_mult=float(width_mult))
+    model = build_local_model(
+        arch_id, in_channels=1, num_classes=4, image_size=64, width_mult=float(width_mult)
+    )
     model.eval()
 
     x = torch.zeros(2, 1, 64, 64)

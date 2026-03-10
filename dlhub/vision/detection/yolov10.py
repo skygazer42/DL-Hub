@@ -3,7 +3,6 @@ from torch import nn
 
 from dlhub.vision.detection.rtmdet import build_rtmdet_detector as _build_base
 
-
 _VARIANTS: dict[str, str] = {
     "yolov10_tiny": "rtmdet_tiny",
     "yolov10_small": "rtmdet_small",
@@ -33,7 +32,9 @@ def build_yolov10_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    model = build_yolov10_detector(in_channels=3, num_classes=3, variant="yolov10_tiny", width_mult=0.5)
+    model = build_yolov10_detector(
+        in_channels=3, num_classes=3, variant="yolov10_tiny", width_mult=0.5
+    )
     out = model(x)
     print("yolov10_tiny", [tuple(t.shape) for t in out["cls_logits"]])
     loss = sum(t.mean() for v in out.values() for t in (v if isinstance(v, list) else [v]))

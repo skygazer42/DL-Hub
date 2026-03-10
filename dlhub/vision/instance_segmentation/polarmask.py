@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -48,9 +47,15 @@ class PolarMask(nn.Module):
         )
         self.proto = ProtoNet(int(low_channels), np, depth=int(proto_depth))
 
-        tower: list[nn.Module] = [ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")]
+        tower: list[nn.Module] = [
+            ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")
+        ]
         for _ in range(int(head_convs) - 1):
-            tower.append(ConvBNAct(int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"))
+            tower.append(
+                ConvBNAct(
+                    int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"
+                )
+            )
         self.tower = nn.Sequential(*tower)
 
         self.cls = nn.Conv2d(int(head_channels), nc, kernel_size=3, padding=1)
@@ -72,13 +77,43 @@ class PolarMask(nn.Module):
         coeff_flat = coeffs.permute(0, 2, 3, 1).reshape(b, slots, p)
         proto_flat = proto.reshape(b, p, h4 * w4)
         mask_logits = torch.bmm(coeff_flat, proto_flat).view(b, slots, h4, w4)
-        return {"cls_logits": cls_logits, "rays": rays, "mask_logits": mask_logits, "proto": proto, "mask_coeffs": coeffs}
+        return {
+            "cls_logits": cls_logits,
+            "rays": rays,
+            "mask_logits": mask_logits,
+            "proto": proto,
+            "mask_coeffs": coeffs,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
-    "polarmask_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "head": 80, "protos": 16, "rays": 24},
-    "polarmask_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "head": 96, "protos": 32, "rays": 36},
-    "polarmask_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "head": 128, "protos": 48, "rays": 36},
+    "polarmask_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "head": 80,
+        "protos": 16,
+        "rays": 24,
+    },
+    "polarmask_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "head": 96,
+        "protos": 32,
+        "rays": 36,
+    },
+    "polarmask_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "head": 128,
+        "protos": 48,
+        "rays": 36,
+    },
 }
 
 
@@ -119,10 +154,11 @@ def build_polarmask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_polarmask_instance_segmenter(in_channels=3, num_classes=3, variant="polarmask_tiny", width_mult=0.5)
+    m = build_polarmask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="polarmask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("polarmask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

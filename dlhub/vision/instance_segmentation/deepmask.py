@@ -1,10 +1,13 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.instance_segmentation._common import BackbonePyramid, InstanceTokenHead, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackbonePyramid,
+    InstanceTokenHead,
+    check_nchw,
+)
 
 
 class DeepMask(nn.Module):
@@ -34,11 +37,15 @@ class DeepMask(nn.Module):
             depth=int(backbone_depth),
             act="relu",
         )
-        self.tokens = InstanceTokenHead(int(p4_channels), int(hidden_channels), int(num_proposals), depth=2)
+        self.tokens = InstanceTokenHead(
+            int(p4_channels), int(hidden_channels), int(num_proposals), depth=2
+        )
         self.proposal_head = nn.Linear(int(hidden_channels), 1)
         self.box_head = nn.Linear(int(hidden_channels), 4)
         self.seed_head = nn.Linear(int(hidden_channels), int(mask_size) * int(mask_size))
-        self.detail_proj = ConvBNAct(int(p2_channels), int(hidden_channels), kernel_size=3, stride=1, act="relu")
+        self.detail_proj = ConvBNAct(
+            int(p2_channels), int(hidden_channels), kernel_size=3, stride=1, act="relu"
+        )
         self.mask_size = int(mask_size)
 
     def forward(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
@@ -51,7 +58,9 @@ class DeepMask(nn.Module):
         proposal_boxes = torch.sigmoid(self.box_head(tokens))
         seed_mask_logits = self.seed_head(tokens).view(b, k, self.mask_size, self.mask_size)
 
-        coarse = F.interpolate(seed_mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False)
+        coarse = F.interpolate(
+            seed_mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False
+        )
         detail = self.detail_proj(p2).mean(dim=1, keepdim=True)
         mask_logits = coarse + detail.expand(-1, k, -1, -1)
         return {
@@ -63,9 +72,36 @@ class DeepMask(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "deepmask_tiny": {"stem": 24, "p2": 40, "p3": 64, "p4": 96, "hidden": 96, "depth": 1, "props": 16, "mask": 16},
-    "deepmask_small": {"stem": 24, "p2": 48, "p3": 80, "p4": 128, "hidden": 128, "depth": 2, "props": 24, "mask": 16},
-    "deepmask_base": {"stem": 32, "p2": 64, "p3": 96, "p4": 160, "hidden": 160, "depth": 3, "props": 32, "mask": 28},
+    "deepmask_tiny": {
+        "stem": 24,
+        "p2": 40,
+        "p3": 64,
+        "p4": 96,
+        "hidden": 96,
+        "depth": 1,
+        "props": 16,
+        "mask": 16,
+    },
+    "deepmask_small": {
+        "stem": 24,
+        "p2": 48,
+        "p3": 80,
+        "p4": 128,
+        "hidden": 128,
+        "depth": 2,
+        "props": 24,
+        "mask": 16,
+    },
+    "deepmask_base": {
+        "stem": 32,
+        "p2": 64,
+        "p3": 96,
+        "p4": 160,
+        "hidden": 160,
+        "depth": 3,
+        "props": 32,
+        "mask": 28,
+    },
 }
 
 
@@ -89,7 +125,9 @@ def build_deepmask_instance_segmenter(
         p2_channels=scale_channels(int(spec["p2"]), float(width_mult), min_ch=16, divisor=8),
         p3_channels=scale_channels(int(spec["p3"]), float(width_mult), min_ch=16, divisor=8),
         p4_channels=scale_channels(int(spec["p4"]), float(width_mult), min_ch=16, divisor=8),
-        hidden_channels=scale_channels(int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8),
+        hidden_channels=scale_channels(
+            int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8
+        ),
         backbone_depth=int(spec["depth"]),
         num_proposals=int(spec["props"]) if num_proposals is None else int(num_proposals),
         mask_size=int(spec["mask"]),
@@ -99,7 +137,9 @@ def build_deepmask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_deepmask_instance_segmenter(in_channels=3, num_classes=3, variant="deepmask_tiny", width_mult=0.5)
+    m = build_deepmask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="deepmask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("deepmask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

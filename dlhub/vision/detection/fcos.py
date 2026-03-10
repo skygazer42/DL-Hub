@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -12,7 +11,9 @@ class _ConvTower(nn.Module):
         n = int(num_convs)
         if n <= 0:
             raise ValueError("num_convs must be > 0")
-        self.net = nn.Sequential(*[ConvBNAct(c, c, kernel_size=3, stride=1, act="relu") for _ in range(n)])
+        self.net = nn.Sequential(
+            *[ConvBNAct(c, c, kernel_size=3, stride=1, act="relu") for _ in range(n)]
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.net(x)
@@ -89,7 +90,11 @@ class FCOSDetector(nn.Module):
         self.cls_logits = nn.Conv2d(int(hidden_channels), nc, kernel_size=3, padding=1)
         self.reg_pred = nn.Conv2d(int(hidden_channels), 4, kernel_size=3, padding=1)
         self.with_centerness = bool(with_centerness)
-        self.centerness = nn.Conv2d(int(hidden_channels), 1, kernel_size=3, padding=1) if self.with_centerness else None
+        self.centerness = (
+            nn.Conv2d(int(hidden_channels), 1, kernel_size=3, padding=1)
+            if self.with_centerness
+            else None
+        )
 
         # A tiny init that helps stability (optional).
         nn.init.normal_(self.cls_logits.weight, mean=0.0, std=0.01)
@@ -113,10 +118,34 @@ class FCOSDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "fcos_tiny": {"stem": 24, "hidden": 32, "backbone_depth": 1, "head_convs": 2, "centerness": True},
-    "fcos_small": {"stem": 32, "hidden": 64, "backbone_depth": 2, "head_convs": 3, "centerness": True},
-    "fcos_base": {"stem": 48, "hidden": 96, "backbone_depth": 3, "head_convs": 4, "centerness": True},
-    "fcos_nocenter": {"stem": 32, "hidden": 64, "backbone_depth": 2, "head_convs": 3, "centerness": False},
+    "fcos_tiny": {
+        "stem": 24,
+        "hidden": 32,
+        "backbone_depth": 1,
+        "head_convs": 2,
+        "centerness": True,
+    },
+    "fcos_small": {
+        "stem": 32,
+        "hidden": 64,
+        "backbone_depth": 2,
+        "head_convs": 3,
+        "centerness": True,
+    },
+    "fcos_base": {
+        "stem": 48,
+        "hidden": 96,
+        "backbone_depth": 3,
+        "head_convs": 4,
+        "centerness": True,
+    },
+    "fcos_nocenter": {
+        "stem": 32,
+        "hidden": 64,
+        "backbone_depth": 2,
+        "head_convs": 3,
+        "centerness": False,
+    },
 }
 
 
@@ -153,4 +182,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

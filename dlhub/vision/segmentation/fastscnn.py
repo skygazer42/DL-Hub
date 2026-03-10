@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.segmentation._common import check_nchw
@@ -101,16 +100,22 @@ def build_fastscnn_segmenter(
         raise ValueError(f"Unknown Fast-SCNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
     base = scale_channels(int(spec["base_channels"]), float(width_mult), min_ch=16, divisor=8)
-    return FastSCNN(in_channels=int(in_channels), num_classes=int(num_classes), base_channels=int(base), depth=int(spec["depth"]))
+    return FastSCNN(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        base_channels=int(base),
+        depth=int(spec["depth"]),
+    )
 
 
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_fastscnn_segmenter(in_channels=3, num_classes=4, variant="fastscnn_tiny", width_mult=0.5)
+    m = build_fastscnn_segmenter(
+        in_channels=3, num_classes=4, variant="fastscnn_tiny", width_mult=0.5
+    )
     y = m(x)
     print("fastscnn_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

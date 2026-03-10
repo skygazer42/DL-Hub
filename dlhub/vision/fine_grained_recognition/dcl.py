@@ -1,4 +1,3 @@
-
 from torch import nn
 
 from ._common import RelationFGVCModel, build_fgvc_model, make_fgvc_variants, smoke_test_classifier
@@ -13,9 +12,25 @@ _VARIANTS: dict[str, dict[str, int]] = make_fgvc_variants("dcl", group="relation
 
 
 def build_dcl_fgvc_classifier(
-    *, in_channels: int, num_classes: int, variant: str = "dcl_small", image_size: int = 64, width_mult: float = 1.0, dropout: float = 0.1
+    *,
+    in_channels: int,
+    num_classes: int,
+    variant: str = "dcl_small",
+    image_size: int = 64,
+    width_mult: float = 1.0,
+    dropout: float = 0.1,
 ) -> nn.Module:
-    return build_fgvc_model(DCL, variants=_VARIANTS, in_channels=in_channels, num_classes=num_classes, variant=variant, image_size=image_size, width_mult=width_mult, dropout=dropout, family="dcl")
+    return build_fgvc_model(
+        DCL,
+        variants=_VARIANTS,
+        in_channels=in_channels,
+        num_classes=num_classes,
+        variant=variant,
+        image_size=image_size,
+        width_mult=width_mult,
+        dropout=dropout,
+        family="dcl",
+    )
 
 
 if __name__ == "__main__":

@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
+from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet, check_nchw
 
 
@@ -92,13 +90,46 @@ class QueryInst(nn.Module):
         proto_flat = proto.view(bp, p, h4 * w4)
         mask_flat = torch.bmm(coeff, proto_flat)
         mask_logits = mask_flat.view(b, coeff.shape[1], h4, w4)
-        return {"query_cls_logits": cls_logits, "query_boxes": boxes, "mask_logits": mask_logits, "proto": proto, "mask_coeff": coeff}
+        return {
+            "query_cls_logits": cls_logits,
+            "query_boxes": boxes,
+            "mask_logits": mask_logits,
+            "proto": proto,
+            "mask_coeff": coeff,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
-    "queryinst_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "queries": 16, "protos": 16, "d_model": 80, "heads": 4},
-    "queryinst_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "queries": 32, "protos": 32, "d_model": 96, "heads": 4},
-    "queryinst_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "queries": 64, "protos": 48, "d_model": 128, "heads": 8},
+    "queryinst_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "queries": 16,
+        "protos": 16,
+        "d_model": 80,
+        "heads": 4,
+    },
+    "queryinst_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "queries": 32,
+        "protos": 32,
+        "d_model": 96,
+        "heads": 4,
+    },
+    "queryinst_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "queries": 64,
+        "protos": 48,
+        "d_model": 128,
+        "heads": 8,
+    },
 }
 
 
@@ -143,10 +174,11 @@ def build_queryinst_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_queryinst_instance_segmenter(in_channels=3, num_classes=3, variant="queryinst_tiny", width_mult=0.5)
+    m = build_queryinst_instance_segmenter(
+        in_channels=3, num_classes=3, variant="queryinst_tiny", width_mult=0.5
+    )
     out = m(x)
     print("queryinst_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

@@ -1,11 +1,9 @@
-
 import math
 
 import torch
 from torch import nn
 
 from ._common import CenterProposalHead, PointNet2Encoder, l2_normalize
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "maskrcnn3d_tiny": {"width": 48, "instances": 16},
@@ -29,7 +27,9 @@ class MaskRCNN3D(nn.Module):
         super().__init__()
         w = int(width)
         self.enc = PointNet2Encoder(int(in_channels), w, dropout=float(dropout))
-        self.stage1 = CenterProposalHead(w, int(num_classes), num_instances=int(num_instances), dropout=float(dropout))
+        self.stage1 = CenterProposalHead(
+            w, int(num_classes), num_instances=int(num_instances), dropout=float(dropout)
+        )
         self.refine = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, w))
         self.cls = nn.Linear(w, int(num_classes))
 
@@ -42,7 +42,9 @@ class MaskRCNN3D(nn.Module):
         inst_feat = inst_feat + 0.1 * self.refine(inst_feat).tanh()
 
         d = feat.shape[-1]
-        mask_logits = torch.einsum("bkd,bnd->bkn", l2_normalize(inst_feat), l2_normalize(feat)) * math.sqrt(d)
+        mask_logits = torch.einsum(
+            "bkd,bnd->bkn", l2_normalize(inst_feat), l2_normalize(feat)
+        ) * math.sqrt(d)
         cls_logits = self.cls(inst_feat)
         return {"mask_logits": mask_logits, "cls_logits": cls_logits}
 
@@ -68,9 +70,10 @@ def build_maskrcnn3d_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_maskrcnn3d_instance_segmenter3d(in_channels=3, num_classes=6, variant="maskrcnn3d_tiny")
+    m = build_maskrcnn3d_instance_segmenter3d(
+        in_channels=3, num_classes=6, variant="maskrcnn3d_tiny"
+    )
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

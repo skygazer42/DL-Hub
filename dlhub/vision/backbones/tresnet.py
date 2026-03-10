@@ -1,8 +1,13 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    DropPath,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    scale_channels,
+)
 
 
 class SpaceToDepth(nn.Module):
@@ -58,7 +63,9 @@ class TResNetBottleneck(nn.Module):
 
         self.down: nn.Module | None = None
         if int(stride) != 1 or int(in_ch) != out_exp:
-            self.down = nn.Sequential(_conv1x1(in_ch, out_exp, stride=int(stride)), nn.BatchNorm2d(out_exp))
+            self.down = nn.Sequential(
+                _conv1x1(in_ch, out_exp, stride=int(stride)), nn.BatchNorm2d(out_exp)
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -114,10 +121,16 @@ class TResNetClassifier(nn.Module):
 
     def _make_layer(self, out_ch: int, blocks: int, *, stride: int, dp_iter: iter) -> nn.Sequential:
         layers: list[nn.Module] = []
-        layers.append(TResNetBottleneck(self.in_ch, int(out_ch), stride=int(stride), drop_path=float(next(dp_iter))))
+        layers.append(
+            TResNetBottleneck(
+                self.in_ch, int(out_ch), stride=int(stride), drop_path=float(next(dp_iter))
+            )
+        )
         self.in_ch = int(out_ch) * TResNetBottleneck.expansion
         for _ in range(int(blocks) - 1):
-            layers.append(TResNetBottleneck(self.in_ch, int(out_ch), stride=1, drop_path=float(next(dp_iter))))
+            layers.append(
+                TResNetBottleneck(self.in_ch, int(out_ch), stride=1, drop_path=float(next(dp_iter)))
+            )
         return nn.Sequential(*layers)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -166,4 +179,3 @@ if __name__ == "__main__":
     m = build_tresnet_classifier(in_channels=3, num_classes=10, variant="tresnet_m", width_mult=0.5)
     y = m(x)
     print("tresnet_m", tuple(y.shape))
-

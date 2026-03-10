@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -69,4 +68,3 @@ class PinSAGEItemEncoder(nn.Module):
 
 
 __all__ = ["PinSAGEItemEncoder", "ModelConfig"]
-

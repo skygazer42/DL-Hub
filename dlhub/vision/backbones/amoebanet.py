@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._nas import Genotype, NASNetworkClassifier
-
 
 _AMOEBANET = Genotype(
     # AmoebaNet tends to mix separable convs, dilated convs, and pooling.
@@ -93,7 +91,8 @@ def build_amoebanet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_amoebanet_classifier(in_channels=3, num_classes=10, variant="amoebanet_tiny", width_mult=0.5)
+    m = build_amoebanet_classifier(
+        in_channels=3, num_classes=10, variant="amoebanet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("amoebanet_tiny", tuple(y.shape))
-

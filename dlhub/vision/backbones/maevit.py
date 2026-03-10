@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._transformer import TransformerEncoderBlock, PatchEmbed
+from dlhub.vision.backbones._transformer import PatchEmbed, TransformerEncoderBlock
 
 
 class MAEViTClassifier(nn.Module):
@@ -28,7 +27,12 @@ class MAEViTClassifier(nn.Module):
         self.pos = nn.Parameter(torch.zeros(1, h * w, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
         self.blocks = nn.Sequential(
-            *[TransformerEncoderBlock(int(dim), int(heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(dp_rates[i])) for i in range(int(depth))]
+            *[
+                TransformerEncoderBlock(
+                    int(dim), int(heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(dp_rates[i])
+                )
+                for i in range(int(depth))
+            ]
         )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
@@ -81,4 +85,3 @@ if __name__ == "__main__":
     m = build_maevit_classifier(in_channels=3, num_classes=10, variant="maevit_tiny", image_size=64)
     y = m(x)
     print("maevit_tiny", tuple(y.shape))
-

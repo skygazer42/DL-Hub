@@ -1,21 +1,31 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, SqueezeExcite, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    make_divisible,
+)
 
 
 class GhostModuleV2(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, ratio: int = 2, dw_kernel: int = 3, act: str = "relu") -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, ratio: int = 2, dw_kernel: int = 3, act: str = "relu"
+    ) -> None:
         super().__init__()
         out_ch = int(out_ch)
         init_ch = int((out_ch + int(ratio) - 1) // int(ratio))
         new_ch = out_ch - init_ch
         self.primary = ConvBNAct(int(in_ch), init_ch, kernel_size=1, stride=1, padding=0, act=act)
-        self.cheap = ConvBNAct(init_ch, new_ch, kernel_size=int(dw_kernel), stride=1, groups=init_ch, act=act)
+        self.cheap = ConvBNAct(
+            init_ch, new_ch, kernel_size=int(dw_kernel), stride=1, groups=init_ch, act=act
+        )
         self.out_ch = out_ch
         # light gate to modulate ghost features (v2-ish)
-        self.gate = nn.Sequential(nn.AdaptiveAvgPool2d((1, 1)), nn.Conv2d(init_ch, new_ch, kernel_size=1), nn.Sigmoid())
+        self.gate = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)), nn.Conv2d(init_ch, new_ch, kernel_size=1), nn.Sigmoid()
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x1 = self.primary(x)
@@ -34,7 +44,15 @@ class GhostBottleneckV2(nn.Module):
         self.dw: nn.Module
         if self.stride > 1:
             self.dw = nn.Sequential(
-                nn.Conv2d(int(mid_ch), int(mid_ch), kernel_size=3, stride=self.stride, padding=1, groups=int(mid_ch), bias=False),
+                nn.Conv2d(
+                    int(mid_ch),
+                    int(mid_ch),
+                    kernel_size=3,
+                    stride=self.stride,
+                    padding=1,
+                    groups=int(mid_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(mid_ch)),
             )
         else:
@@ -47,7 +65,15 @@ class GhostBottleneckV2(nn.Module):
             self.short = nn.Identity()
         else:
             self.short = nn.Sequential(
-                nn.Conv2d(int(in_ch), int(in_ch), kernel_size=3, stride=self.stride, padding=1, groups=int(in_ch), bias=False),
+                nn.Conv2d(
+                    int(in_ch),
+                    int(in_ch),
+                    kernel_size=3,
+                    stride=self.stride,
+                    padding=1,
+                    groups=int(in_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(in_ch)),
                 nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, bias=False),
                 nn.BatchNorm2d(int(out_ch)),
@@ -130,7 +156,12 @@ def build_ghostnet_v2_classifier(
     if name not in _VARIANTS:
         raise ValueError(f"Unknown GhostNetV2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return GhostNetV2Classifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return GhostNetV2Classifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -139,4 +170,3 @@ if __name__ == "__main__":
     m = build_ghostnet_v2_classifier(in_channels=3, num_classes=10, variant="ghostnet_v2_0_5")
     y = m(x)
     print("ghostnet_v2_0_5", tuple(y.shape))
-

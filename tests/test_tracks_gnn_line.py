@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -18,4 +17,3 @@ def test_gnn_line_loss_smoke() -> None:
 
     loss = model.loss(src=src, dst=dst, neg_dst=neg)
     assert torch.isfinite(loss)
-

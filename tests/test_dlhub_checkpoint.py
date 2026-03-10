@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -27,7 +26,8 @@ def test_save_and_load_checkpoint_round_trip(tmp_path) -> None:
     assert meta["epoch"] == 3
     assert meta["extra"]["tag"] == "demo"
 
-    for (k1, v1), (k2, v2) in zip(model.state_dict().items(), model2.state_dict().items(), strict=True):
+    for (k1, v1), (k2, v2) in zip(
+        model.state_dict().items(), model2.state_dict().items(), strict=True
+    ):
         assert k1 == k2
         torch.testing.assert_close(v1, v2)
-

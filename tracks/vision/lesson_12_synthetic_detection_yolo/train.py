@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -42,7 +41,9 @@ class Stats:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 12 (Vision): synthetic detection (YOLOv1-style).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 12 (Vision): synthetic detection (YOLOv1-style)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -160,8 +161,12 @@ def _run_epoch(
 ) -> Stats:
     is_train = optimizer is not None
 
-    obj_criterion = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([float(cfg.obj_pos_weight)], device=device))
-    cls_criterion = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([float(cfg.cls_pos_weight)], device=device))
+    obj_criterion = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor([float(cfg.obj_pos_weight)], device=device)
+    )
+    cls_criterion = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor([float(cfg.cls_pos_weight)], device=device)
+    )
     box_criterion = torch.nn.SmoothL1Loss(reduction="mean")
 
     if is_train:
@@ -258,9 +263,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         raise ValueError("This lesson currently assumes stride=4 to match the model definition.")
 
     train_loader, val_loader = get_dataloaders(data_cfg)
-    model = TinyYOLOv1(ModelConfig(in_channels=1, hidden_channels=32, stride=int(data_cfg.stride))).to(
-        device_info.torch_device
-    )
+    model = TinyYOLOv1(
+        ModelConfig(in_channels=1, hidden_channels=32, stride=int(data_cfg.stride))
+    ).to(device_info.torch_device)
     optimizer = torch.optim.Adam(model.parameters(), lr=float(train_cfg.learning_rate))
 
     write_json(
@@ -293,7 +298,14 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             data_cfg=data_cfg,
         )
 
-        append_jsonl(metrics_path, {"epoch": epoch, "train": dataclass_to_dict(train_stats), "eval": dataclass_to_dict(eval_stats)})
+        append_jsonl(
+            metrics_path,
+            {
+                "epoch": epoch,
+                "train": dataclass_to_dict(train_stats),
+                "eval": dataclass_to_dict(eval_stats),
+            },
+        )
         logger.info(
             "Epoch %d | train=%.4f (iou=%.3f) eval=%.4f (iou=%.3f)",
             epoch,
@@ -308,7 +320,10 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             model=model,
             optimizer=optimizer,
             epoch=epoch,
-            extra={"train_cfg": dataclass_to_dict(train_cfg), "data_cfg": dataclass_to_dict(data_cfg)},
+            extra={
+                "train_cfg": dataclass_to_dict(train_cfg),
+                "data_cfg": dataclass_to_dict(data_cfg),
+            },
         )
 
     logger.info("Done. Run dir: %s", paths.run_dir)
@@ -318,4 +333,3 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
 if __name__ == "__main__":
     cfg_train, cfg_data = parse_args()
     raise SystemExit(run_training(cfg_train, cfg_data))
-

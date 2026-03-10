@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -32,8 +31,11 @@ class TinyYOLOv1(nn.Module):
 
     def forward(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         out = self.model(x)
-        return {"obj_logits": out["obj_logits"], "cls_logits": out["cls_logits"], "bbox": out["bbox"]}
+        return {
+            "obj_logits": out["obj_logits"],
+            "cls_logits": out["cls_logits"],
+            "bbox": out["bbox"],
+        }
 
 
 __all__ = ["TinyYOLOv1", "ModelConfig"]
-

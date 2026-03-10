@@ -13,4 +13,3 @@ def test_train_val_split_indices_is_deterministic_and_disjoint() -> None:
 
     assert set(train_a).isdisjoint(val_a)
     assert sorted(train_a + val_a) == list(range(100))
-

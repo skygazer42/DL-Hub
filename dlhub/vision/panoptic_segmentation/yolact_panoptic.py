@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, ProtoNet, check_nchw, masks_from_prototypes
+from dlhub.vision.panoptic_segmentation._common import (
+    BackboneLowDet,
+    ProtoNet,
+    check_nchw,
+    masks_from_prototypes,
+)
 
 
 class YOLACTPanoptic(nn.Module):
@@ -57,9 +61,15 @@ class YOLACTPanoptic(nn.Module):
         )
 
         # Dense instance prediction at /8.
-        tower: list[nn.Module] = [ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")]
+        tower: list[nn.Module] = [
+            ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")
+        ]
         for _ in range(int(head_convs) - 1):
-            tower.append(ConvBNAct(int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"))
+            tower.append(
+                ConvBNAct(
+                    int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"
+                )
+            )
         self.tower = nn.Sequential(*tower)
 
         self.cls_logits = nn.Conv2d(int(head_channels), na * nt, kernel_size=3, padding=1)
@@ -104,9 +114,30 @@ class YOLACTPanoptic(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "yolact_panoptic_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "head": 80, "protos": 16},
-    "yolact_panoptic_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "head": 96, "protos": 32},
-    "yolact_panoptic_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "head": 128, "protos": 48},
+    "yolact_panoptic_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "head": 80,
+        "protos": 16,
+    },
+    "yolact_panoptic_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "head": 96,
+        "protos": 32,
+    },
+    "yolact_panoptic_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "head": 128,
+        "protos": 48,
+    },
 }
 
 
@@ -121,7 +152,9 @@ def build_yolact_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown YOLACT-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown YOLACT-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -150,11 +183,19 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_yolact_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="yolact_panoptic_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="yolact_panoptic_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("yolact_panoptic_tiny", {k: tuple(v.shape) for k, v in out.items()})
-    loss = out["semantic_logits"].mean() + out["cls_logits"].mean() + out["bbox_deltas"].mean() + out["mask_logits"].mean()
+    loss = (
+        out["semantic_logits"].mean()
+        + out["cls_logits"].mean()
+        + out["bbox_deltas"].mean()
+        + out["mask_logits"].mean()
+    )
     loss.backward()
     print("ok")
-

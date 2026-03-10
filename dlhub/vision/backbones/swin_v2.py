@@ -1,10 +1,7 @@
-
-import math
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import DropPath, scale_channels
 from dlhub.vision.backbones._transformer import MLP, MultiheadSelfAttention
 
 
@@ -29,7 +26,9 @@ def window_reverse(windows: torch.Tensor, window_size: int, h: int, w: int) -> t
 class SwinV2Block(nn.Module):
     """Window attention block (no shift, simplified)."""
 
-    def __init__(self, dim: int, num_heads: int, *, window_size: int = 8, drop_path: float = 0.0) -> None:
+    def __init__(
+        self, dim: int, num_heads: int, *, window_size: int = 8, drop_path: float = 0.0
+    ) -> None:
         super().__init__()
         d = int(dim)
         self.window_size = int(window_size)
@@ -73,7 +72,9 @@ class PatchMerging(nn.Module):
         self.norm = nn.LayerNorm(4 * self.dim)
         self.proj = nn.Linear(4 * self.dim, self.out_dim)
 
-    def forward(self, x: torch.Tensor, *, hw: tuple[int, int]) -> tuple[torch.Tensor, tuple[int, int]]:
+    def forward(
+        self, x: torch.Tensor, *, hw: tuple[int, int]
+    ) -> tuple[torch.Tensor, tuple[int, int]]:
         b, n, d = x.shape
         h, w = int(hw[0]), int(hw[1])
         x = x.view(b, h, w, d)
@@ -118,16 +119,50 @@ class SwinV2Classifier(nn.Module):
         dp_rates = torch.linspace(0.0, float(drop_path), steps=total).tolist()
         dp_iter = iter(dp_rates)
 
-        self.patch = nn.Conv2d(int(in_channels), dims[0], kernel_size=self.patch_size, stride=self.patch_size, bias=True)
+        self.patch = nn.Conv2d(
+            int(in_channels),
+            dims[0],
+            kernel_size=self.patch_size,
+            stride=self.patch_size,
+            bias=True,
+        )
         self.hw = (self.image_size // self.patch_size, self.image_size // self.patch_size)
 
-        self.stage1 = nn.ModuleList([SwinV2Block(dims[0], heads[0], window_size=self.window_size, drop_path=float(next(dp_iter))) for _ in range(depths[0])])
+        self.stage1 = nn.ModuleList(
+            [
+                SwinV2Block(
+                    dims[0], heads[0], window_size=self.window_size, drop_path=float(next(dp_iter))
+                )
+                for _ in range(depths[0])
+            ]
+        )
         self.merge1 = PatchMerging(dims[0], dims[1])
-        self.stage2 = nn.ModuleList([SwinV2Block(dims[1], heads[1], window_size=self.window_size, drop_path=float(next(dp_iter))) for _ in range(depths[1])])
+        self.stage2 = nn.ModuleList(
+            [
+                SwinV2Block(
+                    dims[1], heads[1], window_size=self.window_size, drop_path=float(next(dp_iter))
+                )
+                for _ in range(depths[1])
+            ]
+        )
         self.merge2 = PatchMerging(dims[1], dims[2])
-        self.stage3 = nn.ModuleList([SwinV2Block(dims[2], heads[2], window_size=self.window_size, drop_path=float(next(dp_iter))) for _ in range(depths[2])])
+        self.stage3 = nn.ModuleList(
+            [
+                SwinV2Block(
+                    dims[2], heads[2], window_size=self.window_size, drop_path=float(next(dp_iter))
+                )
+                for _ in range(depths[2])
+            ]
+        )
         self.merge3 = PatchMerging(dims[2], dims[3])
-        self.stage4 = nn.ModuleList([SwinV2Block(dims[3], heads[3], window_size=self.window_size, drop_path=float(next(dp_iter))) for _ in range(depths[3])])
+        self.stage4 = nn.ModuleList(
+            [
+                SwinV2Block(
+                    dims[3], heads[3], window_size=self.window_size, drop_path=float(next(dp_iter))
+                )
+                for _ in range(depths[3])
+            ]
+        )
 
         self.norm = nn.LayerNorm(dims[-1])
         self.drop = nn.Dropout(p=float(dropout))
@@ -192,7 +227,8 @@ def build_swin_v2_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_swin_v2_classifier(in_channels=3, num_classes=10, variant="swin_v2_tiny", image_size=64, width_mult=0.5)
+    m = build_swin_v2_classifier(
+        in_channels=3, num_classes=10, variant="swin_v2_tiny", image_size=64, width_mult=0.5
+    )
     y = m(x)
     print("swin_v2_tiny", tuple(y.shape))
-

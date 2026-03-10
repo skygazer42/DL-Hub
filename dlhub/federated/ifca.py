@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class IFCAStrategy(FederatedStrategy):
@@ -16,7 +21,9 @@ class IFCAStrategy(FederatedStrategy):
         cluster_params = []
         for cluster_id in range(self.num_clusters):
             mask = assignments == cluster_id
-            cluster_params.append(weighted_average(state.raw_updates[mask], state.client_weights[mask]))
+            cluster_params.append(
+                weighted_average(state.raw_updates[mask], state.client_weights[mask])
+            )
         cluster_params_t = torch.stack(cluster_params, dim=0)
         chosen = cluster_params_t[assignments]
         server_params = state.server_params + cluster_params_t.mean(dim=0)

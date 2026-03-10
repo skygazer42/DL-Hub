@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -104,9 +103,45 @@ class DINODetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "dino_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "d_model": 96, "heads": 4, "q": 50, "dn_q": 25, "enc": 1, "dec": 1},
-    "dino_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "d_model": 128, "heads": 4, "q": 100, "dn_q": 50, "enc": 2, "dec": 2},
-    "dino_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "d_model": 192, "heads": 6, "q": 300, "dn_q": 100, "enc": 3, "dec": 3},
+    "dino_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "d_model": 96,
+        "heads": 4,
+        "q": 50,
+        "dn_q": 25,
+        "enc": 1,
+        "dec": 1,
+    },
+    "dino_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "d_model": 128,
+        "heads": 4,
+        "q": 100,
+        "dn_q": 50,
+        "enc": 2,
+        "dec": 2,
+    },
+    "dino_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "d_model": 192,
+        "heads": 6,
+        "q": 300,
+        "dn_q": 100,
+        "enc": 3,
+        "dec": 3,
+    },
 }
 
 

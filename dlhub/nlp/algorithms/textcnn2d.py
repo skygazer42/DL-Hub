@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -85,7 +84,9 @@ def build_textcnn2d_classifier(
     elif name in {"textcnn2d_base"}:
         embed_dim, num_filters, kernels = 160, 160, (3, 4, 5)
     else:
-        raise ValueError("Unknown TextCNN2D variant. Supported: textcnn2d_tiny|textcnn2d_small|textcnn2d_base")
+        raise ValueError(
+            "Unknown TextCNN2D variant. Supported: textcnn2d_tiny|textcnn2d_small|textcnn2d_base"
+        )
 
     return TextCNN2DClassifier(
         TextCNN2DConfig(
@@ -141,4 +142,3 @@ if __name__ == "__main__":
 
 
 __all__ = ["TextCNN2DClassifier", "TextCNN2DConfig", "build_textcnn2d_classifier", "registry"]
-

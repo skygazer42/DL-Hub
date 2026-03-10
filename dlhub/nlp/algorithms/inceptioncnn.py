@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -94,7 +93,11 @@ class InceptionCNNTextClassifier(nn.Module):
 
         blocks: list[nn.Module] = []
         for _ in range(int(cfg.depth)):
-            blocks.append(Inception1DBlock(int(c), bottleneck=max(16, int(c) // 4), dropout=float(cfg.dropout)))
+            blocks.append(
+                Inception1DBlock(
+                    int(c), bottleneck=max(16, int(c) // 4), dropout=float(cfg.dropout)
+                )
+            )
         self.blocks = nn.Sequential(*blocks)
 
         self.drop = nn.Dropout(p=float(cfg.dropout))
@@ -201,4 +204,3 @@ __all__ = [
     "build_inceptioncnn_classifier",
     "registry",
 ]
-

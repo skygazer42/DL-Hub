@@ -15,7 +15,7 @@
 
 <br/>
 
-<code>58 Lessons</code> · <code>7 Learning Tracks</code> · <code>13 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>650+ Tests</code>
+<code>58 Lessons</code> · <code>7 Learning Tracks</code> · <code>27 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>650+ Tests</code>
 
 <br/>
 
@@ -477,15 +477,30 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
 | 类别 | 算法 | 文件 | 核心原理 |
 |------|------|------|---------|
 | **线性模型** | Linear Regression | `linear_models.py` | 最小二乘, 梯度下降 |
+| **线性模型** | Ridge Regression | `linear_models.py` | L2 正则化, 闭式解 |
 | **线性模型** | Logistic Regression | `linear_models.py` | Sigmoid, 交叉熵 |
+| **线性模型** | Softmax Regression | `linear_models.py` | Softmax, 多分类交叉熵 |
 | **核方法** | Linear SVM | `svm.py` | Hinge Loss, 最大间隔 |
 | **树模型** | Decision Tree | `decision_tree.py` | Gini 不纯度, 递归分裂 |
 | **集成方法** | Random Forest | `random_forest.py` | Bagging, 特征随机采样 |
-| **概率模型** | Naive Bayes | `naive_bayes.py` | 贝叶斯定理, 条件独立 |
+| **集成方法** | AdaBoost (Classification) | `adaboost.py` | Boosting, Decision Stumps |
+| **集成方法** | Gradient Boosting (Regression) | `gradient_boosting.py` | Boosting, 残差拟合 |
+| **概率模型** | Naive Bayes | `naive_bayes.py` | 条件独立, 平滑 |
 | **概率模型** | GMM | `gmm.py` | EM 算法, 高斯混合 |
+| **生成模型** | LDA / QDA | `discriminant_analysis.py` | 高斯假设, 判别函数 |
 | **近邻** | KNN | `knn.py` | 距离度量, 多数投票 |
 | **聚类** | K-Means | `kmeans.py` | 质心迭代, Lloyd 算法 |
+| **聚类** | K-Medoids | `kmedoids.py` | Medoid, PAM |
+| **聚类** | Agglomerative Clustering | `clustering.py` | 层次聚类, Linkage |
+| **聚类** | DBSCAN | `clustering.py` | 密度聚类, 邻域扩展 |
+| **聚类** | Spectral Clustering | `spectral_clustering.py` | 图拉普拉斯, 特征向量 |
 | **降维** | PCA | `pca.py` | 特征值分解, 方差最大化 |
+| **降维** | NMF | `nmf.py` | 非负分解, 乘法更新 |
+| **降维** | FastICA | `ica.py` | 独立成分, Fixed-point |
+| **降维** | Isomap | `isomap.py` | 测地距离, MDS |
+| **序列模型** | Markov Chain | `markov_chain.py` | 转移矩阵, 平滑 |
+| **序列模型** | N-gram LM | `ngram.py` | 计数, Laplace 平滑 |
+| **序列模型** | Categorical HMM | `hmm.py` | Forward / Viterbi, log-space |
 | **神经网络** | Perceptron | `perceptron.py` | 感知机学习规则 |
 | **神经网络** | MLP | `mlp.py` | 反向传播, 链式法则 |
 

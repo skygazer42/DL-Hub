@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -10,7 +9,15 @@ class FixedConv2d(nn.Module):
     as a lightweight stand-in, keeping the rest of the pipeline torch-native.
     """
 
-    def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int = 3, stride: int = 1, padding: int | None = None) -> None:
+    def __init__(
+        self,
+        in_ch: int,
+        out_ch: int,
+        *,
+        kernel_size: int = 3,
+        stride: int = 1,
+        padding: int | None = None,
+    ) -> None:
         super().__init__()
         k = int(kernel_size)
         if padding is None:
@@ -22,7 +29,9 @@ class FixedConv2d(nn.Module):
         self.padding = int(padding)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return nn.functional.conv2d(x, self.weight, bias=None, stride=self.stride, padding=self.padding)
+        return nn.functional.conv2d(
+            x, self.weight, bias=None, stride=self.stride, padding=self.padding
+        )
 
 
 class PCANetClassifier(nn.Module):
@@ -40,8 +49,12 @@ class PCANetClassifier(nn.Module):
     ) -> None:
         super().__init__()
         k = int(kernel_size)
-        self.conv1 = FixedConv2d(int(in_channels), int(stage1_filters), kernel_size=k, stride=1, padding=k // 2)
-        self.conv2 = FixedConv2d(int(stage1_filters), int(stage2_filters), kernel_size=k, stride=1, padding=k // 2)
+        self.conv1 = FixedConv2d(
+            int(in_channels), int(stage1_filters), kernel_size=k, stride=1, padding=k // 2
+        )
+        self.conv2 = FixedConv2d(
+            int(stage1_filters), int(stage2_filters), kernel_size=k, stride=1, padding=k // 2
+        )
         self.pool = nn.AvgPool2d(kernel_size=int(pool), stride=int(pool))
         self.proj = nn.Sequential(
             nn.Conv2d(int(stage2_filters), 64, kernel_size=1, bias=True),
@@ -95,4 +108,3 @@ if __name__ == "__main__":
     m = build_pcanet_classifier(in_channels=3, num_classes=10, variant="pcanet_base")
     y = m(x)
     print("pcanet_base", tuple(y.shape))
-

@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _DoubleConv(nn.Module):
@@ -24,7 +23,9 @@ class _Fuse(nn.Module):
     def __init__(self, in_channels_list: list[int], out_ch: int) -> None:
         super().__init__()
         oc = int(out_ch)
-        self.proj = nn.ModuleList([nn.Conv2d(int(c), oc, kernel_size=1, bias=True) for c in in_channels_list])
+        self.proj = nn.ModuleList(
+            [nn.Conv2d(int(c), oc, kernel_size=1, bias=True) for c in in_channels_list]
+        )
         self.conv = _DoubleConv(oc * len(in_channels_list), oc)
 
     def forward(self, feats: list[torch.Tensor], *, size_hw: tuple[int, int]) -> torch.Tensor:
@@ -124,4 +125,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

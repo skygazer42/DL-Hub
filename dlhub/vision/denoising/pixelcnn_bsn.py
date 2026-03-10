@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class MaskedConv2d(nn.Module):
@@ -30,7 +29,9 @@ class MaskedConv2d(nn.Module):
             raise ValueError(f"mask_type must be 'A' or 'B', got: {mask_type!r}")
 
         p = k // 2
-        self.conv = nn.Conv2d(int(in_channels), int(out_channels), kernel_size=k, padding=p, bias=True)
+        self.conv = nn.Conv2d(
+            int(in_channels), int(out_channels), kernel_size=k, padding=p, bias=True
+        )
 
         mask = torch.ones_like(self.conv.weight)
         cy = p
@@ -154,9 +155,13 @@ def build_pixelcnn_bsn_denoiser(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown PixelCNN-BSN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown PixelCNN-BSN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return PixelCNNBSN(in_channels=int(in_channels), width=int(spec["width"]), depth=int(spec["depth"]))
+    return PixelCNNBSN(
+        in_channels=int(in_channels), width=int(spec["width"]), depth=int(spec["depth"])
+    )
 
 
 if __name__ == "__main__":
@@ -169,4 +174,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

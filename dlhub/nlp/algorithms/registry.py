@@ -1,13 +1,12 @@
-
 from dlhub.nlp.types import Builder
 
 from . import (
     albert,
     attention_pool,
     bert,
-    bilstm,
     bigbird,
     bigru,
+    bilstm,
     birnn,
     cnn_bilstm,
     dcnn,

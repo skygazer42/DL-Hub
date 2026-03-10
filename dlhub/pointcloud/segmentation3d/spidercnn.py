@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import index_points, knn_indices
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "spidercnn_tiny": {"width": 64, "depth": 2, "k": 8},
@@ -33,13 +31,17 @@ class _PolyConv(nn.Module):
 class SpiderCNNSeg(nn.Module):
     """SpiderCNN semantic segmentation (toy): polynomial basis on local coordinates."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int
+    ) -> None:
         super().__init__()
         self.k = int(k)
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
         self.blocks = nn.ModuleList([_PolyConv(w) for _ in range(int(depth))])
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -79,4 +81,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

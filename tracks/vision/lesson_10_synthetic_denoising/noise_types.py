@@ -1,4 +1,3 @@
-
 # Kept in a tiny module so CLI "list" commands can stay fast and avoid importing torch.
 SUPPORTED_NOISE_TYPES: tuple[str, ...] = (
     "gaussian",

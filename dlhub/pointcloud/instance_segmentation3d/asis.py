@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
-from ._common import MLPPointEncoder, SimilarityPivotHead, mlp
-
+from ._common import MLPPointEncoder, SimilarityPivotHead
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "asis_tiny": {"width": 64, "depth": 2, "instances": 16},
@@ -28,8 +26,12 @@ class ASIS(nn.Module):
         super().__init__()
         w = int(width)
         self.enc = MLPPointEncoder(int(in_channels), w, depth=int(depth), dropout=float(dropout))
-        self.sem = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
-        self.head = SimilarityPivotHead(w, int(num_classes), num_instances=int(num_instances), dropout=float(dropout))
+        self.sem = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
+        self.head = SimilarityPivotHead(
+            w, int(num_classes), num_instances=int(num_instances), dropout=float(dropout)
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -65,4 +67,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean() + out["sem_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

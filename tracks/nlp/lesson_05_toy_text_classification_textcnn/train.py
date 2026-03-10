@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -33,7 +32,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 05 (NLP): toy text classification with TextCNN.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 05 (NLP): toy text classification with TextCNN."
+    )
 
     parser.add_argument("--num-samples", type=int, default=1024)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -161,7 +162,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         model=model,
         optimizer=optimizer,
         epoch=int(train_cfg.epochs),
-        extra={"track": "nlp", "lesson": "lesson_05_toy_text_classification_textcnn", "vocab_size": vocab.size},
+        extra={
+            "track": "nlp",
+            "lesson": "lesson_05_toy_text_classification_textcnn",
+            "vocab_size": vocab.size,
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
@@ -180,4 +185,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

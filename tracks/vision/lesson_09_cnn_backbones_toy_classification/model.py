@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -63,7 +62,11 @@ def list_supported_arches(*, include_timm: bool = False) -> list[str]:
     arches: list[str] = [a.removeprefix("dl:") for a in local] + local
 
     try:
-        from dlhub.vision.zoo import DependencyNotAvailable, list_timm_arches, list_torchvision_arches
+        from dlhub.vision.zoo import (
+            DependencyNotAvailable,
+            list_timm_arches,
+            list_torchvision_arches,
+        )
     except Exception:
         return arches
 
@@ -98,7 +101,11 @@ def build_model(cfg: ModelConfig) -> nn.Module:
             raise ValueError("Empty torchvision model name. Example: --arch tv:resnet18")
 
         try:
-            from dlhub.vision.zoo import DependencyNotAvailable, build_torchvision_model, list_torchvision_arches
+            from dlhub.vision.zoo import (
+                DependencyNotAvailable,
+                build_torchvision_model,
+                list_torchvision_arches,
+            )
         except Exception as exc:
             raise RuntimeError(f"torchvision is required for arch={arch_raw!r}: {exc}") from exc
 
@@ -122,7 +129,11 @@ def build_model(cfg: ModelConfig) -> nn.Module:
             raise ValueError("Empty quantized torchvision model name. Example: --arch tvq:resnet18")
 
         try:
-            from dlhub.vision.zoo import DependencyNotAvailable, build_torchvision_model, list_torchvision_arches
+            from dlhub.vision.zoo import (
+                DependencyNotAvailable,
+                build_torchvision_model,
+                list_torchvision_arches,
+            )
         except Exception as exc:
             raise RuntimeError(f"torchvision is required for arch={arch_raw!r}: {exc}") from exc
 
@@ -182,4 +193,3 @@ __all__ = [
     "list_supported_arches",
     "RepVGGClassifier",
 ]
-

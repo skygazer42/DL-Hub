@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, make_divisible
+from dlhub.vision.backbones._blocks import DropPath, make_divisible
 
 
 class AdditiveTokenMixer(nn.Module):
@@ -61,12 +60,16 @@ class SwiftFormerClassifier(nn.Module):
         self.image_size = int(image_size)
         self.patch_size = int(patch_size)
         d = make_divisible(int(round(int(dim) * float(width_mult))), 8)
-        self.patch = nn.Conv2d(int(in_channels), d, kernel_size=self.patch_size, stride=self.patch_size, bias=True)
+        self.patch = nn.Conv2d(
+            int(in_channels), d, kernel_size=self.patch_size, stride=self.patch_size, bias=True
+        )
         h = self.image_size // self.patch_size
         w = self.image_size // self.patch_size
         self.pos = nn.Parameter(torch.zeros(1, h * w, d))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.Sequential(*[SwiftFormerBlock(d, drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.Sequential(
+            *[SwiftFormerBlock(d, drop_path=float(dp_rates[i])) for i in range(int(depth))]
+        )
         self.norm = nn.LayerNorm(d)
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(d, int(num_classes))
@@ -99,7 +102,9 @@ def build_swiftformer_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown SwiftFormer variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown SwiftFormer variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return SwiftFormerClassifier(
         in_channels=int(in_channels),
@@ -117,7 +122,8 @@ def build_swiftformer_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_swiftformer_classifier(in_channels=3, num_classes=10, variant="swiftformer_s", image_size=64, width_mult=0.5)
+    m = build_swiftformer_classifier(
+        in_channels=3, num_classes=10, variant="swiftformer_s", image_size=64, width_mult=0.5
+    )
     y = m(x)
     print("swiftformer_s", tuple(y.shape))
-

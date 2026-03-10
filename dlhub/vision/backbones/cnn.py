@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -62,7 +61,9 @@ _VGG_CFGS: dict[str, list[int | str]] = {
 }
 
 
-def _make_vgg_layers(cfg: list[int | str], *, in_channels: int, width_mult: float) -> tuple[nn.Sequential, int]:
+def _make_vgg_layers(
+    cfg: list[int | str], *, in_channels: int, width_mult: float
+) -> tuple[nn.Sequential, int]:
     layers: list[nn.Module] = []
     c_in = int(in_channels)
     c_out_last = c_in
@@ -84,13 +85,23 @@ def _make_vgg_layers(cfg: list[int | str], *, in_channels: int, width_mult: floa
 
 
 class VGGClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, cfg_name: str, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        cfg_name: str,
+        width_mult: float,
+        dropout: float,
+    ) -> None:
         super().__init__()
         name = str(cfg_name).lower().strip()
         if name not in _VGG_CFGS:
             raise ValueError(f"Unknown VGG cfg: {cfg_name!r}. Supported: {sorted(_VGG_CFGS)}")
 
-        self.features, out_ch = _make_vgg_layers(_VGG_CFGS[name], in_channels=int(in_channels), width_mult=float(width_mult))
+        self.features, out_ch = _make_vgg_layers(
+            _VGG_CFGS[name], in_channels=int(in_channels), width_mult=float(width_mult)
+        )
         self.head = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),
@@ -139,7 +150,9 @@ def _conv3x3(in_ch: int, out_ch: int, stride: int, *, groups: int = 1) -> nn.Con
 
 
 def _conv1x1(in_ch: int, out_ch: int, stride: int) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False
+    )
 
 
 class SqueezeExcite(nn.Module):
@@ -342,7 +355,9 @@ class SplitAttentionConv2d(nn.Module):
 
         self.radix = r
         self.out_ch = c_out
-        self.conv = nn.Conv2d(c_in, out_total, kernel_size=3, stride=s, padding=1, groups=conv_groups, bias=False)
+        self.conv = nn.Conv2d(
+            c_in, out_total, kernel_size=3, stride=s, padding=1, groups=conv_groups, bias=False
+        )
         self.bn = nn.BatchNorm2d(out_total)
         self.relu = nn.ReLU(inplace=True)
         self.drop = nn.Dropout2d(p=float(dropout)) if float(dropout) > 0 else nn.Identity()
@@ -374,7 +389,9 @@ class SplitAttentionConv2d(nn.Module):
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64
+    ) -> None:
         super().__init__()
         _ = int(groups)
         _ = int(width_per_group)
@@ -408,7 +425,14 @@ class ECABasicBlock(nn.Module):
     expansion = 1
 
     def __init__(
-        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64, eca_kernel: int = 3
+        self,
+        in_ch: int,
+        out_ch: int,
+        stride: int,
+        *,
+        groups: int = 1,
+        width_per_group: int = 64,
+        eca_kernel: int = 3,
     ) -> None:
         super().__init__()
         _ = int(groups)
@@ -445,7 +469,14 @@ class CBAMBasicBlock(nn.Module):
     expansion = 1
 
     def __init__(
-        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64, reduction: int = 16
+        self,
+        in_ch: int,
+        out_ch: int,
+        stride: int,
+        *,
+        groups: int = 1,
+        width_per_group: int = 64,
+        reduction: int = 16,
     ) -> None:
         super().__init__()
         _ = int(groups)
@@ -482,7 +513,14 @@ class SEBasicBlock(nn.Module):
     expansion = 1
 
     def __init__(
-        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64, se_ratio: float = 0.25
+        self,
+        in_ch: int,
+        out_ch: int,
+        stride: int,
+        *,
+        groups: int = 1,
+        width_per_group: int = 64,
+        se_ratio: float = 0.25,
     ) -> None:
         super().__init__()
         _ = int(groups)
@@ -518,7 +556,9 @@ class SEBasicBlock(nn.Module):
 class Bottleneck(nn.Module):
     expansion = 4
 
-    def __init__(self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64
+    ) -> None:
         super().__init__()
         g = int(groups)
         wpg = int(width_per_group)
@@ -564,7 +604,14 @@ class ECABottleneck(nn.Module):
     expansion = 4
 
     def __init__(
-        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64, eca_kernel: int = 3
+        self,
+        in_ch: int,
+        out_ch: int,
+        stride: int,
+        *,
+        groups: int = 1,
+        width_per_group: int = 64,
+        eca_kernel: int = 3,
     ) -> None:
         super().__init__()
         g = int(groups)
@@ -936,7 +983,9 @@ class SEBottleneck(nn.Module):
 class PreActBasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64
+    ) -> None:
         super().__init__()
         _ = int(groups)
         _ = int(width_per_group)
@@ -963,7 +1012,9 @@ class PreActBasicBlock(nn.Module):
 class PreActBottleneck(nn.Module):
     expansion = 4
 
-    def __init__(self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, stride: int, *, groups: int = 1, width_per_group: int = 64
+    ) -> None:
         super().__init__()
         g = int(groups)
         wpg = int(width_per_group)
@@ -1152,12 +1203,18 @@ class DenseLayer(nn.Module):
 
 
 class DenseBlock(nn.Module):
-    def __init__(self, num_layers: int, in_ch: int, growth_rate: int, bn_size: int, dropout: float) -> None:
+    def __init__(
+        self, num_layers: int, in_ch: int, growth_rate: int, bn_size: int, dropout: float
+    ) -> None:
         super().__init__()
         layers: list[nn.Module] = []
         c = int(in_ch)
         for _ in range(int(num_layers)):
-            layers.append(DenseLayer(c, growth_rate=int(growth_rate), bn_size=int(bn_size), dropout=float(dropout)))
+            layers.append(
+                DenseLayer(
+                    c, growth_rate=int(growth_rate), bn_size=int(bn_size), dropout=float(dropout)
+                )
+            )
             c += int(growth_rate)
         self.layers = nn.Sequential(*layers)
         self.out_channels = c
@@ -1294,7 +1351,9 @@ def _fuse_conv_bn(conv: nn.Conv2d, bn: nn.BatchNorm2d) -> tuple[torch.Tensor, to
     return fused_w, fused_b
 
 
-def _identity_kernel(channels: int, kernel_size: int, device: torch.device, dtype: torch.dtype) -> torch.Tensor:
+def _identity_kernel(
+    channels: int, kernel_size: int, device: torch.device, dtype: torch.dtype
+) -> torch.Tensor:
     k = torch.zeros((channels, channels, kernel_size, kernel_size), device=device, dtype=dtype)
     center = kernel_size // 2
     for i in range(channels):
@@ -1314,22 +1373,40 @@ class RepVGGBlock(nn.Module):
         self.drop = nn.Dropout2d(p=float(dropout))
 
         if self.deploy:
-            self.rbr_reparam = nn.Conv2d(self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=True)
+            self.rbr_reparam = nn.Conv2d(
+                self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=True
+            )
             self.rbr_dense = None
             self.rbr_1x1 = None
             self.rbr_identity = None
         else:
             self.rbr_reparam = None
             self.rbr_dense = nn.Sequential(
-                nn.Conv2d(self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=False),
+                nn.Conv2d(
+                    self.in_ch,
+                    self.out_ch,
+                    kernel_size=3,
+                    stride=self.stride,
+                    padding=1,
+                    bias=False,
+                ),
                 nn.BatchNorm2d(self.out_ch),
             )
             self.rbr_1x1 = nn.Sequential(
-                nn.Conv2d(self.in_ch, self.out_ch, kernel_size=1, stride=self.stride, padding=0, bias=False),
+                nn.Conv2d(
+                    self.in_ch,
+                    self.out_ch,
+                    kernel_size=1,
+                    stride=self.stride,
+                    padding=0,
+                    bias=False,
+                ),
                 nn.BatchNorm2d(self.out_ch),
             )
             self.rbr_identity = (
-                nn.BatchNorm2d(self.in_ch) if (self.out_ch == self.in_ch and self.stride == 1) else None
+                nn.BatchNorm2d(self.in_ch)
+                if (self.out_ch == self.in_ch and self.stride == 1)
+                else None
             )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -1428,7 +1505,9 @@ class RepVGGClassifier(nn.Module):
                 )
             return nn.Sequential(*layers)
 
-        self.stage0 = RepVGGBlock(in_ch=int(in_channels), out_ch=base, stride=1, deploy=deploy, dropout=float(dropout))
+        self.stage0 = RepVGGBlock(
+            in_ch=int(in_channels), out_ch=base, stride=1, deploy=deploy, dropout=float(dropout)
+        )
         self.stage1 = make_stage(base, base, blocks=int(stage_blocks[0]), first_stride=1)
         self.stage2 = make_stage(base, base * 2, blocks=int(stage_blocks[1]), first_stride=2)
         self.stage3 = make_stage(base * 2, base * 4, blocks=int(stage_blocks[2]), first_stride=2)
@@ -1535,7 +1614,9 @@ class ConvBNAct(nn.Sequential):
 class DepthwiseSeparableConv(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int, act: str) -> None:
         super().__init__()
-        self.depthwise = ConvBNAct(in_ch, in_ch, kernel_size=3, stride=int(stride), groups=int(in_ch), act=act)
+        self.depthwise = ConvBNAct(
+            in_ch, in_ch, kernel_size=3, stride=int(stride), groups=int(in_ch), act=act
+        )
         self.pointwise = ConvBNAct(in_ch, out_ch, kernel_size=1, stride=1, groups=1, act=act)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -1544,7 +1625,9 @@ class DepthwiseSeparableConv(nn.Module):
 
 
 class MobileNetV1Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -1609,7 +1692,9 @@ class InvertedResidualV2(nn.Module):
         layers: list[nn.Module] = []
         if int(expand_ratio) != 1:
             layers.append(ConvBNAct(in_ch, hidden, kernel_size=1, stride=1, act="relu6"))
-        layers.append(ConvBNAct(hidden, hidden, kernel_size=3, stride=int(stride), groups=hidden, act="relu6"))
+        layers.append(
+            ConvBNAct(hidden, hidden, kernel_size=3, stride=int(stride), groups=hidden, act="relu6")
+        )
         layers.append(
             nn.Sequential(
                 nn.Conv2d(hidden, int(out_ch), kernel_size=1, stride=1, padding=0, bias=False),
@@ -1626,7 +1711,9 @@ class InvertedResidualV2(nn.Module):
 
 
 class MobileNetV2Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -1698,7 +1785,11 @@ class InvertedResidualV3(nn.Module):
     ) -> None:
         super().__init__()
         self.use_res = int(stride) == 1 and int(in_ch) == int(out_ch)
-        self.expand = nn.Identity() if int(expand_ch) == int(in_ch) else ConvBNAct(in_ch, expand_ch, kernel_size=1, stride=1, act=act)
+        self.expand = (
+            nn.Identity()
+            if int(expand_ch) == int(in_ch)
+            else ConvBNAct(in_ch, expand_ch, kernel_size=1, stride=1, act=act)
+        )
         self.depthwise = ConvBNAct(
             int(expand_ch),
             int(expand_ch),
@@ -1707,7 +1798,11 @@ class InvertedResidualV3(nn.Module):
             groups=int(expand_ch),
             act=act,
         )
-        self.se = SqueezeExcite(int(expand_ch), se_ratio=float(se_ratio)) if float(se_ratio) > 0 else nn.Identity()
+        self.se = (
+            SqueezeExcite(int(expand_ch), se_ratio=float(se_ratio))
+            if float(se_ratio) > 0
+            else nn.Identity()
+        )
         self.project = nn.Sequential(
             nn.Conv2d(int(expand_ch), int(out_ch), kernel_size=1, stride=1, padding=0, bias=False),
             nn.BatchNorm2d(int(out_ch)),
@@ -1724,7 +1819,9 @@ class InvertedResidualV3(nn.Module):
 
 
 class MobileNetV3Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -1735,7 +1832,13 @@ class MobileNetV3Classifier(nn.Module):
         if name not in {"small", "large"}:
             raise ValueError("MobileNetV3 variant must be 'small' or 'large'")
 
-        self.stem = ConvBNAct(int(in_channels), c(16), kernel_size=3, stride=1, act="hswish" if name == "large" else "relu")
+        self.stem = ConvBNAct(
+            int(in_channels),
+            c(16),
+            kernel_size=3,
+            stride=1,
+            act="hswish" if name == "large" else "relu",
+        )
 
         if name == "large":
             cfg = [
@@ -1837,7 +1940,9 @@ class Fire(nn.Module):
 
 
 class SqueezeNetClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -1857,9 +1962,24 @@ class SqueezeNetClassifier(nn.Module):
         layers: list[nn.Module] = []
         in_ch = stem_out
         if name == "1_0":
-            stage_cfg = [(c(16), c(32)), (c(16), c(32)), (c(32), c(64)), (c(32), c(64)), (c(48), c(96)), (c(48), c(96)), (c(64), c(128))]
+            stage_cfg = [
+                (c(16), c(32)),
+                (c(16), c(32)),
+                (c(32), c(64)),
+                (c(32), c(64)),
+                (c(48), c(96)),
+                (c(48), c(96)),
+                (c(64), c(128)),
+            ]
         else:
-            stage_cfg = [(c(16), c(32)), (c(16), c(32)), (c(32), c(64)), (c(32), c(64)), (c(48), c(96)), (c(64), c(128))]
+            stage_cfg = [
+                (c(16), c(32)),
+                (c(16), c(32)),
+                (c(32), c(64)),
+                (c(32), c(64)),
+                (c(48), c(96)),
+                (c(64), c(128)),
+            ]
 
         for i, (sq, ex) in enumerate(stage_cfg):
             layers.append(Fire(in_ch, squeeze=sq, expand=ex))
@@ -1926,7 +2046,9 @@ class ShuffleV2Block(nn.Module):
             self.branch1 = nn.Identity()
             self.branch2 = nn.Sequential(
                 ConvBNAct(branch_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
-                ConvBNAct(branch_ch, branch_ch, kernel_size=3, stride=1, groups=branch_ch, act="relu"),
+                ConvBNAct(
+                    branch_ch, branch_ch, kernel_size=3, stride=1, groups=branch_ch, act="relu"
+                ),
                 ConvBNAct(branch_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
             )
         else:
@@ -1937,7 +2059,9 @@ class ShuffleV2Block(nn.Module):
             )
             self.branch2 = nn.Sequential(
                 ConvBNAct(in_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
-                ConvBNAct(branch_ch, branch_ch, kernel_size=3, stride=2, groups=branch_ch, act="relu"),
+                ConvBNAct(
+                    branch_ch, branch_ch, kernel_size=3, stride=2, groups=branch_ch, act="relu"
+                ),
                 ConvBNAct(branch_ch, branch_ch, kernel_size=1, stride=1, act="relu"),
             )
 
@@ -1952,7 +2076,9 @@ class ShuffleV2Block(nn.Module):
 
 
 class ShuffleNetV2Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
         if w <= 0.75:
@@ -2025,7 +2151,16 @@ class MBConv(nn.Module):
         layers: list[nn.Module] = []
         if int(expand_ratio) != 1:
             layers.append(ConvBNAct(in_ch, hidden, kernel_size=1, stride=1, act=act))
-        layers.append(ConvBNAct(hidden, hidden, kernel_size=int(kernel_size), stride=int(stride), groups=hidden, act=act))
+        layers.append(
+            ConvBNAct(
+                hidden,
+                hidden,
+                kernel_size=int(kernel_size),
+                stride=int(stride),
+                groups=hidden,
+                act=act,
+            )
+        )
         layers.append(SqueezeExcite(hidden, se_ratio=float(se_ratio)))
         layers.append(
             nn.Sequential(
@@ -2147,7 +2282,9 @@ def build_efficientnet_classifier(
 
     spec = _EFFICIENTNET_SPECS.get(key)
     if spec is None:
-        raise ValueError(f"Unknown EfficientNet variant: {variant!r}. Supported: {sorted(_EFFICIENTNET_SPECS)}")
+        raise ValueError(
+            f"Unknown EfficientNet variant: {variant!r}. Supported: {sorted(_EFFICIENTNET_SPECS)}"
+        )
 
     return EfficientNetClassifier(
         in_channels=int(in_channels),
@@ -2171,7 +2308,9 @@ class ConvNeXtBlock(nn.Module):
         self.pw1 = nn.Linear(int(dim), 4 * int(dim))
         self.act = nn.GELU()
         self.pw2 = nn.Linear(4 * int(dim), int(dim))
-        self.gamma = nn.Parameter(layer_scale_init * torch.ones(int(dim))) if layer_scale_init > 0 else None
+        self.gamma = (
+            nn.Parameter(layer_scale_init * torch.ones(int(dim))) if layer_scale_init > 0 else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x

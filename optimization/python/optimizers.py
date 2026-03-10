@@ -1,6 +1,5 @@
 """Lightweight NumPy implementations of common deep learning optimizers."""
 
-
 from dataclasses import dataclass, field
 
 import numpy as np

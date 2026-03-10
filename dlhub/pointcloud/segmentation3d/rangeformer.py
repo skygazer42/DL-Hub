@@ -1,11 +1,17 @@
-
 import math
 
 import torch
 from torch import nn
 
-from ._common import GridSpec2D, PointMLP, TinyTransformerEncoder, check_points, gather_2d, scatter_mean_2d, split_xyz_features
-
+from ._common import (
+    GridSpec2D,
+    PointMLP,
+    TinyTransformerEncoder,
+    check_points,
+    gather_2d,
+    scatter_mean_2d,
+    split_xyz_features,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "rangeformer_tiny": {"width": 64, "depth": 2, "h": 32, "w": 96},
@@ -17,7 +23,17 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class RangeFormerSeg(nn.Module):
     """RangeFormer semantic segmentation (toy): range-view tokens + transformer encoder."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, h: int, w: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        depth: int,
+        h: int,
+        w: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.grid = GridSpec2D(
             x_min=-math.pi,
@@ -28,9 +44,15 @@ class RangeFormerSeg(nn.Module):
             w=int(w),
         )
         self.point = PointMLP(int(in_channels), int(width), depth=2, dropout=float(dropout))
-        self.enc = TinyTransformerEncoder(int(width), nhead=4, num_layers=int(depth), dropout=float(dropout))
+        self.enc = TinyTransformerEncoder(
+            int(width), nhead=4, num_layers=int(depth), dropout=float(dropout)
+        )
         self.proj = nn.Conv2d(int(width), int(width), 1)
-        self.cls = nn.Sequential(nn.Linear(int(width), int(width)), nn.ReLU(inplace=True), nn.Linear(int(width), int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(int(width), int(width)),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(width), int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -81,4 +103,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

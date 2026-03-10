@@ -1,6 +1,5 @@
-
-from dataclasses import dataclass
 import inspect
+from dataclasses import dataclass
 
 
 class DependencyNotAvailable(RuntimeError):

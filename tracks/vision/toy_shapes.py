@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -54,7 +53,10 @@ class ToyQuadrantSquares:
 
         self.labels = rng.integers(low=0, high=4, size=(int(cfg.num_samples),), dtype=np.int64)
         self.sizes = rng.integers(
-            low=int(cfg.min_square), high=int(cfg.max_square) + 1, size=(int(cfg.num_samples),), dtype=np.int64
+            low=int(cfg.min_square),
+            high=int(cfg.max_square) + 1,
+            size=(int(cfg.num_samples),),
+            dtype=np.int64,
         )
 
         # Pre-sample square positions per item to keep dataset deterministic.
@@ -124,4 +126,3 @@ def get_dataloaders(cfg: DataConfig):
 
 
 __all__ = ["DataConfig", "ToyQuadrantSquares", "get_dataloaders"]
-

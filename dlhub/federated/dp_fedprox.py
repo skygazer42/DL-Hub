@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class DPFedProxStrategy(FederatedStrategy):
@@ -16,7 +21,9 @@ class DPFedProxStrategy(FederatedStrategy):
         gen = torch.Generator().manual_seed(int(seed) + 73)
         adjusted = state.raw_updates / (1.0 + self.prox_mu)
         noise = self.noise_std * torch.randn(self.param_dim, generator=gen)
-        server_params = state.server_params + weighted_average(adjusted, state.client_weights) + noise
+        server_params = (
+            state.server_params + weighted_average(adjusted, state.client_weights) + noise
+        )
         return {
             "server_params": server_params,
             "adjusted_updates": adjusted,

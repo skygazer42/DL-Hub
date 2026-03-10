@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -86,7 +85,12 @@ class DIDN(nn.Module):
         self.up2 = nn.Conv2d(w0 * 4, w0 * 2, kernel_size=1, bias=True)
         self.merge1 = nn.Conv2d(w0 * 4, w0 * 2, kernel_size=1, bias=True)
         self.blocks_l1 = nn.Sequential(
-            *[DenseBlock(w0 * 2, num_layers=max(1, lp // 2), growth=max(4, gr // 2), out_ch=w0 * 2) for _ in range(max(1, nb - 1))]
+            *[
+                DenseBlock(
+                    w0 * 2, num_layers=max(1, lp // 2), growth=max(4, gr // 2), out_ch=w0 * 2
+                )
+                for _ in range(max(1, nb - 1))
+            ]
         )
 
         self.up1 = nn.Conv2d(w0 * 2, w0, kernel_size=1, bias=True)
@@ -156,4 +160,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

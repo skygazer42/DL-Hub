@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._nas import Genotype, NASNetworkClassifier
-
 
 _NASNET_A = Genotype(
     # A NASNet-A-like normal cell (simplified to DARTS-style genotype format).
@@ -95,7 +93,8 @@ def build_nasnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_nasnet_classifier(in_channels=3, num_classes=10, variant="nasnet_mobile", width_mult=0.5)
+    m = build_nasnet_classifier(
+        in_channels=3, num_classes=10, variant="nasnet_mobile", width_mult=0.5
+    )
     y = m(x)
     print("nasnet_mobile", tuple(y.shape))
-

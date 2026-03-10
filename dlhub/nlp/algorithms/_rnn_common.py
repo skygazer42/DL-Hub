@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -67,9 +66,7 @@ def pool_sequence(
             h = c // 2
             fwd = x[:, :, :h]
             bwd = x[:, :, h:]
-            idx_f = (lengths - 1).clamp(min=0, max=max(0, t - 1)).view(b, 1, 1).expand(
-                b, 1, h
-            )
+            idx_f = (lengths - 1).clamp(min=0, max=max(0, t - 1)).view(b, 1, 1).expand(b, 1, h)
             f_last = fwd.gather(1, idx_f).squeeze(1)
             b_last = bwd[:, 0, :]
             return torch.cat([f_last, b_last], dim=-1)
@@ -89,4 +86,3 @@ def pool_sequence(
 
 
 __all__ = ["AdditiveTokenAttention", "parse_num_layers_suffix", "pool_sequence"]
-

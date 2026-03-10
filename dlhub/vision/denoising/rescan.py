@@ -1,4 +1,3 @@
-
 """RESCAN (Recurrent SE Context Aggregation Net) - toy-first implementation.
 
 Reference (original idea):
@@ -11,8 +10,8 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _act() -> nn.Module:

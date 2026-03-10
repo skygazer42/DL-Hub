@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 from dataclasses import dataclass
 
@@ -14,24 +13,24 @@ from .backbones import (
     build_densenet_classifier,
     build_efficientnet_classifier,
     build_fnet_classifier,
-    build_gmlp_classifier,
     build_ghostnet_classifier,
+    build_gmlp_classifier,
     build_googlenet_classifier,
     build_lenet_classifier,
     build_mlp_mixer_classifier,
+    build_mnasnet_classifier,
     build_mobilenet_v1_classifier,
     build_mobilenet_v2_classifier,
     build_mobilenet_v3_classifier,
-    build_mobilevit_classifier,
-    build_mnasnet_classifier,
     build_mobileone_classifier,
+    build_mobilevit_classifier,
     build_nin_classifier,
     build_poolformer_classifier,
     build_pvt_classifier,
     build_regnet_classifier,
     build_repvgg_classifier,
-    build_resnet_classifier,
     build_resmlp_classifier,
+    build_resnet_classifier,
     build_shufflenet_v1_classifier,
     build_shufflenet_v2_classifier,
     build_squeezenet_classifier,
@@ -255,7 +254,9 @@ def _extend_registry_with_discovered_backbones(r: dict[str, Builder]) -> None:
             if name in r:
                 continue
 
-            r[name] = _make_lazy_backbone_builder(module_name, variant=v if has_explicit_variants else None)
+            r[name] = _make_lazy_backbone_builder(
+                module_name, variant=v if has_explicit_variants else None
+            )
 
 
 def _registry() -> dict[str, Builder]:
@@ -660,10 +661,16 @@ def _registry() -> dict[str, Builder]:
 
     # MobileNet
     r["mobilenet_v1"] = lambda cfg: build_mobilenet_v1_classifier(
-        in_channels=cfg.in_channels, num_classes=cfg.num_classes, width_mult=cfg.width_mult, dropout=cfg.dropout
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
     )
     r["mobilenet_v2"] = lambda cfg: build_mobilenet_v2_classifier(
-        in_channels=cfg.in_channels, num_classes=cfg.num_classes, width_mult=cfg.width_mult, dropout=cfg.dropout
+        in_channels=cfg.in_channels,
+        num_classes=cfg.num_classes,
+        width_mult=cfg.width_mult,
+        dropout=cfg.dropout,
     )
     r["mobilenet_v3_small"] = lambda cfg: build_mobilenet_v3_classifier(
         in_channels=cfg.in_channels,
@@ -863,16 +870,18 @@ def _registry() -> dict[str, Builder]:
     for base_name, (embed_dim, num_heads, num_layers) in vit_specs.items():
         for patch_size in [4, 8, 16]:
             name = base_name if patch_size == 8 else f"{base_name}_p{patch_size}"
-            r[name] = lambda cfg, embed_dim=embed_dim, num_heads=num_heads, num_layers=num_layers, patch_size=patch_size: build_vit_classifier(
-                in_channels=cfg.in_channels,
-                num_classes=cfg.num_classes,
-                image_size=cfg.image_size,
-                patch_size=int(patch_size),
-                embed_dim=int(embed_dim),
-                num_heads=int(num_heads),
-                num_layers=int(num_layers),
-                ff_dim=int(embed_dim) * 4,
-                dropout=cfg.dropout,
+            r[name] = (
+                lambda cfg, embed_dim=embed_dim, num_heads=num_heads, num_layers=num_layers, patch_size=patch_size: build_vit_classifier(
+                    in_channels=cfg.in_channels,
+                    num_classes=cfg.num_classes,
+                    image_size=cfg.image_size,
+                    patch_size=int(patch_size),
+                    embed_dim=int(embed_dim),
+                    num_heads=int(num_heads),
+                    num_layers=int(num_layers),
+                    ff_dim=int(embed_dim) * 4,
+                    dropout=cfg.dropout,
+                )
             )
 
     # MLP-Mixer grid
@@ -885,16 +894,18 @@ def _registry() -> dict[str, Builder]:
         for patch_size in [4, 8, 16]:
             for tdim_mul in [2, 4]:
                 name = f"{base_name}_p{patch_size}_t{tdim_mul}"
-                r[name] = lambda cfg, embed_dim=embed_dim, num_layers=num_layers, patch_size=patch_size, tdim_mul=tdim_mul: build_mlp_mixer_classifier(
-                    in_channels=cfg.in_channels,
-                    num_classes=cfg.num_classes,
-                    image_size=cfg.image_size,
-                    patch_size=int(patch_size),
-                    embed_dim=int(embed_dim),
-                    num_layers=int(num_layers),
-                    token_mlp_dim=int((cfg.image_size // int(patch_size)) ** 2) * int(tdim_mul),
-                    channel_mlp_dim=int(embed_dim) * 4,
-                    dropout=cfg.dropout,
+                r[name] = (
+                    lambda cfg, embed_dim=embed_dim, num_layers=num_layers, patch_size=patch_size, tdim_mul=tdim_mul: build_mlp_mixer_classifier(
+                        in_channels=cfg.in_channels,
+                        num_classes=cfg.num_classes,
+                        image_size=cfg.image_size,
+                        patch_size=int(patch_size),
+                        embed_dim=int(embed_dim),
+                        num_layers=int(num_layers),
+                        token_mlp_dim=int((cfg.image_size // int(patch_size)) ** 2) * int(tdim_mul),
+                        channel_mlp_dim=int(embed_dim) * 4,
+                        dropout=cfg.dropout,
+                    )
                 )
 
     # ConvMixer grid
@@ -902,15 +913,17 @@ def _registry() -> dict[str, Builder]:
         for depth in [4, 8, 12]:
             for patch_size in [4, 8, 16]:
                 name = f"convmixer_d{depth}_c{embed_dim}_p{patch_size}"
-                r[name] = lambda cfg, embed_dim=embed_dim, depth=depth, patch_size=patch_size: build_convmixer_classifier(
-                    in_channels=cfg.in_channels,
-                    num_classes=cfg.num_classes,
-                    image_size=cfg.image_size,
-                    patch_size=int(patch_size),
-                    embed_dim=int(embed_dim),
-                    depth=int(depth),
-                    kernel_size=9,
-                    dropout=cfg.dropout,
+                r[name] = (
+                    lambda cfg, embed_dim=embed_dim, depth=depth, patch_size=patch_size: build_convmixer_classifier(
+                        in_channels=cfg.in_channels,
+                        num_classes=cfg.num_classes,
+                        image_size=cfg.image_size,
+                        patch_size=int(patch_size),
+                        embed_dim=int(embed_dim),
+                        depth=int(depth),
+                        kernel_size=9,
+                        dropout=cfg.dropout,
+                    )
                 )
 
     # Aliases

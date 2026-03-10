@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class ScaffoldStrategy(FederatedStrategy):
@@ -15,7 +20,9 @@ class ScaffoldStrategy(FederatedStrategy):
         gen = torch.Generator().manual_seed(int(seed) + 17)
         server_control = 0.05 * torch.randn(self.param_dim, generator=gen)
         client_controls = 0.05 * torch.randn(self.num_clients, self.param_dim, generator=gen)
-        corrected = state.raw_updates + self.control_scale * (server_control.unsqueeze(0) - client_controls)
+        corrected = state.raw_updates + self.control_scale * (
+            server_control.unsqueeze(0) - client_controls
+        )
         client_params = state.server_params.unsqueeze(0) + corrected
         server_params = weighted_average(client_params, state.client_weights)
         new_server_control = server_control + corrected.mean(dim=0) * 0.1

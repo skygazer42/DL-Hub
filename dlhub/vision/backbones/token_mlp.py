@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -32,7 +31,9 @@ class TokenMLPBlock(nn.Module):
         self.norm1 = LayerNorm2d(d)
         self.mix = TokenMix(int(num_tokens))
         self.norm2 = LayerNorm2d(d)
-        self.mlp = nn.Sequential(nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1))
+        self.mlp = nn.Sequential(
+            nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x + self.mix(self.norm1(x))
@@ -58,8 +59,12 @@ class TokenMLPClassifier(nn.Module):
         h = int(image_size) // p
         w = int(image_size) // p
         num_tokens = h * w
-        self.patch = nn.Sequential(nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d))
-        self.blocks = nn.Sequential(*[TokenMLPBlock(d, num_tokens=num_tokens) for _ in range(int(depth))])
+        self.patch = nn.Sequential(
+            nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d)
+        )
+        self.blocks = nn.Sequential(
+            *[TokenMLPBlock(d, num_tokens=num_tokens) for _ in range(int(depth))]
+        )
         self.head = GlobalAvgPoolHead(d, int(num_classes), dropout=float(dropout))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -101,7 +106,8 @@ def build_token_mlp_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_token_mlp_classifier(in_channels=3, num_classes=10, variant="token_mlp_tiny", image_size=64)
+    m = build_token_mlp_classifier(
+        in_channels=3, num_classes=10, variant="token_mlp_tiny", image_size=64
+    )
     y = m(x)
     print("token_mlp_tiny", tuple(y.shape))
-

@@ -1,9 +1,7 @@
-import torch
 from torch import nn
 
 from dlhub.vision.detection._aliases import build_aliased_detector, smoke_aliased_detector
 from dlhub.vision.detection.rfcn import build_rfcn_detector as _build_base
-
 
 _VARIANTS: dict[str, str] = {
     "hypernet_tiny": "rfcn_tiny",
@@ -31,4 +29,6 @@ def build_hypernet_detector(
 
 
 if __name__ == "__main__":
-    smoke_aliased_detector(label="hypernet_tiny", builder=build_hypernet_detector, variant="hypernet_tiny")
+    smoke_aliased_detector(
+        label="hypernet_tiny", builder=build_hypernet_detector, variant="hypernet_tiny"
+    )

@@ -1,11 +1,9 @@
-
 import math
 
 import torch
 from torch import nn
 
 from ._common import MLPPointEncoder, l2_normalize
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "bonet_tiny": {"width": 64, "depth": 2, "instances": 16},
@@ -75,4 +73,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

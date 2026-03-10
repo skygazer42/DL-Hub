@@ -1,9 +1,8 @@
-
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _dct_matrix(n: int, *, device: torch.device, dtype: torch.dtype) -> torch.Tensor:
@@ -207,7 +206,9 @@ def _bm3d_stage(
         for t, patch_f in zip(group_idx.tolist(), group_f, strict=True):
             top = (t // n_w) * s
             left = (t % n_w) * s
-            _fold_accumulate(out_sum=out_sum, out_w=out_w, patch=patch_f, top=top, left=left, weight=weight)
+            _fold_accumulate(
+                out_sum=out_sum, out_w=out_w, patch=patch_f, top=top, left=left, weight=weight
+            )
 
     out = out_sum / out_w.clamp_min(1e-8)
     # Crop to pre-padding spatial size.
@@ -289,9 +290,30 @@ class BM3D(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "bm3d_fast": {"patch_size": 8, "step": 4, "search_radius": 2, "max_group_size": 12, "lambda3d": 2.7, "stages": 2},
-    "bm3d_quality": {"patch_size": 8, "step": 3, "search_radius": 3, "max_group_size": 16, "lambda3d": 2.7, "stages": 2},
-    "bm3d_stage1": {"patch_size": 8, "step": 4, "search_radius": 2, "max_group_size": 12, "lambda3d": 2.7, "stages": 1},
+    "bm3d_fast": {
+        "patch_size": 8,
+        "step": 4,
+        "search_radius": 2,
+        "max_group_size": 12,
+        "lambda3d": 2.7,
+        "stages": 2,
+    },
+    "bm3d_quality": {
+        "patch_size": 8,
+        "step": 3,
+        "search_radius": 3,
+        "max_group_size": 16,
+        "lambda3d": 2.7,
+        "stages": 2,
+    },
+    "bm3d_stage1": {
+        "patch_size": 8,
+        "step": 4,
+        "search_radius": 2,
+        "max_group_size": 12,
+        "lambda3d": 2.7,
+        "stages": 1,
+    },
 }
 
 
@@ -327,4 +349,3 @@ if __name__ == "__main__":
     m = build_bm3d_denoiser(in_channels=1, sigma=0.1, variant="bm3d_fast")
     y = m(noisy)
     print("bm3d_fast", tuple(y.shape), float(((y - x).pow(2).mean()).item()))
-

@@ -1,9 +1,8 @@
-
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -102,7 +101,7 @@ class WaveletShrinkage(nn.Module):
             details.append((lh, hl, hh))
 
         # reconstruction (use conv_transpose2d)
-        for (lh, hl, hh) in reversed(details):
+        for lh, hl, hh in reversed(details):
             y = torch.stack([ll, lh, hl, hh], dim=2)  # (B,C,4,H,W)
             y = y.view(b, 4 * c, y.shape[-2], y.shape[-1])  # (B,4C,H,W)
             ll = F.conv_transpose2d(y, w, bias=None, stride=2, padding=0, groups=c)  # (B,C,2H,2W)
@@ -127,7 +126,9 @@ def build_wavelet_shrinkage_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown WaveletShrinkage variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown WaveletShrinkage variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return WaveletShrinkage(
         sigma=float(sigma),
@@ -145,4 +146,3 @@ if __name__ == "__main__":
     m = build_wavelet_shrinkage_denoiser(in_channels=1, sigma=0.12, variant="wavelet_small")
     y = m(noisy)
     print("wavelet_small", tuple(y.shape), float((y - x).pow(2).mean().item()))
-

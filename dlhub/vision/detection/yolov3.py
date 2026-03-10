@@ -1,13 +1,14 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, FPN, check_nchw
+from dlhub.vision.detection._common import FPN, BackboneC3C5, check_nchw
 
 
 class _YOLOv3Head(nn.Module):
-    def __init__(self, *, channels: int, num_classes: int, num_anchors: int, num_convs: int = 2) -> None:
+    def __init__(
+        self, *, channels: int, num_classes: int, num_anchors: int, num_convs: int = 2
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -20,7 +21,9 @@ class _YOLOv3Head(nn.Module):
         if n <= 0:
             raise ValueError("num_convs must be > 0")
 
-        self.tower = nn.Sequential(*[ConvBNAct(c, c, kernel_size=3, stride=1, act="leaky") for _ in range(n)])
+        self.tower = nn.Sequential(
+            *[ConvBNAct(c, c, kernel_size=3, stride=1, act="leaky") for _ in range(n)]
+        )
         self.obj = nn.Conv2d(c, na, kernel_size=1)
         self.cls = nn.Conv2d(c, na * nc, kernel_size=1)
         self.box = nn.Conv2d(c, na * 4, kernel_size=1)
@@ -65,7 +68,12 @@ class YOLOv3Detector(nn.Module):
             act="leaky",
         )
         self.fpn = FPN((c3, c4, c5), out, act="leaky")
-        self.head = _YOLOv3Head(channels=out, num_classes=int(num_classes), num_anchors=int(num_anchors), num_convs=int(head_convs))
+        self.head = _YOLOv3Head(
+            channels=out,
+            num_classes=int(num_classes),
+            num_anchors=int(num_anchors),
+            num_convs=int(head_convs),
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -125,7 +133,10 @@ if __name__ == "__main__":
     m = build_yolov3_detector(in_channels=3, num_classes=3, variant="yolov3_tiny", width_mult=0.5)
     out = m(x)
     print("yolov3_tiny", [tuple(t.shape) for t in out["obj_logits"]])
-    loss = sum(t.mean() for t in out["obj_logits"]) + sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
+    loss = (
+        sum(t.mean() for t in out["obj_logits"])
+        + sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["bbox_deltas"])
+    )
     loss.backward()
     print("ok")
-

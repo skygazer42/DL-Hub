@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -30,8 +29,15 @@ class ConViTBlock(nn.Module):
         y_attn = self.attn(self.norm1(x))
         # Conv branch (local bias)
         x2d = x.view(b, h, w, d).permute(0, 3, 1, 2).contiguous()
-        y_conv = nn.functional.conv2d(x2d, weight=torch.eye(d, device=x.device, dtype=x.dtype).view(d, d, 1, 1), bias=None)
-        y_conv = nn.functional.conv2d(y_conv, weight=torch.ones(d, 1, 3, 3, device=x.device, dtype=x.dtype) / 9.0, padding=1, groups=d)
+        y_conv = nn.functional.conv2d(
+            x2d, weight=torch.eye(d, device=x.device, dtype=x.dtype).view(d, d, 1, 1), bias=None
+        )
+        y_conv = nn.functional.conv2d(
+            y_conv,
+            weight=torch.ones(d, 1, 3, 3, device=x.device, dtype=x.dtype) / 9.0,
+            padding=1,
+            groups=d,
+        )
         y_conv = y_conv.permute(0, 2, 3, 1).contiguous().view(b, n, d)
         alpha = torch.clamp(self.gate, 0.0, 1.0)
         x = x + self.dp1(alpha * y_attn + (1.0 - alpha) * y_conv)
@@ -62,7 +68,12 @@ class ConViTClassifier(nn.Module):
         self.patch = PatchEmbed(int(in_channels), int(dim), patch_size=int(patch_size))
         self.pos = nn.Parameter(torch.zeros(1, h * w, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.ModuleList([ConViTBlock(int(dim), int(heads), drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [
+                ConViTBlock(int(dim), int(heads), drop_path=float(dp_rates[i]))
+                for i in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -116,4 +127,3 @@ if __name__ == "__main__":
     m = build_convit_classifier(in_channels=3, num_classes=10, variant="convit_tiny", image_size=64)
     y = m(x)
     print("convit_tiny", tuple(y.shape))
-

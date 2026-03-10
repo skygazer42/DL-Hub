@@ -1,4 +1,3 @@
-
 from torch import nn
 
 from dlhub.nlp.algorithms.registry import REGISTRY as _REGISTRY

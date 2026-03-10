@@ -3,7 +3,6 @@ from torch import nn
 
 from dlhub.vision.detection.yolov8 import build_yolov8_detector as _build_base
 
-
 _VARIANTS: dict[str, str] = {
     "yolov9_tiny": "yolov8_tiny",
     "yolov9_small": "yolov8_small",
@@ -33,7 +32,9 @@ def build_yolov9_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    model = build_yolov9_detector(in_channels=3, num_classes=3, variant="yolov9_tiny", width_mult=0.5)
+    model = build_yolov9_detector(
+        in_channels=3, num_classes=3, variant="yolov9_tiny", width_mult=0.5
+    )
     out = model(x)
     print("yolov9_tiny", [tuple(t.shape) for t in out["cls_logits"]])
     loss = sum(t.mean() for v in out.values() for t in (v if isinstance(v, list) else [v]))

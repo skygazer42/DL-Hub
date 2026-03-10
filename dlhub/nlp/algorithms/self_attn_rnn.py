@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -177,4 +176,3 @@ __all__ = [
     "build_self_attn_rnn_classifier",
     "registry",
 ]
-

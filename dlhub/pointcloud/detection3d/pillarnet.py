@@ -1,10 +1,17 @@
-
 import torch
 from torch import nn
-from torch.nn import functional as F
 
-from ._common import BEVBoxSpec, DenseBEVHead, PointNetEncoder, TinyBEVBackbone, check_points, scatter_mean_2d, split_xyz_features, topk_heatmap, decode_bev_boxes
-
+from ._common import (
+    BEVBoxSpec,
+    DenseBEVHead,
+    PointNetEncoder,
+    TinyBEVBackbone,
+    check_points,
+    decode_bev_boxes,
+    scatter_mean_2d,
+    split_xyz_features,
+    topk_heatmap,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pillarnet_tiny": {"width": 64, "bev_h": 32, "bev_w": 32, "topk": 64},
@@ -63,7 +70,13 @@ class PillarNet(nn.Module):
         scores, cls, iy, ix = topk_heatmap(dense["heatmap"], k=self.topk)
         boxes = decode_bev_boxes(dense["box_params"], iy, ix, self.bev, with_yaw=True)
 
-        cls_logits = torch.zeros(points.shape[0], self.topk, dense["heatmap"].shape[1], device=points.device, dtype=points.dtype)
+        cls_logits = torch.zeros(
+            points.shape[0],
+            self.topk,
+            dense["heatmap"].shape[1],
+            device=points.device,
+            dtype=points.dtype,
+        )
         cls_logits.scatter_(-1, cls.unsqueeze(-1), scores.unsqueeze(-1))
         return {"boxes": boxes, "cls_logits": cls_logits, "scores": scores}
 
@@ -96,4 +109,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import PointNet2Encoder, PrototypeMaskHead
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointnet2_inst_tiny": {"width": 48, "instances": 16},
@@ -15,10 +13,20 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class PointNet2Inst(nn.Module):
     """PointNet++ instance segmentation (toy): hierarchical encoder + prototype head."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, num_instances: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        num_instances: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.enc = PointNet2Encoder(int(in_channels), int(width), dropout=float(dropout))
-        self.head = PrototypeMaskHead(int(width), int(num_classes), num_prototypes=int(num_instances), dropout=float(dropout))
+        self.head = PrototypeMaskHead(
+            int(width), int(num_classes), num_prototypes=int(num_instances), dropout=float(dropout)
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -46,9 +54,10 @@ def build_pointnet2_inst_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_pointnet2_inst_instance_segmenter3d(in_channels=3, num_classes=6, variant="pointnet2_inst_tiny")
+    m = build_pointnet2_inst_instance_segmenter3d(
+        in_channels=3, num_classes=6, variant="pointnet2_inst_tiny"
+    )
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

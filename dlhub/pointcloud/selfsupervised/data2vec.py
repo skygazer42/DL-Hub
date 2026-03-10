@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.pointcloud.selfsupervised.dinov2 import PatchTransformer
 
@@ -46,7 +45,9 @@ def data2vec_loss(
     """
 
     if pred_cls.ndim != 2 or target_cls.ndim != 2:
-        raise ValueError(f"Expected pred_cls/target_cls shapes (B, D), got {tuple(pred_cls.shape)} and {tuple(target_cls.shape)}")
+        raise ValueError(
+            f"Expected pred_cls/target_cls shapes (B, D), got {tuple(pred_cls.shape)} and {tuple(target_cls.shape)}"
+        )
     if pred_cls.shape != target_cls.shape:
         raise ValueError("pred_cls and target_cls must have the same shape")
 
@@ -195,7 +196,9 @@ class Data2VecPointMAE(nn.Module):
         for ps, pt in zip(self.student.parameters(), self.teacher.parameters(), strict=True):
             pt.data.mul_(m).add_(ps.data, alpha=(1.0 - m))
 
-    def forward_student(self, points: torch.Tensor, *, mask_ratio: float = 0.5) -> dict[str, torch.Tensor]:
+    def forward_student(
+        self, points: torch.Tensor, *, mask_ratio: float = 0.5
+    ) -> dict[str, torch.Tensor]:
         out = self.student(points, mask_ratio=float(mask_ratio), mask_token=self.mask_token)
         cls = self._norm_rep(out["cls"])
         patch = self._norm_rep(out["patch"])
@@ -318,4 +321,3 @@ if __name__ == "__main__":
     loss.backward()
     m.momentum_update_teacher(ema_decay=0.99)
     print("ok", float(loss.item()))
-

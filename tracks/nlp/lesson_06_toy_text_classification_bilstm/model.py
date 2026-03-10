@@ -1,4 +1,3 @@
-
 from collections.abc import Mapping
 from dataclasses import dataclass
 
@@ -44,7 +43,9 @@ class BiLSTMTextClassifier(nn.Module):
         lengths = attention_mask.sum(dim=1).to(torch.long).clamp(min=1).cpu()
 
         emb = self.dropout(self.embedding(input_ids))
-        packed = torch.nn.utils.rnn.pack_padded_sequence(emb, lengths, batch_first=True, enforce_sorted=False)
+        packed = torch.nn.utils.rnn.pack_padded_sequence(
+            emb, lengths, batch_first=True, enforce_sorted=False
+        )
         _, (h_n, _) = self.encoder(packed)  # h_n: (2, B, H) for 1-layer BiLSTM
         h = torch.cat([h_n[0], h_n[1]], dim=1)
         h = self.dropout(h)
@@ -52,4 +53,3 @@ class BiLSTMTextClassifier(nn.Module):
 
 
 __all__ = ["BiLSTMTextClassifier", "ModelConfig"]
-

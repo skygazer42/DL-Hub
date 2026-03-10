@@ -1,15 +1,16 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.backbones._blocks import scale_channels
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class GFLHead(nn.Module):
     """GFL-style head (toy): classification + quality + distribution regression."""
 
-    def __init__(self, *, channels: int, num_classes: int, reg_max: int = 7, num_convs: int = 4) -> None:
+    def __init__(
+        self, *, channels: int, num_classes: int, reg_max: int = 7, num_convs: int = 4
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -32,7 +33,11 @@ class GFLHead(nn.Module):
     def forward_single(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         cls_feat = self.cls_tower(x)
         reg_feat = self.reg_tower(x)
-        return {"cls_logits": self.cls(cls_feat), "quality_logits": self.quality(reg_feat), "dist_logits": self.dist(reg_feat)}
+        return {
+            "cls_logits": self.cls(cls_feat),
+            "quality_logits": self.quality(reg_feat),
+            "dist_logits": self.dist(reg_feat),
+        }
 
 
 class GFLDetector(nn.Module):
@@ -63,7 +68,12 @@ class GFLDetector(nn.Module):
             act="relu",
         )
         self.fpn = FPN((c3, c4, c5), out, act="relu")
-        self.head = GFLHead(channels=out, num_classes=int(num_classes), reg_max=int(reg_max), num_convs=int(head_convs))
+        self.head = GFLHead(
+            channels=out,
+            num_classes=int(num_classes),
+            reg_max=int(reg_max),
+            num_convs=int(head_convs),
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -80,9 +90,36 @@ class GFLDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "gfl_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "fpn": 64, "head": 2, "reg_max": 7},
-    "gfl_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "head": 3, "reg_max": 7},
-    "gfl_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "fpn": 128, "head": 4, "reg_max": 7},
+    "gfl_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "fpn": 64,
+        "head": 2,
+        "reg_max": 7,
+    },
+    "gfl_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "head": 3,
+        "reg_max": 7,
+    },
+    "gfl_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "fpn": 128,
+        "head": 4,
+        "reg_max": 7,
+    },
 }
 
 
@@ -120,7 +157,10 @@ if __name__ == "__main__":
     m = build_gfl_detector(in_channels=3, num_classes=3, variant="gfl_tiny", width_mult=0.5)
     out = m(x)
     print("gfl_tiny", [tuple(t.shape) for t in out["cls_logits"]])
-    loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["quality_logits"]) + sum(t.mean() for t in out["dist_logits"])
+    loss = (
+        sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["quality_logits"])
+        + sum(t.mean() for t in out["dist_logits"])
+    )
     loss.backward()
     print("ok")
-

@@ -1,11 +1,17 @@
-
 import math
 
 import torch
 from torch import nn
 
-from ._common import GridSpec2D, PointMLP, TinyUNet2D, check_points, gather_2d, scatter_mean_2d, split_xyz_features
-
+from ._common import (
+    GridSpec2D,
+    PointMLP,
+    TinyUNet2D,
+    check_points,
+    gather_2d,
+    scatter_mean_2d,
+    split_xyz_features,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "squeezeseg_tiny": {"width": 48, "h": 32, "w": 96},
@@ -33,7 +39,16 @@ class _SE2D(nn.Module):
 class SqueezeSeg(nn.Module):
     """SqueezeSeg semantic segmentation (toy): range-view UNet + squeeze-excitation."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, h: int, w: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        h: int,
+        w: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.grid = GridSpec2D(
             x_min=-math.pi,
@@ -46,7 +61,11 @@ class SqueezeSeg(nn.Module):
         self.point = PointMLP(int(in_channels), int(width), depth=2, dropout=float(dropout))
         self.unet = TinyUNet2D(int(width), int(width))
         self.se = _SE2D(int(width))
-        self.cls = nn.Sequential(nn.Linear(int(width), int(width)), nn.ReLU(inplace=True), nn.Linear(int(width), int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(int(width), int(width)),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(width), int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -90,4 +109,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -36,7 +35,9 @@ class ToyRelGraph:
     num_classes: int
 
 
-def _make_splits(num_nodes: int, train_fraction: float, val_fraction: float, *, gen: torch.Generator) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+def _make_splits(
+    num_nodes: int, train_fraction: float, val_fraction: float, *, gen: torch.Generator
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     if not (0.0 < float(train_fraction) < 1.0):
         raise ValueError("train_fraction must be in (0, 1)")
     if not (0.0 < float(val_fraction) < 1.0):
@@ -103,7 +104,11 @@ def load_toy_rel_graph(cfg: DataConfig) -> ToyRelGraph:
                 continue
             # Sample a few edges per relation.
             for _ in range(int(cfg.edges_per_node)):
-                j = int(candidates[torch.randint(0, int(candidates.numel()), (1,), generator=gen)].item())
+                j = int(
+                    candidates[
+                        torch.randint(0, int(candidates.numel()), (1,), generator=gen)
+                    ].item()
+                )
                 if j == i:
                     continue
                 src_list.append(i)
@@ -144,4 +149,3 @@ def load_toy_rel_graph(cfg: DataConfig) -> ToyRelGraph:
 
 
 __all__ = ["DataConfig", "ToyRelGraph", "load_toy_rel_graph"]
-

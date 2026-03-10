@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -16,7 +15,7 @@ def test_gnn_karate_dataset_shapes_smoke() -> None:
 
 def test_gnn_sdne_forward_and_loss_smoke() -> None:
     from tracks.gnn.datasets.karate import load_karate
-    from tracks.gnn.lesson_07_sdne_karate_embedding.model import ModelConfig, SDNE, sdne_loss
+    from tracks.gnn.lesson_07_sdne_karate_embedding.model import SDNE, ModelConfig, sdne_loss
 
     graph = load_karate()
     adj = graph.adj
@@ -35,4 +34,3 @@ def test_gnn_sdne_forward_and_loss_smoke() -> None:
     assert torch.isfinite(loss)
     assert torch.isfinite(recon)
     assert torch.isfinite(smooth)
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -177,6 +176,7 @@ def build_dpcnn_classifier(
             depth=int(depth),
         )
     )
+
 
 def registry() -> dict[str, Builder]:
     return {name: make_builder(build_dpcnn_classifier, variant=name) for name in _VARIANTS}

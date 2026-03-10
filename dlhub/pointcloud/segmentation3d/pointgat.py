@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import index_points, knn_indices
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointgat_tiny": {"width": 64, "depth": 2, "k": 8},
@@ -38,13 +36,17 @@ class _GraphAttn(nn.Module):
 class PointGATSeg(nn.Module):
     """PointGAT semantic segmentation (toy): kNN graph attention layers."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int
+    ) -> None:
         super().__init__()
         self.k = int(k)
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
         self.blocks = nn.ModuleList([_GraphAttn(w) for _ in range(int(depth))])
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)

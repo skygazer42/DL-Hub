@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -48,9 +47,15 @@ class BoxInst(nn.Module):
             ConvBNAct(mc, mc, kernel_size=3, stride=1, act="relu"),
         )
 
-        tower: list[nn.Module] = [ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")]
+        tower: list[nn.Module] = [
+            ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")
+        ]
         for _ in range(int(head_convs) - 1):
-            tower.append(ConvBNAct(int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"))
+            tower.append(
+                ConvBNAct(
+                    int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"
+                )
+            )
         self.tower = nn.Sequential(*tower)
 
         self.cls = nn.Conv2d(int(head_channels), nc, kernel_size=3, padding=1)
@@ -72,7 +77,13 @@ class BoxInst(nn.Module):
         ker_flat = kernels.permute(0, 2, 3, 1).reshape(b, slots, m)
         mf_flat = mf.reshape(b, m, h4 * w4)
         mask_logits = torch.bmm(ker_flat, mf_flat).view(b, slots, h4, w4)
-        return {"cls_logits": cls_logits, "bbox_deltas": bbox, "mask_logits": mask_logits, "mask_feat": mf, "mask_kernels": kernels}
+        return {
+            "cls_logits": cls_logits,
+            "bbox_deltas": bbox,
+            "mask_logits": mask_logits,
+            "mask_feat": mf,
+            "mask_kernels": kernels,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
@@ -114,10 +125,11 @@ def build_boxinst_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_boxinst_instance_segmenter(in_channels=3, num_classes=3, variant="boxinst_tiny", width_mult=0.5)
+    m = build_boxinst_instance_segmenter(
+        in_channels=3, num_classes=3, variant="boxinst_tiny", width_mult=0.5
+    )
     out = m(x)
     print("boxinst_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

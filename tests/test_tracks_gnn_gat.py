@@ -1,15 +1,19 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
 def test_gnn_lesson_03_gat_shapes_smoke() -> None:
     from tracks.gnn.lesson_03_gat_toy_graph_classification.data import DataConfig, get_dataloaders
-    from tracks.gnn.lesson_03_gat_toy_graph_classification.model import GATGraphClassifier, ModelConfig
+    from tracks.gnn.lesson_03_gat_toy_graph_classification.model import (
+        GATGraphClassifier,
+        ModelConfig,
+    )
 
     train_loader, _ = get_dataloaders(
-        DataConfig(num_graphs=32, num_nodes=10, batch_size=4, val_fraction=0.2, seed=0, num_workers=0)
+        DataConfig(
+            num_graphs=32, num_nodes=10, batch_size=4, val_fraction=0.2, seed=0, num_workers=0
+        )
     )
     (x, adj), y = next(iter(train_loader))
 
@@ -22,4 +26,3 @@ def test_gnn_lesson_03_gat_shapes_smoke() -> None:
     )
     logits = model((x, adj))
     assert tuple(logits.shape) == (4, 2)
-

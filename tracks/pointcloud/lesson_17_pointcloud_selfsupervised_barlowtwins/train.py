@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -35,7 +34,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 17 (PointCloud): self-supervised Barlow Twins (toy-first).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 17 (PointCloud): self-supervised Barlow Twins (toy-first)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--num-points", type=int, default=128)
@@ -60,7 +61,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="barlowtwins_pointnet:barlowtwins_pointnet_small",
         help="Supported: barlowtwins_pointnet:<variant> (try --list-arch)",
     )
-    parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--list-arch", action="store_true", help="Print supported architectures and exit."
+    )
     parser.add_argument("--dropout", type=float, default=0.0)
 
     parser.add_argument("--lambda-offdiag", type=float, default=0.005)
@@ -203,8 +206,16 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             lambda_offdiag=float(train_cfg.lambda_offdiag),
         )
 
-        logger.info("Epoch %d/%d | train loss %.4f | eval loss %.4f", epoch, train_cfg.epochs, train_loss, eval_loss)
-        append_jsonl(metrics_path, {"epoch": epoch, "train_loss": train_loss, "eval_loss": eval_loss})
+        logger.info(
+            "Epoch %d/%d | train loss %.4f | eval loss %.4f",
+            epoch,
+            train_cfg.epochs,
+            train_loss,
+            eval_loss,
+        )
+        append_jsonl(
+            metrics_path, {"epoch": epoch, "train_loss": train_loss, "eval_loss": eval_loss}
+        )
 
     ckpt_path = save_checkpoint(
         paths.checkpoints_dir / "checkpoint.pt",
@@ -230,4 +241,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

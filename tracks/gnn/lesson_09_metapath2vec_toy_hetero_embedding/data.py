@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -39,7 +38,9 @@ class ToyHeteroGraph:
     rel_dst_type: dict[str, int]
 
 
-def _neighbors_from_edges(num_nodes: int, src: torch.Tensor, dst: torch.Tensor) -> list[torch.Tensor]:
+def _neighbors_from_edges(
+    num_nodes: int, src: torch.Tensor, dst: torch.Tensor
+) -> list[torch.Tensor]:
     buckets: list[list[int]] = [[] for _ in range(int(num_nodes))]
     for s, d in zip(src.tolist(), dst.tolist()):
         buckets[int(s)].append(int(d))
@@ -141,7 +142,9 @@ def generate_walks(graph: ToyHeteroGraph, cfg: DataConfig) -> torch.Tensor:
     metapath = parse_metapath(cfg.metapath)
     for rel in metapath:
         if rel not in graph.rel_neighbors:
-            raise ValueError(f"Unknown relation in metapath: {rel}. Known: {sorted(graph.rel_neighbors.keys())}")
+            raise ValueError(
+                f"Unknown relation in metapath: {rel}. Known: {sorted(graph.rel_neighbors.keys())}"
+            )
 
     if cfg.start_type not in graph.type_names:
         raise ValueError(f"Unknown start_type={cfg.start_type!r}. Known: {graph.type_names}")
@@ -169,15 +172,23 @@ def generate_walks(graph: ToyHeteroGraph, cfg: DataConfig) -> torch.Tensor:
                 # Restart at a random node of this relation's src type.
                 src_type = graph.rel_src_type[rel]
                 candidates = torch.nonzero(graph.node_types == src_type, as_tuple=False).view(-1)
-                cur = int(candidates[torch.randint(0, int(candidates.numel()), (1,), generator=g)].item())
+                cur = int(
+                    candidates[torch.randint(0, int(candidates.numel()), (1,), generator=g)].item()
+                )
                 neigh = graph.rel_neighbors[rel][cur]
-            nxt = cur if int(neigh.numel()) == 0 else int(neigh[torch.randint(0, int(neigh.numel()), (1,), generator=g)].item())
+            nxt = (
+                cur
+                if int(neigh.numel()) == 0
+                else int(neigh[torch.randint(0, int(neigh.numel()), (1,), generator=g)].item())
+            )
             walks[w, t + 1] = nxt
             cur = nxt
     return walks
 
 
-def build_skipgram_pairs(walks: torch.Tensor, window_size: int) -> tuple[torch.Tensor, torch.Tensor]:
+def build_skipgram_pairs(
+    walks: torch.Tensor, window_size: int
+) -> tuple[torch.Tensor, torch.Tensor]:
     if int(window_size) < 1:
         raise ValueError("window_size must be >= 1")
 
@@ -235,7 +246,9 @@ class NegativeSampler:
             raise ValueError("k must be >= 1")
 
         if self.care_type == 0:
-            return torch.randint(low=0, high=self.num_nodes, size=(b, k), generator=self.gen, dtype=torch.long)
+            return torch.randint(
+                low=0, high=self.num_nodes, size=(b, k), generator=self.gen, dtype=torch.long
+            )
 
         # Same-type negatives (metapath2vec++ style): sample negatives with the same type as the context node.
         ctx_types = self.node_types[context]  # (B,)
@@ -246,10 +259,17 @@ class NegativeSampler:
             idx = torch.nonzero(mask, as_tuple=False).view(-1)
             candidates = self.nodes_by_type[t]
             if int(candidates.numel()) == 0:
-                out[idx] = torch.randint(low=0, high=self.num_nodes, size=(int(idx.numel()), k), generator=self.gen)
+                out[idx] = torch.randint(
+                    low=0, high=self.num_nodes, size=(int(idx.numel()), k), generator=self.gen
+                )
                 continue
             sampled = candidates[
-                torch.randint(low=0, high=int(candidates.numel()), size=(int(idx.numel()), k), generator=self.gen)
+                torch.randint(
+                    low=0,
+                    high=int(candidates.numel()),
+                    size=(int(idx.numel()), k),
+                    generator=self.gen,
+                )
             ]
             out[idx] = sampled
         return out
@@ -260,7 +280,9 @@ def build_training_pairs(cfg: DataConfig) -> tuple[ToyHeteroGraph, SkipGramPairs
     walks = generate_walks(graph, cfg)
     centers, contexts = build_skipgram_pairs(walks, window_size=cfg.window_size)
     ds = SkipGramPairs(centers, contexts)
-    sampler = NegativeSampler(node_types=graph.node_types, seed=cfg.seed + 1, care_type=cfg.care_type)
+    sampler = NegativeSampler(
+        node_types=graph.node_types, seed=cfg.seed + 1, care_type=cfg.care_type
+    )
     return graph, ds, sampler
 
 
@@ -275,4 +297,3 @@ __all__ = [
     "NegativeSampler",
     "build_training_pairs",
 ]
-

@@ -1,14 +1,21 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DepthwiseSeparableConv, GlobalAvgPoolHead, SqueezeExcite, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    DepthwiseSeparableConv,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    make_divisible,
+)
 
 
 class LCNetBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int, se: bool) -> None:
         super().__init__()
-        self.conv = DepthwiseSeparableConv(int(in_ch), int(out_ch), stride=int(stride), act="hswish")
+        self.conv = DepthwiseSeparableConv(
+            int(in_ch), int(out_ch), stride=int(stride), act="hswish"
+        )
         self.se = SqueezeExcite(int(out_ch), se_ratio=0.25) if bool(se) else nn.Identity()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -38,7 +45,10 @@ class PPLCNetClassifier(nn.Module):
             DepthwiseSeparableConv(c(16), c(32), stride=1, act="hswish"),
         )
 
-        self.stage1 = nn.Sequential(LCNetBlock(c(32), c(64), stride=2, se=False), LCNetBlock(c(64), c(64), stride=1, se=False))
+        self.stage1 = nn.Sequential(
+            LCNetBlock(c(32), c(64), stride=2, se=False),
+            LCNetBlock(c(64), c(64), stride=1, se=False),
+        )
         self.stage2 = nn.Sequential(
             LCNetBlock(c(64), c(128), stride=2, se=True),
             LCNetBlock(c(128), c(128), stride=1, se=True),
@@ -97,4 +107,3 @@ if __name__ == "__main__":
     m = build_pp_lcnet_classifier(in_channels=3, num_classes=10, variant="pp_lcnet_0_5")
     y = m(x)
     print("pp_lcnet_0_5", tuple(y.shape))
-

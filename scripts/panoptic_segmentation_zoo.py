@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from collections.abc import Iterable
@@ -52,19 +51,33 @@ def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Panoptic segmentation local model zoo utilities (no downloads).")
+    parser = argparse.ArgumentParser(
+        description="Panoptic segmentation local model zoo utilities (no downloads)."
+    )
 
     parser.add_argument("--list", action="store_true", help="List available architecture ids.")
-    parser.add_argument("--search", type=str, default=None, help="Filter list by substring (case-insensitive).")
+    parser.add_argument(
+        "--search", type=str, default=None, help="Filter list by substring (case-insensitive)."
+    )
     parser.add_argument("--limit", type=int, default=80, help="Max lines to print when listing.")
 
-    parser.add_argument("--smoke", type=str, default=None, metavar="ARCH_ID", help="Run a forward smoke on an arch id.")
+    parser.add_argument(
+        "--smoke",
+        type=str,
+        default=None,
+        metavar="ARCH_ID",
+        help="Run a forward smoke on an arch id.",
+    )
     parser.add_argument("--batch-size", type=int, default=2, help="Batch size for smoke inputs.")
     parser.add_argument("--image-size", type=int, default=64, help="Image size for smoke inputs.")
-    parser.add_argument("--in-channels", type=int, default=3, help="Input channels for local models.")
+    parser.add_argument(
+        "--in-channels", type=int, default=3, help="Input channels for local models."
+    )
     parser.add_argument("--num-thing-classes", type=int, default=3, help="Number of thing classes.")
     parser.add_argument("--num-stuff-classes", type=int, default=2, help="Number of stuff classes.")
-    parser.add_argument("--width-mult", type=float, default=1.0, help="Width multiplier for local models.")
+    parser.add_argument(
+        "--width-mult", type=float, default=1.0, help="Width multiplier for local models."
+    )
 
     return parser.parse_args()
 
@@ -100,7 +113,9 @@ def main() -> int:
 
         import torch
 
-        x = torch.randn(int(args.batch_size), int(args.in_channels), int(args.image_size), int(args.image_size))
+        x = torch.randn(
+            int(args.batch_size), int(args.in_channels), int(args.image_size), int(args.image_size)
+        )
         model = build_local_model(
             arch_id,
             in_channels=int(args.in_channels),

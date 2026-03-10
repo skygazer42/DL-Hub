@@ -1,15 +1,16 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, scale_channels
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
 class ConvFormerBlock(nn.Module):
     """A lightweight Conv+Transformer block (NCHW -> tokens -> NCHW)."""
 
-    def __init__(self, dim: int, *, num_heads: int, mlp_ratio: float = 4.0, drop_path: float = 0.0) -> None:
+    def __init__(
+        self, dim: int, *, num_heads: int, mlp_ratio: float = 4.0, drop_path: float = 0.0
+    ) -> None:
         super().__init__()
         d = int(dim)
         self.local = nn.Conv2d(d, d, kernel_size=3, padding=1, groups=d, bias=False)
@@ -18,7 +19,9 @@ class ConvFormerBlock(nn.Module):
         self.drop_path = DropPath(float(drop_path))
 
         self.norm = nn.LayerNorm(d)
-        self.attn = TransformerEncoderBlock(d, int(num_heads), mlp_ratio=float(mlp_ratio), dropout=0.0, drop_path=float(drop_path))
+        self.attn = TransformerEncoderBlock(
+            d, int(num_heads), mlp_ratio=float(mlp_ratio), dropout=0.0, drop_path=float(drop_path)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         b, c, h, w = x.shape
@@ -60,11 +63,19 @@ class ConvFormerClassifier(nn.Module):
         self.down = nn.ModuleList()
         self.down.append(nn.Identity())
         for i in range(3):
-            self.down.append(nn.Sequential(nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[i + 1])))
+            self.down.append(
+                nn.Sequential(
+                    nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2, bias=False),
+                    nn.BatchNorm2d(dims[i + 1]),
+                )
+            )
 
         self.stages = nn.ModuleList()
         for i in range(4):
-            blocks = [ConvFormerBlock(dims[i], num_heads=heads[i], drop_path=float(next(dp_iter))) for _ in range(depths[i])]
+            blocks = [
+                ConvFormerBlock(dims[i], num_heads=heads[i], drop_path=float(next(dp_iter)))
+                for _ in range(depths[i])
+            ]
             self.stages.append(nn.Sequential(*blocks))
 
         self.head = GlobalAvgPoolHead(dims[-1], int(num_classes), dropout=float(dropout))
@@ -80,7 +91,11 @@ class ConvFormerClassifier(nn.Module):
 
 _VARIANTS: dict[str, dict] = {
     "convformer_tiny": {"dims": (48, 96, 192, 384), "depths": (2, 2, 4, 2), "heads": (2, 3, 6, 12)},
-    "convformer_base": {"dims": (64, 128, 256, 512), "depths": (2, 2, 6, 2), "heads": (2, 4, 8, 16)},
+    "convformer_base": {
+        "dims": (64, 128, 256, 512),
+        "depths": (2, 2, 6, 2),
+        "heads": (2, 4, 8, 16),
+    },
 }
 
 
@@ -112,7 +127,8 @@ def build_convformer_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_convformer_classifier(in_channels=3, num_classes=10, variant="convformer_tiny", width_mult=0.5)
+    m = build_convformer_classifier(
+        in_channels=3, num_classes=10, variant="convformer_tiny", width_mult=0.5
+    )
     y = m(x)
     print("convformer_tiny", tuple(y.shape))
-

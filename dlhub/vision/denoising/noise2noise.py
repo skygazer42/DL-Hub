@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class DoubleConv(nn.Module):
@@ -118,7 +117,9 @@ def build_noise2noise_denoiser(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Noise2Noise variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Noise2Noise variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return Noise2NoiseUNet(
         in_channels=int(in_channels),
@@ -136,4 +137,3 @@ if __name__ == "__main__":
     loss = (y - x).abs().mean()
     loss.backward()
     print("ok")
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -12,7 +11,9 @@ def _c(ch: int, width_mult: float) -> int:
 class MobileOneBlock(nn.Module):
     """MobileOne block (RepVGG-ish multi-branch conv)."""
 
-    def __init__(self, in_ch: int, out_ch: int, *, stride: int, num_branches: int, dropout: float) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, stride: int, num_branches: int, dropout: float
+    ) -> None:
         super().__init__()
         self.in_ch = int(in_ch)
         self.out_ch = int(out_ch)
@@ -22,16 +23,27 @@ class MobileOneBlock(nn.Module):
         for _ in range(int(num_branches)):
             branches.append(
                 nn.Sequential(
-                    nn.Conv2d(self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=False),
+                    nn.Conv2d(
+                        self.in_ch,
+                        self.out_ch,
+                        kernel_size=3,
+                        stride=self.stride,
+                        padding=1,
+                        bias=False,
+                    ),
                     nn.BatchNorm2d(self.out_ch),
                 )
             )
         self.branches = nn.ModuleList(branches)
         self.branch_1x1 = nn.Sequential(
-            nn.Conv2d(self.in_ch, self.out_ch, kernel_size=1, stride=self.stride, padding=0, bias=False),
+            nn.Conv2d(
+                self.in_ch, self.out_ch, kernel_size=1, stride=self.stride, padding=0, bias=False
+            ),
             nn.BatchNorm2d(self.out_ch),
         )
-        self.identity = nn.BatchNorm2d(self.in_ch) if (self.in_ch == self.out_ch and self.stride == 1) else None
+        self.identity = (
+            nn.BatchNorm2d(self.in_ch) if (self.in_ch == self.out_ch and self.stride == 1) else None
+        )
         self.relu = nn.ReLU(inplace=True)
         self.drop = nn.Dropout2d(p=float(dropout))
 
@@ -166,4 +178,3 @@ if __name__ == "__main__":
         m = build_mobileone_classifier(in_channels=3, num_classes=10, variant=v, width_mult=1.0)
         y = m(x)
         print(v, tuple(y.shape))
-

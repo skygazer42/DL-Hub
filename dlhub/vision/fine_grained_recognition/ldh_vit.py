@@ -1,4 +1,3 @@
-
 """LDH-ViT (Local concealment + feature selection) - toy-first FGVC classifier.
 
 Reference:
@@ -11,12 +10,18 @@ Toy interpretation here:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyPatchEncoder, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyPatchEncoder,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class LDHViT(nn.Module):
@@ -58,12 +63,15 @@ class LDHViT(nn.Module):
 
         # Local concealment: random per-patch dropout.
         if self.training and self.conceal_prob > 0.0:
-            keep = (torch.rand(patch_tokens.shape[:2], device=patch_tokens.device) > float(self.conceal_prob)).to(
-                patch_tokens.dtype
-            )
+            keep = (
+                torch.rand(patch_tokens.shape[:2], device=patch_tokens.device)
+                > float(self.conceal_prob)
+            ).to(patch_tokens.dtype)
             patch_tokens = patch_tokens * keep.unsqueeze(-1)
         else:
-            keep = torch.ones(patch_tokens.shape[:2], device=patch_tokens.device, dtype=patch_tokens.dtype)
+            keep = torch.ones(
+                patch_tokens.shape[:2], device=patch_tokens.device, dtype=patch_tokens.dtype
+            )
 
         scores = self.token_scorer(patch_tokens).squeeze(-1)
         k = min(int(self.num_parts), patch_tokens.shape[1])
@@ -112,4 +120,3 @@ def build_ldh_vit_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_ldh_vit_fgvc_classifier, "ldh_vit_tiny")
-

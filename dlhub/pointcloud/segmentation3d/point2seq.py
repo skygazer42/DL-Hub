@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "point2seq_tiny": {"width": 64, "layers": 1},
@@ -15,13 +13,24 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class Point2SeqSeg(nn.Module):
     """Point2Seq semantic segmentation (toy): sort points, run GRU, then unsort."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, layers: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, layers: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
-        self.rnn = nn.GRU(w, w, num_layers=int(layers), batch_first=True, bidirectional=True, dropout=float(dropout))
+        self.rnn = nn.GRU(
+            w,
+            w,
+            num_layers=int(layers),
+            batch_first=True,
+            bidirectional=True,
+            dropout=float(dropout),
+        )
         self.proj = nn.Sequential(nn.Linear(w * 2, w), nn.ReLU(inplace=True))
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -69,4 +78,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

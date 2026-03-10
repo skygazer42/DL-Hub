@@ -1,9 +1,8 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.backbones._blocks import scale_channels
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class VarifocalHead(nn.Module):
@@ -25,7 +24,11 @@ class VarifocalHead(nn.Module):
     def forward_single(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         cls_feat = self.cls_tower(x)
         reg_feat = self.reg_tower(x)
-        return {"cls_logits": self.cls(cls_feat), "bbox_deltas": self.box(reg_feat), "iou_logits": self.iou(reg_feat)}
+        return {
+            "cls_logits": self.cls(cls_feat),
+            "bbox_deltas": self.box(reg_feat),
+            "iou_logits": self.iou(reg_feat),
+        }
 
 
 class VarifocalNetDetector(nn.Module):
@@ -55,7 +58,9 @@ class VarifocalNetDetector(nn.Module):
             act="relu",
         )
         self.fpn = FPN((c3, c4, c5), out, act="relu")
-        self.head = VarifocalHead(channels=out, num_classes=int(num_classes), num_convs=int(head_convs))
+        self.head = VarifocalHead(
+            channels=out, num_classes=int(num_classes), num_convs=int(head_convs)
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -71,9 +76,33 @@ class VarifocalNetDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "varifocalnet_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "fpn": 64, "head": 2},
-    "varifocalnet_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "head": 4},
-    "varifocalnet_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "fpn": 128, "head": 4},
+    "varifocalnet_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "fpn": 64,
+        "head": 2,
+    },
+    "varifocalnet_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "head": 4,
+    },
+    "varifocalnet_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "fpn": 128,
+        "head": 4,
+    },
 }
 
 
@@ -86,7 +115,9 @@ def build_varifocalnet_detector(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown VarifocalNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown VarifocalNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
     c3 = scale_channels(int(spec["c3"]), float(width_mult), min_ch=16, divisor=8)
@@ -107,10 +138,15 @@ def build_varifocalnet_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_varifocalnet_detector(in_channels=3, num_classes=3, variant="varifocalnet_tiny", width_mult=0.5)
+    m = build_varifocalnet_detector(
+        in_channels=3, num_classes=3, variant="varifocalnet_tiny", width_mult=0.5
+    )
     out = m(x)
     print("varifocalnet_tiny", [tuple(t.shape) for t in out["cls_logits"]])
-    loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"]) + sum(t.mean() for t in out["iou_logits"])
+    loss = (
+        sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["bbox_deltas"])
+        + sum(t.mean() for t in out["iou_logits"])
+    )
     loss.backward()
     print("ok")
-

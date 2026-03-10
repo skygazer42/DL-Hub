@@ -1,9 +1,8 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.backbones._blocks import scale_channels
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class FSAFHead(nn.Module):
@@ -109,4 +108,3 @@ if __name__ == "__main__":
     loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
     loss.backward()
     print("ok")
-

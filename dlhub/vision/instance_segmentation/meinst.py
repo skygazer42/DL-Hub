@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-from dlhub.vision.instance_segmentation._common import BackboneLowDet, DensePredHead, ProtoNet, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackboneLowDet,
+    DensePredHead,
+    ProtoNet,
+    check_nchw,
+)
 
 
 class MEInst(nn.Module):
@@ -50,7 +54,9 @@ class MEInst(nn.Module):
         cls_logits, bbox_deltas, mask_code_map = self.pred_head(det)
 
         b = x.shape[0]
-        mask_latents = F.adaptive_avg_pool2d(mask_code_map, (1, 1)).view(b, self.num_anchors, self.num_codes)
+        mask_latents = F.adaptive_avg_pool2d(mask_code_map, (1, 1)).view(
+            b, self.num_anchors, self.num_codes
+        )
         mask_logits = torch.einsum("bkp,bphw->bkhw", mask_latents, codebook)
         code_mean = codebook.mean(dim=(-2, -1))
         return {
@@ -64,9 +70,33 @@ class MEInst(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "meinst_tiny": {"stem": 24, "low": 40, "det": 72, "head": 72, "depth": 1, "anchors": 8, "codes": 16},
-    "meinst_small": {"stem": 24, "low": 48, "det": 96, "head": 96, "depth": 2, "anchors": 12, "codes": 24},
-    "meinst_base": {"stem": 32, "low": 64, "det": 128, "head": 128, "depth": 3, "anchors": 16, "codes": 32},
+    "meinst_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 72,
+        "head": 72,
+        "depth": 1,
+        "anchors": 8,
+        "codes": 16,
+    },
+    "meinst_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "head": 96,
+        "depth": 2,
+        "anchors": 12,
+        "codes": 24,
+    },
+    "meinst_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "head": 128,
+        "depth": 3,
+        "anchors": 16,
+        "codes": 32,
+    },
 }
 
 
@@ -99,7 +129,9 @@ def build_meinst_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_meinst_instance_segmenter(in_channels=3, num_classes=3, variant="meinst_tiny", width_mult=0.5)
+    m = build_meinst_instance_segmenter(
+        in_channels=3, num_classes=3, variant="meinst_tiny", width_mult=0.5
+    )
     out = m(x)
     print("meinst_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

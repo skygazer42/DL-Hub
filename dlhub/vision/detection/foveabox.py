@@ -1,10 +1,8 @@
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.backbones._blocks import scale_channels
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class FoveaBoxHead(nn.Module):
@@ -26,7 +24,11 @@ class FoveaBoxHead(nn.Module):
     def forward_single(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         cls_feat = self.cls_tower(x)
         reg_feat = self.reg_tower(x)
-        return {"cls_logits": self.cls(cls_feat), "reg": torch.relu(self.reg(reg_feat)), "centerness": self.ctr(reg_feat)}
+        return {
+            "cls_logits": self.cls(cls_feat),
+            "reg": torch.relu(self.reg(reg_feat)),
+            "centerness": self.ctr(reg_feat),
+        }
 
 
 class FoveaBoxDetector(nn.Module):
@@ -56,7 +58,9 @@ class FoveaBoxDetector(nn.Module):
             act="relu",
         )
         self.fpn = FPN((c3, c4, c5), out, act="relu")
-        self.head = FoveaBoxHead(channels=out, num_classes=int(num_classes), num_convs=int(head_convs))
+        self.head = FoveaBoxHead(
+            channels=out, num_classes=int(num_classes), num_convs=int(head_convs)
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -74,7 +78,15 @@ class FoveaBoxDetector(nn.Module):
 _VARIANTS: dict[str, dict] = {
     "foveabox_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "fpn": 64, "head": 2},
     "foveabox_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "head": 4},
-    "foveabox_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "fpn": 128, "head": 4},
+    "foveabox_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "fpn": 128,
+        "head": 4,
+    },
 }
 
 
@@ -108,10 +120,15 @@ def build_foveabox_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_foveabox_detector(in_channels=3, num_classes=3, variant="foveabox_tiny", width_mult=0.5)
+    m = build_foveabox_detector(
+        in_channels=3, num_classes=3, variant="foveabox_tiny", width_mult=0.5
+    )
     out = m(x)
     print("foveabox_tiny", [tuple(t.shape) for t in out["cls_logits"]])
-    loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["reg"]) + sum(t.mean() for t in out["centerness"])
+    loss = (
+        sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["reg"])
+        + sum(t.mean() for t in out["centerness"])
+    )
     loss.backward()
     print("ok")
-

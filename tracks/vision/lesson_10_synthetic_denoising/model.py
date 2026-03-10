@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -7,7 +6,9 @@ from torch import nn
 
 @dataclass(frozen=True)
 class ModelConfig:
-    arch: str = "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | jorder | rescan | prenet | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | median_filter | wiener_filter | guided_filter | bilateral_filter | non_local_means | total_variation | anisotropic_diffusion | wavelet_shrinkage | anscombe_wiener | lee_filter | kuan_filter | stripe_remover | dead_hot_pixel_corrector | line_defect_corrector | rowcol_bias_corrector | block_bias_corrector | debanding_filter | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    arch: str = (
+        "dncnn"  # dncnn | edsr | rrdbnet | carn | resunet | unet3plus | r2unet | denseunet | brdnet | attention_unet | unetpp | mwcnn | hinet | ircnn | jorder | rescan | prenet | nlrn | scunet | convnext_unet | aspp_unet | cbam_unet | restormer | noise2noise_unet | bm3d | median_filter | wiener_filter | guided_filter | bilateral_filter | non_local_means | total_variation | anisotropic_diffusion | wavelet_shrinkage | anscombe_wiener | lee_filter | kuan_filter | stripe_remover | dead_hot_pixel_corrector | line_defect_corrector | rowcol_bias_corrector | block_bias_corrector | debanding_filter | ffdnet | nafnet | drunet | swinir | ridnet | ddpm_unet | mirnet | mprnet | uformer | cbdnet | didn | rcan | rdn | memnet | drrn | rednet | pridnet | dhdn | bsn | dbsn | pixelcnn_bsn | gated_pixelcnn_bsn
+    )
     variant: str = "dncnn_9"
     in_channels: int = 1
     sigma: float = 0.1  # for BM3D baseline
@@ -16,10 +17,12 @@ class ModelConfig:
 def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.anisotropic_diffusion import _VARIANTS as anisodiff_variants
     from dlhub.vision.denoising.anscombe_wiener import _VARIANTS as anscombe_wiener_variants
-    from dlhub.vision.denoising.attention_unet import _VARIANTS as attention_unet_variants
     from dlhub.vision.denoising.aspp_unet import _VARIANTS as aspp_unet_variants
+    from dlhub.vision.denoising.attention_unet import _VARIANTS as attention_unet_variants
     from dlhub.vision.denoising.bilateral_filter import _VARIANTS as bilateral_variants
-    from dlhub.vision.denoising.block_bias_corrector import _VARIANTS as block_bias_corrector_variants
+    from dlhub.vision.denoising.block_bias_corrector import (
+        _VARIANTS as block_bias_corrector_variants,
+    )
     from dlhub.vision.denoising.bm3d import _VARIANTS as bm3d_variants
     from dlhub.vision.denoising.brdnet import _VARIANTS as brdnet_variants
     from dlhub.vision.denoising.bsn import _VARIANTS as bsn_variants
@@ -27,12 +30,14 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.cbam_unet import _VARIANTS as cbam_unet_variants
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.convnext_unet import _VARIANTS as convnext_unet_variants
-    from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
-    from dlhub.vision.denoising.dead_hot_pixel_corrector import _VARIANTS as dead_hot_pixel_corrector_variants
-    from dlhub.vision.denoising.debanding_filter import _VARIANTS as debanding_filter_variants
-    from dlhub.vision.denoising.dhdn import _VARIANTS as dhdn_variants
     from dlhub.vision.denoising.dbsn import _VARIANTS as dbsn_variants
+    from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
+    from dlhub.vision.denoising.dead_hot_pixel_corrector import (
+        _VARIANTS as dead_hot_pixel_corrector_variants,
+    )
+    from dlhub.vision.denoising.debanding_filter import _VARIANTS as debanding_filter_variants
     from dlhub.vision.denoising.denseunet import _VARIANTS as denseunet_variants
+    from dlhub.vision.denoising.dhdn import _VARIANTS as dhdn_variants
     from dlhub.vision.denoising.didn import _VARIANTS as didn_variants
     from dlhub.vision.denoising.dncnn import _VARIANTS as dncnn_variants
     from dlhub.vision.denoising.drrn import _VARIANTS as drrn_variants
@@ -46,7 +51,9 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.jorder import _VARIANTS as jorder_variants
     from dlhub.vision.denoising.kuan_filter import _VARIANTS as kuan_filter_variants
     from dlhub.vision.denoising.lee_filter import _VARIANTS as lee_filter_variants
-    from dlhub.vision.denoising.line_defect_corrector import _VARIANTS as line_defect_corrector_variants
+    from dlhub.vision.denoising.line_defect_corrector import (
+        _VARIANTS as line_defect_corrector_variants,
+    )
     from dlhub.vision.denoising.median_filter import _VARIANTS as median_filter_variants
     from dlhub.vision.denoising.memnet import _VARIANTS as memnet_variants
     from dlhub.vision.denoising.mirnet import _VARIANTS as mirnet_variants
@@ -54,8 +61,8 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.mwcnn import _VARIANTS as mwcnn_variants
     from dlhub.vision.denoising.nafnet import _VARIANTS as nafnet_variants
     from dlhub.vision.denoising.nlrn import _VARIANTS as nlrn_variants
-    from dlhub.vision.denoising.non_local_means import _VARIANTS as non_local_means_variants
     from dlhub.vision.denoising.noise2noise import _VARIANTS as n2n_variants
+    from dlhub.vision.denoising.non_local_means import _VARIANTS as non_local_means_variants
     from dlhub.vision.denoising.pixelcnn_bsn import _VARIANTS as pixelcnn_bsn_variants
     from dlhub.vision.denoising.prenet import _VARIANTS as prenet_variants
     from dlhub.vision.denoising.pridnet import _VARIANTS as pridnet_variants
@@ -63,19 +70,21 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.rcan import _VARIANTS as rcan_variants
     from dlhub.vision.denoising.rdn import _VARIANTS as rdn_variants
     from dlhub.vision.denoising.rednet import _VARIANTS as rednet_variants
-    from dlhub.vision.denoising.resunet import _VARIANTS as resunet_variants
     from dlhub.vision.denoising.rescan import _VARIANTS as rescan_variants
     from dlhub.vision.denoising.restormer import _VARIANTS as restormer_variants
+    from dlhub.vision.denoising.resunet import _VARIANTS as resunet_variants
     from dlhub.vision.denoising.ridnet import _VARIANTS as ridnet_variants
+    from dlhub.vision.denoising.rowcol_bias_corrector import (
+        _VARIANTS as rowcol_bias_corrector_variants,
+    )
     from dlhub.vision.denoising.rrdbnet import _VARIANTS as rrdbnet_variants
     from dlhub.vision.denoising.scunet import _VARIANTS as scunet_variants
-    from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
     from dlhub.vision.denoising.stripe_remover import _VARIANTS as stripe_remover_variants
-    from dlhub.vision.denoising.rowcol_bias_corrector import _VARIANTS as rowcol_bias_corrector_variants
+    from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
     from dlhub.vision.denoising.total_variation import _VARIANTS as total_variation_variants
+    from dlhub.vision.denoising.uformer import _VARIANTS as uformer_variants
     from dlhub.vision.denoising.unet3plus import _VARIANTS as unet3plus_variants
     from dlhub.vision.denoising.unetpp import _VARIANTS as unetpp_variants
-    from dlhub.vision.denoising.uformer import _VARIANTS as uformer_variants
     from dlhub.vision.denoising.wavelet_shrinkage import _VARIANTS as wavelet_shrinkage_variants
     from dlhub.vision.denoising.wiener_filter import _VARIANTS as wiener_filter_variants
 
@@ -293,12 +302,16 @@ def build_model(cfg: ModelConfig) -> nn.Module:
     if arch in {"ffdnet"}:
         from dlhub.vision.denoising.ffdnet import build_ffdnet_denoiser
 
-        return build_ffdnet_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_ffdnet_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"drunet"}:
         from dlhub.vision.denoising.drunet import build_drunet_denoiser
 
-        return build_drunet_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_drunet_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"noise2noise_unet", "n2n_unet", "noise2noise"}:
         from dlhub.vision.denoising.noise2noise import build_noise2noise_denoiser
@@ -313,92 +326,136 @@ def build_model(cfg: ModelConfig) -> nn.Module:
     if arch in {"median_filter", "median"}:
         from dlhub.vision.denoising.median_filter import build_median_filter_denoiser
 
-        return build_median_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_median_filter_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"wiener_filter", "wiener"}:
         from dlhub.vision.denoising.wiener_filter import build_wiener_filter_denoiser
 
-        return build_wiener_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_wiener_filter_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"guided_filter", "guided"}:
         from dlhub.vision.denoising.guided_filter import build_guided_filter_denoiser
 
-        return build_guided_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_guided_filter_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"bilateral_filter", "bilateral"}:
         from dlhub.vision.denoising.bilateral_filter import build_bilateral_filter_denoiser
 
-        return build_bilateral_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_bilateral_filter_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"non_local_means", "nlm"}:
         from dlhub.vision.denoising.non_local_means import build_non_local_means_denoiser
 
-        return build_non_local_means_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_non_local_means_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"total_variation", "tv"}:
         from dlhub.vision.denoising.total_variation import build_total_variation_denoiser
 
-        return build_total_variation_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_total_variation_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"anisotropic_diffusion", "anisodiff"}:
-        from dlhub.vision.denoising.anisotropic_diffusion import build_anisotropic_diffusion_denoiser
+        from dlhub.vision.denoising.anisotropic_diffusion import (
+            build_anisotropic_diffusion_denoiser,
+        )
 
-        return build_anisotropic_diffusion_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_anisotropic_diffusion_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"wavelet_shrinkage", "wavelet"}:
         from dlhub.vision.denoising.wavelet_shrinkage import build_wavelet_shrinkage_denoiser
 
-        return build_wavelet_shrinkage_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_wavelet_shrinkage_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"anscombe_wiener", "anscombe"}:
         from dlhub.vision.denoising.anscombe_wiener import build_anscombe_wiener_denoiser
 
-        return build_anscombe_wiener_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_anscombe_wiener_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"lee_filter", "lee"}:
         from dlhub.vision.denoising.lee_filter import build_lee_filter_denoiser
 
-        return build_lee_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_lee_filter_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"kuan_filter", "kuan"}:
         from dlhub.vision.denoising.kuan_filter import build_kuan_filter_denoiser
 
-        return build_kuan_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_kuan_filter_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"stripe_remover", "stripe"}:
         from dlhub.vision.denoising.stripe_remover import build_stripe_remover_denoiser
 
-        return build_stripe_remover_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_stripe_remover_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"dead_hot_pixel_corrector", "dead_hot_pixel", "dead_hot"}:
-        from dlhub.vision.denoising.dead_hot_pixel_corrector import build_dead_hot_pixel_corrector_denoiser
+        from dlhub.vision.denoising.dead_hot_pixel_corrector import (
+            build_dead_hot_pixel_corrector_denoiser,
+        )
 
-        return build_dead_hot_pixel_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_dead_hot_pixel_corrector_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"line_defect_corrector", "line_defect", "stuck_line"}:
-        from dlhub.vision.denoising.line_defect_corrector import build_line_defect_corrector_denoiser
+        from dlhub.vision.denoising.line_defect_corrector import (
+            build_line_defect_corrector_denoiser,
+        )
 
-        return build_line_defect_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_line_defect_corrector_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"rowcol_bias_corrector", "rowcol_bias", "rowcol"}:
-        from dlhub.vision.denoising.rowcol_bias_corrector import build_rowcol_bias_corrector_denoiser
+        from dlhub.vision.denoising.rowcol_bias_corrector import (
+            build_rowcol_bias_corrector_denoiser,
+        )
 
-        return build_rowcol_bias_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_rowcol_bias_corrector_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"block_bias_corrector", "block_bias"}:
         from dlhub.vision.denoising.block_bias_corrector import build_block_bias_corrector_denoiser
 
-        return build_block_bias_corrector_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_block_bias_corrector_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"debanding_filter", "debanding", "deband"}:
         from dlhub.vision.denoising.debanding_filter import build_debanding_filter_denoiser
 
-        return build_debanding_filter_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_debanding_filter_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"ddpm_unet", "ddpm"}:
         from dlhub.vision.denoising.ddpm_unet import build_ddpm_unet_denoiser
 
-        return build_ddpm_unet_denoiser(in_channels=in_channels, sigma=float(cfg.sigma), variant=variant)
+        return build_ddpm_unet_denoiser(
+            in_channels=in_channels, sigma=float(cfg.sigma), variant=variant
+        )
 
     if arch in {"mirnet"}:
         from dlhub.vision.denoising.mirnet import build_mirnet_denoiser
@@ -497,7 +554,9 @@ class DenoiserAdapter(nn.Module):
         if not isinstance(y, torch.Tensor):
             raise TypeError(f"Denoiser must return a Tensor, got: {type(y).__name__}")
         if y.shape != x.shape:
-            raise ValueError(f"Denoiser output shape {tuple(y.shape)} must match input {tuple(x.shape)}")
+            raise ValueError(
+                f"Denoiser output shape {tuple(y.shape)} must match input {tuple(x.shape)}"
+            )
         return y
 
 

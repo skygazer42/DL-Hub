@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.detection._common import check_nchw
@@ -61,11 +60,15 @@ class CSPBackboneC3C5(nn.Module):
             CSPBlock(int(c3_channels), depth=d),
         )
         self.s4 = nn.Sequential(
-            ConvBNAct(int(c3_channels), int(c4_channels), kernel_size=3, stride=2, act="silu"),  # /16
+            ConvBNAct(
+                int(c3_channels), int(c4_channels), kernel_size=3, stride=2, act="silu"
+            ),  # /16
             CSPBlock(int(c4_channels), depth=d),
         )
         self.s5 = nn.Sequential(
-            ConvBNAct(int(c4_channels), int(c5_channels), kernel_size=3, stride=2, act="silu"),  # /32
+            ConvBNAct(
+                int(c4_channels), int(c5_channels), kernel_size=3, stride=2, act="silu"
+            ),  # /32
             CSPBlock(int(c5_channels), depth=d),
         )
 
@@ -93,7 +96,9 @@ class PAFPN(nn.Module):
         self.down4 = ConvBNAct(out, out, kernel_size=3, stride=2, act="silu")
         self.down5 = ConvBNAct(out, out, kernel_size=3, stride=2, act="silu")
 
-    def forward(self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         p5 = self.l5(c5)
         p4 = self.l4(c4) + F.interpolate(p5, size=c4.shape[-2:], mode="nearest")
         p3 = self.l3(c3) + F.interpolate(p4, size=c3.shape[-2:], mode="nearest")
@@ -147,7 +152,9 @@ class YOLOv5Detector(nn.Module):
             depth=int(backbone_depth),
         )
         self.neck = PAFPN((c3, c4, c5), out)
-        self.head = YOLOv5Head(channels=out, num_classes=int(num_classes), num_anchors=int(num_anchors))
+        self.head = YOLOv5Head(
+            channels=out, num_classes=int(num_classes), num_anchors=int(num_anchors)
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -203,7 +210,10 @@ if __name__ == "__main__":
     m = build_yolov5_detector(in_channels=3, num_classes=3, variant="yolov5_tiny", width_mult=0.5)
     out = m(x)
     print("yolov5_tiny", [tuple(t.shape) for t in out["obj_logits"]])
-    loss = sum(t.mean() for t in out["obj_logits"]) + sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
+    loss = (
+        sum(t.mean() for t in out["obj_logits"])
+        + sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["bbox_deltas"])
+    )
     loss.backward()
     print("ok")
-

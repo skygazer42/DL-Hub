@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class DirectionalMaskedConv2d(nn.Module):
@@ -79,7 +78,9 @@ class DirectionalStack(nn.Module):
             raise ValueError("depth must be > 0")
 
         self.in_conv = DirectionalMaskedConv2d(c_in, w0, kernel_size=3, direction=str(direction))
-        self.blocks = nn.Sequential(*[DirectionalResBlock(w0, direction=str(direction)) for _ in range(d)])
+        self.blocks = nn.Sequential(
+            *[DirectionalResBlock(w0, direction=str(direction)) for _ in range(d)]
+        )
         self.act = nn.ReLU(inplace=True)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -154,7 +155,9 @@ def build_bsn_denoiser(
     if name not in _VARIANTS:
         raise ValueError(f"Unknown BSN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return BlindSpotNet(in_channels=int(in_channels), width=int(spec["width"]), depth=int(spec["depth"]))
+    return BlindSpotNet(
+        in_channels=int(in_channels), width=int(spec["width"]), depth=int(spec["depth"])
+    )
 
 
 if __name__ == "__main__":
@@ -167,4 +170,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

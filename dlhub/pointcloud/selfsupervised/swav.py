@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 @torch.no_grad()
@@ -74,7 +73,9 @@ def swav_loss(
     """
 
     if scores1.ndim != 2 or scores2.ndim != 2:
-        raise ValueError(f"Expected scores shapes (B, K), got {tuple(scores1.shape)} and {tuple(scores2.shape)}")
+        raise ValueError(
+            f"Expected scores shapes (B, K), got {tuple(scores1.shape)} and {tuple(scores2.shape)}"
+        )
     if scores1.shape != scores2.shape:
         raise ValueError("scores1 and scores2 must have the same shape")
 
@@ -83,8 +84,12 @@ def swav_loss(
         raise ValueError("temperature must be > 0")
 
     with torch.no_grad():
-        q1 = sinkhorn_knopp(scores1.detach(), epsilon=float(sinkhorn_epsilon), iters=int(sinkhorn_iters))
-        q2 = sinkhorn_knopp(scores2.detach(), epsilon=float(sinkhorn_epsilon), iters=int(sinkhorn_iters))
+        q1 = sinkhorn_knopp(
+            scores1.detach(), epsilon=float(sinkhorn_epsilon), iters=int(sinkhorn_iters)
+        )
+        q2 = sinkhorn_knopp(
+            scores2.detach(), epsilon=float(sinkhorn_epsilon), iters=int(sinkhorn_iters)
+        )
 
     p1 = F.log_softmax(scores1 / t, dim=1)
     p2 = F.log_softmax(scores2 / t, dim=1)
@@ -209,7 +214,9 @@ class SwAVPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        self.projector = ProjectionHead(int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), num_layers=2)
+        self.projector = ProjectionHead(
+            int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), num_layers=2
+        )
         self.prototypes = nn.Linear(int(proj_dim), k, bias=False)
         self.normalize_prototypes()
 
@@ -228,8 +235,20 @@ class SwAVPointNet(nn.Module):
 
 _VARIANTS: dict[str, dict] = {
     "swav_pointnet_tiny": {"hidden": 32, "embed": 64, "proj": 64, "prototypes": 32, "dropout": 0.0},
-    "swav_pointnet_small": {"hidden": 64, "embed": 128, "proj": 128, "prototypes": 64, "dropout": 0.0},
-    "swav_pointnet_base": {"hidden": 96, "embed": 192, "proj": 192, "prototypes": 128, "dropout": 0.0},
+    "swav_pointnet_small": {
+        "hidden": 64,
+        "embed": 128,
+        "proj": 128,
+        "prototypes": 64,
+        "dropout": 0.0,
+    },
+    "swav_pointnet_base": {
+        "hidden": 96,
+        "embed": 192,
+        "proj": 192,
+        "prototypes": 128,
+        "dropout": 0.0,
+    },
 }
 
 
@@ -242,7 +261,9 @@ def build_swav_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown SwAV-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown SwAV-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     k = int(spec["prototypes"]) if num_prototypes is None else int(num_prototypes)
@@ -264,8 +285,9 @@ if __name__ == "__main__":
     m = build_swav_pointnet(in_channels=3, variant="swav_pointnet_tiny")
     o1 = m(v1)
     o2 = m(v2)
-    loss = swav_loss(o1["scores"], o2["scores"], temperature=0.1, sinkhorn_epsilon=0.05, sinkhorn_iters=3)
+    loss = swav_loss(
+        o1["scores"], o2["scores"], temperature=0.1, sinkhorn_epsilon=0.05, sinkhorn_iters=3
+    )
     loss.backward()
     m.normalize_prototypes()
     print("ok", float(loss.item()))
-

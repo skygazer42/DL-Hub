@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -82,7 +81,12 @@ class SpiderCNNClassifier(nn.Module):
         c_in = int(cfg.in_channels)
         d = _c(int(cfg.embed_dim), float(cfg.width_mult), min_ch=64, divisor=8)
         self.embed = nn.Sequential(nn.Linear(c_in, d), nn.ReLU(inplace=True))
-        self.blocks = nn.ModuleList([SpiderConvBlock(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))])
+        self.blocks = nn.ModuleList(
+            [
+                SpiderConvBlock(d, k=int(cfg.k), dropout=float(cfg.dropout))
+                for _ in range(int(cfg.depth))
+            ]
+        )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -93,7 +97,9 @@ class SpiderCNNClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:
@@ -183,7 +189,12 @@ class RSCNNClassifier(nn.Module):
         c_in = int(cfg.in_channels)
         d = _c(int(cfg.embed_dim), float(cfg.width_mult), min_ch=64, divisor=8)
         self.embed = nn.Sequential(nn.Linear(c_in, d), nn.ReLU(inplace=True))
-        self.blocks = nn.ModuleList([RelationShapeConvBlock(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))])
+        self.blocks = nn.ModuleList(
+            [
+                RelationShapeConvBlock(d, k=int(cfg.k), dropout=float(cfg.dropout))
+                for _ in range(int(cfg.depth))
+            ]
+        )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -194,7 +205,9 @@ class RSCNNClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:
@@ -286,7 +299,12 @@ class PAConvClassifier(nn.Module):
         d = _c(int(cfg.embed_dim), float(cfg.width_mult), min_ch=64, divisor=8)
         self.embed = nn.Sequential(nn.Linear(c_in, d), nn.ReLU(inplace=True))
         self.blocks = nn.ModuleList(
-            [PAConvBlock(d, k=int(cfg.k), num_kernels=int(cfg.num_kernels), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))]
+            [
+                PAConvBlock(
+                    d, k=int(cfg.k), num_kernels=int(cfg.num_kernels), dropout=float(cfg.dropout)
+                )
+                for _ in range(int(cfg.depth))
+            ]
         )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
@@ -298,7 +316,9 @@ class PAConvClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:
@@ -375,7 +395,9 @@ class Point2SeqClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))  # (B, N, D)
         idx = knn_indices(xyz, k=int(self.cfg.k))
@@ -485,7 +507,9 @@ class ASNLClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
 
         fps1 = farthest_point_sample(xyz, int(self.cfg.npoint1))
@@ -572,7 +596,9 @@ class RandLANetClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
 
@@ -688,7 +714,9 @@ class PVCNNClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.point_embed(points.to(torch.float32))  # (B, N, D)
 
@@ -789,7 +817,9 @@ class SimpleViewClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)  # (B, N, 3)
         x, y, z = xyz.unbind(dim=-1)
         img_xy = self._project(x, y)
@@ -876,7 +906,12 @@ class CurveNetClassifier(nn.Module):
         c_in = int(cfg.in_channels)
         d = _c(int(cfg.embed_dim), float(cfg.width_mult), min_ch=64, divisor=8)
         self.embed = nn.Sequential(nn.Linear(c_in, d), nn.ReLU(inplace=True))
-        self.blocks = nn.ModuleList([CurveConvBlock(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))])
+        self.blocks = nn.ModuleList(
+            [
+                CurveConvBlock(d, k=int(cfg.k), dropout=float(cfg.dropout))
+                for _ in range(int(cfg.depth))
+            ]
+        )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -887,7 +922,9 @@ class CurveNetClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:
@@ -984,7 +1021,9 @@ class GDANetClassifier(nn.Module):
         c_in = int(cfg.in_channels)
         d = _c(int(cfg.embed_dim), float(cfg.width_mult), min_ch=64, divisor=8)
         self.embed = nn.Sequential(nn.Linear(c_in, d), nn.ReLU(inplace=True))
-        self.blocks = nn.ModuleList([GDABlock(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))])
+        self.blocks = nn.ModuleList(
+            [GDABlock(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))]
+        )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -995,7 +1034,9 @@ class GDANetClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:
@@ -1082,7 +1123,12 @@ class PointSIFTClassifier(nn.Module):
         c_in = int(cfg.in_channels)
         d = _c(int(cfg.embed_dim), float(cfg.width_mult), min_ch=64, divisor=8)
         self.embed = nn.Sequential(nn.Linear(c_in, d), nn.ReLU(inplace=True))
-        self.blocks = nn.ModuleList([PointSIFTBlock(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))])
+        self.blocks = nn.ModuleList(
+            [
+                PointSIFTBlock(d, k=int(cfg.k), dropout=float(cfg.dropout))
+                for _ in range(int(cfg.depth))
+            ]
+        )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -1093,7 +1139,9 @@ class PointSIFTClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:

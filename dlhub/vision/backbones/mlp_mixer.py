@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -25,11 +24,15 @@ class MixerBlock(nn.Module):
     ) -> None:
         super().__init__()
         self.ln1 = nn.LayerNorm(int(embed_dim))
-        self.token_mlp = _MLP(int(num_tokens), int(token_mlp_dim), int(num_tokens), dropout=float(dropout))
+        self.token_mlp = _MLP(
+            int(num_tokens), int(token_mlp_dim), int(num_tokens), dropout=float(dropout)
+        )
         self.drop1 = nn.Dropout(p=float(dropout))
 
         self.ln2 = nn.LayerNorm(int(embed_dim))
-        self.channel_mlp = _MLP(int(embed_dim), int(channel_mlp_dim), int(embed_dim), dropout=float(dropout))
+        self.channel_mlp = _MLP(
+            int(embed_dim), int(channel_mlp_dim), int(embed_dim), dropout=float(dropout)
+        )
         self.drop2 = nn.Dropout(p=float(dropout))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -144,4 +147,3 @@ if __name__ == "__main__":
         m = build_mlp_mixer_classifier(in_channels=3, num_classes=10, variant=v, patch_size=8)
         y = m(x)
         print(f"mlp_mixer_{v}", tuple(y.shape))
-

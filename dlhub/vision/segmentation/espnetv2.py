@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.segmentation._common import check_nchw
@@ -10,7 +9,9 @@ from dlhub.vision.segmentation._common import check_nchw
 class _EESP(nn.Module):
     """EESP block (simplified): pointwise -> parallel dilated depthwise -> pointwise."""
 
-    def __init__(self, channels: int, *, rates: tuple[int, ...] = (1, 2, 4), expansion: float = 0.5) -> None:
+    def __init__(
+        self, channels: int, *, rates: tuple[int, ...] = (1, 2, 4), expansion: float = 0.5
+    ) -> None:
         super().__init__()
         c = int(channels)
         if c <= 0:
@@ -24,7 +25,9 @@ class _EESP(nn.Module):
         self.dw = nn.ModuleList(
             [
                 nn.Sequential(
-                    nn.Conv2d(mid, mid, kernel_size=3, padding=r, dilation=r, groups=mid, bias=False),
+                    nn.Conv2d(
+                        mid, mid, kernel_size=3, padding=r, dilation=r, groups=mid, bias=False
+                    ),
                     nn.BatchNorm2d(mid),
                     nn.ReLU(inplace=True),
                 )
@@ -110,16 +113,22 @@ def build_espnetv2_segmenter(
         raise ValueError(f"Unknown ESPNetV2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
     base = scale_channels(int(spec["base_channels"]), float(width_mult), min_ch=16, divisor=8)
-    return ESPNetV2(in_channels=int(in_channels), num_classes=int(num_classes), base_channels=int(base), depth=int(spec["depth"]))
+    return ESPNetV2(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        base_channels=int(base),
+        depth=int(spec["depth"]),
+    )
 
 
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_espnetv2_segmenter(in_channels=3, num_classes=4, variant="espnetv2_tiny", width_mult=0.5)
+    m = build_espnetv2_segmenter(
+        in_channels=3, num_classes=4, variant="espnetv2_tiny", width_mult=0.5
+    )
     y = m(x)
     print("espnetv2_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

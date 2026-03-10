@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -52,7 +51,9 @@ class Seq2SeqWithAttention(nn.Module):
         super().__init__()
         self.cfg = cfg
 
-        self.embed = nn.Embedding(int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id))
+        self.embed = nn.Embedding(
+            int(cfg.vocab_size), int(cfg.embed_dim), padding_idx=int(cfg.pad_id)
+        )
         self.emb_drop = nn.Dropout(float(cfg.dropout))
 
         self.encoder = nn.GRU(
@@ -63,32 +64,46 @@ class Seq2SeqWithAttention(nn.Module):
             bidirectional=False,
         )
         self.attn = BahdanauAttention(int(cfg.hidden_dim))
-        self.decoder_cell = nn.GRUCell(int(cfg.embed_dim) + int(cfg.hidden_dim), int(cfg.hidden_dim))
+        self.decoder_cell = nn.GRUCell(
+            int(cfg.embed_dim) + int(cfg.hidden_dim), int(cfg.hidden_dim)
+        )
 
         self.out = nn.Linear(int(cfg.hidden_dim) + int(cfg.hidden_dim), int(cfg.vocab_size))
         self.out_drop = nn.Dropout(float(cfg.dropout))
 
-    def encode(self, *, src_ids: torch.Tensor, src_mask: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def encode(
+        self, *, src_ids: torch.Tensor, src_mask: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         src_ids = src_ids.to(torch.long)
         src_mask = src_mask.to(torch.float32)
         lengths = src_mask.sum(dim=1).to(torch.long).clamp(min=1).cpu()
 
         emb = self.emb_drop(self.embed(src_ids))  # (B, S, E)
-        packed = torch.nn.utils.rnn.pack_padded_sequence(emb, lengths, batch_first=True, enforce_sorted=False)
+        packed = torch.nn.utils.rnn.pack_padded_sequence(
+            emb, lengths, batch_first=True, enforce_sorted=False
+        )
         enc_packed, h = self.encoder(packed)
-        enc_out, _ = torch.nn.utils.rnn.pad_packed_sequence(enc_packed, batch_first=True, total_length=int(src_ids.shape[1]))
+        enc_out, _ = torch.nn.utils.rnn.pad_packed_sequence(
+            enc_packed, batch_first=True, total_length=int(src_ids.shape[1])
+        )
         # h: (1, B, H)
         return enc_out, h.squeeze(0)
 
-    def forward(self, *, src_ids: torch.Tensor, src_mask: torch.Tensor, tgt_in_ids: torch.Tensor) -> dict[str, torch.Tensor]:
+    def forward(
+        self, *, src_ids: torch.Tensor, src_mask: torch.Tensor, tgt_in_ids: torch.Tensor
+    ) -> dict[str, torch.Tensor]:
         enc_out, dec_h = self.encode(src_ids=src_ids, src_mask=src_mask)
         enc_mask = src_mask.to(torch.float32)
 
         tgt_in_ids = tgt_in_ids.to(torch.long)
         b, t = tgt_in_ids.shape
 
-        logits = torch.empty((b, t, int(self.cfg.vocab_size)), device=tgt_in_ids.device, dtype=torch.float32)
-        attn_weights = torch.empty((b, t, int(enc_out.shape[1])), device=tgt_in_ids.device, dtype=torch.float32)
+        logits = torch.empty(
+            (b, t, int(self.cfg.vocab_size)), device=tgt_in_ids.device, dtype=torch.float32
+        )
+        attn_weights = torch.empty(
+            (b, t, int(enc_out.shape[1])), device=tgt_in_ids.device, dtype=torch.float32
+        )
 
         for step in range(int(t)):
             token = tgt_in_ids[:, step]
@@ -103,14 +118,23 @@ class Seq2SeqWithAttention(nn.Module):
         return {"logits": logits, "attn": attn_weights}
 
     @torch.no_grad()
-    def greedy_decode(self, *, src_ids: torch.Tensor, src_mask: torch.Tensor, max_len: int) -> torch.Tensor:
+    def greedy_decode(
+        self, *, src_ids: torch.Tensor, src_mask: torch.Tensor, max_len: int
+    ) -> torch.Tensor:
         enc_out, dec_h = self.encode(src_ids=src_ids, src_mask=src_mask)
         enc_mask = src_mask.to(torch.float32)
 
         b = int(src_ids.shape[0])
-        out_ids = torch.full((b, int(max_len)), fill_value=int(self.cfg.pad_id), device=src_ids.device, dtype=torch.long)
+        out_ids = torch.full(
+            (b, int(max_len)),
+            fill_value=int(self.cfg.pad_id),
+            device=src_ids.device,
+            dtype=torch.long,
+        )
 
-        cur = torch.full((b,), fill_value=int(self.cfg.bos_id), device=src_ids.device, dtype=torch.long)
+        cur = torch.full(
+            (b,), fill_value=int(self.cfg.bos_id), device=src_ids.device, dtype=torch.long
+        )
         for t in range(int(max_len)):
             emb = self.embed(cur)
             ctx, _ = self.attn(enc_out=enc_out, dec_h=dec_h, enc_mask=enc_mask)
@@ -123,4 +147,3 @@ class Seq2SeqWithAttention(nn.Module):
 
 
 __all__ = ["Seq2SeqWithAttention", "ModelConfig"]
-

@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def dino_loss(
@@ -147,7 +146,13 @@ class DINOHead(nn.Module):
 
     def __init__(self, in_dim: int, proj_dim: int, out_dim: int, *, dropout: float = 0.0) -> None:
         super().__init__()
-        self.projector = ProjectionHead(int(in_dim), int(proj_dim), hidden_dim=int(proj_dim), num_layers=3, dropout=float(dropout))
+        self.projector = ProjectionHead(
+            int(in_dim),
+            int(proj_dim),
+            hidden_dim=int(proj_dim),
+            num_layers=3,
+            dropout=float(dropout),
+        )
         self.prototypes = nn.Linear(int(proj_dim), int(out_dim), bias=False)
 
     def forward(self, h: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
@@ -190,7 +195,9 @@ class DINOPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        self.student_head = DINOHead(int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout))
+        self.student_head = DINOHead(
+            int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout)
+        )
 
         self.teacher_encoder = PointNetGlobalEncoder(
             in_channels=int(in_channels),
@@ -198,7 +205,9 @@ class DINOPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        self.teacher_head = DINOHead(int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout))
+        self.teacher_head = DINOHead(
+            int(embed_dim), int(proj_dim), int(out_dim), dropout=float(dropout)
+        )
 
         self.register_buffer("center", torch.zeros(1, int(out_dim), dtype=torch.float32))
         self.reset_teacher()
@@ -226,7 +235,9 @@ class DINOPointNet(nn.Module):
         _ema_update(self.student_head, self.teacher_head)
 
     @torch.no_grad()
-    def update_center(self, teacher_logits: list[torch.Tensor], *, center_momentum: float = 0.9) -> None:
+    def update_center(
+        self, teacher_logits: list[torch.Tensor], *, center_momentum: float = 0.9
+    ) -> None:
         cm = float(center_momentum)
         if not (0.0 <= cm < 1.0):
             raise ValueError("center_momentum must be in [0, 1)")
@@ -268,7 +279,9 @@ def build_dino_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown DINO-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown DINO-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     out = int(spec["out"]) if out_dim is None else int(out_dim)
@@ -292,9 +305,10 @@ if __name__ == "__main__":
     s2 = m.forward_student(v2)["logits"]
     t1 = m.forward_teacher(v1)["logits"]
     t2 = m.forward_teacher(v2)["logits"]
-    loss = dino_loss([s1, s2], [t1, t2], student_temperature=0.1, teacher_temperature=0.04, center=m.center)
+    loss = dino_loss(
+        [s1, s2], [t1, t2], student_temperature=0.1, teacher_temperature=0.04, center=m.center
+    )
     loss.backward()
     m.update_center([t1, t2], center_momentum=0.9)
     m.momentum_update_teacher(ema_decay=0.99)
     print("ok", float(loss.item()))
-

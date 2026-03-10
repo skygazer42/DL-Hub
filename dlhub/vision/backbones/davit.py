@@ -1,8 +1,13 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, LayerNorm2d, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    DropPath,
+    GlobalAvgPoolHead,
+    LayerNorm2d,
+    SqueezeExcite,
+    scale_channels,
+)
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -19,7 +24,9 @@ class DaViTBlock(nn.Module):
         )
         self.se = SqueezeExcite(d, se_ratio=0.25)
         self.dp0 = DropPath(float(drop_path))
-        self.attn = TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(drop_path))
+        self.attn = TransformerEncoderBlock(
+            d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(drop_path)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x + self.dp0(self.se(self.local(x)))
@@ -51,13 +58,24 @@ class DaViTClassifier(nn.Module):
         dp_iter = iter(dp_rates)
 
         self.down = nn.ModuleList()
-        self.down.append(nn.Sequential(nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), LayerNorm2d(dims[0])))
+        self.down.append(
+            nn.Sequential(
+                nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), LayerNorm2d(dims[0])
+            )
+        )
         for i in range(3):
-            self.down.append(nn.Sequential(LayerNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)))
+            self.down.append(
+                nn.Sequential(
+                    LayerNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)
+                )
+            )
 
         self.stages = nn.ModuleList()
         for i in range(4):
-            blocks = [DaViTBlock(dims[i], num_heads=heads[i], drop_path=float(next(dp_iter))) for _ in range(depths[i])]
+            blocks = [
+                DaViTBlock(dims[i], num_heads=heads[i], drop_path=float(next(dp_iter)))
+                for _ in range(depths[i])
+            ]
             self.stages.append(nn.Sequential(*blocks))
         self.head = GlobalAvgPoolHead(dims[-1], int(num_classes), dropout=float(dropout))
 
@@ -106,4 +124,3 @@ if __name__ == "__main__":
     m = build_davit_classifier(in_channels=3, num_classes=10, variant="davit_tiny", width_mult=0.5)
     y = m(x)
     print("davit_tiny", tuple(y.shape))
-

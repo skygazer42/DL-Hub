@@ -1,9 +1,8 @@
-
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -35,7 +34,9 @@ class _SimpleBackboneC3C5(nn.Module):
 
         def stage(in_ch: int, out_ch: int, *, down: bool) -> nn.Sequential:
             layers: list[nn.Module] = []
-            layers.append(ConvBNAct(in_ch, out_ch, kernel_size=3, stride=2 if down else 1, act="relu"))
+            layers.append(
+                ConvBNAct(in_ch, out_ch, kernel_size=3, stride=2 if down else 1, act="relu")
+            )
             for _ in range(d - 1):
                 layers.append(ConvBNAct(out_ch, out_ch, kernel_size=3, stride=1, act="relu"))
             return nn.Sequential(*layers)
@@ -65,7 +66,9 @@ class FPN(nn.Module):
         self.p4 = nn.Conv2d(out, out, kernel_size=3, padding=1)
         self.p5 = nn.Conv2d(out, out, kernel_size=3, padding=1)
 
-    def forward(self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, c3: torch.Tensor, c4: torch.Tensor, c5: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         p5 = self.l5(c5)
         p4 = self.l4(c4) + F.interpolate(p5, size=c4.shape[-2:], mode="nearest")
         p3 = self.l3(c3) + F.interpolate(p4, size=c3.shape[-2:], mode="nearest")
@@ -95,7 +98,9 @@ class RetinaHead(nn.Module):
             raise ValueError("num_convs must be > 0")
 
         def tower() -> nn.Sequential:
-            return nn.Sequential(*[ConvBNAct(c, c, kernel_size=3, stride=1, act="relu") for _ in range(n)])
+            return nn.Sequential(
+                *[ConvBNAct(c, c, kernel_size=3, stride=1, act="relu") for _ in range(n)]
+            )
 
         self.cls_tower = tower()
         self.box_tower = tower()
@@ -112,7 +117,9 @@ class RetinaHead(nn.Module):
         box = self.bbox_pred(self.box_tower(x))
         return cls, box
 
-    def forward(self, feats: tuple[torch.Tensor, ...]) -> tuple[list[torch.Tensor], list[torch.Tensor]]:
+    def forward(
+        self, feats: tuple[torch.Tensor, ...]
+    ) -> tuple[list[torch.Tensor], list[torch.Tensor]]:
         cls_out: list[torch.Tensor] = []
         box_out: list[torch.Tensor] = []
         for f in feats:
@@ -173,8 +180,24 @@ class RetinaNetDetector(nn.Module):
 
 _VARIANTS: dict[str, dict] = {
     "retinanet_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "fpn": 64, "head": 2},
-    "retinanet_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "head": 4},
-    "retinanet_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "fpn": 128, "head": 4},
+    "retinanet_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "head": 4,
+    },
+    "retinanet_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "fpn": 128,
+        "head": 4,
+    },
 }
 
 
@@ -212,10 +235,15 @@ def build_retinanet_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_retinanet_detector(in_channels=3, num_classes=5, variant="retinanet_tiny", width_mult=1.0)
+    m = build_retinanet_detector(
+        in_channels=3, num_classes=5, variant="retinanet_tiny", width_mult=1.0
+    )
     out = m(x)
-    print("retinanet_tiny", [tuple(t.shape) for t in out["cls_logits"]], [tuple(t.shape) for t in out["bbox_deltas"]])
+    print(
+        "retinanet_tiny",
+        [tuple(t.shape) for t in out["cls_logits"]],
+        [tuple(t.shape) for t in out["bbox_deltas"]],
+    )
     loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
     loss.backward()
     print("ok")
-

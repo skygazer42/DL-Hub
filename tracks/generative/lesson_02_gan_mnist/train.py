@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -40,7 +39,9 @@ def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 02 (Generative): Vanilla GAN on MNIST (or fake).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 02 (Generative): Vanilla GAN on MNIST (or fake)."
+    )
 
     parser.add_argument("--epochs", type=int, default=10)
     parser.add_argument("--learning-rate", type=float, default=2e-4)
@@ -89,7 +90,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="generative", lesson="lesson_02_gan_mnist", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="generative", lesson="lesson_02_gan_mnist", run_name=train_cfg.run_name
+    )
     logger = get_logger("generative.gan_mnist", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -140,7 +143,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
             bsz = int(real_images.size(0))
             seen += bsz
 
-            real_label = torch.ones(bsz, device=device_info.torch_device) * (1.0 - train_cfg.label_smoothing)
+            real_label = torch.ones(bsz, device=device_info.torch_device) * (
+                1.0 - train_cfg.label_smoothing
+            )
             fake_label = torch.zeros(bsz, device=device_info.torch_device)
 
             # 1) Train discriminator.
@@ -171,7 +176,13 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
         d_loss_avg = d_loss_total / max(1, seen)
         g_loss_avg = g_loss_total / max(1, seen)
 
-        logger.info("Epoch %d/%d | d_loss %.4f | g_loss %.4f", epoch, train_cfg.epochs, d_loss_avg, g_loss_avg)
+        logger.info(
+            "Epoch %d/%d | d_loss %.4f | g_loss %.4f",
+            epoch,
+            train_cfg.epochs,
+            d_loss_avg,
+            g_loss_avg,
+        )
         append_jsonl(metrics_path, {"epoch": epoch, "d_loss": d_loss_avg, "g_loss": g_loss_avg})
 
         with torch.no_grad():

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -124,7 +123,9 @@ class PVTClassifier(nn.Module):
         grid = int(cfg.image_size) // int(cfg.patch_size)
         # We downsample by 2 at each subsequent stage (4 stages total).
         if grid % 8 != 0:
-            raise ValueError("PVT requires (image_size / patch_size) divisible by 8 for 4-stage pyramid")
+            raise ValueError(
+                "PVT requires (image_size / patch_size) divisible by 8 for 4-stage pyramid"
+            )
 
         self.cfg = cfg
 
@@ -186,8 +187,12 @@ class PVTClassifier(nn.Module):
         x = x.to(torch.float32)
         if x.ndim != 4:
             raise ValueError(f"Expected input shape (B, C, H, W), got {tuple(x.shape)}")
-        if int(x.shape[2]) != int(self.cfg.image_size) or int(x.shape[3]) != int(self.cfg.image_size):
-            raise ValueError(f"Expected image_size={self.cfg.image_size}, got HxW={tuple(x.shape[2:])}")
+        if int(x.shape[2]) != int(self.cfg.image_size) or int(x.shape[3]) != int(
+            self.cfg.image_size
+        ):
+            raise ValueError(
+                f"Expected image_size={self.cfg.image_size}, got HxW={tuple(x.shape[2:])}"
+            )
 
         x = self.stage1(x)
         x = self.stage2(x)
@@ -225,9 +230,7 @@ def build_pvt_classifier(
         raise ValueError("Unknown PVT variant. Supported: pvt_tiny|pvt_small|pvt_base (+ _p*)")
 
     embed_dims_scaled = tuple(_c(int(d), w, min_ch=64, divisor=8) for d in embed_dims)
-    heads = tuple(
-        _pick_heads(d, preferred=[12, 8, 6, 4, 3, 2, 1]) for d in embed_dims_scaled
-    )
+    heads = tuple(_pick_heads(d, preferred=[12, 8, 6, 4, 3, 2, 1]) for d in embed_dims_scaled)
 
     return PVTClassifier(
         PVTConfig(
@@ -244,4 +247,3 @@ def build_pvt_classifier(
 
 
 __all__ = ["build_pvt_classifier"]
-

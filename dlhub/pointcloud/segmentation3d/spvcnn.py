@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import GridSpec3D, PointVoxelFusionSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "spvcnn_tiny": {"width": 48, "grid": (6, 24, 24)},
@@ -64,4 +62,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ChannelShuffle, ConvBNAct, GlobalAvgPoolHead, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ChannelShuffle,
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    scale_channels,
+)
 
 
 class IGCV3Block(nn.Module):
@@ -20,7 +24,9 @@ class IGCV3Block(nn.Module):
             ChannelShuffle(g),
         )
         self.dw = nn.Sequential(
-            nn.Conv2d(c_out, c_out, kernel_size=3, stride=int(stride), padding=1, groups=c_out, bias=False),
+            nn.Conv2d(
+                c_out, c_out, kernel_size=3, stride=int(stride), padding=1, groups=c_out, bias=False
+            ),
             nn.BatchNorm2d(c_out),
             nn.ReLU(inplace=True),
         )
@@ -31,7 +37,10 @@ class IGCV3Block(nn.Module):
         self.act = nn.ReLU(inplace=True)
         self.down: nn.Module | None = None
         if int(stride) != 1 or c_in != c_out:
-            self.down = nn.Sequential(nn.Conv2d(c_in, c_out, kernel_size=1, stride=int(stride), bias=False), nn.BatchNorm2d(c_out))
+            self.down = nn.Sequential(
+                nn.Conv2d(c_in, c_out, kernel_size=1, stride=int(stride), bias=False),
+                nn.BatchNorm2d(c_out),
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x if self.down is None else self.down(x)
@@ -54,11 +63,15 @@ class IGCV3Classifier(nn.Module):
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
-        chs = tuple(scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels)
+        chs = tuple(
+            scale_channels(int(c), float(width_mult), min_ch=16, divisor=8) for c in channels
+        )
         self.stem = ConvBNAct(int(in_channels), chs[0], kernel_size=3, stride=2, act="relu")
 
         def stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
-            blocks: list[nn.Module] = [IGCV3Block(in_ch, out_ch, stride=int(stride), groups=int(groups))]
+            blocks: list[nn.Module] = [
+                IGCV3Block(in_ch, out_ch, stride=int(stride), groups=int(groups))
+            ]
             for _ in range(int(depth) - 1):
                 blocks.append(IGCV3Block(out_ch, out_ch, stride=1, groups=int(groups)))
             return nn.Sequential(*blocks)
@@ -115,4 +128,3 @@ if __name__ == "__main__":
     m = build_igcv3_classifier(in_channels=3, num_classes=10, variant="igcv3_base", width_mult=0.5)
     y = m(x)
     print("igcv3_base", tuple(y.shape))
-

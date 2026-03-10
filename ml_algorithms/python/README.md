@@ -5,17 +5,31 @@ repository focused on core ML/DL fundamentals.
 
 ## Algorithms
 - Linear Regression
+- Ridge Regression
 - Logistic Regression
+- Softmax Regression
 - Perceptron
 - Linear SVM
-- Naive Bayes (Gaussian, Multinomial)
+- Naive Bayes (Gaussian, Multinomial, Bernoulli)
 - Decision Trees (classification/regression)
 - Random Forests (classification/regression)
+- AdaBoost classifier (binary)
+- Gradient Boosting Regressor
 - K-Nearest Neighbors (classification/regression)
 - K-Means clustering
+- K-Medoids clustering
+- Agglomerative clustering
 - DBSCAN clustering
+- Spectral clustering
 - Gaussian Mixture Models (GMM)
+- Discriminant Analysis (LDA, QDA)
+- Markov Chain
+- N-gram language model
+- Hidden Markov Model (categorical)
 - Principal Component Analysis (PCA)
+- Non-negative matrix factorization (NMF)
+- FastICA
+- Isomap
 - MLP classifier
 
 ## Example

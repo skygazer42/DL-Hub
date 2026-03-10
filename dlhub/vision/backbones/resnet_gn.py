@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -14,11 +13,15 @@ def _gn(channels: int, *, groups: int = 32) -> nn.GroupNorm:
 
 
 def _conv3x3(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False
+    )
 
 
 def _conv1x1(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False
+    )
 
 
 class GNBasicBlock(nn.Module):
@@ -33,7 +36,9 @@ class GNBasicBlock(nn.Module):
         self.norm2 = _gn(out_ch, groups=int(groups))
         self.down: nn.Module | None = None
         if int(stride) != 1 or int(in_ch) != int(out_ch):
-            self.down = nn.Sequential(_conv1x1(in_ch, out_ch, stride=int(stride)), _gn(out_ch, groups=int(groups)))
+            self.down = nn.Sequential(
+                _conv1x1(in_ch, out_ch, stride=int(stride)), _gn(out_ch, groups=int(groups))
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -60,7 +65,9 @@ class GNBottleneck(nn.Module):
         self.act = nn.ReLU(inplace=True)
         self.down: nn.Module | None = None
         if int(stride) != 1 or int(in_ch) != out_exp:
-            self.down = nn.Sequential(_conv1x1(in_ch, out_exp, stride=int(stride)), _gn(out_exp, groups=int(groups)))
+            self.down = nn.Sequential(
+                _conv1x1(in_ch, out_exp, stride=int(stride)), _gn(out_exp, groups=int(groups))
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -104,7 +111,9 @@ class ResNetGNClassifier(nn.Module):
         out_dim = c4 * int(getattr(block, "expansion", 1))
         self.head = GlobalAvgPoolHead(out_dim, int(num_classes), dropout=float(dropout))
 
-    def _make_layer(self, block: type[nn.Module], out_ch: int, blocks: int, *, stride: int) -> nn.Sequential:
+    def _make_layer(
+        self, block: type[nn.Module], out_ch: int, blocks: int, *, stride: int
+    ) -> nn.Sequential:
         layers: list[nn.Module] = []
         layers.append(block(self.in_ch, int(out_ch), stride=int(stride), groups=self.groups))
         self.in_ch = int(out_ch) * int(getattr(block, "expansion", 1))
@@ -156,7 +165,8 @@ def build_resnet_gn_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_resnet_gn_classifier(in_channels=3, num_classes=10, variant="resnet_gn18", width_mult=0.5)
+    m = build_resnet_gn_classifier(
+        in_channels=3, num_classes=10, variant="resnet_gn18", width_mult=0.5
+    )
     y = m(x)
     print("resnet_gn18", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -140,4 +139,3 @@ class DGCNNClassifier(nn.Module):
 
 
 __all__ = ["DGCNNClassifier", "ModelConfig"]
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -44,11 +43,15 @@ class LinformerSelfAttention(nn.Module):
 
 
 class LinformerBlock(nn.Module):
-    def __init__(self, dim: int, num_heads: int, *, num_tokens: int, proj_tokens: int, drop_path: float = 0.0) -> None:
+    def __init__(
+        self, dim: int, num_heads: int, *, num_tokens: int, proj_tokens: int, drop_path: float = 0.0
+    ) -> None:
         super().__init__()
         d = int(dim)
         self.norm1 = nn.LayerNorm(d)
-        self.attn = LinformerSelfAttention(d, int(num_heads), num_tokens=int(num_tokens), proj_tokens=int(proj_tokens))
+        self.attn = LinformerSelfAttention(
+            d, int(num_heads), num_tokens=int(num_tokens), proj_tokens=int(proj_tokens)
+        )
         self.dp1 = DropPath(float(drop_path))
         self.norm2 = nn.LayerNorm(d)
         self.mlp = MLP(d, 4 * d, dropout=0.0, act="gelu")
@@ -83,7 +86,16 @@ class LinformerV2Classifier(nn.Module):
         self.pos = nn.Parameter(torch.zeros(1, n, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
         self.blocks = nn.Sequential(
-            *[LinformerBlock(int(dim), int(heads), num_tokens=n, proj_tokens=int(proj_tokens), drop_path=float(dp_rates[i])) for i in range(int(depth))]
+            *[
+                LinformerBlock(
+                    int(dim),
+                    int(heads),
+                    num_tokens=n,
+                    proj_tokens=int(proj_tokens),
+                    drop_path=float(dp_rates[i]),
+                )
+                for i in range(int(depth))
+            ]
         )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
@@ -116,7 +128,9 @@ def build_linformer_v2_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Linformer-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Linformer-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return LinformerV2Classifier(
         in_channels=int(in_channels),
@@ -135,7 +149,8 @@ def build_linformer_v2_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(1, 3, 64, 64)
-    m = build_linformer_v2_classifier(in_channels=3, num_classes=10, variant="linformer_v2_tiny", image_size=64)
+    m = build_linformer_v2_classifier(
+        in_channels=3, num_classes=10, variant="linformer_v2_tiny", image_size=64
+    )
     y = m(x)
     print("linformer_v2_tiny", tuple(y.shape))
-

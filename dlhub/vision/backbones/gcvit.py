@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -12,7 +11,9 @@ class GlobalContextAdd(nn.Module):
     def __init__(self, dim: int) -> None:
         super().__init__()
         d = int(dim)
-        self.fc = nn.Sequential(nn.AdaptiveAvgPool2d((1, 1)), nn.Conv2d(d, d, kernel_size=1, bias=True), nn.Sigmoid())
+        self.fc = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)), nn.Conv2d(d, d, kernel_size=1, bias=True), nn.Sigmoid()
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return x * self.fc(x)
@@ -24,7 +25,9 @@ class GCViTBlock(nn.Module):
         d = int(dim)
         self.gc = GlobalContextAdd(d)
         self.dp0 = DropPath(float(drop_path))
-        self.attn = TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(drop_path))
+        self.attn = TransformerEncoderBlock(
+            d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(drop_path)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x + self.dp0(self.gc(x))
@@ -56,13 +59,28 @@ class GCViTClassifier(nn.Module):
         dp_iter = iter(dp_rates)
 
         self.down = nn.ModuleList()
-        self.down.append(nn.Sequential(nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), LayerNorm2d(dims[0])))
+        self.down.append(
+            nn.Sequential(
+                nn.Conv2d(int(in_channels), dims[0], kernel_size=4, stride=4), LayerNorm2d(dims[0])
+            )
+        )
         for i in range(3):
-            self.down.append(nn.Sequential(LayerNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)))
+            self.down.append(
+                nn.Sequential(
+                    LayerNorm2d(dims[i]), nn.Conv2d(dims[i], dims[i + 1], kernel_size=2, stride=2)
+                )
+            )
 
         self.stages = nn.ModuleList()
         for i in range(4):
-            self.stages.append(nn.Sequential(*[GCViTBlock(dims[i], num_heads=heads[i], drop_path=float(next(dp_iter))) for _ in range(depths[i])]))
+            self.stages.append(
+                nn.Sequential(
+                    *[
+                        GCViTBlock(dims[i], num_heads=heads[i], drop_path=float(next(dp_iter)))
+                        for _ in range(depths[i])
+                    ]
+                )
+            )
         self.head = GlobalAvgPoolHead(dims[-1], int(num_classes), dropout=float(dropout))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -110,4 +128,3 @@ if __name__ == "__main__":
     m = build_gcvit_classifier(in_channels=3, num_classes=10, variant="gcvit_tiny", width_mult=0.5)
     y = m(x)
     print("gcvit_tiny", tuple(y.shape))
-

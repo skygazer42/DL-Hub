@@ -1,14 +1,12 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import GlobalAvgPoolHead, InvertedResidual, scale_channels
 
-
 _VARIANTS: dict[str, dict] = {
-    'tiny':  {'channels': (16, 24, 40, 80), 'depths': (1, 2, 2, 2)},
-    'small': {'channels': (16, 32, 64, 112), 'depths': (2, 3, 3, 2)},
-    'base':  {'channels': (24, 40, 80, 160), 'depths': (2, 3, 4, 3)},
+    "tiny": {"channels": (16, 24, 40, 80), "depths": (1, 2, 2, 2)},
+    "small": {"channels": (16, 32, 64, 112), "depths": (2, 3, 3, 2)},
+    "base": {"channels": (24, 40, 80, 160), "depths": (2, 3, 4, 3)},
 }
 
 
@@ -18,18 +16,20 @@ class MobileformerClassifier(nn.Module):
         *,
         in_channels: int,
         num_classes: int,
-        variant: str = 'tiny',
+        variant: str = "tiny",
         width_mult: float = 1.0,
         dropout: float = 0.1,
     ) -> None:
         super().__init__()
         name = str(variant).lower().strip()
         if name not in _VARIANTS:
-            raise ValueError(f'Unknown variant: {variant!r}. Supported: {sorted(_VARIANTS)}')
+            raise ValueError(f"Unknown variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
 
         spec = _VARIANTS[name]
-        chans = tuple(scale_channels(int(c), float(width_mult), min_ch=8, divisor=8) for c in spec['channels'])
-        depths = tuple(int(d) for d in spec['depths'])
+        chans = tuple(
+            scale_channels(int(c), float(width_mult), min_ch=8, divisor=8) for c in spec["channels"]
+        )
+        depths = tuple(int(d) for d in spec["depths"])
 
         self.stem = nn.Sequential(
             nn.Conv2d(int(in_channels), chans[0], kernel_size=3, stride=2, padding=1, bias=False),
@@ -39,9 +39,17 @@ class MobileformerClassifier(nn.Module):
 
         def stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
             blocks: list[nn.Module] = []
-            blocks.append(InvertedResidual(in_ch, out_ch, stride=int(stride), expand_ratio=6.0, se_ratio=None, act='relu6'))
+            blocks.append(
+                InvertedResidual(
+                    in_ch, out_ch, stride=int(stride), expand_ratio=6.0, se_ratio=None, act="relu6"
+                )
+            )
             for _ in range(int(depth) - 1):
-                blocks.append(InvertedResidual(out_ch, out_ch, stride=1, expand_ratio=6.0, se_ratio=None, act='relu6'))
+                blocks.append(
+                    InvertedResidual(
+                        out_ch, out_ch, stride=1, expand_ratio=6.0, se_ratio=None, act="relu6"
+                    )
+                )
             return nn.Sequential(*blocks)
 
         self.stage1 = stage(chans[0], chans[0], depths[0], stride=1)
@@ -65,7 +73,7 @@ def build_mobileformer_classifier(
     *,
     in_channels: int,
     num_classes: int,
-    variant: str = 'tiny',
+    variant: str = "tiny",
     width_mult: float = 1.0,
     dropout: float = 0.1,
 ) -> nn.Module:
@@ -78,9 +86,9 @@ def build_mobileformer_classifier(
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_mobileformer_classifier(in_channels=3, num_classes=10, variant='tiny')
+    m = build_mobileformer_classifier(in_channels=3, num_classes=10, variant="tiny")
     y = m(x)
-    print('mobileformer', tuple(y.shape))
+    print("mobileformer", tuple(y.shape))

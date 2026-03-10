@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -72,7 +71,9 @@ class WaveNetTextClassifier(nn.Module):
         blocks: list[nn.Module] = []
         for i in range(int(cfg.depth)):
             dilation = 2 ** (i % 6)
-            blocks.append(WaveNetResidualBlock(int(c), dilation=int(dilation), dropout=float(cfg.dropout)))
+            blocks.append(
+                WaveNetResidualBlock(int(c), dilation=int(dilation), dropout=float(cfg.dropout))
+            )
         self.blocks = nn.ModuleList(blocks)
 
         self.out = nn.Sequential(
@@ -123,7 +124,9 @@ def build_wavenet_classifier(
     elif name in {"wavenet_base"}:
         channels, depth = 192, 10
     else:
-        raise ValueError("Unknown WaveNet variant. Supported: wavenet_tiny|wavenet_small|wavenet_base")
+        raise ValueError(
+            "Unknown WaveNet variant. Supported: wavenet_tiny|wavenet_small|wavenet_base"
+        )
 
     return WaveNetTextClassifier(
         WaveNetConfig(
@@ -179,4 +182,3 @@ if __name__ == "__main__":
 
 
 __all__ = ["WaveNetTextClassifier", "WaveNetConfig", "build_wavenet_classifier", "registry"]
-

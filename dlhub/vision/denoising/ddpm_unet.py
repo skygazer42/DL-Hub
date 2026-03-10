@@ -1,9 +1,8 @@
-
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -30,7 +29,9 @@ def sinusoidal_embedding(x: torch.Tensor, dim: int) -> torch.Tensor:
     half = d // 2
     device = x.device
     # log-spaced frequencies
-    freqs = torch.exp(torch.linspace(math.log(1.0), math.log(10000.0), half, device=device, dtype=x.dtype))
+    freqs = torch.exp(
+        torch.linspace(math.log(1.0), math.log(10000.0), half, device=device, dtype=x.dtype)
+    )
     args = x[:, None] * freqs[None, :]
     emb = torch.cat([torch.sin(args), torch.cos(args)], dim=-1)
     return emb
@@ -53,7 +54,9 @@ class ResBlock(nn.Module):
         self.conv2 = nn.Conv2d(c_out, c_out, kernel_size=3, padding=1, bias=False)
 
         self.time_proj = nn.Linear(tdim, c_out, bias=True)
-        self.skip = nn.Identity() if c_in == c_out else nn.Conv2d(c_in, c_out, kernel_size=1, bias=True)
+        self.skip = (
+            nn.Identity() if c_in == c_out else nn.Conv2d(c_in, c_out, kernel_size=1, bias=True)
+        )
 
     def forward(self, x: torch.Tensor, t: torch.Tensor) -> torch.Tensor:
         # t: (B, time_dim)
@@ -190,7 +193,9 @@ class DDPMUNet(nn.Module):
         for blk in self.bottleneck:
             h = blk(h, t)
 
-        for up, reduce, blocks, skip in zip(self.ups[0::2], self.ups[1::2], self.dec_blocks, reversed(skips), strict=True):
+        for up, reduce, blocks, skip in zip(
+            self.ups[0::2], self.ups[1::2], self.dec_blocks, reversed(skips), strict=True
+        ):
             h = up(h)
             if h.shape[-2:] != skip.shape[-2:]:
                 h = F.interpolate(h, size=skip.shape[-2:], mode="nearest")
@@ -260,4 +265,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

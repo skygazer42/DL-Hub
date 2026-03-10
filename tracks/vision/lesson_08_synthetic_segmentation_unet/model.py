@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -46,6 +45,7 @@ class TinyUNet(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.model(x)  # logits (B, 1, H, W)
+
 
 class _TorchvisionSegmentationAdapter(nn.Module):
     def __init__(self, model: nn.Module, *, in_channels: int) -> None:
@@ -114,7 +114,11 @@ def build_model(cfg: ModelConfig) -> nn.Module:
             raise ValueError("Empty torchvision model name. Example: --arch tvseg:fcn_resnet50")
 
         try:
-            from dlhub.vision.zoo import DependencyNotAvailable, build_torchvision_model, list_torchvision_arches
+            from dlhub.vision.zoo import (
+                DependencyNotAvailable,
+                build_torchvision_model,
+                list_torchvision_arches,
+            )
         except Exception as exc:
             raise RuntimeError(f"torchvision is required for arch={arch_raw!r}: {exc}") from exc
 

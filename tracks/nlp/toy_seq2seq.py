@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -53,7 +52,9 @@ def _make_examples(cfg: DataConfig) -> list[tuple[list[int], list[int]]]:
     examples: list[tuple[list[int], list[int]]] = []
     for _ in range(int(cfg.num_samples)):
         length = int(rng.integers(int(cfg.min_len), int(cfg.max_len) + 1))
-        src = rng.integers(low=3, high=3 + int(cfg.base_vocab_size), size=(length,), dtype=np.int64).tolist()
+        src = rng.integers(
+            low=3, high=3 + int(cfg.base_vocab_size), size=(length,), dtype=np.int64
+        ).tolist()
         tgt = list(reversed(src))
         examples.append((src, tgt))
 
@@ -62,7 +63,9 @@ def _make_examples(cfg: DataConfig) -> list[tuple[list[int], list[int]]]:
 
 
 class ToySeq2SeqDataset:
-    def __init__(self, *, examples: list[tuple[list[int], list[int]]], vocab: Vocab, cfg: DataConfig) -> None:
+    def __init__(
+        self, *, examples: list[tuple[list[int], list[int]]], vocab: Vocab, cfg: DataConfig
+    ) -> None:
         self.examples = list(examples)
         self.vocab = vocab
         self.cfg = cfg
@@ -116,7 +119,9 @@ def get_dataloaders(cfg: DataConfig):
     examples = _make_examples(cfg)
     ds = ToySeq2SeqDataset(examples=examples, vocab=vocab, cfg=cfg)
 
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed))
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
+    )
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)
 
@@ -126,9 +131,12 @@ def get_dataloaders(cfg: DataConfig):
         tgt_in_ids = torch.stack([b[0]["tgt_in_ids"] for b in batch], dim=0)
         tgt_mask = torch.stack([b[0]["tgt_mask"] for b in batch], dim=0)
         tgt_out_ids = torch.stack([b[1]["tgt_out_ids"] for b in batch], dim=0)
-        return {"src_ids": src_ids, "src_mask": src_mask, "tgt_in_ids": tgt_in_ids, "tgt_mask": tgt_mask}, {
-            "tgt_out_ids": tgt_out_ids
-        }
+        return {
+            "src_ids": src_ids,
+            "src_mask": src_mask,
+            "tgt_in_ids": tgt_in_ids,
+            "tgt_mask": tgt_mask,
+        }, {"tgt_out_ids": tgt_out_ids}
 
     train_loader = DataLoader(
         train_ds,
@@ -148,4 +156,3 @@ def get_dataloaders(cfg: DataConfig):
 
 
 __all__ = ["DataConfig", "Vocab", "ToySeq2SeqDataset", "get_dataloaders"]
-

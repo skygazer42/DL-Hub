@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -112,4 +111,3 @@ class GATGraphClassifier(nn.Module):
         h = F.elu(self.gat2(h, adj))
         g = h.mean(dim=1)  # graph-level mean pooling
         return self.head(g)
-

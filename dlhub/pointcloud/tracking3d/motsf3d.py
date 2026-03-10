@@ -4,7 +4,6 @@ from torch import nn
 
 from ._common import SegTracking3D, smoke_test_tracker
 
-
 _VARIANTS: dict[str, dict[str, int]] = {
     "motsf3d_tiny": {"width": 48, "tracks": 24},
     "motsf3d_small": {"width": 64, "tracks": 32},

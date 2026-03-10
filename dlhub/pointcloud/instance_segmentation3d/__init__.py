@@ -7,7 +7,6 @@ Conventions:
 This package uses **lazy imports** so `import dlhub.pointcloud.instance_segmentation3d` stays lightweight.
 """
 
-
 from importlib import import_module
 from typing import Any
 
@@ -34,4 +33,3 @@ def __dir__() -> list[str]:  # pragma: no cover
 
 
 __all__ = []
-

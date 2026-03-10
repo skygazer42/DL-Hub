@@ -1,4 +1,3 @@
-
 """XR-VLM (toy-first) for FGVC.
 
 Reference:
@@ -14,12 +13,18 @@ Toy interpretation (offline, no pretrained weights):
 import math
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
-from ._common import TinyPatchEncoder, build_fgvc_model, check_nchw, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TinyPatchEncoder,
+    build_fgvc_model,
+    check_nchw,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class XRVLMFGVC(nn.Module):
@@ -55,7 +60,9 @@ class XRVLMFGVC(nn.Module):
         )
 
         # (K, P, E): multi-part prompts per class.
-        self.class_part_prompts = nn.Parameter(torch.randn(int(self.num_classes), int(self.num_parts), int(embed)) * 0.02)
+        self.class_part_prompts = nn.Parameter(
+            torch.randn(int(self.num_classes), int(self.num_parts), int(embed)) * 0.02
+        )
         self.patch_proj = nn.Linear(int(embed), int(embed))
 
         # Class interaction: treat K class embeddings as a short sequence and run a tiny transformer encoder.
@@ -87,7 +94,9 @@ class XRVLMFGVC(nn.Module):
         prompts = F.normalize(self.class_part_prompts, dim=-1)  # (K, P, E)
 
         # Patch-to-prompt alignment: (B, K, P, N)
-        scores = torch.einsum("bne,kpe->bkpn", patches, prompts) / math.sqrt(max(int(patches.shape[-1]), 1))
+        scores = torch.einsum("bne,kpe->bkpn", patches, prompts) / math.sqrt(
+            max(int(patches.shape[-1]), 1)
+        )
         attn = torch.softmax(scores, dim=-1)
 
         # Per-class part features: (B, K, P, E) then aggregate parts -> (B, K, E)
@@ -147,4 +156,3 @@ def build_xr_vlm_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_xr_vlm_fgvc_classifier, "xr_vlm_tiny")
-

@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -157,7 +156,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         model=model,
         optimizer=optimizer,
         epoch=train_cfg.epochs,
-        extra={"track": "nlp", "lesson": "lesson_01_toy_text_classification", "vocab_size": vocab.size},
+        extra={
+            "track": "nlp",
+            "lesson": "lesson_01_toy_text_classification",
+            "vocab_size": vocab.size,
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
@@ -176,4 +179,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

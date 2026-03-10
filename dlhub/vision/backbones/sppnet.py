@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -9,8 +8,8 @@ from dlhub.vision.backbones._blocks import ConvBNAct
 class SpatialPyramidPooling(nn.Module):
     def __init__(self, levels: tuple[int, ...] = (1, 2, 4), *, mode: str = "max") -> None:
         super().__init__()
-        lvls = tuple(int(l) for l in levels)
-        if not lvls or any(l <= 0 for l in lvls):
+        lvls = tuple(int(level) for level in levels)
+        if not lvls or any(level <= 0 for level in lvls):
             raise ValueError("levels must be a non-empty tuple of positive ints")
         self.levels = lvls
         self.mode = str(mode).lower().strip()
@@ -20,12 +19,12 @@ class SpatialPyramidPooling(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         b, c, _, _ = x.shape
         feats: list[torch.Tensor] = []
-        for l in self.levels:
+        for level in self.levels:
             if self.mode == "max":
-                y = F.adaptive_max_pool2d(x, output_size=(l, l))
+                y = F.adaptive_max_pool2d(x, output_size=(level, level))
             else:
-                y = F.adaptive_avg_pool2d(x, output_size=(l, l))
-            feats.append(y.reshape(b, c * l * l))
+                y = F.adaptive_avg_pool2d(x, output_size=(level, level))
+            feats.append(y.reshape(b, c * level * level))
         return torch.cat(feats, dim=1)
 
 
@@ -55,7 +54,7 @@ class SPPNetClassifier(nn.Module):
         self.spp = SpatialPyramidPooling(tuple(levels), mode="max")
         self.drop = nn.Dropout(p=float(dropout))
 
-        spp_dim = (4 * c) * sum(int(l) * int(l) for l in levels)
+        spp_dim = (4 * c) * sum(int(level) * int(level) for level in levels)
         self.fc = nn.Linear(int(spp_dim), int(num_classes))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -102,4 +101,3 @@ if __name__ == "__main__":
         m = build_sppnet_classifier(in_channels=3, num_classes=10, variant=v)
         y = m(x)
         print(v, tuple(y.shape))
-

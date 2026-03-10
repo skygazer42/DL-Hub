@@ -1,8 +1,13 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, SqueezeExcite, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    SqueezeExcite,
+    make_divisible,
+)
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -16,7 +21,14 @@ class MobileViTBlockV3(nn.Module):
             ConvBNAct(d, d, kernel_size=3, stride=1, act="silu"),
             ConvBNAct(d, d, kernel_size=1, stride=1, padding=0, act="silu"),
         )
-        self.blocks = nn.Sequential(*[TransformerEncoderBlock(d, int(num_heads), mlp_ratio=2.0, dropout=0.0, drop_path=0.0) for _ in range(int(depth))])
+        self.blocks = nn.Sequential(
+            *[
+                TransformerEncoderBlock(
+                    d, int(num_heads), mlp_ratio=2.0, dropout=0.0, drop_path=0.0
+                )
+                for _ in range(int(depth))
+            ]
+        )
         self.fuse = nn.Sequential(
             ConvBNAct(2 * d, d, kernel_size=1, stride=1, padding=0, act="silu"),
             SqueezeExcite(d, se_ratio=0.25),
@@ -32,7 +44,9 @@ class MobileViTBlockV3(nn.Module):
 
 
 class MobileViTV3Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float = 1.0, dropout: float = 0.2) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float = 1.0, dropout: float = 0.2
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -55,7 +69,10 @@ class MobileViTV3Classifier(nn.Module):
             InvertedResidual(c(64), c(80), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"),
             MobileViTBlockV3(c(80), depth=3, num_heads=5),
         )
-        self.head = nn.Sequential(ConvBNAct(c(80), c(640), kernel_size=1, stride=1, padding=0, act="silu"), GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)))
+        self.head = nn.Sequential(
+            ConvBNAct(c(80), c(640), kernel_size=1, stride=1, padding=0, act="silu"),
+            GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -82,9 +99,16 @@ def build_mobilevit_v3_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MobileViT-v3 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MobileViT-v3 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return MobileViTV3Classifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return MobileViTV3Classifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -93,4 +117,3 @@ if __name__ == "__main__":
     m = build_mobilevit_v3_classifier(in_channels=3, num_classes=10, variant="mobilevit_v3_xs")
     y = m(x)
     print("mobilevit_v3_xs", tuple(y.shape))
-

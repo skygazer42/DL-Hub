@@ -9,15 +9,26 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 REGRESSION_IMPORTS = (
     "dlhub.device",
     "ml_algorithms.python.clustering",
+    "ml_algorithms.python.adaboost",
+    "ml_algorithms.python.discriminant_analysis",
     "ml_algorithms.python.gmm",
+    "ml_algorithms.python.gradient_boosting",
+    "ml_algorithms.python.hmm",
+    "ml_algorithms.python.kmedoids",
     "ml_algorithms.python.kmeans",
     "ml_algorithms.python.knn",
+    "ml_algorithms.python.ica",
     "ml_algorithms.python.linear_models",
+    "ml_algorithms.python.isomap",
+    "ml_algorithms.python.markov_chain",
     "ml_algorithms.python.mlp",
+    "ml_algorithms.python.nmf",
     "ml_algorithms.python.naive_bayes",
+    "ml_algorithms.python.ngram",
     "ml_algorithms.python.pca",
     "ml_algorithms.python.perceptron",
     "ml_algorithms.python.random_forest",
+    "ml_algorithms.python.spectral_clustering",
     "ml_algorithms.python.svm",
     "tracks.gnn.datasets.cora",
     "tracks.gnn.datasets.karate",
@@ -33,7 +44,9 @@ REGRESSION_IMPORTS = (
 
 
 @pytest.mark.parametrize("module_name", REGRESSION_IMPORTS)
-def test_regression_modules_import_without_nameerror_or_bad_relative_imports(module_name: str) -> None:
+def test_regression_modules_import_without_nameerror_or_bad_relative_imports(
+    module_name: str,
+) -> None:
     proc = subprocess.run(
         [sys.executable, "-c", f"import {module_name}"],
         cwd=REPO_ROOT,
@@ -43,7 +56,5 @@ def test_regression_modules_import_without_nameerror_or_bad_relative_imports(mod
     )
 
     assert proc.returncode == 0, (
-        f"{module_name} failed to import.\n"
-        f"stdout:\n{proc.stdout}\n"
-        f"stderr:\n{proc.stderr}"
+        f"{module_name} failed to import.\n" f"stdout:\n{proc.stdout}\n" f"stderr:\n{proc.stderr}"
     )

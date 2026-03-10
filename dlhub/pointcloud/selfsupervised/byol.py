@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def cosine_similarity_loss(p: torch.Tensor, z: torch.Tensor) -> torch.Tensor:
@@ -25,7 +24,9 @@ def cosine_similarity_loss(p: torch.Tensor, z: torch.Tensor) -> torch.Tensor:
     return (2.0 - 2.0 * (p * z).sum(dim=1)).mean()
 
 
-def byol_loss(p1: torch.Tensor, z2: torch.Tensor, p2: torch.Tensor, z1: torch.Tensor) -> torch.Tensor:
+def byol_loss(
+    p1: torch.Tensor, z2: torch.Tensor, p2: torch.Tensor, z1: torch.Tensor
+) -> torch.Tensor:
     """Symmetric BYOL loss for two views."""
 
     return 0.5 * (cosine_similarity_loss(p1, z2) + cosine_similarity_loss(p2, z1))
@@ -134,8 +135,12 @@ class BYOLPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        self.online_projector = MLPHead(int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), use_final_bn=True)
-        self.online_predictor = MLPHead(int(proj_dim), int(proj_dim), hidden_dim=int(proj_dim), use_final_bn=False)
+        self.online_projector = MLPHead(
+            int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), use_final_bn=True
+        )
+        self.online_predictor = MLPHead(
+            int(proj_dim), int(proj_dim), hidden_dim=int(proj_dim), use_final_bn=False
+        )
 
         self.target_encoder = PointNetGlobalEncoder(
             in_channels=int(in_channels),
@@ -143,7 +148,9 @@ class BYOLPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        self.target_projector = MLPHead(int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), use_final_bn=True)
+        self.target_projector = MLPHead(
+            int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), use_final_bn=True
+        )
         self.reset_target()
 
     @torch.no_grad()
@@ -203,7 +210,9 @@ def build_byol_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown BYOL-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown BYOL-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     return BYOLPointNet(

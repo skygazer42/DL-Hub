@@ -1,6 +1,11 @@
 from torch import nn
 
-from ._common import TransformerFGVCModel, build_fgvc_model, make_fgvc_variants, smoke_test_classifier
+from ._common import (
+    TransformerFGVCModel,
+    build_fgvc_model,
+    make_fgvc_variants,
+    smoke_test_classifier,
+)
 
 
 class GranViT(TransformerFGVCModel):

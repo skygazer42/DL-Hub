@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -7,7 +6,6 @@ from torch.nn import functional as F
 
 from ._common import PointNetEncoder, check_points, split_xyz_features
 
-
 _VARIANTS: dict[str, dict[str, object]] = {
     "fcaf3d_tiny": {"width": 32, "grid": (8, 16, 16), "topk": 48},
     "fcaf3d_small": {"width": 48, "grid": (8, 20, 20), "topk": 64},
@@ -15,7 +13,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 }
 
 
-def _scatter_mean_3d(idx_dhw: torch.Tensor, values: torch.Tensor, *, d: int, h: int, w: int) -> torch.Tensor:
+def _scatter_mean_3d(
+    idx_dhw: torch.Tensor, values: torch.Tensor, *, d: int, h: int, w: int
+) -> torch.Tensor:
     # idx_dhw: (B,N,3) with (iz,iy,ix)
     b, n, _ = idx_dhw.shape
     _, _, c = values.shape
@@ -34,7 +34,9 @@ def _scatter_mean_3d(idx_dhw: torch.Tensor, values: torch.Tensor, *, d: int, h: 
     return out.view(b, d, h, w, c).permute(0, 4, 1, 2, 3).contiguous()  # (B,C,D,H,W)
 
 
-def _topk_heatmap_3d(hm: torch.Tensor, *, k: int) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+def _topk_heatmap_3d(
+    hm: torch.Tensor, *, k: int
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     # hm: (B,C,D,H,W)
     b, c, d, h, w = hm.shape
     s = hm.sigmoid().view(b, c, d * h * w)
@@ -117,7 +119,9 @@ class FCAF3D(nn.Module):
         yaw = gathered[..., 6:7].tanh() * math.pi
         boxes = torch.cat([torch.stack([xc, yc, zc], dim=-1) + delta, dims, yaw], dim=-1)
 
-        cls_logits = torch.zeros(b, self.topk, self.num_classes, device=points.device, dtype=points.dtype)
+        cls_logits = torch.zeros(
+            b, self.topk, self.num_classes, device=points.device, dtype=points.dtype
+        )
         cls_logits.scatter_(-1, cls.unsqueeze(-1), score.unsqueeze(-1))
         return {"boxes": boxes, "cls_logits": cls_logits, "scores": score}
 
@@ -149,4 +153,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -36,7 +35,9 @@ class RGCNLayer(nn.Module):
         self.num_bases = int(num_bases)
 
         # Basis decomposition: W_r = sum_b a_{r,b} V_b
-        self.bases = nn.Parameter(torch.empty((self.num_bases, self.in_features, self.out_features)))
+        self.bases = nn.Parameter(
+            torch.empty((self.num_bases, self.in_features, self.out_features))
+        )
         self.coeff: nn.Parameter | None = None
         if self.num_bases < self.num_rels:
             self.coeff = nn.Parameter(torch.empty((self.num_rels, self.num_bases)))
@@ -119,11 +120,14 @@ class RGCN(nn.Module):
         )
 
     def forward(
-        self, x: torch.Tensor, edge_index: torch.Tensor, edge_type: torch.Tensor, edge_norm: torch.Tensor | None
+        self,
+        x: torch.Tensor,
+        edge_index: torch.Tensor,
+        edge_type: torch.Tensor,
+        edge_norm: torch.Tensor | None,
     ) -> torch.Tensor:
         h = self.layer1(x, edge_index=edge_index, edge_type=edge_type, edge_norm=edge_norm)
         return self.layer2(h, edge_index=edge_index, edge_type=edge_type, edge_norm=edge_norm)
 
 
 __all__ = ["RGCN", "ModelConfig"]
-

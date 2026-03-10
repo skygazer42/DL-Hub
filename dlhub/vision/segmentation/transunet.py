@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.segmentation._common import check_nchw
@@ -171,10 +170,11 @@ def build_transunet_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_transunet_segmenter(in_channels=3, num_classes=4, variant="transunet_tiny", width_mult=0.5)
+    m = build_transunet_segmenter(
+        in_channels=3, num_classes=4, variant="transunet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("transunet_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

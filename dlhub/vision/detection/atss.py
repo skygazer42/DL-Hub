@@ -1,9 +1,8 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.backbones._blocks import scale_channels
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class ATSSHead(nn.Module):
@@ -25,7 +24,11 @@ class ATSSHead(nn.Module):
     def forward_single(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         cls_feat = self.cls_tower(x)
         reg_feat = self.reg_tower(x)
-        return {"cls_logits": self.cls(cls_feat), "bbox_deltas": self.box(reg_feat), "centerness": self.center(reg_feat)}
+        return {
+            "cls_logits": self.cls(cls_feat),
+            "bbox_deltas": self.box(reg_feat),
+            "centerness": self.center(reg_feat),
+        }
 
 
 class ATSSDetector(nn.Module):
@@ -110,7 +113,10 @@ if __name__ == "__main__":
     m = build_atss_detector(in_channels=3, num_classes=3, variant="atss_tiny", width_mult=0.5)
     out = m(x)
     print("atss_tiny", [tuple(t.shape) for t in out["cls_logits"]])
-    loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"]) + sum(t.mean() for t in out["centerness"])
+    loss = (
+        sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["bbox_deltas"])
+        + sum(t.mean() for t in out["centerness"])
+    )
     loss.backward()
     print("ok")
-

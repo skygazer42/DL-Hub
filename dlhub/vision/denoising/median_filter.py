@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class MedianFilter(nn.Module):
@@ -10,7 +9,9 @@ class MedianFilter(nn.Module):
     This is a simple non-learnable denoiser that can be useful for impulse noise.
     """
 
-    def __init__(self, *, kernel_size: int = 3, padding: str = "reflect", clamp: bool = True) -> None:
+    def __init__(
+        self, *, kernel_size: int = 3, padding: str = "reflect", clamp: bool = True
+    ) -> None:
         super().__init__()
         k = int(kernel_size)
         if k < 1 or k % 2 == 0:
@@ -55,7 +56,9 @@ def build_median_filter_denoiser(
     _ = float(sigma)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MedianFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MedianFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return MedianFilter(kernel_size=int(spec["k"]), padding="reflect", clamp=True)
 
@@ -67,4 +70,3 @@ if __name__ == "__main__":
     m = build_median_filter_denoiser(in_channels=1, variant="median_tiny")
     y = m(noisy)
     print("median_tiny", tuple(y.shape), float((y - x).abs().mean().item()))
-

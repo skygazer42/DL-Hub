@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -116,4 +115,3 @@ def get_dataloaders(config: DataConfig):
         collate_fn=_collate,
     )
     return train_loader, val_loader
-

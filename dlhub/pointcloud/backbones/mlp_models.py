@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -66,7 +65,10 @@ class PointMLPClassifier(nn.Module):
             nn.ReLU(inplace=True),
         )
         self.blocks = nn.ModuleList(
-            [LocalMLPAggregation(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))]
+            [
+                LocalMLPAggregation(d, k=int(cfg.k), dropout=float(cfg.dropout))
+                for _ in range(int(cfg.depth))
+            ]
         )
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -77,7 +79,9 @@ class PointMLPClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         x = points.to(torch.float32).transpose(1, 2).contiguous()  # (B, C, N)
         x = self.stem(x)
@@ -105,7 +109,9 @@ def build_pointmlp_classifier(
     elif name in {"pointmlp_base"}:
         embed_dim, depth, k = 192, 5, 20
     else:
-        raise ValueError("Unknown PointMLP variant. Supported: pointmlp|pointmlp_small|pointmlp_base")
+        raise ValueError(
+            "Unknown PointMLP variant. Supported: pointmlp|pointmlp_small|pointmlp_base"
+        )
 
     return PointMLPClassifier(
         PointMLPConfig(
@@ -157,7 +163,9 @@ class PointNeXtClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         x = points.to(torch.float32).transpose(1, 2).contiguous()
         x = self.stem(x)
@@ -186,7 +194,9 @@ def build_pointnext_classifier(
     elif name in {"pointnext_base"}:
         embed_dim, depth, k = 192, 8, 20
     else:
-        raise ValueError("Unknown PointNeXt variant. Supported: pointnext_tiny|pointnext_small|pointnext_base")
+        raise ValueError(
+            "Unknown PointNeXt variant. Supported: pointnext_tiny|pointnext_small|pointnext_base"
+        )
 
     return PointNeXtClassifier(
         PointNeXtConfig(
@@ -263,7 +273,10 @@ class PointMixerClassifier(nn.Module):
             nn.ReLU(inplace=True),
         )
         self.blocks = nn.ModuleList(
-            [PointMixerBlock(d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))]
+            [
+                PointMixerBlock(d, k=int(cfg.k), dropout=float(cfg.dropout))
+                for _ in range(int(cfg.depth))
+            ]
         )
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -274,7 +287,9 @@ class PointMixerClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         x = points.to(torch.float32).transpose(1, 2).contiguous()  # (B, C, N)
         x = self.stem(x)

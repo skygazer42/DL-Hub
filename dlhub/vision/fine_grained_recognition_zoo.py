@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -63,8 +62,16 @@ def _extract_variants_from_source(src: str) -> list[str] | None:
                 if isinstance(k, ast.Constant) and isinstance(k.value, str):
                     keys.append(k.value)
             return keys or None
-        if isinstance(value, ast.Call) and isinstance(value.func, ast.Name) and value.func.id == "make_fgvc_variants":
-            if value.args and isinstance(value.args[0], ast.Constant) and isinstance(value.args[0].value, str):
+        if (
+            isinstance(value, ast.Call)
+            and isinstance(value.func, ast.Name)
+            and value.func.id == "make_fgvc_variants"
+        ):
+            if (
+                value.args
+                and isinstance(value.args[0], ast.Constant)
+                and isinstance(value.args[0].value, str)
+            ):
                 prefix = str(value.args[0].value).strip()
                 if prefix:
                     return [f"{prefix}_tiny", f"{prefix}_small", f"{prefix}_base"]
@@ -180,7 +187,9 @@ def build_local_model(
 
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
-        raise UnknownLocalArch(f"Unknown FGVC arch: {arch_id!r}. Tip: run `python scripts/fine_grained_recognition_zoo.py --list`.")
+        raise UnknownLocalArch(
+            f"Unknown FGVC arch: {arch_id!r}. Tip: run `python scripts/fine_grained_recognition_zoo.py --list`."
+        )
 
     return builder(
         BuildConfig(

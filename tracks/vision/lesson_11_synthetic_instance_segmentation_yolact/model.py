@@ -1,9 +1,8 @@
-
 from dataclasses import dataclass
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.instance_segmentation.yolact import build_yolact_instance_segmenter
 
@@ -73,7 +72,9 @@ def mask_logits_from_proto(
     # Select the coefficient vector at the positive cell (one-hot, so sum works).
     coeff = (mask_coeffs * pos_mask).sum(dim=(2, 3))  # (B, P)
     mask_small = (proto * coeff[:, :, None, None]).sum(dim=1, keepdim=True)  # (B, 1, H4, W4)
-    return F.interpolate(mask_small, size=tuple(map(int, out_hw)), mode="bilinear", align_corners=False)
+    return F.interpolate(
+        mask_small, size=tuple(map(int, out_hw)), mode="bilinear", align_corners=False
+    )
 
 
 __all__ = ["ModelConfig", "TinyYOLACT", "mask_logits_from_proto"]

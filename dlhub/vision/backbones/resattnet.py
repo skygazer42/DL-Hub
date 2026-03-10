@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -8,7 +7,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, scale_c
 class ResidualUnit(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int) -> None:
         super().__init__()
-        self.conv1 = ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), act="relu")
+        self.conv1 = ConvBNAct(
+            int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), act="relu"
+        )
         self.conv2 = nn.Sequential(
             nn.Conv2d(int(out_ch), int(out_ch), kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(int(out_ch)),
@@ -43,7 +44,9 @@ class AttentionBlock(nn.Module):
         c = int(channels)
         d = int(depth)
         self.trunk = nn.Sequential(*[ResidualUnit(c, c, stride=1) for _ in range(d)])
-        self.mask_down = nn.Sequential(nn.MaxPool2d(kernel_size=2, stride=2), ResidualUnit(c, c, stride=1))
+        self.mask_down = nn.Sequential(
+            nn.MaxPool2d(kernel_size=2, stride=2), ResidualUnit(c, c, stride=1)
+        )
         self.mask_mid = nn.Sequential(*[ResidualUnit(c, c, stride=1) for _ in range(d)])
         self.mask_up = nn.Upsample(scale_factor=2, mode="bilinear", align_corners=False)
         self.mask_out = nn.Sequential(
@@ -57,7 +60,9 @@ class AttentionBlock(nn.Module):
         mask = self.mask_mid(mask)
         mask = self.mask_up(mask)
         if mask.shape[-2:] != trunk.shape[-2:]:
-            mask = nn.functional.interpolate(mask, size=trunk.shape[-2:], mode="bilinear", align_corners=False)
+            mask = nn.functional.interpolate(
+                mask, size=trunk.shape[-2:], mode="bilinear", align_corners=False
+            )
         mask = self.mask_out(mask)
         return trunk * (1.0 + mask)
 
@@ -137,7 +142,8 @@ def build_resattnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_resattnet_classifier(in_channels=3, num_classes=10, variant="resattnet56", width_mult=0.5)
+    m = build_resattnet_classifier(
+        in_channels=3, num_classes=10, variant="resattnet56", width_mult=0.5
+    )
     y = m(x)
     print("resattnet56", tuple(y.shape))
-

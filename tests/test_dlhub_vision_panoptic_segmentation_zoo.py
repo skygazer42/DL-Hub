@@ -1,8 +1,8 @@
-import pytest
 import subprocess
 import sys
 from pathlib import Path
 
+import pytest
 
 torch = pytest.importorskip("torch")
 
@@ -12,7 +12,7 @@ def _sum_tensor_means(x):
         return x.to(torch.float32).mean()
     if isinstance(x, dict):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
-    if isinstance(x, (list, tuple)):
+    if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
     raise TypeError(f"Unsupported output type in panoptic segmentation zoo smoke: {type(x)!r}")
 
@@ -44,7 +44,9 @@ def _repo_root() -> Path:
 def test_panoptic_segmentation_zoo_build_and_backward_smoke(arch_id: str) -> None:
     from dlhub.vision.panoptic_segmentation_zoo import build_local_model
 
-    model = build_local_model(arch_id, in_channels=3, num_thing_classes=3, num_stuff_classes=2, width_mult=0.5)
+    model = build_local_model(
+        arch_id, in_channels=3, num_thing_classes=3, num_stuff_classes=2, width_mult=0.5
+    )
     x = torch.randn(2, 3, 64, 64)
     out = model(x)
     loss = _sum_tensor_means(out)
@@ -63,7 +65,9 @@ def test_panoptic_segmentation_zoo_build_and_backward_smoke(arch_id: str) -> Non
 def test_panoptic_segmentation_zoo_builds_non_tiny_variants(arch_id: str) -> None:
     from dlhub.vision.panoptic_segmentation_zoo import build_local_model
 
-    model = build_local_model(arch_id, in_channels=3, num_thing_classes=3, num_stuff_classes=2, width_mult=0.5)
+    model = build_local_model(
+        arch_id, in_channels=3, num_thing_classes=3, num_stuff_classes=2, width_mult=0.5
+    )
     x = torch.randn(1, 3, 64, 64)
     out = model(x)
     loss = _sum_tensor_means(out)
@@ -86,7 +90,12 @@ def test_panoptic_segmentation_zoo_script_list_and_smoke() -> None:
     assert list_proc.stdout.count("dlpan:") <= 8
 
     smoke_proc = subprocess.run(
-        [sys.executable, "scripts/panoptic_segmentation_zoo.py", "--smoke", "dlpan:mask2former_panoptic_tiny"],
+        [
+            sys.executable,
+            "scripts/panoptic_segmentation_zoo.py",
+            "--smoke",
+            "dlpan:mask2former_panoptic_tiny",
+        ],
         cwd=str(_repo_root()),
         check=False,
         capture_output=True,

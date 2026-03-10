@@ -30,7 +30,9 @@ def _make_k_hop(a: torch.Tensor, k: int) -> torch.Tensor:
 
 
 class MultiScaleGraphConv(nn.Module):
-    def __init__(self, *, in_channels: int, out_channels: int, num_joints: int, hops: int = 2) -> None:
+    def __init__(
+        self, *, in_channels: int, out_channels: int, num_joints: int, hops: int = 2
+    ) -> None:
         super().__init__()
         v = int(num_joints)
         if v <= 0:
@@ -65,7 +67,9 @@ class MSG3DBlock(nn.Module):
         if k <= 0:
             raise ValueError("kt must be > 0")
 
-        self.gcn = MultiScaleGraphConv(in_channels=c, out_channels=c, num_joints=int(num_joints), hops=int(hops))
+        self.gcn = MultiScaleGraphConv(
+            in_channels=c, out_channels=c, num_joints=int(num_joints), hops=int(hops)
+        )
         self.tcn = nn.Conv2d(c, c, kernel_size=(k, 1), padding=(k // 2, 0), bias=True)
         self.bn = nn.BatchNorm2d(c)
         self.act = nn.ReLU(inplace=True)
@@ -157,10 +161,17 @@ def build_ms_g3d_skeleton_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 32, 17)
-    m = build_ms_g3d_skeleton_classifier(in_channels=3, num_classes=6, num_joints=17, seq_len=32, variant="ms_g3d_tiny", width_mult=0.5, dropout=0.0)
+    m = build_ms_g3d_skeleton_classifier(
+        in_channels=3,
+        num_classes=6,
+        num_joints=17,
+        seq_len=32,
+        variant="ms_g3d_tiny",
+        width_mult=0.5,
+        dropout=0.0,
+    )
     y = m(x)
     print("ms_g3d_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -35,7 +34,9 @@ class ToyRectanglesSegmentation:
         rng = np.random.default_rng(int(cfg.seed))
 
         s = int(cfg.image_size)
-        sizes = rng.integers(low=int(cfg.min_rect), high=int(cfg.max_rect) + 1, size=(int(cfg.num_samples), 2))
+        sizes = rng.integers(
+            low=int(cfg.min_rect), high=int(cfg.max_rect) + 1, size=(int(cfg.num_samples), 2)
+        )
         self.h = sizes[:, 0].astype(np.int64)
         self.w = sizes[:, 1].astype(np.int64)
 
@@ -81,7 +82,9 @@ def get_dataloaders(cfg: DataConfig):
     from torch.utils.data import DataLoader, Subset
 
     ds = ToyRectanglesSegmentation(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed))
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
+    )
 
     train_loader = DataLoader(
         Subset(ds, train_idx),
@@ -99,4 +102,3 @@ def get_dataloaders(cfg: DataConfig):
 
 
 __all__ = ["DataConfig", "ToyRectanglesSegmentation", "get_dataloaders"]
-

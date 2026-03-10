@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -60,23 +59,23 @@ class GuidedFilter(nn.Module):
         if k == 1:
             return x.clamp(0.0, 1.0) if self.clamp else x
 
-        I = x  # guidance
+        guide = x  # guidance
         p = x  # filtering input
 
-        mean_I = _box_filter(I, k=k, padding=self.padding)
+        mean_guide = _box_filter(guide, k=k, padding=self.padding)
         mean_p = _box_filter(p, k=k, padding=self.padding)
-        mean_Ip = _box_filter(I * p, k=k, padding=self.padding)
-        cov_Ip = mean_Ip - mean_I * mean_p
+        mean_guide_p = _box_filter(guide * p, k=k, padding=self.padding)
+        cov_guide_p = mean_guide_p - mean_guide * mean_p
 
-        mean_II = _box_filter(I * I, k=k, padding=self.padding)
-        var_I = (mean_II - mean_I * mean_I).clamp_min(0.0)
+        mean_guide_sq = _box_filter(guide * guide, k=k, padding=self.padding)
+        var_guide = (mean_guide_sq - mean_guide * mean_guide).clamp_min(0.0)
 
-        a = cov_Ip / (var_I + float(self.eps))
-        b = mean_p - a * mean_I
+        a = cov_guide_p / (var_guide + float(self.eps))
+        b = mean_p - a * mean_guide
 
         mean_a = _box_filter(a, k=k, padding=self.padding)
         mean_b = _box_filter(b, k=k, padding=self.padding)
-        q = mean_a * I + mean_b
+        q = mean_a * guide + mean_b
         return q.clamp(0.0, 1.0) if self.clamp else q
 
 
@@ -96,7 +95,9 @@ def build_guided_filter_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown GuidedFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown GuidedFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     # Heuristic: scale eps with sigma (bigger noise -> stronger regularization).
@@ -111,4 +112,3 @@ if __name__ == "__main__":
     m = build_guided_filter_denoiser(in_channels=1, sigma=0.12, variant="guided_filter_tiny")
     y = m(noisy)
     print("guided_filter_tiny", tuple(y.shape), float((y - x).pow(2).mean().item()))
-

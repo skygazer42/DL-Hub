@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _DoubleConv(nn.Module):
@@ -144,4 +143,3 @@ if __name__ == "__main__":
     loss = y.mean()
     loss.backward()
     print("ok")
-

@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    make_divisible,
+)
 
 
 class FBNetV3Classifier(nn.Module):
@@ -83,7 +87,12 @@ def build_fbnet_v3_classifier(
     if name not in _VARIANTS:
         raise ValueError(f"Unknown FBNetV3 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return FBNetV3Classifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return FBNetV3Classifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -92,4 +101,3 @@ if __name__ == "__main__":
     m = build_fbnet_v3_classifier(in_channels=3, num_classes=10, variant="fbnet_v3_a")
     y = m(x)
     print("fbnet_v3_a", tuple(y.shape))
-

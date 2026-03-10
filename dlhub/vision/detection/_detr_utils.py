@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -6,7 +5,9 @@ from torch import nn
 
 
 class MLP(nn.Module):
-    def __init__(self, in_dim: int, hidden_dim: int, out_dim: int, *, num_layers: int = 2, act: str = "relu") -> None:
+    def __init__(
+        self, in_dim: int, hidden_dim: int, out_dim: int, *, num_layers: int = 2, act: str = "relu"
+    ) -> None:
         super().__init__()
         d_in = int(in_dim)
         d_h = int(hidden_dim)
@@ -80,8 +81,12 @@ class MultiheadAttention(nn.Module):
             raise ValueError(f"Expected dim={self.dim}, got q_dim={d}, kv_dim={d2}")
 
         q = self.q_proj(q).view(b, nq, self.num_heads, self.head_dim).transpose(1, 2)  # (B,H,Nq,Dh)
-        k = self.k_proj(kv).view(b, nk, self.num_heads, self.head_dim).transpose(1, 2)  # (B,H,Nk,Dh)
-        v = self.v_proj(kv).view(b, nk, self.num_heads, self.head_dim).transpose(1, 2)  # (B,H,Nk,Dh)
+        k = (
+            self.k_proj(kv).view(b, nk, self.num_heads, self.head_dim).transpose(1, 2)
+        )  # (B,H,Nk,Dh)
+        v = (
+            self.v_proj(kv).view(b, nk, self.num_heads, self.head_dim).transpose(1, 2)
+        )  # (B,H,Nk,Dh)
 
         attn = torch.matmul(q, k.transpose(-2, -1)) * float(self.scale)  # (B,H,Nq,Nk)
         attn = torch.softmax(attn, dim=-1)
@@ -162,10 +167,16 @@ class SimpleTransformer(nn.Module):
         super().__init__()
         d = int(dim)
         self.encoder = nn.ModuleList(
-            [EncoderLayer(d, int(num_heads), mlp_ratio=float(mlp_ratio), dropout=float(dropout)) for _ in range(int(num_encoder_layers))]
+            [
+                EncoderLayer(d, int(num_heads), mlp_ratio=float(mlp_ratio), dropout=float(dropout))
+                for _ in range(int(num_encoder_layers))
+            ]
         )
         self.decoder = nn.ModuleList(
-            [DecoderLayer(d, int(num_heads), mlp_ratio=float(mlp_ratio), dropout=float(dropout)) for _ in range(int(num_decoder_layers))]
+            [
+                DecoderLayer(d, int(num_heads), mlp_ratio=float(mlp_ratio), dropout=float(dropout))
+                for _ in range(int(num_decoder_layers))
+            ]
         )
 
     def forward(self, memory: torch.Tensor, queries: torch.Tensor) -> torch.Tensor:
@@ -202,8 +213,9 @@ def sine_positional_encoding_1d(length: int, dim: int, *, device: torch.device) 
 
     pe = torch.zeros(n, d, device=device)
     pos = torch.arange(0, n, device=device, dtype=torch.float32).unsqueeze(1)
-    div = torch.exp(torch.arange(0, d, 2, device=device, dtype=torch.float32) * (-math.log(10000.0) / d))
+    div = torch.exp(
+        torch.arange(0, d, 2, device=device, dtype=torch.float32) * (-math.log(10000.0) / d)
+    )
     pe[:, 0::2] = torch.sin(pos * div)
     pe[:, 1::2] = torch.cos(pos * div)
     return pe
-

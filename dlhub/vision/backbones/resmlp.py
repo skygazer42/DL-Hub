@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -81,7 +80,12 @@ class ResMLPClassifier(nn.Module):
         )
         self.blocks = nn.Sequential(
             *[
-                ResMLPBlock(num_tokens=int(num_tokens), dim=int(embed_dim), mlp_ratio=float(mlp_ratio), dropout=float(dropout))
+                ResMLPBlock(
+                    num_tokens=int(num_tokens),
+                    dim=int(embed_dim),
+                    mlp_ratio=float(mlp_ratio),
+                    dropout=float(dropout),
+                )
                 for _ in range(int(depth))
             ]
         )
@@ -120,7 +124,9 @@ def build_resmlp_classifier(
 ) -> nn.Module:
     name, patch_size = _parse_patch_variant(variant, default_patch_size=8)
     if name not in _SPECS:
-        raise ValueError("Unknown ResMLP variant. Supported: resmlp_tiny|resmlp_small|resmlp_base (+ _p*)")
+        raise ValueError(
+            "Unknown ResMLP variant. Supported: resmlp_tiny|resmlp_small|resmlp_base (+ _p*)"
+        )
     base_dim, depth = _SPECS[name]
     embed_dim = scale_channels(int(base_dim), float(width_mult), min_ch=64, divisor=8)
     return ResMLPClassifier(
@@ -142,4 +148,3 @@ if __name__ == "__main__":
         m = build_resmlp_classifier(in_channels=3, num_classes=10, image_size=64, variant=v)
         y = m(x)
         print(v, tuple(y.shape))
-

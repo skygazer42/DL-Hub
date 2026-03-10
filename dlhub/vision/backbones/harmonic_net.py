@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -17,8 +16,11 @@ def _dct_2d_basis(k: int, u: int, v: int) -> torch.Tensor:
     def alpha(n: int) -> float:
         return math.sqrt(1.0 / k) if n == 0 else math.sqrt(2.0 / k)
 
-    basis = alpha(u) * alpha(v) * torch.cos((math.pi * (2 * y + 1) * u) / (2 * k)) * torch.cos(
-        (math.pi * (2 * x + 1) * v) / (2 * k)
+    basis = (
+        alpha(u)
+        * alpha(v)
+        * torch.cos((math.pi * (2 * y + 1) * u) / (2 * k))
+        * torch.cos((math.pi * (2 * x + 1) * v) / (2 * k))
     )
     return basis
 
@@ -91,12 +93,20 @@ class HarmonicNetClassifier(nn.Module):
         super().__init__()
         chs = tuple(scale_channels(int(c), float(width_mult)) for c in channels)
         self.stem = nn.Sequential(
-            HarmonicConv2d(int(in_channels), chs[0], kernel_size=int(kernel_size), num_basis=int(num_basis), stride=2),
+            HarmonicConv2d(
+                int(in_channels),
+                chs[0],
+                kernel_size=int(kernel_size),
+                num_basis=int(num_basis),
+                stride=2,
+            ),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
         )
 
         def stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
-            layers: list[nn.Module] = [ConvBNAct(in_ch, out_ch, kernel_size=3, stride=int(stride), act="relu")]
+            layers: list[nn.Module] = [
+                ConvBNAct(in_ch, out_ch, kernel_size=3, stride=int(stride), act="relu")
+            ]
             for _ in range(int(depth) - 1):
                 layers.append(ConvBNAct(out_ch, out_ch, kernel_size=3, stride=1, act="relu"))
             return nn.Sequential(*layers)
@@ -134,7 +144,9 @@ def build_harmonic_net_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown HarmonicNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown HarmonicNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return HarmonicNetClassifier(
         in_channels=int(in_channels),
@@ -151,7 +163,8 @@ def build_harmonic_net_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_harmonic_net_classifier(in_channels=3, num_classes=10, variant="harmonicnet_base", width_mult=0.5)
+    m = build_harmonic_net_classifier(
+        in_channels=3, num_classes=10, variant="harmonicnet_base", width_mult=0.5
+    )
     y = m(x)
     print("harmonicnet_base", tuple(y.shape))
-

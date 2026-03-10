@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "asnl_tiny": {"width": 64, "depth": 2},
@@ -33,12 +31,19 @@ class _NonLocal(nn.Module):
 class ASNLSeg(nn.Module):
     """ASNL semantic segmentation (toy): non-local blocks on point tokens."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
         self.nl = nn.ModuleList([_NonLocal(w) for _ in range(int(depth))])
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Dropout(float(dropout)), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w),
+            nn.ReLU(inplace=True),
+            nn.Dropout(float(dropout)),
+            nn.Linear(w, int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)

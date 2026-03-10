@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -13,7 +12,7 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import DataConfig, load_toy_rel_graph
-from .model import ModelConfig, RGCN
+from .model import RGCN, ModelConfig
 
 
 @dataclass(frozen=True)
@@ -38,7 +37,9 @@ class TrainConfig:
 
 
 def parse_args() -> TrainConfig:
-    parser = argparse.ArgumentParser(description="Lesson 11 (GNN): R-GCN on a toy relational graph.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 11 (GNN): R-GCN on a toy relational graph."
+    )
     parser.add_argument("--epochs", type=int, default=150)
     parser.add_argument("--learning-rate", type=float, default=1e-2)
     parser.add_argument("--weight-decay", type=float, default=0.0)
@@ -90,7 +91,9 @@ def run_training(cfg: TrainConfig) -> int:
     set_seed(cfg.seed)
     device_info = resolve_device(cfg.device)
 
-    paths = build_run_paths(track="gnn", lesson="lesson_11_rgcn_toy_node_classification", run_name=cfg.run_name)
+    paths = build_run_paths(
+        track="gnn", lesson="lesson_11_rgcn_toy_node_classification", run_name=cfg.run_name
+    )
     logger = get_logger("gnn.rgcn_toy", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -122,7 +125,9 @@ def run_training(cfg: TrainConfig) -> int:
         )
     ).to(device_info.torch_device)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay)
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=cfg.learning_rate, weight_decay=cfg.weight_decay
+    )
     criterion = torch.nn.CrossEntropyLoss()
 
     write_json(
@@ -146,7 +151,9 @@ def run_training(cfg: TrainConfig) -> int:
         model.eval()
         with torch.no_grad():
             logits = model(x, edge_index=edge_index, edge_type=edge_type, edge_norm=edge_norm)
-            train_acc = float((logits[idx_train].argmax(dim=1) == y[idx_train]).float().mean().item())
+            train_acc = float(
+                (logits[idx_train].argmax(dim=1) == y[idx_train]).float().mean().item()
+            )
             val_loss = float(criterion(logits[idx_val], y[idx_val]).item())
             val_acc = float((logits[idx_val].argmax(dim=1) == y[idx_val]).float().mean().item())
             test_acc = float((logits[idx_test].argmax(dim=1) == y[idx_test]).float().mean().item())
@@ -197,4 +204,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

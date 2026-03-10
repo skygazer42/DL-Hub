@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -50,7 +49,9 @@ class STNNetClassifier(nn.Module):
     ) -> None:
         super().__init__()
         w = int(width)
-        self.stn = SpatialTransformer(int(in_channels), hidden=32) if bool(use_stn) else nn.Identity()
+        self.stn = (
+            SpatialTransformer(int(in_channels), hidden=32) if bool(use_stn) else nn.Identity()
+        )
         self.backbone = nn.Sequential(
             ConvBNAct(int(in_channels), w, kernel_size=3, stride=2, act="relu"),
             ConvBNAct(w, w, kernel_size=3, stride=1, act="relu"),
@@ -102,4 +103,3 @@ if __name__ == "__main__":
         m = build_stn_net_classifier(in_channels=3, num_classes=10, variant=v)
         y = m(x)
         print(v, tuple(y.shape))
-

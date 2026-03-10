@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -50,9 +49,9 @@ class LabelPropagation(torch.nn.Module):
             num_classes = int(labels.max().item()) + 1
 
         y0 = torch.zeros((n, num_classes), dtype=torch.float32, device=labels.device)
-        y0[idx_labeled] = torch.nn.functional.one_hot(labels[idx_labeled], num_classes=num_classes).to(
-            torch.float32
-        )
+        y0[idx_labeled] = torch.nn.functional.one_hot(
+            labels[idx_labeled], num_classes=num_classes
+        ).to(torch.float32)
 
         y = y0.clone()
         for _ in range(self.cfg.num_layers):
@@ -63,4 +62,3 @@ class LabelPropagation(torch.nn.Module):
             y = y / y.sum(dim=1, keepdim=True).clamp(min=1e-12)
 
         return y
-

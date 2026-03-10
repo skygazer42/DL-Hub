@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -85,13 +84,19 @@ class PointNetClassifier(nn.Module):
             nn.Dropout(p=float(cfg.dropout)),
             nn.Linear(_c(256, float(cfg.width_mult), min_ch=64, divisor=8), int(cfg.num_classes)),
         )
-        self.tnet = TNet(3, width_mult=float(cfg.width_mult), dropout=float(cfg.dropout)) if bool(cfg.use_tnet) else None
+        self.tnet = (
+            TNet(3, width_mult=float(cfg.width_mult), dropout=float(cfg.dropout))
+            if bool(cfg.use_tnet)
+            else None
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3:
             raise ValueError(f"Expected points shape (B, N, C), got {tuple(points.shape)}")
         if int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected in_channels={self.cfg.in_channels}, got C={points.shape[-1]}")
+            raise ValueError(
+                f"Expected in_channels={self.cfg.in_channels}, got C={points.shape[-1]}"
+            )
 
         p = points.to(torch.float32)
         if self.tnet is not None:
@@ -162,7 +167,9 @@ class DeepSetsClassifier(nn.Module):
         if points.ndim != 3:
             raise ValueError(f"Expected points shape (B, N, C), got {tuple(points.shape)}")
         if int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected in_channels={self.cfg.in_channels}, got C={points.shape[-1]}")
+            raise ValueError(
+                f"Expected in_channels={self.cfg.in_channels}, got C={points.shape[-1]}"
+            )
 
         x = points.to(torch.float32).transpose(1, 2).contiguous()  # (B, C, N)
         x = self.phi(x)  # (B, C2, N)
@@ -204,7 +211,9 @@ class _ConvBNReLU(nn.Sequential):
 
 
 class SetAbstraction(nn.Module):
-    def __init__(self, *, npoint: int, k: int, in_channels: int, mlp: list[int], dropout: float) -> None:
+    def __init__(
+        self, *, npoint: int, k: int, in_channels: int, mlp: list[int], dropout: float
+    ) -> None:
         super().__init__()
         self.npoint = int(npoint)
         self.k = int(k)
@@ -216,7 +225,9 @@ class SetAbstraction(nn.Module):
             last_c = int(out_c)
         self.mlp = nn.Sequential(*layers)
 
-    def forward(self, xyz: torch.Tensor, features: torch.Tensor | None) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, xyz: torch.Tensor, features: torch.Tensor | None
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         # xyz: (B, N, 3), features: (B, N, C) or None
         fps_idx = farthest_point_sample(xyz, self.npoint)  # (B, S)
         new_xyz = index_points(xyz, fps_idx)  # (B, S, 3)
@@ -257,7 +268,9 @@ class PointNet2Classifier(nn.Module):
         self.cfg = cfg
 
         h = _c(64, float(cfg.width_mult), min_ch=16, divisor=8)
-        self.sa1 = SetAbstraction(npoint=cfg.npoint1, k=cfg.k1, in_channels=0, mlp=[h, h], dropout=cfg.dropout)
+        self.sa1 = SetAbstraction(
+            npoint=cfg.npoint1, k=cfg.k1, in_channels=0, mlp=[h, h], dropout=cfg.dropout
+        )
         self.sa2 = SetAbstraction(
             npoint=cfg.npoint2,
             k=cfg.k2,
@@ -276,7 +289,9 @@ class PointNet2Classifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or points.shape[-1] != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
 
         xyz = points[..., :3].to(torch.float32)
         features = None

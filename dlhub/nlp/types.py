@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 from dataclasses import dataclass
 
@@ -16,4 +15,3 @@ class BuildConfig:
 
 
 Builder = Callable[[BuildConfig], nn.Module]
-

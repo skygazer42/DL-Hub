@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from collections.abc import Iterable
@@ -44,10 +43,14 @@ def _print_lines(lines: Iterable[str], *, limit: int = 120) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="3D instance segmentation local model zoo utilities (no downloads).")
+    parser = argparse.ArgumentParser(
+        description="3D instance segmentation local model zoo utilities (no downloads)."
+    )
 
     parser.add_argument("--list", action="store_true", help="List available architecture ids.")
-    parser.add_argument("--search", type=str, default=None, help="Filter list by substring (case-insensitive).")
+    parser.add_argument(
+        "--search", type=str, default=None, help="Filter list by substring (case-insensitive)."
+    )
     parser.add_argument("--limit", type=int, default=120, help="Max lines to print when listing.")
 
     parser.add_argument(
@@ -58,11 +61,19 @@ def parse_args() -> argparse.Namespace:
         help="Run a forward smoke on an arch id.",
     )
     parser.add_argument("--batch-size", type=int, default=2, help="Batch size for smoke inputs.")
-    parser.add_argument("--num-points", type=int, default=256, help="Number of points for smoke inputs.")
-    parser.add_argument("--in-channels", type=int, default=3, help="Point channels for local segmenters (>=3).")
+    parser.add_argument(
+        "--num-points", type=int, default=256, help="Number of points for smoke inputs."
+    )
+    parser.add_argument(
+        "--in-channels", type=int, default=3, help="Point channels for local segmenters (>=3)."
+    )
     parser.add_argument("--num-classes", type=int, default=6, help="Instance-seg classes.")
-    parser.add_argument("--width-mult", type=float, default=1.0, help="Width multiplier for local segmenters.")
-    parser.add_argument("--dropout", type=float, default=0.0, help="Dropout rate for local segmenters.")
+    parser.add_argument(
+        "--width-mult", type=float, default=1.0, help="Width multiplier for local segmenters."
+    )
+    parser.add_argument(
+        "--dropout", type=float, default=0.0, help="Dropout rate for local segmenters."
+    )
 
     return parser.parse_args()
 
@@ -119,4 +130,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

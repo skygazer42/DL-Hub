@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -7,8 +6,7 @@ from torch.nn import functional as F
 
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 
-from ._common import PointNetEncoder, TinyTransformerEncoder, check_points, split_xyz_features
-
+from ._common import PointNetEncoder, check_points, split_xyz_features
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "threedssd_tiny": {"width": 64, "keypoints": 64},
@@ -20,7 +18,15 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class ThreeDSSD(nn.Module):
     """3DSSD (toy): sample keypoints + single-stage box regression."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, keypoints: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        keypoints: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.keypoints = int(keypoints)
         self.enc = PointNetEncoder(int(in_channels), width=int(width), dropout=float(dropout))
@@ -71,4 +77,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

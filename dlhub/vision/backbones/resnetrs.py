@@ -1,8 +1,13 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    DropPath,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    scale_channels,
+)
 
 
 def _conv3x3(in_ch: int, out_ch: int, *, stride: int = 1, groups: int = 1) -> nn.Conv2d:
@@ -24,7 +29,15 @@ def _conv1x1(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
 class ResNetRSBottleneck(nn.Module):
     expansion = 4
 
-    def __init__(self, in_ch: int, out_ch: int, *, stride: int, se_ratio: float = 0.25, drop_path: float = 0.0) -> None:
+    def __init__(
+        self,
+        in_ch: int,
+        out_ch: int,
+        *,
+        stride: int,
+        se_ratio: float = 0.25,
+        drop_path: float = 0.0,
+    ) -> None:
         super().__init__()
         mid = int(out_ch)
         out_exp = int(out_ch) * self.expansion
@@ -34,7 +47,11 @@ class ResNetRSBottleneck(nn.Module):
         self.bn2 = nn.BatchNorm2d(mid)
         self.conv3 = _conv1x1(mid, out_exp, stride=1)
         self.bn3 = nn.BatchNorm2d(out_exp)
-        self.se = SqueezeExcite(out_exp, se_ratio=float(se_ratio)) if float(se_ratio) > 0 else nn.Identity()
+        self.se = (
+            SqueezeExcite(out_exp, se_ratio=float(se_ratio))
+            if float(se_ratio) > 0
+            else nn.Identity()
+        )
         self.drop_path = DropPath(float(drop_path))
         self.act = nn.ReLU(inplace=True)
 
@@ -42,7 +59,9 @@ class ResNetRSBottleneck(nn.Module):
         if int(stride) != 1 or int(in_ch) != out_exp:
             ops: list[nn.Module] = []
             if int(stride) != 1:
-                ops.append(nn.AvgPool2d(kernel_size=2, stride=2, ceil_mode=True, count_include_pad=False))
+                ops.append(
+                    nn.AvgPool2d(kernel_size=2, stride=2, ceil_mode=True, count_include_pad=False)
+                )
                 stride = 1
             ops.append(_conv1x1(in_ch, out_exp, stride=int(stride)))
             ops.append(nn.BatchNorm2d(out_exp))
@@ -91,10 +110,18 @@ class ResNetRSClassifier(nn.Module):
         dp_iter = iter(dp_rates)
 
         self.in_ch = c1
-        self.layer1 = self._make_layer(c1, layers[0], stride=1, se_ratio=float(se_ratio), dp_iter=dp_iter)
-        self.layer2 = self._make_layer(c2, layers[1], stride=2, se_ratio=float(se_ratio), dp_iter=dp_iter)
-        self.layer3 = self._make_layer(c3, layers[2], stride=2, se_ratio=float(se_ratio), dp_iter=dp_iter)
-        self.layer4 = self._make_layer(c4, layers[3], stride=2, se_ratio=float(se_ratio), dp_iter=dp_iter)
+        self.layer1 = self._make_layer(
+            c1, layers[0], stride=1, se_ratio=float(se_ratio), dp_iter=dp_iter
+        )
+        self.layer2 = self._make_layer(
+            c2, layers[1], stride=2, se_ratio=float(se_ratio), dp_iter=dp_iter
+        )
+        self.layer3 = self._make_layer(
+            c3, layers[2], stride=2, se_ratio=float(se_ratio), dp_iter=dp_iter
+        )
+        self.layer4 = self._make_layer(
+            c4, layers[3], stride=2, se_ratio=float(se_ratio), dp_iter=dp_iter
+        )
 
         out_dim = c4 * ResNetRSBottleneck.expansion
         self.head = GlobalAvgPoolHead(out_dim, int(num_classes), dropout=float(dropout))
@@ -110,12 +137,24 @@ class ResNetRSClassifier(nn.Module):
     ) -> nn.Sequential:
         layers: list[nn.Module] = []
         layers.append(
-            ResNetRSBottleneck(self.in_ch, int(out_ch), stride=int(stride), se_ratio=float(se_ratio), drop_path=float(next(dp_iter)))
+            ResNetRSBottleneck(
+                self.in_ch,
+                int(out_ch),
+                stride=int(stride),
+                se_ratio=float(se_ratio),
+                drop_path=float(next(dp_iter)),
+            )
         )
         self.in_ch = int(out_ch) * ResNetRSBottleneck.expansion
         for _ in range(int(blocks) - 1):
             layers.append(
-                ResNetRSBottleneck(self.in_ch, int(out_ch), stride=1, se_ratio=float(se_ratio), drop_path=float(next(dp_iter)))
+                ResNetRSBottleneck(
+                    self.in_ch,
+                    int(out_ch),
+                    stride=1,
+                    se_ratio=float(se_ratio),
+                    drop_path=float(next(dp_iter)),
+                )
             )
         return nn.Sequential(*layers)
 
@@ -164,7 +203,8 @@ def build_resnetrs_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_resnetrs_classifier(in_channels=3, num_classes=10, variant="resnetrs50", width_mult=0.5)
+    m = build_resnetrs_classifier(
+        in_channels=3, num_classes=10, variant="resnetrs50", width_mult=0.5
+    )
     y = m(x)
     print("resnetrs50", tuple(y.shape))
-

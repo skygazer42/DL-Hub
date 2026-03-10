@@ -13,4 +13,3 @@ def test_append_jsonl_writes_one_json_object_per_line(tmp_path: Path) -> None:
     assert len(lines) == 2
     assert json.loads(lines[0]) == {"epoch": 1, "loss": 1.0}
     assert json.loads(lines[1]) == {"epoch": 2, "loss": 0.5}
-

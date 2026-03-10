@@ -1,4 +1,3 @@
-
 import argparse
 import subprocess
 import sys
@@ -91,9 +90,13 @@ def main(argv: list[str] | None = None) -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("track", nargs="?", help="Track name under tracks/ (e.g. vision, nlp, gnn)")
-    parser.add_argument("lesson", nargs="?", help="Lesson directory name (e.g. lesson_01_mnist_lenet)")
+    parser.add_argument(
+        "lesson", nargs="?", help="Lesson directory name (e.g. lesson_01_mnist_lenet)"
+    )
     parser.add_argument("--list", action="store_true", help="List available tracks or lessons.")
-    parser.add_argument("--dry-run", action="store_true", help="Print the resolved module without running it.")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Print the resolved module without running it."
+    )
 
     args, unknown = parser.parse_known_args(argv)
 

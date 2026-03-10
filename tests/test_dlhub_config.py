@@ -22,4 +22,3 @@ def test_write_json_round_trip(tmp_path: Path) -> None:
     assert '"epochs": 1' in text
     assert '"learning_rate": 0.001' in text
     assert str(cfg.run_dir) in text
-

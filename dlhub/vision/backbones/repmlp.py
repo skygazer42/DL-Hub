@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -18,8 +17,12 @@ class RepMLPBlock(nn.Module):
         self.local = nn.Conv2d(d, d, kernel_size=3, padding=1, groups=d, bias=False)
         self.local_bn = nn.BatchNorm2d(d)
         self.norm2 = LayerNorm2d(d)
-        self.global_fc = nn.Sequential(nn.AdaptiveAvgPool2d((1, 1)), nn.Flatten(), nn.Linear(d, d), nn.Sigmoid())
-        self.mlp = nn.Sequential(nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1))
+        self.global_fc = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)), nn.Flatten(), nn.Linear(d, d), nn.Sigmoid()
+        )
+        self.mlp = nn.Sequential(
+            nn.Conv2d(d, 4 * d, kernel_size=1), nn.GELU(), nn.Conv2d(4 * d, d, kernel_size=1)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         y = self.local_bn(self.local(self.norm1(x)))
@@ -45,7 +48,9 @@ class RepMLPClassifier(nn.Module):
         super().__init__()
         d = scale_channels(int(dim), float(width_mult), min_ch=16, divisor=8)
         p = int(patch_size)
-        self.patch = nn.Sequential(nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d))
+        self.patch = nn.Sequential(
+            nn.Conv2d(int(in_channels), d, kernel_size=p, stride=p), LayerNorm2d(d)
+        )
         self.blocks = nn.Sequential(*[RepMLPBlock(d) for _ in range(int(depth))])
         self.head = GlobalAvgPoolHead(d, int(num_classes), dropout=float(dropout))
 
@@ -88,7 +93,8 @@ def build_repmlp_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_repmlp_classifier(in_channels=3, num_classes=10, variant="repmlp_tiny", width_mult=0.5)
+    m = build_repmlp_classifier(
+        in_channels=3, num_classes=10, variant="repmlp_tiny", width_mult=0.5
+    )
     y = m(x)
     print("repmlp_tiny", tuple(y.shape))
-

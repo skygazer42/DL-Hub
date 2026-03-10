@@ -1,14 +1,21 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ChannelShuffle, ConvBNAct, GlobalAvgPoolHead, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ChannelShuffle,
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    scale_channels,
+)
 
 
 class HGUnit(nn.Module):
     """HGNet-style lightweight unit (simplified): grouped conv + channel shuffle + SE."""
 
-    def __init__(self, in_ch: int, out_ch: int, *, stride: int, groups: int, se: bool = True) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, stride: int, groups: int, se: bool = True
+    ) -> None:
         super().__init__()
         c_in = int(in_ch)
         c_out = int(out_ch)
@@ -58,7 +65,9 @@ class HGNetClassifier(nn.Module):
         )
 
         def make_stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
-            blocks: list[nn.Module] = [HGUnit(in_ch, out_ch, stride=int(stride), groups=int(groups), se=True)]
+            blocks: list[nn.Module] = [
+                HGUnit(in_ch, out_ch, stride=int(stride), groups=int(groups), se=True)
+            ]
             for _ in range(int(depth) - 1):
                 blocks.append(HGUnit(out_ch, out_ch, stride=1, groups=int(groups), se=True))
             return nn.Sequential(*blocks)

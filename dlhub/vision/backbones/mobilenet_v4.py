@@ -1,10 +1,14 @@
-
 import math
 
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import GlobalAvgPoolHead, InvertedResidual, SqueezeExcite, make_divisible
+from dlhub.vision.backbones._blocks import (
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    SqueezeExcite,
+    make_divisible,
+)
 
 
 class FusedMBConv(nn.Module):
@@ -31,8 +35,14 @@ class FusedMBConv(nn.Module):
             nn.BatchNorm2d(hidden),
             nn.SiLU(inplace=True) if act == "silu" else nn.ReLU(inplace=True),
         )
-        self.se = SqueezeExcite(hidden, se_ratio=float(se_ratio)) if se_ratio is not None and float(se_ratio) > 0 else nn.Identity()
-        self.proj = nn.Sequential(nn.Conv2d(hidden, c_out, kernel_size=1, bias=False), nn.BatchNorm2d(c_out))
+        self.se = (
+            SqueezeExcite(hidden, se_ratio=float(se_ratio))
+            if se_ratio is not None and float(se_ratio) > 0
+            else nn.Identity()
+        )
+        self.proj = nn.Sequential(
+            nn.Conv2d(hidden, c_out, kernel_size=1, bias=False), nn.BatchNorm2d(c_out)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         y = self.conv(x)
@@ -80,7 +90,16 @@ class MobileNetV4Classifier(nn.Module):
             for i in range(int(reps)):
                 s = int(stride) if i == 0 else 1
                 if kind == "fused":
-                    blocks.append(FusedMBConv(in_ch, int(out_ch), stride=int(s), expand_ratio=float(exp), se_ratio=se, act="silu"))
+                    blocks.append(
+                        FusedMBConv(
+                            in_ch,
+                            int(out_ch),
+                            stride=int(s),
+                            expand_ratio=float(exp),
+                            se_ratio=se,
+                            act="silu",
+                        )
+                    )
                 else:
                     blocks.append(
                         InvertedResidual(
@@ -127,7 +146,9 @@ def build_mobilenet_v4_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MobileNetV4 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MobileNetV4 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return MobileNetV4Classifier(
         in_channels=int(in_channels),
@@ -144,4 +165,3 @@ if __name__ == "__main__":
     m = build_mobilenet_v4_classifier(in_channels=3, num_classes=10, variant="mobilenet_v4_small")
     y = m(x)
     print("mobilenet_v4_small", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -44,7 +43,9 @@ class ReAttention(nn.Module):
 
 
 class DeepViTBlock(nn.Module):
-    def __init__(self, dim: int, heads: int, *, mlp_ratio: float, dropout: float, drop_path: float) -> None:
+    def __init__(
+        self, dim: int, heads: int, *, mlp_ratio: float, dropout: float, drop_path: float
+    ) -> None:
         super().__init__()
         d = int(dim)
         self.norm1 = nn.LayerNorm(d)
@@ -84,7 +85,13 @@ class DeepViTClassifier(nn.Module):
         dp_rates = torch.linspace(0.0, float(drop_path), steps=max(1, int(depth))).tolist()
         self.blocks = nn.Sequential(
             *[
-                DeepViTBlock(d, int(heads), mlp_ratio=4.0, dropout=float(dropout), drop_path=float(dp_rates[i]))
+                DeepViTBlock(
+                    d,
+                    int(heads),
+                    mlp_ratio=4.0,
+                    dropout=float(dropout),
+                    drop_path=float(dp_rates[i]),
+                )
                 for i in range(int(depth))
             ]
         )

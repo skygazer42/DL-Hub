@@ -1,11 +1,10 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
 def test_generative_vae_forward_shapes_smoke() -> None:
-    from tracks.generative.lesson_01_vae_mnist.model import ModelConfig, VAE, vae_loss
+    from tracks.generative.lesson_01_vae_mnist.model import VAE, ModelConfig, vae_loss
 
     cfg = ModelConfig(latent_dim=8, hidden_dim=64)
     model = VAE(cfg)
@@ -26,7 +25,9 @@ def test_generative_vae_fake_dataloaders_smoke() -> None:
     from tracks.generative.lesson_01_vae_mnist.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
-        DataConfig(dataset="fake", num_samples=64, batch_size=8, seed=0, num_workers=0, val_fraction=0.2)
+        DataConfig(
+            dataset="fake", num_samples=64, batch_size=8, seed=0, num_workers=0, val_fraction=0.2
+        )
     )
     train_batch = next(iter(train_loader))
     val_batch = next(iter(val_loader))
@@ -46,4 +47,3 @@ def test_generative_gan_forward_shapes_smoke() -> None:
 
     logits = bundle.discriminator(fake)
     assert logits.shape == (4,)
-

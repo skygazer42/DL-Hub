@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -31,7 +30,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 01 (GNN): toy graph classification with GCN.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 01 (GNN): toy graph classification with GCN."
+    )
 
     parser.add_argument("--num-graphs", type=int, default=512)
     parser.add_argument("--num-nodes", type=int, default=10)
@@ -165,4 +166,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

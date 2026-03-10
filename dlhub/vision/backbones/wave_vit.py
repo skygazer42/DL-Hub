@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -33,7 +32,9 @@ class WaveViTBlock(nn.Module):
         d = int(dim)
         self.mix = HaarMix(d)
         self.dp0 = DropPath(float(drop_path))
-        self.attn = TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(drop_path))
+        self.attn = TransformerEncoderBlock(
+            d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(drop_path)
+        )
 
     def forward(self, x: torch.Tensor, *, hw: tuple[int, int]) -> torch.Tensor:
         b, n, d = x.shape
@@ -65,7 +66,12 @@ class WaveViTClassifier(nn.Module):
         self.patch = PatchEmbed(int(in_channels), int(dim), patch_size=int(patch_size))
         self.pos = nn.Parameter(torch.zeros(1, self.hw[0] * self.hw[1], int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.ModuleList([WaveViTBlock(int(dim), int(heads), drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [
+                WaveViTBlock(int(dim), int(heads), drop_path=float(dp_rates[i]))
+                for i in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -115,7 +121,8 @@ def build_wave_vit_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(1, 3, 64, 64)
-    m = build_wave_vit_classifier(in_channels=3, num_classes=10, variant="wave_vit_tiny", image_size=64)
+    m = build_wave_vit_classifier(
+        in_channels=3, num_classes=10, variant="wave_vit_tiny", image_size=64
+    )
     y = m(x)
     print("wave_vit_tiny", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -56,7 +55,14 @@ class PerceiverIOClassifier(nn.Module):
         self.embed = PatchEmbed(int(in_channels), int(input_dim), patch_size=int(patch_size))
         self.latents = nn.Parameter(torch.randn(1, int(num_latents), int(latent_dim)) * 0.02)
         self.cross_in = CrossAttention(int(latent_dim), int(input_dim), int(num_heads))
-        self.self_lat = nn.Sequential(*[TransformerEncoderBlock(int(latent_dim), int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0) for _ in range(int(depth))])
+        self.self_lat = nn.Sequential(
+            *[
+                TransformerEncoderBlock(
+                    int(latent_dim), int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0
+                )
+                for _ in range(int(depth))
+            ]
+        )
         self.query = nn.Parameter(torch.randn(1, 1, int(latent_dim)) * 0.02)
         self.cross_out = CrossAttention(int(latent_dim), int(latent_dim), int(num_heads))
         self.norm = nn.LayerNorm(int(latent_dim))
@@ -77,8 +83,20 @@ class PerceiverIOClassifier(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "perceiver_io_tiny": {"input_dim": 192, "latent_dim": 256, "latents": 64, "heads": 8, "depth": 4},
-    "perceiver_io_base": {"input_dim": 192, "latent_dim": 384, "latents": 128, "heads": 12, "depth": 6},
+    "perceiver_io_tiny": {
+        "input_dim": 192,
+        "latent_dim": 256,
+        "latents": 64,
+        "heads": 8,
+        "depth": 4,
+    },
+    "perceiver_io_base": {
+        "input_dim": 192,
+        "latent_dim": 384,
+        "latents": 128,
+        "heads": 12,
+        "depth": 6,
+    },
 }
 
 
@@ -92,7 +110,9 @@ def build_perceiver_io_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown PerceiverIO variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown PerceiverIO variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return PerceiverIOClassifier(
         in_channels=int(in_channels),

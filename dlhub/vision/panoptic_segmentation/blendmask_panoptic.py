@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.panoptic_segmentation._common import (
@@ -99,12 +98,16 @@ class BlendMaskPanoptic(nn.Module):
         blend = self.blend(low)  # (B,1,H/4,W/4)
         proto = proto * blend
 
-        cls_logits, bbox_deltas, mask_coeffs = self.head(det)  # cls (B,A*nt,H/8,W/8); coeff (B,A*P,H/8,W/8)
+        cls_logits, bbox_deltas, mask_coeffs = self.head(
+            det
+        )  # cls (B,A*nt,H/8,W/8); coeff (B,A*P,H/8,W/8)
 
         a = self.num_anchors
         p = self.num_protos
         _, _, h8, w8 = mask_coeffs.shape
-        coeff = mask_coeffs.view(b, a, p, h8, w8).permute(0, 3, 4, 1, 2).reshape(b, -1, p)  # (B,N,P)
+        coeff = (
+            mask_coeffs.view(b, a, p, h8, w8).permute(0, 3, 4, 1, 2).reshape(b, -1, p)
+        )  # (B,N,P)
         mask_logits = masks_from_prototypes(proto, coeff)  # (B,N,H/4,W/4)
         mask_logits = F.interpolate(mask_logits, size=(h, w), mode="nearest")
 
@@ -112,7 +115,9 @@ class BlendMaskPanoptic(nn.Module):
         nt = self.num_thing_classes
         cls = cls_logits.view(b, a, nt, h8, w8).permute(0, 3, 4, 1, 2).reshape(b, -1, nt)
         instance_scores = cls.softmax(dim=-1).max(dim=-1).values
-        panoptic_map = fuse_panoptic(semantic_logits, mask_logits, instance_scores, thing_offset=int(self.num_stuff_classes))
+        panoptic_map = fuse_panoptic(
+            semantic_logits, mask_logits, instance_scores, thing_offset=int(self.num_stuff_classes)
+        )
 
         return {
             "semantic_logits": semantic_logits,
@@ -125,9 +130,30 @@ class BlendMaskPanoptic(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "blendmask_panoptic_tiny": {"stem": 24, "low": 40, "det": 80, "depth": 1, "head": 80, "protos": 16},
-    "blendmask_panoptic_small": {"stem": 24, "low": 48, "det": 96, "depth": 2, "head": 96, "protos": 32},
-    "blendmask_panoptic_base": {"stem": 32, "low": 64, "det": 128, "depth": 3, "head": 128, "protos": 48},
+    "blendmask_panoptic_tiny": {
+        "stem": 24,
+        "low": 40,
+        "det": 80,
+        "depth": 1,
+        "head": 80,
+        "protos": 16,
+    },
+    "blendmask_panoptic_small": {
+        "stem": 24,
+        "low": 48,
+        "det": 96,
+        "depth": 2,
+        "head": 96,
+        "protos": 32,
+    },
+    "blendmask_panoptic_base": {
+        "stem": 32,
+        "low": 64,
+        "det": 128,
+        "depth": 3,
+        "head": 128,
+        "protos": 48,
+    },
 }
 
 
@@ -142,7 +168,9 @@ def build_blendmask_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown BlendMask-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown BlendMask-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -171,11 +199,14 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_blendmask_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="blendmask_panoptic_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="blendmask_panoptic_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("blendmask_panoptic_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = out["semantic_logits"].mean() + out["cls_logits"].mean() + out["mask_logits"].mean()
     loss.backward()
     print("ok")
-

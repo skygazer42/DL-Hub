@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -60,7 +59,9 @@ class SyntheticRectDetectionYOLO(Dataset):
         x1, y1, x2, y2 = self._sample_box()
 
         # Image: background noise + bright rectangle.
-        img = self.rng.normal(loc=0.0, scale=float(self.cfg.noise_std), size=(s, s)).astype(np.float32)
+        img = self.rng.normal(loc=0.0, scale=float(self.cfg.noise_std), size=(s, s)).astype(
+            np.float32
+        )
         img = np.clip(img, -1.0, 1.0)
         img[y1:y2, x1:x2] = 1.0
 
@@ -105,7 +106,9 @@ class SyntheticRectDetectionYOLO(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     ds = SyntheticRectDetectionYOLO(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed))
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
+    )
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)
 
@@ -142,4 +145,3 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
 
 
 __all__ = ["DataConfig", "SyntheticRectDetectionYOLO", "get_dataloaders"]
-

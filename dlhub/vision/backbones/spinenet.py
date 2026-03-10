@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -98,7 +97,9 @@ class SpineNetClassifier(nn.Module):
         for spec in specs:
             a_idx, b_idx = int(spec.a), int(spec.b)
             if a_idx < 0 or a_idx >= len(feat_channels) or b_idx < 0 or b_idx >= len(feat_channels):
-                raise ValueError(f"Invalid SpineNet node inputs: a={a_idx}, b={b_idx}, available={len(feat_channels)}")
+                raise ValueError(
+                    f"Invalid SpineNet node inputs: a={a_idx}, b={b_idx}, available={len(feat_channels)}"
+                )
 
             out_level = int(spec.out_level)
             out_ch = int(spec.out_ch)
@@ -128,8 +129,8 @@ class SpineNetClassifier(nn.Module):
         self._blocks = nn.ModuleList(blocks)
 
         # Final head takes the highest-level feature that exists (largest level).
-        best_level = max(int(l) for l in feat_levels)
-        best_idx = max(i for i, l in enumerate(feat_levels) if int(l) == best_level)
+        best_level = max(int(level) for level in feat_levels)
+        best_idx = max(i for i, level in enumerate(feat_levels) if int(level) == best_level)
         head_ch = int(feat_channels[int(best_idx)])
         self.head = GlobalAvgPoolHead(head_ch, int(num_classes), dropout=float(dropout))
 
@@ -163,8 +164,8 @@ class SpineNetClassifier(nn.Module):
             levels.append(out_level)
 
         # pick the highest-level feature (largest level number)
-        best_level = max(int(l) for l in levels)
-        best_idx = max(i for i, l in enumerate(levels) if int(l) == best_level)
+        best_level = max(int(level) for level in levels)
+        best_idx = max(i for i, level in enumerate(levels) if int(level) == best_level)
         return self.head(feats[int(best_idx)])
 
 
@@ -220,7 +221,12 @@ def build_spinenet_classifier(
     spec = _VARIANTS[name]
     w = float(width_mult)
     scaled_nodes = tuple(
-        SpineNodeSpec(int(n.a), int(n.b), out_level=int(n.out_level), out_ch=scale_channels(int(n.out_ch), w, min_ch=16, divisor=8))
+        SpineNodeSpec(
+            int(n.a),
+            int(n.b),
+            out_level=int(n.out_level),
+            out_ch=scale_channels(int(n.out_ch), w, min_ch=16, divisor=8),
+        )
         for n in spec["nodes"]
     )
     return SpineNetClassifier(
@@ -237,6 +243,8 @@ def build_spinenet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_spinenet_classifier(in_channels=3, num_classes=10, variant="spinenet_tiny", width_mult=0.5)
+    m = build_spinenet_classifier(
+        in_channels=3, num_classes=10, variant="spinenet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("spinenet_tiny", tuple(y.shape))

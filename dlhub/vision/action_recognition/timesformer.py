@@ -1,4 +1,3 @@
-
 """TimeSformer (space-time attention) - toy-first video action classifier.
 
 Reference:
@@ -12,7 +11,6 @@ Toy interpretation:
 
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -116,7 +114,9 @@ def build_timesformer_video_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown TimeSformer variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown TimeSformer variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     embed = scale_channels(int(spec["embed"]), float(width_mult), min_ch=32, divisor=8)
     return TimeSformerVideoClassifier(
@@ -135,7 +135,9 @@ def build_timesformer_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_timesformer_video_classifier(in_channels=3, num_classes=6, variant="timesformer_tiny", width_mult=0.5, dropout=0.0)
+    m = build_timesformer_video_classifier(
+        in_channels=3, num_classes=6, variant="timesformer_tiny", width_mult=0.5, dropout=0.0
+    )
     y = m(x)
     print("timesformer_tiny", tuple(y.shape))
     loss = y.mean()

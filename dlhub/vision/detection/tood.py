@@ -1,9 +1,8 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.backbones._blocks import scale_channels
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class TOODHead(nn.Module):
@@ -27,7 +26,11 @@ class TOODHead(nn.Module):
         x = self.shared(x)
         cls_feat = self.cls_tower(x)
         reg_feat = self.reg_tower(x)
-        return {"align_logits": self.align(x), "cls_logits": self.cls(cls_feat), "bbox_deltas": self.box(reg_feat)}
+        return {
+            "align_logits": self.align(x),
+            "cls_logits": self.cls(cls_feat),
+            "bbox_deltas": self.box(reg_feat),
+        }
 
 
 class TOODDetector(nn.Module):
@@ -112,7 +115,10 @@ if __name__ == "__main__":
     m = build_tood_detector(in_channels=3, num_classes=3, variant="tood_tiny", width_mult=0.5)
     out = m(x)
     print("tood_tiny", [tuple(t.shape) for t in out["cls_logits"]])
-    loss = sum(t.mean() for t in out["align_logits"]) + sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
+    loss = (
+        sum(t.mean() for t in out["align_logits"])
+        + sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["bbox_deltas"])
+    )
     loss.backward()
     print("ok")
-

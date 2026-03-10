@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -9,7 +8,7 @@ def _sum_tensor_means(x):
         return x.to(torch.float32).mean()
     if isinstance(x, dict):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
-    if isinstance(x, (list, tuple)):
+    if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
     raise TypeError(f"Unsupported output type in tracking3d smoke: {type(x)!r}")
 
@@ -17,12 +16,72 @@ def _sum_tensor_means(x):
 @pytest.mark.parametrize(
     "builder_name,kwargs",
     [
-        ("build_ab3dmot_tracker3d", {"in_channels": 3, "num_classes": 3, "seq_len": 4, "variant": "ab3dmot_tiny", "width_mult": 0.5, "dropout": 0.0}),
-        ("build_centerpoint_track_tracker3d", {"in_channels": 3, "num_classes": 3, "seq_len": 4, "variant": "centerpoint_track_tiny", "width_mult": 0.5, "dropout": 0.0}),
-        ("build_simpletrack_tracker3d", {"in_channels": 3, "num_classes": 3, "seq_len": 4, "variant": "simpletrack_tiny", "width_mult": 0.5, "dropout": 0.0}),
-        ("build_bitrack_tracker3d", {"in_channels": 3, "num_classes": 3, "seq_len": 4, "variant": "bitrack_tiny", "width_mult": 0.5, "dropout": 0.0}),
-        ("build_motsf3d_tracker3d", {"in_channels": 3, "num_classes": 3, "seq_len": 4, "variant": "motsf3d_tiny", "width_mult": 0.5, "dropout": 0.0}),
-        ("build_imm_kalman_tracker3d", {"in_channels": 3, "num_classes": 3, "seq_len": 4, "variant": "imm_kalman_tiny", "width_mult": 0.5, "dropout": 0.0}),
+        (
+            "build_ab3dmot_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "ab3dmot_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_centerpoint_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "centerpoint_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_simpletrack_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "simpletrack_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_bitrack_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "bitrack_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_motsf3d_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "motsf3d_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_imm_kalman_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "imm_kalman_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
     ],
 )
 def test_tracking3d_algorithms_track_smoke(builder_name: str, kwargs: dict) -> None:

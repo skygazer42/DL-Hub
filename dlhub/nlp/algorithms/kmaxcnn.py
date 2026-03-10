@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -159,4 +158,9 @@ if __name__ == "__main__":
     _smoke()
 
 
-__all__ = ["KMaxTextCNNClassifier", "KMaxTextCNNConfig", "build_kmax_textcnn_classifier", "registry"]
+__all__ = [
+    "KMaxTextCNNClassifier",
+    "KMaxTextCNNConfig",
+    "build_kmax_textcnn_classifier",
+    "registry",
+]

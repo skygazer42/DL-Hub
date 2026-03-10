@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import EdgeConv, TinyTransformerEncoder, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointformer_tiny": {"width": 64, "k": 8, "depth": 2},
@@ -16,14 +14,26 @@ class PointFormerSeg(nn.Module):
     """PointFormer semantic segmentation (toy): local EdgeConv pre-encoder + transformer."""
 
     def __init__(
-        self, *, in_channels: int, num_classes: int, width: int, k: int, depth: int, dropout: float = 0.0
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        k: int,
+        depth: int,
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
         self.local = EdgeConv(w, w, k=int(k), dropout=float(dropout))
         self.enc = TinyTransformerEncoder(w, nhead=4, num_layers=int(depth), dropout=float(dropout))
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Dropout(float(dropout)), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w),
+            nn.ReLU(inplace=True),
+            nn.Dropout(float(dropout)),
+            nn.Linear(w, int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -62,4 +72,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

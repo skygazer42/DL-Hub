@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class LayerNorm2d(nn.Module):
@@ -81,7 +80,9 @@ class GDFN(nn.Module):
         hidden = int(round(d * float(expansion)))
 
         self.project_in = nn.Conv2d(d, hidden * 2, kernel_size=1, bias=True)
-        self.dwconv = nn.Conv2d(hidden * 2, hidden * 2, kernel_size=3, padding=1, groups=hidden * 2, bias=True)
+        self.dwconv = nn.Conv2d(
+            hidden * 2, hidden * 2, kernel_size=3, padding=1, groups=hidden * 2, bias=True
+        )
         self.project_out = nn.Conv2d(hidden, d, kernel_size=1, bias=True)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

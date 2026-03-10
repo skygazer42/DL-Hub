@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -6,7 +5,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 
 class _EncoderStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -121,4 +122,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

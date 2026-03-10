@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -28,7 +27,9 @@ class DropBlock2D(nn.Module):
 
         # gamma per DropBlock paper
         gamma = self.p * (h * w) / (bs * bs) / ((h - bs + 1) * (w - bs + 1))
-        mask = torch.empty((b, 1, h - bs + 1, w - bs + 1), device=x.device, dtype=x.dtype).bernoulli_(gamma)
+        mask = torch.empty(
+            (b, 1, h - bs + 1, w - bs + 1), device=x.device, dtype=x.dtype
+        ).bernoulli_(gamma)
         # pad to full size then maxpool to create blocks
         mask = nn.functional.pad(mask, (bs // 2, bs - 1 - bs // 2, bs // 2, bs - 1 - bs // 2))
         block_mask = nn.functional.max_pool2d(mask, kernel_size=bs, stride=1, padding=bs // 2)
@@ -39,11 +40,15 @@ class DropBlock2D(nn.Module):
 
 
 def _conv3x3(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False
+    )
 
 
 def _conv1x1(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False
+    )
 
 
 class DropBlockBottleneck(nn.Module):
@@ -63,7 +68,9 @@ class DropBlockBottleneck(nn.Module):
         self.act = nn.ReLU(inplace=True)
         self.down: nn.Module | None = None
         if int(stride) != 1 or int(in_ch) != out_exp:
-            self.down = nn.Sequential(_conv1x1(in_ch, out_exp, stride=int(stride)), nn.BatchNorm2d(out_exp))
+            self.down = nn.Sequential(
+                _conv1x1(in_ch, out_exp, stride=int(stride)), nn.BatchNorm2d(out_exp)
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x
@@ -112,10 +119,16 @@ class ResNetDropBlockClassifier(nn.Module):
 
     def _make_layer(self, out_ch: int, blocks: int, *, stride: int) -> nn.Sequential:
         layers: list[nn.Module] = []
-        layers.append(DropBlockBottleneck(self.in_ch, int(out_ch), stride=int(stride), dropblock=self.dropblock))
+        layers.append(
+            DropBlockBottleneck(
+                self.in_ch, int(out_ch), stride=int(stride), dropblock=self.dropblock
+            )
+        )
         self.in_ch = int(out_ch) * DropBlockBottleneck.expansion
         for _ in range(int(blocks) - 1):
-            layers.append(DropBlockBottleneck(self.in_ch, int(out_ch), stride=1, dropblock=self.dropblock))
+            layers.append(
+                DropBlockBottleneck(self.in_ch, int(out_ch), stride=1, dropblock=self.dropblock)
+            )
         return nn.Sequential(*layers)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -146,7 +159,9 @@ def build_resnet_dropblock_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown ResNet-DropBlock variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown ResNet-DropBlock variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return ResNetDropBlockClassifier(
         in_channels=int(in_channels),
@@ -162,7 +177,8 @@ def build_resnet_dropblock_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_resnet_dropblock_classifier(in_channels=3, num_classes=10, variant="resnet_dropblock50", width_mult=0.5)
+    m = build_resnet_dropblock_classifier(
+        in_channels=3, num_classes=10, variant="resnet_dropblock50", width_mult=0.5
+    )
     y = m(x)
     print("resnet_dropblock50", tuple(y.shape))
-

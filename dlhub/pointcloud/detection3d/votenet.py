@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -8,7 +7,6 @@ from torch.nn import functional as F
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 
 from ._common import PointNetEncoder, check_points, mlp, roi_pool_knn, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "votenet_tiny": {"width": 64, "seeds": 64, "proposals": 32, "vote_k": 16},
@@ -38,7 +36,9 @@ class VoteNet(nn.Module):
         self.num_classes = int(num_classes)
 
         self.enc = PointNetEncoder(int(in_channels), width=int(width), dropout=float(dropout))
-        self.vote = mlp(int(width), [int(width), int(width)], 3 + int(width), dropout=float(dropout))
+        self.vote = mlp(
+            int(width), [int(width), int(width)], 3 + int(width), dropout=float(dropout)
+        )
         self.proj = nn.Linear(int(width), int(width))
 
         self.cls = nn.Linear(int(width), int(num_classes))
@@ -104,4 +104,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

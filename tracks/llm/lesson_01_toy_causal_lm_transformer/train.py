@@ -1,4 +1,3 @@
-
 import argparse
 import json
 import sys
@@ -36,7 +35,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 01 (LLM): toy causal LM with Transformer decoder.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 01 (LLM): toy causal LM with Transformer decoder."
+    )
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -147,7 +148,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="llm", lesson="lesson_01_toy_causal_lm_transformer", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="llm", lesson="lesson_01_toy_causal_lm_transformer", run_name=train_cfg.run_name
+    )
     logger = get_logger("llm.toy_causal_lm", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -237,7 +240,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         model=model,
         optimizer=optimizer,
         epoch=int(train_cfg.epochs),
-        extra={"track": "llm", "lesson": "lesson_01_toy_causal_lm_transformer", "vocab_size": vocab.size},
+        extra={
+            "track": "llm",
+            "lesson": "lesson_01_toy_causal_lm_transformer",
+            "vocab_size": vocab.size,
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
@@ -255,4 +262,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

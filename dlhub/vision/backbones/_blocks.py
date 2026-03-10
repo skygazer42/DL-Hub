@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -280,7 +279,9 @@ class NonLocal2D(nn.Module):
 class SKConv(nn.Module):
     """Selective Kernel Convolution (SKNet-style, simplified)."""
 
-    def __init__(self, channels: int, *, kernel_sizes: tuple[int, ...] = (3, 5), reduction: int = 16) -> None:
+    def __init__(
+        self, channels: int, *, kernel_sizes: tuple[int, ...] = (3, 5), reduction: int = 16
+    ) -> None:
         super().__init__()
         c = int(channels)
         ks = tuple(int(k) for k in kernel_sizes)

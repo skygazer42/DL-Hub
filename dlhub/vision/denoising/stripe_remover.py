@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _smooth_h(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -120,7 +119,9 @@ def build_stripe_remover_denoiser(
     _ = float(sigma)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown StripeRemover variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown StripeRemover variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return StripeRemover(
         smooth=int(spec["smooth"]),

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -64,7 +63,9 @@ class Attention2DBlock(nn.Module):
     def __init__(self, dim: int, *, num_heads: int, dropout: float) -> None:
         super().__init__()
         self.dim = int(dim)
-        self.block = TransformerEncoderBlock(dim=int(dim), num_heads=int(num_heads), dropout=float(dropout))
+        self.block = TransformerEncoderBlock(
+            dim=int(dim), num_heads=int(num_heads), dropout=float(dropout)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -103,28 +104,41 @@ class CoAtNetClassifier(nn.Module):
             widths = (48, 128, 256, 512)
             depths = (3, 4, 4, 4)
         else:
-            raise ValueError("Unknown CoAtNet variant. Supported: coatnet_tiny|coatnet_small|coatnet_base")
+            raise ValueError(
+                "Unknown CoAtNet variant. Supported: coatnet_tiny|coatnet_small|coatnet_base"
+            )
 
         w1, w2, w3, w4 = (scale_channels(int(c), w, min_ch=32, divisor=8) for c in widths)
         d1, d2, d3, d4 = (int(d) for d in depths)
 
         self.stem = ConvBNAct(int(in_channels), w1, kernel_size=3, stride=2, act="silu")
 
-        self.stage1 = nn.Sequential(*[MBConv(w1, w1, stride=1, expand_ratio=2, dropout=float(dropout)) for _ in range(d1)])
+        self.stage1 = nn.Sequential(
+            *[MBConv(w1, w1, stride=1, expand_ratio=2, dropout=float(dropout)) for _ in range(d1)]
+        )
 
         s2: list[nn.Module] = [MBConv(w1, w2, stride=2, expand_ratio=2, dropout=float(dropout))]
-        s2.extend([MBConv(w2, w2, stride=1, expand_ratio=2, dropout=float(dropout)) for _ in range(d2 - 1)])
+        s2.extend(
+            [
+                MBConv(w2, w2, stride=1, expand_ratio=2, dropout=float(dropout))
+                for _ in range(d2 - 1)
+            ]
+        )
         self.stage2 = nn.Sequential(*s2)
 
         heads3 = _pick_heads(w3, preferred=[12, 8, 6, 4, 3, 2, 1])
         heads4 = _pick_heads(w4, preferred=[12, 8, 6, 4, 3, 2, 1])
 
         s3: list[nn.Module] = [ConvBNAct(w2, w3, kernel_size=3, stride=2, act="silu")]
-        s3.extend([Attention2DBlock(w3, num_heads=heads3, dropout=float(dropout)) for _ in range(d3)])
+        s3.extend(
+            [Attention2DBlock(w3, num_heads=heads3, dropout=float(dropout)) for _ in range(d3)]
+        )
         self.stage3 = nn.Sequential(*s3)
 
         s4: list[nn.Module] = [ConvBNAct(w3, w4, kernel_size=3, stride=2, act="silu")]
-        s4.extend([Attention2DBlock(w4, num_heads=heads4, dropout=float(dropout)) for _ in range(d4)])
+        s4.extend(
+            [Attention2DBlock(w4, num_heads=heads4, dropout=float(dropout)) for _ in range(d4)]
+        )
         self.stage4 = nn.Sequential(*s4)
 
         self.head = nn.Sequential(
@@ -167,7 +181,8 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     for v in ["coatnet_tiny", "coatnet_small", "coatnet_base"]:
-        m = build_coatnet_classifier(in_channels=3, num_classes=10, image_size=64, variant=v, width_mult=0.5)
+        m = build_coatnet_classifier(
+            in_channels=3, num_classes=10, image_size=64, variant=v, width_mult=0.5
+        )
         y = m(x)
         print(v, tuple(y.shape))
-

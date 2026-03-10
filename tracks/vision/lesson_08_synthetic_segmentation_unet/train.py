@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -34,7 +33,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 08 (Vision): Synthetic segmentation with a tiny U-Net.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 08 (Vision): Synthetic segmentation with a tiny U-Net."
+    )
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--batch-size", type=int, default=32)
@@ -55,7 +56,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--run-name", type=str, default="dev")
 
     parser.add_argument("--arch", type=str, default="unet", help="unet | tvseg:<name>")
-    parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--list-arch", action="store_true", help="Print supported architectures and exit."
+    )
     parser.add_argument("--base-channels", type=int, default=32)
     parser.add_argument("--dropout", type=float, default=0.0)
     parser.add_argument("--threshold", type=float, default=0.5)
@@ -97,7 +100,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="vision", lesson="lesson_08_synthetic_segmentation_unet", run_name=train_cfg.run_name)
+    paths = build_run_paths(
+        track="vision", lesson="lesson_08_synthetic_segmentation_unet", run_name=train_cfg.run_name
+    )
     logger = get_logger("vision.synth_seg", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)

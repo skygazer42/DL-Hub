@@ -7,7 +7,6 @@ Conventions:
 This package uses lazy imports so `import dlhub.vision.fine_grained_recognition` stays lightweight.
 """
 
-
 from importlib import import_module
 from typing import Any
 

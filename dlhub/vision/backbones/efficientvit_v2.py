@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -50,14 +49,30 @@ class EfficientViTV2Classifier(nn.Module):
             ConvBNAct(dims[0], dims[0], kernel_size=3, stride=1, act="silu"),
         )
 
-        self.stage1 = nn.Sequential(*[EfficientViTV2ConvBlock(dims[0], drop_path=float(next(dp_iter, 0.0))) for _ in range(depths[0])])
+        self.stage1 = nn.Sequential(
+            *[
+                EfficientViTV2ConvBlock(dims[0], drop_path=float(next(dp_iter, 0.0)))
+                for _ in range(depths[0])
+            ]
+        )
         self.down2 = ConvBNAct(dims[0], dims[1], kernel_size=3, stride=2, act="silu")
-        self.stage2 = nn.Sequential(*[EfficientViTV2ConvBlock(dims[1], drop_path=float(next(dp_iter, 0.0))) for _ in range(depths[1])])
+        self.stage2 = nn.Sequential(
+            *[
+                EfficientViTV2ConvBlock(dims[1], drop_path=float(next(dp_iter, 0.0)))
+                for _ in range(depths[1])
+            ]
+        )
 
         self.down3 = ConvBNAct(dims[1], dims[2], kernel_size=3, stride=2, act="silu")
         self.blocks = nn.Sequential(
             *[
-                TransformerEncoderBlock(dims[2], int(heads), mlp_ratio=4.0, dropout=float(dropout), drop_path=float(next(dp_iter, 0.0)))
+                TransformerEncoderBlock(
+                    dims[2],
+                    int(heads),
+                    mlp_ratio=4.0,
+                    dropout=float(dropout),
+                    drop_path=float(next(dp_iter, 0.0)),
+                )
                 for _ in range(depths[2])
             ]
         )
@@ -99,7 +114,9 @@ def build_efficientvit_v2_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown EfficientViT-V2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown EfficientViT-V2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return EfficientViTV2Classifier(
         in_channels=int(in_channels),
@@ -116,6 +133,8 @@ def build_efficientvit_v2_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_efficientvit_v2_classifier(in_channels=3, num_classes=10, variant="efficientvit_v2_tiny", width_mult=0.5)
+    m = build_efficientvit_v2_classifier(
+        in_channels=3, num_classes=10, variant="efficientvit_v2_tiny", width_mult=0.5
+    )
     y = m(x)
     print("efficientvit_v2_tiny", tuple(y.shape))

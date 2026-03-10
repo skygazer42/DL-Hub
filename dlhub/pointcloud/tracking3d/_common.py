@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from dlhub.pointcloud.detection3d._common import PointNetEncoder
 
@@ -78,8 +75,12 @@ class KalmanAssociationTracker3D(nn.Module):
     ) -> None:
         super().__init__()
         self.family = str(family)
-        self.encoder = TemporalPointEncoder(in_channels=int(in_channels), width=int(width), dropout=float(dropout))
-        self.head = QueryTrackHead(width=int(width), num_tracks=int(num_tracks), num_classes=int(num_classes))
+        self.encoder = TemporalPointEncoder(
+            in_channels=int(in_channels), width=int(width), dropout=float(dropout)
+        )
+        self.head = QueryTrackHead(
+            width=int(width), num_tracks=int(num_tracks), num_classes=int(num_classes)
+        )
         self.kalman_gain = nn.Linear(int(width), 7)
         self.mode_head = nn.Linear(int(width), 3)
 
@@ -110,8 +111,12 @@ class BEVTracking3D(nn.Module):
     ) -> None:
         super().__init__()
         self.family = str(family)
-        self.encoder = TemporalPointEncoder(in_channels=int(in_channels), width=int(width), dropout=float(dropout))
-        self.head = QueryTrackHead(width=int(width), num_tracks=int(num_tracks), num_classes=int(num_classes))
+        self.encoder = TemporalPointEncoder(
+            in_channels=int(in_channels), width=int(width), dropout=float(dropout)
+        )
+        self.head = QueryTrackHead(
+            width=int(width), num_tracks=int(num_tracks), num_classes=int(num_classes)
+        )
         self.motion_head = nn.Linear(int(width), 7)
 
     def track(self, seq: torch.Tensor) -> dict[str, torch.Tensor]:
@@ -137,8 +142,12 @@ class SegTracking3D(nn.Module):
     ) -> None:
         super().__init__()
         self.family = str(family)
-        self.encoder = TemporalPointEncoder(in_channels=int(in_channels), width=int(width), dropout=float(dropout))
-        self.head = QueryTrackHead(width=int(width), num_tracks=int(num_tracks), num_classes=int(num_classes))
+        self.encoder = TemporalPointEncoder(
+            in_channels=int(in_channels), width=int(width), dropout=float(dropout)
+        )
+        self.head = QueryTrackHead(
+            width=int(width), num_tracks=int(num_tracks), num_classes=int(num_classes)
+        )
         self.mask_head = nn.Linear(int(width), int(num_tracks))
 
     def track(self, seq: torch.Tensor) -> dict[str, torch.Tensor]:
@@ -146,12 +155,16 @@ class SegTracking3D(nn.Module):
         out = self.head(summary, temporal)
         mask_logits = self.mask_head(temporal.mean(dim=1))
         out["mask_logits"] = mask_logits
-        out["track_scores"] = out["track_scores"] + 0.05 * torch.sigmoid(mask_logits[:, : out["track_scores"].shape[1]])
+        out["track_scores"] = out["track_scores"] + 0.05 * torch.sigmoid(
+            mask_logits[:, : out["track_scores"].shape[1]]
+        )
         return out
 
 
 def smoke_test_tracker(builder, variant: str) -> None:
-    tracker = builder(in_channels=3, num_classes=3, seq_len=4, variant=variant, width_mult=0.5, dropout=0.0)
+    tracker = builder(
+        in_channels=3, num_classes=3, seq_len=4, variant=variant, width_mult=0.5, dropout=0.0
+    )
     x = torch.randn(2, 4, 128, 3)
     out = tracker.track(x)
     print(variant, {k: tuple(v.shape) for k, v in out.items() if torch.is_tensor(v)})

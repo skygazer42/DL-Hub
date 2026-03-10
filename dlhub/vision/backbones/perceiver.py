@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -55,7 +54,14 @@ class PerceiverClassifier(nn.Module):
         self.embed = PatchEmbed(int(in_channels), int(input_dim), patch_size=int(patch_size))
         self.latents = nn.Parameter(torch.randn(1, int(num_latents), int(latent_dim)) * 0.02)
         self.cross = CrossAttention(int(latent_dim), int(input_dim), int(num_heads))
-        self.blocks = nn.Sequential(*[TransformerEncoderBlock(int(latent_dim), int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0) for _ in range(int(depth))])
+        self.blocks = nn.Sequential(
+            *[
+                TransformerEncoderBlock(
+                    int(latent_dim), int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=0.0
+                )
+                for _ in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(int(latent_dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(latent_dim), int(num_classes))
@@ -73,7 +79,13 @@ class PerceiverClassifier(nn.Module):
 
 _VARIANTS: dict[str, dict] = {
     "perceiver_tiny": {"input_dim": 192, "latent_dim": 256, "latents": 64, "heads": 8, "depth": 4},
-    "perceiver_base": {"input_dim": 192, "latent_dim": 384, "latents": 128, "heads": 12, "depth": 6},
+    "perceiver_base": {
+        "input_dim": 192,
+        "latent_dim": 384,
+        "latents": 128,
+        "heads": 12,
+        "depth": 6,
+    },
 }
 
 
@@ -110,4 +122,3 @@ if __name__ == "__main__":
     m = build_perceiver_classifier(in_channels=3, num_classes=10, variant="perceiver_tiny")
     y = m(x)
     print("perceiver_tiny", tuple(y.shape))
-

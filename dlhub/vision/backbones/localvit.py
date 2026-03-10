@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -69,7 +68,12 @@ class LocalViTClassifier(nn.Module):
         self.hw = (h, w)
         self.pos = nn.Parameter(torch.zeros(1, h * w, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.ModuleList([LocalViTBlock(int(dim), int(heads), drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [
+                LocalViTBlock(int(dim), int(heads), drop_path=float(dp_rates[i]))
+                for i in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -119,7 +123,8 @@ def build_localvit_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_localvit_classifier(in_channels=3, num_classes=10, variant="localvit_tiny", image_size=64)
+    m = build_localvit_classifier(
+        in_channels=3, num_classes=10, variant="localvit_tiny", image_size=64
+    )
     y = m(x)
     print("localvit_tiny", tuple(y.shape))
-

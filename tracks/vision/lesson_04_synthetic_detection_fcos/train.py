@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -40,7 +39,9 @@ class Stats:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 04 (Vision): synthetic anchor-free detection (FCOS-style).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 04 (Vision): synthetic anchor-free detection (FCOS-style)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -157,7 +158,9 @@ def _run_epoch(
 ) -> Stats:
     is_train = optimizer is not None
 
-    cls_criterion = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([float(cfg.cls_pos_weight)], device=device))
+    cls_criterion = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor([float(cfg.cls_pos_weight)], device=device)
+    )
     reg_criterion = torch.nn.SmoothL1Loss(reduction="mean")
 
     if is_train:
@@ -216,7 +219,10 @@ def _run_epoch(
             total_center += float((pred_idx == true_idx).float().mean().item()) * b
 
             pred_boxes = _decode_boxes_from_grid(
-                cls_logits=cls_logits, reg=reg, stride=int(data_cfg.stride), image_size=int(data_cfg.image_size)
+                cls_logits=cls_logits,
+                reg=reg,
+                stride=int(data_cfg.stride),
+                image_size=int(data_cfg.image_size),
             )
             total_iou += float(_iou(pred_boxes, box_target).mean().item()) * b
 
@@ -248,9 +254,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         raise ValueError("This lesson currently assumes stride=4 to match the model definition.")
 
     train_loader, val_loader = get_dataloaders(data_cfg)
-    model = TinyFCOS(ModelConfig(in_channels=1, hidden_channels=32, stride=int(data_cfg.stride))).to(
-        device_info.torch_device
-    )
+    model = TinyFCOS(
+        ModelConfig(in_channels=1, hidden_channels=32, stride=int(data_cfg.stride))
+    ).to(device_info.torch_device)
     optimizer = torch.optim.Adam(model.parameters(), lr=float(train_cfg.learning_rate))
 
     write_json(

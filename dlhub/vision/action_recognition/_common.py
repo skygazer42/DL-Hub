@@ -1,4 +1,3 @@
-
 import torch
 
 
@@ -24,4 +23,3 @@ def check_skeleton_input(x: torch.Tensor) -> torch.Tensor:
     if x.ndim != 4:
         raise ValueError(f"Expected skeleton input shape (B, C, T, V), got {tuple(x.shape)}")
     return x
-

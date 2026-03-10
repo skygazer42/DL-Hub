@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -9,7 +8,7 @@ def _sum_tensor_means(x):
         return x.to(torch.float32).mean()
     if isinstance(x, dict):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
-    if isinstance(x, (list, tuple)):
+    if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
     raise TypeError(f"Unsupported output type in tracking3d zoo smoke: {type(x)!r}")
 
@@ -53,4 +52,3 @@ def test_tracking3d_zoo_build_and_track_smoke(arch_id: str) -> None:
     assert "track_boxes" in out and "track_scores" in out and "track_ids" in out
     loss = _sum_tensor_means(out)
     assert torch.isfinite(loss)
-

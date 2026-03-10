@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -8,7 +7,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct
 class _ResBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int = 1) -> None:
         super().__init__()
-        self.conv1 = ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), act="relu")
+        self.conv1 = ConvBNAct(
+            int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), act="relu"
+        )
         self.conv2 = nn.Sequential(
             nn.Conv2d(int(out_ch), int(out_ch), kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(int(out_ch)),
@@ -39,7 +40,9 @@ class _Up(nn.Module):
     def forward(self, x: torch.Tensor, skip: torch.Tensor) -> torch.Tensor:
         x = self.up(x)
         if x.shape[-2:] != skip.shape[-2:]:
-            x = nn.functional.interpolate(x, size=skip.shape[-2:], mode="bilinear", align_corners=False)
+            x = nn.functional.interpolate(
+                x, size=skip.shape[-2:], mode="bilinear", align_corners=False
+            )
         x = torch.cat([x, skip], dim=1)
         return self.block(x)
 
@@ -96,7 +99,11 @@ def build_resunet_classifier(
     if name not in _VARIANTS:
         raise ValueError(f"Unknown ResUNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return ResUNet(in_channels=int(in_channels), num_classes=int(num_classes), widths=tuple(map(int, spec["widths"])))
+    return ResUNet(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        widths=tuple(map(int, spec["widths"])),
+    )
 
 
 if __name__ == "__main__":
@@ -105,4 +112,3 @@ if __name__ == "__main__":
     m = build_resunet_classifier(in_channels=3, num_classes=5, variant="resunet_tiny")
     y = m(x)
     print("resunet_tiny", tuple(y.shape))
-

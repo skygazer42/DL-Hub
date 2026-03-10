@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -35,7 +34,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 02 (NLP): toy text classification with a Transformer encoder.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 02 (NLP): toy text classification with a Transformer encoder."
+    )
 
     parser.add_argument("--num-samples", type=int, default=1024)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -89,7 +90,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     device_info = resolve_device(train_cfg.device)
 
     paths = build_run_paths(
-        track="nlp", lesson="lesson_02_toy_text_classification_transformer", run_name=train_cfg.run_name
+        track="nlp",
+        lesson="lesson_02_toy_text_classification_transformer",
+        run_name=train_cfg.run_name,
     )
     logger = get_logger("nlp.toy_text_transformer", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
@@ -192,4 +195,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

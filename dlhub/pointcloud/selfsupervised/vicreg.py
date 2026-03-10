@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _off_diagonal(x: torch.Tensor) -> torch.Tensor:
@@ -29,7 +28,9 @@ def vicreg_loss(
     """
 
     if z1.ndim != 2 or z2.ndim != 2:
-        raise ValueError(f"Expected z1/z2 shapes (B, D), got {tuple(z1.shape)} and {tuple(z2.shape)}")
+        raise ValueError(
+            f"Expected z1/z2 shapes (B, D), got {tuple(z1.shape)} and {tuple(z2.shape)}"
+        )
     if z1.shape != z2.shape:
         raise ValueError("z1 and z2 must have the same shape")
     b, d = z1.shape
@@ -50,7 +51,9 @@ def vicreg_loss(
     z2c = z2 - z2.mean(dim=0)
     cov1 = (z1c.t() @ z1c) / float(b - 1)
     cov2 = (z2c.t() @ z2c) / float(b - 1)
-    cov = 0.5 * (_off_diagonal(cov1).pow(2).sum() / float(d) + _off_diagonal(cov2).pow(2).sum() / float(d))
+    cov = 0.5 * (
+        _off_diagonal(cov1).pow(2).sum() / float(d) + _off_diagonal(cov2).pow(2).sum() / float(d)
+    )
 
     return float(inv_weight) * inv + float(var_weight) * var + float(cov_weight) * cov
 
@@ -163,7 +166,9 @@ def build_vicreg_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown VICReg-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown VICReg-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     return VICRegPointNet(

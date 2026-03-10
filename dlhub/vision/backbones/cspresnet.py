@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -33,7 +32,9 @@ class CSPStage(nn.Module):
         self.c2 = c2
 
         dp_rates = torch.linspace(0.0, float(drop_path), steps=max(1, d)).tolist()
-        blocks = [CSPBottleneck(c2, hidden_ratio=0.5, drop_path=float(dp_rates[i])) for i in range(d)]
+        blocks = [
+            CSPBottleneck(c2, hidden_ratio=0.5, drop_path=float(dp_rates[i])) for i in range(d)
+        ]
         self.blocks = nn.Sequential(*blocks)
         self.fuse = ConvBNAct(c_out, c_out, kernel_size=1, stride=1, padding=0, act="silu")
 
@@ -121,6 +122,8 @@ def build_cspresnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_cspresnet_classifier(in_channels=3, num_classes=10, variant="cspresnet_tiny", width_mult=0.5)
+    m = build_cspresnet_classifier(
+        in_channels=3, num_classes=10, variant="cspresnet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("cspresnet_tiny", tuple(y.shape))

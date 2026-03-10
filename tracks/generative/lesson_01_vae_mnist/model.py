@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -72,4 +71,3 @@ def vae_loss(
 
     total = recon_loss + float(beta) * kl_loss
     return total, recon_loss, kl_loss
-

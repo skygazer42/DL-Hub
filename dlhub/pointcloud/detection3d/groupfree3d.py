@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 
 from ._common import PointQueryDetector3D, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "groupfree3d_tiny": {"d_model": 64, "queries": 32, "groups": 32},
@@ -74,4 +72,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

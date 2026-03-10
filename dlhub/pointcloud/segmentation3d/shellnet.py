@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import index_points, knn_indices
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "shellnet_tiny": {"width": 64, "depth": 2, "k": 16, "shells": 3},
@@ -38,14 +36,20 @@ class _ShellAgg(nn.Module):
 class ShellNetSeg(nn.Module):
     """ShellNet semantic segmentation (toy): distance shells around each point."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int, shells: int) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int, shells: int
+    ) -> None:
         super().__init__()
         self.k = int(k)
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
         self.agg = _ShellAgg(w, shells=int(shells))
-        self.blocks = nn.ModuleList([nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True)) for _ in range(int(depth))])
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.blocks = nn.ModuleList(
+            [nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True)) for _ in range(int(depth))]
+        )
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -89,4 +93,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -62,6 +61,7 @@ def build_nystromformer_classifier(
             nystrom_landmarks=int(m),
         )
     )
+
 
 def registry() -> dict[str, Builder]:
     r: dict[str, Builder] = {}

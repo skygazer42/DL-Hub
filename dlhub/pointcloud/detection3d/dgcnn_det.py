@@ -1,12 +1,7 @@
-
-import math
-
 import torch
 from torch import nn
-from torch.nn import functional as F
 
 from ._common import EdgeConv, QueryHead, check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "dgcnn_det_tiny": {"width": 64, "k": 8, "queries": 32},
@@ -18,11 +13,22 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class DGCNNDet(nn.Module):
     """DGCNN baseline detector (toy): EdgeConv tokens -> global -> query head."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, k: int, num_queries: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        k: int,
+        num_queries: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.edge1 = EdgeConv(int(in_channels), int(width), k=int(k), dropout=float(dropout))
         self.edge2 = EdgeConv(int(width), int(width), k=int(k), dropout=float(dropout))
-        self.head = QueryHead(int(width), int(num_classes), num_queries=int(num_queries), with_yaw=True)
+        self.head = QueryHead(
+            int(width), int(num_classes), num_queries=int(num_queries), with_yaw=True
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         check_points(points)
@@ -60,4 +66,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

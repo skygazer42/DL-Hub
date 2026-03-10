@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._nas import Genotype, NASNetworkClassifier
-
 
 _PNASNET = Genotype(
     # Progressive NAS tends to favor separable convolutions + pooling (simplified).
@@ -93,7 +91,8 @@ def build_pnasnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_pnasnet_classifier(in_channels=3, num_classes=10, variant="pnasnet_tiny", width_mult=0.5)
+    m = build_pnasnet_classifier(
+        in_channels=3, num_classes=10, variant="pnasnet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("pnasnet_tiny", tuple(y.shape))
-

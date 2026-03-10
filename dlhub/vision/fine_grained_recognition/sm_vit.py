@@ -1,4 +1,3 @@
-
 """SM-ViT (Salient Mask-Guided Vision Transformer) - toy-first FGVC classifier.
 
 Reference (one example of the idea):
@@ -10,8 +9,8 @@ This repo keeps things toy-first and offline:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -36,7 +35,9 @@ class SalientMaskPatchEncoder(nn.Module):
             raise ValueError(f"image_size ({img}) must be divisible by patch_size ({patch})")
 
         self.patch_size = int(patch)
-        self.patch_embed = nn.Conv2d(int(in_channels), int(embed_dim), kernel_size=patch, stride=patch)
+        self.patch_embed = nn.Conv2d(
+            int(in_channels), int(embed_dim), kernel_size=patch, stride=patch
+        )
 
         # Lightweight learnable saliency predictor (mask in [0,1]).
         hid = max(8, int(in_channels) * 2)
@@ -69,7 +70,9 @@ class SalientMaskPatchEncoder(nn.Module):
 
         sal = torch.sigmoid(self.saliency(x))  # (B, 1, H, W)
         # Downsample to patch grid as a soft mask.
-        mask = F.avg_pool2d(sal, kernel_size=int(self.patch_size), stride=int(self.patch_size))  # (B,1,gh,gw)
+        mask = F.avg_pool2d(
+            sal, kernel_size=int(self.patch_size), stride=int(self.patch_size)
+        )  # (B,1,gh,gw)
         mask_flat = mask.flatten(2).transpose(1, 2)  # (B, N, 1)
 
         tok = self.patch_embed(x).flatten(2).transpose(1, 2)  # (B, N, E)
@@ -165,4 +168,3 @@ def build_sm_vit_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_sm_vit_fgvc_classifier, "sm_vit_tiny")
-

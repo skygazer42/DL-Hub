@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def ressl_loss(student_logits: torch.Tensor, teacher_logits: torch.Tensor) -> torch.Tensor:
@@ -80,7 +79,9 @@ class PointNetGlobalEncoder(nn.Module):
 
 
 class ProjectionHead(nn.Module):
-    def __init__(self, in_dim: int, out_dim: int, *, hidden_dim: int | None = None, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_dim: int, out_dim: int, *, hidden_dim: int | None = None, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         d_in = int(in_dim)
         d_out = int(out_dim)
@@ -134,7 +135,9 @@ class ReSSLPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        self.projector_s = ProjectionHead(int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), dropout=float(dropout))
+        self.projector_s = ProjectionHead(
+            int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), dropout=float(dropout)
+        )
 
         self.encoder_t = PointNetGlobalEncoder(
             in_channels=int(in_channels),
@@ -142,7 +145,9 @@ class ReSSLPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        self.projector_t = ProjectionHead(int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), dropout=float(dropout))
+        self.projector_t = ProjectionHead(
+            int(embed_dim), int(proj_dim), hidden_dim=int(proj_dim), dropout=float(dropout)
+        )
 
         d = int(proj_dim)
         self.register_buffer("queue", torch.randn(d, qsz, dtype=torch.float32))
@@ -248,7 +253,13 @@ class ReSSLPointNet(nn.Module):
 
 _VARIANTS: dict[str, dict] = {
     "ressl_pointnet_tiny": {"hidden": 32, "embed": 64, "proj": 64, "queue": 512, "dropout": 0.0},
-    "ressl_pointnet_small": {"hidden": 64, "embed": 128, "proj": 128, "queue": 1024, "dropout": 0.0},
+    "ressl_pointnet_small": {
+        "hidden": 64,
+        "embed": 128,
+        "proj": 128,
+        "queue": 1024,
+        "dropout": 0.0,
+    },
     "ressl_pointnet_base": {"hidden": 96, "embed": 192, "proj": 192, "queue": 2048, "dropout": 0.0},
 }
 
@@ -262,7 +273,9 @@ def build_ressl_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown ReSSL-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown ReSSL-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     q = int(spec["queue"]) if queue_size is None else int(queue_size)
@@ -288,4 +301,3 @@ if __name__ == "__main__":
     m.momentum_update_teacher(ema_decay=0.99)
     m.dequeue_and_enqueue(out["teacher_z"])
     print("ok", float(loss.item()))
-

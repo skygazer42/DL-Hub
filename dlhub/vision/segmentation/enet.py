@@ -1,14 +1,15 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.segmentation._common import check_nchw
 
 
 class _ENetBottleneck(nn.Module):
-    def __init__(self, channels: int, *, bottleneck: int, dilation: int = 1, dropout: float = 0.0) -> None:
+    def __init__(
+        self, channels: int, *, bottleneck: int, dilation: int = 1, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         c = int(channels)
         b = int(bottleneck)
@@ -93,7 +94,11 @@ class ENet(nn.Module):
 
         blocks: list[nn.Module] = []
         for i in range(d):
-            blocks.append(_ENetBottleneck(c, bottleneck=max(8, c // 4), dilation=1 if i % 2 == 0 else 2, dropout=dropout))
+            blocks.append(
+                _ENetBottleneck(
+                    c, bottleneck=max(8, c // 4), dilation=1 if i % 2 == 0 else 2, dropout=dropout
+                )
+            )
         self.blocks = nn.Sequential(*blocks)
 
         self.head = nn.Sequential(
@@ -148,4 +153,3 @@ if __name__ == "__main__":
     loss = y.mean()
     loss.backward()
     print("ok")
-

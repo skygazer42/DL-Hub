@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -22,14 +21,20 @@ class MetaPath2Vec(nn.Module):
         super().__init__()
         self.cfg = cfg
 
-        self.u_embeddings = nn.Embedding(int(cfg.num_nodes), int(cfg.embed_dim), sparse=bool(cfg.sparse))
-        self.v_embeddings = nn.Embedding(int(cfg.num_nodes), int(cfg.embed_dim), sparse=bool(cfg.sparse))
+        self.u_embeddings = nn.Embedding(
+            int(cfg.num_nodes), int(cfg.embed_dim), sparse=bool(cfg.sparse)
+        )
+        self.v_embeddings = nn.Embedding(
+            int(cfg.num_nodes), int(cfg.embed_dim), sparse=bool(cfg.sparse)
+        )
 
         init_range = 0.5 / float(cfg.embed_dim)
         nn.init.uniform_(self.u_embeddings.weight, a=-init_range, b=init_range)
         nn.init.constant_(self.v_embeddings.weight, 0.0)
 
-    def loss(self, *, center: torch.Tensor, context: torch.Tensor, neg_context: torch.Tensor) -> torch.Tensor:
+    def loss(
+        self, *, center: torch.Tensor, context: torch.Tensor, neg_context: torch.Tensor
+    ) -> torch.Tensor:
         center = center.to(torch.long)
         context = context.to(torch.long)
         neg_context = neg_context.to(torch.long)
@@ -47,4 +52,3 @@ class MetaPath2Vec(nn.Module):
 
 
 __all__ = ["MetaPath2Vec", "ModelConfig"]
-

@@ -1,9 +1,8 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import DepthwiseSeparableConv, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, FPN, check_nchw
+from dlhub.vision.detection._common import FPN, BackboneC3C5, check_nchw
 
 
 class NanoDetHead(nn.Module):
@@ -14,7 +13,9 @@ class NanoDetHead(nn.Module):
     - dist_logits: (B, 4*(reg_max+1), H, W)
     """
 
-    def __init__(self, *, channels: int, num_classes: int, reg_max: int = 7, num_convs: int = 2) -> None:
+    def __init__(
+        self, *, channels: int, num_classes: int, reg_max: int = 7, num_convs: int = 2
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -27,8 +28,12 @@ class NanoDetHead(nn.Module):
         if n <= 0:
             raise ValueError("num_convs must be > 0")
 
-        self.cls_tower = nn.Sequential(*[DepthwiseSeparableConv(c, c, act="silu") for _ in range(n)])
-        self.reg_tower = nn.Sequential(*[DepthwiseSeparableConv(c, c, act="silu") for _ in range(n)])
+        self.cls_tower = nn.Sequential(
+            *[DepthwiseSeparableConv(c, c, act="silu") for _ in range(n)]
+        )
+        self.reg_tower = nn.Sequential(
+            *[DepthwiseSeparableConv(c, c, act="silu") for _ in range(n)]
+        )
         self.cls = nn.Conv2d(c, nc, kernel_size=1)
         self.dist = nn.Conv2d(c, 4 * (rm + 1), kernel_size=1)
         self.reg_max = rm
@@ -65,7 +70,12 @@ class NanoDetDetector(nn.Module):
             act="silu",
         )
         self.fpn = FPN((c3, c4, c5), out, act="silu")
-        self.head = NanoDetHead(channels=out, num_classes=int(num_classes), reg_max=int(reg_max), num_convs=int(head_convs))
+        self.head = NanoDetHead(
+            channels=out,
+            num_classes=int(num_classes),
+            reg_max=int(reg_max),
+            num_convs=int(head_convs),
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -80,9 +90,36 @@ class NanoDetDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "nanodet_tiny": {"stem": 20, "c3": 40, "c4": 56, "c5": 72, "depth": 1, "fpn": 56, "head": 1, "reg_max": 7},
-    "nanodet_small": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 2, "fpn": 64, "head": 2, "reg_max": 7},
-    "nanodet_base": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "head": 2, "reg_max": 7},
+    "nanodet_tiny": {
+        "stem": 20,
+        "c3": 40,
+        "c4": 56,
+        "c5": 72,
+        "depth": 1,
+        "fpn": 56,
+        "head": 1,
+        "reg_max": 7,
+    },
+    "nanodet_small": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 2,
+        "fpn": 64,
+        "head": 2,
+        "reg_max": 7,
+    },
+    "nanodet_base": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "head": 2,
+        "reg_max": 7,
+    },
 }
 
 
@@ -119,8 +156,11 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 128, 128)
     m = build_nanodet_detector(in_channels=3, num_classes=2, variant="nanodet_tiny", width_mult=0.5)
     out = m(x)
-    print("nanodet_tiny", [tuple(t.shape) for t in out["cls_logits"]], [tuple(t.shape) for t in out["dist_logits"]])
+    print(
+        "nanodet_tiny",
+        [tuple(t.shape) for t in out["cls_logits"]],
+        [tuple(t.shape) for t in out["dist_logits"]],
+    )
     loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["dist_logits"])
     loss.backward()
     print("ok")
-

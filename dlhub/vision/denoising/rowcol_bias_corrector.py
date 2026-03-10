@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _smooth_h(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -101,9 +100,13 @@ def build_rowcol_bias_corrector_denoiser(
     _ = float(sigma)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown RowColBiasCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown RowColBiasCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return RowColBiasCorrector(smooth=int(spec["smooth"]), strength=1.0, padding="reflect", clamp=True)
+    return RowColBiasCorrector(
+        smooth=int(spec["smooth"]), strength=1.0, padding="reflect", clamp=True
+    )
 
 
 if __name__ == "__main__":
@@ -117,4 +120,3 @@ if __name__ == "__main__":
     m = build_rowcol_bias_corrector_denoiser(in_channels=1, variant="rowcol_bias_tiny")
     out = m(noisy)
     print("rowcol_bias_tiny", tuple(out.shape), float((out - clean).pow(2).mean().item()))
-

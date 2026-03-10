@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -6,11 +5,15 @@ from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, scale_c
 
 
 def _conv3x3(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1, bias=False
+    )
 
 
 def _conv1x1(in_ch: int, out_ch: int, *, stride: int = 1) -> nn.Conv2d:
-    return nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False)
+    return nn.Conv2d(
+        int(in_ch), int(out_ch), kernel_size=1, stride=int(stride), padding=0, bias=False
+    )
 
 
 class PreActBasicBlock(nn.Module):
@@ -104,7 +107,9 @@ class ResNetV2Classifier(nn.Module):
         self.act = nn.ReLU(inplace=True)
         self.head = GlobalAvgPoolHead(out_dim, int(num_classes), dropout=float(dropout))
 
-    def _make_layer(self, block: type[nn.Module], out_ch: int, blocks: int, *, stride: int) -> nn.Sequential:
+    def _make_layer(
+        self, block: type[nn.Module], out_ch: int, blocks: int, *, stride: int
+    ) -> nn.Sequential:
         layers: list[nn.Module] = []
         layers.append(block(self.in_ch, int(out_ch), stride=int(stride)))
         self.in_ch = int(out_ch) * int(getattr(block, "expansion", 1))
@@ -160,4 +165,3 @@ if __name__ == "__main__":
         m = build_resnetv2_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.5)
         y = m(x)
         print(v, tuple(y.shape))
-

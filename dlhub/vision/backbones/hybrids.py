@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -269,7 +268,9 @@ def build_mobilevit_classifier(
         transformer_dims = (128, 192)
         transformer_depths = (4, 4)
     else:
-        raise ValueError("Unknown MobileViT variant. Supported: mobilevit_tiny|mobilevit_small|mobilevit_base")
+        raise ValueError(
+            "Unknown MobileViT variant. Supported: mobilevit_tiny|mobilevit_small|mobilevit_base"
+        )
 
     widths_scaled = tuple(_c(int(c), w, min_ch=16, divisor=8) for c in widths)
     t_scaled = tuple(_c(int(c), w, min_ch=64, divisor=8) for c in transformer_dims)
@@ -339,7 +340,9 @@ class CoAtNetClassifier(nn.Module):
             s1.append(MBConv(w1, w1, stride=1, expand_ratio=2, se_ratio=0.25, dropout=cfg.dropout))
         self.stage1 = nn.Sequential(*s1)
 
-        s2: list[nn.Module] = [MBConv(w1, w2, stride=2, expand_ratio=2, se_ratio=0.25, dropout=cfg.dropout)]
+        s2: list[nn.Module] = [
+            MBConv(w1, w2, stride=2, expand_ratio=2, se_ratio=0.25, dropout=cfg.dropout)
+        ]
         for _ in range(1, d2):
             s2.append(MBConv(w2, w2, stride=1, expand_ratio=2, se_ratio=0.25, dropout=cfg.dropout))
         self.stage2 = nn.Sequential(*s2)
@@ -394,7 +397,9 @@ def build_coatnet_classifier(
         widths = (48, 128, 256, 512)
         depths = (3, 4, 4, 4)
     else:
-        raise ValueError("Unknown CoAtNet variant. Supported: coatnet_tiny|coatnet_small|coatnet_base")
+        raise ValueError(
+            "Unknown CoAtNet variant. Supported: coatnet_tiny|coatnet_small|coatnet_base"
+        )
 
     widths_scaled = tuple(_c(int(c), w, min_ch=32, divisor=8) for c in widths)
     return CoAtNetClassifier(
@@ -535,4 +540,3 @@ __all__ = [
     "build_fnet_classifier",
     "build_mobilevit_classifier",
 ]
-

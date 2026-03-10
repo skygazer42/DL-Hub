@@ -1,4 +1,3 @@
-
 import re
 from dataclasses import dataclass
 
@@ -179,4 +178,3 @@ def get_dataloaders(config: DataConfig):
 
 
 __all__ = ["DataConfig", "Vocab", "ToyTextDataset", "get_dataloaders", "simple_tokenize"]
-

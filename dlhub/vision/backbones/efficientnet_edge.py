@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -95,7 +94,9 @@ def build_efficientnet_edge_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown EfficientNet-Edge variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown EfficientNet-Edge variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return EfficientNetEdgeClassifier(
         in_channels=int(in_channels),
@@ -109,7 +110,8 @@ def build_efficientnet_edge_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_efficientnet_edge_classifier(in_channels=3, num_classes=10, variant="efficientnet_edge_s")
+    m = build_efficientnet_edge_classifier(
+        in_channels=3, num_classes=10, variant="efficientnet_edge_s"
+    )
     y = m(x)
     print("efficientnet_edge_s", tuple(y.shape))
-

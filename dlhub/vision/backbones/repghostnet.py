@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, SqueezeExcite, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    make_divisible,
+)
 
 
 class RepGhostModule(nn.Module):
@@ -32,7 +36,15 @@ class RepGhostBottleneck(nn.Module):
         self.ghost1 = RepGhostModule(int(in_ch), int(mid_ch), act="relu")
         if self.stride > 1:
             self.dw = nn.Sequential(
-                nn.Conv2d(int(mid_ch), int(mid_ch), kernel_size=3, stride=self.stride, padding=1, groups=int(mid_ch), bias=False),
+                nn.Conv2d(
+                    int(mid_ch),
+                    int(mid_ch),
+                    kernel_size=3,
+                    stride=self.stride,
+                    padding=1,
+                    groups=int(mid_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(mid_ch)),
             )
         else:
@@ -44,7 +56,15 @@ class RepGhostBottleneck(nn.Module):
             self.short = nn.Identity()
         else:
             self.short = nn.Sequential(
-                nn.Conv2d(int(in_ch), int(in_ch), kernel_size=3, stride=self.stride, padding=1, groups=int(in_ch), bias=False),
+                nn.Conv2d(
+                    int(in_ch),
+                    int(in_ch),
+                    kernel_size=3,
+                    stride=self.stride,
+                    padding=1,
+                    groups=int(in_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(in_ch)),
                 nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, bias=False),
                 nn.BatchNorm2d(int(out_ch)),
@@ -124,9 +144,16 @@ def build_repghostnet_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown RepGhostNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown RepGhostNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return RepGhostNetClassifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return RepGhostNetClassifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -135,4 +162,3 @@ if __name__ == "__main__":
     m = build_repghostnet_classifier(in_channels=3, num_classes=10, variant="repghostnet_0_5")
     y = m(x)
     print("repghostnet_0_5", tuple(y.shape))
-

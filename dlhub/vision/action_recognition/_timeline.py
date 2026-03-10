@@ -1,4 +1,3 @@
-
 """Action recognition timeline metadata (best-effort, for docs/CLI).
 
 Notes:
@@ -34,7 +33,9 @@ _ENTRIES: list[TimelineEntry] = [
     TimelineEntry(2021, "vivit", "ViViT (factorized video transformer, toy)", "video"),
     TimelineEntry(2022, "videomae", "VideoMAE (tubelet ViT, toy)", "video"),
     TimelineEntry(2024, "videomamba", "VideoMamba (SSM/Mamba-style mixer, toy)", "video"),
-    TimelineEntry(2025, "videornn", "VideoRNN (CNN+GRU, efficient temporal modeling, toy)", "video"),
+    TimelineEntry(
+        2025, "videornn", "VideoRNN (CNN+GRU, efficient temporal modeling, toy)", "video"
+    ),
     # --- skeleton-based action recognition
     TimelineEntry(2018, "stgcn", "ST-GCN (spatio-temporal graph conv)", "skeleton"),
     TimelineEntry(2019, "agcn", "2S-AGCN (adaptive graph conv, toy)", "skeleton"),
@@ -42,7 +43,9 @@ _ENTRIES: list[TimelineEntry] = [
     TimelineEntry(2020, "ms_g3d", "MS-G3D (multi-hop graph conv, toy)", "skeleton"),
     TimelineEntry(2021, "ctr_gcn", "CTR-GCN (dynamic topology refinement, toy)", "skeleton"),
     TimelineEntry(2021, "poseformer", "PoseFormer (transformer over joints/time, toy)", "skeleton"),
-    TimelineEntry(2021, "sttr", "ST-Transformer (factorized spatial+temporal attention, toy)", "skeleton"),
+    TimelineEntry(
+        2021, "sttr", "ST-Transformer (factorized spatial+temporal attention, toy)", "skeleton"
+    ),
     TimelineEntry(2022, "motionbert", "MotionBERT (masked motion modeling, toy)", "skeleton"),
 ]
 

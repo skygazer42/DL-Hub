@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -30,7 +29,9 @@ class LINE(nn.Module):
             )
 
     def _target_table(self) -> nn.Embedding:
-        return self.context_embeddings if self.context_embeddings is not None else self.node_embeddings
+        return (
+            self.context_embeddings if self.context_embeddings is not None else self.node_embeddings
+        )
 
     def loss(self, *, src: torch.Tensor, dst: torch.Tensor, neg_dst: torch.Tensor) -> torch.Tensor:
         """Compute LINE loss for a batch.
@@ -57,4 +58,3 @@ class LINE(nn.Module):
 
 
 __all__ = ["LINE", "ModelConfig"]
-

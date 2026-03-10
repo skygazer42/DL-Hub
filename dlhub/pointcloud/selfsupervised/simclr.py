@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def nt_xent_loss(z1: torch.Tensor, z2: torch.Tensor, *, temperature: float = 0.2) -> torch.Tensor:
@@ -13,7 +12,9 @@ def nt_xent_loss(z1: torch.Tensor, z2: torch.Tensor, *, temperature: float = 0.2
     """
 
     if z1.ndim != 2 or z2.ndim != 2:
-        raise ValueError(f"Expected z1/z2 shapes (B, D), got {tuple(z1.shape)} and {tuple(z2.shape)}")
+        raise ValueError(
+            f"Expected z1/z2 shapes (B, D), got {tuple(z1.shape)} and {tuple(z2.shape)}"
+        )
     if z1.shape != z2.shape:
         raise ValueError("z1 and z2 must have the same shape")
 
@@ -149,7 +150,9 @@ def build_simclr_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown SimCLR-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown SimCLR-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     return SimCLRPointNet(

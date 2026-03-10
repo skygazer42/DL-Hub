@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -78,7 +77,9 @@ class OverlapPatchEmbed(nn.Module):
         k = int(kernel_size)
         s = int(stride)
         p = k // 2
-        self.proj = nn.Conv2d(int(in_ch), int(embed_dim), kernel_size=k, stride=s, padding=p, bias=True)
+        self.proj = nn.Conv2d(
+            int(in_ch), int(embed_dim), kernel_size=k, stride=s, padding=p, bias=True
+        )
         self.norm = nn.LayerNorm(int(embed_dim))
 
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, tuple[int, int]]:
@@ -148,7 +149,9 @@ class SegFormerMiTClassifier(nn.Module):
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(dims[-1], int(num_classes))
 
-    def _run_stage(self, x: torch.Tensor, hw: tuple[int, int], blocks: nn.ModuleList) -> torch.Tensor:
+    def _run_stage(
+        self, x: torch.Tensor, hw: tuple[int, int], blocks: nn.ModuleList
+    ) -> torch.Tensor:
         for b in blocks:
             x = b(x, hw=hw)
         return x
@@ -175,9 +178,24 @@ class SegFormerMiTClassifier(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "mit_b0": {"dims": (32, 64, 160, 256), "depths": (2, 2, 2, 2), "heads": (1, 2, 5, 8), "sr": (8, 4, 2, 1)},
-    "mit_b1": {"dims": (64, 128, 320, 512), "depths": (2, 2, 4, 2), "heads": (1, 2, 5, 8), "sr": (8, 4, 2, 1)},
-    "mit_b2": {"dims": (64, 128, 320, 512), "depths": (3, 4, 6, 3), "heads": (1, 2, 5, 8), "sr": (8, 4, 2, 1)},
+    "mit_b0": {
+        "dims": (32, 64, 160, 256),
+        "depths": (2, 2, 2, 2),
+        "heads": (1, 2, 5, 8),
+        "sr": (8, 4, 2, 1),
+    },
+    "mit_b1": {
+        "dims": (64, 128, 320, 512),
+        "depths": (2, 2, 4, 2),
+        "heads": (1, 2, 5, 8),
+        "sr": (8, 4, 2, 1),
+    },
+    "mit_b2": {
+        "dims": (64, 128, 320, 512),
+        "depths": (3, 4, 6, 3),
+        "heads": (1, 2, 5, 8),
+        "sr": (8, 4, 2, 1),
+    },
 }
 
 
@@ -212,6 +230,8 @@ if __name__ == "__main__":
 
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_segformer_mit_classifier(in_channels=3, num_classes=10, variant="mit_b0", width_mult=0.5)
+    m = build_segformer_mit_classifier(
+        in_channels=3, num_classes=10, variant="mit_b0", width_mult=0.5
+    )
     y = m(x)
     print("mit_b0", tuple(y.shape))

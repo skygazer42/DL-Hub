@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import CenterProposalHead, EdgeConvEncoder
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "hais_tiny": {"width": 64, "depth": 2, "k": 8, "instances": 16},
@@ -27,9 +25,18 @@ class HAIS(nn.Module):
         dropout: float = 0.0,
     ) -> None:
         super().__init__()
-        self.enc = EdgeConvEncoder(int(in_channels), int(width), depth=int(depth), k=int(k), dropout=float(dropout))
-        self.head = CenterProposalHead(int(width), int(num_classes), num_instances=int(num_instances), dropout=float(dropout))
-        self.gate = nn.Sequential(nn.Linear(3, int(width) // 2), nn.ReLU(inplace=True), nn.Linear(int(width) // 2, 1), nn.Sigmoid())
+        self.enc = EdgeConvEncoder(
+            int(in_channels), int(width), depth=int(depth), k=int(k), dropout=float(dropout)
+        )
+        self.head = CenterProposalHead(
+            int(width), int(num_classes), num_instances=int(num_instances), dropout=float(dropout)
+        )
+        self.gate = nn.Sequential(
+            nn.Linear(3, int(width) // 2),
+            nn.ReLU(inplace=True),
+            nn.Linear(int(width) // 2, 1),
+            nn.Sigmoid(),
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -69,4 +76,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

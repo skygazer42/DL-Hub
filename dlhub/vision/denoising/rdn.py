@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _ResidualDenseLayer(nn.Module):
@@ -27,17 +26,17 @@ class ResidualDenseBlock(nn.Module):
         super().__init__()
         c = int(channels)
         g = int(growth)
-        l = int(num_layers)
+        num_layers_int = int(num_layers)
         if c <= 0:
             raise ValueError("channels must be > 0")
         if g <= 0:
             raise ValueError("growth must be > 0")
-        if l <= 0:
+        if num_layers_int <= 0:
             raise ValueError("num_layers must be > 0")
 
         layers: list[nn.Module] = []
         ch = c
-        for _ in range(l):
+        for _ in range(num_layers_int):
             layers.append(_ResidualDenseLayer(ch, g))
             ch += g
         self.layers = nn.ModuleList(layers)
@@ -71,7 +70,7 @@ class RDN(nn.Module):
         c_in = int(in_channels)
         f = int(features)
         d = int(num_blocks)
-        l = int(num_layers)
+        num_layers_int = int(num_layers)
         g = int(growth)
         if c_in <= 0:
             raise ValueError("in_channels must be > 0")
@@ -84,7 +83,7 @@ class RDN(nn.Module):
         self.sfe2 = nn.Conv2d(f, f, kernel_size=3, padding=1, bias=True)
 
         self.rdbs = nn.ModuleList(
-            [ResidualDenseBlock(f, growth=g, num_layers=l) for _ in range(d)]
+            [ResidualDenseBlock(f, growth=g, num_layers=num_layers_int) for _ in range(d)]
         )
 
         self.gff_1x1 = nn.Conv2d(f * d, f, kernel_size=1, bias=True)
@@ -144,4 +143,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

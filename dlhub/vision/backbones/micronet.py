@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ChannelShuffle, ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ChannelShuffle,
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    make_divisible,
+)
 
 
 class MicroBlock(nn.Module):
@@ -20,7 +24,9 @@ class MicroBlock(nn.Module):
             ChannelShuffle(g),
         )
         self.dw = nn.Sequential(
-            nn.Conv2d(c_out, c_out, kernel_size=3, stride=int(stride), padding=1, groups=c_out, bias=False),
+            nn.Conv2d(
+                c_out, c_out, kernel_size=3, stride=int(stride), padding=1, groups=c_out, bias=False
+            ),
             nn.BatchNorm2d(c_out),
             nn.ReLU(inplace=True),
         )
@@ -31,7 +37,10 @@ class MicroBlock(nn.Module):
         self.act = nn.ReLU(inplace=True)
         self.down: nn.Module | None = None
         if int(stride) != 1 or c_in != c_out:
-            self.down = nn.Sequential(nn.Conv2d(c_in, c_out, kernel_size=1, stride=int(stride), bias=False), nn.BatchNorm2d(c_out))
+            self.down = nn.Sequential(
+                nn.Conv2d(c_in, c_out, kernel_size=1, stride=int(stride), bias=False),
+                nn.BatchNorm2d(c_out),
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         identity = x if self.down is None else self.down(x)
@@ -57,7 +66,10 @@ class MicroNetClassifier(nn.Module):
             return make_divisible(int(round(int(ch) * w)), 8)
 
         self.stem = ConvBNAct(int(in_channels), c(16), kernel_size=3, stride=2, act="relu")
-        self.stage1 = nn.Sequential(MicroBlock(c(16), c(32), stride=2, groups=2), MicroBlock(c(32), c(32), stride=1, groups=2))
+        self.stage1 = nn.Sequential(
+            MicroBlock(c(16), c(32), stride=2, groups=2),
+            MicroBlock(c(32), c(32), stride=1, groups=2),
+        )
         self.stage2 = nn.Sequential(
             MicroBlock(c(32), c(64), stride=2, groups=4),
             MicroBlock(c(64), c(64), stride=1, groups=4),
@@ -67,7 +79,10 @@ class MicroNetClassifier(nn.Module):
             MicroBlock(c(64), c(128), stride=2, groups=4),
             MicroBlock(c(128), c(128), stride=1, groups=4),
         )
-        self.head = nn.Sequential(ConvBNAct(c(128), c(512), kernel_size=1, stride=1, padding=0, act="relu"), GlobalAvgPoolHead(c(512), int(num_classes), dropout=float(dropout)))
+        self.head = nn.Sequential(
+            ConvBNAct(c(128), c(512), kernel_size=1, stride=1, padding=0, act="relu"),
+            GlobalAvgPoolHead(c(512), int(num_classes), dropout=float(dropout)),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -96,7 +111,12 @@ def build_micronet_classifier(
     if name not in _VARIANTS:
         raise ValueError(f"Unknown MicroNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return MicroNetClassifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return MicroNetClassifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -105,4 +125,3 @@ if __name__ == "__main__":
     m = build_micronet_classifier(in_channels=3, num_classes=10, variant="micronet_xs")
     y = m(x)
     print("micronet_xs", tuple(y.shape))
-

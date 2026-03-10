@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import EdgeConvSegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "dgcnn_tiny": {"width": 48, "k": 8, "depth": 2},
@@ -16,7 +14,14 @@ class DGCNNSeg(nn.Module):
     """DGCNN semantic segmentation (toy): EdgeConv stack -> per-point logits."""
 
     def __init__(
-        self, *, in_channels: int, num_classes: int, width: int, k: int, depth: int, dropout: float = 0.0
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        k: int,
+        depth: int,
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
         self.net = EdgeConvSegBase(
@@ -59,4 +64,3 @@ if __name__ == "__main__":
     y = model(x)
     (y.mean()).backward()
     print("logits:", tuple(y.shape))
-

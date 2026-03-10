@@ -1,15 +1,21 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_hw, sine_positional_encoding_1d
+from dlhub.vision.detection._detr_utils import (
+    MLP,
+    SimpleTransformer,
+    flatten_hw,
+    sine_positional_encoding_1d,
+)
 
 
 class _ConvBackboneStride8(nn.Module):
     """Tiny conv backbone producing a stride-8 feature map for DETR-like models."""
 
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -107,9 +113,36 @@ class DETRDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "detr_tiny": {"stem": 24, "feat": 96, "depth": 1, "d_model": 96, "heads": 4, "q": 32, "enc": 1, "dec": 1},
-    "detr_small": {"stem": 32, "feat": 128, "depth": 2, "d_model": 128, "heads": 4, "q": 50, "enc": 2, "dec": 2},
-    "detr_base": {"stem": 48, "feat": 192, "depth": 2, "d_model": 192, "heads": 6, "q": 100, "enc": 3, "dec": 3},
+    "detr_tiny": {
+        "stem": 24,
+        "feat": 96,
+        "depth": 1,
+        "d_model": 96,
+        "heads": 4,
+        "q": 32,
+        "enc": 1,
+        "dec": 1,
+    },
+    "detr_small": {
+        "stem": 32,
+        "feat": 128,
+        "depth": 2,
+        "d_model": 128,
+        "heads": 4,
+        "q": 50,
+        "enc": 2,
+        "dec": 2,
+    },
+    "detr_base": {
+        "stem": 48,
+        "feat": 192,
+        "depth": 2,
+        "d_model": 192,
+        "heads": 6,
+        "q": 100,
+        "enc": 3,
+        "dec": 3,
+    },
 }
 
 
@@ -154,4 +187,3 @@ if __name__ == "__main__":
     loss = out["class_logits"].mean() + out["boxes"].mean()
     loss.backward()
     print("ok")
-

@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
-from ._common import BEVBoxSpec, BEVAnchorFreeDetector3D
-
+from ._common import BEVAnchorFreeDetector3D, BEVBoxSpec
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "voxelnet_tiny": {"width": 48, "bev_h": 24, "bev_w": 24, "topk": 48},
@@ -71,4 +69,3 @@ if __name__ == "__main__":
     loss = out["boxes"].mean() + out["cls_logits"].mean()
     loss.backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

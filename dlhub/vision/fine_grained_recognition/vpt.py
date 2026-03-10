@@ -1,4 +1,3 @@
-
 """VPT (Visual Prompt Tuning) - toy-first FGVC classifier.
 
 Reference:
@@ -10,8 +9,8 @@ This implementation is intentionally lightweight:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -35,7 +34,9 @@ class PromptedPatchEncoder(nn.Module):
         patch = int(patch_size)
         if img % patch != 0:
             raise ValueError(f"image_size ({img}) must be divisible by patch_size ({patch})")
-        self.patch_embed = nn.Conv2d(int(in_channels), int(embed_dim), kernel_size=patch, stride=patch)
+        self.patch_embed = nn.Conv2d(
+            int(in_channels), int(embed_dim), kernel_size=patch, stride=patch
+        )
         grid = img // patch
         num_patches = grid * grid
         self.prompt_len = int(prompt_len)
@@ -43,8 +44,12 @@ class PromptedPatchEncoder(nn.Module):
             raise ValueError("prompt_len must be >= 0")
 
         self.cls_token = nn.Parameter(torch.zeros(1, 1, int(embed_dim)))
-        self.prompt_tokens = nn.Parameter(torch.randn(1, int(self.prompt_len), int(embed_dim)) * 0.02)
-        self.pos_embed = nn.Parameter(torch.zeros(1, num_patches + 1 + int(self.prompt_len), int(embed_dim)))
+        self.prompt_tokens = nn.Parameter(
+            torch.randn(1, int(self.prompt_len), int(embed_dim)) * 0.02
+        )
+        self.pos_embed = nn.Parameter(
+            torch.zeros(1, num_patches + 1 + int(self.prompt_len), int(embed_dim))
+        )
 
         layer = nn.TransformerEncoderLayer(
             d_model=int(embed_dim),

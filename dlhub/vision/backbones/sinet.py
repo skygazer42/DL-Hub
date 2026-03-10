@@ -1,8 +1,13 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, DropPath, GlobalAvgPoolHead, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    DropPath,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    scale_channels,
+)
 
 
 class SiBlock(nn.Module):
@@ -59,9 +64,13 @@ class SINetClassifier(nn.Module):
         )
 
         def stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
-            blocks: list[nn.Module] = [SiBlock(in_ch, out_ch, stride=int(stride), drop_path=float(next(dp_iter, 0.0)))]
+            blocks: list[nn.Module] = [
+                SiBlock(in_ch, out_ch, stride=int(stride), drop_path=float(next(dp_iter, 0.0)))
+            ]
             for _ in range(int(depth) - 1):
-                blocks.append(SiBlock(out_ch, out_ch, stride=1, drop_path=float(next(dp_iter, 0.0))))
+                blocks.append(
+                    SiBlock(out_ch, out_ch, stride=1, drop_path=float(next(dp_iter, 0.0)))
+                )
             return nn.Sequential(*blocks)
 
         self.stage1 = stage(dims[0], dims[0], depths[0], stride=1)

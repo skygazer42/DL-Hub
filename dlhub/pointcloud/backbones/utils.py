@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -90,4 +89,3 @@ __all__ = [
     "_c",
     "global_max_pool",
 ]
-

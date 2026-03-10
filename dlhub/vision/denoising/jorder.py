@@ -1,4 +1,3 @@
-
 """JORDER (Joint Rain Detection and Removal) - toy-first implementation.
 
 Reference (original idea):
@@ -10,8 +9,8 @@ This repo keeps it lightweight and offline:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _ConvBlock(nn.Module):

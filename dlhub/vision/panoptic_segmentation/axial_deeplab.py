@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.panoptic_segmentation._common import BackboneC2C3C4C5, ProtoNet, check_nchw, masks_from_prototypes
+from dlhub.vision.panoptic_segmentation._common import (
+    BackboneC2C3C4C5,
+    ProtoNet,
+    check_nchw,
+    masks_from_prototypes,
+)
 
 
 class _AxialBlock(nn.Module):
@@ -107,7 +111,9 @@ class AxialDeepLabPanoptic(nn.Module):
         )
 
         # Toy instance masks from /8 features.
-        self.inst_proj = ConvBNAct(int(c3_channels), dm, kernel_size=1, stride=1, padding=0, act="relu")
+        self.inst_proj = ConvBNAct(
+            int(c3_channels), dm, kernel_size=1, stride=1, padding=0, act="relu"
+        )
         self.proto = ProtoNet(dm, np, depth=3, act="relu")
         self.query = nn.Parameter(torch.randn(ni, dm) * 0.02)
         self.q_proj = nn.Linear(dm, dm)
@@ -137,13 +143,53 @@ class AxialDeepLabPanoptic(nn.Module):
         mask_logits = masks_from_prototypes(proto, coeff)
         mask_logits = F.interpolate(mask_logits, size=(h, w), mode="nearest")
 
-        return {"semantic_logits": semantic_logits, "query_cls_logits": query_cls_logits, "mask_logits": mask_logits}
+        return {
+            "semantic_logits": semantic_logits,
+            "query_cls_logits": query_cls_logits,
+            "mask_logits": mask_logits,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
-    "axial_deeplab_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "embed": 64, "axial_depth": 1, "heads": 4, "instances": 16, "protos": 16},
-    "axial_deeplab_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "embed": 96, "axial_depth": 2, "heads": 4, "instances": 32, "protos": 32},
-    "axial_deeplab_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "embed": 128, "axial_depth": 3, "heads": 8, "instances": 64, "protos": 48},
+    "axial_deeplab_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "embed": 64,
+        "axial_depth": 1,
+        "heads": 4,
+        "instances": 16,
+        "protos": 16,
+    },
+    "axial_deeplab_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "embed": 96,
+        "axial_depth": 2,
+        "heads": 4,
+        "instances": 32,
+        "protos": 32,
+    },
+    "axial_deeplab_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "embed": 128,
+        "axial_depth": 3,
+        "heads": 8,
+        "instances": 64,
+        "protos": 48,
+    },
 }
 
 
@@ -157,7 +203,9 @@ def build_axial_deeplab_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Axial-DeepLab panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Axial-DeepLab panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     def sc(v: int, *, min_ch: int = 16) -> int:
@@ -194,11 +242,16 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_axial_deeplab_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="axial_deeplab_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="axial_deeplab_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("axial_deeplab_tiny", {k: tuple(v.shape) for k, v in out.items()})
-    loss = out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    loss = (
+        out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    )
     loss.backward()
     print("ok")
-

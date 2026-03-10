@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
-
 
 _VGG_CFGS: dict[str, list[int | str]] = {
     "vgg11": [64, "M", 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"],
@@ -54,7 +52,9 @@ _VGG_CFGS: dict[str, list[int | str]] = {
 }
 
 
-def _make_layers(cfg: list[int | str], *, in_channels: int, width_mult: float) -> tuple[nn.Sequential, int]:
+def _make_layers(
+    cfg: list[int | str], *, in_channels: int, width_mult: float
+) -> tuple[nn.Sequential, int]:
     layers: list[nn.Module] = []
     c_in = int(in_channels)
     last = c_in
@@ -89,7 +89,9 @@ class VGGClassifier(nn.Module):
         name = str(variant).lower().strip()
         if name not in _VGG_CFGS:
             raise ValueError(f"Unknown VGG variant: {variant!r}. Supported: {sorted(_VGG_CFGS)}")
-        self.features, out_ch = _make_layers(_VGG_CFGS[name], in_channels=int(in_channels), width_mult=float(width_mult))
+        self.features, out_ch = _make_layers(
+            _VGG_CFGS[name], in_channels=int(in_channels), width_mult=float(width_mult)
+        )
         self.head = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Flatten(),

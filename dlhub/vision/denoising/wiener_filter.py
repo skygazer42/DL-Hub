@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -81,9 +80,13 @@ def build_wiener_filter_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown WienerFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown WienerFilter variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return WienerFilter(sigma=float(sigma), window=int(spec["window"]), padding="reflect", clamp=True)
+    return WienerFilter(
+        sigma=float(sigma), window=int(spec["window"]), padding="reflect", clamp=True
+    )
 
 
 if __name__ == "__main__":
@@ -93,4 +96,3 @@ if __name__ == "__main__":
     m = build_wiener_filter_denoiser(in_channels=1, sigma=0.12, variant="wiener_tiny")
     y = m(noisy)
     print("wiener_tiny", tuple(y.shape), float((y - x).pow(2).mean().item()))
-

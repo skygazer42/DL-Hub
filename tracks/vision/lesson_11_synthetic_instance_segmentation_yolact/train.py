@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -106,7 +105,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     return train_cfg, data_cfg
 
 
-def _mask_iou(pred_logits: torch.Tensor, target: torch.Tensor, *, threshold: float = 0.5) -> torch.Tensor:
+def _mask_iou(
+    pred_logits: torch.Tensor, target: torch.Tensor, *, threshold: float = 0.5
+) -> torch.Tensor:
     probs = torch.sigmoid(pred_logits)
     pred = (probs > float(threshold)).to(torch.float32)
     target = target.to(torch.float32)
@@ -127,7 +128,9 @@ def _run_epoch(
 ) -> Stats:
     is_train = optimizer is not None
 
-    cls_criterion = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor([float(cfg.cls_pos_weight)], device=device))
+    cls_criterion = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor([float(cfg.cls_pos_weight)], device=device)
+    )
     reg_criterion = torch.nn.SmoothL1Loss(reduction="mean")
     mask_criterion = torch.nn.BCEWithLogitsLoss()
 
@@ -316,4 +319,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

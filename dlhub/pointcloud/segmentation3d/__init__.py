@@ -8,7 +8,6 @@ This package uses **lazy imports** so `import dlhub.pointcloud.segmentation3d` s
 even as the zoo grows.
 """
 
-
 from importlib import import_module
 from typing import Any
 
@@ -35,4 +34,3 @@ def __dir__() -> list[str]:  # pragma: no cover
 
 
 __all__ = []
-

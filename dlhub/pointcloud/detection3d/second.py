@@ -1,10 +1,17 @@
-
 import torch
 from torch import nn
-from torch.nn import functional as F
 
-from ._common import BEVBoxSpec, DenseBEVHead, PointNetEncoder, TinyBEVBackbone, check_points, scatter_mean_2d, split_xyz_features, topk_heatmap, decode_bev_boxes
-
+from ._common import (
+    BEVBoxSpec,
+    DenseBEVHead,
+    PointNetEncoder,
+    TinyBEVBackbone,
+    check_points,
+    decode_bev_boxes,
+    scatter_mean_2d,
+    split_xyz_features,
+    topk_heatmap,
+)
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "second_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 64},
@@ -66,7 +73,9 @@ class SECOND(nn.Module):
             device=points.device,
             dtype=points.dtype,
         )
-        cls_logits.scatter_(-1, cls.unsqueeze(-1), torch.logit(scores.clamp(1e-4, 1 - 1e-4)).unsqueeze(-1))
+        cls_logits.scatter_(
+            -1, cls.unsqueeze(-1), torch.logit(scores.clamp(1e-4, 1 - 1e-4)).unsqueeze(-1)
+        )
         return {"boxes": boxes, "cls_logits": cls_logits, "scores": scores}
 
 
@@ -98,4 +107,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

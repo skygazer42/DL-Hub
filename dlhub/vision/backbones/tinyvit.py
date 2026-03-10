@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import DropPath, scale_channels
 from dlhub.vision.backbones._transformer import MLP, MultiheadSelfAttention
 
 
@@ -23,7 +22,9 @@ def _window_reverse(windows: torch.Tensor, window: int, h: int, w: int) -> torch
 
 
 class TinyViTBlock(nn.Module):
-    def __init__(self, dim: int, num_heads: int, *, window: int = 8, drop_path: float = 0.0) -> None:
+    def __init__(
+        self, dim: int, num_heads: int, *, window: int = 8, drop_path: float = 0.0
+    ) -> None:
         super().__init__()
         d = int(dim)
         self.window = int(window)
@@ -56,7 +57,9 @@ class PatchMerging(nn.Module):
         self.norm = nn.LayerNorm(4 * self.dim)
         self.proj = nn.Linear(4 * self.dim, self.out_dim)
 
-    def forward(self, x: torch.Tensor, *, hw: tuple[int, int]) -> tuple[torch.Tensor, tuple[int, int]]:
+    def forward(
+        self, x: torch.Tensor, *, hw: tuple[int, int]
+    ) -> tuple[torch.Tensor, tuple[int, int]]:
         b, n, d = x.shape
         h, w = int(hw[0]), int(hw[1])
         x = x.view(b, h, w, d)
@@ -98,15 +101,41 @@ class TinyViTClassifier(nn.Module):
         self.image_size = int(image_size)
         self.patch_size = int(patch_size)
         self.hw = (self.image_size // self.patch_size, self.image_size // self.patch_size)
-        self.patch = nn.Conv2d(int(in_channels), dims[0], kernel_size=self.patch_size, stride=self.patch_size, bias=True)
+        self.patch = nn.Conv2d(
+            int(in_channels),
+            dims[0],
+            kernel_size=self.patch_size,
+            stride=self.patch_size,
+            bias=True,
+        )
 
-        self.stage1 = nn.ModuleList([TinyViTBlock(dims[0], heads[0], window=int(window), drop_path=float(next(dp_iter))) for _ in range(depths[0])])
+        self.stage1 = nn.ModuleList(
+            [
+                TinyViTBlock(dims[0], heads[0], window=int(window), drop_path=float(next(dp_iter)))
+                for _ in range(depths[0])
+            ]
+        )
         self.merge1 = PatchMerging(dims[0], dims[1])
-        self.stage2 = nn.ModuleList([TinyViTBlock(dims[1], heads[1], window=int(window), drop_path=float(next(dp_iter))) for _ in range(depths[1])])
+        self.stage2 = nn.ModuleList(
+            [
+                TinyViTBlock(dims[1], heads[1], window=int(window), drop_path=float(next(dp_iter)))
+                for _ in range(depths[1])
+            ]
+        )
         self.merge2 = PatchMerging(dims[1], dims[2])
-        self.stage3 = nn.ModuleList([TinyViTBlock(dims[2], heads[2], window=int(window), drop_path=float(next(dp_iter))) for _ in range(depths[2])])
+        self.stage3 = nn.ModuleList(
+            [
+                TinyViTBlock(dims[2], heads[2], window=int(window), drop_path=float(next(dp_iter)))
+                for _ in range(depths[2])
+            ]
+        )
         self.merge3 = PatchMerging(dims[2], dims[3])
-        self.stage4 = nn.ModuleList([TinyViTBlock(dims[3], heads[3], window=int(window), drop_path=float(next(dp_iter))) for _ in range(depths[3])])
+        self.stage4 = nn.ModuleList(
+            [
+                TinyViTBlock(dims[3], heads[3], window=int(window), drop_path=float(next(dp_iter)))
+                for _ in range(depths[3])
+            ]
+        )
 
         self.norm = nn.LayerNorm(dims[-1])
         self.drop = nn.Dropout(p=float(dropout))
@@ -171,7 +200,8 @@ def build_tinyvit_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_tinyvit_classifier(in_channels=3, num_classes=10, variant="tinyvit_5m", image_size=64, width_mult=0.5)
+    m = build_tinyvit_classifier(
+        in_channels=3, num_classes=10, variant="tinyvit_5m", image_size=64, width_mult=0.5
+    )
     y = m(x)
     print("tinyvit_5m", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -138,7 +137,9 @@ def build_textcnn_classifier(
             kernels = tuple(int(ch) for ch in kernel_str)
             dilation = int(d_str)
             if not kernels or dilation <= 0 or any(k <= 0 for k in kernels):
-                raise ValueError("Invalid TextCNN lab variant; kernel sizes and dilation must be > 0")
+                raise ValueError(
+                    "Invalid TextCNN lab variant; kernel sizes and dilation must be > 0"
+                )
         else:
             raise ValueError(
                 "Unknown TextCNN variant. Supported: textcnn_k345|textcnn_k2345|textcnn_dilated|textcnn_k<ks>_d<d>"

@@ -1,10 +1,7 @@
-
 import math
-from dataclasses import dataclass
 
 import torch
 from torch import nn
-from torch.nn import functional as F
 
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 from dlhub.pointcloud.segmentation3d._common import (
@@ -33,7 +30,9 @@ def l2_normalize(x: torch.Tensor, *, dim: int = -1, eps: float = 1e-6) -> torch.
 
 
 class MLPPointEncoder(nn.Module):
-    def __init__(self, in_channels: int, width: int, *, depth: int = 3, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_channels: int, width: int, *, depth: int = 3, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.mlp = PointMLP(int(in_channels), int(width), depth=int(depth), dropout=float(dropout))
 
@@ -46,11 +45,15 @@ class MLPPointEncoder(nn.Module):
 
 
 class EdgeConvEncoder(nn.Module):
-    def __init__(self, in_channels: int, width: int, *, depth: int = 3, k: int = 16, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_channels: int, width: int, *, depth: int = 3, k: int = 16, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
-        self.blocks = nn.ModuleList([EdgeConv(w, w, k=int(k), dropout=float(dropout)) for _ in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [EdgeConv(w, w, k=int(k), dropout=float(dropout)) for _ in range(int(depth))]
+        )
 
     def forward(self, points: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         check_points(points)
@@ -108,14 +111,18 @@ class TransformerPointEncoder(nn.Module):
         self.embed = nn.Linear(int(in_channels), int(d_model))
         self.pos_feats = int(pos_feats)
         self.pe = nn.Linear(3 * 2 * int(pos_feats), int(d_model))
-        self.enc = TinyTransformerEncoder(int(d_model), nhead=4, num_layers=int(depth), dropout=float(dropout))
+        self.enc = TinyTransformerEncoder(
+            int(d_model), nhead=4, num_layers=int(depth), dropout=float(dropout)
+        )
 
     def forward(self, points: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         check_points(points)
         xyz, _ = split_xyz_features(points)
         x = points.to(torch.float32)
         tok = self.embed(x)
-        pe = self.pe(sinusoidal_positional_encoding(xyz, num_feats=int(self.pos_feats)).to(tok.dtype))
+        pe = self.pe(
+            sinusoidal_positional_encoding(xyz, num_feats=int(self.pos_feats)).to(tok.dtype)
+        )
         tok = tok + pe
         tok = self.enc(tok)
         return xyz, tok
@@ -150,7 +157,9 @@ class Projection2DEncoder(nn.Module):
 class RangeViewEncoder(nn.Module):
     """Project to a LiDAR-like range view (azimuth/elevation) then gather back to points."""
 
-    def __init__(self, in_channels: int, width: int, *, h: int, w: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, in_channels: int, width: int, *, h: int, w: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.grid = GridSpec2D(
             x_min=-math.pi,
@@ -181,7 +190,16 @@ class RangeViewEncoder(nn.Module):
 class PolarBEVEncoder(nn.Module):
     """Project to a polar BEV (theta, r) then gather back to points."""
 
-    def __init__(self, in_channels: int, width: int, *, h: int, w: int, r_max: float = 20.0, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        in_channels: int,
+        width: int,
+        *,
+        h: int,
+        w: int,
+        r_max: float = 20.0,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.grid = GridSpec2D(
             x_min=-math.pi,
@@ -212,7 +230,17 @@ class PolarBEVEncoder(nn.Module):
 class CylinderEncoder(nn.Module):
     """Project to a cylindrical view (theta, z) then gather back to points."""
 
-    def __init__(self, in_channels: int, width: int, *, h: int, w: int, z_min: float = -2.0, z_max: float = 2.0, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        in_channels: int,
+        width: int,
+        *,
+        h: int,
+        w: int,
+        z_min: float = -2.0,
+        z_max: float = 2.0,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.grid = GridSpec2D(
             x_min=-math.pi,
@@ -297,7 +325,9 @@ class PointVoxelFusionEncoder(nn.Module):
 class QueryMaskHead(nn.Module):
     """DETR-like instance head: K learned queries -> masks via dot product."""
 
-    def __init__(self, d_model: int, num_classes: int, *, num_queries: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, d_model: int, num_classes: int, *, num_queries: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.num_queries = int(num_queries)
         d = int(d_model)
@@ -323,7 +353,9 @@ class QueryMaskHead(nn.Module):
 class PrototypeMaskHead(nn.Module):
     """Prototype head: K prototypes in feature space -> masks via similarity."""
 
-    def __init__(self, d_model: int, num_classes: int, *, num_prototypes: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, d_model: int, num_classes: int, *, num_prototypes: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.num_prototypes = int(num_prototypes)
         d = int(d_model)
@@ -377,7 +409,9 @@ class YOLACTHead(nn.Module):
 class CenterProposalHead(nn.Module):
     """Proposal-style instance head: pick K centers (FPS) -> masks via distance + feature sim."""
 
-    def __init__(self, d_model: int, num_classes: int, *, num_instances: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, d_model: int, num_classes: int, *, num_instances: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.num_instances = int(num_instances)
         d = int(d_model)
@@ -394,7 +428,9 @@ class CenterProposalHead(nn.Module):
         inst_feat = self.drop(inst_feat)
 
         dist2 = torch.cdist(centers.to(torch.float32), xyz.to(torch.float32)) ** 2  # (B,K,N)
-        sim = torch.einsum("bkd,bnd->bkn", l2_normalize(inst_feat, dim=-1), l2_normalize(feat, dim=-1)) * math.sqrt(d)
+        sim = torch.einsum(
+            "bkd,bnd->bkn", l2_normalize(inst_feat, dim=-1), l2_normalize(feat, dim=-1)
+        ) * math.sqrt(d)
         mask_logits = sim - 0.1 * dist2.to(sim.dtype)
         cls_logits = self.cls(inst_feat)
         return {"mask_logits": mask_logits, "cls_logits": cls_logits, "centers": centers}
@@ -403,7 +439,9 @@ class CenterProposalHead(nn.Module):
 class SimilarityPivotHead(nn.Module):
     """SGPN-ish: embedding similarity to K pivot points defines masks."""
 
-    def __init__(self, d_model: int, num_classes: int, *, num_instances: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, d_model: int, num_classes: int, *, num_instances: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.num_instances = int(num_instances)
         d = int(d_model)
@@ -417,6 +455,8 @@ class SimilarityPivotHead(nn.Module):
         emb = self.embed(self.drop(feat))
         idx = farthest_point_sample(xyz, k)
         piv = index_points(emb, idx)  # (B,K,D)
-        sim = torch.einsum("bkd,bnd->bkn", l2_normalize(piv, dim=-1), l2_normalize(emb, dim=-1)) * math.sqrt(d)
+        sim = torch.einsum(
+            "bkd,bnd->bkn", l2_normalize(piv, dim=-1), l2_normalize(emb, dim=-1)
+        ) * math.sqrt(d)
         cls_logits = self.cls(piv)
         return {"mask_logits": sim, "cls_logits": cls_logits}

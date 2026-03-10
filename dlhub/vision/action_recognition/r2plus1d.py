@@ -9,8 +9,8 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -66,9 +66,17 @@ class Conv2Plus1D(nn.Module):
         if st <= 0 or sh <= 0 or sw <= 0:
             raise ValueError("stride must be positive")
 
-        m = int(mid_ch) if mid_ch is not None else max(8, (c_in * c_out * 3 * 3) // (c_in * 3 * 3 + 3 * c_out))
-        self.spatial = Conv3dBNAct(c_in, m, kernel_size=(1, 3, 3), stride=(1, sh, sw), padding=(0, 1, 1))
-        self.temporal = Conv3dBNAct(m, c_out, kernel_size=(3, 1, 1), stride=(st, 1, 1), padding=(1, 0, 0))
+        m = (
+            int(mid_ch)
+            if mid_ch is not None
+            else max(8, (c_in * c_out * 3 * 3) // (c_in * 3 * 3 + 3 * c_out))
+        )
+        self.spatial = Conv3dBNAct(
+            c_in, m, kernel_size=(1, 3, 3), stride=(1, sh, sw), padding=(0, 1, 1)
+        )
+        self.temporal = Conv3dBNAct(
+            m, c_out, kernel_size=(3, 1, 1), stride=(st, 1, 1), padding=(1, 0, 0)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.spatial(x)
@@ -76,7 +84,9 @@ class Conv2Plus1D(nn.Module):
 
 
 class R2Plus1DBlock(nn.Module):
-    def __init__(self, *, in_channels: int, out_channels: int, stride: tuple[int, int, int]) -> None:
+    def __init__(
+        self, *, in_channels: int, out_channels: int, stride: tuple[int, int, int]
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         c_out = int(out_channels)
@@ -131,14 +141,22 @@ class R2Plus1DVideoClassifier(nn.Module):
         )
 
         # 3 stages, with increasing channels and time downsampling.
-        self.stage1 = nn.Sequential(*[R2Plus1DBlock(in_channels=w, out_channels=w, stride=(1, 1, 1)) for _ in range(d)])
+        self.stage1 = nn.Sequential(
+            *[R2Plus1DBlock(in_channels=w, out_channels=w, stride=(1, 1, 1)) for _ in range(d)]
+        )
         self.stage2 = nn.Sequential(
             R2Plus1DBlock(in_channels=w, out_channels=2 * w, stride=(2, 2, 2)),
-            *[R2Plus1DBlock(in_channels=2 * w, out_channels=2 * w, stride=(1, 1, 1)) for _ in range(max(1, d - 1))],
+            *[
+                R2Plus1DBlock(in_channels=2 * w, out_channels=2 * w, stride=(1, 1, 1))
+                for _ in range(max(1, d - 1))
+            ],
         )
         self.stage3 = nn.Sequential(
             R2Plus1DBlock(in_channels=2 * w, out_channels=4 * w, stride=(2, 2, 2)),
-            *[R2Plus1DBlock(in_channels=4 * w, out_channels=4 * w, stride=(1, 1, 1)) for _ in range(max(1, d - 1))],
+            *[
+                R2Plus1DBlock(in_channels=4 * w, out_channels=4 * w, stride=(1, 1, 1))
+                for _ in range(max(1, d - 1))
+            ],
         )
 
         self.dropout = nn.Dropout(float(dropout))
@@ -191,10 +209,11 @@ def build_r2plus1d_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_r2plus1d_video_classifier(in_channels=3, num_classes=6, variant="r2plus1d_tiny", width_mult=0.5, dropout=0.0)
+    m = build_r2plus1d_video_classifier(
+        in_channels=3, num_classes=6, variant="r2plus1d_tiny", width_mult=0.5, dropout=0.0
+    )
     y = m(x)
     print("r2plus1d_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

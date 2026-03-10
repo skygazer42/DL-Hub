@@ -1,10 +1,13 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.instance_segmentation._common import BackbonePyramid, InstanceTokenHead, check_nchw
+from dlhub.vision.instance_segmentation._common import (
+    BackbonePyramid,
+    InstanceTokenHead,
+    check_nchw,
+)
 
 
 class SharpMask(nn.Module):
@@ -33,7 +36,9 @@ class SharpMask(nn.Module):
             depth=int(backbone_depth),
             act="relu",
         )
-        self.tokens = InstanceTokenHead(int(p4_channels), int(hidden_channels), int(num_proposals), depth=2)
+        self.tokens = InstanceTokenHead(
+            int(p4_channels), int(hidden_channels), int(num_proposals), depth=2
+        )
         self.score_head = nn.Linear(int(hidden_channels), 1)
         self.box_head = nn.Linear(int(hidden_channels), 4)
         self.coarse_head = nn.Linear(int(hidden_channels), int(mask_size) * int(mask_size))
@@ -54,7 +59,9 @@ class SharpMask(nn.Module):
         coarse_mask_logits = self.coarse_head(tokens).view(b, k, self.mask_size, self.mask_size)
 
         edge_logits = self.edge_head(p2)
-        refined = F.interpolate(coarse_mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False)
+        refined = F.interpolate(
+            coarse_mask_logits, size=p2.shape[-2:], mode="bilinear", align_corners=False
+        )
         mask_logits = refined + edge_logits.expand(-1, k, -1, -1)
         return {
             "proposal_logits": proposal_logits,
@@ -66,9 +73,36 @@ class SharpMask(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "sharpmask_tiny": {"stem": 24, "p2": 40, "p3": 64, "p4": 96, "hidden": 96, "depth": 1, "props": 16, "mask": 16},
-    "sharpmask_small": {"stem": 24, "p2": 48, "p3": 80, "p4": 128, "hidden": 128, "depth": 2, "props": 24, "mask": 16},
-    "sharpmask_base": {"stem": 32, "p2": 64, "p3": 96, "p4": 160, "hidden": 160, "depth": 3, "props": 32, "mask": 28},
+    "sharpmask_tiny": {
+        "stem": 24,
+        "p2": 40,
+        "p3": 64,
+        "p4": 96,
+        "hidden": 96,
+        "depth": 1,
+        "props": 16,
+        "mask": 16,
+    },
+    "sharpmask_small": {
+        "stem": 24,
+        "p2": 48,
+        "p3": 80,
+        "p4": 128,
+        "hidden": 128,
+        "depth": 2,
+        "props": 24,
+        "mask": 16,
+    },
+    "sharpmask_base": {
+        "stem": 32,
+        "p2": 64,
+        "p3": 96,
+        "p4": 160,
+        "hidden": 160,
+        "depth": 3,
+        "props": 32,
+        "mask": 28,
+    },
 }
 
 
@@ -92,7 +126,9 @@ def build_sharpmask_instance_segmenter(
         p2_channels=scale_channels(int(spec["p2"]), float(width_mult), min_ch=16, divisor=8),
         p3_channels=scale_channels(int(spec["p3"]), float(width_mult), min_ch=16, divisor=8),
         p4_channels=scale_channels(int(spec["p4"]), float(width_mult), min_ch=16, divisor=8),
-        hidden_channels=scale_channels(int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8),
+        hidden_channels=scale_channels(
+            int(spec["hidden"]), float(width_mult), min_ch=16, divisor=8
+        ),
         backbone_depth=int(spec["depth"]),
         num_proposals=int(spec["props"]) if num_proposals is None else int(num_proposals),
         mask_size=int(spec["mask"]),
@@ -102,7 +138,9 @@ def build_sharpmask_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_sharpmask_instance_segmenter(in_channels=3, num_classes=3, variant="sharpmask_tiny", width_mult=0.5)
+    m = build_sharpmask_instance_segmenter(
+        in_channels=3, num_classes=3, variant="sharpmask_tiny", width_mult=0.5
+    )
     out = m(x)
     print("sharpmask_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

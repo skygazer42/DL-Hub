@@ -1,13 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 
 class _BackboneStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -115,7 +116,9 @@ def build_cascade_rcnn_detector(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Cascade R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Cascade R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
     feat = scale_channels(int(spec["feat"]), float(width_mult), min_ch=16, divisor=8)
@@ -133,10 +136,11 @@ def build_cascade_rcnn_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_cascade_rcnn_detector(in_channels=3, num_classes=2, variant="cascade_rcnn_tiny", width_mult=0.5)
+    m = build_cascade_rcnn_detector(
+        in_channels=3, num_classes=2, variant="cascade_rcnn_tiny", width_mult=0.5
+    )
     out = m(x)
     print("cascade_rcnn_tiny", len(out["roi_cls_logits"]), len(out["roi_boxes"]))
     loss = sum(t.mean() for t in out["roi_cls_logits"]) + sum(t.mean() for t in out["roi_boxes"])
     loss.backward()
     print("ok")
-

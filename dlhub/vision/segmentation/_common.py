@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct
 
@@ -16,7 +15,9 @@ def check_nchw(x: torch.Tensor) -> torch.Tensor:
 class ConvTower(nn.Module):
     """A small stack of Conv-BN-Act blocks."""
 
-    def __init__(self, in_channels: int, out_channels: int, *, num_convs: int = 2, act: str = "relu") -> None:
+    def __init__(
+        self, in_channels: int, out_channels: int, *, num_convs: int = 2, act: str = "relu"
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         c_out = int(out_channels)
@@ -81,7 +82,9 @@ class BackboneC2C3C4C5(nn.Module):
         self.stage4 = stage(c3, c4)  # /16
         self.stage5 = stage(c4, c5)  # /32
 
-    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         c2 = self.stem(x)
         c3 = self.stage3(c2)
         c4 = self.stage4(c3)
@@ -92,7 +95,9 @@ class BackboneC2C3C4C5(nn.Module):
 class FPN4(nn.Module):
     """Minimal 4-level FPN: (C2..C5) -> (P2..P5)."""
 
-    def __init__(self, in_channels: tuple[int, int, int, int], out_channels: int, *, act: str = "relu") -> None:
+    def __init__(
+        self, in_channels: tuple[int, int, int, int], out_channels: int, *, act: str = "relu"
+    ) -> None:
         super().__init__()
         c2, c3, c4, c5 = (int(x) for x in in_channels)
         out = int(out_channels)
@@ -115,4 +120,3 @@ class FPN4(nn.Module):
         p3 = self.l3(c3) + F.interpolate(p4, size=c3.shape[-2:], mode="nearest")
         p2 = self.l2(c2) + F.interpolate(p3, size=c2.shape[-2:], mode="nearest")
         return self.p2(p2), self.p3(p3), self.p4(p4), self.p5(p5)
-

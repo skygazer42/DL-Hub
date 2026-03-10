@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from ._utils import pad_to_multiple, unpad
 
@@ -148,7 +147,9 @@ class CBDNet(nn.Module):
 
         self.est = NoiseEstimationNet(in_channels=c, width=int(est_width), depth=int(est_depth))
         # conditional input: (noisy, noise_map) -> channels = 2C
-        self.denoiser = ConditionalDenoiserUNet(in_channels=c * 2, width=int(den_width), depth=int(den_depth))
+        self.denoiser = ConditionalDenoiserUNet(
+            in_channels=c * 2, width=int(den_width), depth=int(den_depth)
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -198,4 +199,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

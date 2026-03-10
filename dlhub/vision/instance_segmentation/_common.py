@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct
 
@@ -24,7 +23,9 @@ class ConvTower(nn.Module):
             raise ValueError("channels must be > 0")
         if n <= 0:
             raise ValueError("num_convs must be > 0")
-        self.net = nn.Sequential(*[ConvBNAct(c, c, kernel_size=3, stride=1, act=act) for _ in range(n)])
+        self.net = nn.Sequential(
+            *[ConvBNAct(c, c, kernel_size=3, stride=1, act=act) for _ in range(n)]
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.net(x)

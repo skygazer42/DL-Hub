@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -108,7 +107,10 @@ class TCNClassifier(nn.Module):
         self.embedding = nn.Embedding(int(cfg.vocab_size), int(d), padding_idx=int(cfg.pad_id))
         self.stem = _ConvBlock1d(int(d), int(c), kernel_size=3, dropout=float(cfg.dropout))
         self.blocks = nn.Sequential(
-            *[TCNBlock(int(c), dilation=2**i, dropout=float(cfg.dropout)) for i in range(int(cfg.depth))]
+            *[
+                TCNBlock(int(c), dilation=2**i, dropout=float(cfg.dropout))
+                for i in range(int(cfg.depth))
+            ]
         )
         self.head = nn.Sequential(
             nn.Linear(int(c), int(c)),
@@ -181,6 +183,7 @@ def build_tcn_classifier(
             depth=int(depth),
         )
     )
+
 
 def registry() -> dict[str, Builder]:
     return {name: make_builder(build_tcn_classifier, variant=name) for name in _VARIANTS}

@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    SqueezeExcite,
+    scale_channels,
+)
 
 
 class OSABlock(nn.Module):
@@ -32,7 +36,9 @@ class OSABlock(nn.Module):
             convs.append(ConvBNAct(cur, c_mid, kernel_size=3, stride=1, act="relu"))
             cur = c_mid
         self.convs = nn.ModuleList(convs)
-        self.concat = ConvBNAct(c_in + n * c_mid, c_out, kernel_size=1, stride=1, padding=0, act="relu")
+        self.concat = ConvBNAct(
+            c_in + n * c_mid, c_out, kernel_size=1, stride=1, padding=0, act="relu"
+        )
         self.se = SqueezeExcite(c_out, se_ratio=0.25) if bool(use_se) else nn.Identity()
         self.residual = bool(residual)
 
@@ -78,7 +84,9 @@ class VoVNetClassifier(nn.Module):
             mid = max(16, int(round(float(out_ch) * float(mid_ratio))))
             blocks.append(OSABlock(in_ch, mid, out_ch, num_layers=3, use_se=True, residual=False))
             for _ in range(int(depth) - 1):
-                blocks.append(OSABlock(out_ch, mid, out_ch, num_layers=3, use_se=True, residual=True))
+                blocks.append(
+                    OSABlock(out_ch, mid, out_ch, num_layers=3, use_se=True, residual=True)
+                )
             return nn.Sequential(*blocks)
 
         self.down2 = ConvBNAct(dims[0], dims[1], kernel_size=3, stride=2, act="relu")
@@ -137,6 +145,8 @@ def build_vovnet_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_vovnet_classifier(in_channels=3, num_classes=10, variant="vovnet_tiny", width_mult=0.5)
+    m = build_vovnet_classifier(
+        in_channels=3, num_classes=10, variant="vovnet_tiny", width_mult=0.5
+    )
     y = m(x)
     print("vovnet_tiny", tuple(y.shape))

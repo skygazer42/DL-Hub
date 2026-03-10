@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, LayerNorm2d, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, scale_channels
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -26,7 +25,9 @@ class ConvFFN(nn.Module):
 
 
 class UniFormerV2Stage(nn.Module):
-    def __init__(self, *, dim: int, depth: int, num_heads: int, mode: str, drop_path: float) -> None:
+    def __init__(
+        self, *, dim: int, depth: int, num_heads: int, mode: str, drop_path: float
+    ) -> None:
         super().__init__()
         d = int(dim)
         depth = int(depth)
@@ -34,10 +35,20 @@ class UniFormerV2Stage(nn.Module):
         blocks: list[nn.Module] = []
         if mode == "conv":
             for i in range(depth):
-                blocks.append(ConvFFN(d, mlp_ratio=4.0, drop_path=float(drop_path) * (i / max(1, depth - 1))))
+                blocks.append(
+                    ConvFFN(d, mlp_ratio=4.0, drop_path=float(drop_path) * (i / max(1, depth - 1)))
+                )
         elif mode == "attn":
             for i in range(depth):
-                blocks.append(TransformerEncoderBlock(d, int(num_heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(drop_path) * (i / max(1, depth - 1))))
+                blocks.append(
+                    TransformerEncoderBlock(
+                        d,
+                        int(num_heads),
+                        mlp_ratio=4.0,
+                        dropout=0.0,
+                        drop_path=float(drop_path) * (i / max(1, depth - 1)),
+                    )
+                )
         else:
             raise ValueError("mode must be 'conv' or 'attn'")
         self.blocks = nn.Sequential(*blocks)
@@ -76,14 +87,47 @@ class UniFormerV2Classifier(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
         )
-        self.down2 = nn.Sequential(nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[1]))
-        self.down3 = nn.Sequential(nn.Conv2d(dims[1], dims[2], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[2]))
-        self.down4 = nn.Sequential(nn.Conv2d(dims[2], dims[3], kernel_size=2, stride=2, bias=False), nn.BatchNorm2d(dims[3]))
+        self.down2 = nn.Sequential(
+            nn.Conv2d(dims[0], dims[1], kernel_size=2, stride=2, bias=False),
+            nn.BatchNorm2d(dims[1]),
+        )
+        self.down3 = nn.Sequential(
+            nn.Conv2d(dims[1], dims[2], kernel_size=2, stride=2, bias=False),
+            nn.BatchNorm2d(dims[2]),
+        )
+        self.down4 = nn.Sequential(
+            nn.Conv2d(dims[2], dims[3], kernel_size=2, stride=2, bias=False),
+            nn.BatchNorm2d(dims[3]),
+        )
 
-        self.stage1 = UniFormerV2Stage(dim=dims[0], depth=depths[0], num_heads=heads[0], mode="conv", drop_path=float(drop_path))
-        self.stage2 = UniFormerV2Stage(dim=dims[1], depth=depths[1], num_heads=heads[1], mode="conv", drop_path=float(drop_path))
-        self.stage3 = UniFormerV2Stage(dim=dims[2], depth=depths[2], num_heads=heads[2], mode="attn", drop_path=float(drop_path))
-        self.stage4 = UniFormerV2Stage(dim=dims[3], depth=depths[3], num_heads=heads[3], mode="attn", drop_path=float(drop_path))
+        self.stage1 = UniFormerV2Stage(
+            dim=dims[0],
+            depth=depths[0],
+            num_heads=heads[0],
+            mode="conv",
+            drop_path=float(drop_path),
+        )
+        self.stage2 = UniFormerV2Stage(
+            dim=dims[1],
+            depth=depths[1],
+            num_heads=heads[1],
+            mode="conv",
+            drop_path=float(drop_path),
+        )
+        self.stage3 = UniFormerV2Stage(
+            dim=dims[2],
+            depth=depths[2],
+            num_heads=heads[2],
+            mode="attn",
+            drop_path=float(drop_path),
+        )
+        self.stage4 = UniFormerV2Stage(
+            dim=dims[3],
+            depth=depths[3],
+            num_heads=heads[3],
+            mode="attn",
+            drop_path=float(drop_path),
+        )
 
         self.head = GlobalAvgPoolHead(dims[-1], int(num_classes), dropout=float(dropout))
 
@@ -117,7 +161,9 @@ def build_uniformer_v2_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown UniFormerV2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown UniFormerV2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return UniFormerV2Classifier(
         in_channels=int(in_channels),
@@ -134,7 +180,8 @@ def build_uniformer_v2_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_uniformer_v2_classifier(in_channels=3, num_classes=10, variant="uniformer_v2_s", width_mult=0.5)
+    m = build_uniformer_v2_classifier(
+        in_channels=3, num_classes=10, variant="uniformer_v2_s", width_mult=0.5
+    )
     y = m(x)
     print("uniformer_v2_s", tuple(y.shape))
-

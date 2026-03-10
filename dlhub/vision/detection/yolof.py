@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.detection._common import BackboneC3C5, check_nchw
@@ -67,7 +66,12 @@ class YOLOFDetector(nn.Module):
         self.proj = nn.Conv2d(c5, feat, kernel_size=1)
         self.encoder = _DilatedEncoder(feat, num_layers=int(encoder_layers))
 
-        tower = nn.Sequential(*[ConvBNAct(feat, feat, kernel_size=3, stride=1, act="relu") for _ in range(int(head_convs))])
+        tower = nn.Sequential(
+            *[
+                ConvBNAct(feat, feat, kernel_size=3, stride=1, act="relu")
+                for _ in range(int(head_convs))
+            ]
+        )
         self.cls_tower = tower
         self.box_tower = tower
         na = int(num_anchors)
@@ -78,13 +82,43 @@ class YOLOFDetector(nn.Module):
         x = check_nchw(x)
         _, _, c5 = self.backbone(x)
         f = self.encoder(F.relu(self.proj(c5)))
-        return {"cls_logits": self.cls(self.cls_tower(f)), "bbox_deltas": self.box(self.box_tower(f))}
+        return {
+            "cls_logits": self.cls(self.cls_tower(f)),
+            "bbox_deltas": self.box(self.box_tower(f)),
+        }
 
 
 _VARIANTS: dict[str, dict] = {
-    "yolof_tiny": {"stem": 24, "c3": 48, "c4": 64, "c5": 80, "depth": 1, "feat": 96, "enc": 3, "head": 1},
-    "yolof_small": {"stem": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "feat": 128, "enc": 4, "head": 2},
-    "yolof_base": {"stem": 48, "c3": 96, "c4": 144, "c5": 192, "depth": 3, "feat": 192, "enc": 4, "head": 2},
+    "yolof_tiny": {
+        "stem": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 80,
+        "depth": 1,
+        "feat": 96,
+        "enc": 3,
+        "head": 1,
+    },
+    "yolof_small": {
+        "stem": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "feat": 128,
+        "enc": 4,
+        "head": 2,
+    },
+    "yolof_base": {
+        "stem": 48,
+        "c3": 96,
+        "c4": 144,
+        "c5": 192,
+        "depth": 3,
+        "feat": 192,
+        "enc": 4,
+        "head": 2,
+    },
 }
 
 
@@ -129,4 +163,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

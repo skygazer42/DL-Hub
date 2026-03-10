@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -32,7 +31,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 01 (PointCloud): PointNet toy classification (Cube vs Sphere).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 01 (PointCloud): PointNet toy classification (Cube vs Sphere)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--num-points", type=int, default=128)
@@ -80,7 +81,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     device_info = resolve_device(train_cfg.device)
 
     paths = build_run_paths(
-        track="pointcloud", lesson="lesson_01_pointnet_toy_classification", run_name=train_cfg.run_name
+        track="pointcloud",
+        lesson="lesson_01_pointnet_toy_classification",
+        run_name=train_cfg.run_name,
     )
     logger = get_logger("pointcloud.toy_pointnet", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
@@ -107,7 +110,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
 
     train_loader, val_loader = get_dataloaders(data_cfg)
     model = PointNetClassifier(
-        ModelConfig(hidden_features=train_cfg.hidden_features, num_classes=2, dropout=train_cfg.dropout)
+        ModelConfig(
+            hidden_features=train_cfg.hidden_features, num_classes=2, dropout=train_cfg.dropout
+        )
     ).to(device_info.torch_device)
 
     criterion = torch.nn.CrossEntropyLoss()
@@ -176,4 +181,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

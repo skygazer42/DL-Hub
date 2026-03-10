@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import GridSpec2D, Projection2DEncoder, PrototypeMaskHead
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "sparseinst3d_tiny": {"width": 48, "bev": 24, "prototypes": 16},
@@ -27,8 +25,12 @@ class SparseInst3D(nn.Module):
     ) -> None:
         super().__init__()
         grid = GridSpec2D(h=int(bev), w=int(bev))
-        self.enc = Projection2DEncoder(int(in_channels), int(width), grid=grid, dropout=float(dropout))
-        self.head = PrototypeMaskHead(int(width), int(num_classes), num_prototypes=int(num_prototypes), dropout=float(dropout))
+        self.enc = Projection2DEncoder(
+            int(in_channels), int(width), grid=grid, dropout=float(dropout)
+        )
+        self.head = PrototypeMaskHead(
+            int(width), int(num_classes), num_prototypes=int(num_prototypes), dropout=float(dropout)
+        )
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         xyz, feat = self.enc(points)
@@ -57,9 +59,10 @@ def build_sparseinst3d_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_sparseinst3d_instance_segmenter3d(in_channels=3, num_classes=6, variant="sparseinst3d_tiny")
+    m = build_sparseinst3d_instance_segmenter3d(
+        in_channels=3, num_classes=6, variant="sparseinst3d_tiny"
+    )
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

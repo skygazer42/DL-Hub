@@ -1,6 +1,3 @@
-
-import math
-
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -8,7 +5,6 @@ from torch.nn import functional as F
 from dlhub.pointcloud.ops import index_points, knn_indices
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "kpconv_tiny": {"width": 48, "k": 16, "kernels": 8},
@@ -18,7 +14,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class _KPConv(nn.Module):
-    def __init__(self, in_channels: int, out_channels: int, *, k: int, num_kernels: int, sigma: float = 0.5) -> None:
+    def __init__(
+        self, in_channels: int, out_channels: int, *, k: int, num_kernels: int, sigma: float = 0.5
+    ) -> None:
         super().__init__()
         self.k = int(k)
         self.num_kernels = int(num_kernels)
@@ -49,13 +47,27 @@ class _KPConv(nn.Module):
 class KPConvSeg(nn.Module):
     """KPConv semantic segmentation (toy): KPConv blocks + per-point logits."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, k: int, kernels: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        k: int,
+        kernels: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
         self.kp1 = _KPConv(w, w, k=int(k), num_kernels=int(kernels))
         self.kp2 = _KPConv(w, w, k=int(k), num_kernels=int(kernels))
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Dropout(float(dropout)), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w),
+            nn.ReLU(inplace=True),
+            nn.Dropout(float(dropout)),
+            nn.Linear(w, int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -94,4 +106,3 @@ if __name__ == "__main__":
     y = model(x)
     (y.mean()).backward()
     print("logits:", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 from torch import nn
@@ -42,4 +41,3 @@ def build_model(cfg: ModelConfig) -> nn.Module:
 
 
 __all__ = ["ModelConfig", "build_model", "list_supported_arches"]
-

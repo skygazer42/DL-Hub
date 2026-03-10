@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -34,7 +33,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 02 (PointCloud): DGCNN toy classification (Cube vs Sphere).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 02 (PointCloud): DGCNN toy classification (Cube vs Sphere)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=2048)
     parser.add_argument("--num-points", type=int, default=128)
@@ -190,4 +191,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

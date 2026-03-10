@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -102,9 +101,13 @@ def build_anscombe_wiener_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown AnscombeWiener variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown AnscombeWiener variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return AnscombeWiener(sigma=float(sigma), window=int(spec["window"]), padding="reflect", clamp=True)
+    return AnscombeWiener(
+        sigma=float(sigma), window=int(spec["window"]), padding="reflect", clamp=True
+    )
 
 
 if __name__ == "__main__":
@@ -115,7 +118,8 @@ if __name__ == "__main__":
     counts = torch.poisson(clean * peak) / peak
     noisy = counts.clamp(0.0, 1.0)
 
-    m = build_anscombe_wiener_denoiser(in_channels=1, sigma=1.0 / (peak**0.5), variant="anscombe_wiener_tiny")
+    m = build_anscombe_wiener_denoiser(
+        in_channels=1, sigma=1.0 / (peak**0.5), variant="anscombe_wiener_tiny"
+    )
     out = m(noisy)
     print("anscombe_wiener_tiny", tuple(out.shape), float((out - clean).pow(2).mean().item()))
-

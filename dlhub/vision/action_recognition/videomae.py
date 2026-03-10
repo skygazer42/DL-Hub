@@ -102,7 +102,9 @@ class VideoMAEVideoClassifier(nn.Module):
         tok = self.tubelet_embed(x)  # (B, E, T', H', W')
         tok = tok.flatten(2).transpose(1, 2).contiguous()  # (B, N, E)
         if int(tok.shape[1]) != int(self.num_tokens):
-            raise ValueError(f"Unexpected token count: got N={tok.shape[1]}, expected {self.num_tokens}")
+            raise ValueError(
+                f"Unexpected token count: got N={tok.shape[1]}, expected {self.num_tokens}"
+            )
 
         cls = self.cls_token.expand(b, -1, -1)
         seq = torch.cat([cls, tok], dim=1)
@@ -152,10 +154,17 @@ def build_videomae_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_videomae_video_classifier(in_channels=3, num_classes=6, variant="videomae_tiny", image_size=64, frames=8, width_mult=0.5, dropout=0.0)
+    m = build_videomae_video_classifier(
+        in_channels=3,
+        num_classes=6,
+        variant="videomae_tiny",
+        image_size=64,
+        frames=8,
+        width_mult=0.5,
+        dropout=0.0,
+    )
     y = m(x)
     print("videomae_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

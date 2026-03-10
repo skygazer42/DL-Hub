@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -13,7 +12,6 @@ from ._common import (
     split_xyz_features,
     topk_heatmap,
 )
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "mv3d_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 48},
@@ -39,7 +37,9 @@ class MV3D(nn.Module):
         super().__init__()
         self.bev = BEVBoxSpec(h=int(bev_h), w=int(bev_w))
         # Front-view uses x (w) and z (h)
-        self.fv = BEVBoxSpec(h=int(bev_h), w=int(bev_w), x_min=-10.0, x_max=10.0, y_min=-3.0, y_max=3.0)
+        self.fv = BEVBoxSpec(
+            h=int(bev_h), w=int(bev_w), x_min=-10.0, x_max=10.0, y_min=-3.0, y_max=3.0
+        )
         self.topk = int(topk)
 
         self.point = PointNetEncoder(int(in_channels), width=int(width), dropout=float(dropout))
@@ -67,7 +67,13 @@ class MV3D(nn.Module):
 
         scores, cls, iy, ix = topk_heatmap(dense["heatmap"], k=self.topk)
         boxes = decode_bev_boxes(dense["box_params"], iy, ix, self.bev, with_yaw=True)
-        cls_logits = torch.zeros(points.shape[0], self.topk, dense["heatmap"].shape[1], device=points.device, dtype=points.dtype)
+        cls_logits = torch.zeros(
+            points.shape[0],
+            self.topk,
+            dense["heatmap"].shape[1],
+            device=points.device,
+            dtype=points.dtype,
+        )
         cls_logits.scatter_(-1, cls.unsqueeze(-1), scores.unsqueeze(-1))
         return {"boxes": boxes, "cls_logits": cls_logits, "scores": scores}
 
@@ -100,4 +106,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

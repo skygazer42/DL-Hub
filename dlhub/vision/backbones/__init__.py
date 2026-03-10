@@ -32,11 +32,15 @@ from .extra_cnn import (
     build_xception_classifier,
     build_zfnet_classifier,
 )
-from .pvt import build_pvt_classifier
-from .mixers import build_gmlp_classifier, build_poolformer_classifier, build_resmlp_classifier
-from .swin import build_swin_classifier
-from .transformers import build_convmixer_classifier, build_mlp_mixer_classifier, build_vit_classifier
 from .hybrids import build_coatnet_classifier, build_fnet_classifier, build_mobilevit_classifier
+from .mixers import build_gmlp_classifier, build_poolformer_classifier, build_resmlp_classifier
+from .pvt import build_pvt_classifier
+from .swin import build_swin_classifier
+from .transformers import (
+    build_convmixer_classifier,
+    build_mlp_mixer_classifier,
+    build_vit_classifier,
+)
 
 __all__ = [
     "build_alexnet_classifier",

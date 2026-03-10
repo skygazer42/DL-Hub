@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -9,7 +8,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 class _BackboneStride4(nn.Module):
     """Tiny backbone producing a stride-4 feature map."""
 
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -46,7 +47,9 @@ class RPNHead(nn.Module):
 
 
 class RoIHead(nn.Module):
-    def __init__(self, channels: int, num_classes: int, *, num_rois: int = 32, hidden_dim: int | None = None) -> None:
+    def __init__(
+        self, channels: int, num_classes: int, *, num_rois: int = 32, hidden_dim: int | None = None
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -128,7 +131,9 @@ def build_faster_rcnn_detector(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Faster R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Faster R-CNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
     feat = scale_channels(int(spec["feat"]), float(width_mult), min_ch=16, divisor=8)
@@ -146,10 +151,11 @@ def build_faster_rcnn_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_faster_rcnn_detector(in_channels=3, num_classes=2, variant="faster_rcnn_tiny", width_mult=0.5)
+    m = build_faster_rcnn_detector(
+        in_channels=3, num_classes=2, variant="faster_rcnn_tiny", width_mult=0.5
+    )
     out = m(x)
     print("faster_rcnn_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

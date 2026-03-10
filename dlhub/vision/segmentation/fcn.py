@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import scale_channels
 from dlhub.vision.segmentation._common import BackboneC2C3C4C5, check_nchw
@@ -51,8 +50,14 @@ class FCNSegmenter(nn.Module):
         self.mode = m
 
         self.score5 = nn.Conv2d(int(c5_channels), nc, kernel_size=1, bias=True)
-        self.score4 = nn.Conv2d(int(c4_channels), nc, kernel_size=1, bias=True) if m in {"fcn16s", "fcn8s"} else None
-        self.score3 = nn.Conv2d(int(c3_channels), nc, kernel_size=1, bias=True) if m in {"fcn8s"} else None
+        self.score4 = (
+            nn.Conv2d(int(c4_channels), nc, kernel_size=1, bias=True)
+            if m in {"fcn16s", "fcn8s"}
+            else None
+        )
+        self.score3 = (
+            nn.Conv2d(int(c3_channels), nc, kernel_size=1, bias=True) if m in {"fcn8s"} else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = check_nchw(x)
@@ -68,10 +73,34 @@ class FCNSegmenter(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "fcn32s_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "mode": "fcn32s"},
-    "fcn16s_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "mode": "fcn16s"},
+    "fcn32s_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "mode": "fcn32s",
+    },
+    "fcn16s_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "mode": "fcn16s",
+    },
     "fcn8s_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "mode": "fcn8s"},
-    "fcn16s_base": {"stem": 32, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "mode": "fcn16s"},
+    "fcn16s_base": {
+        "stem": 32,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "mode": "fcn16s",
+    },
 }
 
 
@@ -115,4 +144,3 @@ if __name__ == "__main__":
     loss = y.mean()
     loss.backward()
     print("ok")
-

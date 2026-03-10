@@ -1,13 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 
 class _BackboneStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -72,9 +73,20 @@ class RFCNDetector(nn.Module):
         box_map = self.ps_box(feat)  # (B, 4*k*k, H, W)
 
         b = feat.shape[0]
-        pooled_cls = F.adaptive_avg_pool2d(cls_map, (1, 1)).view(b, self.num_classes, self.k, self.k).mean(dim=(2, 3))
-        pooled_box = F.adaptive_avg_pool2d(box_map, (1, 1)).view(b, 4, self.k, self.k).mean(dim=(2, 3))
-        return {"ps_cls_logits": pooled_cls, "ps_bbox": torch.sigmoid(pooled_box), "ps_cls_map": cls_map, "ps_box_map": box_map}
+        pooled_cls = (
+            F.adaptive_avg_pool2d(cls_map, (1, 1))
+            .view(b, self.num_classes, self.k, self.k)
+            .mean(dim=(2, 3))
+        )
+        pooled_box = (
+            F.adaptive_avg_pool2d(box_map, (1, 1)).view(b, 4, self.k, self.k).mean(dim=(2, 3))
+        )
+        return {
+            "ps_cls_logits": pooled_cls,
+            "ps_bbox": torch.sigmoid(pooled_box),
+            "ps_cls_map": cls_map,
+            "ps_box_map": box_map,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
@@ -116,4 +128,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

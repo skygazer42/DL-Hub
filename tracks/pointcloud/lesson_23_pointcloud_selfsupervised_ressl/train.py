@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -38,7 +37,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 23 (PointCloud): self-supervised ReSSL (toy-first).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 23 (PointCloud): self-supervised ReSSL (toy-first)."
+    )
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--num-points", type=int, default=128)
@@ -68,7 +69,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
         default="ressl_pointnet:ressl_pointnet_small",
         help="Supported: ressl_pointnet:<variant> (try --list-arch)",
     )
-    parser.add_argument("--list-arch", action="store_true", help="Print supported architectures and exit.")
+    parser.add_argument(
+        "--list-arch", action="store_true", help="Print supported architectures and exit."
+    )
     parser.add_argument("--dropout", type=float, default=0.0)
     parser.add_argument("--queue-size", type=int, default=None)
 
@@ -237,7 +240,10 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             model=model,
             optimizer=optimizer,
             epoch=epoch,
-            extra={"train_cfg": dataclass_to_dict(train_cfg), "data_cfg": dataclass_to_dict(data_cfg)},
+            extra={
+                "train_cfg": dataclass_to_dict(train_cfg),
+                "data_cfg": dataclass_to_dict(data_cfg),
+            },
         )
 
     logger.info("Done. Run dir: %s", paths.run_dir)
@@ -247,4 +253,3 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
 if __name__ == "__main__":
     cfg_train, cfg_data = parse_args()
     raise SystemExit(run_training(cfg_train, cfg_data))
-

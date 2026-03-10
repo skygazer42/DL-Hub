@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def negative_cosine_similarity(p: torch.Tensor, z: torch.Tensor) -> torch.Tensor:
@@ -24,7 +23,9 @@ def negative_cosine_similarity(p: torch.Tensor, z: torch.Tensor) -> torch.Tensor
     return -(p * z).sum(dim=1).mean()
 
 
-def simsiam_loss(p1: torch.Tensor, z2: torch.Tensor, p2: torch.Tensor, z1: torch.Tensor) -> torch.Tensor:
+def simsiam_loss(
+    p1: torch.Tensor, z2: torch.Tensor, p2: torch.Tensor, z1: torch.Tensor
+) -> torch.Tensor:
     """Symmetric SimSiam loss for two views."""
 
     return 0.5 * (negative_cosine_similarity(p1, z2) + negative_cosine_similarity(p2, z1))
@@ -182,7 +183,9 @@ def build_simsiam_pointnet(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown SimSiam-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown SimSiam-PointNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     p = float(spec["dropout"]) if dropout is None else float(dropout)
     return SimSiamPointNet(
@@ -205,4 +208,3 @@ if __name__ == "__main__":
     loss = simsiam_loss(o1["p"], o2["z"], o2["p"], o1["z"])
     loss.backward()
     print("ok", float(loss.item()))
-

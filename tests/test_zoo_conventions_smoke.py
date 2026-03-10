@@ -1,4 +1,3 @@
-
 import ast
 from pathlib import Path
 
@@ -38,16 +37,22 @@ def _iter_family_modules(directory: Path) -> list[Path]:
 def _has_variants(tree: ast.Module) -> bool:
     for node in tree.body:
         if isinstance(node, ast.Assign):
-            if any(isinstance(target, ast.Name) and target.id == "_VARIANTS" for target in node.targets):
+            if any(
+                isinstance(target, ast.Name) and target.id == "_VARIANTS" for target in node.targets
+            ):
                 return True
-        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name) and node.target.id == "_VARIANTS":
+        if (
+            isinstance(node, ast.AnnAssign)
+            and isinstance(node.target, ast.Name)
+            and node.target.id == "_VARIANTS"
+        ):
             return True
     return False
 
 
 def _has_builder(tree: ast.Module) -> bool:
     return any(
-        isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name.startswith("build_")
+        isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef) and node.name.startswith("build_")
         for node in tree.body
     )
 

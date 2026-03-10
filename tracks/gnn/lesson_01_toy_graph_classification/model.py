@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -53,4 +52,3 @@ class GCNGraphClassifier(nn.Module):
         h = F.relu(self.gcn2(h, adj))
         g = h.mean(dim=1)  # global mean pooling
         return self.head(g)
-

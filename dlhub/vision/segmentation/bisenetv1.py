@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.segmentation._common import BackboneC2C3C4C5, check_nchw
@@ -69,8 +68,12 @@ class BiSeNetV1(nn.Module):
             act="relu",
         )
         cp = int(context_channels)
-        self.c4_proj = ConvBNAct(int(c4_channels), cp, kernel_size=1, stride=1, padding=0, act="relu")
-        self.c5_proj = ConvBNAct(int(c5_channels), cp, kernel_size=1, stride=1, padding=0, act="relu")
+        self.c4_proj = ConvBNAct(
+            int(c4_channels), cp, kernel_size=1, stride=1, padding=0, act="relu"
+        )
+        self.c5_proj = ConvBNAct(
+            int(c5_channels), cp, kernel_size=1, stride=1, padding=0, act="relu"
+        )
         self.global_proj = nn.Sequential(
             nn.AdaptiveAvgPool2d((1, 1)),
             nn.Conv2d(int(c5_channels), cp, kernel_size=1, bias=False),
@@ -107,9 +110,39 @@ class BiSeNetV1(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "bisenetv1_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "sp": 48, "cp": 64, "fuse": 64},
-    "bisenetv1_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "sp": 64, "cp": 96, "fuse": 96},
-    "bisenetv1_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "sp": 80, "cp": 128, "fuse": 128},
+    "bisenetv1_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "sp": 48,
+        "cp": 64,
+        "fuse": 64,
+    },
+    "bisenetv1_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "sp": 64,
+        "cp": 96,
+        "fuse": 96,
+    },
+    "bisenetv1_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "sp": 80,
+        "cp": 128,
+        "fuse": 128,
+    },
 }
 
 
@@ -152,10 +185,11 @@ def build_bisenetv1_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_bisenetv1_segmenter(in_channels=3, num_classes=4, variant="bisenetv1_tiny", width_mult=0.5)
+    m = build_bisenetv1_segmenter(
+        in_channels=3, num_classes=4, variant="bisenetv1_tiny", width_mult=0.5
+    )
     y = m(x)
     print("bisenetv1_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

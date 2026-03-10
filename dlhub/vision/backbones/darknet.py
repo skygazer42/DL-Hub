@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -7,7 +6,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 class DarkConv(nn.Sequential):
     def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int) -> None:
-        super().__init__(ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), act="leaky"))
+        super().__init__(
+            ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), act="leaky")
+        )
 
 
 class DarkResidual(nn.Module):
@@ -114,4 +115,3 @@ if __name__ == "__main__":
         m = build_darknet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=0.5)
         y = m(x)
         print(v, tuple(y.shape))
-

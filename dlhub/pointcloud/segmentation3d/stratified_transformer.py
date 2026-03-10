@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import farthest_point_sample, index_points
 
-from ._common import FeaturePropagation, TinyTransformerEncoder, check_points, mlp, split_xyz_features
-
+from ._common import FeaturePropagation, TinyTransformerEncoder, check_points, split_xyz_features
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "stratified_transformer_tiny": {"width": 64, "depth": 2, "tokens": 48},
@@ -18,7 +16,14 @@ class StratifiedTransformerSeg(nn.Module):
     """Stratified Transformer semantic segmentation (toy): attend on sampled tokens then propagate."""
 
     def __init__(
-        self, *, in_channels: int, num_classes: int, width: int, depth: int, tokens: int, dropout: float = 0.0
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        depth: int,
+        tokens: int,
+        dropout: float = 0.0,
     ) -> None:
         super().__init__()
         w = int(width)
@@ -26,7 +31,12 @@ class StratifiedTransformerSeg(nn.Module):
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
         self.enc = TinyTransformerEncoder(w, nhead=4, num_layers=int(depth), dropout=float(dropout))
         self.fp = FeaturePropagation(w + w, w, dropout=float(dropout))
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Dropout(float(dropout)), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w),
+            nn.ReLU(inplace=True),
+            nn.Dropout(float(dropout)),
+            nn.Linear(w, int(num_classes)),
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -67,9 +77,10 @@ def build_stratified_transformer_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    model = build_stratified_transformer_segmenter3d(in_channels=3, num_classes=6, variant="stratified_transformer_tiny")
+    model = build_stratified_transformer_segmenter3d(
+        in_channels=3, num_classes=6, variant="stratified_transformer_tiny"
+    )
     x = torch.randn(2, 128, 3)
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

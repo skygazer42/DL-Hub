@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -156,4 +155,3 @@ __all__ = [
     "build_mctextcnn_classifier",
     "registry",
 ]
-

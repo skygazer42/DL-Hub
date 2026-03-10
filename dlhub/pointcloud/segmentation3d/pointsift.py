@@ -1,11 +1,9 @@
-
 import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import index_points, knn_indices
 
 from ._common import check_points, split_xyz_features
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointsift_tiny": {"width": 64, "k": (8, 16, 24)},
@@ -19,7 +17,9 @@ class _ScaleMix(nn.Module):
         super().__init__()
         self.k = int(k)
         w = int(width)
-        self.fc = nn.Sequential(nn.Linear(w * 2, w), nn.ReLU(inplace=True), nn.Linear(w, w), nn.ReLU(inplace=True))
+        self.fc = nn.Sequential(
+            nn.Linear(w * 2, w), nn.ReLU(inplace=True), nn.Linear(w, w), nn.ReLU(inplace=True)
+        )
 
     def forward(self, xyz: torch.Tensor, feat: torch.Tensor) -> torch.Tensor:
         idx = knn_indices(xyz.to(torch.float32), self.k, exclude_self=True)
@@ -30,7 +30,9 @@ class _ScaleMix(nn.Module):
 class PointSIFTSeg(nn.Module):
     """PointSIFT semantic segmentation (toy): multi-scale neighbor mixing."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, ks: tuple[int, int, int]) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, ks: tuple[int, int, int]
+    ) -> None:
         super().__init__()
         w = int(width)
         self.embed = nn.Sequential(nn.Linear(int(in_channels), w), nn.ReLU(inplace=True))
@@ -38,7 +40,9 @@ class PointSIFTSeg(nn.Module):
         self.s2 = _ScaleMix(w, int(ks[1]))
         self.s3 = _ScaleMix(w, int(ks[2]))
         self.fuse = nn.Sequential(nn.Linear(w * 3, w), nn.ReLU(inplace=True))
-        self.cls = nn.Sequential(nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes)))
+        self.cls = nn.Sequential(
+            nn.Linear(w, w), nn.ReLU(inplace=True), nn.Linear(w, int(num_classes))
+        )
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         check_points(points)
@@ -76,4 +80,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

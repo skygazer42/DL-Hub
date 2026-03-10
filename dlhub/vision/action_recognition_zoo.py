@@ -1,4 +1,3 @@
-
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -117,7 +116,9 @@ def _make_lazy_builder(module_name: str, *, builder_name: str, variant: str) -> 
         mod = importlib.import_module(f"dlhub.vision.action_recognition.{module_name}")
         fn = getattr(mod, builder_name, None)
         if fn is None:
-            raise RuntimeError(f"Action recognition module {module_name!r} missing {builder_name}()")
+            raise RuntimeError(
+                f"Action recognition module {module_name!r} missing {builder_name}()"
+            )
 
         kwargs: dict[str, object] = {
             "in_channels": int(cfg.in_channels),
@@ -180,7 +181,9 @@ def _extend_registry(r_video: dict[str, Builder], r_skel: dict[str, Builder]) ->
             name = str(v).lower().strip()
             if not name or name in registry:
                 continue
-            registry[name] = _make_lazy_builder(module_name, builder_name=builder_name, variant=name)
+            registry[name] = _make_lazy_builder(
+                module_name, builder_name=builder_name, variant=name
+            )
 
 
 def _registries() -> tuple[dict[str, Builder], dict[str, Builder]]:
@@ -259,4 +262,3 @@ def build_local_model(
 
 
 __all__ = ["BuildConfig", "UnknownLocalArch", "build_local_model", "list_local_arches"]
-

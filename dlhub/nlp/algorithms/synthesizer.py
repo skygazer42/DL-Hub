@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -75,6 +74,7 @@ def build_synthesizer_classifier(
             synthesizer_hidden=int(hidden),
         )
     )
+
 
 def registry() -> dict[str, Builder]:
     r: dict[str, Builder] = {}

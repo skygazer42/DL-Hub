@@ -15,4 +15,3 @@ def test_toy_classification_numpy_shapes_and_labels() -> None:
     # Both classes should appear with high probability at this scale.
     assert set(np.unique(y)).issubset({0, 1})
     assert 0 in y and 1 in y
-

@@ -1,14 +1,20 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, SqueezeExcite, scale_channels
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    scale_channels,
+)
 
 
 class EdgeNeXtBlock(nn.Module):
     """EdgeNeXt-inspired lightweight block (MBConv + optional SE)."""
 
-    def __init__(self, in_ch: int, out_ch: int, *, stride: int, expand: float, se_ratio: float | None) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, stride: int, expand: float, se_ratio: float | None
+    ) -> None:
         super().__init__()
         self.block = InvertedResidual(
             int(in_ch),
@@ -44,7 +50,9 @@ class EdgeNeXtClassifier(nn.Module):
 
         def make_stage(in_ch: int, out_ch: int, depth: int, *, stride: int) -> nn.Sequential:
             blocks: list[nn.Module] = []
-            blocks.append(EdgeNeXtBlock(in_ch, out_ch, stride=int(stride), expand=4.0, se_ratio=0.25))
+            blocks.append(
+                EdgeNeXtBlock(in_ch, out_ch, stride=int(stride), expand=4.0, se_ratio=0.25)
+            )
             for _ in range(int(depth) - 1):
                 blocks.append(EdgeNeXtBlock(out_ch, out_ch, stride=1, expand=4.0, se_ratio=0.25))
             return nn.Sequential(*blocks)
@@ -98,7 +106,8 @@ def build_edgenext_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_edgenext_classifier(in_channels=3, num_classes=10, variant="edgenext_xxs", width_mult=0.5)
+    m = build_edgenext_classifier(
+        in_channels=3, num_classes=10, variant="edgenext_xxs", width_mult=0.5
+    )
     y = m(x)
     print("edgenext_xxs", tuple(y.shape))
-

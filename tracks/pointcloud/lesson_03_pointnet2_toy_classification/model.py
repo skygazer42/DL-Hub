@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -96,7 +95,9 @@ class SetAbstraction(nn.Module):
             last_c = int(out_c)
         self.mlp = nn.Sequential(*layers)
 
-    def forward(self, xyz: torch.Tensor, features: torch.Tensor | None) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, xyz: torch.Tensor, features: torch.Tensor | None
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         # xyz: (B, N, 3), features: (B, N, C) or None
         fps_idx = _farthest_point_sample(xyz, self.npoint)  # (B, S)
         new_xyz = _index_points(xyz, fps_idx)  # (B, S, 3)
@@ -161,4 +162,3 @@ class PointNet2Classifier(nn.Module):
 
 
 __all__ = ["PointNet2Classifier", "ModelConfig"]
-

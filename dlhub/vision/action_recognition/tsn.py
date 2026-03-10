@@ -1,4 +1,3 @@
-
 """TSN (Temporal Segment Network) - toy-first video action classifier.
 
 Reference:
@@ -11,8 +10,8 @@ Toy interpretation:
 """
 
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
@@ -66,7 +65,9 @@ class TSNVideoClassifier(nn.Module):
         dropout: float,
     ) -> None:
         super().__init__()
-        self.backbone = TinyFrameCNN(in_channels=int(in_channels), width=int(width), depth=int(depth), dropout=float(dropout))
+        self.backbone = TinyFrameCNN(
+            in_channels=int(in_channels), width=int(width), depth=int(depth), dropout=float(dropout)
+        )
         feat_dim = int(width) * (2 ** max(int(depth) - 1, 0))
         self.classifier = nn.Linear(int(feat_dim), int(num_classes))
 
@@ -115,10 +116,11 @@ def build_tsn_video_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 8, 64, 64)
-    m = build_tsn_video_classifier(in_channels=3, num_classes=6, variant="tsn_tiny", width_mult=0.5, dropout=0.0)
+    m = build_tsn_video_classifier(
+        in_channels=3, num_classes=6, variant="tsn_tiny", width_mult=0.5, dropout=0.0
+    )
     y = m(x)
     print("tsn_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

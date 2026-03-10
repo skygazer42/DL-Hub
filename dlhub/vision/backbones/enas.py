@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._nas import Genotype, NASNetworkClassifier
-
 
 _ENAS = Genotype(
     # ENAS discovered cells are typically similar to NASNet-like operations.
@@ -96,4 +94,3 @@ if __name__ == "__main__":
     m = build_enas_classifier(in_channels=3, num_classes=10, variant="enas_tiny", width_mult=0.5)
     y = m(x)
     print("enas_tiny", tuple(y.shape))
-

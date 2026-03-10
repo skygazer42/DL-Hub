@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -29,7 +28,9 @@ class DeformableConv2d(nn.Module):
         self.stride = int(stride)
         self.padding = int(padding)
 
-        self.offset = nn.Conv2d(int(in_ch), 2 * k * k, kernel_size=3, stride=self.stride, padding=1, bias=True)
+        self.offset = nn.Conv2d(
+            int(in_ch), 2 * k * k, kernel_size=3, stride=self.stride, padding=1, bias=True
+        )
         self.weight = nn.Parameter(torch.randn(int(out_ch), int(in_ch), k, k) * 0.02)
         self.bias = nn.Parameter(torch.zeros(int(out_ch)))
 
@@ -67,7 +68,9 @@ class DeformableConv2d(nn.Module):
             gy = (sample_y / max(1.0, float(h_pad - 1))) * 2.0 - 1.0
             gx = (sample_x / max(1.0, float(w_pad - 1))) * 2.0 - 1.0
             grid = torch.stack([gx, gy], dim=-1)  # (B, Hout, Wout, 2)
-            sampled = F.grid_sample(x_pad, grid, mode="bilinear", padding_mode="zeros", align_corners=False)  # (B,C,Hout,Wout)
+            sampled = F.grid_sample(
+                x_pad, grid, mode="bilinear", padding_mode="zeros", align_corners=False
+            )  # (B,C,Hout,Wout)
 
             w_ij = self.weight[:, :, ky, kx].unsqueeze(-1).unsqueeze(-1)  # (O, C, 1, 1)
             out = out + F.conv2d(sampled, w_ij, bias=None, stride=1, padding=0)
@@ -79,10 +82,14 @@ class DeformableConv2d(nn.Module):
 class DCNBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, *, stride: int = 1) -> None:
         super().__init__()
-        self.dcn = DeformableConv2d(int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1)
+        self.dcn = DeformableConv2d(
+            int(in_ch), int(out_ch), kernel_size=3, stride=int(stride), padding=1
+        )
         self.bn = nn.BatchNorm2d(int(out_ch))
         self.act = nn.ReLU(inplace=True)
-        self.pw = ConvBNAct(int(out_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu")
+        self.pw = ConvBNAct(
+            int(out_ch), int(out_ch), kernel_size=1, stride=1, padding=0, act="relu"
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.dcn(x)
@@ -156,4 +163,3 @@ if __name__ == "__main__":
     m = build_dcn_classifier(in_channels=3, num_classes=10, variant="dcn_tiny", width_mult=0.5)
     y = m(x)
     print("dcn_tiny", tuple(y.shape))
-

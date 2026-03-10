@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class REDNet(nn.Module):
@@ -31,8 +30,12 @@ class REDNet(nn.Module):
 
         self.in_conv = nn.Conv2d(c_in, f, kernel_size=3, padding=1, bias=True)
 
-        self.enc = nn.ModuleList([nn.Conv2d(f, f, kernel_size=3, padding=1, bias=True) for _ in range(d)])
-        self.dec = nn.ModuleList([nn.ConvTranspose2d(f, f, kernel_size=3, padding=1, bias=True) for _ in range(d)])
+        self.enc = nn.ModuleList(
+            [nn.Conv2d(f, f, kernel_size=3, padding=1, bias=True) for _ in range(d)]
+        )
+        self.dec = nn.ModuleList(
+            [nn.ConvTranspose2d(f, f, kernel_size=3, padding=1, bias=True) for _ in range(d)]
+        )
 
         self.out_conv = nn.Conv2d(f, c_in, kernel_size=3, padding=1, bias=True)
 
@@ -68,7 +71,9 @@ def build_rednet_denoiser(*, in_channels: int, variant: str = "rednet_small") ->
     if name not in _VARIANTS:
         raise ValueError(f"Unknown REDNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return REDNet(in_channels=int(in_channels), features=int(spec["features"]), depth=int(spec["depth"]))
+    return REDNet(
+        in_channels=int(in_channels), features=int(spec["features"]), depth=int(spec["depth"])
+    )
 
 
 if __name__ == "__main__":
@@ -81,4 +86,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

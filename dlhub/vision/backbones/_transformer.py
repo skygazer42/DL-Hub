@@ -1,4 +1,3 @@
-
 import math
 
 import torch
@@ -129,7 +128,9 @@ class PatchEmbed(nn.Module):
         return x
 
 
-def sinusoidal_positional_embedding(num_tokens: int, dim: int, *, device: torch.device) -> torch.Tensor:
+def sinusoidal_positional_embedding(
+    num_tokens: int, dim: int, *, device: torch.device
+) -> torch.Tensor:
     n = int(num_tokens)
     d = int(dim)
     if n <= 0:
@@ -141,8 +142,9 @@ def sinusoidal_positional_embedding(num_tokens: int, dim: int, *, device: torch.
 
     pe = torch.zeros(n, d, device=device)
     pos = torch.arange(0, n, device=device, dtype=torch.float32).unsqueeze(1)
-    div = torch.exp(torch.arange(0, d, 2, device=device, dtype=torch.float32) * (-math.log(10000.0) / d))
+    div = torch.exp(
+        torch.arange(0, d, 2, device=device, dtype=torch.float32) * (-math.log(10000.0) / d)
+    )
     pe[:, 0::2] = torch.sin(pos * div)
     pe[:, 1::2] = torch.cos(pos * div)
     return pe
-

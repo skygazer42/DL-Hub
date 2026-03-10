@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -6,7 +5,9 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 
 class _EncoderStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -58,6 +59,7 @@ class CornerNetDetector(nn.Module):
         )
 
         hc = int(head_channels)
+
         def head(out_ch: int) -> nn.Sequential:
             return nn.Sequential(
                 ConvBNAct(int(feat_channels), hc, kernel_size=3, stride=1, act="relu"),
@@ -125,10 +127,11 @@ def build_cornernet_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_cornernet_detector(in_channels=3, num_classes=2, variant="cornernet_tiny", width_mult=0.5)
+    m = build_cornernet_detector(
+        in_channels=3, num_classes=2, variant="cornernet_tiny", width_mult=0.5
+    )
     out = m(x)
     print("cornernet_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

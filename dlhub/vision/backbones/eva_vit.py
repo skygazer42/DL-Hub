@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._transformer import TransformerEncoderBlock, PatchEmbed
+from dlhub.vision.backbones._transformer import PatchEmbed, TransformerEncoderBlock
 
 
 class EVAViTClassifier(nn.Module):
@@ -28,7 +27,12 @@ class EVAViTClassifier(nn.Module):
         self.pos = nn.Parameter(torch.zeros(1, h * w, int(dim)))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
         self.blocks = nn.Sequential(
-            *[TransformerEncoderBlock(int(dim), int(heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(dp_rates[i])) for i in range(int(depth))]
+            *[
+                TransformerEncoderBlock(
+                    int(dim), int(heads), mlp_ratio=4.0, dropout=0.0, drop_path=float(dp_rates[i])
+                )
+                for i in range(int(depth))
+            ]
         )
         self.norm = nn.LayerNorm(int(dim))
         self.drop = nn.Dropout(p=float(dropout))
@@ -78,7 +82,8 @@ def build_eva_vit_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_eva_vit_classifier(in_channels=3, num_classes=10, variant="eva_vit_tiny", image_size=64)
+    m = build_eva_vit_classifier(
+        in_channels=3, num_classes=10, variant="eva_vit_tiny", image_size=64
+    )
     y = m(x)
     print("eva_vit_tiny", tuple(y.shape))
-

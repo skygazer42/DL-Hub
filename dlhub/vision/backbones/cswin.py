@@ -1,10 +1,7 @@
-
-import math
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead
+from dlhub.vision.backbones._blocks import DropPath
 from dlhub.vision.backbones._transformer import MLP, MultiheadSelfAttention, PatchEmbed
 
 
@@ -94,7 +91,12 @@ class CSWinClassifier(nn.Module):
 
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
         self.blocks = nn.ModuleList(
-            [CSWinBlock(int(dim), int(num_heads), dropout=float(dropout), drop_path=float(dp_rates[i])) for i in range(int(depth))]
+            [
+                CSWinBlock(
+                    int(dim), int(num_heads), dropout=float(dropout), drop_path=float(dp_rates[i])
+                )
+                for i in range(int(depth))
+            ]
         )
         self.norm = nn.LayerNorm(int(dim))
         self.head = nn.Linear(int(dim), int(num_classes))
@@ -149,4 +151,3 @@ if __name__ == "__main__":
     m = build_cswin_classifier(in_channels=3, num_classes=10, variant="cswin_tiny", image_size=64)
     y = m(x)
     print("cswin_tiny", tuple(y.shape))
-

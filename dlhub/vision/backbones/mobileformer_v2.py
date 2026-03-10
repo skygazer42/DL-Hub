@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    make_divisible,
+)
 from dlhub.vision.backbones._transformer import TransformerEncoderBlock
 
 
@@ -17,7 +21,9 @@ class TokenInteraction(nn.Module):
         self.to_conv = nn.Linear(td, cd)
         self.gate = nn.Sequential(nn.Linear(td, cd), nn.Sigmoid())
 
-    def forward(self, tokens: torch.Tensor, feat: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, tokens: torch.Tensor, feat: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         # tokens: (B, T, Td), feat: (B, C, H, W)
         b, c, _, _ = feat.shape
         pooled = feat.mean(dim=(2, 3))  # (B, C)
@@ -52,16 +58,25 @@ class MobileFormerV2Classifier(nn.Module):
         )
 
         self.stem = ConvBNAct(int(in_channels), c(32), kernel_size=3, stride=2, act="silu")
-        self.stage1 = InvertedResidual(c(32), c(64), stride=2, expand_ratio=4.0, se_ratio=0.25, act="silu")
+        self.stage1 = InvertedResidual(
+            c(32), c(64), stride=2, expand_ratio=4.0, se_ratio=0.25, act="silu"
+        )
         self.inter1 = TokenInteraction(int(token_dim), c(64))
 
-        self.stage2 = InvertedResidual(c(64), c(96), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu")
+        self.stage2 = InvertedResidual(
+            c(64), c(96), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"
+        )
         self.inter2 = TokenInteraction(int(token_dim), c(96))
 
-        self.stage3 = InvertedResidual(c(96), c(160), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu")
+        self.stage3 = InvertedResidual(
+            c(96), c(160), stride=2, expand_ratio=6.0, se_ratio=0.25, act="silu"
+        )
         self.inter3 = TokenInteraction(int(token_dim), c(160))
 
-        self.head = nn.Sequential(ConvBNAct(c(160), c(640), kernel_size=1, stride=1, padding=0, act="silu"), GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)))
+        self.head = nn.Sequential(
+            ConvBNAct(c(160), c(640), kernel_size=1, stride=1, padding=0, act="silu"),
+            GlobalAvgPoolHead(c(640), int(num_classes), dropout=float(dropout)),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.to(torch.float32)
@@ -95,7 +110,9 @@ def build_mobileformer_v2_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MobileFormer-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MobileFormer-v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return MobileFormerV2Classifier(
         in_channels=int(in_channels),
@@ -113,4 +130,3 @@ if __name__ == "__main__":
     m = build_mobileformer_v2_classifier(in_channels=3, num_classes=10, variant="mobileformer_v2_s")
     y = m(x)
     print("mobileformer_v2_s", tuple(y.shape))
-

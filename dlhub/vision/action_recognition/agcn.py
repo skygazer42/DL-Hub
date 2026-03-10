@@ -1,4 +1,3 @@
-
 """2S-AGCN (Adaptive Graph Convolutional Network) - toy-first skeleton action classifier.
 
 Reference (idea):
@@ -12,7 +11,6 @@ Toy interpretation:
 
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 from dlhub.vision.backbones._blocks import scale_channels
 
@@ -82,7 +80,9 @@ class AGCNSkeletonClassifier(nn.Module):
         if d <= 0:
             raise ValueError("depth must be > 0")
         self.stem = nn.Conv2d(c_in, w, kernel_size=1, bias=True)
-        self.blocks = nn.Sequential(*[AGCNBlock(channels=w, num_joints=v, kt=int(kt)) for _ in range(d)])
+        self.blocks = nn.Sequential(
+            *[AGCNBlock(channels=w, num_joints=v, kt=int(kt)) for _ in range(d)]
+        )
         self.dropout = nn.Dropout(float(dropout))
         self.classifier = nn.Linear(w, int(num_classes))
 
@@ -132,10 +132,17 @@ def build_agcn_skeleton_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 32, 17)
-    m = build_agcn_skeleton_classifier(in_channels=3, num_classes=6, num_joints=17, seq_len=32, variant="agcn_tiny", width_mult=0.5, dropout=0.0)
+    m = build_agcn_skeleton_classifier(
+        in_channels=3,
+        num_classes=6,
+        num_joints=17,
+        seq_len=32,
+        variant="agcn_tiny",
+        width_mult=0.5,
+        dropout=0.0,
+    )
     y = m(x)
     print("agcn_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

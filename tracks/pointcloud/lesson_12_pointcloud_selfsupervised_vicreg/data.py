@@ -1,7 +1,5 @@
-
-from dataclasses import dataclass
-
 import math
+from dataclasses import dataclass
 
 import torch
 from torch.utils.data import DataLoader, Dataset, Subset
@@ -18,8 +16,12 @@ def _sample_sphere(*, num_points: int, g: torch.Generator) -> torch.Tensor:
     return pts / pts.norm(dim=1, keepdim=True).clamp(min=1e-8)
 
 
-def _rand_uniform(g: torch.Generator, low: float, high: float, shape: tuple[int, ...] = ()) -> torch.Tensor:
-    return torch.rand(shape, generator=g, dtype=torch.float32) * (float(high) - float(low)) + float(low)
+def _rand_uniform(
+    g: torch.Generator, low: float, high: float, shape: tuple[int, ...] = ()
+) -> torch.Tensor:
+    return torch.rand(shape, generator=g, dtype=torch.float32) * (float(high) - float(low)) + float(
+        low
+    )
 
 
 def _augment(points: torch.Tensor, *, g: torch.Generator, cfg) -> torch.Tensor:
@@ -117,7 +119,9 @@ class ToySSLViewsDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     ds = ToySSLViewsDataset(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed))
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
+    )
 
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)
@@ -148,4 +152,3 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
 
 
 __all__ = ["DataConfig", "ToySSLViewsDataset", "get_dataloaders"]
-

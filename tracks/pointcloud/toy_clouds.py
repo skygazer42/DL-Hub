@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -13,7 +12,9 @@ def _sample_cube(*, num_points: int, g: torch.Generator) -> torch.Tensor:
     return pts
 
 
-def _sample_cube_surface(*, num_points: int, g: torch.Generator, noise_std: float = 0.0) -> torch.Tensor:
+def _sample_cube_surface(
+    *, num_points: int, g: torch.Generator, noise_std: float = 0.0
+) -> torch.Tensor:
     """Sample points on the surface of a unit cube [-1,1]^3."""
 
     n = int(num_points)
@@ -85,7 +86,9 @@ class ToyPointCloudDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     ds = ToyPointCloudDataset(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=cfg.val_fraction, seed=cfg.seed)
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=cfg.val_fraction, seed=cfg.seed
+    )
 
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)
@@ -157,7 +160,9 @@ class ToyPartSegDataset(Dataset):
         sphere = sphere + torch.tensor([off, 0.0, 0.0], dtype=torch.float32)
 
         points = torch.cat([cube, sphere], dim=0)  # (N, 3)
-        labels = torch.cat([torch.zeros(n0, dtype=torch.long), torch.ones(n1, dtype=torch.long)], dim=0)  # (N,)
+        labels = torch.cat(
+            [torch.zeros(n0, dtype=torch.long), torch.ones(n1, dtype=torch.long)], dim=0
+        )  # (N,)
 
         if bool(cfg.shuffle_points):
             perm = torch.randperm(n, generator=g)
@@ -169,7 +174,9 @@ class ToyPartSegDataset(Dataset):
 
 def get_partseg_dataloaders(cfg: PartSegDataConfig) -> tuple[DataLoader, DataLoader]:
     ds = ToyPartSegDataset(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=cfg.val_fraction, seed=cfg.seed)
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=cfg.val_fraction, seed=cfg.seed
+    )
 
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)
@@ -252,7 +259,9 @@ class ToyReconDataset(Dataset):
 
 def get_recon_dataloaders(cfg: ReconDataConfig) -> tuple[DataLoader, DataLoader]:
     ds = ToyReconDataset(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=cfg.val_fraction, seed=cfg.seed)
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=cfg.val_fraction, seed=cfg.seed
+    )
 
     train_ds = Subset(ds, train_idx)
     val_ds = Subset(ds, val_idx)

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -35,7 +34,9 @@ class _SSDBackbone(nn.Module):
 
         def stage(in_ch: int, out_ch: int, *, down: bool) -> nn.Sequential:
             layers: list[nn.Module] = []
-            layers.append(ConvBNAct(in_ch, out_ch, kernel_size=3, stride=2 if down else 1, act="relu"))
+            layers.append(
+                ConvBNAct(in_ch, out_ch, kernel_size=3, stride=2 if down else 1, act="relu")
+            )
             for _ in range(d - 1):
                 layers.append(ConvBNAct(out_ch, out_ch, kernel_size=3, stride=1, act="relu"))
             return nn.Sequential(*layers)
@@ -86,7 +87,9 @@ class SSDHead(nn.Module):
         f = self.tower(x)
         return self.cls(f), self.box(f)
 
-    def forward(self, feats: tuple[torch.Tensor, ...]) -> tuple[list[torch.Tensor], list[torch.Tensor]]:
+    def forward(
+        self, feats: tuple[torch.Tensor, ...]
+    ) -> tuple[list[torch.Tensor], list[torch.Tensor]]:
         cls_out: list[torch.Tensor] = []
         box_out: list[torch.Tensor] = []
         for f in feats:
@@ -195,7 +198,11 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 128, 128)
     m = build_ssd_detector(in_channels=3, num_classes=3, variant="ssd_tiny", width_mult=0.5)
     out = m(x)
-    print("ssd_tiny", [tuple(t.shape) for t in out["cls_logits"]], [tuple(t.shape) for t in out["bbox_deltas"]])
+    print(
+        "ssd_tiny",
+        [tuple(t.shape) for t in out["cls_logits"]],
+        [tuple(t.shape) for t in out["bbox_deltas"]],
+    )
     loss = sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
     loss.backward()
     print("ok")

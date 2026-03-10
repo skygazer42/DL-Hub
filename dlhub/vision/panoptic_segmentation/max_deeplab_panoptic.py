@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.panoptic_segmentation._common import BackboneC2C3C4C5, FPN4, check_nchw, fuse_panoptic
+from dlhub.vision.panoptic_segmentation._common import (
+    FPN4,
+    BackboneC2C3C4C5,
+    check_nchw,
+    fuse_panoptic,
+)
 
 
 class MaXDeepLabPanoptic(nn.Module):
@@ -67,7 +71,11 @@ class MaXDeepLabPanoptic(nn.Module):
             depth=int(depth),
             act="relu",
         )
-        self.fpn = FPN4((int(c2_channels), int(c3_channels), int(c4_channels), int(c5_channels)), int(fpn_channels), act="relu")
+        self.fpn = FPN4(
+            (int(c2_channels), int(c3_channels), int(c4_channels), int(c5_channels)),
+            int(fpn_channels),
+            act="relu",
+        )
 
         self.pix_proj = nn.Conv2d(int(fpn_channels), ed, kernel_size=1, bias=True)
         self.mem = nn.Parameter(torch.randn(m, ed) * 0.02)
@@ -127,7 +135,9 @@ class MaXDeepLabPanoptic(nn.Module):
         mask_logits = F.interpolate(mask_logits, size=(h, w), mode="nearest")
 
         scores = query_cls_logits.softmax(dim=-1).max(dim=-1).values
-        panoptic_map = fuse_panoptic(semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes))
+        panoptic_map = fuse_panoptic(
+            semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes)
+        )
 
         return {
             "semantic_logits": semantic_logits,
@@ -139,9 +149,48 @@ class MaXDeepLabPanoptic(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "max_deeplab_panoptic_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "fpn": 64, "embed": 64, "enc": 2, "heads": 4, "mem": 16, "inst": 8},
-    "max_deeplab_panoptic_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "fpn": 96, "embed": 96, "enc": 3, "heads": 4, "mem": 32, "inst": 16},
-    "max_deeplab_panoptic_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "fpn": 128, "embed": 128, "enc": 4, "heads": 8, "mem": 64, "inst": 32},
+    "max_deeplab_panoptic_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "fpn": 64,
+        "embed": 64,
+        "enc": 2,
+        "heads": 4,
+        "mem": 16,
+        "inst": 8,
+    },
+    "max_deeplab_panoptic_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "fpn": 96,
+        "embed": 96,
+        "enc": 3,
+        "heads": 4,
+        "mem": 32,
+        "inst": 16,
+    },
+    "max_deeplab_panoptic_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "fpn": 128,
+        "embed": 128,
+        "enc": 4,
+        "heads": 8,
+        "mem": 64,
+        "inst": 32,
+    },
 }
 
 
@@ -155,7 +204,9 @@ def build_max_deeplab_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MaX-DeepLab-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MaX-DeepLab-panoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     def sc(v: int, *, min_ch: int = 16) -> int:
@@ -200,11 +251,16 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_max_deeplab_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="max_deeplab_panoptic_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="max_deeplab_panoptic_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("max_deeplab_panoptic_tiny", {k: tuple(v.shape) for k, v in out.items()})
-    loss = out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    loss = (
+        out["semantic_logits"].mean() + out["query_cls_logits"].mean() + out["mask_logits"].mean()
+    )
     loss.backward()
     print("ok")
-

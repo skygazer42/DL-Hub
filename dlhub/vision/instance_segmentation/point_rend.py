@@ -1,14 +1,15 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 from dlhub.vision.instance_segmentation._common import check_nchw
 
 
 class _BackboneStride4(nn.Module):
-    def __init__(self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int) -> None:
+    def __init__(
+        self, *, in_channels: int, stem_channels: int, feat_channels: int, depth: int
+    ) -> None:
         super().__init__()
         c_in = int(in_channels)
         stem = int(stem_channels)
@@ -98,10 +99,17 @@ class PointRendLite(nn.Module):
         boxes = torch.sigmoid(self.box(h))
 
         coarse = self.mask_coarse(h).view(b, self.num_rois, 1, self.mask_size, self.mask_size)
-        refine = self.refine(F.adaptive_avg_pool2d(feat, (self.mask_size, self.mask_size)))  # (B,1,ms,ms)
+        refine = self.refine(
+            F.adaptive_avg_pool2d(feat, (self.mask_size, self.mask_size))
+        )  # (B,1,ms,ms)
         refined = coarse + refine.unsqueeze(1)  # broadcast over rois
 
-        return {"roi_cls_logits": cls_logits, "roi_boxes": boxes, "mask_logits_coarse": coarse, "mask_logits_refined": refined}
+        return {
+            "roi_cls_logits": cls_logits,
+            "roi_boxes": boxes,
+            "mask_logits_coarse": coarse,
+            "mask_logits_refined": refined,
+        }
 
 
 _VARIANTS: dict[str, dict] = {
@@ -139,10 +147,11 @@ def build_pointrend_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_pointrend_instance_segmenter(in_channels=3, num_classes=3, variant="pointrend_tiny", width_mult=0.5)
+    m = build_pointrend_instance_segmenter(
+        in_channels=3, num_classes=3, variant="pointrend_tiny", width_mult=0.5
+    )
     out = m(x)
     print("pointrend_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

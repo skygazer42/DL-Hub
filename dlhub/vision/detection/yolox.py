@@ -1,15 +1,16 @@
-
 import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._common import BackboneC3C5, ConvTower, FPN, check_nchw
+from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_nchw
 
 
 class YOLOXHead(nn.Module):
     """YOLOX-style decoupled head (shared across FPN levels)."""
 
-    def __init__(self, *, channels: int, num_classes: int, num_anchors: int = 1, num_convs: int = 2) -> None:
+    def __init__(
+        self, *, channels: int, num_classes: int, num_anchors: int = 1, num_convs: int = 2
+    ) -> None:
         super().__init__()
         c = int(channels)
         nc = int(num_classes)
@@ -65,7 +66,12 @@ class YOLOXDetector(nn.Module):
             act="silu",
         )
         self.fpn = FPN((c3, c4, c5), out, act="silu")
-        self.head = YOLOXHead(channels=out, num_classes=int(num_classes), num_anchors=int(num_anchors), num_convs=int(head_convs))
+        self.head = YOLOXHead(
+            channels=out,
+            num_classes=int(num_classes),
+            num_anchors=int(num_anchors),
+            num_convs=int(head_convs),
+        )
 
     def forward(self, x: torch.Tensor) -> dict[str, list[torch.Tensor]]:
         x = check_nchw(x)
@@ -124,7 +130,10 @@ if __name__ == "__main__":
     m = build_yolox_detector(in_channels=3, num_classes=3, variant="yolox_tiny", width_mult=0.5)
     out = m(x)
     print("yolox_tiny", [tuple(t.shape) for t in out["obj_logits"]])
-    loss = sum(t.mean() for t in out["obj_logits"]) + sum(t.mean() for t in out["cls_logits"]) + sum(t.mean() for t in out["bbox_deltas"])
+    loss = (
+        sum(t.mean() for t in out["obj_logits"])
+        + sum(t.mean() for t in out["cls_logits"])
+        + sum(t.mean() for t in out["bbox_deltas"])
+    )
     loss.backward()
     print("ok")
-

@@ -1,10 +1,14 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.panoptic_segmentation._common import BackboneC2C3C4C5, ProtoNet, check_nchw, masks_from_prototypes
+from dlhub.vision.panoptic_segmentation._common import (
+    BackboneC2C3C4C5,
+    ProtoNet,
+    check_nchw,
+    masks_from_prototypes,
+)
 
 
 class PanopticDeepLab(nn.Module):
@@ -117,9 +121,39 @@ class PanopticDeepLab(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "panoptic_deeplab_tiny": {"stem": 24, "c2": 24, "c3": 48, "c4": 64, "c5": 96, "depth": 1, "head": 64, "instances": 16, "protos": 16},
-    "panoptic_deeplab_small": {"stem": 24, "c2": 32, "c3": 64, "c4": 96, "c5": 128, "depth": 2, "head": 96, "instances": 32, "protos": 32},
-    "panoptic_deeplab_base": {"stem": 32, "c2": 40, "c3": 80, "c4": 128, "c5": 160, "depth": 2, "head": 128, "instances": 64, "protos": 48},
+    "panoptic_deeplab_tiny": {
+        "stem": 24,
+        "c2": 24,
+        "c3": 48,
+        "c4": 64,
+        "c5": 96,
+        "depth": 1,
+        "head": 64,
+        "instances": 16,
+        "protos": 16,
+    },
+    "panoptic_deeplab_small": {
+        "stem": 24,
+        "c2": 32,
+        "c3": 64,
+        "c4": 96,
+        "c5": 128,
+        "depth": 2,
+        "head": 96,
+        "instances": 32,
+        "protos": 32,
+    },
+    "panoptic_deeplab_base": {
+        "stem": 32,
+        "c2": 40,
+        "c3": 80,
+        "c4": 128,
+        "c5": 160,
+        "depth": 2,
+        "head": 128,
+        "instances": 64,
+        "protos": 48,
+    },
 }
 
 
@@ -133,7 +167,9 @@ def build_panoptic_deeplab_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Panoptic-DeepLab variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Panoptic-DeepLab variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     def sc(v: int, *, min_ch: int = 16) -> int:
@@ -168,7 +204,11 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     m = build_panoptic_deeplab_panoptic_segmenter(
-        in_channels=3, num_thing_classes=3, num_stuff_classes=2, variant="panoptic_deeplab_tiny", width_mult=0.5
+        in_channels=3,
+        num_thing_classes=3,
+        num_stuff_classes=2,
+        variant="panoptic_deeplab_tiny",
+        width_mult=0.5,
     )
     out = m(x)
     print("panoptic_deeplab_tiny", {k: tuple(v.shape) for k, v in out.items()})
@@ -181,4 +221,3 @@ if __name__ == "__main__":
     )
     loss.backward()
     print("ok")
-

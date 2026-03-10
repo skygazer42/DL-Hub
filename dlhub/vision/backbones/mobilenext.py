@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, make_divisible
+from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, make_divisible
 
 
 class SandglassBlock(nn.Module):
@@ -64,7 +63,9 @@ class MobileNeXtClassifier(nn.Module):
             (c(256), c(256), 1, 6.0),
         ]
         for in_c, out_c, s, exp in cfg:
-            blocks.append(SandglassBlock(int(in_c), int(out_c), stride=int(s), expand_ratio=float(exp)))
+            blocks.append(
+                SandglassBlock(int(in_c), int(out_c), stride=int(s), expand_ratio=float(exp))
+            )
         self.blocks = nn.Sequential(*blocks)
         self.head = nn.Sequential(
             ConvBNAct(c(256), c(1024), kernel_size=1, stride=1, padding=0, act="relu6"),
@@ -96,7 +97,12 @@ def build_mobilenext_classifier(
     if name not in _VARIANTS:
         raise ValueError(f"Unknown MobileNeXt variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
-    return MobileNeXtClassifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return MobileNeXtClassifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -105,4 +111,3 @@ if __name__ == "__main__":
     m = build_mobilenext_classifier(in_channels=3, num_classes=10, variant="mobilenext_s")
     y = m(x)
     print("mobilenext_s", tuple(y.shape))
-

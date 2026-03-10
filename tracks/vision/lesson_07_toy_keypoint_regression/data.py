@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import numpy as np
@@ -37,7 +36,9 @@ class ToyKeypointDots:
         rng = np.random.default_rng(int(cfg.seed))
 
         s = int(cfg.image_size)
-        self.xy = rng.integers(low=0, high=s, size=(int(cfg.num_samples), 2), dtype=np.int64)  # (x, y)
+        self.xy = rng.integers(
+            low=0, high=s, size=(int(cfg.num_samples), 2), dtype=np.int64
+        )  # (x, y)
 
     def __len__(self) -> int:
         return int(self.cfg.num_samples)
@@ -55,7 +56,9 @@ class ToyKeypointDots:
 
         yy, xx = np.mgrid[0:s, 0:s].astype(np.float32)
         sigma = float(self.cfg.dot_sigma)
-        dot = np.exp(-((xx - float(x0)) ** 2 + (yy - float(y0)) ** 2) / (2.0 * sigma * sigma)).astype(np.float32)
+        dot = np.exp(
+            -((xx - float(x0)) ** 2 + (yy - float(y0)) ** 2) / (2.0 * sigma * sigma)
+        ).astype(np.float32)
         dot = dot / max(1e-6, float(dot.max()))
 
         noise = rng.normal(loc=0.0, scale=float(self.cfg.noise_std), size=(s, s)).astype(np.float32)
@@ -72,7 +75,9 @@ def get_dataloaders(cfg: DataConfig):
     from torch.utils.data import DataLoader, Subset
 
     ds = ToyKeypointDots(cfg)
-    train_idx, val_idx = train_val_split_indices(n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed))
+    train_idx, val_idx = train_val_split_indices(
+        n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
+    )
 
     train_loader = DataLoader(
         Subset(ds, train_idx),
@@ -90,4 +95,3 @@ def get_dataloaders(cfg: DataConfig):
 
 
 __all__ = ["DataConfig", "ToyKeypointDots", "get_dataloaders"]
-

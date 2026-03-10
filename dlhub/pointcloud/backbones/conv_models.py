@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -66,7 +65,12 @@ class PointConvClassifier(nn.Module):
             nn.Linear(c_in, d),
             nn.ReLU(inplace=True),
         )
-        self.blocks = nn.ModuleList([PointConvBlock(d, d, k=int(cfg.k), dropout=float(cfg.dropout)) for _ in range(int(cfg.depth))])
+        self.blocks = nn.ModuleList(
+            [
+                PointConvBlock(d, d, k=int(cfg.k), dropout=float(cfg.dropout))
+                for _ in range(int(cfg.depth))
+            ]
+        )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -77,7 +81,9 @@ class PointConvClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))  # (B, N, D)
         for blk in self.blocks:
@@ -105,7 +111,9 @@ def build_pointconv_classifier(
     elif name in {"pointconv_base"}:
         embed_dim, depth, k = 192, 4, 20
     else:
-        raise ValueError("Unknown PointConv variant. Supported: pointconv|pointconv_small|pointconv_base")
+        raise ValueError(
+            "Unknown PointConv variant. Supported: pointconv|pointconv_small|pointconv_base"
+        )
 
     return PointConvClassifier(
         PointConvConfig(
@@ -159,7 +167,9 @@ class PointCNNClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
 
         xyz = points[..., :3].to(torch.float32)
         x = points.to(torch.float32).transpose(1, 2).contiguous()
@@ -196,7 +206,9 @@ def build_pointcnn_classifier(
     elif name in {"pointcnn_base"}:
         embed_dim, k = 192, 24
     else:
-        raise ValueError("Unknown PointCNN variant. Supported: pointcnn|pointcnn_small|pointcnn_base")
+        raise ValueError(
+            "Unknown PointCNN variant. Supported: pointcnn|pointcnn_small|pointcnn_base"
+        )
 
     return PointCNNClassifier(
         PointCNNConfig(
@@ -216,7 +228,9 @@ class KPConvBlock(nn.Module):
     Uses a small set of learnable kernel centers and weights points by RBF distance to centers.
     """
 
-    def __init__(self, in_dim: int, out_dim: int, *, k: int, num_kpoints: int, dropout: float) -> None:
+    def __init__(
+        self, in_dim: int, out_dim: int, *, k: int, num_kpoints: int, dropout: float
+    ) -> None:
         super().__init__()
         self.k = int(k)
         self.num_kpoints = int(num_kpoints)
@@ -232,7 +246,9 @@ class KPConvBlock(nn.Module):
         rel = (nbr_xyz - xyz.unsqueeze(2)).to(torch.float32)  # (B, N, k, 3)
 
         # (B, N, k, P)
-        dist2 = ((rel.unsqueeze(3) - self.centers.view(1, 1, 1, self.num_kpoints, 3)) ** 2).sum(dim=-1)
+        dist2 = ((rel.unsqueeze(3) - self.centers.view(1, 1, 1, self.num_kpoints, 3)) ** 2).sum(
+            dim=-1
+        )
         sigma2 = (self.radius.abs() + 1e-6) ** 2
         w = torch.exp(-dist2 / (2.0 * sigma2))  # RBF
         w = w / (w.sum(dim=3, keepdim=True) + 1e-6)
@@ -267,7 +283,9 @@ class KPConvClassifier(nn.Module):
         self.embed = nn.Sequential(nn.Linear(c_in, d), nn.ReLU(inplace=True))
         self.blocks = nn.ModuleList(
             [
-                KPConvBlock(d, d, k=int(cfg.k), num_kpoints=int(cfg.num_kpoints), dropout=float(cfg.dropout))
+                KPConvBlock(
+                    d, d, k=int(cfg.k), num_kpoints=int(cfg.num_kpoints), dropout=float(cfg.dropout)
+                )
                 for _ in range(int(cfg.depth))
             ]
         )
@@ -281,7 +299,9 @@ class KPConvClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:
@@ -385,7 +405,9 @@ class ShellNetClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
 
         xyz = points[..., :3].to(torch.float32)  # (B, N, 3)
         b, n, _ = xyz.shape
@@ -429,7 +451,9 @@ def build_shellnet_classifier(
     elif name in {"shellnet_base"}:
         embed_dim, shells, depth = 192, 16, 4
     else:
-        raise ValueError("Unknown ShellNet variant. Supported: shellnet|shellnet_small|shellnet_base")
+        raise ValueError(
+            "Unknown ShellNet variant. Supported: shellnet|shellnet_small|shellnet_base"
+        )
 
     shells = min(int(shells), int(n))
     return ShellNetClassifier(

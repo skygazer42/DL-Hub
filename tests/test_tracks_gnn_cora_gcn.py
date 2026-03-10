@@ -1,6 +1,5 @@
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 
@@ -25,6 +24,8 @@ def test_gnn_cora_gcn_forward_shape_smoke() -> None:
     from tracks.gnn.lesson_04_cora_node_classification_gcn.model import GCN, ModelConfig
 
     data = load_cora()
-    model = GCN(ModelConfig(in_features=1433, hidden_features=16, num_classes=int(data.labels.max()) + 1))
+    model = GCN(
+        ModelConfig(in_features=1433, hidden_features=16, num_classes=int(data.labels.max()) + 1)
+    )
     logits = model(data.features, data.adj)
     assert tuple(logits.shape) == (2708, int(data.labels.max()) + 1)

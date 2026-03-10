@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import DropPath, scale_channels
 
 
 class SpatialReductionAttention(nn.Module):
@@ -78,7 +77,9 @@ class OverlapPatchEmbed(nn.Module):
         k = int(kernel_size)
         s = int(stride)
         p = k // 2
-        self.proj = nn.Conv2d(int(in_ch), int(embed_dim), kernel_size=k, stride=s, padding=p, bias=True)
+        self.proj = nn.Conv2d(
+            int(in_ch), int(embed_dim), kernel_size=k, stride=s, padding=p, bias=True
+        )
         self.norm = nn.LayerNorm(int(embed_dim))
 
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, tuple[int, int]]:
@@ -117,16 +118,38 @@ class PVTV2Classifier(nn.Module):
         self.patch3 = OverlapPatchEmbed(dims[1], dims[2], kernel_size=3, stride=2)
         self.patch4 = OverlapPatchEmbed(dims[2], dims[3], kernel_size=3, stride=2)
 
-        self.stage1 = nn.ModuleList([PVTBlock(dims[0], heads[0], sr_ratio=sr[0], drop_path=float(next(dp_iter))) for _ in range(depths[0])])
-        self.stage2 = nn.ModuleList([PVTBlock(dims[1], heads[1], sr_ratio=sr[1], drop_path=float(next(dp_iter))) for _ in range(depths[1])])
-        self.stage3 = nn.ModuleList([PVTBlock(dims[2], heads[2], sr_ratio=sr[2], drop_path=float(next(dp_iter))) for _ in range(depths[2])])
-        self.stage4 = nn.ModuleList([PVTBlock(dims[3], heads[3], sr_ratio=sr[3], drop_path=float(next(dp_iter))) for _ in range(depths[3])])
+        self.stage1 = nn.ModuleList(
+            [
+                PVTBlock(dims[0], heads[0], sr_ratio=sr[0], drop_path=float(next(dp_iter)))
+                for _ in range(depths[0])
+            ]
+        )
+        self.stage2 = nn.ModuleList(
+            [
+                PVTBlock(dims[1], heads[1], sr_ratio=sr[1], drop_path=float(next(dp_iter)))
+                for _ in range(depths[1])
+            ]
+        )
+        self.stage3 = nn.ModuleList(
+            [
+                PVTBlock(dims[2], heads[2], sr_ratio=sr[2], drop_path=float(next(dp_iter)))
+                for _ in range(depths[2])
+            ]
+        )
+        self.stage4 = nn.ModuleList(
+            [
+                PVTBlock(dims[3], heads[3], sr_ratio=sr[3], drop_path=float(next(dp_iter)))
+                for _ in range(depths[3])
+            ]
+        )
 
         self.norm = nn.LayerNorm(dims[-1])
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(dims[-1], int(num_classes))
 
-    def _run_stage(self, x: torch.Tensor, hw: tuple[int, int], blocks: nn.ModuleList) -> torch.Tensor:
+    def _run_stage(
+        self, x: torch.Tensor, hw: tuple[int, int], blocks: nn.ModuleList
+    ) -> torch.Tensor:
         for b in blocks:
             x = b(x, hw=hw)
         return x
@@ -153,8 +176,18 @@ class PVTV2Classifier(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "pvt_v2_b0": {"dims": (32, 64, 160, 256), "depths": (2, 2, 2, 2), "heads": (1, 2, 5, 8), "sr": (8, 4, 2, 1)},
-    "pvt_v2_b1": {"dims": (64, 128, 320, 512), "depths": (2, 2, 4, 2), "heads": (1, 2, 5, 8), "sr": (8, 4, 2, 1)},
+    "pvt_v2_b0": {
+        "dims": (32, 64, 160, 256),
+        "depths": (2, 2, 2, 2),
+        "heads": (1, 2, 5, 8),
+        "sr": (8, 4, 2, 1),
+    },
+    "pvt_v2_b1": {
+        "dims": (64, 128, 320, 512),
+        "depths": (2, 2, 4, 2),
+        "heads": (1, 2, 5, 8),
+        "sr": (8, 4, 2, 1),
+    },
 }
 
 
@@ -190,4 +223,3 @@ if __name__ == "__main__":
     m = build_pvt_v2_classifier(in_channels=3, num_classes=10, variant="pvt_v2_b0", width_mult=0.5)
     y = m(x)
     print("pvt_v2_b0", tuple(y.shape))
-

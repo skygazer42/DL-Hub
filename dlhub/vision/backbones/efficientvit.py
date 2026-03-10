@@ -1,8 +1,12 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import ConvBNAct, GlobalAvgPoolHead, InvertedResidual, SqueezeExcite, make_divisible
+from dlhub.vision.backbones._blocks import (
+    ConvBNAct,
+    GlobalAvgPoolHead,
+    InvertedResidual,
+    make_divisible,
+)
 
 
 class EfficientViTClassifier(nn.Module):
@@ -36,7 +40,16 @@ class EfficientViTClassifier(nn.Module):
         ]
         in_ch = c(32)
         for out_ch, out2, stride, exp, se in cfg:
-            blocks.append(InvertedResidual(in_ch, int(out2), stride=int(stride), expand_ratio=float(exp), se_ratio=float(se), act="silu"))
+            blocks.append(
+                InvertedResidual(
+                    in_ch,
+                    int(out2),
+                    stride=int(stride),
+                    expand_ratio=float(exp),
+                    se_ratio=float(se),
+                    act="silu",
+                )
+            )
             in_ch = int(out2)
         self.blocks = nn.Sequential(*blocks)
 
@@ -68,9 +81,16 @@ def build_efficientvit_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown EfficientViT variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown EfficientViT variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
-    return EfficientViTClassifier(in_channels=int(in_channels), num_classes=int(num_classes), width_mult=float(spec["w"]), dropout=float(dropout))
+    return EfficientViTClassifier(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width_mult=float(spec["w"]),
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -79,4 +99,3 @@ if __name__ == "__main__":
     m = build_efficientvit_classifier(in_channels=3, num_classes=10, variant="efficientvit_m0")
     y = m(x)
     print("efficientvit_m0", tuple(y.shape))
-

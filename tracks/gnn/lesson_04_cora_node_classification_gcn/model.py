@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -37,4 +36,3 @@ class GCN(nn.Module):
         h = F.relu(self.gc1(x, adj))
         h = self.dropout(h)
         return self.gc2(h, adj)
-

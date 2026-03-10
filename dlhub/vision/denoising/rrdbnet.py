@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class _DenseLayer(nn.Module):
@@ -17,22 +16,24 @@ class _DenseLayer(nn.Module):
 class _ResidualDenseBlock(nn.Module):
     """Residual Dense Block (RDB) used inside RRDB."""
 
-    def __init__(self, channels: int, *, growth: int = 32, num_layers: int = 5, res_scale: float = 0.2) -> None:
+    def __init__(
+        self, channels: int, *, growth: int = 32, num_layers: int = 5, res_scale: float = 0.2
+    ) -> None:
         super().__init__()
         c = int(channels)
         g = int(growth)
-        l = int(num_layers)
+        num_layers_int = int(num_layers)
         if c <= 0:
             raise ValueError("channels must be > 0")
         if g <= 0:
             raise ValueError("growth must be > 0")
-        if l <= 0:
+        if num_layers_int <= 0:
             raise ValueError("num_layers must be > 0")
         self.res_scale = float(res_scale)
 
         layers: list[nn.Module] = []
         ch = c
-        for _ in range(l):
+        for _ in range(num_layers_int):
             layers.append(_DenseLayer(ch, g))
             ch += g
         self.layers = nn.ModuleList(layers)
@@ -52,9 +53,15 @@ class RRDB(nn.Module):
     def __init__(self, channels: int, *, growth: int = 32, res_scale: float = 0.2) -> None:
         super().__init__()
         c = int(channels)
-        self.rdb1 = _ResidualDenseBlock(c, growth=int(growth), num_layers=5, res_scale=float(res_scale))
-        self.rdb2 = _ResidualDenseBlock(c, growth=int(growth), num_layers=5, res_scale=float(res_scale))
-        self.rdb3 = _ResidualDenseBlock(c, growth=int(growth), num_layers=5, res_scale=float(res_scale))
+        self.rdb1 = _ResidualDenseBlock(
+            c, growth=int(growth), num_layers=5, res_scale=float(res_scale)
+        )
+        self.rdb2 = _ResidualDenseBlock(
+            c, growth=int(growth), num_layers=5, res_scale=float(res_scale)
+        )
+        self.rdb3 = _ResidualDenseBlock(
+            c, growth=int(growth), num_layers=5, res_scale=float(res_scale)
+        )
         self.res_scale = float(res_scale)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -93,7 +100,9 @@ class RRDBNet(nn.Module):
             raise ValueError("num_blocks must be > 0")
 
         self.in_conv = nn.Conv2d(c_in, f, kernel_size=3, padding=1, bias=True)
-        self.trunk = nn.Sequential(*[RRDB(f, growth=g, res_scale=float(res_scale)) for _ in range(b)])
+        self.trunk = nn.Sequential(
+            *[RRDB(f, growth=g, res_scale=float(res_scale)) for _ in range(b)]
+        )
         self.trunk_conv = nn.Conv2d(f, f, kernel_size=3, padding=1, bias=True)
         self.out_conv = nn.Conv2d(f, c_in, kernel_size=3, padding=1, bias=True)
 
@@ -141,4 +150,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -56,8 +55,10 @@ def build_distilbert_classifier(
         )
     )
 
+
 def registry() -> dict[str, Builder]:
     return {"distilbert_tiny": make_builder(build_distilbert_classifier, variant="distilbert_tiny")}
+
 
 def _smoke() -> None:
     vocab_size = 128

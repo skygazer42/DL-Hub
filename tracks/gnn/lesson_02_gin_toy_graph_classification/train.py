@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -37,7 +36,9 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 02 (GNN): toy graph classification with GIN.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 02 (GNN): toy graph classification with GIN."
+    )
 
     parser.add_argument("--num-graphs", type=int, default=512)
     parser.add_argument("--num-nodes", type=int, default=10)
@@ -53,7 +54,9 @@ def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser.add_argument("--hidden-features", type=int, default=32)
     parser.add_argument("--num-layers", type=int, default=3)
     parser.add_argument("--num-mlp-layers", type=int, default=2)
-    parser.add_argument("--neighbor-pooling", type=str, default="sum", choices=["sum", "mean", "max"])
+    parser.add_argument(
+        "--neighbor-pooling", type=str, default="sum", choices=["sum", "mean", "max"]
+    )
     parser.add_argument("--graph-pooling", type=str, default="mean", choices=["sum", "mean", "max"])
     parser.add_argument("--learn-eps", action="store_true")
     parser.add_argument("--dropout", type=float, default=0.0)
@@ -194,4 +197,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

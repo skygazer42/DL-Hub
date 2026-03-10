@@ -1,9 +1,7 @@
-
 import torch
 from torch import nn
 
 from ._common import PointNet2SegBase
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "pointcnn_tiny": {"width": 32},
@@ -15,7 +13,9 @@ _VARIANTS: dict[str, dict[str, object]] = {
 class PointCNNSeg(nn.Module):
     """PointCNN semantic segmentation (toy): PointNet++ hierarchy as a proxy for X-Conv."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.net = PointNet2SegBase(
             in_channels=int(in_channels),
@@ -38,7 +38,12 @@ def build_pointcnn_segmenter3d(
 ) -> nn.Module:
     cfg = _VARIANTS[str(variant)]
     width = int(int(cfg["width"]) * float(width_mult))
-    return PointCNNSeg(in_channels=int(in_channels), num_classes=int(num_classes), width=width, dropout=float(dropout))
+    return PointCNNSeg(
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width=width,
+        dropout=float(dropout),
+    )
 
 
 if __name__ == "__main__":
@@ -48,4 +53,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -122,7 +121,9 @@ class ResNetClassifier(nn.Module):
         out_dim = c4 * int(getattr(block, "expansion", 1))
         self.head = GlobalAvgPoolHead(out_dim, int(num_classes), dropout=float(dropout))
 
-    def _make_layer(self, block: type[nn.Module], out_ch: int, blocks: int, *, stride: int) -> nn.Sequential:
+    def _make_layer(
+        self, block: type[nn.Module], out_ch: int, blocks: int, *, stride: int
+    ) -> nn.Sequential:
         layers: list[nn.Module] = []
         layers.append(block(self.in_ch, int(out_ch), stride=int(stride)))
         self.in_ch = int(out_ch) * int(getattr(block, "expansion", 1))
@@ -178,4 +179,3 @@ if __name__ == "__main__":
         m = build_resnet_classifier(in_channels=3, num_classes=10, variant=v, width_mult=1.0)
         y = m(x)
         print(v, tuple(y.shape))
-

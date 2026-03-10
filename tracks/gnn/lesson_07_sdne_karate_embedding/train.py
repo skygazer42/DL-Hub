@@ -1,4 +1,3 @@
-
 import argparse
 import sys
 from dataclasses import dataclass
@@ -13,7 +12,7 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import load_karate
-from .model import ModelConfig, SDNE, sdne_loss
+from .model import SDNE, ModelConfig, sdne_loss
 
 
 @dataclass(frozen=True)
@@ -31,7 +30,9 @@ class TrainConfig:
 
 
 def parse_args() -> TrainConfig:
-    parser = argparse.ArgumentParser(description="Lesson 07 (GNN): SDNE-style embeddings on Karate graph.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 07 (GNN): SDNE-style embeddings on Karate graph."
+    )
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--lambda-smooth", type=float, default=1.0)
@@ -61,7 +62,9 @@ def run_training(cfg: TrainConfig) -> int:
     set_seed(cfg.seed)
     device_info = resolve_device(cfg.device)
 
-    paths = build_run_paths(track="gnn", lesson="lesson_07_sdne_karate_embedding", run_name=cfg.run_name)
+    paths = build_run_paths(
+        track="gnn", lesson="lesson_07_sdne_karate_embedding", run_name=cfg.run_name
+    )
     logger = get_logger("gnn.karate_sdne", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
@@ -154,4 +157,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

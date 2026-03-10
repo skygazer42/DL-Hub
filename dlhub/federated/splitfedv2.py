@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import torch
 
-from ._common import FederatedStrategy, build_federated_strategy, smoke_test_strategy, weighted_average
+from ._common import (
+    FederatedStrategy,
+    build_federated_strategy,
+    smoke_test_strategy,
+    weighted_average,
+)
 
 
 class SplitFedV2Strategy(FederatedStrategy):
@@ -16,7 +21,9 @@ class SplitFedV2Strategy(FederatedStrategy):
         cut = max(1, min(self.param_dim - 1, int(round(self.param_dim * self.cut_ratio))))
         relay = self.relay_scale * state.raw_updates.mean(dim=0)
         client_front = state.server_params[:cut].unsqueeze(0) + state.raw_updates[:, :cut]
-        server_back = state.server_params[cut:] + weighted_average(state.raw_updates[:, cut:], state.client_weights)
+        server_back = state.server_params[cut:] + weighted_average(
+            state.raw_updates[:, cut:], state.client_weights
+        )
         server_params = torch.cat(
             [
                 weighted_average(client_front, state.client_weights) + relay[:cut],

@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -47,9 +46,15 @@ class CondInst(nn.Module):
             ConvBNAct(mc, mc, kernel_size=3, stride=1, act="relu"),
         )
 
-        tower: list[nn.Module] = [ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")]
+        tower: list[nn.Module] = [
+            ConvBNAct(int(det_channels), int(head_channels), kernel_size=3, stride=1, act="relu")
+        ]
         for _ in range(int(head_convs) - 1):
-            tower.append(ConvBNAct(int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"))
+            tower.append(
+                ConvBNAct(
+                    int(head_channels), int(head_channels), kernel_size=3, stride=1, act="relu"
+                )
+            )
         self.tower = nn.Sequential(*tower)
 
         self.cls = nn.Conv2d(int(head_channels), nc, kernel_size=3, padding=1)
@@ -120,10 +125,11 @@ def build_condinst_instance_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_condinst_instance_segmenter(in_channels=3, num_classes=3, variant="condinst_tiny", width_mult=0.5)
+    m = build_condinst_instance_segmenter(
+        in_channels=3, num_classes=3, variant="condinst_tiny", width_mult=0.5
+    )
     out = m(x)
     print("condinst_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

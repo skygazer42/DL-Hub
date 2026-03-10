@@ -11,4 +11,3 @@ def test_early_stopping_min_mode_triggers_after_patience() -> None:
     # No improvement for 2 consecutive updates -> stop.
     assert stopper.update(0.9) is False
     assert stopper.update(0.91) is True
-

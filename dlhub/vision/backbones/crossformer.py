@@ -1,8 +1,7 @@
-
 import torch
 from torch import nn
 
-from dlhub.vision.backbones._blocks import DropPath, GlobalAvgPoolHead, LayerNorm2d, scale_channels
+from dlhub.vision.backbones._blocks import DropPath
 
 
 class CrossAttention(nn.Module):
@@ -79,10 +78,17 @@ class CrossFormerClassifier(nn.Module):
         w = self.image_size // self.patch_size
         self.hw = (h, w)
         d = int(dim)
-        self.patch = nn.Conv2d(int(in_channels), d, kernel_size=self.patch_size, stride=self.patch_size, bias=True)
+        self.patch = nn.Conv2d(
+            int(in_channels), d, kernel_size=self.patch_size, stride=self.patch_size, bias=True
+        )
         self.pos = nn.Parameter(torch.zeros(1, h * w, d))
         dp_rates = torch.linspace(0.0, float(drop_path), steps=int(depth)).tolist()
-        self.blocks = nn.ModuleList([CrossFormerBlock(d, int(num_heads), drop_path=float(dp_rates[i])) for i in range(int(depth))])
+        self.blocks = nn.ModuleList(
+            [
+                CrossFormerBlock(d, int(num_heads), drop_path=float(dp_rates[i]))
+                for i in range(int(depth))
+            ]
+        )
         self.norm = nn.LayerNorm(d)
         self.drop = nn.Dropout(p=float(dropout))
         self.head = nn.Linear(d, int(num_classes))
@@ -115,7 +121,9 @@ def build_crossformer_classifier(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown CrossFormer variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown CrossFormer variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return CrossFormerClassifier(
         in_channels=int(in_channels),
@@ -133,7 +141,8 @@ def build_crossformer_classifier(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_crossformer_classifier(in_channels=3, num_classes=10, variant="crossformer_tiny", image_size=64)
+    m = build_crossformer_classifier(
+        in_channels=3, num_classes=10, variant="crossformer_tiny", image_size=64
+    )
     y = m(x)
     print("crossformer_tiny", tuple(y.shape))
-

@@ -1,4 +1,3 @@
-
 import sys
 from pathlib import Path
 
@@ -60,9 +59,13 @@ def main() -> int:
 
         # 4.1) Foundations lesson (no downloads, torch-only).
         from dlhub.paths import build_run_paths
-        from tracks.foundations.lesson_02_linear_regression_autograd.data import DataConfig as RegData
+        from tracks.foundations.lesson_02_linear_regression_autograd.data import (
+            DataConfig as RegData,
+        )
         from tracks.foundations.lesson_02_linear_regression_autograd.train import (
             TrainConfig as RegTrain,
+        )
+        from tracks.foundations.lesson_02_linear_regression_autograd.train import (
             run_training as run_regression,
         )
 
@@ -118,10 +121,8 @@ def main() -> int:
 
         # 4.2b) Vision lesson: synthetic detection (torch-only).
         from tracks.vision.lesson_04_synthetic_detection_fcos.data import DataConfig as DetData
-        from tracks.vision.lesson_04_synthetic_detection_fcos.train import (
-            TrainConfig as DetTrain,
-            run_training as run_det,
-        )
+        from tracks.vision.lesson_04_synthetic_detection_fcos.train import TrainConfig as DetTrain
+        from tracks.vision.lesson_04_synthetic_detection_fcos.train import run_training as run_det
 
         run_det(
             DetTrain(
@@ -149,17 +150,17 @@ def main() -> int:
             ),
         )
 
-        det_paths = build_run_paths(track="vision", lesson="lesson_04_synthetic_detection_fcos", run_name="smoke")
+        det_paths = build_run_paths(
+            track="vision", lesson="lesson_04_synthetic_detection_fcos", run_name="smoke"
+        )
         assert (det_paths.run_dir / "config.json").is_file()
         assert (det_paths.run_dir / "metrics.jsonl").is_file()
         assert (det_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.2c) Vision lesson: ViT toy classification (torch-only).
         from tracks.vision.lesson_05_vit_toy_classification.data import DataConfig as VitData
-        from tracks.vision.lesson_05_vit_toy_classification.train import (
-            TrainConfig as VitTrain,
-            run_training as run_vit,
-        )
+        from tracks.vision.lesson_05_vit_toy_classification.train import TrainConfig as VitTrain
+        from tracks.vision.lesson_05_vit_toy_classification.train import run_training as run_vit
 
         run_vit(
             VitTrain(
@@ -191,17 +192,17 @@ def main() -> int:
             ),
         )
 
-        vit_paths = build_run_paths(track="vision", lesson="lesson_05_vit_toy_classification", run_name="smoke")
+        vit_paths = build_run_paths(
+            track="vision", lesson="lesson_05_vit_toy_classification", run_name="smoke"
+        )
         assert (vit_paths.run_dir / "config.json").is_file()
         assert (vit_paths.run_dir / "metrics.jsonl").is_file()
         assert (vit_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.2d) Vision lesson: Swin-style toy classification (torch-only).
         from tracks.vision.lesson_06_swin_toy_classification.data import DataConfig as SwinData
-        from tracks.vision.lesson_06_swin_toy_classification.train import (
-            TrainConfig as SwinTrain,
-            run_training as run_swin,
-        )
+        from tracks.vision.lesson_06_swin_toy_classification.train import TrainConfig as SwinTrain
+        from tracks.vision.lesson_06_swin_toy_classification.train import run_training as run_swin
 
         run_swin(
             SwinTrain(
@@ -234,15 +235,21 @@ def main() -> int:
             ),
         )
 
-        swin_paths = build_run_paths(track="vision", lesson="lesson_06_swin_toy_classification", run_name="smoke")
+        swin_paths = build_run_paths(
+            track="vision", lesson="lesson_06_swin_toy_classification", run_name="smoke"
+        )
         assert (swin_paths.run_dir / "config.json").is_file()
         assert (swin_paths.run_dir / "metrics.jsonl").is_file()
         assert (swin_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.3) PointCloud lesson: local zoo (torch-only, synthetic data).
-        from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.data import DataConfig as PCData
+        from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.data import (
+            DataConfig as PCData,
+        )
         from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train import (
             TrainConfig as PCTrain,
+        )
+        from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train import (
             run_training as run_pc,
         )
 
@@ -269,17 +276,19 @@ def main() -> int:
             ),
         )
 
-        pc_paths = build_run_paths(track="pointcloud", lesson="lesson_04_pointcloud_zoo_toy_classification", run_name="smoke")
+        pc_paths = build_run_paths(
+            track="pointcloud",
+            lesson="lesson_04_pointcloud_zoo_toy_classification",
+            run_name="smoke",
+        )
         assert (pc_paths.run_dir / "config.json").is_file()
         assert (pc_paths.run_dir / "metrics.jsonl").is_file()
         assert (pc_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.2e) Vision lesson: toy keypoint regression (torch-only).
         from tracks.vision.lesson_07_toy_keypoint_regression.data import DataConfig as KptData
-        from tracks.vision.lesson_07_toy_keypoint_regression.train import (
-            TrainConfig as KptTrain,
-            run_training as run_kpt,
-        )
+        from tracks.vision.lesson_07_toy_keypoint_regression.train import TrainConfig as KptTrain
+        from tracks.vision.lesson_07_toy_keypoint_regression.train import run_training as run_kpt
 
         run_kpt(
             KptTrain(
@@ -306,7 +315,9 @@ def main() -> int:
             ),
         )
 
-        kpt_paths = build_run_paths(track="vision", lesson="lesson_07_toy_keypoint_regression", run_name="smoke")
+        kpt_paths = build_run_paths(
+            track="vision", lesson="lesson_07_toy_keypoint_regression", run_name="smoke"
+        )
         assert (kpt_paths.run_dir / "config.json").is_file()
         assert (kpt_paths.run_dir / "metrics.jsonl").is_file()
         assert (kpt_paths.checkpoints_dir / "checkpoint.pt").is_file()
@@ -315,6 +326,8 @@ def main() -> int:
         from tracks.vision.lesson_08_synthetic_segmentation_unet.data import DataConfig as SegData
         from tracks.vision.lesson_08_synthetic_segmentation_unet.train import (
             TrainConfig as SegTrain,
+        )
+        from tracks.vision.lesson_08_synthetic_segmentation_unet.train import (
             run_training as run_seg,
         )
 
@@ -344,15 +357,21 @@ def main() -> int:
             ),
         )
 
-        seg_paths = build_run_paths(track="vision", lesson="lesson_08_synthetic_segmentation_unet", run_name="smoke")
+        seg_paths = build_run_paths(
+            track="vision", lesson="lesson_08_synthetic_segmentation_unet", run_name="smoke"
+        )
         assert (seg_paths.run_dir / "config.json").is_file()
         assert (seg_paths.run_dir / "metrics.jsonl").is_file()
         assert (seg_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.2g) Vision lesson: classic CNN backbones (torch-only).
-        from tracks.vision.lesson_09_cnn_backbones_toy_classification.data import DataConfig as CnnData
+        from tracks.vision.lesson_09_cnn_backbones_toy_classification.data import (
+            DataConfig as CnnData,
+        )
         from tracks.vision.lesson_09_cnn_backbones_toy_classification.train import (
             TrainConfig as CnnTrain,
+        )
+        from tracks.vision.lesson_09_cnn_backbones_toy_classification.train import (
             run_training as run_cnn,
         )
 
@@ -383,17 +402,17 @@ def main() -> int:
             ),
         )
 
-        cnn_paths = build_run_paths(track="vision", lesson="lesson_09_cnn_backbones_toy_classification", run_name="smoke")
+        cnn_paths = build_run_paths(
+            track="vision", lesson="lesson_09_cnn_backbones_toy_classification", run_name="smoke"
+        )
         assert (cnn_paths.run_dir / "config.json").is_file()
         assert (cnn_paths.run_dir / "metrics.jsonl").is_file()
         assert (cnn_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.3) LLM lesson: toy causal LM (torch-only).
         from tracks.llm.lesson_01_toy_causal_lm_transformer.data import DataConfig as LmData
-        from tracks.llm.lesson_01_toy_causal_lm_transformer.train import (
-            TrainConfig as LmTrain,
-            run_training as run_lm,
-        )
+        from tracks.llm.lesson_01_toy_causal_lm_transformer.train import TrainConfig as LmTrain
+        from tracks.llm.lesson_01_toy_causal_lm_transformer.train import run_training as run_lm
 
         run_lm(
             LmTrain(
@@ -410,10 +429,20 @@ def main() -> int:
                 ff_dim=128,
                 dropout=0.1,
             ),
-            LmData(num_samples=256, batch_size=32, seq_length=32, base_vocab_size=64, val_fraction=0.2, seed=0, num_workers=0),
+            LmData(
+                num_samples=256,
+                batch_size=32,
+                seq_length=32,
+                base_vocab_size=64,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
-        lm_paths = build_run_paths(track="llm", lesson="lesson_01_toy_causal_lm_transformer", run_name="smoke")
+        lm_paths = build_run_paths(
+            track="llm", lesson="lesson_01_toy_causal_lm_transformer", run_name="smoke"
+        )
         assert (lm_paths.run_dir / "config.json").is_file()
         assert (lm_paths.run_dir / "metrics.jsonl").is_file()
         assert (lm_paths.run_dir / "vocab.json").is_file()
@@ -422,10 +451,8 @@ def main() -> int:
 
         # 4.3) GNN lesson (torch-only, fully synthetic).
         from tracks.gnn.lesson_01_toy_graph_classification.data import DataConfig as GnnData
-        from tracks.gnn.lesson_01_toy_graph_classification.train import (
-            TrainConfig as GnnTrain,
-            run_training as run_gnn,
-        )
+        from tracks.gnn.lesson_01_toy_graph_classification.train import TrainConfig as GnnTrain
+        from tracks.gnn.lesson_01_toy_graph_classification.train import run_training as run_gnn
 
         run_gnn(
             GnnTrain(
@@ -438,7 +465,9 @@ def main() -> int:
                 run_name="smoke",
                 hidden_features=16,
             ),
-            GnnData(num_graphs=64, num_nodes=10, batch_size=16, val_fraction=0.2, seed=0, num_workers=0),
+            GnnData(
+                num_graphs=64, num_nodes=10, batch_size=16, val_fraction=0.2, seed=0, num_workers=0
+            ),
         )
 
         gnn_paths = build_run_paths(
@@ -450,10 +479,8 @@ def main() -> int:
 
         # 4.4) GNN lesson: GIN (toy, torch-only).
         from tracks.gnn.lesson_02_gin_toy_graph_classification.data import DataConfig as GinData
-        from tracks.gnn.lesson_02_gin_toy_graph_classification.train import (
-            TrainConfig as GinTrain,
-            run_training as run_gin,
-        )
+        from tracks.gnn.lesson_02_gin_toy_graph_classification.train import TrainConfig as GinTrain
+        from tracks.gnn.lesson_02_gin_toy_graph_classification.train import run_training as run_gin
 
         run_gin(
             GinTrain(
@@ -472,7 +499,9 @@ def main() -> int:
                 learn_eps=False,
                 dropout=0.0,
             ),
-            GinData(num_graphs=64, num_nodes=10, batch_size=16, val_fraction=0.2, seed=0, num_workers=0),
+            GinData(
+                num_graphs=64, num_nodes=10, batch_size=16, val_fraction=0.2, seed=0, num_workers=0
+            ),
         )
 
         gin_paths = build_run_paths(
@@ -484,10 +513,8 @@ def main() -> int:
 
         # 4.5) GNN lesson: GAT (toy, torch-only).
         from tracks.gnn.lesson_03_gat_toy_graph_classification.data import DataConfig as GatData
-        from tracks.gnn.lesson_03_gat_toy_graph_classification.train import (
-            TrainConfig as GatTrain,
-            run_training as run_gat,
-        )
+        from tracks.gnn.lesson_03_gat_toy_graph_classification.train import TrainConfig as GatTrain
+        from tracks.gnn.lesson_03_gat_toy_graph_classification.train import run_training as run_gat
 
         run_gat(
             GatTrain(
@@ -503,7 +530,9 @@ def main() -> int:
                 dropout=0.1,
                 alpha=0.2,
             ),
-            GatData(num_graphs=64, num_nodes=10, batch_size=16, val_fraction=0.2, seed=0, num_workers=0),
+            GatData(
+                num_graphs=64, num_nodes=10, batch_size=16, val_fraction=0.2, seed=0, num_workers=0
+            ),
         )
 
         gat_paths = build_run_paths(
@@ -514,10 +543,8 @@ def main() -> int:
         assert (gat_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.6) GNN lesson: Cora node classification (GCN).
-        from tracks.gnn.lesson_04_cora_node_classification_gcn.train import (
-            TrainConfig as CoraTrain,
-            run_training as run_cora,
-        )
+        from tracks.gnn.lesson_04_cora_node_classification_gcn.train import TrainConfig as CoraTrain
+        from tracks.gnn.lesson_04_cora_node_classification_gcn.train import run_training as run_cora
 
         run_cora(
             CoraTrain(
@@ -540,10 +567,8 @@ def main() -> int:
         assert (cora_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.7) GNN lesson: Cora label propagation baseline (no learning).
-        from tracks.gnn.lesson_05_label_propagation_cora.train import (
-            TrainConfig as LpTrain,
-            run_training as run_lp,
-        )
+        from tracks.gnn.lesson_05_label_propagation_cora.train import TrainConfig as LpTrain
+        from tracks.gnn.lesson_05_label_propagation_cora.train import run_training as run_lp
 
         run_lp(
             LpTrain(
@@ -556,17 +581,17 @@ def main() -> int:
             )
         )
 
-        lp_paths = build_run_paths(track="gnn", lesson="lesson_05_label_propagation_cora", run_name="smoke")
+        lp_paths = build_run_paths(
+            track="gnn", lesson="lesson_05_label_propagation_cora", run_name="smoke"
+        )
         assert (lp_paths.run_dir / "config.json").is_file()
         assert (lp_paths.run_dir / "metrics.jsonl").is_file()
         assert (lp_paths.run_dir / "preds.pt").is_file()
         assert (lp_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.8) GNN lesson: Cora node classification (GraphSAGE, full-batch).
-        from tracks.gnn.lesson_06_graphsage_cora.train import (
-            TrainConfig as SageTrain,
-            run_training as run_sage,
-        )
+        from tracks.gnn.lesson_06_graphsage_cora.train import TrainConfig as SageTrain
+        from tracks.gnn.lesson_06_graphsage_cora.train import run_training as run_sage
 
         run_sage(
             SageTrain(
@@ -581,16 +606,16 @@ def main() -> int:
             )
         )
 
-        sage_paths = build_run_paths(track="gnn", lesson="lesson_06_graphsage_cora", run_name="smoke")
+        sage_paths = build_run_paths(
+            track="gnn", lesson="lesson_06_graphsage_cora", run_name="smoke"
+        )
         assert (sage_paths.run_dir / "config.json").is_file()
         assert (sage_paths.run_dir / "metrics.jsonl").is_file()
         assert (sage_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.9) GNN lesson: Karate SDNE embeddings (torch-only, tiny).
-        from tracks.gnn.lesson_07_sdne_karate_embedding.train import (
-            TrainConfig as SdneTrain,
-            run_training as run_sdne,
-        )
+        from tracks.gnn.lesson_07_sdne_karate_embedding.train import TrainConfig as SdneTrain
+        from tracks.gnn.lesson_07_sdne_karate_embedding.train import run_training as run_sdne
 
         run_sdne(
             SdneTrain(
@@ -606,17 +631,17 @@ def main() -> int:
             )
         )
 
-        sdne_paths = build_run_paths(track="gnn", lesson="lesson_07_sdne_karate_embedding", run_name="smoke")
+        sdne_paths = build_run_paths(
+            track="gnn", lesson="lesson_07_sdne_karate_embedding", run_name="smoke"
+        )
         assert (sdne_paths.run_dir / "config.json").is_file()
         assert (sdne_paths.run_dir / "metrics.jsonl").is_file()
         assert (sdne_paths.run_dir / "embeddings.pt").is_file()
         assert (sdne_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.10) GNN lesson: Karate LINE embeddings (torch-only, tiny).
-        from tracks.gnn.lesson_08_line_karate_embedding.train import (
-            TrainConfig as LineTrain,
-            run_training as run_line,
-        )
+        from tracks.gnn.lesson_08_line_karate_embedding.train import TrainConfig as LineTrain
+        from tracks.gnn.lesson_08_line_karate_embedding.train import run_training as run_line
 
         run_line(
             LineTrain(
@@ -633,7 +658,9 @@ def main() -> int:
             )
         )
 
-        line_paths = build_run_paths(track="gnn", lesson="lesson_08_line_karate_embedding", run_name="smoke")
+        line_paths = build_run_paths(
+            track="gnn", lesson="lesson_08_line_karate_embedding", run_name="smoke"
+        )
         assert (line_paths.run_dir / "config.json").is_file()
         assert (line_paths.run_dir / "metrics.jsonl").is_file()
         assert (line_paths.run_dir / "embeddings.pt").is_file()
@@ -641,10 +668,8 @@ def main() -> int:
 
         # 4.11) NLP lesson (toy, torch-only).
         from tracks.nlp.lesson_01_toy_text_classification.data import DataConfig as NlpData
-        from tracks.nlp.lesson_01_toy_text_classification.train import (
-            TrainConfig as NlpTrain,
-            run_training as run_nlp,
-        )
+        from tracks.nlp.lesson_01_toy_text_classification.train import TrainConfig as NlpTrain
+        from tracks.nlp.lesson_01_toy_text_classification.train import run_training as run_nlp
 
         run_nlp(
             NlpTrain(
@@ -658,10 +683,19 @@ def main() -> int:
                 embed_dim=32,
                 dropout=0.1,
             ),
-            NlpData(num_samples=256, batch_size=32, max_length=16, val_fraction=0.2, seed=0, num_workers=0),
+            NlpData(
+                num_samples=256,
+                batch_size=32,
+                max_length=16,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
-        nlp_paths = build_run_paths(track="nlp", lesson="lesson_01_toy_text_classification", run_name="smoke")
+        nlp_paths = build_run_paths(
+            track="nlp", lesson="lesson_01_toy_text_classification", run_name="smoke"
+        )
         assert (nlp_paths.run_dir / "config.json").is_file()
         assert (nlp_paths.run_dir / "metrics.jsonl").is_file()
         assert (nlp_paths.run_dir / "vocab.json").is_file()
@@ -671,6 +705,8 @@ def main() -> int:
         from tracks.nlp.lesson_05_toy_text_classification_textcnn.data import DataConfig as CnnData
         from tracks.nlp.lesson_05_toy_text_classification_textcnn.train import (
             TrainConfig as CnnTrain,
+        )
+        from tracks.nlp.lesson_05_toy_text_classification_textcnn.train import (
             run_training as run_cnn,
         )
 
@@ -687,10 +723,19 @@ def main() -> int:
                 dropout=0.2,
                 num_filters=32,
             ),
-            CnnData(num_samples=256, batch_size=32, max_length=16, val_fraction=0.2, seed=0, num_workers=0),
+            CnnData(
+                num_samples=256,
+                batch_size=32,
+                max_length=16,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
-        cnn_paths = build_run_paths(track="nlp", lesson="lesson_05_toy_text_classification_textcnn", run_name="smoke")
+        cnn_paths = build_run_paths(
+            track="nlp", lesson="lesson_05_toy_text_classification_textcnn", run_name="smoke"
+        )
         assert (cnn_paths.run_dir / "config.json").is_file()
         assert (cnn_paths.run_dir / "metrics.jsonl").is_file()
         assert (cnn_paths.run_dir / "vocab.json").is_file()
@@ -700,6 +745,8 @@ def main() -> int:
         from tracks.nlp.lesson_06_toy_text_classification_bilstm.data import DataConfig as RnnData
         from tracks.nlp.lesson_06_toy_text_classification_bilstm.train import (
             TrainConfig as RnnTrain,
+        )
+        from tracks.nlp.lesson_06_toy_text_classification_bilstm.train import (
             run_training as run_rnn,
         )
 
@@ -716,10 +763,19 @@ def main() -> int:
                 hidden_dim=32,
                 dropout=0.2,
             ),
-            RnnData(num_samples=256, batch_size=32, max_length=16, val_fraction=0.2, seed=0, num_workers=0),
+            RnnData(
+                num_samples=256,
+                batch_size=32,
+                max_length=16,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
-        rnn_paths = build_run_paths(track="nlp", lesson="lesson_06_toy_text_classification_bilstm", run_name="smoke")
+        rnn_paths = build_run_paths(
+            track="nlp", lesson="lesson_06_toy_text_classification_bilstm", run_name="smoke"
+        )
         assert (rnn_paths.run_dir / "config.json").is_file()
         assert (rnn_paths.run_dir / "metrics.jsonl").is_file()
         assert (rnn_paths.run_dir / "vocab.json").is_file()
@@ -731,6 +787,8 @@ def main() -> int:
         )
         from tracks.nlp.lesson_02_toy_text_classification_transformer.train import (
             TrainConfig as NlpTrTrain,
+        )
+        from tracks.nlp.lesson_02_toy_text_classification_transformer.train import (
             run_training as run_nlp_tr,
         )
 
@@ -749,7 +807,14 @@ def main() -> int:
                 ff_dim=64,
                 dropout=0.1,
             ),
-            NlpTrData(num_samples=256, batch_size=32, max_length=16, val_fraction=0.2, seed=0, num_workers=0),
+            NlpTrData(
+                num_samples=256,
+                batch_size=32,
+                max_length=16,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
         nlp_tr_paths = build_run_paths(
@@ -764,6 +829,8 @@ def main() -> int:
         from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.data import DataConfig as S2SData
         from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.train import (
             TrainConfig as S2STrain,
+        )
+        from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.train import (
             run_training as run_s2s,
         )
 
@@ -792,7 +859,9 @@ def main() -> int:
             ),
         )
 
-        s2s_paths = build_run_paths(track="nlp", lesson="lesson_04_toy_seq2seq_attention_generation", run_name="smoke")
+        s2s_paths = build_run_paths(
+            track="nlp", lesson="lesson_04_toy_seq2seq_attention_generation", run_name="smoke"
+        )
         assert (s2s_paths.run_dir / "config.json").is_file()
         assert (s2s_paths.run_dir / "metrics.jsonl").is_file()
         assert (s2s_paths.run_dir / "vocab.json").is_file()
@@ -801,10 +870,8 @@ def main() -> int:
 
         # 4.11) NLP lesson: toy NER (BiLSTM, torch-only).
         from tracks.nlp.lesson_03_toy_ner_bilstm.data import DataConfig as NerData
-        from tracks.nlp.lesson_03_toy_ner_bilstm.train import (
-            TrainConfig as NerTrain,
-            run_training as run_ner,
-        )
+        from tracks.nlp.lesson_03_toy_ner_bilstm.train import TrainConfig as NerTrain
+        from tracks.nlp.lesson_03_toy_ner_bilstm.train import run_training as run_ner
 
         run_ner(
             NerTrain(
@@ -819,10 +886,19 @@ def main() -> int:
                 hidden_dim=64,
                 dropout=0.1,
             ),
-            NerData(num_samples=256, batch_size=32, max_length=16, val_fraction=0.2, seed=0, num_workers=0),
+            NerData(
+                num_samples=256,
+                batch_size=32,
+                max_length=16,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
-        ner_paths = build_run_paths(track="nlp", lesson="lesson_03_toy_ner_bilstm", run_name="smoke")
+        ner_paths = build_run_paths(
+            track="nlp", lesson="lesson_03_toy_ner_bilstm", run_name="smoke"
+        )
         assert (ner_paths.run_dir / "config.json").is_file()
         assert (ner_paths.run_dir / "metrics.jsonl").is_file()
         assert (ner_paths.run_dir / "vocab.json").is_file()
@@ -831,10 +907,8 @@ def main() -> int:
 
         # 4.12) NLP lesson: toy reading comprehension (span prediction).
         from tracks.nlp.lesson_07_reading_comprehension.data import DataConfig as RcData
-        from tracks.nlp.lesson_07_reading_comprehension.train import (
-            TrainConfig as RcTrain,
-            run_training as run_rc,
-        )
+        from tracks.nlp.lesson_07_reading_comprehension.train import TrainConfig as RcTrain
+        from tracks.nlp.lesson_07_reading_comprehension.train import run_training as run_rc
 
         run_rc(
             RcTrain(
@@ -860,7 +934,9 @@ def main() -> int:
             ),
         )
 
-        rc_paths = build_run_paths(track="nlp", lesson="lesson_07_reading_comprehension", run_name="smoke")
+        rc_paths = build_run_paths(
+            track="nlp", lesson="lesson_07_reading_comprehension", run_name="smoke"
+        )
         assert (rc_paths.run_dir / "config.json").is_file()
         assert (rc_paths.run_dir / "metrics.jsonl").is_file()
         assert (rc_paths.run_dir / "vocab.json").is_file()
@@ -869,10 +945,8 @@ def main() -> int:
         # 4.13) Generative lesson: VAE (fake, torch-only).
         from tracks.generative.lesson_01_vae_mnist.data import DataConfig as VaeData
         from tracks.generative.lesson_01_vae_mnist.model import ModelConfig as VaeModel
-        from tracks.generative.lesson_01_vae_mnist.train import (
-            TrainConfig as VaeTrain,
-            run_training as run_vae,
-        )
+        from tracks.generative.lesson_01_vae_mnist.train import TrainConfig as VaeTrain
+        from tracks.generative.lesson_01_vae_mnist.train import run_training as run_vae
 
         run_vae(
             VaeTrain(
@@ -885,11 +959,20 @@ def main() -> int:
                 max_eval_batches=1,
                 run_name="smoke",
             ),
-            VaeData(dataset="fake", batch_size=64, num_workers=0, num_samples=256, seed=0, val_fraction=0.2),
+            VaeData(
+                dataset="fake",
+                batch_size=64,
+                num_workers=0,
+                num_samples=256,
+                seed=0,
+                val_fraction=0.2,
+            ),
             VaeModel(latent_dim=8, hidden_dim=64),
         )
 
-        vae_paths = build_run_paths(track="generative", lesson="lesson_01_vae_mnist", run_name="smoke")
+        vae_paths = build_run_paths(
+            track="generative", lesson="lesson_01_vae_mnist", run_name="smoke"
+        )
         assert (vae_paths.run_dir / "config.json").is_file()
         assert (vae_paths.run_dir / "metrics.jsonl").is_file()
         assert (vae_paths.run_dir / "samples.pt").is_file()
@@ -899,10 +982,8 @@ def main() -> int:
         # 4.14) Generative lesson: GAN (fake, torch-only).
         from tracks.generative.lesson_02_gan_mnist.data import DataConfig as GanData
         from tracks.generative.lesson_02_gan_mnist.model import ModelConfig as GanModel
-        from tracks.generative.lesson_02_gan_mnist.train import (
-            TrainConfig as GanTrain,
-            run_training as run_gan,
-        )
+        from tracks.generative.lesson_02_gan_mnist.train import TrainConfig as GanTrain
+        from tracks.generative.lesson_02_gan_mnist.train import run_training as run_gan
 
         run_gan(
             GanTrain(
@@ -920,16 +1001,22 @@ def main() -> int:
             GanModel(z_dim=16, hidden_dim=64),
         )
 
-        gan_paths = build_run_paths(track="generative", lesson="lesson_02_gan_mnist", run_name="smoke")
+        gan_paths = build_run_paths(
+            track="generative", lesson="lesson_02_gan_mnist", run_name="smoke"
+        )
         assert (gan_paths.run_dir / "config.json").is_file()
         assert (gan_paths.run_dir / "metrics.jsonl").is_file()
         assert (gan_paths.run_dir / "samples.pt").is_file()
         assert (gan_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.13) PointCloud lesson: toy PointNet classification (torch-only).
-        from tracks.pointcloud.lesson_01_pointnet_toy_classification.data import DataConfig as PcData
+        from tracks.pointcloud.lesson_01_pointnet_toy_classification.data import (
+            DataConfig as PcData,
+        )
         from tracks.pointcloud.lesson_01_pointnet_toy_classification.train import (
             TrainConfig as PcTrain,
+        )
+        from tracks.pointcloud.lesson_01_pointnet_toy_classification.train import (
             run_training as run_pc,
         )
 
@@ -945,7 +1032,14 @@ def main() -> int:
                 hidden_features=32,
                 dropout=0.0,
             ),
-            PcData(num_samples=256, num_points=64, batch_size=32, val_fraction=0.2, seed=0, num_workers=0),
+            PcData(
+                num_samples=256,
+                num_points=64,
+                batch_size=32,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
         pc_paths = build_run_paths(
@@ -959,6 +1053,8 @@ def main() -> int:
         from tracks.pointcloud.lesson_02_dgcnn_toy_classification.data import DataConfig as DgData
         from tracks.pointcloud.lesson_02_dgcnn_toy_classification.train import (
             TrainConfig as DgTrain,
+        )
+        from tracks.pointcloud.lesson_02_dgcnn_toy_classification.train import (
             run_training as run_dg,
         )
 
@@ -976,7 +1072,14 @@ def main() -> int:
                 dropout=0.0,
                 dynamic_graph=True,
             ),
-            DgData(num_samples=256, num_points=64, batch_size=32, val_fraction=0.2, seed=0, num_workers=0),
+            DgData(
+                num_samples=256,
+                num_points=64,
+                batch_size=32,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
         dg_paths = build_run_paths(
@@ -987,9 +1090,13 @@ def main() -> int:
         assert (dg_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
         # 4.15) PointCloud lesson: toy PointNet2 classification (torch-only).
-        from tracks.pointcloud.lesson_03_pointnet2_toy_classification.data import DataConfig as P2Data
+        from tracks.pointcloud.lesson_03_pointnet2_toy_classification.data import (
+            DataConfig as P2Data,
+        )
         from tracks.pointcloud.lesson_03_pointnet2_toy_classification.train import (
             TrainConfig as P2Train,
+        )
+        from tracks.pointcloud.lesson_03_pointnet2_toy_classification.train import (
             run_training as run_p2,
         )
 
@@ -1009,7 +1116,14 @@ def main() -> int:
                 hidden_features=32,
                 dropout=0.0,
             ),
-            P2Data(num_samples=256, num_points=64, batch_size=32, val_fraction=0.2, seed=0, num_workers=0),
+            P2Data(
+                num_samples=256,
+                num_points=64,
+                batch_size=32,
+                val_fraction=0.2,
+                seed=0,
+                num_workers=0,
+            ),
         )
 
         p2_paths = build_run_paths(

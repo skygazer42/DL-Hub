@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -106,7 +105,9 @@ def build_total_variation_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown TotalVariation variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown TotalVariation variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     # Heuristic: increase weight slightly with sigma (more noise -> more smoothing).
@@ -121,4 +122,3 @@ if __name__ == "__main__":
     m = build_total_variation_denoiser(in_channels=1, sigma=0.12, variant="tv_fast")
     y = m(noisy)
     print("tv_fast", tuple(y.shape), float((y - x).pow(2).mean().item()))
-

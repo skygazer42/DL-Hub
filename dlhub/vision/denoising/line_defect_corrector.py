@@ -1,7 +1,6 @@
-
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def _median_filter_h(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
@@ -18,10 +17,10 @@ def _median_filter_h(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
     p = k // 2
     x_pad = F.pad(x, (0, 0, p, p), mode=str(padding))
     patches = F.unfold(x_pad, kernel_size=(k, 1))  # (B, C*k, H)
-    b, ck, l = patches.shape
+    b, ck, length = patches.shape
     c = ck // k
-    patches = patches.view(b, c, k, l)
-    y = patches.median(dim=2).values.view(b, c, l, 1)
+    patches = patches.view(b, c, k, length)
+    y = patches.median(dim=2).values.view(b, c, length, 1)
     return y
 
 
@@ -39,10 +38,10 @@ def _median_filter_w(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
     p = k // 2
     x_pad = F.pad(x, (p, p, 0, 0), mode=str(padding))
     patches = F.unfold(x_pad, kernel_size=(1, k))  # (B, C*k, W)
-    b, ck, l = patches.shape
+    b, ck, length = patches.shape
     c = ck // k
-    patches = patches.view(b, c, k, l)
-    y = patches.median(dim=2).values.view(b, c, 1, l)
+    patches = patches.view(b, c, k, length)
+    y = patches.median(dim=2).values.view(b, c, 1, length)
     return y
 
 
@@ -91,7 +90,9 @@ class LineDefectCorrector(nn.Module):
             row_mean = y.mean(dim=-1, keepdim=True)  # (B,C,H,1)
             row_var = y.var(dim=-1, keepdim=True, unbiased=False)  # (B,C,H,1)
             row_med = _median_filter_h(row_mean, k=int(self.window), padding="replicate")
-            row_bad = (row_var < float(self.var_threshold)) & ((row_mean - row_med).abs() > float(self.mean_threshold))
+            row_bad = (row_var < float(self.var_threshold)) & (
+                (row_mean - row_med).abs() > float(self.mean_threshold)
+            )
             if bool(row_bad.any().item()):
                 prev = torch.roll(y, shifts=1, dims=-2)
                 nxt = torch.roll(y, shifts=-1, dims=-2)
@@ -102,7 +103,9 @@ class LineDefectCorrector(nn.Module):
             col_mean = y.mean(dim=-2, keepdim=True)  # (B,C,1,W)
             col_var = y.var(dim=-2, keepdim=True, unbiased=False)  # (B,C,1,W)
             col_med = _median_filter_w(col_mean, k=int(self.window), padding="replicate")
-            col_bad = (col_var < float(self.var_threshold)) & ((col_mean - col_med).abs() > float(self.mean_threshold))
+            col_bad = (col_var < float(self.var_threshold)) & (
+                (col_mean - col_med).abs() > float(self.mean_threshold)
+            )
             if bool(col_bad.any().item()):
                 left = torch.roll(y, shifts=1, dims=-1)
                 right = torch.roll(y, shifts=-1, dims=-1)
@@ -128,7 +131,9 @@ def build_line_defect_corrector_denoiser(
     _ = int(in_channels)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown LineDefectCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown LineDefectCorrector variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     mean_thr = max(0.15, min(0.7, 2.0 * float(sigma) + 0.1))
@@ -153,4 +158,3 @@ if __name__ == "__main__":
     m = build_line_defect_corrector_denoiser(in_channels=1, sigma=0.1, variant="line_defect_tiny")
     out = m(noisy)
     print("line_defect_tiny", tuple(out.shape), float((out - clean).abs().mean().item()))
-

@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -51,7 +50,12 @@ class DGCNNClassifier(nn.Module):
         self.edge3 = EdgeConv(in_channels=h * 2, out_channels=h2, dropout=cfg.dropout)
 
         self.fuse = nn.Sequential(
-            nn.Conv1d(h + h + h2, _c(256, float(cfg.width_mult), min_ch=64, divisor=8), kernel_size=1, bias=False),
+            nn.Conv1d(
+                h + h + h2,
+                _c(256, float(cfg.width_mult), min_ch=64, divisor=8),
+                kernel_size=1,
+                bias=False,
+            ),
             nn.BatchNorm1d(_c(256, float(cfg.width_mult), min_ch=64, divisor=8)),
             nn.LeakyReLU(0.2, inplace=True),
         )
@@ -68,7 +72,9 @@ class DGCNNClassifier(nn.Module):
         if points.ndim != 3:
             raise ValueError(f"Expected points shape (B, N, C), got {tuple(points.shape)}")
         if int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected in_channels={self.cfg.in_channels}, got C={points.shape[-1]}")
+            raise ValueError(
+                f"Expected in_channels={self.cfg.in_channels}, got C={points.shape[-1]}"
+            )
 
         x0 = points.to(torch.float32)  # (B, N, C)
 
@@ -116,6 +122,7 @@ def build_dgcnn_classifier(
             dynamic_graph=bool(dynamic_graph),
         )
     )
+
 
 class GraphConvBlock(nn.Module):
     def __init__(self, dim: int, *, k: int, dropout: float) -> None:
@@ -179,7 +186,7 @@ class GraphAttentionBlock(nn.Module):
         k, v = kv.chunk(2, dim=-1)
         rel_e = self.rel(rel)
 
-        attn = ((q * (k + rel_e)).sum(dim=-1))  # (B, N, k)
+        attn = (q * (k + rel_e)).sum(dim=-1)  # (B, N, k)
         attn = torch.softmax(attn, dim=2)
         out = (attn.unsqueeze(-1) * (v + rel_e)).sum(dim=2)  # (B, N, D)
         return feat + self.proj(out)
@@ -261,7 +268,9 @@ class GraphNetClassifier(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         if points.ndim != 3 or int(points.shape[-1]) != int(self.cfg.in_channels):
-            raise ValueError(f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}")
+            raise ValueError(
+                f"Expected points shape (B, N, C={self.cfg.in_channels}), got {tuple(points.shape)}"
+            )
         xyz = points[..., :3].to(torch.float32)
         feat = self.embed(points.to(torch.float32))
         for blk in self.blocks:

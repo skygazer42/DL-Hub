@@ -1,4 +1,3 @@
-
 import torch
 from torch import nn
 
@@ -13,7 +12,6 @@ from ._common import (
     split_xyz_features,
     topk_heatmap,
 )
-
 
 _VARIANTS: dict[str, dict[str, object]] = {
     "votr_tiny": {"width": 64, "bev_h": 24, "bev_w": 24, "topk": 64, "layers": 1},
@@ -43,7 +41,9 @@ class VoTR(nn.Module):
 
         self.point = PointNetEncoder(int(in_channels), width=int(width), dropout=float(dropout))
         self.token_proj = nn.Linear(int(width), int(width))
-        self.enc = TinyTransformerEncoder(int(width), nhead=4, num_layers=int(layers), dropout=float(dropout))
+        self.enc = TinyTransformerEncoder(
+            int(width), nhead=4, num_layers=int(layers), dropout=float(dropout)
+        )
         self.head = DenseBEVHead(int(width), int(num_classes), with_yaw=True)
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
@@ -65,7 +65,13 @@ class VoTR(nn.Module):
         scores, cls, iy, ix = topk_heatmap(dense["heatmap"], k=self.topk)
         boxes = decode_bev_boxes(dense["box_params"], iy, ix, self.bev, with_yaw=True)
 
-        cls_logits = torch.zeros(points.shape[0], self.topk, dense["heatmap"].shape[1], device=points.device, dtype=points.dtype)
+        cls_logits = torch.zeros(
+            points.shape[0],
+            self.topk,
+            dense["heatmap"].shape[1],
+            device=points.device,
+            dtype=points.dtype,
+        )
         cls_logits.scatter_(-1, cls.unsqueeze(-1), scores.unsqueeze(-1))
         return {"boxes": boxes, "cls_logits": cls_logits, "scores": scores}
 
@@ -99,4 +105,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

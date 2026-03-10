@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -54,4 +53,3 @@ class GAN(nn.Module):
         super().__init__()
         self.generator = Generator(cfg)
         self.discriminator = Discriminator(cfg)
-

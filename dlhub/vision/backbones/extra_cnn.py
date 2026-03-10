@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 
 import torch
@@ -91,7 +90,9 @@ class SqueezeExcite(nn.Module):
 
 
 class LeNet5Classifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         c1 = _c(16, float(width_mult), min_ch=8, divisor=4)
         c2 = _c(32, float(width_mult), min_ch=8, divisor=4)
@@ -128,7 +129,9 @@ def build_lenet_classifier(
 
 
 class AlexNetClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
         c1 = _c(64, w, min_ch=16, divisor=8)
@@ -176,7 +179,9 @@ def build_alexnet_classifier(
 
 
 class ZFNetClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
         c1 = _c(96, w, min_ch=16, divisor=8)
@@ -224,10 +229,19 @@ def build_zfnet_classifier(
 
 
 class MLPConv(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int, padding: int
+    ) -> None:
         super().__init__()
         self.net = nn.Sequential(
-            ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), padding=int(padding), act="relu"),
+            ConvBNAct(
+                in_ch,
+                out_ch,
+                kernel_size=int(kernel_size),
+                stride=int(stride),
+                padding=int(padding),
+                act="relu",
+            ),
             ConvBNAct(out_ch, out_ch, kernel_size=1, stride=1, padding=0, act="relu"),
             ConvBNAct(out_ch, out_ch, kernel_size=1, stride=1, padding=0, act="relu"),
         )
@@ -237,7 +251,9 @@ class MLPConv(nn.Module):
 
 
 class NiNClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
         c1 = _c(192, w, min_ch=32, divisor=8)
@@ -322,7 +338,9 @@ class InceptionModule(nn.Module):
 
 
 class GoogLeNetClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -468,7 +486,9 @@ class SeparableConvBNAct(nn.Module):
 
 
 class XceptionBlock(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, reps: int, stride: int, grow_first: bool, dropout: float) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, reps: int, stride: int, grow_first: bool, dropout: float
+    ) -> None:
         super().__init__()
         reps = int(reps)
         stride = int(stride)
@@ -479,7 +499,9 @@ class XceptionBlock(nn.Module):
         c = int(in_ch)
         for i in range(reps):
             if i == 0 and grow_first:
-                layers.append(SeparableConvBNAct(c, int(out_ch), kernel_size=3, stride=1, act="relu"))
+                layers.append(
+                    SeparableConvBNAct(c, int(out_ch), kernel_size=3, stride=1, act="relu")
+                )
                 c = int(out_ch)
             else:
                 layers.append(SeparableConvBNAct(c, c, kernel_size=3, stride=1, act="relu"))
@@ -488,7 +510,9 @@ class XceptionBlock(nn.Module):
             c = int(out_ch)
 
         self.sep = nn.Sequential(*layers)
-        self.pool = nn.MaxPool2d(kernel_size=3, stride=stride, padding=1) if stride != 1 else nn.Identity()
+        self.pool = (
+            nn.MaxPool2d(kernel_size=3, stride=stride, padding=1) if stride != 1 else nn.Identity()
+        )
         self.drop = nn.Dropout2d(p=float(dropout))
 
         self.shortcut: nn.Module | None = None
@@ -507,7 +531,9 @@ class XceptionBlock(nn.Module):
 
 
 class XceptionClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str
+    ) -> None:
         super().__init__()
         w = float(width_mult)
         name = str(variant).lower().strip()
@@ -536,14 +562,24 @@ class XceptionClassifier(nn.Module):
         in_ch = stem
         for out_base, reps in entry:
             out_ch = _c(out_base, w, min_ch=32, divisor=8)
-            blocks.append(XceptionBlock(in_ch, out_ch, reps=int(reps), stride=2, grow_first=True, dropout=float(dropout)))
+            blocks.append(
+                XceptionBlock(
+                    in_ch, out_ch, reps=int(reps), stride=2, grow_first=True, dropout=float(dropout)
+                )
+            )
             in_ch = out_ch
 
         for _ in range(int(middle_reps)):
-            blocks.append(XceptionBlock(in_ch, in_ch, reps=3, stride=1, grow_first=True, dropout=float(dropout)))
+            blocks.append(
+                XceptionBlock(
+                    in_ch, in_ch, reps=3, stride=1, grow_first=True, dropout=float(dropout)
+                )
+            )
 
         out_ch = _c(int(exit_ch), w, min_ch=64, divisor=8)
-        blocks.append(XceptionBlock(in_ch, out_ch, reps=2, stride=2, grow_first=False, dropout=float(dropout)))
+        blocks.append(
+            XceptionBlock(in_ch, out_ch, reps=2, stride=2, grow_first=False, dropout=float(dropout))
+        )
         self.blocks = nn.Sequential(*blocks)
 
         self.head = nn.Sequential(
@@ -585,7 +621,9 @@ def build_xception_classifier(
 
 class DarkConv(nn.Sequential):
     def __init__(self, in_ch: int, out_ch: int, *, kernel_size: int, stride: int) -> None:
-        super().__init__(ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), act="leaky"))
+        super().__init__(
+            ConvBNAct(in_ch, out_ch, kernel_size=int(kernel_size), stride=int(stride), act="leaky")
+        )
 
 
 class DarkResidual(nn.Module):
@@ -767,7 +805,9 @@ def build_cspdarknet_classifier(
         stage_channels = (32, 64, 128, 256)
         stage_blocks = (1, 1, 2, 1)
     else:
-        raise ValueError("Unknown CSPDarkNet variant. Supported: cspdarknet53|cspdarknet_small|cspdarknet_tiny")
+        raise ValueError(
+            "Unknown CSPDarkNet variant. Supported: cspdarknet53|cspdarknet_small|cspdarknet_tiny"
+        )
 
     return CSPDarkNetClassifier(
         in_channels=int(in_channels),
@@ -785,14 +825,22 @@ def build_cspdarknet_classifier(
 
 
 class RegNetBottleneck(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, stride: int, groups: int, se_ratio: float) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, stride: int, groups: int, se_ratio: float
+    ) -> None:
         super().__init__()
         g = int(groups)
         if g <= 0:
             raise ValueError("groups must be > 0")
         self.conv1 = ConvBNAct(in_ch, out_ch, kernel_size=1, stride=1, padding=0, act="relu")
-        self.conv2 = ConvBNAct(out_ch, out_ch, kernel_size=3, stride=int(stride), groups=g, act="relu")
-        self.se = SqueezeExcite(out_ch, se_ratio=float(se_ratio)) if float(se_ratio) > 0 else nn.Identity()
+        self.conv2 = ConvBNAct(
+            out_ch, out_ch, kernel_size=3, stride=int(stride), groups=g, act="relu"
+        )
+        self.se = (
+            SqueezeExcite(out_ch, se_ratio=float(se_ratio))
+            if float(se_ratio) > 0
+            else nn.Identity()
+        )
         self.conv3 = nn.Sequential(
             nn.Conv2d(out_ch, out_ch, kernel_size=1, bias=False),
             nn.BatchNorm2d(out_ch),
@@ -849,10 +897,16 @@ class RegNetClassifier(nn.Module):
                 groups = 1
 
             blocks: list[nn.Module] = [
-                RegNetBottleneck(in_ch, int(out_ch), stride=stride, groups=groups, se_ratio=float(se_ratio))
+                RegNetBottleneck(
+                    in_ch, int(out_ch), stride=stride, groups=groups, se_ratio=float(se_ratio)
+                )
             ]
             for _ in range(1, int(d)):
-                blocks.append(RegNetBottleneck(int(out_ch), int(out_ch), stride=1, groups=groups, se_ratio=float(se_ratio)))
+                blocks.append(
+                    RegNetBottleneck(
+                        int(out_ch), int(out_ch), stride=1, groups=groups, se_ratio=float(se_ratio)
+                    )
+                )
             stages.append(nn.Sequential(*blocks))
             in_ch = int(out_ch)
         self.stages = nn.Sequential(*stages)
@@ -918,11 +972,15 @@ def build_regnet_classifier(
         se_ratio = 0.25
         group_width = 8
     else:
-        raise ValueError("RegNet variant must start with x_ or y_. Example: regnetx_400mf or regnety_3_2gf")
+        raise ValueError(
+            "RegNet variant must start with x_ or y_. Example: regnetx_400mf or regnety_3_2gf"
+        )
 
     spec = _REGNET_SIZES.get(key)
     if spec is None:
-        raise ValueError(f"Unknown RegNet{family} size: {key!r}. Supported: {sorted(_REGNET_SIZES)}")
+        raise ValueError(
+            f"Unknown RegNet{family} size: {key!r}. Supported: {sorted(_REGNET_SIZES)}"
+        )
 
     base_widths = (64, 128, 256, 512)
     widths = tuple(_c(int(wi), float(spec.width_mult), min_ch=16, divisor=8) for wi in base_widths)
@@ -944,9 +1002,19 @@ def build_regnet_classifier(
 # ---------------------------------------------------------------------------
 
 
-def _cheap_depthwise(in_ch: int, out_ch: int, *, kernel_size: int = 3, stride: int = 1) -> nn.Sequential:
+def _cheap_depthwise(
+    in_ch: int, out_ch: int, *, kernel_size: int = 3, stride: int = 1
+) -> nn.Sequential:
     return nn.Sequential(
-        nn.Conv2d(int(in_ch), int(out_ch), kernel_size=int(kernel_size), stride=int(stride), padding=int(kernel_size) // 2, groups=int(in_ch), bias=False),
+        nn.Conv2d(
+            int(in_ch),
+            int(out_ch),
+            kernel_size=int(kernel_size),
+            stride=int(stride),
+            padding=int(kernel_size) // 2,
+            groups=int(in_ch),
+            bias=False,
+        ),
         nn.BatchNorm2d(int(out_ch)),
         nn.ReLU(inplace=True),
     )
@@ -963,7 +1031,11 @@ class GhostModule(nn.Module):
             nn.BatchNorm2d(primary),
             nn.ReLU(inplace=True),
         )
-        self.cheap = _cheap_depthwise(primary, cheap, kernel_size=3, stride=1) if cheap > 0 else nn.Identity()
+        self.cheap = (
+            _cheap_depthwise(primary, cheap, kernel_size=3, stride=1)
+            if cheap > 0
+            else nn.Identity()
+        )
         self.out_ch = out_ch
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -977,19 +1049,33 @@ class GhostModule(nn.Module):
 
 
 class GhostBottleneck(nn.Module):
-    def __init__(self, in_ch: int, mid_ch: int, out_ch: int, *, stride: int, se_ratio: float) -> None:
+    def __init__(
+        self, in_ch: int, mid_ch: int, out_ch: int, *, stride: int, se_ratio: float
+    ) -> None:
         super().__init__()
         self.stride = int(stride)
         self.ghost1 = GhostModule(in_ch, mid_ch)
         self.dw = (
             nn.Sequential(
-                nn.Conv2d(int(mid_ch), int(mid_ch), kernel_size=3, stride=int(stride), padding=1, groups=int(mid_ch), bias=False),
+                nn.Conv2d(
+                    int(mid_ch),
+                    int(mid_ch),
+                    kernel_size=3,
+                    stride=int(stride),
+                    padding=1,
+                    groups=int(mid_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(mid_ch)),
             )
             if int(stride) != 1
             else nn.Identity()
         )
-        self.se = SqueezeExcite(int(mid_ch), se_ratio=float(se_ratio)) if float(se_ratio) > 0 else nn.Identity()
+        self.se = (
+            SqueezeExcite(int(mid_ch), se_ratio=float(se_ratio))
+            if float(se_ratio) > 0
+            else nn.Identity()
+        )
         self.ghost2 = GhostModule(mid_ch, out_ch)
 
         self.shortcut: nn.Module
@@ -997,7 +1083,15 @@ class GhostBottleneck(nn.Module):
             self.shortcut = nn.Identity()
         else:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(int(in_ch), int(in_ch), kernel_size=3, stride=int(stride), padding=1, groups=int(in_ch), bias=False),
+                nn.Conv2d(
+                    int(in_ch),
+                    int(in_ch),
+                    kernel_size=3,
+                    stride=int(stride),
+                    padding=1,
+                    groups=int(in_ch),
+                    bias=False,
+                ),
                 nn.BatchNorm2d(int(in_ch)),
                 nn.Conv2d(int(in_ch), int(out_ch), kernel_size=1, bias=False),
                 nn.BatchNorm2d(int(out_ch)),
@@ -1012,7 +1106,15 @@ class GhostBottleneck(nn.Module):
 
 
 class GhostNetClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, se_ratio: float) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width_mult: float,
+        dropout: float,
+        se_ratio: float,
+    ) -> None:
         super().__init__()
         w = float(width_mult)
 
@@ -1130,11 +1232,7 @@ class ShuffleUnit(nn.Module):
             raise ValueError("stride must be 1 or 2")
         mid = max(8, int(out_ch) // 4)
         g_eff = g
-        if (
-            int(in_ch) % g_eff != 0
-            or int(mid) % g_eff != 0
-            or int(out_ch) % g_eff != 0
-        ):
+        if int(in_ch) % g_eff != 0 or int(mid) % g_eff != 0 or int(out_ch) % g_eff != 0:
             g_eff = 1
 
         self.stride = s
@@ -1261,7 +1359,16 @@ def build_shufflenet_v1_classifier(
 
 
 class InvertedResidual(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, stride: int, expand_ratio: int, kernel_size: int, se_ratio: float) -> None:
+    def __init__(
+        self,
+        in_ch: int,
+        out_ch: int,
+        *,
+        stride: int,
+        expand_ratio: int,
+        kernel_size: int,
+        se_ratio: float,
+    ) -> None:
         super().__init__()
         self.use_res = int(stride) == 1 and int(in_ch) == int(out_ch)
         hidden = int(in_ch) * int(expand_ratio)
@@ -1269,7 +1376,16 @@ class InvertedResidual(nn.Module):
         layers: list[nn.Module] = []
         if hidden != int(in_ch):
             layers.append(ConvBNAct(in_ch, hidden, kernel_size=1, stride=1, padding=0, act="relu"))
-        layers.append(ConvBNAct(hidden, hidden, kernel_size=int(kernel_size), stride=int(stride), groups=hidden, act="relu"))
+        layers.append(
+            ConvBNAct(
+                hidden,
+                hidden,
+                kernel_size=int(kernel_size),
+                stride=int(stride),
+                groups=hidden,
+                act="relu",
+            )
+        )
         if float(se_ratio) > 0:
             layers.append(SqueezeExcite(hidden, se_ratio=float(se_ratio)))
         layers.append(
@@ -1288,7 +1404,9 @@ class InvertedResidual(nn.Module):
 
 
 class MNASNetClassifier(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width_mult: float, dropout: float, variant: str
+    ) -> None:
         super().__init__()
         w = float(width_mult)
         name = str(variant).lower().strip()
@@ -1326,7 +1444,14 @@ class MNASNetClassifier(nn.Module):
             for i in range(int(n)):
                 stride = int(s) if i == 0 else 1
                 layers.append(
-                    InvertedResidual(in_ch, out_ch, stride=stride, expand_ratio=int(t), kernel_size=int(k), se_ratio=float(se))
+                    InvertedResidual(
+                        in_ch,
+                        out_ch,
+                        stride=stride,
+                        expand_ratio=int(t),
+                        kernel_size=int(k),
+                        se_ratio=float(se),
+                    )
                 )
                 in_ch = out_ch
         self.features = nn.Sequential(*layers)
@@ -1370,7 +1495,9 @@ def build_mnasnet_classifier(
 
 
 class MobileOneBlock(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, *, stride: int, num_branches: int, dropout: float) -> None:
+    def __init__(
+        self, in_ch: int, out_ch: int, *, stride: int, num_branches: int, dropout: float
+    ) -> None:
         super().__init__()
         self.in_ch = int(in_ch)
         self.out_ch = int(out_ch)
@@ -1380,13 +1507,22 @@ class MobileOneBlock(nn.Module):
         for _ in range(int(num_branches)):
             branches.append(
                 nn.Sequential(
-                    nn.Conv2d(self.in_ch, self.out_ch, kernel_size=3, stride=self.stride, padding=1, bias=False),
+                    nn.Conv2d(
+                        self.in_ch,
+                        self.out_ch,
+                        kernel_size=3,
+                        stride=self.stride,
+                        padding=1,
+                        bias=False,
+                    ),
                     nn.BatchNorm2d(self.out_ch),
                 )
             )
         self.branches = nn.ModuleList(branches)
         self.branch_1x1 = nn.Sequential(
-            nn.Conv2d(self.in_ch, self.out_ch, kernel_size=1, stride=self.stride, padding=0, bias=False),
+            nn.Conv2d(
+                self.in_ch, self.out_ch, kernel_size=1, stride=self.stride, padding=0, bias=False
+            ),
             nn.BatchNorm2d(self.out_ch),
         )
         self.identity = (
@@ -1425,13 +1561,23 @@ class MobileOneClassifier(nn.Module):
             return _c(ch, w, min_ch=8, divisor=8)
 
         base = c(32)
-        self.stem = MobileOneBlock(int(in_channels), base, stride=2, num_branches=int(num_branches), dropout=float(dropout))
+        self.stem = MobileOneBlock(
+            int(in_channels), base, stride=2, num_branches=int(num_branches), dropout=float(dropout)
+        )
 
         def make_stage(in_ch: int, out_ch: int, blocks: int, first_stride: int) -> nn.Sequential:
             layers: list[nn.Module] = []
             for i in range(int(blocks)):
                 stride = int(first_stride) if i == 0 else 1
-                layers.append(MobileOneBlock(int(in_ch) if i == 0 else int(out_ch), int(out_ch), stride=stride, num_branches=int(num_branches), dropout=float(dropout)))
+                layers.append(
+                    MobileOneBlock(
+                        int(in_ch) if i == 0 else int(out_ch),
+                        int(out_ch),
+                        stride=stride,
+                        num_branches=int(num_branches),
+                        dropout=float(dropout),
+                    )
+                )
                 if use_se:
                     layers.append(SqueezeExcite(int(out_ch), se_ratio=0.25))
             return nn.Sequential(*layers)
