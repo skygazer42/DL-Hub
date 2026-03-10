@@ -24,6 +24,9 @@ Thumbs.db
 .idea/
 .vscode/
 
+# Git worktrees (local only)
+.worktrees/
+
 # Local data / downloads
 /.data/
 /data/
