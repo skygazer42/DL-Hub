@@ -6,6 +6,10 @@ repository focused on core ML/DL fundamentals.
 ## Algorithms
 - Linear Regression
 - Ridge Regression
+- Lasso Regression
+- Elastic Net Regression
+- Kernel Ridge Regression
+- Gaussian Process Regressor (RBF)
 - Logistic Regression
 - Softmax Regression
 - Perceptron
@@ -27,9 +31,13 @@ repository focused on core ML/DL fundamentals.
 - N-gram language model
 - Hidden Markov Model (categorical)
 - Principal Component Analysis (PCA)
+- Kernel PCA
 - Non-negative matrix factorization (NMF)
 - FastICA
 - Isomap
+- Metric MDS
+- Locally Linear Embedding (LLE)
+- Gaussian KDE
 - MLP classifier
 
 ## Example
