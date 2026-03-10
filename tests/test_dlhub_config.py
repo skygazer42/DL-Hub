@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -19,6 +20,6 @@ def test_write_json_round_trip(tmp_path: Path) -> None:
     write_json(out, payload)
 
     text = out.read_text(encoding="utf-8")
+    assert json.loads(text) == payload
     assert '"epochs": 1' in text
     assert '"learning_rate": 0.001' in text
-    assert str(cfg.run_dir) in text
