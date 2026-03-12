@@ -11,6 +11,7 @@ CONVENTION_DIRS = (
     REPO_ROOT / "dlhub/vision/denoising",
     REPO_ROOT / "dlhub/vision/fine_grained_recognition",
     REPO_ROOT / "dlhub/vision/instance_segmentation",
+    REPO_ROOT / "dlhub/vision/lane_detection",
     REPO_ROOT / "dlhub/vision/panoptic_segmentation",
     REPO_ROOT / "dlhub/vision/segmentation",
     REPO_ROOT / "dlhub/pointcloud/detection3d",
