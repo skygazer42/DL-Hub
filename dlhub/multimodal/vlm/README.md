@@ -8,6 +8,12 @@ Families in the first batch:
 - 2022: `ofa`, `blip`, `coca`, `flamingo`
 - 2023: `blip2`, `instructblip`, `llava`, `kosmos2`
 
+Second batch extensions:
+
+- 2021: `simvlm`, `lit`
+- 2022: `pali`
+- 2023: `pali_x`, `minigpt4`, `mplug_owl2`, `qwen_vl`, `cogvlm`
+
 Each family exposes three local variants:
 
 - `tiny`

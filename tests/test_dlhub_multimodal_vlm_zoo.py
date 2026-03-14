@@ -13,26 +13,34 @@ def _sum_tensor_means(x):
     raise TypeError(f"Unsupported output type in VLM zoo smoke: {type(x)!r}")
 
 
-def test_vlm_zoo_lists_12_families_3_variants() -> None:
+def test_vlm_zoo_lists_20_families_3_variants() -> None:
     from dlhub.multimodal.vlm_zoo import list_local_arches
 
     arches = list_local_arches()
-    assert len(arches) >= 36
+    assert len(arches) >= 60
     assert "vlm:clip_tiny" in arches
     assert "vlm:blip_small" in arches
     assert "vlm:flamingo_base" in arches
     assert "vlm:blip2_tiny" in arches
     assert "vlm:llava_small" in arches
     assert "vlm:kosmos2_base" in arches
+    assert "vlm:simvlm_tiny" in arches
+    assert "vlm:lit_small" in arches
+    assert "vlm:pali_base" in arches
+    assert "vlm:qwen_vl_small" in arches
+    assert "vlm:cogvlm_base" in arches
 
 
 @pytest.mark.parametrize(
     "arch_id,expect_generated",
     [
         ("vlm:clip_tiny", False),
+        ("vlm:simvlm_tiny", True),
         ("vlm:blip_tiny", True),
+        ("vlm:pali_tiny", True),
         ("vlm:blip2_tiny", True),
         ("vlm:llava_tiny", True),
+        ("vlm:qwen_vl_tiny", True),
     ],
 )
 def test_vlm_zoo_build_and_forward_smoke(arch_id: str, expect_generated: bool) -> None:

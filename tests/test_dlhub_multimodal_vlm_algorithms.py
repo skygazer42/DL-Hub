@@ -72,6 +72,34 @@ def _sum_tensor_means(x):
             },
             True,
         ),
+        (
+            "build_lit_vlm",
+            {
+                "image_size": 32,
+                "vocab_size": 128,
+                "seq_len": 16,
+                "embed_dim": 64,
+                "num_classes": 8,
+                "variant": "lit_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+            False,
+        ),
+        (
+            "build_qwen_vl_vlm",
+            {
+                "image_size": 32,
+                "vocab_size": 128,
+                "seq_len": 16,
+                "embed_dim": 64,
+                "num_classes": 8,
+                "variant": "qwen_vl_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+            True,
+        ),
     ],
 )
 def test_vlm_algorithms_forward_smoke(

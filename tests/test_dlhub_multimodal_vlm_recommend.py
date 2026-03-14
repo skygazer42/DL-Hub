@@ -26,7 +26,8 @@ def test_vlm_recommend_instruction_returns_multimodal_llm_bias() -> None:
     arches = set(list_local_arches())
     assert len(recs) == 4
     assert all(rec.arch_id in arches for rec in recs)
-    assert any(rec.family == "llava" for rec in recs)
+    assert recs[0].family == "qwen_vl"
+    assert any(rec.family in {"qwen_vl", "cogvlm", "mplug_owl2"} for rec in recs)
     assert all(rec.group in {"multimodal_llm", "fusion_encoder_decoder"} for rec in recs)
 
 
