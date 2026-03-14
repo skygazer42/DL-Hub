@@ -13,17 +13,39 @@ def _sum_tensor_means(x):
     raise TypeError(f"Unsupported output type in tracking3d zoo smoke: {type(x)!r}")
 
 
-def test_tracking3d_zoo_lists_first_batch_arches() -> None:
+def test_tracking3d_zoo_lists_130_families_3_variants() -> None:
     from dlhub.pointcloud.tracking3d_zoo import list_local_arches
 
     arches = list_local_arches()
-    assert len(arches) >= 18
+    assert len(arches) >= 390
     assert "pctrk3d:ab3dmot_tiny" in arches
     assert "pctrk3d:centerpoint_track_tiny" in arches
     assert "pctrk3d:simpletrack_tiny" in arches
     assert "pctrk3d:bitrack_tiny" in arches
     assert "pctrk3d:motsf3d_tiny" in arches
     assert "pctrk3d:imm_kalman_tiny" in arches
+    assert "pctrk3d:bevfusion_track_tiny" in arches
+    assert "pctrk3d:pointtrack3d_base" in arches
+    assert "pctrk3d:gnn_kalman3d_tiny" in arches
+    assert "pctrk3d:mapbev_track_base" in arches
+    assert "pctrk3d:temporalbev_track_tiny" in arches
+    assert "pctrk3d:transformbev_track_base" in arches
+    assert "pctrk3d:bevformer_track_tiny" in arches
+    assert "pctrk3d:worldbev_track_base" in arches
+    assert "pctrk3d:mapprior_bev_track_tiny" in arches
+    assert "pctrk3d:geobev_track_base" in arches
+    assert "pctrk3d:cambev_track_tiny" in arches
+    assert "pctrk3d:robustbev_track_base" in arches
+    assert "pctrk3d:lowlatency_bev_track_tiny" in arches
+    assert "pctrk3d:streamlite_bev_track_base" in arches
+    assert "pctrk3d:ultrafast_bev_track_tiny" in arches
+    assert "pctrk3d:turbo_bev_track_base" in arches
+    assert "pctrk3d:sensorlite_bev_track_tiny" in arches
+    assert "pctrk3d:latencyguard_bev_track_base" in arches
+    assert "pctrk3d:ultralite_bev_track_tiny" in arches
+    assert "pctrk3d:nanoedge_bev_track_base" in arches
+    assert "pctrk3d:pulsebev_track_tiny" in arches
+    assert "pctrk3d:steadyedge_bev_track_base" in arches
 
 
 @pytest.mark.parametrize(

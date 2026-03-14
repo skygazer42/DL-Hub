@@ -15,7 +15,7 @@
 
 <br/>
 
-<code>58 Lessons</code> · <code>7 Learning Tracks</code> · <code>27 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>650+ Tests</code>
+<code>60 Lessons</code> · <code>7 Learning Tracks</code> · <code>27 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>650+ Tests</code>
 
 <br/>
 
@@ -178,7 +178,7 @@ python scripts/run_lesson.py --list
 <tr>
 <td><b>Full Curriculum</b></td>
 <td>4-6 周</td>
-<td>58 lessons</td>
+<td>60 lessons</td>
 <td>按顺序完成全部 7 个 track 的所有 lesson<br/><sub>系统掌握从经典 ML 到前沿深度学习的完整技能树</sub></td>
 </tr>
 </table>
@@ -193,7 +193,7 @@ python scripts/run_lesson.py --list
 <table>
 <tr>
 <td align="center" width="14%"><b>Foundations</b><br/><sub>2 lessons</sub></td>
-<td align="center" width="14%"><b>Vision</b><br/><sub>12 lessons</sub></td>
+<td align="center" width="14%"><b>Vision</b><br/><sub>14 lessons</sub></td>
 <td align="center" width="14%"><b>NLP</b><br/><sub>7 lessons</sub></td>
 <td align="center" width="14%"><b>GNN</b><br/><sub>11 lessons</sub></td>
 <td align="center" width="14%"><b>Point Cloud</b><br/><sub>23 lessons</sub></td>
@@ -230,6 +230,11 @@ python scripts/run_lesson.py --list
 | 7 | 关键点回归 | [toy_keypoint_regression](tracks/vision/lesson_07_toy_keypoint_regression/) | 坐标回归, Heatmap |
 | 8 | UNet 语义分割 | [synthetic_segmentation_unet](tracks/vision/lesson_08_synthetic_segmentation_unet/) | Encoder-Decoder, Skip Connection |
 | 9 | 多 Backbone 对比 | [cnn_backbones_toy_classification](tracks/vision/lesson_09_cnn_backbones_toy_classification/) | 统一接口, 特征提取 |
+| 10 | 图像去噪（多模型） | [synthetic_denoising](tracks/vision/lesson_10_synthetic_denoising/) | 合成噪声建模, 去噪回归 |
+| 11 | YOLACT 实例分割 | [synthetic_instance_segmentation_yolact](tracks/vision/lesson_11_synthetic_instance_segmentation_yolact/) | Prototype + Coefficients |
+| 12 | YOLO 风格目标检测 | [synthetic_detection_yolo](tracks/vision/lesson_12_synthetic_detection_yolo/) | Grid/Objectness + BBox |
+| 13 | 行人检测（FCOS） | [synthetic_pedestrian_detection_fcos](tracks/vision/lesson_13_synthetic_pedestrian_detection_fcos/) | Anchor-free 检测头 |
+| 14 | 视频多目标跟踪（MOT） | [video_mot_basics](tracks/vision/lesson_14_video_mot_basics/) | 多目标轨迹预测, Presence + IoU |
 
 <details>
 <summary><b>支持的 Vision Backbones（208 算法族 / 736 架构 ID）</b></summary>
@@ -409,6 +414,28 @@ python scripts/action_recognition_zoo.py --smoke dlacts:stgcn_tiny
 ```
 
 > 时间线与方法说明见 `dlhub/vision/action_recognition/README.md`
+
+#### Multi-Object Tracking (MOT) Local Zoo
+
+> 多目标跟踪模型族补充：2D 单相机 MOT，80 算法族（每族 `tiny/small/base`），toy-first, no downloads
+
+```bash
+python scripts/mot_zoo.py --list
+python scripts/mot_zoo.py --search bytetrack
+python scripts/mot_zoo.py --timeline
+python scripts/mot_zoo.py --recommend realtime --top-k 8 --variant tiny
+python scripts/mot_zoo.py --recommend occlusion --top-k 8 --variant tiny --emit-train-cmds
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --skip-existing
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --summary-only
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --rank-by loss
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --save-leaderboard outputs/vision/mot_leaderboard.json
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --save-artifacts-dir outputs/vision/mot_artifacts
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --save-artifacts-dir auto
+python scripts/mot_zoo.py --smoke mot2d:sort_tiny
+```
+
+> 组别、选型建议与 80 族列表见 `dlhub/vision/mot/README.md`
 
 <details>
 <summary><b>主要架构分类</b></summary>

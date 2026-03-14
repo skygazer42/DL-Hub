@@ -82,6 +82,127 @@ def _sum_tensor_means(x):
                 "dropout": 0.0,
             },
         ),
+        (
+            "build_bevfusion_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "bevfusion_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_gnn_kalman3d_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "gnn_kalman3d_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_temporalbev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "temporalbev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_bevformer_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "bevformer_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_mapprior_bev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "mapprior_bev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_cambev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "cambev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_lowlatency_bev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "lowlatency_bev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_ultrafast_bev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "ultrafast_bev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_sensorlite_bev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "sensorlite_bev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_ultralite_bev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "ultralite_bev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
+        (
+            "build_pulsebev_track_tracker3d",
+            {
+                "in_channels": 3,
+                "num_classes": 3,
+                "seq_len": 4,
+                "variant": "pulsebev_track_tiny",
+                "width_mult": 0.5,
+                "dropout": 0.0,
+            },
+        ),
     ],
 )
 def test_tracking3d_algorithms_track_smoke(builder_name: str, kwargs: dict) -> None:
