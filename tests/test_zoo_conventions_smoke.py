@@ -6,6 +6,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 CONVENTION_DIRS = (
+    REPO_ROOT / "dlhub/generative/diffusion",
     REPO_ROOT / "dlhub/vision/action_recognition",
     REPO_ROOT / "dlhub/vision/detection",
     REPO_ROOT / "dlhub/vision/denoising",
