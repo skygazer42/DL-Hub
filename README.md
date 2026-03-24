@@ -15,14 +15,14 @@
 
 <br/>
 
-<code>60 Lessons</code> · <code>7 Learning Tracks</code> · <code>27 ML Algorithms</code> · <code>1600+ Model Zoo Architectures</code> · <code>650+ Tests</code>
+<code>76 Lessons</code> · <code>8 Learning Tracks</code> · <code>27 ML Algorithms</code> · <code>2500+ Model Zoo Architectures</code> · <code>126 Test Files</code>
 
 <br/>
 
 统一代码风格、统一训练脚手架、统一运行方式<br/>
 让学习者真正能 **"循序渐进跑通 → 改得动 → 能验收"**
 
-[Quick Start](#-quick-start) · [Learning Tracks](#-learning-tracks) · [Model Zoo](#-model-zoo) · [ML Algorithms](#-numpy-ml-algorithms) · [Docs](#-documentation)
+[Quick Start](#-quick-start) · [Learning Tracks](#-learning-tracks) · [Model Zoo](#-model-zoo) · [Federated Zoo](#-federated-learning-zoo) · [ML Algorithms](#-numpy-ml-algorithms) · [Docs](#-documentation)
 
 </div>
 
@@ -32,38 +32,55 @@
 
 <table>
 <tr>
-<td align="center" width="20%">
+<td align="center" width="25%">
 <br/>
 <b>Vision</b><br/>
 <sub>从 LeNet 到 ViT，<br/>736 架构 · 图像分类 / 检测 / 分割</sub>
 </td>
-<td align="center" width="20%">
+<td align="center" width="25%">
 <br/>
 <b>NLP</b><br/>
 <sub>从词嵌入到 Transformer，<br/>813 架构 · 分类 / NER / 阅读理解</sub>
 </td>
-<td align="center" width="20%">
+<td align="center" width="25%">
 <br/>
 <b>GNN</b><br/>
 <sub>从 GCN 到 PinSAGE，<br/>图分类 / 节点嵌入 / 推荐</sub>
 </td>
-<td align="center" width="20%">
+<td align="center" width="25%">
 <br/>
 <b>Point Cloud</b><br/>
 <sub>从 PointNet 到 PCT，<br/>64 架构 · 分类 / 部件分割 / 重建 / 15 种自监督</sub>
 </td>
-<td align="center" width="20%">
+</tr>
+<tr>
+<td align="center" width="25%">
 <br/>
 <b>Generative</b><br/>
 <sub>VAE & GAN，<br/>手写数字重建与生成</sub>
+</td>
+<td align="center" width="25%">
+<br/>
+<b>Multimodal</b><br/>
+<sub>从 CLIP 到 LLaVA，20 VLM 架构<br/>视觉问答 / 目标检测 / 时序定位</sub>
+</td>
+<td align="center" width="25%">
+<br/>
+<b>LLM</b><br/>
+<sub>Causal LM + 资源库，<br/>50+ 论文笔记</sub>
+</td>
+<td align="center" width="25%">
+<br/>
+<b>Federated</b><br/>
+<sub>36 联邦策略<br/>差分隐私 / 安全聚合 / 个性化</sub>
 </td>
 </tr>
 </table>
 
 <p align="center">
-  <img src="assets/overview_4panels.png" width="80%" alt="DL-Hub 四大领域：Vision · GNN · Point Cloud · Generative" />
+  <img src="assets/overview_8panels.png" width="80%" alt="DL-Hub 八大领域：Vision · NLP · GNN · Point Cloud · Generative · Multimodal · LLM · Federated" />
 </p>
-<p align="center"><sub>① Vision — CNN / ViT 图像分类 · ② GNN — 图神经网络 · ③ Point Cloud — 3D 点云 · ④ Generative — VAE / GAN 生成</sub></p>
+<p align="center"><sub>① Vision — CNN / ViT 图像分类 · ② NLP — 文本分类 / NER · ③ GNN — 图神经网络 · ④ Point Cloud — 3D 点云 · ⑤ Generative — VAE / GAN · ⑥ Multimodal — VLM 视觉语言 · ⑦ LLM — 大语言模型 · ⑧ Federated — 联邦学习</sub></p>
 
 ---
 
@@ -74,9 +91,10 @@
 - [Prerequisites](#-prerequisites)
 - [Learning Path](#-learning-path)
 - [Learning Tracks](#-learning-tracks)
-  - [Foundations](#-foundations--基础) · [Vision](#-vision--视觉) · [NLP](#-nlp--自然语言处理) · [GNN](#-gnn--图神经网络) · [Point Cloud](#-point-cloud--点云) · [Generative](#-generative--生成模型) · [LLM](#-llm--大语言模型)
+  - [Foundations](#-foundations--基础) · [Vision](#-vision--视觉) · [NLP](#-nlp--自然语言处理) · [GNN](#-gnn--图神经网络) · [Point Cloud](#-point-cloud--点云) · [Generative](#-generative--生成模型) · [LLM](#-llm--大语言模型) · [Multimodal](#-multimodal--多模态)
 - [Model Zoo](#-model-zoo)
-  - [Vision Zoo (736 architectures)](#vision-zoo--736-architectures) · [NLP Zoo (813 architectures)](#nlp-zoo--813-architectures) · [Point Cloud Zoo (64 architectures)](#point-cloud-zoo--64-architectures)
+  - [Vision Zoo (736 architectures)](#vision-zoo--736-architectures) · [NLP Zoo (813 architectures)](#nlp-zoo--813-architectures) · [Point Cloud Zoo (64 architectures)](#point-cloud-zoo--64-architectures) · [VLM Zoo (20 families)](#vlm-zoo--20-families) · [Generative Zoo (GAN + Diffusion)](#generative-zoo--gan--diffusion)
+- [Federated Learning Zoo](#-federated-learning-zoo)
 - [NumPy ML Algorithms](#-numpy-ml-algorithms)
 - [Optimization Toolkit](#-optimization-toolkit)
 - [Documentation](#-documentation)
@@ -144,6 +162,7 @@ python scripts/run_lesson.py --list
 | Point Cloud | Vision track + 3D 几何直觉 |
 | Generative | Vision track + 概率论基础 |
 | LLM | NLP track + Transformer 机制 |
+| Multimodal | Vision track + NLP track + 注意力机制 |
 
 ---
 
@@ -152,9 +171,9 @@ python scripts/run_lesson.py --list
 不知道从哪开始？根据你的时间选择一条学习路线：
 
 <p align="center">
-  <img src="assets/learning_path_steps.png" width="85%" alt="7 Learning Tracks: Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM" />
+  <img src="assets/learning_path_steps.png" width="85%" alt="8 Learning Tracks: Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal" />
 </p>
-<p align="center"><sub>Step 1–7 对应：Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM</sub></p>
+<p align="center"><sub>Step 1–8 对应：Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal</sub></p>
 
 <table>
 <tr>
@@ -177,14 +196,14 @@ python scripts/run_lesson.py --list
 </tr>
 <tr>
 <td><b>Full Curriculum</b></td>
-<td>4-6 周</td>
-<td>60 lessons</td>
-<td>按顺序完成全部 7 个 track 的所有 lesson<br/><sub>系统掌握从经典 ML 到前沿深度学习的完整技能树</sub></td>
+<td>6-8 周</td>
+<td>76 lessons</td>
+<td>按顺序完成全部 8 个 track 的所有 lesson<br/><sub>系统掌握从经典 ML 到前沿深度学习的完整技能树</sub></td>
 </tr>
 </table>
 
 > [!TIP]
-> 推荐顺序：**Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM**。每个 lesson 都有独立的 README 说明目标、先修和验收标准。
+> 推荐顺序：**Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal**。每个 lesson 都有独立的 README 说明目标、先修和验收标准。
 
 ---
 
@@ -192,13 +211,14 @@ python scripts/run_lesson.py --list
 
 <table>
 <tr>
-<td align="center" width="14%"><b>Foundations</b><br/><sub>2 lessons</sub></td>
-<td align="center" width="14%"><b>Vision</b><br/><sub>14 lessons</sub></td>
-<td align="center" width="14%"><b>NLP</b><br/><sub>7 lessons</sub></td>
-<td align="center" width="14%"><b>GNN</b><br/><sub>11 lessons</sub></td>
-<td align="center" width="14%"><b>Point Cloud</b><br/><sub>23 lessons</sub></td>
-<td align="center" width="14%"><b>Generative</b><br/><sub>2 lessons</sub></td>
-<td align="center" width="14%"><b>LLM</b><br/><sub>1 lesson</sub></td>
+<td align="center" width="12%"><b>Foundations</b><br/><sub>2 lessons</sub></td>
+<td align="center" width="12%"><b>Vision</b><br/><sub>14 lessons</sub></td>
+<td align="center" width="12%"><b>NLP</b><br/><sub>7 lessons</sub></td>
+<td align="center" width="12%"><b>GNN</b><br/><sub>11 lessons</sub></td>
+<td align="center" width="12%"><b>Point Cloud</b><br/><sub>23 lessons</sub></td>
+<td align="center" width="12%"><b>Generative</b><br/><sub>2 lessons</sub></td>
+<td align="center" width="12%"><b>LLM</b><br/><sub>1 lesson</sub></td>
+<td align="center" width="12%"><b>Multimodal</b><br/><sub>16 lessons</sub></td>
 </tr>
 </table>
 
@@ -356,17 +376,94 @@ python scripts/run_lesson.py --list
 
 ---
 
+### 🌐 8. Multimodal / 多模态
+
+> 从 CLIP 双塔对齐到 LLaVA 指令跟随，再到开放词汇检测、时序定位 — 16 步走完现代视觉语言建模核心脉络。
+
+| 序号 | 项目 | 代码文档 | 核心概念 |
+|------|------|----------|----------|
+| 1 | CLIP-Style Retrieval | [lesson_01_clip_toy_retrieval](tracks/multimodal/lesson_01_clip_toy_retrieval/) | 对比学习, 双塔编码器 |
+| 2 | BLIP-Lite Captioning + ITM | [lesson_02_blip_toy_captioning](tracks/multimodal/lesson_02_blip_toy_captioning/) | 视觉 token 融合, ITM |
+| 3 | LLaVA-Lite Instruction VLM | [lesson_03_llava_toy_instruction_vlm](tracks/multimodal/lesson_03_llava_toy_instruction_vlm/) | 视觉前缀, 指令跟随 |
+| 4 | Grounding Referring | [lesson_04_grounding_toy_refexp](tracks/multimodal/lesson_04_grounding_toy_refexp/) | 指代表达, Box 回归 |
+| 5 | Mask Grounding | [lesson_05_mask_grounding_toy_refexp](tracks/multimodal/lesson_05_mask_grounding_toy_refexp/) | 文本条件 Mask 预测 |
+| 6 | Flamingo Interleaved VLM | [lesson_06_flamingo_toy_interleaved_vlm](tracks/multimodal/lesson_06_flamingo_toy_interleaved_vlm/) | 交错图文, Few-shot |
+| 7 | Q-Former Bridge VLM | [lesson_07_qformer_toy_bridge_vlm](tracks/multimodal/lesson_07_qformer_toy_bridge_vlm/) | Cross-attention 瓶颈 |
+| 8 | Perceiver Resampler VLM | [lesson_08_perceiver_resampler_toy_vlm](tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/) | 多视图 token 池化 |
+| 9 | PaliGemma Multitask VLM | [lesson_09_paligemma_toy_siglip_decoder_vlm](tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/) | 提示式多任务 |
+| 10 | OWL-ViT Open-Vocab Detection | [lesson_10_owlvit_toy_open_vocab_detection](tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/) | 开放词汇检测 |
+| 11 | Grounded-SAM Segmentation | [lesson_11_grounded_sam_toy_open_vocab_segmentation](tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/) | 开放词汇分割 |
+| 12 | Key-Value OCR Document VLM | [lesson_12_key_value_ocr_toy_doc_vlm](tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/) | 文档字段提取 |
+| 13 | Video VLM Temporal QA | [lesson_13_video_vlm_toy_temporal_qa](tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/) | 短视频 QA |
+| 14 | BMN Temporal Grounding | [lesson_14_bmn_toy_temporal_grounding](tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/) | 时序定位, 边界预测 |
+| 15 | 2D-TAN Temporal Grounding | [lesson_15_2dtan_toy_temporal_grounding](tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/) | 密集时序段图 |
+| 16 | Multi-Scale 2D-TAN | [lesson_16_multiscale_2dtan_toy_temporal_grounding](tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/) | 多尺度时序金字塔 |
+
+```bash
+# 冒烟测试 Multimodal lesson
+python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
+  --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1
+```
+
+<details>
+<summary><b>VLM Zoo — 20 个视觉语言模型族（教学实现 + 时间线）</b></summary>
+
+| Family | 年份 | 核心创新 |
+|--------|------|---------|
+| CLIP | 2021 | 对比图文预训练 |
+| ALIGN | 2021 | 大规模噪声对比学习 |
+| ViLT | 2021 | Patch 级视觉语言 Transformer |
+| SimVLM | 2021 | 简单视觉语言预训练 |
+| ALBEF | 2021 | 先对齐再融合 |
+| LiT | 2022 | 锁定图像的文本微调 |
+| BLIP | 2022 | 引导式图文预训练 |
+| CoCa | 2022 | 对比式描述器 |
+| OFA | 2022 | 统一架构、任务、模态 |
+| Flamingo | 2022 | 交错图文视觉语言模型 |
+| PaLI | 2022 | Pathways 图文模型 |
+| BLIP-2 | 2023 | Q-Former 桥接视觉与 LLM |
+| InstructBLIP | 2023 | 指令微调 BLIP-2 |
+| LLaVA | 2023 | 视觉指令微调 |
+| MiniGPT-4 | 2023 | 投影前缀视觉 LLM |
+| Kosmos-2 | 2023 | 接地多模态 LLM |
+| mPLUG-Owl2 | 2023 | 模态自适应模块 |
+| CogVLM | 2023 | LLM 层内视觉专家 |
+| PaLI-X | 2023 | 缩放版 Pathways 图文模型 |
+| Qwen-VL | 2023 | 通义千问视觉语言模型 |
+
+> 完整列表与变体见 `python scripts/vlm_zoo.py --list`
+
+</details>
+
+---
+
 ## Model Zoo
 
-> 三大领域统一模型动物园 — 纯 PyTorch 本地实现，无需下载预训练权重，1600+ 架构 ID 一行切换
+> 全领域统一模型动物园 — 纯 PyTorch 本地实现，无需下载预训练权重，2500+ 架构 ID 一行切换
 
-<table>
-<tr>
-<td align="center" width="33%"><b>Vision Zoo</b><br/><sub>208 算法族 · 736 架构 ID</sub></td>
-<td align="center" width="33%"><b>NLP Zoo</b><br/><sub>49 算法族 · 813 架构 ID</sub></td>
-<td align="center" width="33%"><b>Point Cloud Zoo</b><br/><sub>30 算法族 · 64 架构 ID</sub></td>
-</tr>
-</table>
+### Zoo 子系统总览（21 个子系统）
+
+| 领域 | 子系统 | 算法族 | CLI 脚本 |
+|------|--------|--------|---------|
+| Vision | Backbones | 208 族 / 736 IDs | `scripts/vision_zoo.py` |
+| Vision | Detection (2D) | ~120 | `scripts/detection_zoo.py` |
+| Vision | Instance Segmentation | 40 | `scripts/instance_segmentation_zoo.py` |
+| Vision | Panoptic Segmentation | 40 | `scripts/panoptic_segmentation_zoo.py` |
+| Vision | Lane Detection | 24 | `scripts/lane_detection_zoo.py` |
+| Vision | Co-segmentation | 6 | `scripts/co_segmentation_zoo.py` |
+| Vision | Fine-Grained Recognition | 72 | `scripts/fine_grained_recognition_zoo.py` |
+| Vision | Action Recognition | 22 | `scripts/action_recognition_zoo.py` |
+| Vision | MOT (2D) | 81 | `scripts/mot_zoo.py` |
+| NLP | Text Encoders | 49 族 / 813 IDs | `scripts/nlp_zoo.py` |
+| Point Cloud | Backbones | 30 族 / 64 IDs | `scripts/pointcloud_zoo.py` |
+| Point Cloud | 3D Detection | 40 | `scripts/detection3d_zoo.py` |
+| Point Cloud | 3D Segmentation | 40 | `scripts/segmentation3d_zoo.py` |
+| Point Cloud | 3D Instance Seg | 30 | `scripts/instance_segmentation3d_zoo.py` |
+| Point Cloud | 3D Tracking | 131 | `scripts/tracking3d_zoo.py` |
+| Multimodal | VLM | 20 | `scripts/vlm_zoo.py` |
+| Generative | GAN | 24 | `scripts/gan_zoo.py` |
+| Generative | Diffusion | 12 | `scripts/diffusion_zoo.py` |
+| Federated | FL Strategies | 36 | `scripts/federated_zoo.py` |
 
 所有 Zoo 遵循相同的设计模式：
 
@@ -437,6 +534,49 @@ python scripts/mot_zoo.py --smoke mot2d:sort_tiny
 
 > 组别、选型建议与 80 族列表见 `dlhub/vision/mot/README.md`
 
+#### Detection Zoo (2D)
+
+> 2D 目标检测模型族：Anchor-based / Anchor-free / Transformer-based / 轻量级检测器，~120 算法
+
+```bash
+python scripts/detection_zoo.py --list
+python scripts/detection_zoo.py --search fcos
+python scripts/detection_zoo.py --smoke dldet:fcos_r50_tiny
+```
+
+#### Instance & Panoptic Segmentation Zoo
+
+> 实例分割 + 全景分割：Mask R-CNN / YOLACT / Panoptic FPN 等
+
+```bash
+# 实例分割
+python scripts/instance_segmentation_zoo.py --list
+python scripts/instance_segmentation_zoo.py --smoke dlinsseg:maskrcnn_r50_tiny
+
+# 全景分割
+python scripts/panoptic_segmentation_zoo.py --list
+python scripts/panoptic_segmentation_zoo.py --smoke dlpanseg:panfpn_r50_tiny
+```
+
+#### Lane Detection Zoo
+
+> 车道线检测模型族：24 算法族，Anchor / Parametric / Segmentation / Keypoint / Transformer 五大范式
+
+```bash
+python scripts/lane_detection_zoo.py --list
+python scripts/lane_detection_zoo.py --search laneatt
+python scripts/lane_detection_zoo.py --smoke dllane:laneatt_r18_tiny
+```
+
+#### Co-segmentation Zoo
+
+> 协同分割模型族：6 算法族，Group / Pair 级别图像共分割
+
+```bash
+python scripts/co_segmentation_zoo.py --list
+python scripts/co_segmentation_zoo.py --smoke dlcoseg:coatt_tiny
+```
+
 <details>
 <summary><b>主要架构分类</b></summary>
 
@@ -494,6 +634,159 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
 ```
 
 > 详细列表见 [Point Cloud Track](#-point-cloud--点云) 的 Backbone 表格。
+
+#### 3D Detection Zoo
+
+> 3D 目标检测模型族：40 算法族，Point-based / Voxel-based / Pillar-based / Multi-modal
+
+```bash
+python scripts/detection3d_zoo.py --list
+python scripts/detection3d_zoo.py --search pointpillars
+python scripts/detection3d_zoo.py --smoke dldet3d:pointpillars_tiny
+```
+
+#### 3D Segmentation Zoo
+
+> 3D 语义分割模型族：40 算法族，Point / Voxel / Range-view / Fusion
+
+```bash
+python scripts/segmentation3d_zoo.py --list
+python scripts/segmentation3d_zoo.py --search randlanet
+python scripts/segmentation3d_zoo.py --smoke dlseg3d:randlanet_tiny
+```
+
+#### 3D Instance Segmentation Zoo
+
+> 3D 实例分割模型族：30 算法族，Proposal-based / Grouping-based / Panoptic
+
+```bash
+python scripts/instance_segmentation3d_zoo.py --list
+python scripts/instance_segmentation3d_zoo.py --smoke dlinsseg3d:pointgroup_tiny
+```
+
+#### 3D Tracking Zoo
+
+> 3D 多目标跟踪模型族：131 算法族，LiDAR / Camera-LiDAR / Radar-LiDAR
+
+```bash
+python scripts/tracking3d_zoo.py --list
+python scripts/tracking3d_zoo.py --search centerpoint
+python scripts/tracking3d_zoo.py --smoke dltrk3d:centerpoint_tiny
+```
+
+---
+
+### VLM Zoo / 20 Families
+
+> 视觉语言模型族：20 个 Family，从 CLIP 到 Qwen-VL，纯 PyTorch 教学实现
+
+```bash
+python scripts/vlm_zoo.py --list
+python scripts/vlm_zoo.py --search llava
+python scripts/vlm_zoo.py --timeline
+python scripts/vlm_zoo.py --smoke dlvlm:clip_tiny
+```
+
+> 详细 Family 列表见 [Multimodal Track](#-multimodal--多模态) 的 VLM Zoo 表格。
+
+---
+
+### Generative Zoo / GAN + Diffusion
+
+> 生成模型族：GAN（24 算法族）+ Diffusion（12 算法族），纯 PyTorch toy 实现
+
+```bash
+# GAN Zoo
+python scripts/gan_zoo.py --list
+python scripts/gan_zoo.py --search stylegan
+python scripts/gan_zoo.py --smoke dlgan:dcgan_tiny
+
+# Diffusion Zoo
+python scripts/diffusion_zoo.py --list
+python scripts/diffusion_zoo.py --search ddpm
+python scripts/diffusion_zoo.py --smoke dldiff:ddpm_tiny
+```
+
+<details>
+<summary><b>GAN 主要架构</b></summary>
+
+| 类别 | 代表架构 |
+|------|---------|
+| 无条件 GAN | DCGAN, WGAN, WGAN-GP, LSGAN, SNGAN |
+| 条件 GAN | cGAN, ACGAN, InfoGAN, Pix2Pix |
+| 图像翻译 | CycleGAN, StarGAN, UNIT, MUNIT |
+| 高分辨率 | ProGAN, StyleGAN, StyleGAN2, StyleGAN3 |
+| 轻量级 | LightGAN, FastGAN |
+
+</details>
+
+<details>
+<summary><b>Diffusion 主要架构</b></summary>
+
+| 类别 | 代表架构 |
+|------|---------|
+| 基础扩散 | DDPM, DDIM, Score-SDE |
+| 条件扩散 | Classifier-Guided, Classifier-Free |
+| 隐空间扩散 | Latent Diffusion, Stable Diffusion |
+| 快速采样 | DPM-Solver, Consistency Models |
+
+</details>
+
+---
+
+## Federated Learning Zoo
+
+> 联邦学习策略库 — 36 种联邦优化 / 个性化 / 隐私策略，纯 PyTorch 教学实现
+
+```bash
+python scripts/federated_zoo.py --list
+python scripts/federated_zoo.py --search fedavg
+python scripts/federated_zoo.py --timeline
+```
+
+<details>
+<summary><b>全部 36 种策略（按 13 个分组）</b></summary>
+
+| 分组 | 策略 | 说明 |
+|------|------|------|
+| **Optimization** | FedAvg | 迭代式模型平均 |
+| | FedProx | 近端正则化 FedAvg |
+| | FedNova | 归一化平均 |
+| | FedDyn | 动态正则化联邦优化 |
+| **Server Optimizer** | FedAdam | 服务端 Adam |
+| | FedYogi | 服务端 Yogi |
+| **Control Variate** | SCAFFOLD | 控制变量修正客户端漂移 |
+| **Feature Normalization** | FedBN | 本地 Batch Normalization |
+| **Personalization** | FedPer | Base/Head 分割个性化 |
+| | APFL | 自适应个性化联邦学习 |
+| | Ditto | 近端本地头个性化 |
+| | pFedMe | 元正则化个性化 |
+| | MOON | 模型对比个性化 |
+| | Per-FedAvg | 元学习个性化 |
+| | FedRep | 共享表示 + 个性化头 |
+| | FedAMP | 注意力消息传递个性化 |
+| | FedProto | 原型化联邦学习 |
+| | IFCA | 聚类个性化联邦学习 |
+| **Fairness** | q-FedAvg | 公平资源分配 |
+| | AFL | 不可知联邦学习 |
+| | TERM | 倾斜经验风险最小化 |
+| **Long-tail Robustness** | FedRS | 类不平衡重平衡 Softmax |
+| | FedLC | 长尾 Logit 校准 |
+| | FedRoD | 鲁棒蒸馏 |
+| **Split Learning** | SplitFed | 联邦分割学习 |
+| | SplitFedV2 | 增强分割联邦混合训练 |
+| **Heterogeneous Width** | HeteroFL | 异构宽度联邦学习 |
+| | FjORD | 联邦 Dropout |
+| **Distillation** | FedGKT | 联邦组知识转移 |
+| | FedDF | 集成蒸馏联邦学习 |
+| **Privacy** | DP-FedAvg | 差分隐私联邦平均 |
+| | DP-FedProx | 差分隐私近端联邦学习 |
+| **Compression** | FedPAQ | 周期平均 + 量化 |
+| | STC | 稀疏三值压缩 |
+| **Secure Aggregation** | SecureAgg | 隐私保护安全求和 |
+| | LightSecAgg | 轻量安全聚合 |
+
+</details>
 
 ---
 
@@ -629,8 +922,8 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
               │ 支持离线冒烟   │ 训练框架      │ 每次实验可追溯          │
               ├──────────────┼──────────────┼─────────────────────────┤
               │   渐进式      │  测试覆盖     │  Model Zoo             │
-              │ 由浅入深       │ 40+ pytest  │ 1600+ 架构 ID          │
-              │ 7 track 递进  │ CI 可集成    │ 三大领域统一接口         │
+              │ 由浅入深       │ 126 pytest  │ 2500+ 架构 ID          │
+              │ 8 track 递进  │ CI 可集成    │ 全领域统一接口           │
               └──────────────┴──────────────┴─────────────────────────┘
 ```
 
@@ -640,9 +933,9 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
 - **Offline-first** — 所有 lesson 支持 `--dataset fake` 离线冒烟，无需下载任何数据集，10 秒内验证环境
 - **统一脚手架** — 所有 lesson 共享 `dlhub/` 框架：训练循环、设备管理、种子、检查点、JSONL 指标记录
 - **可复现** — 种子管理 + 配置自动保存 + 指标日志，每次实验完整可追溯
-- **渐进式** — 从基础张量操作到 Vision Transformer、GraphSAGE、PointNet++，由浅入深，7 个 track 层层递进
-- **测试覆盖** — 40+ pytest 测试文件覆盖框架核心与所有 track，支持 CI 集成
-- **Model Zoo** — 三大领域（Vision / NLP / Point Cloud）共 1600+ 架构 ID，纯 PyTorch 本地实现，统一接口一行切换
+- **渐进式** — 从基础张量操作到 Vision Transformer、GraphSAGE、PointNet++、LLaVA，由浅入深，8 个 track 层层递进
+- **测试覆盖** — 126 pytest 测试文件覆盖框架核心与所有 track，支持 CI 集成
+- **Model Zoo** — 全领域（Vision / NLP / Point Cloud / Multimodal / Generative / Federated）共 2500+ 架构 ID，纯 PyTorch 本地实现，统一接口一行切换
 
 </details>
 
