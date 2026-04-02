@@ -18,3 +18,4 @@
 - `lesson_12_synthetic_detection_yolo/`：合成目标检测（YOLOv1-style，grid/objectness + bbox，纯 torch）
 - `lesson_13_synthetic_pedestrian_detection_fcos/`：合成行人检测（FCOS-style，anchor-free，纯 torch + local zoo `dldet:pedestrian_fcos`）
 - `lesson_14_video_mot_basics/`：合成视频多目标跟踪（MOT 基础闭环，纯 torch + local zoo `mot2d:*`）
+- `lesson_17_synthetic_super_resolution/`：合成配对图像超分辨率（paired super-resolution，toy-first，纯 torch + local zoo `sr:*`）
