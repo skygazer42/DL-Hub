@@ -26,6 +26,10 @@ Thumbs.db
 
 # Git worktrees (local only)
 .worktrees/
+.claude/
+.cursor/
+.codex/
+.beads/
 
 # Local data / downloads
 /.data/
