@@ -31,6 +31,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.cbdnet import _VARIANTS as cbdnet_variants
     from dlhub.vision.denoising.convnext_unet import _VARIANTS as convnext_unet_variants
     from dlhub.vision.denoising.dbsn import _VARIANTS as dbsn_variants
+    from dlhub.vision.denoising.ddn import _VARIANTS as ddn_variants
     from dlhub.vision.denoising.ddpm_unet import _VARIANTS as ddpm_unet_variants
     from dlhub.vision.denoising.dead_hot_pixel_corrector import (
         _VARIANTS as dead_hot_pixel_corrector_variants,
@@ -81,6 +82,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.scunet import _VARIANTS as scunet_variants
     from dlhub.vision.denoising.stripe_remover import _VARIANTS as stripe_remover_variants
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
+    from dlhub.vision.denoising.spanet import _VARIANTS as spanet_variants
     from dlhub.vision.denoising.total_variation import _VARIANTS as total_variation_variants
     from dlhub.vision.denoising.uformer import _VARIANTS as uformer_variants
     from dlhub.vision.denoising.unet3plus import _VARIANTS as unet3plus_variants
@@ -104,6 +106,8 @@ def list_supported_arches() -> list[str]:
     out.extend([f"hinet:{k}" for k in sorted(hinet_variants)])
     out.extend([f"ircnn:{k}" for k in sorted(ircnn_variants)])
     out.extend([f"jorder:{k}" for k in sorted(jorder_variants)])
+    out.extend([f"ddn:{k}" for k in sorted(ddn_variants)])
+    out.extend([f"spanet:{k}" for k in sorted(spanet_variants)])
     out.extend([f"rescan:{k}" for k in sorted(rescan_variants)])
     out.extend([f"prenet:{k}" for k in sorted(prenet_variants)])
     out.extend([f"nlrn:{k}" for k in sorted(nlrn_variants)])
@@ -243,6 +247,16 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.jorder import build_jorder_denoiser
 
         return build_jorder_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"ddn"}:
+        from dlhub.vision.denoising.ddn import build_ddn_denoiser
+
+        return build_ddn_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"spanet", "spa_net"}:
+        from dlhub.vision.denoising.spanet import build_spanet_denoiser
+
+        return build_spanet_denoiser(in_channels=in_channels, variant=variant)
 
     if arch in {"rescan"}:
         from dlhub.vision.denoising.rescan import build_rescan_denoiser
