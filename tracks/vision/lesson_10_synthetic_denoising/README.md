@@ -76,7 +76,7 @@ python -m pytest tests/test_tracks_vision_denoising.py -x -q
 │   ├─ 噪声强度已知且固定 → DnCNN / NAFNet / Restormer
 │   ├─ 噪声强度未知或变化 → FFDNet / DRUNet（条件化）
 │   ├─ 噪声类型未知       → CBDNet（自动估噪声 level）
-│   ├─ 雨线去除           → JORDER / RESCAN / PReNet
+│   ├─ 雨线去除           → JORDER / RESCAN / PReNet / DDN / SPANet / DID-MDN / RCDNet / TransWeather / DerainFormer
 │   └─ 想要最强效果       → Restormer / MPRNet / SwinIR
 │
 ├─ 有两份独立噪声观测（无干净图）
@@ -191,6 +191,12 @@ python -m pytest tests/test_tracks_vision_denoising.py -x -q
 | **JORDER** | `jorder` | 联合雨线检测（mask）+ 去雨（residual） | 显式建模雨线区域，适合 `--noise-type rain` |
 | **RESCAN** | `rescan` | 递归/迭代残差去雨 + SE 通道重标定 | 多 stage 逐步细化，偏“迭代优化”风格 |
 | **PReNet** | `prenet` | Progressive recurrent（ConvGRU）逐步去雨 | 轻量 recurrent baseline，收敛快 |
+| **DDN** | `ddn` | Single-stage residual CNN derainer | 经典 CNN 去雨基线，适合 `--noise-type rain` |
+| **SPANet** | `spanet` | Spatial attentive deraining network | 空间注意力强化雨线区域，CNN 风格 |
+| **DID-MDN** | `did_mdn` | Density-aware multi-stream deraining CNN | 多密度感知分支，CNN 去雨 |
+| **RCDNet** | `rcdnet` | Model-driven iterative decomposition | 迭代分解雨层/背景，面向结构化雨线 |
+| **TransWeather** | `transweather` | Weather-aware transformer restoration | Transformer 风格去雨 |
+| **DerainFormer** | `derainformer` | Hierarchical transformer deraining | 层级 Transformer 去雨 |
 
 ### 噪声条件化
 
