@@ -144,6 +144,48 @@ def test_vision_denoising_supervised_forward_loss_backward_smoke() -> None:
         loss.backward()
 
 
+@pytest.mark.parametrize(
+    "arch",
+    [
+        "ddn:ddn_tiny",
+        "spanet:spanet_tiny",
+        "did_mdn:did_mdn_tiny",
+        "rcdnet:rcdnet_tiny",
+        "transweather:transweather_tiny",
+        "derainformer:derainformer_tiny",
+    ],
+)
+def test_vision_denoising_deraining_rain_models_forward_backward_smoke(arch: str) -> None:
+    from tracks.vision.lesson_10_synthetic_denoising.data import DataConfig, get_dataloaders
+    from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
+
+    train_loader, _ = get_dataloaders(
+        DataConfig(
+            num_samples=64,
+            batch_size=4,
+            image_size=32,
+            val_fraction=0.2,
+            seed=0,
+            num_workers=0,
+            in_channels=1,
+            noise_type="rain",
+            rain_count=24,
+            rain_length_min=8,
+            rain_length_max=18,
+            rain_intensity_min=0.05,
+            rain_intensity_max=0.14,
+            train_mode="supervised",
+        )
+    )
+    noisy, clean = next(iter(train_loader))
+    model = build_model(ModelConfig(arch=arch, variant="", in_channels=1, sigma=0.15))
+    pred = model(noisy)
+    assert tuple(pred.shape) == tuple(clean.shape)
+    loss = torch.nn.MSELoss()(pred, clean)
+    assert torch.isfinite(loss)
+    loss.backward()
+
+
 def test_vision_denoising_noise2noise_training_pair_smoke() -> None:
     from tracks.vision.lesson_10_synthetic_denoising.data import DataConfig, get_dataloaders
     from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
@@ -496,6 +538,12 @@ def test_vision_denoising_train_parse_args_list_arch_families(
     assert "jorder" in out
     assert "rescan" in out
     assert "prenet" in out
+    assert "ddn" in out
+    assert "spanet" in out
+    assert "did_mdn" in out
+    assert "rcdnet" in out
+    assert "transweather" in out
+    assert "derainformer" in out
     assert len(out) >= 10
 
 
@@ -515,6 +563,16 @@ def test_vision_denoising_train_parse_args_list_arch_filters_by_family(
     out = [ln.strip() for ln in capsys.readouterr().out.splitlines() if ln.strip()]
     assert any(ln.startswith("dncnn:") for ln in out)
     assert all(ln.startswith("dncnn:") for ln in out)
+
+    monkeypatch.setattr(sys, "argv", ["prog", "--list-arch", "--arch-family", "ddn"])
+
+    with pytest.raises(SystemExit) as exc2:
+        parse_args()
+
+    assert exc2.value.code == 0
+    out2 = [ln.strip() for ln in capsys.readouterr().out.splitlines() if ln.strip()]
+    assert any(ln.startswith("ddn:") for ln in out2)
+    assert all(ln.startswith("ddn:") for ln in out2)
 
 
 def test_vision_denoising_train_parse_args_list_arch_filters_by_match(
