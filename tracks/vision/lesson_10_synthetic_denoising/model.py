@@ -36,6 +36,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.dead_hot_pixel_corrector import (
         _VARIANTS as dead_hot_pixel_corrector_variants,
     )
+    from dlhub.vision.denoising.derainformer import _VARIANTS as derainformer_variants
     from dlhub.vision.denoising.debanding_filter import _VARIANTS as debanding_filter_variants
     from dlhub.vision.denoising.denseunet import _VARIANTS as denseunet_variants
     from dlhub.vision.denoising.dhdn import _VARIANTS as dhdn_variants
@@ -86,6 +87,7 @@ def list_supported_arches() -> list[str]:
     from dlhub.vision.denoising.swinir import _VARIANTS as swinir_variants
     from dlhub.vision.denoising.spanet import _VARIANTS as spanet_variants
     from dlhub.vision.denoising.total_variation import _VARIANTS as total_variation_variants
+    from dlhub.vision.denoising.transweather import _VARIANTS as transweather_variants
     from dlhub.vision.denoising.uformer import _VARIANTS as uformer_variants
     from dlhub.vision.denoising.unet3plus import _VARIANTS as unet3plus_variants
     from dlhub.vision.denoising.unetpp import _VARIANTS as unetpp_variants
@@ -112,6 +114,8 @@ def list_supported_arches() -> list[str]:
     out.extend([f"spanet:{k}" for k in sorted(spanet_variants)])
     out.extend([f"did_mdn:{k}" for k in sorted(did_mdn_variants)])
     out.extend([f"rcdnet:{k}" for k in sorted(rcdnet_variants)])
+    out.extend([f"transweather:{k}" for k in sorted(transweather_variants)])
+    out.extend([f"derainformer:{k}" for k in sorted(derainformer_variants)])
     out.extend([f"rescan:{k}" for k in sorted(rescan_variants)])
     out.extend([f"prenet:{k}" for k in sorted(prenet_variants)])
     out.extend([f"nlrn:{k}" for k in sorted(nlrn_variants)])
@@ -271,6 +275,16 @@ def build_model(cfg: ModelConfig) -> nn.Module:
         from dlhub.vision.denoising.rcdnet import build_rcdnet_denoiser
 
         return build_rcdnet_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"transweather", "trans_weather"}:
+        from dlhub.vision.denoising.transweather import build_transweather_denoiser
+
+        return build_transweather_denoiser(in_channels=in_channels, variant=variant)
+
+    if arch in {"derainformer", "derain_former"}:
+        from dlhub.vision.denoising.derainformer import build_derainformer_denoiser
+
+        return build_derainformer_denoiser(in_channels=in_channels, variant=variant)
 
     if arch in {"rescan"}:
         from dlhub.vision.denoising.rescan import build_rescan_denoiser
