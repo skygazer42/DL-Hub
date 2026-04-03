@@ -1,6 +1,6 @@
 # Lesson 10：图像去噪（Synthetic, toy-first）
 
-目标：把"输入带噪图 → 输出干净图"的回归式训练闭环跑通，并对比 **64 种**经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 20 种噪声模型。
+目标：把"输入带噪图 → 输出干净图"的回归式训练闭环跑通，并对比多类经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 20 种噪声模型。
 
 ## 运行
 
@@ -40,7 +40,7 @@ python -m tracks.vision.lesson_10_synthetic_denoising.train \
 python -m pytest tests/test_tracks_vision_denoising.py -x -q
 ```
 
-覆盖：20 种噪声模型 DataLoader、46 种深度学习架构前向/反向、17 种传统方法前向、Noise2Noise 配对、Blind-Spot MaskedMSE、传感器缺陷校正效果、CLI 发现命令。
+覆盖：20 种噪声模型 DataLoader、深度学习架构前向/反向、传统方法前向、Noise2Noise 配对、Blind-Spot MaskedMSE、传感器缺陷校正效果、CLI 发现命令。
 
 ## 数据说明
 
@@ -103,7 +103,7 @@ python -m pytest tests/test_tracks_vision_denoising.py -x -q
 
 ## 模型一览
 
-本课包含 64 个去噪算法族，按设计思路分为 6 类：
+本课包含多个去噪算法族，按设计思路分为若干类：
 
 ### 传统方法（无需训练）
 
@@ -371,12 +371,12 @@ $RUN --arch rcdnet:rcdnet_tiny --noise-type rain --rain-count 24 --rain-length-m
 $RUN --arch transweather:transweather_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
 $RUN --arch derainformer:derainformer_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
 
+# 不同噪声模型
+```
+
 Rain-family quick selection (`--noise-type rain`):
 - CNN-style: `jorder`, `rescan`, `prenet`, `ddn`, `spanet`, `did_mdn`, `rcdnet`
 - Transformer-style: `transweather`, `derainformer`
-
-# 不同噪声模型
-```
 
 ## 输出产物（统一规范）
 
