@@ -186,6 +186,100 @@ def test_vision_denoising_deraining_rain_models_forward_backward_smoke(arch: str
     loss.backward()
 
 
+@pytest.mark.parametrize(
+    "arch",
+    [
+        "transweather:transweather_tiny",
+        "derainformer:derainformer_tiny",
+    ],
+)
+@pytest.mark.parametrize("size", [1, 2])
+def test_vision_denoising_transformer_derainers_reject_tiny_inputs(
+    arch: str, size: int
+) -> None:
+    from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
+
+    model = build_model(ModelConfig(arch=arch, variant="", in_channels=1, sigma=0.15))
+    noisy = torch.rand(2, 1, size, size)
+
+    with pytest.raises(ValueError, match="too small for reflect padding"):
+        model(noisy)
+
+
+@pytest.mark.parametrize(
+    "arch",
+    [
+        "transweather:transweather_tiny",
+        "derainformer:derainformer_tiny",
+    ],
+)
+def test_vision_denoising_transformer_derainers_accept_smallest_valid_inputs(
+    arch: str,
+) -> None:
+    from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
+
+    model = build_model(ModelConfig(arch=arch, variant="", in_channels=1, sigma=0.15))
+    noisy = torch.rand(2, 1, 3, 3)
+
+    out = model(noisy)
+
+    assert tuple(out.shape) == tuple(noisy.shape)
+    assert torch.isfinite(out).all()
+
+
+def test_vision_denoising_deraining_package_exports_smoke() -> None:
+    from dlhub.vision.denoising import (
+        DDN,
+        DIDMDN,
+        RCDNet,
+        SPANet,
+        DerainFormer,
+        TransWeather,
+        build_ddn_denoiser,
+        build_derainformer_denoiser,
+        build_did_mdn_denoiser,
+        build_rcdnet_denoiser,
+        build_spanet_denoiser,
+        build_transweather_denoiser,
+    )
+
+    specs = [
+        (DDN, build_ddn_denoiser, "ddn_tiny"),
+        (SPANet, build_spanet_denoiser, "spanet_tiny"),
+        (DIDMDN, build_did_mdn_denoiser, "did_mdn_tiny"),
+        (RCDNet, build_rcdnet_denoiser, "rcdnet_tiny"),
+        (TransWeather, build_transweather_denoiser, "transweather_tiny"),
+        (DerainFormer, build_derainformer_denoiser, "derainformer_tiny"),
+    ]
+
+    for cls, builder, variant in specs:
+        model = builder(in_channels=1, variant=variant)
+        assert isinstance(model, cls)
+
+
+@pytest.mark.parametrize(
+    ("arch", "variant"),
+    [
+        ("spa_net", "spanet_tiny"),
+        ("did-mdn", "did_mdn_tiny"),
+        ("didmdn", "did_mdn_tiny"),
+        ("trans_weather", "transweather_tiny"),
+        ("derain_former", "derainformer_tiny"),
+    ],
+)
+def test_vision_denoising_deraining_alias_arches_forward_smoke(
+    arch: str, variant: str
+) -> None:
+    from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
+
+    model = build_model(ModelConfig(arch=f"{arch}:{variant}", variant="", in_channels=1, sigma=0.15))
+    noisy = torch.rand(2, 1, 8, 8)
+
+    out = model(noisy)
+
+    assert tuple(out.shape) == tuple(noisy.shape)
+
+
 def test_vision_denoising_noise2noise_training_pair_smoke() -> None:
     from tracks.vision.lesson_10_synthetic_denoising.data import DataConfig, get_dataloaders
     from tracks.vision.lesson_10_synthetic_denoising.model import ModelConfig, build_model
