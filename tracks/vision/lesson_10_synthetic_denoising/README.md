@@ -352,8 +352,22 @@ $RUN --arch dead_hot_pixel_corrector:dead_hot_tiny --noise-type dead_hot --sigma
 $RUN --arch stripe_remover:stripe_remover_tiny --noise-type stripe --sigma 0.1
 
 # 去雨
-$RUN --arch restormer:restormer_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+# Deraining (CNN-style)
+$RUN --arch jorder:jorder_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+$RUN --arch rescan:rescan_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
 $RUN --arch prenet:prenet_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+$RUN --arch ddn:ddn_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+$RUN --arch spanet:spanet_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+$RUN --arch did_mdn:did_mdn_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+$RUN --arch rcdnet:rcdnet_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+
+# Deraining (Transformer-style)
+$RUN --arch transweather:transweather_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+$RUN --arch derainformer:derainformer_tiny --noise-type rain --rain-count 24 --rain-length-min 8 --rain-length-max 18 --rain-intensity-min 0.05 --rain-intensity-max 0.14 --epochs 3
+
+Rain-family quick selection (`--noise-type rain`):
+- CNN-style: `jorder`, `rescan`, `prenet`, `ddn`, `spanet`, `did_mdn`, `rcdnet`
+- Transformer-style: `transweather`, `derainformer`
 
 # 不同噪声模型
 ```
