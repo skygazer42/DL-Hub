@@ -4,6 +4,17 @@ from torch import nn
 from ._utils import pad_to_multiple, unpad
 
 
+def _validate_reflect_padding_input(x: torch.Tensor, *, multiple: int) -> None:
+    h, w = (int(x.shape[-2]), int(x.shape[-1]))
+    pad_h = (int(multiple) - (h % int(multiple))) % int(multiple)
+    pad_w = (int(multiple) - (w % int(multiple))) % int(multiple)
+    if pad_h >= h or pad_w >= w:
+        raise ValueError(
+            "Input spatial size is too small for reflect padding to the required multiple: "
+            f"got HxW={h}x{w}, requires pad_h={pad_h}, pad_w={pad_w}"
+        )
+
+
 class _TokenMixer(nn.Module):
     def __init__(self, dim: int, *, num_heads: int, mlp_ratio: float = 2.0) -> None:
         super().__init__()
@@ -95,6 +106,7 @@ class TransWeather(nn.Module):
                 f"Expected {self.in_channels} input channels, received {int(x.shape[1])}"
             )
 
+        _validate_reflect_padding_input(x, multiple=4)
         x_pad, pad_hw = pad_to_multiple(x, 4, mode="reflect")
         feat = self.stem(x_pad)
         for block in self.encoder:
