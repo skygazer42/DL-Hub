@@ -1,0 +1,129 @@
+/* DL-Hub Documentation - Custom Styles */
+
+/* Hero section on home page */
+.md-typeset .dlhub-hero {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.md-typeset .dlhub-hero h1 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* Feature grid */
+.md-typeset .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.md-typeset .grid .card {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.5rem;
+  padding: 1.2rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.md-typeset .grid .card:hover {
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.md-typeset .grid .card h3 {
+  margin-top: 0;
+}
+
+/* Track badge styles */
+.md-typeset .badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.md-typeset .badge-vision {
+  background-color: #7c4dff;
+  color: white;
+}
+
+.md-typeset .badge-nlp {
+  background-color: #00bfa5;
+  color: white;
+}
+
+.md-typeset .badge-gnn {
+  background-color: #ff6d00;
+  color: white;
+}
+
+.md-typeset .badge-pointcloud {
+  background-color: #2979ff;
+  color: white;
+}
+
+.md-typeset .badge-generative {
+  background-color: #f50057;
+  color: white;
+}
+
+.md-typeset .badge-llm {
+  background-color: #00c853;
+  color: white;
+}
+
+.md-typeset .badge-multimodal {
+  background-color: #ff9100;
+  color: white;
+}
+
+.md-typeset .badge-foundations {
+  background-color: #6d4c41;
+  color: white;
+}
+
+.md-typeset .badge-federated {
+  background-color: #546e7a;
+  color: white;
+}
+
+/* Stats card */
+.md-typeset .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.8rem;
+  margin: 1.5rem 0;
+}
+
+.md-typeset .stat-card {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: var(--md-code-bg-color);
+}
+
+.md-typeset .stat-card .stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--md-primary-fg-color);
+  display: block;
+}
+
+.md-typeset .stat-card .stat-label {
+  font-size: 0.8rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* Version badge */
+.md-typeset .version-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--md-primary-fg-color);
+  color: white;
+  vertical-align: middle;
+}
