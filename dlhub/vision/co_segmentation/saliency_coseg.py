@@ -13,22 +13,15 @@ from ._common import (
     unflatten_group,
 )
 
+_VARIANTS: dict[str, dict[str, int]] = {
+    "saliency_coseg_tiny": {"width": 16, "depth": 1},
+    "saliency_coseg_small": {"width": 24, "depth": 2},
+    "saliency_coseg_base": {"width": 32, "depth": 3},
+}
 
-class SaliencyCosegCoSegmentor(nn.Module):
-    """Toy co-segmentation model for the saliency_coseg family."""
 
-    def __init__(
-        self,
-        *,
-        in_channels: int,
-        num_classes: int,
-        width: int,
-        depth: int,
-        fusion_mode: str,
-        num_prototypes: int,
-        use_prompt_tokens: bool,
-        dropout: float = 0.0,
-    ) -> None:
+class SaliencyCoseg(nn.Module):
+    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0) -> None:
         super().__init__()
         self.encoder = TinyCoSegEncoder(
             in_channels=int(in_channels),
@@ -36,43 +29,33 @@ class SaliencyCosegCoSegmentor(nn.Module):
             depth=int(depth),
             dropout=float(dropout),
         )
-        high_channels = int(self.encoder.out_channels[-1])
-        self.prompt = (
-            nn.Parameter(torch.randn(1, high_channels, 1, 1) * 0.02) if use_prompt_tokens else None
-        )
-        self.fusion = GroupFusionBlock(
-            high_channels,
-            mode=str(fusion_mode),
-            num_prototypes=int(num_prototypes),
-        )
+        c3 = int(self.encoder.out_channels[-1])
+        self.fuser = GroupFusionBlock(c3, mode="max", num_prototypes=4)
+        self.prompt = None
         self.head = CoSegHead(
-            in_channels=high_channels,
-            hidden_channels=max(32, high_channels),
+            in_channels=c3,
+            hidden_channels=max(32, c3),
             num_classes=int(num_classes),
             dropout=float(dropout),
         )
 
     def forward(self, images: torch.Tensor) -> dict[str, torch.Tensor]:
         images = check_btchw(images)
-        b, t, c, h, w = images.shape
+        b, t, _, h, w = images.shape
         flat = flatten_group(images)
-        _, _, feat = self.encoder(flat)
-        grouped = unflatten_group(feat, batch=b, set_size=t)
-        if self.prompt is not None:
-            grouped = grouped + self.prompt.unsqueeze(0).expand(b, t, -1, grouped.shape[-2], grouped.shape[-1])
-        fused, aux = self.fusion(grouped)
+        _, _, c3 = self.encoder(flat)
+        grouped = unflatten_group(c3, batch=b, set_size=t)
+        fused, aux = self.fuser(grouped)
+
         logits = self.head(fused, out_hw=(h, w))
-        masks = logits_to_masks(logits)
-        out = {"logits": logits, "masks": masks}
-        out.update(aux)
+        out: dict[str, torch.Tensor] = {
+            "logits": logits,
+            "masks": logits_to_masks(logits),
+        }
+        for key, value in aux.items():
+            if isinstance(value, torch.Tensor):
+                out[key] = value
         return out
-
-
-_VARIANTS: dict[str, dict[str, int | float]] = {
-    "saliency_coseg_tiny": {"width": 16, "depth": 1, "dropout": 0.0},
-    "saliency_coseg_small": {"width": 24, "depth": 2, "dropout": 0.0},
-    "saliency_coseg_base": {"width": 32, "depth": 3, "dropout": 0.1},
-}
 
 
 def build_saliency_coseg_co_segmentor(
@@ -86,32 +69,21 @@ def build_saliency_coseg_co_segmentor(
     dropout: float = 0.0,
 ) -> nn.Module:
     del set_size, image_size
-    name = str(variant).lower().strip()
-    if name not in _VARIANTS:
-        raise ValueError(f"Unknown saliency_coseg variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
-    cfg = _VARIANTS[name]
+    cfg = _VARIANTS[str(variant).lower().strip()]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
-    return SaliencyCosegCoSegmentor(
+    return SaliencyCoseg(
         in_channels=int(in_channels),
         num_classes=int(num_classes),
         width=width,
         depth=int(cfg["depth"]),
-        fusion_mode="max",
-        num_prototypes=4,
-        use_prompt_tokens=False,
-        dropout=float(dropout if dropout > 0 else cfg["dropout"]),
+        dropout=float(dropout),
     )
 
 
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 3, 64, 64)
-    m = build_saliency_coseg_co_segmentor(
-        in_channels=3,
-        num_classes=2,
-        variant="saliency_coseg_tiny",
-        width_mult=0.5,
-    )
+    m = build_saliency_coseg_co_segmentor(in_channels=3, num_classes=2, variant="saliency_coseg_tiny", width_mult=0.5)
     out = m(x)
     print("saliency_coseg_tiny", {k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
     loss = sum(v.mean() for v in out.values() if isinstance(v, torch.Tensor))
