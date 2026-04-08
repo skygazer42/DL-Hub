@@ -72,7 +72,7 @@
 <td align="center" width="25%">
 <br/>
 <b>Federated</b><br/>
-<sub>66 联邦策略<br/>差分隐私 / 安全聚合 / 个性化</sub>
+<sub>76 联邦策略<br/>差分隐私 / 安全聚合 / 个性化</sub>
 </td>
 </tr>
 </table>
@@ -93,7 +93,7 @@
 - [Learning Tracks](#-learning-tracks)
   - [Foundations](#-foundations--基础) · [Vision](#-vision--视觉) · [NLP](#-nlp--自然语言处理) · [GNN](#-gnn--图神经网络) · [Point Cloud](#-point-cloud--点云) · [Generative](#-generative--生成模型) · [LLM](#-llm--大语言模型) · [Multimodal](#-multimodal--多模态)
 - [Model Zoo](#-model-zoo)
-  - [Vision Zoo (736 architectures)](#vision-zoo--736-architectures) · [NLP Zoo (813 architectures)](#nlp-zoo--813-architectures) · [Point Cloud Zoo (64 architectures)](#point-cloud-zoo--64-architectures) · [VLM Zoo (60 families)](#vlm-zoo--60-families) · [Generative Zoo (GAN + Diffusion)](#generative-zoo--gan--diffusion)
+  - [Vision Zoo (736 architectures)](#vision-zoo--736-architectures) · [NLP Zoo (813 architectures)](#nlp-zoo--813-architectures) · [Point Cloud Zoo (64 architectures)](#point-cloud-zoo--64-architectures) · [VLM Zoo (70 families)](#vlm-zoo--70-families) · [Generative Zoo (GAN + Diffusion)](#generative-zoo--gan--diffusion)
 - [Federated Learning Zoo](#-federated-learning-zoo)
 - [NumPy ML Algorithms](#-numpy-ml-algorithms)
 - [Optimization Toolkit](#-optimization-toolkit)
@@ -406,7 +406,7 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 ```
 
 <details>
-<summary><b>VLM Zoo — 60 个视觉语言模型族（教学实现 + 时间线）</b></summary>
+<summary><b>VLM Zoo — 70 个视觉语言模型族（教学实现 + 时间线）</b></summary>
 
 | Family | 年份 | 核心创新 |
 |--------|------|---------|
@@ -464,6 +464,16 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | ChartVLM | 2025 | 图表理解与数据问答 |
 | DocOwl2 | 2025 | 文档问答与版面理解 |
 | Grounded-VLM | 2025 | 定位增强的视觉语言推理 |
+| MetaVLM | 2025 | 元学习式视觉语言适配 |
+| Evo-VL | 2025 | 进化式多模态推理 |
+| Agent-VL | 2025 | 面向工具调用的多模态代理 |
+| Video-Qwen-VL | 2025 | 视频增强版通义视觉语言模型 |
+| SigLIP-VLM | 2025 | SigLIP 风格对齐与生成统一 |
+| OCRVLM | 2025 | 文档 OCR 专项多模态助手 |
+| Science-VLM | 2025 | 科学图表与实验图像理解 |
+| WebVLM | 2025 | 网页截图与界面理解 |
+| MixVLM | 2025 | 多路视觉编码混合融合 |
+| EdgeVLM | 2025 | 端侧轻量多模态推理 |
 | InternVL2 | 2024 | 多尺度多模态升级版 |
 | XGen-MM | 2024 | 指令跟随多模态模型 |
 | Aria | 2024 | 端到端视觉对话助手 |
@@ -491,8 +501,8 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Vision | Panoptic Segmentation | 60 | `scripts/panoptic_segmentation_zoo.py` |
 | Vision | Lane Detection | 44 | `scripts/lane_detection_zoo.py` |
 | Vision | Co-segmentation | 26 | `scripts/co_segmentation_zoo.py` |
-| Vision | Fine-Grained Recognition | 102 | `scripts/fine_grained_recognition_zoo.py` |
-| Vision | Action Recognition | 52 | `scripts/action_recognition_zoo.py` |
+| Vision | Fine-Grained Recognition | 112 | `scripts/fine_grained_recognition_zoo.py` |
+| Vision | Action Recognition | 62 | `scripts/action_recognition_zoo.py` |
 | Vision | MOT (2D) | 100 | `scripts/mot_zoo.py` |
 | NLP | Text Encoders | 49 族 / 813 IDs | `scripts/nlp_zoo.py` |
 | Point Cloud | Backbones | 30 族 / 64 IDs | `scripts/pointcloud_zoo.py` |
@@ -500,10 +510,10 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Point Cloud | 3D Segmentation | 60 | `scripts/segmentation3d_zoo.py` |
 | Point Cloud | 3D Instance Seg | 50 | `scripts/instance_segmentation3d_zoo.py` |
 | Point Cloud | 3D Tracking | 140 | `scripts/tracking3d_zoo.py` |
-| Multimodal | VLM | 60 | `scripts/vlm_zoo.py` |
+| Multimodal | VLM | 70 | `scripts/vlm_zoo.py` |
 | Generative | GAN | 44 | `scripts/gan_zoo.py` |
 | Generative | Diffusion | 32 | `scripts/diffusion_zoo.py` |
-| Federated | FL Strategies | 66 | `scripts/federated_zoo.py` |
+| Federated | FL Strategies | 76 | `scripts/federated_zoo.py` |
 
 所有 Zoo 遵循相同的设计模式：
 
@@ -716,9 +726,9 @@ python scripts/tracking3d_zoo.py --smoke dltrk3d:centerpoint_tiny
 
 ---
 
-### VLM Zoo / 60 Families
+### VLM Zoo / 70 Families
 
-> 视觉语言模型族：60 个 Family，从 CLIP 到 Grounded-VLM，纯 PyTorch 教学实现
+> 视觉语言模型族：70 个 Family，从 CLIP 到 EdgeVLM，纯 PyTorch 教学实现
 
 ```bash
 python scripts/vlm_zoo.py --list
@@ -776,7 +786,7 @@ python scripts/diffusion_zoo.py --smoke dldiff:ddpm_tiny
 
 ## Federated Learning Zoo
 
-> 联邦学习策略库 — 66 种联邦优化 / 个性化 / 隐私策略，纯 PyTorch 教学实现
+> 联邦学习策略库 — 76 种联邦优化 / 个性化 / 隐私策略，纯 PyTorch 教学实现
 
 ```bash
 python scripts/federated_zoo.py --list
@@ -785,7 +795,7 @@ python scripts/federated_zoo.py --timeline
 ```
 
 <details>
-<summary><b>全部 66 种策略（按 13 个分组）</b></summary>
+<summary><b>全部 76 种策略（按 13 个分组）</b></summary>
 
 | 分组 | 策略 | 说明 |
 |------|------|------|
