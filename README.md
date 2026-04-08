@@ -587,6 +587,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Scene Graph Generation / 场景图生成 | 10 | `dlhub/vision/scene_graph_generation/` |
 | Camouflaged Object Detection / 伪装物体检测 | 10 | `dlhub/vision/camouflaged_object_detection/` |
 
+#### Additional New Directions / 新增研究方向（五）
+> 这一批继续拓展此前未建包的方向，覆盖编辑、融合、匹配、定位和时序理解类任务。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Image Editing / 图像编辑 | 10 | `dlhub/vision/image_editing/` |
+| Multi-focus Fusion / 多焦点图像融合 | 10 | `dlhub/vision/multi_focus_fusion/` |
+| Online Handwriting Recognition / 联机手写汉字识别 | 10 | `dlhub/vision/online_handwriting_recognition/` |
+| Lane Topology Estimation / 车道图估计 | 10 | `dlhub/vision/lane_topology_estimation/` |
+| Remote Sensing Change Detection / 遥感变化检测 | 10 | `dlhub/vision/remote_sensing_change_detection/` |
+| Cross-view Geo-localization / 跨视图地理定位 | 10 | `dlhub/vision/cross_view_geo_localization/` |
+| Video Understanding / 视频理解 | 10 | `dlhub/vision/video_understanding/` |
+| Video Enhancement / 视频增强 | 10 | `dlhub/vision/video_enhancement/` |
+| Image Matching / 图像匹配 | 10 | `dlhub/vision/image_matching/` |
+| Feature Matching / 特征匹配 | 10 | `dlhub/vision/feature_matching/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
