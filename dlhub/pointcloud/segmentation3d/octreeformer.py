@@ -56,5 +56,5 @@ if __name__ == "__main__":
     )
     x = torch.randn(2, 128, 3)
     y = model(x)
-    (y.mean()).backward()
+    y.mean().backward()
     print("logits:", tuple(y.shape))

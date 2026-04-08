@@ -51,10 +51,8 @@ def build_retnet3d_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    model = build_retnet3d_segmenter3d(
-        in_channels=3, num_classes=6, variant="retnet3d_tiny"
-    )
+    model = build_retnet3d_segmenter3d(in_channels=3, num_classes=6, variant="retnet3d_tiny")
     x = torch.randn(2, 128, 3)
     y = model(x)
-    (y.mean()).backward()
+    y.mean().backward()
     print("logits:", tuple(y.shape))
