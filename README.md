@@ -571,6 +571,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | License Plate Recognition / 车牌识别 | 10 | `dlhub/vision/license_plate_recognition/` |
 | Sketch Retrieval / 草图检索 | 10 | `dlhub/vision/sketch_retrieval/` |
 
+#### Additional New Directions / 新增研究方向（四）
+> 继续沿用“一方向一 worktree”的方式扩展此前未建包的视觉任务，每个方向先补 10 个 family。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Image Matting / 图像抠图 | 10 | `dlhub/vision/image_matting/` |
+| Image Harmonization / 图像协调 | 10 | `dlhub/vision/image_harmonization/` |
+| Image Inpainting / 图像修复 | 10 | `dlhub/vision/image_inpainting/` |
+| Image Fusion / 图像融合 | 10 | `dlhub/vision/image_fusion/` |
+| Image Stitching / 图像拼接 | 10 | `dlhub/vision/image_stitching/` |
+| Temporal Action Localization / 时序动作定位 | 10 | `dlhub/vision/temporal_action_localization/` |
+| Gaze Estimation / 视线估计 | 10 | `dlhub/vision/gaze_estimation/` |
+| Trajectory Prediction / 轨迹预测 | 10 | `dlhub/vision/trajectory_prediction/` |
+| Scene Graph Generation / 场景图生成 | 10 | `dlhub/vision/scene_graph_generation/` |
+| Camouflaged Object Detection / 伪装物体检测 | 10 | `dlhub/vision/camouflaged_object_detection/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
