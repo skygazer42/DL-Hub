@@ -619,6 +619,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Reflection Removal / 反光去除 | 10 | `dlhub/vision/reflection_removal/` |
 | Novel View Synthesis / 新视角合成 | 10 | `dlhub/vision/novel_view_synthesis/` |
 
+#### Additional New Directions / 新增研究方向（七）
+> 继续向此前未建包的细分视觉方向扩展，聚焦匹配、解析、问答和跨模态定位类任务。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Optical Flow / 光流估计 | 10 | `dlhub/vision/optical_flow/` |
+| Person Search / 行人搜索 | 10 | `dlhub/vision/person_search/` |
+| Human Parsing / 人体解析 | 10 | `dlhub/vision/human_parsing/` |
+| Scene Text Spotting / 场景文本检测识别一体化 | 10 | `dlhub/vision/scene_text_spotting/` |
+| Stereo Matching / 双目匹配 | 10 | `dlhub/vision/stereo_matching/` |
+| Video Captioning / 视频描述 | 10 | `dlhub/vision/video_captioning/` |
+| Video Question Answering / 视频问答 | 10 | `dlhub/vision/video_question_answering/` |
+| Few-shot Recognition / 小样本识别 | 10 | `dlhub/vision/few_shot_recognition/` |
+| Interactive Segmentation / 交互式分割 | 10 | `dlhub/vision/interactive_segmentation/` |
+| Human Mesh Recovery / 人体网格恢复 | 10 | `dlhub/vision/human_mesh_recovery/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
