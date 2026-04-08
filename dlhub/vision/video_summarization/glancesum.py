@@ -1,0 +1,66 @@
+from __future__ import annotations
+
+import torch
+from torch import nn
+
+from ._common import (
+    SegmentPooler,
+    TemporalAttentionScorer,
+    TemporalGRUScorer,
+    TinyFrameEncoder,
+    scores_to_mask,
+)
+
+_VARIANTS: dict[str, dict[str, int]] = {
+    "glancesum_tiny": {"width": 24, "depth": 2},
+    "glancesum_small": {"width": 32, "depth": 3},
+    "glancesum_base": {"width": 48, "depth": 4},
+}
+
+
+class GlancesumVideoSummarizer(nn.Module):
+    def __init__(self, *, in_channels: int, width: int, depth: int, dropout: float = 0.0) -> None:
+        super().__init__()
+        self.encoder = TinyFrameEncoder(
+            in_channels=int(in_channels),
+            width=int(width),
+            depth=int(depth),
+            dropout=float(dropout),
+        )
+        self.scorer = TemporalGRUScorer(dim=int(self.encoder.out_dim), hidden_dim=max(16, int(self.encoder.out_dim)), layers=max(1, int(depth) - 1), dropout=float(dropout))
+
+    def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
+        feat = self.encoder(video)
+        scores = torch.sigmoid(self.scorer(feat))
+return {"scores": scores, "summary_mask": scores_to_mask(scores)}
+
+
+def build_glancesum_video_summarizer(
+    *,
+    in_channels: int,
+    seq_len: int = 8,
+    image_size: int = 64,
+    variant: str = "glancesum_small",
+    width_mult: float = 1.0,
+    dropout: float = 0.0,
+) -> nn.Module:
+    del seq_len, image_size
+    cfg = _VARIANTS[str(variant).lower().strip()]
+    width = max(8, int(int(cfg["width"]) * float(width_mult)))
+    return GlancesumVideoSummarizer(
+        in_channels=int(in_channels),
+        width=width,
+        depth=int(cfg["depth"]),
+        dropout=float(dropout),
+    )
+
+
+if __name__ == "__main__":
+    torch.manual_seed(0)
+    x = torch.randn(2, 8, 3, 32, 32)
+    m = build_glancesum_video_summarizer(in_channels=3, variant="glancesum_tiny", width_mult=0.5)
+    out = m(x)
+    print("glancesum_tiny", {k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
+    loss = sum(v.mean() for v in out.values() if isinstance(v, torch.Tensor))
+    loss.backward()
+    print("ok")
