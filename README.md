@@ -603,6 +603,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Image Matching / 图像匹配 | 10 | `dlhub/vision/image_matching/` |
 | Feature Matching / 特征匹配 | 10 | `dlhub/vision/feature_matching/` |
 
+#### Additional New Directions / 新增研究方向（六）
+> 继续补全此前未建包的生成式/理解式视觉任务，每个方向仍然先落地 10 个 family。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Low-light Enhancement / 低光增强 | 10 | `dlhub/vision/low_light_enhancement/` |
+| Image Colorization / 图像上色 | 10 | `dlhub/vision/image_colorization/` |
+| Referring Expression Comprehension / 指代表达理解 | 10 | `dlhub/vision/referring_expression_comprehension/` |
+| Referring Expression Segmentation / 指代表达分割 | 10 | `dlhub/vision/referring_expression_segmentation/` |
+| Open-vocabulary Segmentation / 开放词汇分割 | 10 | `dlhub/vision/open_vocabulary_segmentation/` |
+| Video Temporal Grounding / 视频时序定位 | 10 | `dlhub/vision/video_temporal_grounding/` |
+| Document Understanding / 文档理解 | 10 | `dlhub/vision/document_understanding/` |
+| Shadow Removal / 阴影去除 | 10 | `dlhub/vision/shadow_removal/` |
+| Reflection Removal / 反光去除 | 10 | `dlhub/vision/reflection_removal/` |
+| Novel View Synthesis / 新视角合成 | 10 | `dlhub/vision/novel_view_synthesis/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
