@@ -635,6 +635,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Interactive Segmentation / 交互式分割 | 10 | `dlhub/vision/interactive_segmentation/` |
 | Human Mesh Recovery / 人体网格恢复 | 10 | `dlhub/vision/human_mesh_recovery/` |
 
+#### Additional New Directions / 新增研究方向（八）
+> 继续扩展此前未建包的感知质量、跨模态推理与几何理解任务，每个方向仍然先补 10 个 family。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Image Quality Assessment / 图像质量评估 | 10 | `dlhub/vision/image_quality_assessment/` |
+| Aesthetic Assessment / 美学评分 | 10 | `dlhub/vision/aesthetic_assessment/` |
+| Video Quality Assessment / 视频质量评估 | 10 | `dlhub/vision/video_quality_assessment/` |
+| Visual Dialog / 视觉对话 | 10 | `dlhub/vision/visual_dialog/` |
+| Visual Entailment / 视觉蕴含 | 10 | `dlhub/vision/visual_entailment/` |
+| Image Captioning / 图像描述 | 10 | `dlhub/vision/image_captioning/` |
+| Phrase Grounding / 短语定位 | 10 | `dlhub/vision/phrase_grounding/` |
+| Depth Completion / 深度补全 | 10 | `dlhub/vision/depth_completion/` |
+| Surface Normal Estimation / 法线估计 | 10 | `dlhub/vision/surface_normal_estimation/` |
+| Point Cloud Registration / 点云配准 | 10 | `dlhub/pointcloud/registration/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
