@@ -555,6 +555,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Video Restoration / 视频修复 | 10 | `dlhub/vision/video_restoration/` |
 | Geo-localization / 地理定位 | 10 | `dlhub/vision/geo_localization/` |
 
+#### Additional New Directions / 新增研究方向（三）
+> 继续沿用“一方向一 worktree”的方式补全新任务包，每个方向先补 10 个 family 作为第一批骨架。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Text Detection / 文本检测 | 10 | `dlhub/vision/text_detection/` |
+| Text Recognition / 文本识别 | 10 | `dlhub/vision/text_recognition/` |
+| Video Instance Segmentation / 视频实例分割 | 10 | `dlhub/vision/video_instance_segmentation/` |
+| 3D Pose Estimation / 3D 姿态估计 | 10 | `dlhub/vision/pose_estimation_3d/` |
+| 6D Pose Estimation / 6D 姿态估计 | 10 | `dlhub/vision/sixd_pose_estimation/` |
+| Face Anti-Spoofing / 活体检测 | 10 | `dlhub/vision/face_anti_spoofing/` |
+| Facial Expression Recognition / 表情识别 | 10 | `dlhub/vision/facial_expression_recognition/` |
+| Person Attribute Recognition / 行人属性识别 | 10 | `dlhub/vision/person_attribute_recognition/` |
+| License Plate Recognition / 车牌识别 | 10 | `dlhub/vision/license_plate_recognition/` |
+| Sketch Retrieval / 草图检索 | 10 | `dlhub/vision/sketch_retrieval/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures

@@ -1,0 +1,6 @@
+from __future__ import annotations
+from ._common import build_toy_text_recognizer, smoke_test_rec
+_VARIANTS = {'aster_tiny': {'width':32,'depth':1}, 'aster_small': {'width':48,'depth':2}, 'aster_base': {'width':64,'depth':3}}
+def build_aster_text_recognizer(*, in_channels:int, vocab_size:int, seq_len:int=16, variant:str='aster_small', width_mult:float=1.0):
+    return build_toy_text_recognizer(family='aster', variants=_VARIANTS, in_channels=int(in_channels), vocab_size=int(vocab_size), seq_len=int(seq_len), variant=str(variant), width_mult=float(width_mult), decoder='gru')
+if __name__ == '__main__': smoke_test_rec(build_aster_text_recognizer, 'aster_tiny')
