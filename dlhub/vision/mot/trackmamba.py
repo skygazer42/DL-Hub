@@ -3,9 +3,9 @@ from __future__ import annotations
 from ._common import MOTTracker2D, smoke_test_tracker
 
 _VARIANTS: dict[str, dict[str, int]] = {
-    "trackmamba_tiny": {"width": 72, "num_tracks": 24},
-    "trackmamba_small": {"width": 104, "num_tracks": 36},
-    "trackmamba_base": {"width": 136, "num_tracks": 48},
+    "trackmamba_tiny": {"width": 64, "num_tracks": 32},
+    "trackmamba_small": {"width": 96, "num_tracks": 48},
+    "trackmamba_base": {"width": 128, "num_tracks": 64},
 }
 
 
@@ -21,10 +21,7 @@ def build_trackmamba_tracker(
 ):
     cfg = _VARIANTS.get(str(variant).lower().strip())
     if cfg is None:
-        raise ValueError(
-            f"Unknown variant for trackmamba: {variant!r}. Available: {sorted(_VARIANTS)}"
-        )
-
+        raise ValueError(f"Unknown variant for trackmamba: {variant!r}. Available: {sorted(_VARIANTS)}")
     _ = seq_len, image_size
     width = max(16, int(round(int(cfg["width"]) * float(width_mult))))
     return MOTTracker2D(
