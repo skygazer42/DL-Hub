@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class StratifiedMamba3DSeg(nn.Module):
-    """Stratified-Mamba3D semantic segmentation (toy): sampled token mixing then propagate."""
+    """Stratified Transformer semantic segmentation (toy): attend on sampled tokens then propagate."""
 
     def __init__(
         self,
@@ -45,11 +45,12 @@ class StratifiedMamba3DSeg(nn.Module):
         f0 = self.embed(x.to(torch.float32))
 
         n_tok = min(self.tokens, xyz.shape[1])
-        idx = farthest_point_sample(xyz, n_tok)
+        idx = farthest_point_sample(xyz, n_tok)  # (B,T)
         t_xyz = index_points(xyz, idx)
         t_feat = index_points(f0, idx)
         t_feat = self.enc(t_feat)
 
+        # Propagate sampled token features back to all points.
         f = self.fp(xyz, f0, t_xyz, t_feat, k=3)
         return self.cls(f)
 

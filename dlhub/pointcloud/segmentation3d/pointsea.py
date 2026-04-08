@@ -10,8 +10,8 @@ _VARIANTS: dict[str, dict[str, object]] = {
 }
 
 
-class PointSEASeg(nn.Module):
-    """PointSEA semantic segmentation (toy): transformer encoder + light head."""
+class PointSeaSeg(nn.Module):
+    """PointSea semantic segmentation (toy): transformer encoder + light head."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0
@@ -40,7 +40,7 @@ def build_pointsea_segmenter3d(
 ) -> nn.Module:
     cfg = _VARIANTS[str(variant)]
     d_model = int(int(cfg["d_model"]) * float(width_mult))
-    return PointSEASeg(
+    return PointSeaSeg(
         in_channels=int(in_channels),
         num_classes=int(num_classes),
         d_model=d_model,

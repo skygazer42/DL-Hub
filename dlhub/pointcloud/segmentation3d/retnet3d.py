@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class RetNet3DSeg(nn.Module):
-    """RetNet3D semantic segmentation (toy): transformer encoder on point tokens."""
+    """Point Transformer semantic segmentation (toy): transformer encoder on point tokens."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0
@@ -51,8 +51,10 @@ def build_retnet3d_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    model = build_retnet3d_segmenter3d(in_channels=3, num_classes=6, variant="retnet3d_tiny")
+    model = build_retnet3d_segmenter3d(
+        in_channels=3, num_classes=6, variant="retnet3d_tiny"
+    )
     x = torch.randn(2, 128, 3)
     y = model(x)
-    y.mean().backward()
+    (y.mean()).backward()
     print("logits:", tuple(y.shape))

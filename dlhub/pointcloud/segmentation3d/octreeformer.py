@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class OctreeFormerSeg(nn.Module):
-    """OctreeFormer semantic segmentation (toy): transformer encoder on point tokens."""
+    """Point Transformer semantic segmentation (toy): transformer encoder on point tokens."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0
@@ -56,5 +56,5 @@ if __name__ == "__main__":
     )
     x = torch.randn(2, 128, 3)
     y = model(x)
-    y.mean().backward()
+    (y.mean()).backward()
     print("logits:", tuple(y.shape))

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointM2AESeg(nn.Module):
-    """Point-M2AE semantic segmentation (toy): transformer encoder + light head."""
+    """PointM2AE semantic segmentation (toy): transformer encoder + light head."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0
