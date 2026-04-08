@@ -683,6 +683,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Food Recognition / 食物识别 | 10 | `dlhub/vision/food_recognition/` |
 | Symbol Recognition / 符号识别 | 10 | `dlhub/vision/symbol_recognition/` |
 
+#### Additional New Directions / 新增研究方向（十一）
+> 继续沿着“此前未建包”的方向扩展，补充结构感知、专业识别和工业/文档视觉任务。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Edge Detection / 边缘检测 | 10 | `dlhub/vision/edge_detection/` |
+| Line Segment Detection / 线段检测 | 10 | `dlhub/vision/line_segment_detection/` |
+| Contour Detection / 轮廓检测 | 10 | `dlhub/vision/contour_detection/` |
+| Defect Detection / 缺陷检测 | 10 | `dlhub/vision/defect_detection/` |
+| Document Layout Analysis / 文档版面分析 | 10 | `dlhub/vision/document_layout_analysis/` |
+| Table Structure Recognition / 表格结构识别 | 10 | `dlhub/vision/table_structure_recognition/` |
+| Chart Understanding / 图表理解 | 10 | `dlhub/vision/chart_understanding/` |
+| Fashion Compatibility / 时尚搭配预测 | 10 | `dlhub/vision/fashion_compatibility/` |
+| Food Recognition / 食物识别 | 10 | `dlhub/vision/food_recognition/` |
+| Symbol Recognition / 符号识别 | 10 | `dlhub/vision/symbol_recognition/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
