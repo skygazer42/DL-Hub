@@ -12,8 +12,8 @@ _VARIANTS: dict[str, dict[str, object]] = {
 }
 
 
-class ISBNet3D(nn.Module):
-    """ISBNet3D (toy): initial queries, then refine by pooling point features with masks."""
+class ISBNet(nn.Module):
+    """ISBNet (toy): initial queries, then refine by pooling point features with masks."""
 
     def __init__(
         self,
@@ -62,7 +62,7 @@ def build_isbnet_instance_segmenter3d(
 ) -> nn.Module:
     cfg = _VARIANTS[str(variant)]
     d_model = int(int(cfg["d_model"]) * float(width_mult))
-    return ISBNet3D(
+    return ISBNet(
         in_channels=int(in_channels),
         num_classes=int(num_classes),
         d_model=d_model,

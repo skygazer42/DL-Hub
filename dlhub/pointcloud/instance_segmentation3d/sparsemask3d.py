@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SparseMask3D(nn.Module):
-    """SparseSparseMask3D (toy): transformer point encoder + query mask head."""
+    """SparseMask3D (toy): transformer point encoder + query mask head."""
 
     def __init__(
         self,
