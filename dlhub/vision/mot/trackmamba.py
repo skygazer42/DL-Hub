@@ -1,0 +1,42 @@
+from __future__ import annotations
+
+from ._common import MOTTracker2D, smoke_test_tracker
+
+_VARIANTS: dict[str, dict[str, int]] = {
+    "trackmamba_tiny": {"width": 72, "num_tracks": 24},
+    "trackmamba_small": {"width": 104, "num_tracks": 36},
+    "trackmamba_base": {"width": 136, "num_tracks": 48},
+}
+
+
+def build_trackmamba_tracker(
+    *,
+    in_channels: int,
+    num_classes: int,
+    seq_len: int = 4,
+    image_size: int = 64,
+    variant: str = "trackmamba_tiny",
+    width_mult: float = 1.0,
+    dropout: float = 0.0,
+):
+    cfg = _VARIANTS.get(str(variant).lower().strip())
+    if cfg is None:
+        raise ValueError(
+            f"Unknown variant for trackmamba: {variant!r}. Available: {sorted(_VARIANTS)}"
+        )
+
+    _ = seq_len, image_size
+    width = max(16, int(round(int(cfg["width"]) * float(width_mult))))
+    return MOTTracker2D(
+        family="trackmamba",
+        group="query_transformer",
+        in_channels=int(in_channels),
+        num_classes=int(num_classes),
+        width=width,
+        num_tracks=int(cfg["num_tracks"]),
+        dropout=float(dropout),
+    )
+
+
+if __name__ == "__main__":
+    smoke_test_tracker(build_trackmamba_tracker, "trackmamba_tiny")
