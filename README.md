@@ -522,6 +522,23 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 - **统一接口** — `build(arch_id, num_classes=...)` 即可构建任意模型
 - **CLI 工具** — `--list` 列表、`--search` 搜索、`--smoke` 冒烟测试
 
+#### Emerging Research Directions / 新研究方向
+
+> 这一批补充的是此前尚未系统展开的方向，每个方向先落地 10 个 toy-first family，便于后续继续扩展。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| ReID / 行人重识别 | 10 | `dlhub/vision/reid/` |
+| OCR / 文字识别 | 10 | `dlhub/vision/ocr/` |
+| Depth Estimation / 深度估计 | 10 | `dlhub/vision/depth_estimation/` |
+| Dehazing / 去雾 | 10 | `dlhub/vision/dehazing/` |
+| Deblurring / 去模糊 | 10 | `dlhub/vision/deblurring/` |
+| Saliency Detection / 显著性检测 | 10 | `dlhub/vision/saliency_detection/` |
+| Anomaly Detection / 异常检测 | 10 | `dlhub/vision/anomaly_detection/` |
+| Image Retrieval / 图像检索 | 10 | `dlhub/vision/image_retrieval/` |
+| Medical Segmentation / 医学分割 | 10 | `dlhub/vision/medical_segmentation/` |
+| Remote Sensing Detection / 遥感检测 | 10 | `dlhub/vision/remote_sensing_detection/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
