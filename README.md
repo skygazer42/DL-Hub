@@ -456,13 +456,13 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | 领域 | 子系统 | 算法族 | CLI 脚本 |
 |------|--------|--------|---------|
 | Vision | Backbones | 208 族 / 736 IDs | `scripts/vision_zoo.py` |
-| Vision | Detection (2D) | ~120 | `scripts/detection_zoo.py` |
-| Vision | Instance Segmentation | 40 | `scripts/instance_segmentation_zoo.py` |
-| Vision | Panoptic Segmentation | 40 | `scripts/panoptic_segmentation_zoo.py` |
+| Vision | Detection (2D) | ~130 | `scripts/detection_zoo.py` |
+| Vision | Instance Segmentation | 50 | `scripts/instance_segmentation_zoo.py` |
+| Vision | Panoptic Segmentation | 50 | `scripts/panoptic_segmentation_zoo.py` |
 | Vision | Lane Detection | 34 | `scripts/lane_detection_zoo.py` |
 | Vision | Co-segmentation | 16 | `scripts/co_segmentation_zoo.py` |
-| Vision | Fine-Grained Recognition | 72 | `scripts/fine_grained_recognition_zoo.py` |
-| Vision | Action Recognition | 22 | `scripts/action_recognition_zoo.py` |
+| Vision | Fine-Grained Recognition | 82 | `scripts/fine_grained_recognition_zoo.py` |
+| Vision | Action Recognition | 32 | `scripts/action_recognition_zoo.py` |
 | Vision | MOT (2D) | 90 | `scripts/mot_zoo.py` |
 | NLP | Text Encoders | 49 族 / 813 IDs | `scripts/nlp_zoo.py` |
 | Point Cloud | Backbones | 30 族 / 64 IDs | `scripts/pointcloud_zoo.py` |
@@ -546,7 +546,7 @@ python scripts/mot_zoo.py --smoke mot2d:sort_tiny
 
 #### Detection Zoo (2D)
 
-> 2D 目标检测模型族：Anchor-based / Anchor-free / Transformer-based / 轻量级检测器，~120 算法
+> 2D 目标检测模型族：Anchor-based / Anchor-free / Transformer-based / 轻量级检测器，~130 算法
 
 ```bash
 python scripts/detection_zoo.py --list
