@@ -93,7 +93,7 @@
 - [Learning Tracks](#-learning-tracks)
   - [Foundations](#-foundations--基础) · [Vision](#-vision--视觉) · [NLP](#-nlp--自然语言处理) · [GNN](#-gnn--图神经网络) · [Point Cloud](#-point-cloud--点云) · [Generative](#-generative--生成模型) · [LLM](#-llm--大语言模型) · [Multimodal](#-multimodal--多模态)
 - [Model Zoo](#-model-zoo)
-  - [Vision Zoo (736 architectures)](#vision-zoo--736-architectures) · [NLP Zoo (813 architectures)](#nlp-zoo--813-architectures) · [Point Cloud Zoo (64 architectures)](#point-cloud-zoo--64-architectures) · [VLM Zoo (20 families)](#vlm-zoo--20-families) · [Generative Zoo (GAN + Diffusion)](#generative-zoo--gan--diffusion)
+  - [Vision Zoo (736 architectures)](#vision-zoo--736-architectures) · [NLP Zoo (813 architectures)](#nlp-zoo--813-architectures) · [Point Cloud Zoo (64 architectures)](#point-cloud-zoo--64-architectures) · [VLM Zoo (30 families)](#vlm-zoo--30-families) · [Generative Zoo (GAN + Diffusion)](#generative-zoo--gan--diffusion)
 - [Federated Learning Zoo](#-federated-learning-zoo)
 - [NumPy ML Algorithms](#-numpy-ml-algorithms)
 - [Optimization Toolkit](#-optimization-toolkit)
@@ -406,7 +406,7 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 ```
 
 <details>
-<summary><b>VLM Zoo — 20 个视觉语言模型族（教学实现 + 时间线）</b></summary>
+<summary><b>VLM Zoo — 30 个视觉语言模型族（教学实现 + 时间线）</b></summary>
 
 | Family | 年份 | 核心创新 |
 |--------|------|---------|
@@ -430,6 +430,16 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | CogVLM | 2023 | LLM 层内视觉专家 |
 | PaLI-X | 2023 | 缩放版 Pathways 图文模型 |
 | Qwen-VL | 2023 | 通义千问视觉语言模型 |
+| Ferret | 2023 | 指点式区域感知视觉语言建模 |
+| Emu2 | 2023 | 多模态生成与理解统一 |
+| Fuyu | 2023 | 原生 patch 序列视觉输入 |
+| IDEFICS2 | 2024 | 开放式多图对话助手 |
+| InternVL | 2024 | 多尺度高分辨率视觉编码 |
+| Phi-3-Vision | 2024 | 轻量视觉语言推理 |
+| Janus | 2024 | 理解与生成统一视觉前端 |
+| Ovis | 2024 | 文档/OCR 场景优化的视觉语言助手 |
+| Cambrian | 2024 | 多视觉塔融合与蒸馏 |
+| Molmo | 2024 | 开放数据配方驱动的多模态助手 |
 
 > 完整列表与变体见 `python scripts/vlm_zoo.py --list`
 
@@ -449,20 +459,20 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Vision | Detection (2D) | ~120 | `scripts/detection_zoo.py` |
 | Vision | Instance Segmentation | 40 | `scripts/instance_segmentation_zoo.py` |
 | Vision | Panoptic Segmentation | 40 | `scripts/panoptic_segmentation_zoo.py` |
-| Vision | Lane Detection | 24 | `scripts/lane_detection_zoo.py` |
-| Vision | Co-segmentation | 6 | `scripts/co_segmentation_zoo.py` |
+| Vision | Lane Detection | 34 | `scripts/lane_detection_zoo.py` |
+| Vision | Co-segmentation | 16 | `scripts/co_segmentation_zoo.py` |
 | Vision | Fine-Grained Recognition | 72 | `scripts/fine_grained_recognition_zoo.py` |
 | Vision | Action Recognition | 22 | `scripts/action_recognition_zoo.py` |
-| Vision | MOT (2D) | 81 | `scripts/mot_zoo.py` |
+| Vision | MOT (2D) | 90 | `scripts/mot_zoo.py` |
 | NLP | Text Encoders | 49 族 / 813 IDs | `scripts/nlp_zoo.py` |
 | Point Cloud | Backbones | 30 族 / 64 IDs | `scripts/pointcloud_zoo.py` |
-| Point Cloud | 3D Detection | 40 | `scripts/detection3d_zoo.py` |
-| Point Cloud | 3D Segmentation | 40 | `scripts/segmentation3d_zoo.py` |
-| Point Cloud | 3D Instance Seg | 30 | `scripts/instance_segmentation3d_zoo.py` |
+| Point Cloud | 3D Detection | 50 | `scripts/detection3d_zoo.py` |
+| Point Cloud | 3D Segmentation | 50 | `scripts/segmentation3d_zoo.py` |
+| Point Cloud | 3D Instance Seg | 40 | `scripts/instance_segmentation3d_zoo.py` |
 | Point Cloud | 3D Tracking | 131 | `scripts/tracking3d_zoo.py` |
-| Multimodal | VLM | 20 | `scripts/vlm_zoo.py` |
-| Generative | GAN | 24 | `scripts/gan_zoo.py` |
-| Generative | Diffusion | 12 | `scripts/diffusion_zoo.py` |
+| Multimodal | VLM | 30 | `scripts/vlm_zoo.py` |
+| Generative | GAN | 34 | `scripts/gan_zoo.py` |
+| Generative | Diffusion | 22 | `scripts/diffusion_zoo.py` |
 | Federated | FL Strategies | 36 | `scripts/federated_zoo.py` |
 
 所有 Zoo 遵循相同的设计模式：
@@ -514,7 +524,7 @@ python scripts/action_recognition_zoo.py --smoke dlacts:stgcn_tiny
 
 #### Multi-Object Tracking (MOT) Local Zoo
 
-> 多目标跟踪模型族补充：2D 单相机 MOT，80 算法族（每族 `tiny/small/base`），toy-first, no downloads
+> 多目标跟踪模型族补充：2D 单相机 MOT，90 算法族（每族 `tiny/small/base`），toy-first, no downloads
 
 ```bash
 python scripts/mot_zoo.py --list
@@ -560,7 +570,7 @@ python scripts/panoptic_segmentation_zoo.py --smoke dlpanseg:panfpn_r50_tiny
 
 #### Lane Detection Zoo
 
-> 车道线检测模型族：24 算法族，Anchor / Parametric / Segmentation / Keypoint / Transformer 五大范式
+> 车道线检测模型族：34 算法族，Anchor / Parametric / Segmentation / Keypoint / Transformer 五大范式
 
 ```bash
 python scripts/lane_detection_zoo.py --list
@@ -570,7 +580,7 @@ python scripts/lane_detection_zoo.py --smoke dllane:laneatt_r18_tiny
 
 #### Co-segmentation Zoo
 
-> 协同分割模型族：6 算法族，Group / Pair 级别图像共分割
+> 协同分割模型族：16 算法族，Group / Pair 级别图像共分割
 
 ```bash
 python scripts/co_segmentation_zoo.py --list
@@ -637,7 +647,7 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
 
 #### 3D Detection Zoo
 
-> 3D 目标检测模型族：40 算法族，Point-based / Voxel-based / Pillar-based / Multi-modal
+> 3D 目标检测模型族：50 算法族，Point-based / Voxel-based / Pillar-based / Multi-modal
 
 ```bash
 python scripts/detection3d_zoo.py --list
@@ -647,7 +657,7 @@ python scripts/detection3d_zoo.py --smoke dldet3d:pointpillars_tiny
 
 #### 3D Segmentation Zoo
 
-> 3D 语义分割模型族：40 算法族，Point / Voxel / Range-view / Fusion
+> 3D 语义分割模型族：50 算法族，Point / Voxel / Range-view / Fusion
 
 ```bash
 python scripts/segmentation3d_zoo.py --list
@@ -657,7 +667,7 @@ python scripts/segmentation3d_zoo.py --smoke dlseg3d:randlanet_tiny
 
 #### 3D Instance Segmentation Zoo
 
-> 3D 实例分割模型族：30 算法族，Proposal-based / Grouping-based / Panoptic
+> 3D 实例分割模型族：40 算法族，Proposal-based / Grouping-based / Panoptic
 
 ```bash
 python scripts/instance_segmentation3d_zoo.py --list
@@ -676,9 +686,9 @@ python scripts/tracking3d_zoo.py --smoke dltrk3d:centerpoint_tiny
 
 ---
 
-### VLM Zoo / 20 Families
+### VLM Zoo / 30 Families
 
-> 视觉语言模型族：20 个 Family，从 CLIP 到 Qwen-VL，纯 PyTorch 教学实现
+> 视觉语言模型族：30 个 Family，从 CLIP 到 Molmo，纯 PyTorch 教学实现
 
 ```bash
 python scripts/vlm_zoo.py --list
@@ -693,7 +703,7 @@ python scripts/vlm_zoo.py --smoke dlvlm:clip_tiny
 
 ### Generative Zoo / GAN + Diffusion
 
-> 生成模型族：GAN（24 算法族）+ Diffusion（12 算法族），纯 PyTorch toy 实现
+> 生成模型族：GAN（34 算法族）+ Diffusion（22 算法族），纯 PyTorch toy 实现
 
 ```bash
 # GAN Zoo
