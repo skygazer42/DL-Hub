@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class InstFormer3D(nn.Module):
-    """InstFormer3D (toy): transformer instance queries over point features."""
+    """InstFormer3D (toy): transformer point encoder + query mask head."""
 
     def __init__(
         self,
@@ -58,11 +58,7 @@ def build_instformer3d_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_instformer3d_instance_segmenter3d(
-        in_channels=3,
-        num_classes=6,
-        variant="instformer3d_tiny",
-    )
+    m = build_instformer3d_instance_segmenter3d(in_channels=3, num_classes=6, variant="instformer3d_tiny")
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()

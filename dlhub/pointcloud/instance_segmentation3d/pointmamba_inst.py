@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointMambaInst(nn.Module):
-    """PointMamba-Inst (toy): query refinement over point tokens for instance masks."""
+    """PointMambaInst (toy): initial queries, then refine by pooling point features with masks."""
 
     def __init__(
         self,
@@ -37,17 +37,18 @@ class PointMambaInst(nn.Module):
         self.q2 = nn.Sequential(nn.Linear(d, d), nn.ReLU(inplace=True), nn.Linear(d, d))
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
-        xyz, feat = self.enc(points)
+        xyz, feat = self.enc(points)  # (B,N,D)
         out1 = self.head1(xyz, feat)
-        mask_prob = out1["mask_logits"].sigmoid()
-        weights = mask_prob / mask_prob.sum(dim=-1, keepdim=True).clamp_min(1e-6)
-        inst_feat = torch.einsum("bkn,bnd->bkd", weights, feat)
-        refined = inst_feat + 0.1 * self.q2(inst_feat).tanh()
-        scale = math.sqrt(feat.shape[-1])
+        m1 = out1["mask_logits"].sigmoid()  # (B,K,N)
+        w = m1 / m1.sum(dim=-1, keepdim=True).clamp_min(1e-6)
+        inst_feat = torch.einsum("bkn,bnd->bkd", w, feat)  # (B,K,D)
+
+        inst_feat2 = inst_feat + 0.1 * self.q2(inst_feat).tanh()
+        d = feat.shape[-1]
         mask_logits = torch.einsum(
-            "bkd,bnd->bkn", l2_normalize(refined), l2_normalize(feat)
-        ) * scale
-        cls_logits = self.cls2(refined)
+            "bkd,bnd->bkn", l2_normalize(inst_feat2), l2_normalize(feat)
+        ) * math.sqrt(d)
+        cls_logits = self.cls2(inst_feat2)
         return {"mask_logits": mask_logits, "cls_logits": cls_logits}
 
 
@@ -74,9 +75,7 @@ def build_pointmamba_inst_instance_segmenter3d(
 if __name__ == "__main__":
     torch.manual_seed(0)
     m = build_pointmamba_inst_instance_segmenter3d(
-        in_channels=3,
-        num_classes=6,
-        variant="pointmamba_inst_tiny",
+        in_channels=3, num_classes=6, variant="pointmamba_inst_tiny"
     )
     x = torch.randn(2, 128, 3)
     out = m(x)
