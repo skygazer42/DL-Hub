@@ -651,6 +651,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Surface Normal Estimation / 法线估计 | 10 | `dlhub/vision/surface_normal_estimation/` |
 | Point Cloud Registration / 点云配准 | 10 | `dlhub/pointcloud/registration/` |
 
+#### Additional New Directions / 新增研究方向（九）
+> 继续覆盖此前未建包的质量评估、视觉推理与补全类任务，每个方向依旧先补 10 个 family。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Image Quality Assessment / 图像质量评估 | 10 | `dlhub/vision/image_quality_assessment/` |
+| Aesthetic Assessment / 美学评分 | 10 | `dlhub/vision/aesthetic_assessment/` |
+| Video Quality Assessment / 视频质量评估 | 10 | `dlhub/vision/video_quality_assessment/` |
+| Visual Dialog / 视觉对话 | 10 | `dlhub/vision/visual_dialog/` |
+| Visual Entailment / 视觉蕴含 | 10 | `dlhub/vision/visual_entailment/` |
+| Image Captioning / 图像描述 | 10 | `dlhub/vision/image_captioning/` |
+| Phrase Grounding / 短语定位 | 10 | `dlhub/vision/phrase_grounding/` |
+| Depth Completion / 深度补全 | 10 | `dlhub/vision/depth_completion/` |
+| Surface Normal Estimation / 法线估计 | 10 | `dlhub/vision/surface_normal_estimation/` |
+| Point Cloud Registration / 点云配准 | 10 | `dlhub/pointcloud/registration/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
