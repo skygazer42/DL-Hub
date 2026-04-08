@@ -667,6 +667,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Surface Normal Estimation / 法线估计 | 10 | `dlhub/vision/surface_normal_estimation/` |
 | Point Cloud Registration / 点云配准 | 10 | `dlhub/pointcloud/registration/` |
 
+#### Additional New Directions / 新增研究方向（十）
+> 继续扩展此前未建包的底层结构感知与专业视觉任务，每个方向仍然先补 10 个 family。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Edge Detection / 边缘检测 | 10 | `dlhub/vision/edge_detection/` |
+| Line Segment Detection / 线段检测 | 10 | `dlhub/vision/line_segment_detection/` |
+| Contour Detection / 轮廓检测 | 10 | `dlhub/vision/contour_detection/` |
+| Defect Detection / 缺陷检测 | 10 | `dlhub/vision/defect_detection/` |
+| Document Layout Analysis / 文档版面分析 | 10 | `dlhub/vision/document_layout_analysis/` |
+| Table Structure Recognition / 表格结构识别 | 10 | `dlhub/vision/table_structure_recognition/` |
+| Chart Understanding / 图表理解 | 10 | `dlhub/vision/chart_understanding/` |
+| Fashion Compatibility / 时尚搭配预测 | 10 | `dlhub/vision/fashion_compatibility/` |
+| Food Recognition / 食物识别 | 10 | `dlhub/vision/food_recognition/` |
+| Symbol Recognition / 符号识别 | 10 | `dlhub/vision/symbol_recognition/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
