@@ -539,6 +539,22 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Medical Segmentation / 医学分割 | 10 | `dlhub/vision/medical_segmentation/` |
 | Remote Sensing Detection / 遥感检测 | 10 | `dlhub/vision/remote_sensing_detection/` |
 
+#### Additional New Directions / 新增研究方向（二）
+> 这一批继续按“一个 worktree 一个方向”补充全新方向，每个方向同样先落地 10 个 family。
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| HOI Detection / 人物交互检测 | 10 | `dlhub/vision/hoi_detection/` |
+| Weakly Supervised Detection / 弱监督检测 | 10 | `dlhub/vision/weakly_supervised_detection/` |
+| Weakly Supervised Segmentation / 弱监督分割 | 10 | `dlhub/vision/weakly_supervised_segmentation/` |
+| Video Object Segmentation / 视频目标分割 | 10 | `dlhub/vision/video_object_segmentation/` |
+| Crowd Counting / 人群计数 | 10 | `dlhub/vision/crowd_counting/` |
+| Face Detection / 人脸检测 | 10 | `dlhub/vision/face_detection/` |
+| Face Alignment / 人脸对齐 | 10 | `dlhub/vision/face_alignment/` |
+| Human Pose Estimation / 人体姿态估计 | 10 | `dlhub/vision/human_pose_estimation/` |
+| Video Restoration / 视频修复 | 10 | `dlhub/vision/video_restoration/` |
+| Geo-localization / 地理定位 | 10 | `dlhub/vision/geo_localization/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
