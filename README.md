@@ -1149,7 +1149,7 @@ python scripts/federated_zoo.py --timeline
 | [`STRUCTURE.md`](docs/STRUCTURE.md) | 仓库结构详解 | 想深入了解的人 |
 | [`CONVENTIONS.md`](docs/CONVENTIONS.md) | 运行 & 实验约定 | 贡献者 |
 | [`STYLEGUIDE.md`](docs/STYLEGUIDE.md) | 代码规范 | 贡献者 |
-| [`FAQ.md`](docs/FAQ.md) | 常见问题 | 遇到问题时 |
+| [`faq.md`](docs/faq.md) | 常见问题 | 遇到问题时 |
 
 ---
 

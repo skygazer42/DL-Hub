@@ -134,21 +134,23 @@ python scripts/vision_zoo.py --smoke
 
 ---
 
-## 8. 如何只安装某个 track 的依赖？
+## 8. 如何按赛道安装依赖？
 
-部分赛道提供独立的 requirements 文件：
+目前仓库里的赛道专属依赖文件放在**仓库根目录**，不是放在 `tracks/` 子目录里。
 
 ```bash
-# 安装视觉赛道依赖
-pip install -r tracks/vision/requirements.txt
+# 安装基础依赖
+pip install -r requirements.txt
 
-# 安装 NLP 赛道依赖
-pip install -r tracks/nlp/requirements.txt
+# 安装视觉赛道额外依赖
+pip install -r requirements-vision.txt
 ```
 
-!!! note "最小依赖"
+!!! note "当前约定"
 
-    如果赛道目录下没有独立的 `requirements.txt`，
-    使用根目录的 `requirements-dev.txt` 即可覆盖所有依赖。
+    如果某个赛道还没有单独的 `requirements-<track>.txt`，
+    直接使用根目录的 `requirements.txt` 或 `requirements-dev.txt` 即可。
+
+    例如目前仓库中存在 `requirements-vision.txt`，其他赛道的专属依赖文件会按需补充。
 
     ML 算法部分 (`ml_algorithms/`) 只依赖 NumPy，无需额外安装。
