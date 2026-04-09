@@ -161,4 +161,3 @@ def build_local_model(
 
 
 __all__ = ["BuildConfig", "UnknownLocalArch", "build_local_model", "list_local_arches"]
-

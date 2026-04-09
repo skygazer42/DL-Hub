@@ -51,4 +51,3 @@ git add tests/test_tracks_vision_denoising.py
 git add docs/plans/2026-04-03-deraining-regression-tests.md
 git commit -m "test: add deraining regression smoke coverage"
 ```
-

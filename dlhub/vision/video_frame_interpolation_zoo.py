@@ -86,4 +86,3 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
 
 
 __all__ = ["BuildConfig", "UnknownLocalArch", "build_local_model", "list_local_arches"]
-
