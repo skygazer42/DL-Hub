@@ -510,7 +510,9 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Point Cloud | 3D Segmentation | 60 | `scripts/segmentation3d_zoo.py` |
 | Point Cloud | 3D Instance Seg | 50 | `scripts/instance_segmentation3d_zoo.py` |
 | Point Cloud | 3D Tracking | 140 | `scripts/tracking3d_zoo.py` |
+| Point Cloud | Gaussian Splatting | 10 | `dlhub/pointcloud/gaussian_splatting_zoo.py` |
 | Multimodal | VLM | 70 | `scripts/vlm_zoo.py` |
+| Multimodal | Prompt Learning | 10 | `dlhub/multimodal/prompt_learning_zoo.py` |
 | Generative | GAN | 44 | `scripts/gan_zoo.py` |
 | Generative | Diffusion | 32 | `scripts/diffusion_zoo.py` |
 | Federated | FL Strategies | 76 | `scripts/federated_zoo.py` |
@@ -713,6 +715,21 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Image Forensics / 图像取证 | 10 | `dlhub/vision/image_forensics/` |
 | Graphical Document Parsing / 图形文档解析 | 10 | `dlhub/vision/graphical_document_parsing/` |
 | Fine-Grained Retrieval / 细粒度检索 | 10 | `dlhub/vision/fine_grained_retrieval/` |
+
+#### Additional New Directions / 新增研究方向（十三）
+> 这一批继续从用户给出的主题池里补齐仓库尚未建包的方向，覆盖视频插帧、视频稳像、视频目标检测、文档几何、AIGC、Prompt Learning 和 3DGS，每个方向先补 10 个 toy-first family。
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Video Frame Interpolation / 视频插帧 | 10 | `dlhub/vision/video_frame_interpolation/` |
+| Video Stabilization / 视频稳像 | 10 | `dlhub/vision/video_stabilization/` |
+| Video Object Detection / 视频目标检测 | 10 | `dlhub/vision/video_object_detection/` |
+| Document Dewarping / 文档矫正 | 10 | `dlhub/vision/document_dewarping/` |
+| Layout Generation / 布局生成 | 10 | `dlhub/vision/layout_generation/` |
+| Adversarial Robustness / 对抗鲁棒性 | 10 | `dlhub/vision/adversarial_robustness/` |
+| Data Augmentation / 数据增广 | 10 | `dlhub/vision/data_augmentation/` |
+| Image Synthesis / 图像合成 | 10 | `dlhub/vision/image_synthesis/` |
+| Prompt Learning / 多模态 Prompt Learning | 10 | `dlhub/multimodal/prompt_learning/` |
+| Gaussian Splatting / 3DGS | 10 | `dlhub/pointcloud/gaussian_splatting/` |
 
 ---
 
