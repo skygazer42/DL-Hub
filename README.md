@@ -699,6 +699,21 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Food Recognition / 食物识别 | 10 | `dlhub/vision/food_recognition/` |
 | Symbol Recognition / 符号识别 | 10 | `dlhub/vision/symbol_recognition/` |
 
+#### Additional New Directions / 新增研究方向（十二）
+> 继续沿着“此前未建包”的视觉-时空-多模态边界，补全提示建模、地点识别、资产与文档理解等新方向，每个方向仍然先补 10 个 family。
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Visual Prompting / 视觉提示建模 | 10 | `dlhub/vision/visual_prompting/` |
+| Visual Place Recognition / 视觉地点识别 | 10 | `dlhub/vision/visual_place_recognition/` |
+| Video Prediction / 视频预测 | 10 | `dlhub/vision/video_prediction/` |
+| Pose Tracking / 姿态跟踪 | 10 | `dlhub/vision/pose_tracking/` |
+| Pedestrian Attribute Analysis / 行人属性分析 | 10 | `dlhub/vision/pedestrian_attribute_analysis/` |
+| Object Counting / 目标计数 | 10 | `dlhub/vision/object_counting/` |
+| Multimodal Fusion / 多模态融合 | 10 | `dlhub/vision/multimodal_fusion/` |
+| Image Forensics / 图像取证 | 10 | `dlhub/vision/image_forensics/` |
+| Graphical Document Parsing / 图形文档解析 | 10 | `dlhub/vision/graphical_document_parsing/` |
+| Fine-Grained Retrieval / 细粒度检索 | 10 | `dlhub/vision/fine_grained_retrieval/` |
+
 ---
 
 ### Vision Zoo / 736 Architectures
