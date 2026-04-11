@@ -26,6 +26,23 @@
 
 </div>
 
+#### Additional New Directions / 新增研究方向（十四）
+> Continue the unseen-direction expansion with a cross-domain batch that covers relighting, transparent segmentation, event vision, point cloud motion/completion, multimodal reasoning, and text-conditioned 3D generation. Each direction again lands 10 toy-first families.
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Image Relighting / 图像重照明 | 10 | `dlhub/vision/image_relighting/` |
+| Transparent Object Segmentation / 透明物体分割 | 10 | `dlhub/vision/transparent_object_segmentation/` |
+| Video Matting / 视频抠像 | 10 | `dlhub/vision/video_matting/` |
+| Event Camera Understanding / 事件相机理解 | 10 | `dlhub/vision/event_camera_understanding/` |
+| Scene Flow / 场景流 | 10 | `dlhub/pointcloud/scene_flow/` |
+| Point Cloud Completion / 点云补全 | 10 | `dlhub/pointcloud/pointcloud_completion/` |
+| Audio-Visual Learning / 音视学习 | 10 | `dlhub/multimodal/audio_visual_learning/` |
+| Multimodal Reasoning / 多模态推理 | 10 | `dlhub/multimodal/multimodal_reasoning/` |
+| Video Diffusion / 视频扩散 | 10 | `dlhub/generative/video_diffusion/` |
+| Text-to-3D / 文本生成三维 | 10 | `dlhub/generative/text_to_3d/` |
+
+
 ---
 
 ## What You'll Build
