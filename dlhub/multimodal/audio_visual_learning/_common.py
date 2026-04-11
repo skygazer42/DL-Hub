@@ -16,6 +16,7 @@ class ToyAudioVisualModel(nn.Module):
     ) -> None:
         super().__init__()
         self.family = str(family)
+        self.audio_bins = int(audio_bins)
         c = int(width)
         layers: list[nn.Module] = [nn.Conv2d(int(in_channels), c, 3, 1, 1), nn.ReLU(inplace=True)]
         for _ in range(max(0, int(depth) - 1)):
@@ -23,7 +24,7 @@ class ToyAudioVisualModel(nn.Module):
         self.video_encoder = nn.Sequential(*layers)
         self.video_pool = nn.AdaptiveAvgPool2d(1)
         self.audio_encoder = nn.Sequential(
-            nn.Linear(int(audio_bins), c),
+            nn.Linear(self.audio_bins, c),
             nn.ReLU(inplace=True),
             nn.Linear(c, c),
         )
@@ -35,11 +36,15 @@ class ToyAudioVisualModel(nn.Module):
             raise ValueError(f"Expected input shape (B,C,H,W), got {tuple(x.shape)}")
         pooled = self.video_pool(self.video_encoder(x)).flatten(1)
         if audio is None:
-            audio = torch.zeros(x.shape[0], 32, dtype=x.dtype, device=x.device)
+            audio = torch.zeros(x.shape[0], self.audio_bins, dtype=x.dtype, device=x.device)
         else:
             audio = audio.to(torch.float32)
         if audio.ndim != 2:
             raise ValueError(f"Expected audio shape (B,F), got {tuple(audio.shape)}")
+        if int(audio.shape[1]) != self.audio_bins:
+            raise ValueError(
+                f"Expected audio feature size {self.audio_bins} for family {self.family!r}, got {int(audio.shape[1])}"
+            )
         audio_tokens = self.audio_encoder(audio)
         joint = self.fusion(torch.cat([pooled, audio_tokens], dim=1))
         return {"video_embedding": pooled, "audio_embedding": audio_tokens, "joint_embedding": joint}
@@ -54,7 +59,11 @@ def build_toy_audio_visual_model(
     width_mult: float = 1.0,
     audio_bins: int = 32,
 ):
-    spec = variants[str(variant)]
+    variant = str(variant)
+    if variant not in variants:
+        available = ", ".join(sorted(variants))
+        raise KeyError(f"Unknown {family} variant {variant!r}. Available variants: {available}")
+    spec = variants[variant]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     return ToyAudioVisualModel(
         family=str(family),
