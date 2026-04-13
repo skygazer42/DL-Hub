@@ -43,6 +43,22 @@
 | Text-to-3D / 文本生成三维 | 10 | `dlhub/generative/text_to_3d/` |
 
 
+#### Additional New Directions / Batch Fifteen
+> Continue the unseen-direction expansion with a cross-domain batch focused on deraining, shadow analysis, 3D upsampling and correspondence, open-vocabulary 3D modeling, multimodal retrieval and navigation, document VLMs, and image-conditioned video and 3D generation. Each direction lands 10 toy-first families.
+
+| Direction | Families | Package |
+|------|-----------|--------|
+| Image Deraining | 10 | `dlhub/vision/image_deraining/` |
+| Shadow Detection | 10 | `dlhub/vision/shadow_detection/` |
+| Point Cloud Upsampling | 10 | `dlhub/pointcloud/pointcloud_upsampling/` |
+| Shape Correspondence 3D | 10 | `dlhub/pointcloud/shape_correspondence_3d/` |
+| Open Vocabulary 3D | 10 | `dlhub/pointcloud/open_vocabulary_3d/` |
+| Image-Text Retrieval | 10 | `dlhub/multimodal/image_text_retrieval/` |
+| Vision-Language Navigation | 10 | `dlhub/multimodal/vision_language_navigation/` |
+| Document VLM | 10 | `dlhub/multimodal/document_vlm/` |
+| Image-to-Video | 10 | `dlhub/generative/image_to_video/` |
+| Image-to-3D | 10 | `dlhub/generative/image_to_3d/` |
+
 ---
 
 ## What You'll Build
