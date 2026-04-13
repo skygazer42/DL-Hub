@@ -43,21 +43,21 @@
 | Text-to-3D / 文本生成三维 | 10 | `dlhub/generative/text_to_3d/` |
 
 
-#### Additional New Directions / Batch Fifteen
-> Continue the unseen-direction expansion with a cross-domain batch focused on deraining, shadow analysis, 3D upsampling and correspondence, open-vocabulary 3D modeling, multimodal retrieval and navigation, document VLMs, and image-conditioned video and 3D generation. Each direction lands 10 toy-first families.
+#### Additional New Directions / 新增研究方向（十五）
+> Continue the unseen-direction expansion with a cross-domain batch focused on deraining, shadow analysis, 3D upsampling and correspondence, open-vocabulary 3D modeling, multimodal retrieval and navigation, document VLMs, and image-conditioned video and 3D generation. Each direction again lands 10 toy-first families.
 
-| Direction | Families | Package |
+| 方向 | 当前家族数 | 包路径 |
 |------|-----------|--------|
-| Image Deraining | 10 | `dlhub/vision/image_deraining/` |
-| Shadow Detection | 10 | `dlhub/vision/shadow_detection/` |
-| Point Cloud Upsampling | 10 | `dlhub/pointcloud/pointcloud_upsampling/` |
-| Shape Correspondence 3D | 10 | `dlhub/pointcloud/shape_correspondence_3d/` |
-| Open Vocabulary 3D | 10 | `dlhub/pointcloud/open_vocabulary_3d/` |
-| Image-Text Retrieval | 10 | `dlhub/multimodal/image_text_retrieval/` |
-| Vision-Language Navigation | 10 | `dlhub/multimodal/vision_language_navigation/` |
-| Document VLM | 10 | `dlhub/multimodal/document_vlm/` |
-| Image-to-Video | 10 | `dlhub/generative/image_to_video/` |
-| Image-to-3D | 10 | `dlhub/generative/image_to_3d/` |
+| Image Deraining / 图像去雨 | 10 | `dlhub/vision/image_deraining/` |
+| Shadow Detection / 阴影检测 | 10 | `dlhub/vision/shadow_detection/` |
+| Point Cloud Upsampling / 点云上采样 | 10 | `dlhub/pointcloud/pointcloud_upsampling/` |
+| Shape Correspondence 3D / 三维形状对应 | 10 | `dlhub/pointcloud/shape_correspondence_3d/` |
+| Open Vocabulary 3D / 开放词表三维 | 10 | `dlhub/pointcloud/open_vocabulary_3d/` |
+| Image-Text Retrieval / 图文检索 | 10 | `dlhub/multimodal/image_text_retrieval/` |
+| Vision-Language Navigation / 视觉语言导航 | 10 | `dlhub/multimodal/vision_language_navigation/` |
+| Document VLM / 文档 VLM | 10 | `dlhub/multimodal/document_vlm/` |
+| Image-to-Video / 图生视频 | 10 | `dlhub/generative/image_to_video/` |
+| Image-to-3D / 图生三维 | 10 | `dlhub/generative/image_to_3d/` |
 
 ---
 
