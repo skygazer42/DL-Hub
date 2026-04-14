@@ -32,6 +32,12 @@ from .prompt_learning_zoo import (
     build_local_model as build_prompt_learning_model,
     list_local_arches as list_prompt_learning_arches,
 )
+from .video_text_retrieval_zoo import (
+    BuildConfig as VideoTextRetrievalBuildConfig,
+    UnknownLocalArch as UnknownVideoTextRetrievalArch,
+    build_local_model as build_video_text_retrieval_model,
+    list_local_arches as list_video_text_retrieval_arches,
+)
 from .vision_language_navigation_zoo import (
     BuildConfig as VisionLanguageNavigationBuildConfig,
     UnknownLocalArch as UnknownVisionLanguageNavigationArch,
@@ -66,6 +72,10 @@ __all__ = [
     "UnknownPromptLearningArch",
     "build_prompt_learning_model",
     "list_prompt_learning_arches",
+    "VideoTextRetrievalBuildConfig",
+    "UnknownVideoTextRetrievalArch",
+    "build_video_text_retrieval_model",
+    "list_video_text_retrieval_arches",
     "VisionLanguageNavigationBuildConfig",
     "UnknownVisionLanguageNavigationArch",
     "build_vision_language_navigation_model",

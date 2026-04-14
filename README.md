@@ -59,6 +59,17 @@
 | Image-to-Video / 图生视频 | 10 | `dlhub/generative/image_to_video/` |
 | Image-to-3D / 图生三维 | 10 | `dlhub/generative/image_to_3d/` |
 
+#### Additional New Directions / 新增研究方向（十六，当前已落地）
+> Land the currently completed portion of the next unseen-direction cross-domain batch, covering deweathering, transparent depth estimation, point-cloud forecasting/anomaly detection, and video-text retrieval. Each landed direction contributes 10 toy-first families.
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Image Deweathering / 图像去天气 | 10 | `dlhub/vision/image_deweathering/` |
+| Transparent Depth Estimation / 透明体深度估计 | 10 | `dlhub/vision/transparent_depth_estimation/` |
+| Point Cloud Forecasting / 点云预测 | 10 | `dlhub/pointcloud/pointcloud_forecasting/` |
+| Point Cloud Anomaly Detection / 点云异常检测 | 10 | `dlhub/pointcloud/pointcloud_anomaly_detection/` |
+| Video-Text Retrieval / 视频文本检索 | 10 | `dlhub/multimodal/video_text_retrieval/` |
+
 ---
 
 ## What You'll Build
