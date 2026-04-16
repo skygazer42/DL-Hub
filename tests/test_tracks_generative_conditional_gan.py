@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 torch = pytest.importorskip("torch")
@@ -71,5 +69,4 @@ def test_conditional_gan_training_smoke(tmp_path, monkeypatch: pytest.MonkeyPatc
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
     assert (run_dir / "checkpoints" / "checkpoint.pt").is_file()
-
 

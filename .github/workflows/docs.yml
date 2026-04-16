@@ -28,18 +28,28 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Configure Pages
+        if: ${{ github.event.repository.has_pages == true }}
+        uses: actions/configure-pages@v5
+
       - name: Install dependencies
         run: pip install -r requirements-docs.txt
 
       - name: Build docs
         run: mkdocs build --strict
 
+      - name: Skip Pages deploy
+        if: ${{ github.event.repository.has_pages != true }}
+        run: echo "GitHub Pages is disabled for this repository; docs were built but deployment was skipped."
+
       - uses: actions/upload-pages-artifact@v3
+        if: ${{ github.event.repository.has_pages == true }}
         with:
           path: site
 
   deploy:
     needs: build
+    if: ${{ github.event.repository.has_pages == true }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
