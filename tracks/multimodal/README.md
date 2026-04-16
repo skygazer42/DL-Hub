@@ -2,7 +2,7 @@
 
 Goal: learn the core progression of modern vision-language modeling through small, runnable teaching implementations.
 
-This track is intentionally ordered as a sixteen-step path:
+This track is intentionally ordered as a fifty-eight-step path:
 
 1. align image and text in one embedding space
 2. fuse image and text for generation and matching
@@ -20,8 +20,50 @@ This track is intentionally ordered as a sixteen-step path:
 14. ground a text query to a temporal video segment with boundary prediction and proposal matching
 15. ground a text query to a temporal video segment with dense 2D segment-map reasoning
 16. ground a text query to a temporal video segment with fused multi-scale 2D segment-map reasoning
+17. retrieve the matching text for a short video by adding temporal contrastive alignment
+18. adapt a frozen multimodal retriever by learning only soft prompt tokens
+19. align short audio clips with text labels for event understanding
+20. fuse synchronized audio and video streams for clip-level cross-modal learning
+21. retrieve the matching clip by conditioning language on audio evidence inside a temporal multimodal scene
+22. localize when a queried event happens by fusing audio, video, and text over time
+23. answer a question from egocentric observations plus navigation state in an embodied scene
+24. reason jointly over image evidence and supporting facts to choose the correct answer
+25. navigate from visual observations plus a language instruction by fusing scene evidence with navigation state
+26. rerank matched image-text candidates with a cross-encoder style fusion scorer
+27. read short scene text directly from an image with a compact vision-language recognizer
+28. answer simple document questions by combining OCR tokens, layout cues, and a textual query
+29. reason over human and object regions jointly with a language relation query
+30. estimate a gaze target from image evidence, head-location cues, and short textual context
+31. retrieve the matching person image from an attribute-style text query with identity-aware alignment
+32. localize when a described action occurs in a short clip from fused video frames and text cues
+33. predict pedestrian attributes from a person image against a text attribute inventory
+34. classify a short clip against textual action descriptions with compact video-language alignment
+35. classify facial expressions from compact face evidence against short emotion prompts
+36. judge whether a face is authentic or spoofed from visual artifacts plus a short textual cue
+37. match a face against candidate identity prompts with compact image-text alignment
+38. verify whether two face observations belong to the same identity with multimodal pair reasoning
+39. reason about a facial attribute from image evidence plus a short attribute query
+40. judge whether a short face caption is grounded in the observed face image
+41. reason about whether a face is lightly or heavily occluded from image evidence plus a short query
+42. ground a queried facial region to a normalized image box from fused image-text evidence
+43. reason about requested facial landmarks from image evidence plus a short landmark query
+44. reason about face-part parsing from image evidence plus a short region query
+45. regress canonical facial landmarks from image evidence plus a short alignment query
+46. localize a face box from image evidence plus a short detection query
+47. retrieve the matching face identity from a small gallery with image-text alignment
+48. regress normalized yaw, pitch, and roll from face evidence plus a short pose query
+49. regress a face-centered gaze target from image evidence plus a short gaze query
+50. regress a compact person-pose state from image evidence plus a short pose query
+51. regress a compact hand-pose state from image evidence plus a short hand-pose query
+52. classify a compact gesture state from image evidence plus a short gesture query
+53. classify finger count from grayscale hand evidence plus a short count query
+54. classify handedness from grayscale hand evidence plus a short handedness query
+55. reason about palm orientation from grayscale hand evidence plus a short orientation query
+56. reason about sign-digit identity from grayscale hand evidence plus a short digit query
+57. regress normalized finger spread from grayscale hand evidence plus a short spread query
+58. classify thumb position from grayscale hand evidence plus a short thumb-position query
 
-That progression maps directly to the sixteen current lessons:
+That progression maps directly to the fifty-eight current lessons:
 
 - `lesson_01_clip_toy_retrieval/`
 - `lesson_02_blip_toy_captioning/`
@@ -39,6 +81,48 @@ That progression maps directly to the sixteen current lessons:
 - `lesson_14_bmn_toy_temporal_grounding/`
 - `lesson_15_2dtan_toy_temporal_grounding/`
 - `lesson_16_multiscale_2dtan_toy_temporal_grounding/`
+- `lesson_17_video_text_retrieval/`
+- `lesson_18_prompt_learning_vlm/`
+- `lesson_19_audio_text_understanding/`
+- `lesson_20_audio_visual_learning/`
+- `lesson_21_audio_grounded_retrieval/`
+- `lesson_22_audio_visual_event_localization/`
+- `lesson_23_embodied_question_answering/`
+- `lesson_24_multimodal_reasoning/`
+- `lesson_25_vision_language_navigation/`
+- `lesson_26_image_text_reranking/`
+- `lesson_27_scene_text_vlm_recognition/`
+- `lesson_28_document_vlm_reasoning/`
+- `lesson_29_human_object_interaction_reasoning/`
+- `lesson_30_vision_language_gaze_estimation/`
+- `lesson_31_person_search_attribute_retrieval/`
+- `lesson_32_video_text_action_localization/`
+- `lesson_33_pedestrian_attribute_recognition/`
+- `lesson_34_video_text_action_recognition/`
+- `lesson_35_face_expression_vlm_recognition/`
+- `lesson_36_face_anti_spoof_vlm_reasoning/`
+- `lesson_37_face_identity_vlm_recognition/`
+- `lesson_38_face_verification_vlm_reasoning/`
+- `lesson_39_face_attribute_vlm_reasoning/`
+- `lesson_40_face_caption_vlm_grounding/`
+- `lesson_41_face_occlusion_vlm_reasoning/`
+- `lesson_42_face_region_grounding_vlm/`
+- `lesson_43_face_landmark_vlm_reasoning/`
+- `lesson_44_face_parsing_vlm_reasoning/`
+- `lesson_45_face_alignment_vlm_reasoning/`
+- `lesson_46_face_detection_vlm_reasoning/`
+- `lesson_47_face_retrieval_vlm_reasoning/`
+- `lesson_48_face_pose_vlm_reasoning/`
+- `lesson_49_face_gaze_vlm_reasoning/`
+- `lesson_50_person_pose_vlm_reasoning/`
+- `lesson_51_hand_pose_vlm_reasoning/`
+- `lesson_52_gesture_vlm_reasoning/`
+- `lesson_53_finger_count_vlm_reasoning/`
+- `lesson_54_handedness_vlm_reasoning/`
+- `lesson_55_palm_orientation_vlm_reasoning/`
+- `lesson_56_sign_digit_vlm_reasoning/`
+- `lesson_57_finger_spread_vlm_reasoning/`
+- `lesson_58_thumb_position_vlm_reasoning/`
 
 ## Why This Track Exists
 
@@ -309,6 +393,134 @@ You should finish this lesson understanding:
 - why fine temporal scales still matter for boundary precision
 - why deep supervision across scales is a natural extension of lesson 15
 
+### Lesson 17: Video-Text Retrieval
+
+Path: `lesson_17_video_text_retrieval/`
+
+Core idea:
+
+- frame encoder plus temporal pooling
+- shared video-text embedding space
+- symmetric contrastive retrieval over short clips
+
+You should finish this lesson understanding:
+
+- how CLIP-style retrieval extends from one image to a short video
+- why temporal pooling is a simple but useful bridge into video-language alignment
+- how retrieval metrics expose cross-modal alignment quality directly
+
+### Lesson 18: Prompt Learning VLM
+
+Path: `lesson_18_prompt_learning_vlm/`
+
+Core idea:
+
+- frozen image encoder and frozen text encoder
+- learnable soft prompt tokens on the text side
+- CoOp-style adaptation without full-model finetuning
+
+You should finish this lesson understanding:
+
+- how soft prompts can adapt a multimodal model while keeping most weights frozen
+- why prompt learning is a lightweight alternative to end-to-end finetuning
+- how prompt tokens shift text embeddings to improve retrieval
+
+### Lesson 19: Audio-Text Understanding
+
+Path: `lesson_19_audio_text_understanding/`
+
+Core idea:
+
+- audio encoder plus text encoder in a shared event embedding space
+- waveform-like clips paired with natural-language event descriptions
+- one lightweight classification head beside contrastive alignment
+
+You should finish this lesson understanding:
+
+- how audio-text retrieval reuses the CLIP-style recipe on top of synthetic audio features
+- why event descriptions are a clean supervision bridge between retrieval and classification
+- how one shared embedding space can support both alignment and event prediction
+
+### Lesson 20: Audio-Visual Learning
+
+Path: `lesson_20_audio_visual_learning/`
+
+Core idea:
+
+- synchronized audio tokens and visual frame tokens
+- lightweight fusion for clip-level event understanding
+- robustness checks against missing or weak single-modality evidence
+
+You should finish this lesson understanding:
+
+- how synchronized audio and video complement each other for event recognition
+- why a small fusion block is enough to expose cross-modal gains in a toy setting
+- how clip-level multimodal classification differs from text-conditioned retrieval or generation
+
+### Lesson 21: Audio-Grounded Retrieval
+
+Path: `lesson_21_audio_grounded_retrieval/`
+
+Core idea:
+
+- language query plus audio-guided temporal retrieval
+- aligned audio and frame tokens compressed into one clip embedding
+- retrieval over short multimodal scenes rather than over one static clip label
+
+You should finish this lesson understanding:
+
+- how retrieval changes once the query must key into both text semantics and audio evidence
+- why temporal clip retrieval is a useful bridge between clip-level classification and frame-level localization
+- how one shared embedding space can support retrieval across fused audio-video scenes
+
+### Lesson 22: Audio-Visual Event Localization
+
+Path: `lesson_22_audio_visual_event_localization/`
+
+Core idea:
+
+- short audio-video windows plus a text event query
+- fused temporal tokens that score when the queried event occurs
+- frame-level localization instead of clip-level retrieval
+
+You should finish this lesson understanding:
+
+- how event localization differs from clip retrieval even when the same modalities are present
+- why a text query is useful for selecting one event out of multiple audio-visual cues
+- how temporal saliency prediction closes the gap between retrieval and grounding in multimodal teaching code
+
+### Lesson 23: Embodied Question Answering
+
+Path: `lesson_23_embodied_question_answering/`
+
+Core idea:
+
+- egocentric observations plus a small navigation-state summary
+- question answering grounded in embodied scene context
+- multimodal fusion over scene tokens, state tokens, and question tokens
+
+You should finish this lesson understanding:
+
+- how embodied QA differs from static-image VQA because scene state matters
+- why navigation metadata is a useful bridge between perception and reasoning
+- how a small fused encoder can answer grounded questions without a large world model
+
+### Lesson 24: Multimodal Reasoning
+
+Path: `lesson_24_multimodal_reasoning/`
+
+Core idea:
+
+- image evidence plus a short sequence of supporting facts
+- reasoning over multiple candidate answers instead of free-form generation
+- joint visual-text pooling for answer selection
+
+You should finish this lesson understanding:
+
+- how multimodal reasoning differs from retrieval or captioning once evidence must be combined
+- why structured fact tokens are a simple teaching scaffold for multi-hop reasoning
+- how answer classification exposes whether the model used both image and text evidence
+
 ## Lesson Matrix
 
 | Lesson | Main Task | Input Form | Model Bridge | Main Loss | Main Metrics |
@@ -329,6 +541,24 @@ You should finish this lesson understanding:
 | `lesson_14_bmn_toy_temporal_grounding` | temporal grounding | short video + event query | query-conditioned temporal encoder + BMN-lite proposal map | start BCE + end BCE + proposal MSE | start acc, end acc, mean tIoU, R@1 IoU=0.5 |
 | `lesson_15_2dtan_toy_temporal_grounding` | temporal grounding | short video + event query | dense 2D temporal segment map + 2D conv scoring | masked map MSE | mean tIoU, R@1 IoU=0.5, R@1 IoU=0.7 |
 | `lesson_16_multiscale_2dtan_toy_temporal_grounding` | temporal grounding | short video + event query | multi-scale dense temporal segment maps + fused scoring | fused map MSE + auxiliary masked map MSE | mean tIoU, R@1 IoU=0.5, R@1 IoU=0.7 |
+| `lesson_17_video_text_retrieval` | video-text retrieval | short video + text query | frame encoder + temporal pooling into shared embedding space | symmetric contrastive loss | top-1 retrieval acc, recall@3 |
+| `lesson_18_prompt_learning_vlm` | prompt learning retrieval | image + learnable prompt text | frozen encoders + soft text prompts | contrastive loss on prompted text embeddings | top-1 retrieval acc, prompt-only adaptation gap |
+| `lesson_19_audio_text_understanding` | audio-text retrieval + event classification | waveform clip + event text | audio encoder + text encoder in shared event space | symmetric contrastive loss + event CE | retrieval acc, event acc |
+| `lesson_20_audio_visual_learning` | audio-visual event understanding | clip frames + synchronized audio | audio branch + visual branch + fused classifier | event CE | fused acc, audio-only gap, visual-only gap |
+| `lesson_21_audio_grounded_retrieval` | audio-grounded retrieval | short multimodal scene + query text | fused audio-video scene encoder into shared retrieval space | symmetric contrastive loss | clip retrieval acc, recall@3 |
+| `lesson_22_audio_visual_event_localization` | audio-visual event localization | short clip + audio + event query text | fused temporal encoder + localization scorer | frame BCE + temporal smoothness | frame acc, localization IoU, peak hit rate |
+| `lesson_23_embodied_question_answering` | embodied question answering | egocentric scene + navigation state + question | scene/state fusion encoder into answer classifier | answer CE | answer acc, macro F1 |
+| `lesson_24_multimodal_reasoning` | multimodal reasoning | image + supporting facts + question + answer choices | visual-text reasoning encoder into choice scorer | answer CE | answer acc, choice margin |
+| `lesson_25_vision_language_navigation` | vision-language navigation | egocentric observation + route instruction + navigation state | visual-state instruction fusion into action policy | action CE | action acc, path success |
+| `lesson_26_image_text_reranking` | image-text reranking | image + query text + candidate captions | cross-encoder fusion scorer over paired candidates | pairwise ranking BCE | rerank acc, mean reciprocal rank |
+| `lesson_27_scene_text_vlm_recognition` | scene-text recognition | scene image + text prompt | visual token encoder into compact decoder recognizer | token CE | token acc, exact match |
+| `lesson_28_document_vlm_reasoning` | document reasoning | document image + question | OCR/layout fusion encoder into answer classifier | answer CE | answer acc, macro F1 |
+| `lesson_29_human_object_interaction_reasoning` | human-object interaction reasoning | human region + object region + relation query | region fusion encoder into interaction classifier | answer CE | answer acc, macro F1 |
+| `lesson_30_vision_language_gaze_estimation` | gaze estimation | image + head location + short prompt | visual-language fusion into gaze point + heatmap heads | point regression + heatmap BCE | point L1, heatmap IoU, hit acc |
+| `lesson_31_person_search_attribute_retrieval` | person-search attribute retrieval | person image + attribute text query | dual encoder into shared identity-aware embedding space | symmetric contrastive loss | image-to-text acc, text-to-image acc, recall@3 |
+| `lesson_32_video_text_action_localization` | video-text action localization | short clip features + action query | query-conditioned temporal encoder into start/end regressors | start CE + end CE + span L1 | start acc, end acc, mean tIoU |
+| `lesson_33_pedestrian_attribute_recognition` | pedestrian attribute recognition | person image + attribute text inventory | visual encoder + text attribute encoder into multi-label scorer | BCE with logits over attributes | attribute acc, macro F1, exact-match rate |
+| `lesson_34_video_text_action_recognition` | video-text action recognition | short clip features + action text labels | temporal video encoder + text label encoder into shared classifier | action CE + alignment CE | action acc, retrieval acc |
 
 ## Quick Start
 
@@ -440,6 +670,42 @@ Smoke run lesson 16:
 python -m tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_multiscale_2dtan
 ```
 
+Smoke run lesson 17:
+
+```bash
+python -m tracks.multimodal.lesson_17_video_text_retrieval.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_video_text_retrieval
+```
+
+Smoke run lesson 18:
+
+```bash
+python -m tracks.multimodal.lesson_18_prompt_learning_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_prompt_learning
+```
+
+Smoke run lesson 19:
+
+```bash
+python -m tracks.multimodal.lesson_19_audio_text_understanding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_audio_text
+```
+
+Smoke run lesson 20:
+
+```bash
+python -m tracks.multimodal.lesson_20_audio_visual_learning.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_audio_visual
+```
+
+Smoke run lesson 21:
+
+```bash
+python -m tracks.multimodal.lesson_21_audio_grounded_retrieval.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_audio_grounded_retrieval
+```
+
+Smoke run lesson 22:
+
+```bash
+python -m tracks.multimodal.lesson_22_audio_visual_event_localization.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_audio_visual_localization
+```
+
 ## How To Study Each Lesson
 
 Recommended order inside every lesson:
@@ -468,6 +734,12 @@ If you want the shortest path through the track:
 14. Run lesson 14 once and compare temporal grounding against lesson 13 to separate "answering over time" from "localizing in time".
 15. Run lesson 15 once and compare dense segment-map reasoning against lesson 14's boundary-first BMN-lite formulation.
 16. Run lesson 16 once and compare multi-scale fused localization against lesson 15's single-scale temporal map.
+17. Run lesson 17 once and compare retrieval over full clips against lesson 13's question answering over time.
+18. Run lesson 18 once and compare soft-prompt adaptation against lesson 17's full retriever training.
+19. Run lesson 19 once and compare audio-text retrieval against the earlier image-text and video-text retrieval setups.
+20. Run lesson 20 once and inspect how synchronized audio shifts predictions relative to visual-only clip recognition.
+21. Run lesson 21 once and compare clip retrieval with explicit audio evidence against lesson 20's clip classification.
+22. Run lesson 22 once and compare frame-level localization against lesson 21's clip-level retrieval objective.
 
 ## Lessons Versus Zoo
 

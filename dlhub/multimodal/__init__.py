@@ -8,11 +8,23 @@ from .audio_visual_learning_zoo import (
     build_local_model as build_audio_visual_learning_model,
     list_local_arches as list_audio_visual_learning_arches,
 )
+from .audio_text_understanding_zoo import (
+    BuildConfig as AudioTextUnderstandingBuildConfig,
+    UnknownLocalArch as UnknownAudioTextUnderstandingArch,
+    build_local_model as build_audio_text_understanding_model,
+    list_local_arches as list_audio_text_understanding_arches,
+)
 from .document_vlm_zoo import (
     BuildConfig as DocumentVLMBuildConfig,
     UnknownLocalArch as UnknownDocumentVLMArch,
     build_local_model as build_document_vlm_model,
     list_local_arches as list_document_vlm_arches,
+)
+from .embodied_question_answering_zoo import (
+    BuildConfig as EmbodiedQuestionAnsweringBuildConfig,
+    UnknownLocalArch as UnknownEmbodiedQuestionAnsweringArch,
+    build_local_model as build_embodied_question_answering_model,
+    list_local_arches as list_embodied_question_answering_arches,
 )
 from .image_text_retrieval_zoo import (
     BuildConfig as ImageTextRetrievalBuildConfig,
@@ -56,10 +68,18 @@ __all__ = [
     "UnknownAudioVisualLearningArch",
     "build_audio_visual_learning_model",
     "list_audio_visual_learning_arches",
+    "AudioTextUnderstandingBuildConfig",
+    "UnknownAudioTextUnderstandingArch",
+    "build_audio_text_understanding_model",
+    "list_audio_text_understanding_arches",
     "DocumentVLMBuildConfig",
     "UnknownDocumentVLMArch",
     "build_document_vlm_model",
     "list_document_vlm_arches",
+    "EmbodiedQuestionAnsweringBuildConfig",
+    "UnknownEmbodiedQuestionAnsweringArch",
+    "build_embodied_question_answering_model",
+    "list_embodied_question_answering_arches",
     "ImageTextRetrievalBuildConfig",
     "UnknownImageTextRetrievalArch",
     "build_image_text_retrieval_model",

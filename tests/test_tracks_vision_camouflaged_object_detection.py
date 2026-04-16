@@ -1,0 +1,123 @@
+import json
+from pathlib import Path
+
+import pytest
+
+torch = pytest.importorskip("torch")
+
+
+def test_vision_camouflaged_object_detection_batch_contract_and_loss_smoke() -> None:
+    from tracks.vision.lesson_29_synthetic_camouflaged_object_detection.data import (
+        DataConfig,
+        SyntheticCamouflagedObjectDataset,
+        get_dataloaders,
+    )
+    from tracks.vision.lesson_29_synthetic_camouflaged_object_detection.model import (
+        CamouflagedObjectDetectionModel,
+        ModelConfig,
+        camouflaged_detection_loss,
+        mask_iou,
+    )
+
+    cfg = DataConfig(
+        num_samples=32,
+        batch_size=4,
+        image_size=32,
+        val_fraction=0.2,
+        seed=0,
+        num_workers=0,
+        in_channels=1,
+    )
+
+    ds = SyntheticCamouflagedObjectDataset(cfg)
+    image, target = ds[0]
+    assert tuple(image.shape) == (1, 32, 32)
+    assert tuple(target.shape) == (1, 32, 32)
+    assert image.dtype == torch.float32
+    assert target.dtype == torch.float32
+
+    train_loader, _ = get_dataloaders(cfg)
+    images, targets = next(iter(train_loader))
+    assert tuple(images.shape) == (4, 1, 32, 32)
+    assert tuple(targets.shape) == (4, 1, 32, 32)
+
+    model = CamouflagedObjectDetectionModel(
+        ModelConfig(in_channels=1, hidden_channels=24, num_blocks=3)
+    )
+    outputs = model(images)
+    assert tuple(outputs.shape) == (4, 1, 32, 32)
+
+    loss, parts = camouflaged_detection_loss(outputs, targets)
+    assert torch.isfinite(loss)
+    assert set(parts.keys()) == {"bce_loss", "dice_loss"}
+    assert float(parts["bce_loss"]) >= 0.0
+    assert float(parts["dice_loss"]) >= 0.0
+    assert 0.0 <= mask_iou(outputs.detach(), targets) <= 1.0
+    loss.backward()
+
+
+def test_vision_camouflaged_object_detection_training_smoke(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from tracks.vision.lesson_29_synthetic_camouflaged_object_detection.data import DataConfig
+    from tracks.vision.lesson_29_synthetic_camouflaged_object_detection.model import ModelConfig
+    from tracks.vision.lesson_29_synthetic_camouflaged_object_detection.train import (
+        TrainConfig,
+        run_training,
+    )
+
+    monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
+
+    exit_code = run_training(
+        TrainConfig(
+            epochs=1,
+            learning_rate=1e-3,
+            seed=42,
+            device="cpu",
+            max_train_batches=2,
+            max_eval_batches=1,
+            run_name="pytest_camouflaged_object_detection_smoke",
+        ),
+        DataConfig(
+            num_samples=48,
+            batch_size=4,
+            image_size=32,
+            val_fraction=0.2,
+            seed=5,
+            num_workers=0,
+            in_channels=1,
+        ),
+        ModelConfig(in_channels=1, hidden_channels=24, num_blocks=3),
+    )
+
+    assert exit_code == 0
+
+    run_dir = (
+        tmp_path
+        / "vision"
+        / "lesson_29_synthetic_camouflaged_object_detection"
+        / "pytest_camouflaged_object_detection_smoke"
+    )
+    assert (run_dir / "config.json").is_file()
+    assert (run_dir / "metrics.jsonl").is_file()
+    assert (run_dir / "logs" / "train.log").is_file()
+    assert (run_dir / "checkpoints" / "checkpoint.pt").is_file()
+
+    metrics = [
+        json.loads(line)
+        for line in (run_dir / "metrics.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    assert len(metrics) == 1
+    record = metrics[0]
+    for key in (
+        "train_loss",
+        "train_bce_loss",
+        "train_dice_loss",
+        "eval_loss",
+        "eval_bce_loss",
+        "eval_dice_loss",
+        "eval_iou",
+    ):
+        assert key in record
+        assert float(record[key]) >= 0.0

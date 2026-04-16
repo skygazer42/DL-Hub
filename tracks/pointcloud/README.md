@@ -31,3 +31,16 @@
 - `lesson_21_pointcloud_selfsupervised_msn/`：点云自监督（MSN-style masked distillation + prototype balance，toy 数据）
 - `lesson_22_pointcloud_selfsupervised_data2vec/`：点云自监督（data2vec-style masked representation regression，toy 数据）
 - `lesson_23_pointcloud_selfsupervised_ressl/`：点云自监督（ReSSL-style relational distillation + queue，toy 数据）
+- `lesson_24_toy_pointcloud_completion/`：点云补全（partial → complete，Chamfer distance，toy 数据）
+- `lesson_25_toy_scene_flow_estimation/`：点云场景流（双帧 per-point motion regression，toy 数据）
+- `lesson_26_toy_gaussian_splatting/`：toy Gaussian Splatting（点到高斯参数映射 + 可微 splat 渲染，toy 数据）
+- `lesson_27_toy_3d_object_detection/`：toy 3D 目标检测（点云到 3D box + class 预测，toy 数据）
+- `lesson_28_toy_3d_semantic_segmentation/`：toy 3D 语义分割（per-point 类别预测，toy 数据）
+- `lesson_29_toy_3d_instance_segmentation/`：toy 3D 实例分割（per-point instance ID 预测，toy 数据）
+- `lesson_30_toy_3d_object_tracking/`：toy 3D 目标跟踪（跨帧轨迹状态回归，toy 数据）
+- `lesson_31_toy_open_vocabulary_3d/`：toy Open-Vocabulary 3D（文本条件 3D 识别/grounding，toy 数据）
+- `lesson_32_toy_pointcloud_forecasting/`：点云预测（历史序列到未来点云轨迹，toy 数据）
+- `lesson_33_toy_pointcloud_anomaly_detection/`：点云异常检测（重建残差 + 异常得分，toy 数据）
+- `lesson_34_toy_pointcloud_upsampling/`：点云上采样（稀疏点集到稠密点集恢复，Chamfer distance，toy 数据）
+- `lesson_35_toy_shape_correspondence_3d/`：三维形状对应（source/target 点级匹配学习，correspondence 监督，toy 数据）
+- `lesson_36_toy_pointcloud_registration/`：点云配准（source/target 刚体对齐，pose6d 回归，toy 数据）

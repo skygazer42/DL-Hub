@@ -21,3 +21,75 @@
 - `lesson_15_neural_style_transfer_gatys/`：风格迁移（Gatys-style neural style transfer，优化式，toy-first）
 - `lesson_16_style_transfer_translation_cyclegan/`：风格迁移（CycleGAN-style 图像翻译，unpaired，toy-first）
 - `lesson_17_synthetic_super_resolution/`：合成配对图像超分辨率（paired super-resolution，toy-first，纯 torch + local zoo `sr:*`）
+- `lesson_18_synthetic_crowd_counting/`：合成人群计数（密度图回归 + 总人数估计，toy-first）
+- `lesson_19_synthetic_monocular_depth_estimation/`：合成单目深度估计（层次几何 + 稠密深度回归，toy-first）
+- `lesson_20_synthetic_lane_detection/`：合成车道线检测（heatmap + 车道点回归，toy-first）
+- `lesson_21_synthetic_lane_topology_estimation/`：合成车道拓扑估计（车道图连接关系预测，toy-first）
+- `lesson_22_synthetic_road_scene_understanding/`：合成道路场景理解（车道槽位 + 目标存在 + 场景类别融合，toy-first）
+- `lesson_23_synthetic_image_dehazing/`：合成图像去雾（大气散射 + transmission 估计 + 配对恢复，toy-first）
+- `lesson_24_synthetic_reflection_removal/`：合成反光去除（反光层分离 + 透射恢复，toy-first）
+- `lesson_25_synthetic_image_fusion/`：合成图像融合（多源细节融合 + 权重预测，toy-first）
+- `lesson_26_synthetic_text_detection/`：合成文本检测（文本区域热图 + bbox 回归 + 可变长度单词合成，toy-first）
+- `lesson_27_synthetic_edge_detection/`：合成边缘检测（边缘图监督 + 梯度特征融合 + 稀疏结构预测，toy-first）
+- `lesson_28_synthetic_salient_object_detection/`：合成显著性目标检测（前景显著区域分割 + clutter 抑制，toy-first）
+- `lesson_29_synthetic_camouflaged_object_detection/`：合成伪装物体检测（低对比隐藏目标恢复 + 纹理混淆建模，toy-first）
+- `lesson_30_synthetic_salient_object_detection_boxes/`：合成显著性目标框检测（显著目标框回归 + IoU 驱动定位，toy-first）
+- `lesson_31_synthetic_interactive_segmentation/`：合成交互式分割（点击提示编码 + 用户引导 mask 细化，toy-first）
+- `lesson_32_synthetic_face_landmark_detection/`：合成人脸关键点检测（五点关键点回归 + 合成人脸渲染，toy-first）
+- `lesson_33_synthetic_face_liveness_detection/`：合成人脸活体检测（活体/欺骗二分类 + 纹理伪迹模拟，toy-first）
+- `lesson_34_synthetic_license_plate_recognition/`：合成车牌识别（固定长度字符序列识别 + 视觉槽位读码，toy-first）
+- `lesson_35_synthetic_6d_pose_estimation/`：合成 6D 姿态估计（6D 旋转表示 + 3D 平移回归，toy-first）
+- `lesson_36_synthetic_text_recognition/`：合成文本识别（固定长度 OCR 读码 + 合成字符渲染，toy-first）
+- `lesson_37_synthetic_face_parsing/`：合成人脸解析（粗粒度面部区域分割 + 多类 mask 预测，toy-first）
+- `lesson_38_synthetic_face_detection/`：合成人脸检测（单脸框回归 + 目标存在监督，toy-first）
+- `lesson_39_synthetic_face_alignment/`：合成人脸对齐（canonical 五点布局回归 + 姿态扰动归一化，toy-first）
+- `lesson_40_synthetic_face_attribute_recognition/`：合成人脸属性识别（笑容/眼镜/胡须多标签分类，toy-first）
+- `lesson_41_synthetic_face_occlusion_estimation/`：合成人脸遮挡估计（遮挡比例回归 + 合成遮挡建模，toy-first）
+- `lesson_42_synthetic_face_expression_recognition/`：合成人脸表情识别（neutral/happy/sad/surprised 四分类，toy-first）
+- `lesson_43_synthetic_deepfake_detection/`：合成 deepfake 检测（真假脸二分类 + 伪造伪迹建模，toy-first）
+- `lesson_44_synthetic_face_verification/`：合成人脸验证（双脸同一人判别 + 成对身份一致性建模，toy-first）
+- `lesson_45_synthetic_face_identification/`：合成人脸识别（五类身份分类 + 身份模板建模，toy-first）
+- `lesson_46_synthetic_face_retrieval/`：合成人脸检索（triplet 风格嵌入学习 + 最近邻 top-1 检索，toy-first）
+- `lesson_47_synthetic_face_pose_estimation/`：合成人脸姿态估计（yaw/pitch/roll 回归 + 归一化头姿向量，toy-first）
+- `lesson_48_synthetic_gaze_estimation/`：合成视线估计（归一化 gaze x/y 回归 + 瞳孔位移建模，toy-first）
+- `lesson_49_synthetic_human_pose_estimation/`：合成人体姿态估计（关键点坐标回归 + 棒人骨架建模，toy-first）
+- `lesson_50_synthetic_hand_pose_estimation/`：合成手部姿态估计（十点关键点回归 + 手部骨架建模，toy-first）
+- `lesson_51_synthetic_gesture_recognition/`：合成手势识别（四类手势分类 + 棒人姿态渲染，toy-first）
+- `lesson_52_synthetic_finger_count_estimation/`：合成手指计数估计（0-5 手指数分类 + 掌心/手指渲染，toy-first）
+- `lesson_53_synthetic_handedness_classification/`：合成左右手分类（左右手二分类 + 拇指侧显式建模，toy-first）
+- `lesson_54_synthetic_palm_orientation_estimation/`：合成掌心朝向估计（掌心朝向标量回归 + 旋转掌形渲染，toy-first）
+- `lesson_55_synthetic_sign_digit_classification/`：合成手势数字分类（0-9 手势数字分类 + 合成手部标记渲染，toy-first）
+- `lesson_56_synthetic_finger_spread_estimation/`：合成手指张开度估计（手指张开度标量回归 + 合成手部轮廓渲染，toy-first）
+- `lesson_57_synthetic_thumb_position_classification/`：合成拇指位置分类（thumb tucked/neutral/extended 分类 + 合成手部姿态渲染，toy-first）
+- `lesson_58_synthetic_finger_curvature_estimation/`：合成手指弯曲度估计（手指弯曲度标量回归 + 合成指尖弯折渲染，toy-first）
+- `lesson_59_synthetic_thumb_contact_classification/`：合成拇指接触分类（thumb contact/no-contact 二分类 + 合成接触桥渲染，toy-first）
+- `lesson_60_synthetic_image_deraining/`：合成图像去雨（雨条纹移除 + 配对清晰恢复，toy-first）
+- `lesson_61_synthetic_image_retrieval/`：合成图像检索（嵌入学习 + 最近邻 top-1 检索，toy-first）
+- `lesson_62_synthetic_image_matching/`：合成图像匹配（成对匹配判别 + 共享编码器，toy-first）
+- `lesson_63_synthetic_image_stitching/`：合成图像拼接（重叠视图融合 + 全景重建，toy-first）
+- `lesson_64_synthetic_fine_grained_recognition/`：合成细粒度识别（相似类别区分 + 细微纹理差异建模，toy-first）
+- `lesson_65_synthetic_few_shot_recognition/`：合成小样本识别（episodic support/query 分类 + prototype 推理，toy-first）
+- `lesson_66_synthetic_video_object_detection/`：合成视频目标检测（短时序目标框回归 + 目标存在监督，toy-first）
+- `lesson_67_synthetic_video_stabilization/`：合成视频稳像（抖动序列到稳像序列回归，toy-first）
+- `lesson_68_synthetic_video_frame_interpolation/`：合成视频插帧（相邻帧重建中间帧，toy-first）
+- `lesson_69_synthetic_video_restoration/`：合成视频修复（退化序列到清晰序列回归，toy-first）
+- `lesson_70_synthetic_video_understanding/`：合成视频理解（时序事件模式分类，toy-first）
+- `lesson_71_synthetic_video_summarization/`：合成视频摘要（帧级重要性估计，toy-first）
+- `lesson_72_synthetic_video_enhancement/`：合成视频增强（低质序列增强恢复，toy-first）
+- `lesson_73_synthetic_video_object_segmentation/`：合成视频目标分割（时序前景掩码预测，toy-first）
+- `lesson_74_synthetic_video_instance_segmentation/`：合成视频实例分割（多实例时序掩码预测，toy-first）
+- `lesson_75_synthetic_video_matting/`：合成视频抠像（时序 alpha matte 估计，toy-first）
+- `lesson_76_synthetic_image_deweathering/`：合成图像去天气（混合天气残差恢复 + 配对清晰重建，toy-first）
+- `lesson_77_synthetic_transparent_depth_estimation/`：合成透明体深度估计（透明区域深度 + transparency mask 联合预测，toy-first）
+- `lesson_78_synthetic_image_relighting/`：合成图像重照明（目标光照条件编码 + relit image 重建，toy-first）
+- `lesson_79_synthetic_transparent_object_segmentation/`：合成透明物体分割（透明区域 mask + 边界辅助监督，toy-first）
+- `lesson_80_synthetic_event_camera_understanding/`：合成事件相机理解（事件体素编码 + polarity/motion 联合理解，toy-first）
+- `lesson_81_synthetic_shadow_detection/`：合成阴影检测（shadow mask 预测 + illumination-aware 恢复，toy-first）
+- `lesson_82_synthetic_layout_generation/`：合成布局生成（对象集合到布局框生成 + relation-aware 编码，toy-first）
+- `lesson_83_synthetic_panoptic_segmentation/`：合成全景分割（semantic + instance 联合预测 + thing/stuff 一体建模，toy-first）
+- `lesson_84_synthetic_medical_segmentation/`：合成医学图像分割（病灶区域 mask 预测 + 多尺度编码解码，toy-first）
+- `lesson_85_synthetic_scene_text_spotting/`：合成场景文本检测识别一体化（文本热图定位 + 字符序列解码，toy-first）
+- `lesson_86_synthetic_co_segmentation/`：合成协同分割（图组共享前景恢复 + group prototype 聚合，toy-first）
+- `lesson_87_synthetic_action_recognition/`：合成行为识别（短视频动作分类 + 时序卷积聚合，toy-first）
+- `lesson_88_synthetic_reid/`：合成 Re-ID（身份嵌入学习 + top-1 检索，toy-first）
+- `lesson_89_synthetic_anomaly_detection/`：合成异常检测（异常得分预测 + 正常/异常外观偏差建模，toy-first）
