@@ -79,7 +79,7 @@ def test_instance_segmentation_zoo_script_list_and_smoke() -> None:
     )
     assert list_proc.returncode == 0
     assert "Instance segmentation local zoo" in list_proc.stdout
-    assert "total_arches=120" in list_proc.stdout
+    assert "total_arches=150" in list_proc.stdout
 
     smoke_proc = subprocess.run(
         [

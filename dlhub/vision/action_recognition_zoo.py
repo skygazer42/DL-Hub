@@ -160,7 +160,7 @@ def _extend_registry(r_video: dict[str, Builder], r_skel: dict[str, Builder]) ->
             continue
 
         try:
-            src = py.read_text(encoding="utf-8")
+            src = py.read_text(encoding="utf-8-sig")
         except OSError:
             continue
 

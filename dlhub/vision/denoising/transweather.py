@@ -140,3 +140,14 @@ def build_transweather_denoiser(
         num_heads=int(spec["num_heads"]),
         mlp_ratio=float(spec["mlp_ratio"]),
     )
+
+
+if __name__ == "__main__":
+    torch.manual_seed(0)
+    x = torch.randn(2, 3, 64, 64)
+    m = build_transweather_denoiser(in_channels=3, variant="transweather_tiny")
+    y = m(x)
+    print("transweather_tiny", tuple(y.shape))
+    loss = (y - x).pow(2).mean()
+    loss.backward()
+    print("ok")

@@ -134,3 +134,13 @@ def build_did_mdn_denoiser(*, in_channels: int, variant: str = "did_mdn_small") 
         growth=int(spec["growth"]),
     )
 
+
+if __name__ == "__main__":
+    torch.manual_seed(0)
+    x = torch.randn(2, 3, 64, 64)
+    m = build_did_mdn_denoiser(in_channels=3, variant="did_mdn_tiny")
+    y = m(x)
+    print("did_mdn_tiny", tuple(y.shape))
+    loss = (y - x).pow(2).mean()
+    loss.backward()
+    print("ok")

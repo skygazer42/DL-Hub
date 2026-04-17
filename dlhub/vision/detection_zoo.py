@@ -139,7 +139,7 @@ def _extend_registry_with_discovered_detectors(r: dict[str, Builder]) -> None:
             continue
 
         try:
-            src = py.read_text(encoding="utf-8")
+            src = py.read_text(encoding="utf-8-sig")
         except OSError:
             continue
 

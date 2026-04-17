@@ -69,7 +69,7 @@ def _extend_registry(registry: dict[str, Builder]) -> None:
     for py in sorted(module_dir.glob('*.py')):
         module_name = py.stem
         if module_name in {'__init__', '_common'} or module_name.startswith('_'): continue
-        src = py.read_text(encoding='utf-8')
+        src = py.read_text(encoding='utf-8-sig')
         if '_VARIANTS' not in src or 'def build_' not in src: continue
         variants = _extract_variants_from_source(src); builder_name = _extract_builder_name_from_source(src)
         if not variants or builder_name is None: continue

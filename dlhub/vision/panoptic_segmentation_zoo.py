@@ -128,7 +128,7 @@ def _extend_registry(r: dict[str, Builder]) -> None:
             continue
 
         try:
-            src = py.read_text(encoding="utf-8")
+            src = py.read_text(encoding="utf-8-sig")
         except OSError:
             continue
 

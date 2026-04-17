@@ -189,7 +189,7 @@ def _extend_registry_with_discovered_modules(registry: dict[str, Builder]) -> No
             continue
 
         try:
-            src = py.read_text(encoding="utf-8")
+            src = py.read_text(encoding="utf-8-sig")
         except OSError:
             continue
 

@@ -80,7 +80,7 @@ def _has_main_guard(tree: ast.Module) -> bool:
 
 
 def _missing_conventions(path: Path) -> list[str]:
-    tree = ast.parse(path.read_text(encoding="utf-8"))
+    tree = ast.parse(path.read_text(encoding="utf-8-sig"))
     missing: list[str] = []
     if not _has_variants(tree):
         missing.append("_VARIANTS")

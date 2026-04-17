@@ -99,3 +99,13 @@ def build_rcdnet_denoiser(*, in_channels: int, variant: str = "rcdnet_small") ->
         blocks=int(spec["blocks"]),
     )
 
+
+if __name__ == "__main__":
+    torch.manual_seed(0)
+    x = torch.randn(2, 3, 64, 64)
+    m = build_rcdnet_denoiser(in_channels=3, variant="rcdnet_tiny")
+    y = m(x)
+    print("rcdnet_tiny", tuple(y.shape))
+    loss = (y - x).pow(2).mean()
+    loss.backward()
+    print("ok")

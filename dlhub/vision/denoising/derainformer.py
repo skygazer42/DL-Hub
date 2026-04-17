@@ -149,3 +149,14 @@ def build_derainformer_denoiser(
         num_heads=int(spec["num_heads"]),
         expansion=float(spec["expansion"]),
     )
+
+
+if __name__ == "__main__":
+    torch.manual_seed(0)
+    x = torch.randn(2, 3, 64, 64)
+    m = build_derainformer_denoiser(in_channels=3, variant="derainformer_tiny")
+    y = m(x)
+    print("derainformer_tiny", tuple(y.shape))
+    loss = (y - x).pow(2).mean()
+    loss.backward()
+    print("ok")
