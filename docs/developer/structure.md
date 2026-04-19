@@ -19,7 +19,7 @@ DL-Hub/
 ├── scripts/            # 辅助脚本（冒烟验证、Zoo CLI）
 ├── docs/               # MkDocs 文档源文件
 ├── resources/          # 保留资料（PDF 论文笔记）
-├── tests/              # 126+ 测试文件
+├── tests/              # 393 测试文件
 ├── mkdocs.yml          # 文档配置
 ├── Makefile            # 常用命令入口
 └── requirements*.txt   # 依赖清单

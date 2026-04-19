@@ -120,8 +120,8 @@ flowchart TD
 
 ## Vision Backbone Zoo
 
-!!! note "736 架构可供切换"
-    Vision Zoo 包含 **208 个算法族 / 736 个架构 ID**，所有 backbone 均为纯 PyTorch 本地实现，支持通过 `--arch` 参数一行切换。
+!!! note "791 架构可供切换"
+    Vision Zoo 包含 **208 个算法族 / 791 个架构 ID**，所有 backbone 均为纯 PyTorch 本地实现，支持通过 `--arch` 参数一行切换。
 
 ```bash
 # 列出所有可用架构

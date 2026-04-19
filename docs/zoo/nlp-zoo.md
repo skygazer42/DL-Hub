@@ -4,14 +4,14 @@ icon: material/text
 
 # NLP Zoo
 
-> **49 算法族 / 813 Architecture IDs** --- 覆盖 Transformer、RNN、CNN、MLP 等全部主流文本编码器架构。
+> **49 算法族 / 814 Architecture IDs** --- 覆盖 Transformer、RNN、CNN、MLP 等全部主流文本编码器架构。
 
 ---
 
 ## CLI 快速上手
 
 ```bash
-# 列出全部 813 个架构 ID
+# 列出全部 814 个架构 ID
 python -m zoo.nlp --list
 
 # 模糊搜索

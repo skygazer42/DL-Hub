@@ -5,7 +5,7 @@ description: DL-Hub 八大学习赛道导航 — 从基础张量操作到多模�
 
 # 学习赛道总览
 
-DL-Hub 将 **76 个 Lesson** 组织为 **8 条学习赛道**，覆盖深度学习从入门到前沿的完整技能树。每条赛道聚焦一个核心领域，由浅入深、环环相扣。
+DL-Hub 将 **339 个 Lesson** 组织为 **8 条学习赛道**，覆盖深度学习从入门到前沿的完整技能树。每条赛道聚焦一个核心领域，由浅入深、环环相扣。
 
 ---
 
@@ -13,16 +13,16 @@ DL-Hub 将 **76 个 Lesson** 组织为 **8 条学习赛道**，覆盖深度学�
 
 ```mermaid
 flowchart LR
-    A["**Foundations**\n基础 (2)"] --> B["**Vision**\n视觉 (14)"]
-    A --> C["**NLP**\n自然语言处理 (7)"]
+    A["**Foundations**\n基础 (2)"] --> B["**Vision**\n视觉 (89)"]
+    A --> C["**NLP**\n自然语言处理 (49)"]
     B --> D["**GNN**\n图神经网络 (11)"]
     C --> D
-    B --> E["**Point Cloud**\n点云 (23)"]
-    D --> F["**Generative**\n生成模型 (2)"]
+    B --> E["**Point Cloud**\n点云 (36)"]
+    D --> F["**Generative**\n生成模型 (51)"]
     E --> F
-    F --> G["**LLM**\n大语言模型 (1)"]
+    F --> G["**LLM**\n大语言模型 (43)"]
     C --> G
-    G --> H["**Multimodal**\n多模态 (16)"]
+    G --> H["**Multimodal**\n多模态 (58)"]
     B --> H
 
     style A fill:#7c3aed,color:#fff,stroke:#5b21b6
@@ -48,7 +48,7 @@ flowchart LR
 |:-----|:---------|:--------|:---------|
 | :material-run-fast: **Weekend Sprint** | 1-2 天 | 6 lessons | Foundations (2) :arrow_right: Vision 01-02 :arrow_right: Generative 01 :arrow_right: LLM 01 — 快速建立从张量到生成模型的完整直觉 |
 | :material-calendar-week: **Two-Week Deep Dive** | 2 周 | 18 lessons | Foundations (2) :arrow_right: Vision (5) :arrow_right: NLP (4) :arrow_right: GNN (3) :arrow_right: Generative (2) :arrow_right: LLM (1) :arrow_right: Point Cloud (1) — 覆盖所有 track 的核心 lesson |
-| :material-school: **Full Curriculum** | 6-8 周 | 76 lessons | 按顺序完成全部 8 个赛道的所有 lesson — 系统掌握从经典 ML 到前沿深度学习的完整技能树 |
+| :material-school: **Full Curriculum** | 6-8 周 | 339 lessons | 按顺序完成全部 8 个赛道的所有 lesson — 系统掌握从经典 ML 到前沿深度学习的完整技能树 |
 
 !!! note "离线冒烟模式"
     所有 lesson 均支持 `--dataset fake` 离线冒烟测试，**无需下载任何数据集，2 分钟即可跑通**。
@@ -60,13 +60,13 @@ flowchart LR
 | 赛道 | Lessons | 关键主题 | 先修知识 |
 |:-----|:--------|:---------|:---------|
 | [**Foundations** 基础](foundations.md) | 2 | `torch.Tensor`, Autograd, 线性回归, 梯度下降 | Python 基础, 线性代数入门 |
-| [**Vision** 视觉](vision.md) | 14 | CNN, ViT, Swin, FCOS, UNet, YOLO, MOT | Foundations + 卷积直觉 |
-| [**NLP** 自然语言处理](nlp.md) | 7 | Embedding, Transformer, BiLSTM, NER, Seq2Seq, 阅读理解 | Foundations + 文本处理基础 |
+| [**Vision** 视觉](vision.md) | 89 | CNN, ViT, Swin, FCOS, UNet, YOLO, MOT | Foundations + 卷积直觉 |
+| [**NLP** 自然语言处理](nlp.md) | 49 | Embedding, Transformer, BiLSTM, NER, Seq2Seq, 阅读理解 | Foundations + 文本处理基础 |
 | [**GNN** 图神经网络](gnn.md) | 11 | GCN, GIN, GAT, GraphSAGE, PinSAGE, R-GCN | Foundations + 图论基本概念 |
-| [**Point Cloud** 点云](pointcloud.md) | 23 | PointNet, DGCNN, PointNet++, 64 架构 Zoo | Vision + 3D 几何直觉 |
-| [**Generative** 生成模型](generative.md) | 2 | VAE, GAN, 重参数化, 对抗训练 | Vision + 概率论基础 |
-| [**LLM** 大语言模型](llm.md) | 1 | Causal Mask, 自回归解码, Transformer 生成 | NLP + Transformer 机制 |
-| [**Multimodal** 多模态](multimodal.md) | 16 | CLIP, BLIP, LLaVA, Grounding, VLM, 时序定位 | Vision + NLP + 注意力机制 |
+| [**Point Cloud** 点云](pointcloud.md) | 36 | PointNet, DGCNN, PointNet++, 64 架构 Zoo | Vision + 3D 几何直觉 |
+| [**Generative** 生成模型](generative.md) | 51 | VAE, GAN, 重参数化, 对抗训练 | Vision + 概率论基础 |
+| [**LLM** 大语言模型](llm.md) | 43 | Causal Mask, 自回归解码, Transformer 生成 | NLP + Transformer 机制 |
+| [**Multimodal** 多模态](multimodal.md) | 58 | CLIP, BLIP, LLaVA, Grounding, VLM, 时序定位 | Vision + NLP + 注意力机制 |
 
 ---
 

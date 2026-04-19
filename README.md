@@ -15,7 +15,7 @@
 
 <br/>
 
-<code>339 Lessons</code> · <code>8 Learning Tracks</code> · <code>27 ML Algorithms</code> · <code>2500+ Model Zoo Architectures</code> · <code>392 Test Files</code>
+<code>339 Lessons</code> · <code>8 Learning Tracks</code> · <code>31 ML Algorithms</code> · <code>8000+ Model Zoo Architectures</code> · <code>393 Test Files</code>
 
 <br/>
 
@@ -33,12 +33,12 @@
 <td align="center" width="25%">
 <br/>
 <b>Vision</b><br/>
-<sub>从 LeNet 到 ViT，<br/>736 架构 · 图像分类 / 检测 / 分割</sub>
+<sub>从 LeNet 到 ViT，<br/>791 架构 · 图像分类 / 检测 / 分割</sub>
 </td>
 <td align="center" width="25%">
 <br/>
 <b>NLP</b><br/>
-<sub>从词嵌入到 Transformer，<br/>813 架构 · 分类 / NER / 阅读理解</sub>
+<sub>从词嵌入到 Transformer，<br/>814 架构 · 分类 / NER / 阅读理解</sub>
 </td>
 <td align="center" width="25%">
 <br/>
@@ -330,7 +330,7 @@ python scripts/run_lesson.py --list
 | 89 | 合成异常检测 | [synthetic_anomaly_detection](tracks/vision/lesson_89_synthetic_anomaly_detection/) | 异常得分预测, 正常/异常外观偏差建模, anomaly supervision |
 
 <details>
-<summary><b>支持的 Vision Backbones（208 算法族 / 736 架构 ID）</b></summary>
+<summary><b>支持的 Vision Backbones（208 算法族 / 791 架构 ID）</b></summary>
 
 | 类别 | 代表架构 |
 |------|---------|
@@ -750,13 +750,13 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 
 ## Model Zoo
 
-> 全领域统一模型动物园 — 纯 PyTorch 本地实现，无需下载预训练权重，2500+ 架构 ID 一行切换
+> 全领域统一模型动物园 — 纯 PyTorch 本地实现，无需下载预训练权重，8000+ 架构 ID 一行切换
 
 ### Zoo 子系统总览（21 个子系统）
 
 | 领域 | 子系统 | 算法族 | CLI 脚本 |
 |------|--------|--------|---------|
-| Vision | Backbones | 208 族 / 736 IDs | `scripts/vision_zoo.py` |
+| Vision | Backbones | 208 族 / 791 IDs | `scripts/vision_zoo.py` |
 | Vision | Detection (2D) | ~140 | `scripts/detection_zoo.py` |
 | Vision | Instance Segmentation | 60 | `scripts/instance_segmentation_zoo.py` |
 | Vision | Panoptic Segmentation | 60 | `scripts/panoptic_segmentation_zoo.py` |
@@ -765,7 +765,7 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Vision | Fine-Grained Recognition | 112 | `scripts/fine_grained_recognition_zoo.py` |
 | Vision | Action Recognition | 62 | `scripts/action_recognition_zoo.py` |
 | Vision | MOT (2D) | 100 | `scripts/mot_zoo.py` |
-| NLP | Text Encoders | 49 族 / 813 IDs | `scripts/nlp_zoo.py` |
+| NLP | Text Encoders | 49 族 / 814 IDs | `scripts/nlp_zoo.py` |
 | Point Cloud | Backbones | 30 族 / 64 IDs | `scripts/pointcloud_zoo.py` |
 | Point Cloud | 3D Detection | 60 | `scripts/detection3d_zoo.py` |
 | Point Cloud | 3D Segmentation | 60 | `scripts/segmentation3d_zoo.py` |
@@ -1025,6 +1025,96 @@ python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
 | Text-to-Video / 文本生成视频 | 10 | `dlhub/generative/text_to_video/` |
 | Video-to-Video / 视频生成视频 | 10 | `dlhub/generative/video_to_video/` |
 | World Models / 世界模型 | 10 | `dlhub/generative/world_models/` |
+
+#### Research Directions / 研究方向（十七）
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Pedestrian Detection / 行人检测 | 10 | `dlhub/vision/pedestrian_detection/` |
+| Road Scene Understanding / 道路场景理解 | 10 | `dlhub/vision/road_scene_understanding/` |
+| Salient Object Detection / 显著性目标检测 | 10 | `dlhub/vision/salient_object_detection/` |
+| Face Attribute Recognition / 人脸属性识别 | 10 | `dlhub/vision/face_attribute_recognition/` |
+| Face Occlusion Estimation / 人脸遮挡估计 | 10 | `dlhub/vision/face_occlusion_estimation/` |
+| Deepfake Detection / 假脸检测 | 10 | `dlhub/vision/deepfake_detection/` |
+| Face Verification / 人脸验证 | 10 | `dlhub/vision/face_verification/` |
+| Face Identification / 人脸识别 | 10 | `dlhub/vision/face_identification/` |
+| Face Retrieval / 人脸检索 | 10 | `dlhub/vision/face_retrieval/` |
+| Face Pose Estimation / 人脸姿态估计 | 10 | `dlhub/vision/face_pose_estimation/` |
+
+#### Research Directions / 研究方向（十八）
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Hand Pose Estimation / 手部姿态估计 | 10 | `dlhub/vision/hand_pose_estimation/` |
+| Gesture Recognition / 手势识别 | 10 | `dlhub/vision/gesture_recognition/` |
+| Finger Count Estimation / 手指计数估计 | 10 | `dlhub/vision/finger_count_estimation/` |
+| Handedness Classification / 左右手分类 | 10 | `dlhub/vision/handedness_classification/` |
+| Palm Orientation Estimation / 掌心朝向估计 | 10 | `dlhub/vision/palm_orientation_estimation/` |
+| Sign Digit Classification / 手势数字分类 | 10 | `dlhub/vision/sign_digit_classification/` |
+| Finger Spread Estimation / 手指张开度估计 | 10 | `dlhub/vision/finger_spread_estimation/` |
+| Thumb Position Classification / 拇指位置分类 | 10 | `dlhub/vision/thumb_position_classification/` |
+| Finger Curvature Estimation / 手指弯曲度估计 | 10 | `dlhub/vision/finger_curvature_estimation/` |
+| Thumb Contact Classification / 拇指接触分类 | 10 | `dlhub/vision/thumb_contact_classification/` |
+
+#### Research Directions / 研究方向（十九）
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Anchor-Free Detection / Anchor-Free 检测 | 10 | `dlhub/vision/anchor_free_detection/` |
+| Keypoint Regression / 关键点回归 | 10 | `dlhub/vision/keypoint_regression/` |
+| UNet Segmentation / UNet 分割 | 10 | `dlhub/vision/unet_segmentation/` |
+| YOLACT Instance Segmentation / YOLACT 实例分割 | 10 | `dlhub/vision/yolact_instance_segmentation/` |
+| Neural Style Transfer / 神经风格迁移 | 10 | `dlhub/vision/neural_style_transfer/` |
+| Image Translation / 图像翻译 | 10 | `dlhub/vision/image_translation/` |
+| Monocular Depth Estimation / 单目深度估计 | 10 | `dlhub/vision/monocular_depth_estimation/` |
+| Salient Object Detection Boxes / 显著性目标框检测 | 10 | `dlhub/vision/salient_object_detection_boxes/` |
+| Face Landmark Detection / 人脸关键点检测 | 10 | `dlhub/vision/face_landmark_detection/` |
+| Face Liveness Detection / 人脸活体检测 | 10 | `dlhub/vision/face_liveness_detection/` |
+
+#### Research Directions / 研究方向（二十）
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Open Vocabulary Detection / 开放词表检测 | 10 | `dlhub/vision/open_vocabulary_detection/` |
+| Few-Shot Segmentation / 小样本分割 | 10 | `dlhub/vision/few_shot_segmentation/` |
+| Object Proposal Generation / 目标候选框生成 | 10 | `dlhub/vision/object_proposal_generation/` |
+| Image Moire Removal / 图像去摩尔纹 | 10 | `dlhub/vision/image_moire_removal/` |
+| Raindrop Removal / 雨滴去除 | 10 | `dlhub/vision/raindrop_removal/` |
+| Compression Artifact Reduction / 压缩伪影去除 | 10 | `dlhub/vision/compression_artifact_reduction/` |
+| Document Binarization / 文档二值化 | 10 | `dlhub/vision/document_binarization/` |
+| Crowd Localization / 人群定位 | 10 | `dlhub/vision/crowd_localization/` |
+| Homography Estimation / 单应性估计 | 10 | `dlhub/vision/homography_estimation/` |
+| Camera Pose Estimation / 相机位姿估计 | 10 | `dlhub/vision/camera_pose_estimation/` |
+
+#### Research Directions / 研究方向（二十一）
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Infrared Small Target Detection / 红外小目标检测 | 10 | `dlhub/vision/infrared_small_target_detection/` |
+| Blur Detection / 模糊检测 | 10 | `dlhub/vision/blur_detection/` |
+| Camera Calibration / 相机标定 | 10 | `dlhub/vision/camera_calibration/` |
+| Vanishing Point Detection / 消失点检测 | 10 | `dlhub/vision/vanishing_point_detection/` |
+| Image Outpainting / 图像外延生成 | 10 | `dlhub/vision/image_outpainting/` |
+| Underwater Image Enhancement / 水下图像增强 | 10 | `dlhub/vision/underwater_image_enhancement/` |
+| Gaze Following / 视线跟随 | 10 | `dlhub/vision/gaze_following/` |
+| Object Discovery / 目标发现 | 10 | `dlhub/vision/object_discovery/` |
+| Motion Segmentation / 运动分割 | 10 | `dlhub/vision/motion_segmentation/` |
+| Salient Instance Segmentation / 显著性实例分割 | 10 | `dlhub/vision/salient_instance_segmentation/` |
+
+#### Research Directions / 研究方向（二十二）
+
+| 方向 | 当前家族数 | 包路径 |
+|------|-----------|--------|
+| Mirror Segmentation / 镜面分割 | 10 | `dlhub/vision/mirror_segmentation/` |
+| Hand Segmentation / 手部分割 | 10 | `dlhub/vision/hand_segmentation/` |
+| Iris Segmentation / 虹膜分割 | 10 | `dlhub/vision/iris_segmentation/` |
+| Pupil Detection / 瞳孔检测 | 10 | `dlhub/vision/pupil_detection/` |
+| Crack Detection / 裂缝检测 | 10 | `dlhub/vision/crack_detection/` |
+| Glare Detection / 眩光检测 | 10 | `dlhub/vision/glare_detection/` |
+| Lens Flare Removal / 镜头光斑去除 | 10 | `dlhub/vision/lens_flare_removal/` |
+| Illumination Estimation / 光照估计 | 10 | `dlhub/vision/illumination_estimation/` |
+| Exposure Correction / 曝光校正 | 10 | `dlhub/vision/exposure_correction/` |
+| Reflection Detection / 反射检测 | 10 | `dlhub/vision/reflection_detection/` |
 
 
 ---
@@ -1477,7 +1567,7 @@ python scripts/federated_zoo.py --timeline
               │ 支持离线冒烟   │ 训练框架      │ 每次实验可追溯          │
               ├──────────────┼──────────────┼─────────────────────────┤
               │   渐进式      │  测试覆盖     │  Model Zoo             │
-              │ 由浅入深       │ 126 pytest  │ 2500+ 架构 ID          │
+              │ 由浅入深       │ 393 pytest  │ 8000+ 架构 ID          │
               │ 8 track 递进  │ CI 可集成    │ 全领域统一接口           │
               └──────────────┴──────────────┴─────────────────────────┘
 ```
@@ -1489,8 +1579,8 @@ python scripts/federated_zoo.py --timeline
 - **统一脚手架** — 所有 lesson 共享 `dlhub/` 框架：训练循环、设备管理、种子、检查点、JSONL 指标记录
 - **可复现** — 种子管理 + 配置自动保存 + 指标日志，每次实验完整可追溯
 - **渐进式** — 从基础张量操作到 Vision Transformer、GraphSAGE、PointNet++、LLaVA，由浅入深，8 个 track 层层递进
-- **测试覆盖** — 126 pytest 测试文件覆盖框架核心与所有 track，支持 CI 集成
-- **Model Zoo** — 全领域（Vision / NLP / Point Cloud / Multimodal / Generative / Federated）共 2500+ 架构 ID，纯 PyTorch 本地实现，统一接口一行切换
+- **测试覆盖** — 393 pytest 测试文件覆盖框架核心与所有 track，支持 CI 集成
+- **Model Zoo** — 全领域（Vision / NLP / Point Cloud / Multimodal / Generative / Federated）共 8000+ 架构 ID，纯 PyTorch 本地实现，统一接口一行切换
 
 </details>
 

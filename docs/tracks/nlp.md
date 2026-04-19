@@ -131,8 +131,8 @@ flowchart LR
 
 ## NLP Architecture Zoo
 
-!!! note "813 架构可供探索"
-    NLP Zoo 包含 **49 个算法族 / 813 个架构 ID**，涵盖 Transformer、RNN、CNN、MLP 等多种文本编码器，所有实现均为纯 PyTorch 本地代码。
+!!! note "814 架构可供探索"
+    NLP Zoo 包含 **49 个算法族 / 814 个架构 ID**，涵盖 Transformer、RNN、CNN、MLP 等多种文本编码器，所有实现均为纯 PyTorch 本地代码。
 
 ```bash
 # 列出所有可用架构

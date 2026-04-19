@@ -4,7 +4,7 @@ icon: material/paw
 
 # Model Zoo 总览
 
-全领域统一模型动物园 --- 纯 PyTorch 本地实现，无需下载预训练权重，**2 500+ 架构 ID** 一行切换。
+全领域统一模型动物园 --- 纯 PyTorch 本地实现，无需下载预训练权重，**8 000+ 架构 ID** 一行切换。
 
 ---
 
@@ -16,7 +16,7 @@ icon: material/paw
 
     ---
 
-    **736** Architecture IDs / 208 算法族
+    **791** Architecture IDs / 208 算法族
 
     [:octicons-arrow-right-24: Vision Zoo](vision-zoo.md)
 
@@ -24,7 +24,7 @@ icon: material/paw
 
     ---
 
-    **813** Architecture IDs / 49 算法族
+    **814** Architecture IDs / 49 算法族
 
     [:octicons-arrow-right-24: NLP Zoo](nlp-zoo.md)
 
@@ -68,7 +68,7 @@ icon: material/paw
 
 | 领域 | 子系统 | 算法族数量 | CLI 脚本 |
 |:-----|:------|:----------|:---------|
-| Vision | Backbones | 208 族 / 736 IDs | `python -m zoo.vision` |
+| Vision | Backbones | 208 族 / 791 IDs | `python -m zoo.vision` |
 | Vision | Detection 2D | ~120 | `python -m zoo.det2d` |
 | Vision | Instance Segmentation | 40 | `python -m zoo.instseg` |
 | Vision | Panoptic Segmentation | 40 | `python -m zoo.panoptic` |
@@ -77,7 +77,7 @@ icon: material/paw
 | Vision | Fine-Grained Recognition | 72 | `python -m zoo.finegrained` |
 | Vision | Action Recognition | 22 | `python -m zoo.action` |
 | Vision | MOT | 81 | `python -m zoo.mot` |
-| NLP | Text Encoders | 49 族 / 813 IDs | `python -m zoo.nlp` |
+| NLP | Text Encoders | 49 族 / 814 IDs | `python -m zoo.nlp` |
 | Point Cloud | Backbones | 30 族 / 64 IDs | `python -m zoo.pc` |
 | Point Cloud | 3D Detection | 40 | `python -m zoo.det3d` |
 | Point Cloud | 3D Segmentation | 40 | `python -m zoo.seg3d` |

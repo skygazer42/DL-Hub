@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-04-18 · 文档事实同步
+
+- 刷新 README 与 docs/ 全站统计数字至实测值：Lessons 339 / 测试 393 / ML 算法 31 / Zoo 架构 8545。
+- 校正 Vision backbone 791 / NLP backbone 814 / Pointcloud 赛道 36 Lessons。
+- 详见 `docs/superpowers/specs/2026-04-18-docs-fact-sync-design.md`。
+
+---
+
 ## Vision 赛道
 
 ### 图像去雨 (Deraining)

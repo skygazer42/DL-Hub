@@ -6,9 +6,9 @@ description: 从 PointNet 到 30+ Backbone Zoo — 3D 点云分类、分割与�
 # 点云赛道
 
 !!! abstract "赛道概览"
-    **23 个 Lesson**（4 个核心 + 19 个进阶） · 预计 2-3 周 · PointNet、DGCNN、PointNet++ 与 64 架构 Zoo
+    **36 个 Lesson**（4 个核心 + 32 个进阶） · 预计 2-3 周 · PointNet、DGCNN、PointNet++ 与 64 架构 Zoo
 
-    Point Cloud 赛道从最经典的 PointNet 出发，逐步引入图卷积（DGCNN）和层级采样（PointNet++），最后通过 30+ Backbone Zoo 统一对比各类 3D 点云架构。赛道还包含自监督学习等进阶内容，共计 23 个 Lesson。
+    Point Cloud 赛道从最经典的 PointNet 出发，逐步引入图卷积（DGCNN）和层级采样（PointNet++），最后通过 30+ Backbone Zoo 统一对比各类 3D 点云架构。赛道还包含自监督学习等进阶内容，共计 36 个 Lesson。
 
 ---
 
@@ -49,8 +49,8 @@ flowchart LR
 | 03 | **PointNet++ 点云分类** | [`pointnet2_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_03_pointnet2_toy_classification/) | 层级采样, Set Abstraction |
 | 04 | **30+ Backbone Zoo 对比** | [`pointcloud_zoo_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_04_pointcloud_zoo_toy_classification/) | 统一接口, Backbone 对比 |
 
-!!! note "23 个 Lesson 总计"
-    除上述 4 个核心 Lesson 外，Point Cloud 赛道还包含 **19 个进阶 Lesson**，涵盖自监督点云预训练（15 种方法）、部件分割、场景分割、点云重建等主题，共计 23 个 Lesson。
+!!! note "36 个 Lesson 总计"
+    除上述 4 个核心 Lesson 外，Point Cloud 赛道还包含 **32 个进阶 Lesson**，涵盖自监督点云预训练（15 种方法）、部件分割、场景分割、点云重建等主题，共计 36 个 Lesson。
 
 ---
 

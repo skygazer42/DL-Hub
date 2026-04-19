@@ -21,7 +21,7 @@ hide:
 <div class="stats-grid" markdown>
 
 <div class="stat-card" markdown>
-<span class="stat-number">76</span>
+<span class="stat-number">339</span>
 <span class="stat-label">Lessons</span>
 </div>
 
@@ -31,17 +31,17 @@ hide:
 </div>
 
 <div class="stat-card" markdown>
-<span class="stat-number">2500+</span>
+<span class="stat-number">8000+</span>
 <span class="stat-label">Model Zoo 架构</span>
 </div>
 
 <div class="stat-card" markdown>
-<span class="stat-number">27</span>
+<span class="stat-number">31</span>
 <span class="stat-label">ML 算法</span>
 </div>
 
 <div class="stat-card" markdown>
-<span class="stat-number">126</span>
+<span class="stat-number">393</span>
 <span class="stat-label">测试文件</span>
 </div>
 
@@ -69,7 +69,7 @@ hide:
 
 ### :material-eye: Vision
 
-CNN→ViT→检测→分割，736 架构
+CNN→ViT→检测→分割，791 架构
 
 从经典 LeNet 到 Swin Transformer，覆盖分类、检测、分割全流程。
 
@@ -81,7 +81,7 @@ CNN→ViT→检测→分割，736 架构
 
 ### :material-text-box: NLP
 
-文本分类→Transformer→阅读理解，813 架构
+文本分类→Transformer→阅读理解，814 架构
 
 从词向量到 Transformer，掌握文本分类、序列标注、阅读理解等核心任务。
 
@@ -181,7 +181,7 @@ CLIP→LLaVA，20 VLM 架构
 
 ### :material-archive: Model Zoo
 
-2500+ 预定义架构，开箱即用。
+8000+ 预定义架构，开箱即用。
 
 [:octicons-arrow-right-24: 浏览 Zoo](zoo/index.md)
 

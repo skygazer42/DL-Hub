@@ -125,5 +125,5 @@ python -m tracks.foundations.lesson_01_tensor_basics.run
 ## 下一步
 
 - :material-map-marker-path: 选择一条 [学习赛道](../tracks/index.md) 开始系统学习
-- :material-archive: 浏览 [Model Zoo](../zoo/index.md)，了解 2500+ 可用架构
+- :material-archive: 浏览 [Model Zoo](../zoo/index.md)，了解 8000+ 可用架构
 - :material-cog: 阅读 [项目结构](../developer/structure.md)，理解代码组织方式

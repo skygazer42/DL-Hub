@@ -4,14 +4,14 @@ icon: material/eye
 
 # Vision Zoo
 
-> **208 算法族 / 736 Architecture IDs** --- 覆盖从经典 CNN 到最新 Vision Transformer 的全部视觉主干网络，外加 8 个下游任务子系统。
+> **208 算法族 / 791 Architecture IDs** --- 覆盖从经典 CNN 到最新 Vision Transformer 的全部视觉主干网络，外加 8 个下游任务子系统。
 
 ---
 
 ## CLI 快速上手
 
 ```bash
-# 列出全部 736 个架构 ID
+# 列出全部 791 个架构 ID
 python -m zoo.vision --list
 
 # 模糊搜索
