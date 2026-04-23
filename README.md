@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/hero_banner.png" width="100%" alt="DL-Hub — Deep Learning from Scratch" />
+<img src="assets/1.png" width="100%" alt="DL-Hub — Deep Learning from Scratch" />
 
 # DL-Hub
 
@@ -76,7 +76,7 @@
 </table>
 
 <p align="center">
-  <img src="assets/overview_8panels.png" width="80%" alt="DL-Hub 八大领域：Vision · NLP · GNN · Point Cloud · Generative · Multimodal · LLM · Federated" />
+  <img src="assets/2.png" width="80%" alt="DL-Hub 八大领域：Vision · NLP · GNN · Point Cloud · Generative · Multimodal · LLM · Federated" />
 </p>
 <p align="center"><sub>① Vision — CNN / ViT 图像分类 · ② NLP — 文本分类 / NER · ③ GNN — 图神经网络 · ④ Point Cloud — 3D 点云 · ⑤ Generative — VAE / GAN · ⑥ Multimodal — VLM 视觉语言 · ⑦ LLM — 大语言模型 · ⑧ Federated — 联邦学习</sub></p>
 
@@ -169,7 +169,7 @@ python scripts/run_lesson.py --list
 不知道从哪开始？根据你的时间选择一条学习路线：
 
 <p align="center">
-  <img src="assets/learning_path_steps.png" width="85%" alt="8 Learning Tracks: Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal" />
+  <img src="assets/3.png" width="85%" alt="8 Learning Tracks: Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal" />
 </p>
 <p align="center"><sub>Step 1–8 对应：Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal</sub></p>
 
