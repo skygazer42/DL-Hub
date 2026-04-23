@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Any
-
 import numpy as np
 
 from .splits import train_val_split_indices

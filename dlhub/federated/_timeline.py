@@ -1,7 +1,6 @@
 """Federated learning timeline metadata (best-effort, for docs/CLI)."""
 
 from __future__ import annotations
-
 from dataclasses import dataclass
 
 
