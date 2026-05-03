@@ -26,6 +26,21 @@
 
 </div>
 
+#### Topic Coverage / 主题覆盖闭环
+> The user-provided topic pool is represented by a checked code registry instead of README-only claims. `dlhub/topic_coverage.py` maps every requested topic to concrete artifacts, while `dlhub/research_streams.py`, `dlhub/framework_adapters.py`, and `dlhub/method_kits.py` cover research streams, optional frameworks, and cross-cutting methods.
+
+```bash
+python -m pytest tests/test_topic_coverage.py
+```
+
+| 闭环层 | 代码入口 |
+|------|--------|
+| Topic manifest / 主题清单 | `dlhub/topic_coverage.py` |
+| Paper/resource/survey streams / 论文资源综述流 | `dlhub/research_streams.py` |
+| Framework probes / 框架探测 | `dlhub/framework_adapters.py` |
+| NAS/AutoML/pruning/distillation/SLAM kits | `dlhub/method_kits.py` |
+| Regression test / 回归测试 | `tests/test_topic_coverage.py` |
+
 ## What You'll Build
 
 <table>

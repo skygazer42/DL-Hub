@@ -49,6 +49,67 @@ from . import (
     zero,
 )
 
+_TITLE_CASE_MODULE_ALIASES = {
+    "AI_Bubbles": ai_bubbles,
+    "Anthropic": anthropic,
+    "Bard": bard,
+    "BLIP": blip,
+    "BLIP2": blip2,
+    "BLOOM": bloom,
+    "Chain_of_Thought": chain_of_thought,
+    "Chinchilla": chinchilla,
+    "Dolly": dolly,
+    "FED": fed,
+    "Flamingo": flamingo,
+    "Flan_T5": flan_t5,
+    "GPipe": gpipe,
+    "GPT4All": gpt4all,
+    "GPT4All_J": gpt4all_j,
+    "GPT_NeoX": gpt_neox,
+    "HELM": helm,
+    "Imagen": imagen,
+    "InstructBLIP": instructblip,
+    "InstructGPT": instructgpt,
+    "LaMDA": lamda,
+    "LLaMA": llama,
+    "LLaMA_Adapter": llama_adapter,
+    "LLM_Survey": llm_survey,
+    "LLM_Timeline": llm_timeline,
+    "LoRA": lora,
+    "Megatron": megatron,
+    "MiniGPT4": minigpt4,
+    "MTF": mtf,
+    "OASST1": oasst1,
+    "OpenAssistant": openassistant,
+    "PaLM": palm,
+    "Parameter_Server": parameter_server,
+    "Pathways": pathways,
+    "Pile": pile,
+    "Prompt_Engineering_Guide": prompt_engineering_guide,
+    "Pythia": pythia,
+    "RedPajama": red_pajama,
+    "ScienceQA": scienceqa,
+    "Segment_Anything": segment_anything,
+    "Self_Instruct": self_instruct,
+    "StarCoder": starcoder,
+    "T5": t5,
+    "The_Stack": the_stack,
+    "UL2": ul2,
+    "ViLT": vilt,
+    "ZeRO": zero,
+}
+
+def _install_title_case_aliases() -> None:
+    import sys
+
+    package = __name__
+    for alias, module in _TITLE_CASE_MODULE_ALIASES.items():
+        globals()[alias] = module
+        sys.modules[f"{package}.{alias}"] = module
+
+
+_install_title_case_aliases()
+
 __all__ = [
     "llama",
     "bloom",
@@ -98,4 +159,5 @@ __all__ = [
     "starcoder",
     "gpipe",
     "pathways",
+    *_TITLE_CASE_MODULE_ALIASES,
 ]

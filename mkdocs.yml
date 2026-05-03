@@ -136,6 +136,7 @@ nav:
     - VLM Zoo: zoo/vlm-zoo.md
     - Generative Zoo: zoo/generative-zoo.md
     - Federated Zoo: zoo/federated-zoo.md
+  - Topic Coverage: topic-coverage.md
   - ML 算法:
     - ml-algorithms/index.md
     - 监督学习: ml-algorithms/supervised.md
