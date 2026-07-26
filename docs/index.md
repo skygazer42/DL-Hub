@@ -18,6 +18,7 @@ hide:
 
 ---
 
+<!-- stats:docs-index-stats -->
 <div class="stats-grid" markdown>
 
 <div class="stat-card" markdown>
@@ -31,7 +32,7 @@ hide:
 </div>
 
 <div class="stat-card" markdown>
-<span class="stat-number">8000+</span>
+<span class="stat-number">8626</span>
 <span class="stat-label">Model Zoo 架构</span>
 </div>
 
@@ -41,11 +42,12 @@ hide:
 </div>
 
 <div class="stat-card" markdown>
-<span class="stat-number">393</span>
+<span class="stat-number">409</span>
 <span class="stat-label">测试文件</span>
 </div>
 
 </div>
+<!-- /stats:docs-index-stats -->
 
 ---
 

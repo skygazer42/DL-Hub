@@ -1,18 +1,20 @@
 ---
 title: NLP 赛道
-description: 从词嵌入到 Transformer、NER、阅读理解 — 7 个 Lesson 掌握自然语言处理核心技术
+description: 从词嵌入到 Transformer、NER、阅读理解与对话系统 — 49 个 Lesson 掌握自然语言处理核心技术
 ---
 
 # NLP 赛道
 
 !!! abstract "赛道概览"
-    **7 个 Lesson** · 预计 1-2 周 · 从 toy 文本分类到 Transformer、NER、阅读理解
+    **49 个 Lesson** · 预计 3-4 周 · 从 toy 文本分类到 Transformer、NER、阅读理解与对话系统
 
-    NLP 赛道从最基础的词嵌入 + 全连接分类开始，逐步引入 Transformer Encoder、BiLSTM、Seq2Seq + Attention，最终完成 SQuAD 风格的阅读理解任务。配套 **813 种 NLP 架构**可供探索。
+    NLP 赛道从最基础的词嵌入 + 全连接分类开始，逐步引入 Transformer Encoder、BiLSTM、Seq2Seq + Attention 与阅读理解，再延伸到文本匹配、摘要生成、prompt tuning、few-shot、自监督语言建模，最后以 21 课的 task-oriented dialog 专题收尾。配套 **814 种 NLP 架构**可供探索。
 
 ---
 
 ## 学习路径
+
+下图展示前 7 课的核心学习路径；Lesson 08 之后按主题分组，详见下方课程列表。
 
 ```mermaid
 flowchart TD
@@ -50,6 +52,10 @@ flowchart TD
 
 ## 课程列表
 
+全部 **49 个 Lesson** 按主题分组如下，每个 lesson 目录均含独立 README 与可运行的 `train.py`。
+
+### 基础与表示学习（01-15）
+
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
 | 01 | **Embedding + FC 文本分类** | [`toy_text_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_01_toy_text_classification/) | 词嵌入, 词袋 |
@@ -59,6 +65,58 @@ flowchart TD
 | 05 | **TextCNN 文本分类** | [`toy_text_classification_textcnn`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_05_toy_text_classification_textcnn/) | 多尺度卷积核, 文本特征 |
 | 06 | **BiLSTM 文本分类** | [`toy_text_classification_bilstm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_06_toy_text_classification_bilstm/) | 双向 LSTM, 隐藏状态 |
 | 07 | **Span Prediction 阅读理解** | [`reading_comprehension`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_07_reading_comprehension/) | SQuAD 风格, Start/End Logits |
+| 08 | **双塔文本匹配** | [`toy_text_matching_biencoder`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_08_toy_text_matching_biencoder/) | 双塔编码器, 相似度检索 |
+| 09 | **Transformer 摘要生成** | [`toy_transformer_summarization`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_09_toy_transformer_summarization/) | Encoder-Decoder, Teacher Forcing |
+| 10 | **Prompt Tuning 文本分类** | [`toy_prompt_tuning_classifier`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_10_toy_prompt_tuning_classifier/) | Soft Prompt, Frozen Encoder |
+| 11 | **Few-Shot 文本分类** | [`toy_few_shot_text_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_11_toy_few_shot_text_classification/) | Episodic Sampling, Prototype 分类 |
+| 12 | **In-Context 文本分类** | [`toy_in_context_text_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_12_toy_in_context_text_classification/) | Support Set Prompting, 无梯度适配 |
+| 13 | **Masked Language Modeling** | [`toy_masked_language_modeling`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_13_toy_masked_language_modeling/) | Masked Token 预测, 自监督预训练 |
+| 14 | **Contrastive Sentence Embedding** | [`toy_contrastive_sentence_embedding`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_14_toy_contrastive_sentence_embedding/) | 双视图增强, NT-Xent 对比学习 |
+| 15 | **Cross-Encoder Reranking** | [`toy_cross_encoder_reranking`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_15_toy_cross_encoder_reranking/) | Query-Doc 拼接, 成对排序损失 |
+
+### 进阶文本任务（16-28）
+
+| 序号 | 项目 | 代码文档 | 核心概念 |
+|:----:|:-----|:---------|:---------|
+| 16 | **Text Clustering** | [`toy_text_clustering`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_16_toy_text_clustering/) | 原型聚类, 句向量分组, 无标签结构发现 |
+| 17 | **Text Anomaly Detection** | [`toy_text_anomaly_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_17_toy_text_anomaly_detection/) | 正常模式建模, 距离阈值, 异常得分 |
+| 18 | **Topic Modeling** | [`toy_topic_modeling`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_18_toy_topic_modeling/) | 主题混合, BoW 重建, 潜在主题发现 |
+| 19 | **Distilled Text Classifier** | [`toy_distilled_text_classifier`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_19_toy_distilled_text_classifier/) | Teacher-Student 蒸馏, 软目标迁移, 轻量学生模型 |
+| 20 | **Adversarial Text Classification** | [`toy_adversarial_text_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_20_toy_adversarial_text_classification/) | 对抗替换增强, 干净/扰动双视图分类, 一致性约束 |
+| 21 | **Adversarial Example Detection** | [`toy_adversarial_example_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_21_toy_adversarial_example_detection/) | 扰动检测, 二分类判别, 语义模板对抗样本识别 |
+| 22 | **Weak-Supervision Text Classification** | [`toy_weak_supervision_text_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_22_toy_weak_supervision_text_classification/) | 标注函数投票, 软伪标签, 文本与投票融合 |
+| 23 | **Sentence Denoising Autoencoder** | [`toy_sentence_denoising_autoencoder`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_23_toy_sentence_denoising_autoencoder/) | 句子去噪重建, 序列自编码, 自监督恢复训练 |
+| 24 | **Meta Few-Shot Text Classification** | [`toy_meta_few_shot_text_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_24_toy_meta_few_shot_text_classification/) | Episodic 元学习, Prototype 适配, 任务级泛化 |
+| 25 | **Low-Shot Intent Detection** | [`toy_low_shot_intent_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_25_toy_low_shot_intent_detection/) | 少样本意图分类, 小预算监督, 轻量文本编码器 |
+| 26 | **Joint Intent + Slot Parsing** | [`toy_joint_intent_slot_parsing`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_26_toy_joint_intent_slot_parsing/) | 意图与槽位联合建模, BIO 标注, 任务导向 NLU |
+| 27 | **Textual Entailment** | [`toy_textual_entailment`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_27_toy_textual_entailment/) | 前提-假设关系判别, 双句编码, 蕴含分类 |
+| 28 | **Semantic Textual Similarity** | [`toy_semantic_textual_similarity`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_28_toy_semantic_textual_similarity/) | 双句相似度回归, pooled embedding, MAE 评估 |
+
+### 对话系统专题（29-49）
+
+| 序号 | 项目 | 代码文档 | 核心概念 |
+|:----:|:-----|:---------|:---------|
+| 29 | **Dialog State Tracking** | [`toy_dialog_state_tracking`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_29_toy_dialog_state_tracking/) | 多轮对话状态维护, 多槽位分类, joint-goal accuracy |
+| 30 | **Dialog Response Selection** | [`toy_dialog_response_selection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_30_toy_dialog_response_selection/) | 上下文-候选响应匹配, 双塔评分, 排序准确率 |
+| 31 | **Slot Carryover Prediction** | [`toy_slot_carryover_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_31_toy_slot_carryover_prediction/) | 历史槽位继承判别, 多头二分类, joint carryover accuracy |
+| 32 | **Dialog Act Prediction** | [`toy_dialog_act_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_32_toy_dialog_act_prediction/) | 对话行为分类, 轮次语气模式, utterance-level softmax |
+| 33 | **Dialog Intent Prediction** | [`toy_dialog_intent_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_33_toy_dialog_intent_prediction/) | 任务导向意图分类, 餐厅/打车场景, pooled embedding 分类 |
+| 34 | **Dialog Policy Prediction** | [`toy_dialog_policy_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_34_toy_dialog_policy_prediction/) | 系统动作预测, 状态-动作映射, pooled embedding 策略分类 |
+| 35 | **Dialog Domain Prediction** | [`toy_dialog_domain_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_35_toy_dialog_domain_prediction/) | 对话域分类, 餐厅/酒店/打车场景, pooled embedding 分类 |
+| 36 | **Dialog Slot Prediction** | [`toy_dialog_slot_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_36_toy_dialog_slot_prediction/) | 多槽位联合分类, cuisine/area/party 预测, pooled embedding 编码 |
+| 37 | **Dialog Outcome Prediction** | [`toy_dialog_outcome_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_37_toy_dialog_outcome_prediction/) | resolved/pending/escalated 分类, 对话结果建模, softmax 监督 |
+| 38 | **Dialog Satisfaction Prediction** | [`toy_dialog_satisfaction_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_38_toy_dialog_satisfaction_prediction/) | dissatisfied/neutral/satisfied 分类, 满意度建模, softmax 监督 |
+| 39 | **Dialog Escalation Risk Prediction** | [`toy_dialog_escalation_risk_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_39_toy_dialog_escalation_risk_prediction/) | low/medium/high 风险分类, 升级风险建模, softmax 监督 |
+| 40 | **Dialog Priority Prediction** | [`toy_dialog_priority_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_40_toy_dialog_priority_prediction/) | low/medium/high 优先级分类, 支持工单分流, pooled embedding 监督 |
+| 41 | **Dialog Transfer Prediction** | [`toy_dialog_transfer_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_41_toy_dialog_transfer_prediction/) | low/medium/high 转接需求分类, specialist transfer 建模, softmax 监督 |
+| 42 | **Dialog Resolution Time Prediction** | [`toy_dialog_resolution_time_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_42_toy_dialog_resolution_time_prediction/) | 预计处理时长分类, timing cue 建模, pooled embedding 监督 |
+| 43 | **Dialog Callback Prediction** | [`toy_dialog_callback_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_43_toy_dialog_callback_prediction/) | 是否需要回拨二分类, callback/followup 语义建模, pooled embedding 监督 |
+| 44 | **Dialog SLA Breach Prediction** | [`toy_dialog_sla_breach_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_44_toy_dialog_sla_breach_prediction/) | 是否 SLA breach 二分类, sla/minutes 语义建模, pooled embedding 监督 |
+| 45 | **Dialog Followup Channel Prediction** | [`toy_dialog_followup_channel_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_45_toy_dialog_followup_channel_prediction/) | email/sms/call 三分类, followup route 建模, pooled embedding 监督 |
+| 46 | **Dialog Reopen Prediction** | [`toy_dialog_reopen_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_46_toy_dialog_reopen_prediction/) | 是否 reopen 二分类, unresolved cue 建模, pooled embedding 监督 |
+| 47 | **Dialog Resolution Owner Prediction** | [`toy_dialog_resolution_owner_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_47_toy_dialog_resolution_owner_prediction/) | billing/support/operations 三分类, owner cue 建模, pooled embedding 监督 |
+| 48 | **Dialog Resolution Action Prediction** | [`toy_dialog_resolution_action_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_48_toy_dialog_resolution_action_prediction/) | close/handoff/followup/resolve/escalate 五分类, resolution action cue 建模, pooled embedding 监督 |
+| 49 | **Dialog Owner Handoff Prediction** | [`toy_dialog_owner_handoff_prediction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/nlp/lesson_49_toy_dialog_owner_handoff_prediction/) | none/billing/support/operations 四分类, owner-queue handoff cue 建模, pooled embedding 监督 |
 
 ---
 
