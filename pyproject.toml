@@ -1,3 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dlhub"
+version = "0.1.0"
+description = "Reusable deep-learning utilities behind the DL-Hub lesson tracks"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+# Mirrors requirements-dev.txt / requirements-docs.txt / requirements-vision.txt.
+dev = [
+  "pytest>=7.0",
+  "ruff>=0.9",
+  "black>=24.0",
+  "isort>=5.12",
+  "pre-commit>=3.0",
+]
+docs = [
+  "mkdocs-material>=9.5",
+  "mkdocs-minify-plugin>=0.8",
+]
+vision = [
+  "torch",
+  "torchvision",
+  "timm",
+]
+
+[tool.setuptools.packages.find]
+# Only the reusable library is distributable. `tracks/`, `Llms/` and friends
+# are lesson content meant to be run from the repo root (see docs/CONVENTIONS.md).
+include = ["dlhub*"]
+
 [tool.black]
 line-length = 100
 target-version = ["py310"]

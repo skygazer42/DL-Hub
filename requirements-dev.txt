@@ -1,7 +1,6 @@
-numpy>=1.24
+-r requirements.txt
 pytest>=7.0
 ruff>=0.9
 black>=24.0
 isort>=5.12
 pre-commit>=3.0
-
