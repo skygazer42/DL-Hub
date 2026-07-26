@@ -1,1 +1,1 @@
-"""Toy DDPM-style diffusion lesson on MNIST-like images."""
+"""Toy consistency model lesson (one-step generation) on MNIST-like images."""

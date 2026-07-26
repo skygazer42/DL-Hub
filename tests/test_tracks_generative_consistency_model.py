@@ -12,11 +12,11 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def test_latent_diffusion_fake_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_04_toy_latent_diffusion.data import DataConfig, get_dataloaders
+def test_consistency_model_fake_dataloaders_smoke() -> None:
+    from tracks.generative.lesson_05_toy_consistency_model.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
-        DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
+        DataConfig(num_samples=48, batch_size=8, seed=0, num_workers=0, val_fraction=0.25)
     )
     train_batch = next(iter(train_loader))
     val_batch = next(iter(val_loader))
@@ -28,42 +28,74 @@ def test_latent_diffusion_fake_dataloaders_smoke() -> None:
     assert torch.all(train_batch <= 1.0)
 
 
-def test_latent_diffusion_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_04_toy_latent_diffusion.model import (
-        LatentDiffusionModel,
+def test_consistency_model_boundary_condition_and_loss() -> None:
+    from tracks.generative.lesson_05_toy_consistency_model.model import (
+        ConsistencyModel,
+        ConsistencySchedule,
         ModelConfig,
-        diffusion_loss,
+        consistency_training_loss,
+        update_ema,
     )
 
-    cfg = ModelConfig(image_size=28, in_channels=1, latent_channels=4, latent_size=7, hidden_channels=16)
-    model = LatentDiffusionModel(cfg)
-    images = torch.rand((4, 1, 28, 28), dtype=torch.float32)
+    schedule = ConsistencySchedule(num_steps=6, sigma_min=0.02, sigma_max=3.0)
+    sigmas = schedule.sigmas()
+    assert sigmas.shape == (6,)
+    assert torch.all(sigmas[1:] > sigmas[:-1])
+    assert sigmas[0] == pytest.approx(schedule.sigma_min, rel=1e-5)
+    assert sigmas[-1] == pytest.approx(schedule.sigma_max, rel=1e-5)
 
-    latents = model.encode(images)
-    assert latents.shape == (4, 4, 7, 7)
+    model = ConsistencyModel(ModelConfig(hidden_dim=16, time_embed_dim=8), schedule)
+    x = torch.rand((4, 28 * 28), dtype=torch.float32)
 
-    timesteps = torch.randint(low=0, high=cfg.num_diffusion_steps, size=(4,), dtype=torch.long)
-    noisy_latents, noise = model.add_noise(latents, timesteps)
-    noise_pred = model.predict_noise(noisy_latents, timesteps)
-    decoded = model.decode(latents)
+    # f(x, sigma_min) must be the identity by construction.
+    at_boundary = model(x, torch.full((4,), schedule.sigma_min))
+    assert torch.allclose(at_boundary, x, atol=1e-5)
 
-    assert noisy_latents.shape == latents.shape
-    assert noise.shape == latents.shape
-    assert noise_pred.shape == latents.shape
-    assert decoded.shape == images.shape
-
-    loss = diffusion_loss(noise_pred=noise_pred, noise=noise, recon_images=decoded, target_images=images)
+    target_model = ConsistencyModel(ModelConfig(hidden_dim=16, time_embed_dim=8), schedule)
+    target_model.load_state_dict(model.state_dict())
+    loss = consistency_training_loss(model, target_model, x, schedule)
     assert loss.ndim == 0
     assert torch.isfinite(loss)
+    loss.backward()
+    assert any(p.grad is not None for p in model.parameters())
+
+    update_ema(target_model, model, decay=0.5)
 
 
-def test_latent_diffusion_training_smoke() -> None:
+def test_consistency_model_sampling_smoke() -> None:
+    from tracks.generative.lesson_05_toy_consistency_model.model import (
+        ConsistencyModel,
+        ConsistencySchedule,
+        ModelConfig,
+        sample_consistency,
+    )
+
+    schedule = ConsistencySchedule(num_steps=6)
+    model = ConsistencyModel(ModelConfig(hidden_dim=16, time_embed_dim=8), schedule)
+
+    one_step = sample_consistency(model, schedule, num_samples=4, device=torch.device("cpu"))
+    frames = sample_consistency(
+        model,
+        schedule,
+        num_samples=4,
+        device=torch.device("cpu"),
+        num_steps=3,
+        return_all=True,
+    )
+
+    assert one_step.shape == (4, 1, 28, 28)
+    assert torch.all(one_step >= 0.0)
+    assert torch.all(one_step <= 1.0)
+    assert frames.shape == (3, 4, 1, 28, 28)
+
+
+def test_consistency_model_training_smoke() -> None:
     run_dir = (
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_04_toy_latent_diffusion"
-        / "pytest_latent_diffusion_smoke"
+        / "lesson_05_toy_consistency_model"
+        / "pytest_consistency_model_smoke"
     )
     if run_dir.exists():
         shutil.rmtree(run_dir)
@@ -72,7 +104,7 @@ def test_latent_diffusion_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_04_toy_latent_diffusion.train",
+            "tracks.generative.lesson_05_toy_consistency_model.train",
             "--epochs",
             "1",
             "--num-samples",
@@ -83,10 +115,12 @@ def test_latent_diffusion_training_smoke() -> None:
             "2",
             "--max-eval-batches",
             "1",
+            "--num-discretization-steps",
+            "6",
             "--device",
             "cpu",
             "--run-name",
-            "pytest_latent_diffusion_smoke",
+            "pytest_consistency_model_smoke",
         ],
         cwd=str(_repo_root()),
         check=False,
@@ -98,5 +132,5 @@ def test_latent_diffusion_training_smoke() -> None:
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
-    assert (run_dir / "recons.pt").is_file()
+    assert (run_dir / "refine_grid.pt").is_file()
     assert (run_dir / "checkpoints" / "checkpoint.pt").is_file()

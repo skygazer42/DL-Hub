@@ -1,4 +1,5 @@
 import argparse
+import copy
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -13,7 +14,14 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import DataConfig, get_dataloaders
-from .model import DiffusionMLP, DiffusionSchedule, ModelConfig, q_sample, sample_reverse_diffusion
+from .model import (
+    ConsistencyModel,
+    ConsistencySchedule,
+    ModelConfig,
+    consistency_training_loss,
+    sample_consistency,
+    update_ema,
+)
 
 
 @dataclass(frozen=True)
@@ -25,7 +33,8 @@ class TrainConfig:
     max_train_batches: int | None = None
     max_eval_batches: int | None = None
     run_name: str = "dev"
-    num_sample_steps: int | None = None
+    ema_decay: float = 0.99
+    num_sample_steps: int = 1
 
 
 def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
@@ -36,9 +45,9 @@ def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
     save_image(images, path, nrow=8)
 
 
-def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig, DiffusionSchedule]:
+def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig, ConsistencySchedule]:
     parser = argparse.ArgumentParser(
-        description="Lesson 03 (Generative): toy DDPM-style diffusion on MNIST-like images."
+        description="Lesson 05 (Generative): toy consistency model on MNIST-like images."
     )
 
     parser.add_argument("--epochs", type=int, default=5)
@@ -48,14 +57,16 @@ def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig, DiffusionSchedul
     parser.add_argument("--run-name", type=str, default="dev")
     parser.add_argument("--max-train-batches", type=int, default=None)
     parser.add_argument("--max-eval-batches", type=int, default=None)
-    parser.add_argument("--num-sample-steps", type=int, default=None)
+    parser.add_argument("--ema-decay", type=float, default=0.99)
+    parser.add_argument("--num-sample-steps", type=int, default=1)
 
     parser.add_argument("--hidden-dim", type=int, default=128)
     parser.add_argument("--time-embed-dim", type=int, default=32)
 
-    parser.add_argument("--num-diffusion-steps", type=int, default=20)
-    parser.add_argument("--beta-start", type=float, default=1e-4)
-    parser.add_argument("--beta-end", type=float, default=0.02)
+    parser.add_argument("--num-discretization-steps", type=int, default=20)
+    parser.add_argument("--sigma-min", type=float, default=0.02)
+    parser.add_argument("--sigma-max", type=float, default=3.0)
+    parser.add_argument("--sigma-data", type=float, default=0.5)
 
     parser.add_argument("--dataset", type=str, default="fake", choices=["fake", "mnist"])
     parser.add_argument("--batch-size", type=int, default=128)
@@ -74,6 +85,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig, DiffusionSchedul
         max_train_batches=args.max_train_batches,
         max_eval_batches=args.max_eval_batches,
         run_name=args.run_name,
+        ema_decay=args.ema_decay,
         num_sample_steps=args.num_sample_steps,
     )
     data_cfg = DataConfig(
@@ -85,10 +97,11 @@ def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig, DiffusionSchedul
         val_fraction=args.val_fraction,
     )
     model_cfg = ModelConfig(hidden_dim=args.hidden_dim, time_embed_dim=args.time_embed_dim)
-    schedule = DiffusionSchedule(
-        num_steps=args.num_diffusion_steps,
-        beta_start=args.beta_start,
-        beta_end=args.beta_end,
+    schedule = ConsistencySchedule(
+        num_steps=args.num_discretization_steps,
+        sigma_min=args.sigma_min,
+        sigma_max=args.sigma_max,
+        sigma_data=args.sigma_data,
     )
     return train_cfg, data_cfg, model_cfg, schedule
 
@@ -100,9 +113,10 @@ def _flatten_images(batch: torch.Tensor) -> torch.Tensor:
 
 
 def _evaluate(
-    model: DiffusionMLP,
+    model: ConsistencyModel,
+    target_model: ConsistencyModel,
     loader: torch.utils.data.DataLoader,
-    schedule: DiffusionSchedule,
+    schedule: ConsistencySchedule,
     *,
     device: torch.device,
     max_batches: int | None,
@@ -116,11 +130,7 @@ def _evaluate(
                 break
             images = images.to(device)
             x0 = _flatten_images(images)
-            timesteps = torch.randint(0, schedule.num_steps, (x0.size(0),), device=device)
-            noise = torch.randn_like(x0)
-            xt = q_sample(schedule, x0, timesteps, noise)
-            pred_noise = model(xt, timesteps)
-            loss = torch.nn.functional.mse_loss(pred_noise, noise)
+            loss = consistency_training_loss(model, target_model, x0, schedule)
 
             bsz = int(images.size(0))
             total_loss += float(loss.item()) * bsz
@@ -132,20 +142,20 @@ def run_training(
     train_cfg: TrainConfig,
     data_cfg: DataConfig,
     model_cfg: ModelConfig,
-    schedule: DiffusionSchedule | None = None,
+    schedule: ConsistencySchedule | None = None,
 ) -> int:
     if schedule is None:
-        schedule = DiffusionSchedule()
+        schedule = ConsistencySchedule()
 
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
     paths = build_run_paths(
         track="generative",
-        lesson="lesson_03_toy_diffusion_mnist",
+        lesson="lesson_05_toy_consistency_model",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("generative.toy_diffusion_mnist", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("generative.toy_consistency_model", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
@@ -165,7 +175,10 @@ def run_training(
     )
 
     train_loader, val_loader = get_dataloaders(data_cfg)
-    model = DiffusionMLP(model_cfg).to(device_info.torch_device)
+    model = ConsistencyModel(model_cfg, schedule).to(device_info.torch_device)
+    target_model = copy.deepcopy(model)
+    for param in target_model.parameters():
+        param.requires_grad_(False)
     optimizer = torch.optim.Adam(model.parameters(), lr=train_cfg.learning_rate)
     metrics_path = paths.run_dir / "metrics.jsonl"
 
@@ -180,17 +193,12 @@ def run_training(
 
             images = images.to(device_info.torch_device)
             x0 = _flatten_images(images)
-            timesteps = torch.randint(
-                0, schedule.num_steps, (x0.size(0),), device=device_info.torch_device
-            )
-            noise = torch.randn_like(x0)
-            xt = q_sample(schedule, x0, timesteps, noise)
 
             optimizer.zero_grad(set_to_none=True)
-            pred_noise = model(xt, timesteps)
-            loss = torch.nn.functional.mse_loss(pred_noise, noise)
+            loss = consistency_training_loss(model, target_model, x0, schedule)
             loss.backward()
             optimizer.step()
+            update_ema(target_model, model, train_cfg.ema_decay)
 
             bsz = int(images.size(0))
             total_loss += float(loss.item()) * bsz
@@ -199,6 +207,7 @@ def run_training(
         train_loss = total_loss / max(1, total_seen)
         val_loss = _evaluate(
             model,
+            target_model,
             val_loader,
             schedule,
             device=device_info.torch_device,
@@ -206,7 +215,7 @@ def run_training(
         )
 
         logger.info(
-            "Epoch %d/%d | train_noise_mse %.4f | val_noise_mse %.4f",
+            "Epoch %d/%d | train_consistency_mse %.4f | val_consistency_mse %.4f",
             epoch,
             train_cfg.epochs,
             train_loss,
@@ -216,14 +225,14 @@ def run_training(
             metrics_path,
             {
                 "epoch": epoch,
-                "train_noise_mse": train_loss,
-                "val_noise_mse": val_loss,
+                "train_consistency_mse": train_loss,
+                "val_consistency_mse": val_loss,
                 "lr": optimizer.param_groups[0]["lr"],
             },
         )
 
-        samples = sample_reverse_diffusion(
-            model,
+        samples = sample_consistency(
+            target_model,
             schedule,
             num_samples=64,
             device=device_info.torch_device,
@@ -232,24 +241,24 @@ def run_training(
         torch.save({"samples": samples}, paths.run_dir / "samples.pt")
         _maybe_save_image_grid(samples, paths.run_dir / "samples.png")
 
-    denoise_frames = sample_reverse_diffusion(
-        model,
+    refine_frames = sample_consistency(
+        target_model,
         schedule,
         num_samples=16,
         device=device_info.torch_device,
-        num_steps=train_cfg.num_sample_steps,
+        num_steps=max(4, train_cfg.num_sample_steps),
         return_all=True,
     )
-    torch.save({"frames": denoise_frames}, paths.run_dir / "denoise_grid.pt")
-    if denoise_frames.numel() > 0:
-        _maybe_save_image_grid(denoise_frames[-1], paths.run_dir / "denoise_grid.png")
+    torch.save({"frames": refine_frames}, paths.run_dir / "refine_grid.pt")
+    if refine_frames.numel() > 0:
+        _maybe_save_image_grid(refine_frames[-1], paths.run_dir / "refine_grid.png")
 
     ckpt_path = save_checkpoint(
         paths.checkpoints_dir / "checkpoint.pt",
         model=model,
         optimizer=optimizer,
         epoch=train_cfg.epochs,
-        extra={"track": "generative", "lesson": "lesson_03_toy_diffusion_mnist"},
+        extra={"track": "generative", "lesson": "lesson_05_toy_consistency_model"},
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
@@ -259,7 +268,7 @@ def main() -> int:
     if __package__ is None:
         raise RuntimeError(
             "Please run this lesson from the repo root as a module:\n"
-            "  python -m tracks.generative.lesson_03_toy_diffusion_mnist.train"
+            "  python -m tracks.generative.lesson_05_toy_consistency_model.train"
         )
     train_cfg, data_cfg, model_cfg, schedule = parse_args()
     return run_training(train_cfg, data_cfg, model_cfg, schedule)

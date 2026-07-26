@@ -12,8 +12,8 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def test_latent_diffusion_fake_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_04_toy_latent_diffusion.data import DataConfig, get_dataloaders
+def test_flow_matching_fake_dataloaders_smoke() -> None:
+    from tracks.generative.lesson_06_toy_flow_matching.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
@@ -28,42 +28,51 @@ def test_latent_diffusion_fake_dataloaders_smoke() -> None:
     assert torch.all(train_batch <= 1.0)
 
 
-def test_latent_diffusion_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_04_toy_latent_diffusion.model import (
-        LatentDiffusionModel,
+def test_flow_matching_model_pipeline_smoke() -> None:
+    from tracks.generative.lesson_06_toy_flow_matching.model import (
+        FlowMatchingModel,
         ModelConfig,
-        diffusion_loss,
+        build_flow_targets,
+        sample_time,
     )
 
-    cfg = ModelConfig(image_size=28, in_channels=1, latent_channels=4, latent_size=7, hidden_channels=16)
-    model = LatentDiffusionModel(cfg)
+    cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=16, time_embed_dim=16)
+    model = FlowMatchingModel(cfg)
     images = torch.rand((4, 1, 28, 28), dtype=torch.float32)
+    noise = torch.randn_like(images)
+    times = sample_time(batch_size=4, device=images.device)
 
-    latents = model.encode(images)
-    assert latents.shape == (4, 4, 7, 7)
+    xt, target_velocity = build_flow_targets(images=images, noise=noise, times=times)
+    assert xt.shape == images.shape
+    assert target_velocity.shape == images.shape
+    assert torch.allclose(target_velocity, images - noise)
 
-    timesteps = torch.randint(low=0, high=cfg.num_diffusion_steps, size=(4,), dtype=torch.long)
-    noisy_latents, noise = model.add_noise(latents, timesteps)
-    noise_pred = model.predict_noise(noisy_latents, timesteps)
-    decoded = model.decode(latents)
+    xt_start, _ = build_flow_targets(images=images, noise=noise, times=torch.zeros(4))
+    xt_end, _ = build_flow_targets(images=images, noise=noise, times=torch.ones(4))
+    assert torch.allclose(xt_start, noise)
+    assert torch.allclose(xt_end, images)
 
-    assert noisy_latents.shape == latents.shape
-    assert noise.shape == latents.shape
-    assert noise_pred.shape == latents.shape
-    assert decoded.shape == images.shape
+    velocity = model(xt, times)
+    samples, trajectory = model.sample(
+        num_samples=4,
+        device=images.device,
+        num_steps=8,
+        return_trajectory=True,
+    )
 
-    loss = diffusion_loss(noise_pred=noise_pred, noise=noise, recon_images=decoded, target_images=images)
-    assert loss.ndim == 0
-    assert torch.isfinite(loss)
+    assert velocity.shape == images.shape
+    assert torch.isfinite(velocity).all()
+    assert samples.shape == images.shape
+    assert trajectory.shape == (9, 4, 1, 28, 28)
 
 
-def test_latent_diffusion_training_smoke() -> None:
+def test_flow_matching_training_smoke() -> None:
     run_dir = (
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_04_toy_latent_diffusion"
-        / "pytest_latent_diffusion_smoke"
+        / "lesson_06_toy_flow_matching"
+        / "pytest_flow_matching_smoke"
     )
     if run_dir.exists():
         shutil.rmtree(run_dir)
@@ -72,7 +81,7 @@ def test_latent_diffusion_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_04_toy_latent_diffusion.train",
+            "tracks.generative.lesson_06_toy_flow_matching.train",
             "--epochs",
             "1",
             "--num-samples",
@@ -83,10 +92,12 @@ def test_latent_diffusion_training_smoke() -> None:
             "2",
             "--max-eval-batches",
             "1",
+            "--sample-steps",
+            "4",
             "--device",
             "cpu",
             "--run-name",
-            "pytest_latent_diffusion_smoke",
+            "pytest_flow_matching_smoke",
         ],
         cwd=str(_repo_root()),
         check=False,
@@ -98,5 +109,5 @@ def test_latent_diffusion_training_smoke() -> None:
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
-    assert (run_dir / "recons.pt").is_file()
+    assert (run_dir / "interp.pt").is_file()
     assert (run_dir / "checkpoints" / "checkpoint.pt").is_file()
