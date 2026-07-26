@@ -44,7 +44,10 @@ class ToyModel(nn.Module):
         x = check_nchw(image)
         feat = self.enc(x)
         if text_feat is None:
-            text_feat = torch.randn(image.shape[0], 32, device=image.device)
+            # Deterministic "no prompt" default; injecting randn here made
+            # eval outputs irreproducible (and hardcoded dim 32 crashed
+            # when text_dim differed).
+            text_feat = torch.zeros(image.shape[0], self.txt.in_features, device=image.device)
         bias = self.txt(text_feat.to(feat.dtype)).unsqueeze(-1).unsqueeze(-1)
         logits = self.mask(feat + bias)
         return {"logits": logits, "mask": torch.sigmoid(logits)}
