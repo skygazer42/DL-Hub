@@ -16,7 +16,10 @@ class ToyVideoUnderstander(nn.Module):
         super().__init__()
         self.family = str(family)
         c = int(width)
-        self.frame = nn.Sequential(nn.Conv2d(int(in_channels), c, 3, 1, 1), nn.ReLU(inplace=True))
+        layers: list[nn.Module] = [nn.Conv2d(int(in_channels), c, 3, 1, 1), nn.ReLU(inplace=True)]
+        for _ in range(max(1, int(depth)) - 1):
+            layers += [nn.Conv2d(c, c, 3, 1, 1), nn.ReLU(inplace=True)]
+        self.frame = nn.Sequential(*layers)
         self.temporal = nn.GRU(c, c, batch_first=True)
         self.head = nn.Linear(c, int(num_classes))
 

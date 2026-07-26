@@ -75,9 +75,13 @@ def load_cora(*, dataset_dir: str | Path | None = None) -> CoraData:
 
     n = int(labels.shape[0])
 
-    # Undirected edges + self loops.
+    # Undirected edges + self loops. cora.cites contains mutually-citing
+    # pairs; without dedup those edges get weight 2 after coalesce() and
+    # the result is no longer the textbook 0/1-adjacency normalization.
     row = np.concatenate([src_idx, dst_idx, np.arange(n, dtype=np.int64)])
     col = np.concatenate([dst_idx, src_idx, np.arange(n, dtype=np.int64)])
+    pairs = np.unique(np.stack([row, col], axis=1), axis=0)
+    row, col = np.ascontiguousarray(pairs[:, 0]), np.ascontiguousarray(pairs[:, 1])
     val = np.ones(row.shape[0], dtype=np.float32)
 
     degree = np.zeros(n, dtype=np.float32)

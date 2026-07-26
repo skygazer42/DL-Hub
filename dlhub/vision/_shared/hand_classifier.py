@@ -13,15 +13,27 @@ def check_nchw(image: torch.Tensor) -> torch.Tensor:
 
 
 class TinyHandClassifierBlock(nn.Module):
+    # Sub-layers are only created for the modes whose forward branch uses
+    # them; unconditional creation left dead (never-trained) parameters on
+    # 10 of the 11 modes.
+    _USES_MIX = {"transformer", "graph", "efficient", "multitask"}
+    _USES_DEPTHWISE = {"cnn", "region", "attention", "contrastive", "skeleton", "transformer", "mamba"}
+
     def __init__(self, *, channels: int, mode: str) -> None:
         super().__init__()
         self.mode = str(mode)
         self.norm = nn.GroupNorm(1, int(channels))
         self.conv1 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
-        self.mix = nn.Conv2d(int(channels), int(channels), kernel_size=1)
-        self.depthwise = nn.Conv2d(
-            int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels)
+        self.mix = (
+            nn.Conv2d(int(channels), int(channels), kernel_size=1)
+            if self.mode in self._USES_MIX
+            else None
+        )
+        self.depthwise = (
+            nn.Conv2d(int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels))
+            if self.mode in self._USES_DEPTHWISE
+            else None
         )
         self.prompt = (
             nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None

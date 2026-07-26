@@ -108,6 +108,12 @@ def ppo_policy_loss(
     kl_coefficient: float,
     ignore_index: int,
 ) -> torch.Tensor:
+    # Toy simplification: the "old policy" in the ratio is the frozen
+    # initial reference model and the batch comes from a fixed dataset,
+    # not on-policy rollouts. This makes the clip term a trust region
+    # around the init rather than full PPO (where the old policy is
+    # refreshed to the sampling policy each round), and the k1 KL
+    # estimate below can go negative on off-policy samples.
     policy_lp, valid = _token_log_probs(policy_logits, labels, ignore_index)
     ref_lp, _ = _token_log_probs(reference_logits, labels, ignore_index)
 

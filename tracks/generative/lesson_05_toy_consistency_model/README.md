@@ -1,9 +1,17 @@
-# Lesson 03: Toy Diffusion (MNIST-like, minimal DDPM)
+# Lesson 05: Toy Consistency Model (one-step generation)
 
-This lesson keeps diffusion toy-first:
+This lesson trains a consistency model (Song et al., 2023) in its
+simplest toy form:
 
-- train a tiny denoiser to predict added Gaussian noise
-- use a small linear noise schedule so CPU smoke runs stay fast
+- a consistency function `f(x, sigma)` with the skip parameterization
+  `c_skip(sigma) * x + c_out(sigma) * F(x, sigma)`, so the boundary
+  condition `f(x, sigma_min) = x` holds by construction
+- consistency training (no pre-trained diffusion teacher): adjacent
+  noise levels on a Karras sigma grid share one noise draw, and the
+  online network at the higher level is pulled toward an EMA target
+  network at the lower level
+- one-step sampling `f(sigma_max * z, sigma_max)`, plus optional
+  multistep stochastic refinement
 - default to synthetic MNIST-like blobs so the lesson runs offline
 
 ## Run
@@ -11,30 +19,35 @@ This lesson keeps diffusion toy-first:
 Offline smoke run:
 
 ```bash
-python -m tracks.generative.lesson_03_toy_diffusion_mnist.train --dataset fake --epochs 1 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name smoke
+python -m tracks.generative.lesson_05_toy_consistency_model.train --dataset fake --epochs 1 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name smoke
 ```
 
 If `torchvision` is installed, you can switch to real MNIST:
 
 ```bash
-python -m tracks.generative.lesson_03_toy_diffusion_mnist.train --dataset mnist --epochs 5
+python -m tracks.generative.lesson_05_toy_consistency_model.train --dataset mnist --epochs 5
 ```
+
+Useful knobs: `--num-discretization-steps` (sigma grid size),
+`--sigma-min/--sigma-max/--sigma-data`, `--ema-decay`,
+`--num-sample-steps` (1 = one-step generation).
 
 ## Outputs
 
-`outputs/generative/lesson_03_toy_diffusion_mnist/<run_name>/`
+`outputs/generative/lesson_05_toy_consistency_model/<run_name>/`
 
 - `config.json`
-- `metrics.jsonl`
-- `samples.pt`
-- `denoise_grid.pt`
-- `logs/train.log`
-- `checkpoints/checkpoint.pt`
-
-If `torchvision` is available, the lesson also writes `samples.png` and `denoise_grid.png`.
+- `metrics.jsonl` (`train_consistency_mse` / `val_consistency_mse`)
+- `samples.pt` (one-step samples from the EMA target network)
+- `refine_grid.pt` (multistep refinement frames)
+- `checkpoints/checkpoint.pt` (online network + EMA target network)
 
 ## Exercises
 
-1. Increase `--num-diffusion-steps` and compare sample smoothness versus speed.
-2. Swap the MLP denoiser for a tiny conv net that keeps the same training target.
-3. Try a cosine-style schedule after understanding the linear baseline here.
+1. Set `--num-sample-steps 4` and compare `refine_grid.pt` frames with
+   the one-step samples — how much does refinement sharpen the blobs?
+2. Lower `--ema-decay` (e.g. 0.9) and watch `train_consistency_mse`:
+   why does a faster-moving target make the loss noisier?
+3. Increase `--num-discretization-steps` and check whether one-step
+   samples improve. What does a finer grid change about the target the
+   student is chasing?

@@ -258,7 +258,13 @@ def run_training(
         model=model,
         optimizer=optimizer,
         epoch=train_cfg.epochs,
-        extra={"track": "generative", "lesson": "lesson_05_toy_consistency_model"},
+        extra={
+            "track": "generative",
+            "lesson": "lesson_05_toy_consistency_model",
+            # Sampling uses the EMA target network, so persist it too —
+            # the online weights alone cannot reproduce samples.pt.
+            "target_model_state": target_model.state_dict(),
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
