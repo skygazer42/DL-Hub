@@ -27,11 +27,14 @@ class ToyTextRecognizer(nn.Module):
         else:
             self.decoder=nn.GRU(c,c,batch_first=True)
         self.head=nn.Linear(c,int(vocab_size))
-    def forward(self,image): feat=self.enc(image); seq=F.adaptive_avg_pool2d(feat,(1,feat.shape[-1])).squeeze(2).transpose(1,2); seq = seq[:, : self.seq_len];
-
+    def forward(self,image):
+        feat=self.enc(image)
+        seq=F.adaptive_avg_pool2d(feat,(1,feat.shape[-1])).squeeze(2).transpose(1,2)
+        seq = seq[:, : self.seq_len]
         if isinstance(self.decoder, nn.GRU): seq,_=self.decoder(seq)
         else: seq=self.decoder(seq)
-        logits=self.head(seq); return {'logits': logits, 'tokens': logits.argmax(dim=-1)}
+        logits=self.head(seq)
+        return {'logits': logits, 'tokens': logits.argmax(dim=-1)}
 
 def build_toy_text_recognizer(*, family:str, variants:dict[str,dict[str,int]], in_channels:int, vocab_size:int, seq_len:int, variant:str, width_mult:float=1.0, decoder:str='gru'):
     spec=variants[str(variant)]; width=max(16,int(int(spec['width'])*float(width_mult))); return ToyTextRecognizer(family=str(family), in_channels=int(in_channels), vocab_size=int(vocab_size), seq_len=int(seq_len), width=width, depth=int(spec['depth']), decoder=str(decoder))

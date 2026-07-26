@@ -17,7 +17,12 @@ class TinyEncoder(nn.Module):
 class ToyRefExp(nn.Module):
     def __init__(self, *, family:str, in_channels:int, width:int, depth:int, text_dim:int=32):
         super().__init__(); self.family=str(family); self.enc=TinyEncoder(in_channels,width,depth); c=self.enc.out_channels; self.txt=nn.Linear(text_dim,c); self.box=nn.Linear(c,4)
-    def forward(self,image, text_feat=None): x=check_nchw(image); feat=self.enc(x).mean(dim=(2,3)); if text_feat is None: text_feat=torch.randn(image.shape[0],32,device=image.device); fused=feat+self.txt(text_feat.to(feat.dtype)); return {'boxes': torch.sigmoid(self.box(fused))}
+    def forward(self,image, text_feat=None):
+        x=check_nchw(image)
+        feat=self.enc(x).mean(dim=(2,3))
+        if text_feat is None: text_feat=torch.randn(image.shape[0],32,device=image.device)
+        fused=feat+self.txt(text_feat.to(feat.dtype))
+        return {'boxes': torch.sigmoid(self.box(fused))}
 
 def build_toy_model(*, family:str, variants:dict[str,dict[str,int]], in_channels:int, variant:str, width_mult:float=1.0, **kwargs):
     spec=variants[str(variant)]; width=max(16,int(int(spec['width'])*float(width_mult))); return ToyRefExp(family=str(family), in_channels=int(in_channels), width=width, depth=int(spec['depth']))

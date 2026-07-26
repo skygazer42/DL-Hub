@@ -47,7 +47,7 @@ class TokenAffinityCoseg(nn.Module):
         grouped = unflatten_group(c3, batch=b, set_size=t)
         fused, aux = self.fuser(grouped)
         if self.prompt is not None:
-    fused = fused + self.prompt.expand_as(fused)
+            fused = fused + self.prompt.expand_as(fused)
         logits = self.head(fused, out_hw=(h, w))
         out: dict[str, torch.Tensor] = {
             "logits": logits,

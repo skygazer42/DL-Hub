@@ -17,8 +17,9 @@ class TinyEncoder(nn.Module):
 class ToySketchRetriever(nn.Module):
     def __init__(self, *, family:str, in_channels:int, width:int, depth:int, embed_dim:int):
         super().__init__(); self.family=str(family); self.enc=TinyEncoder(in_channels,width,depth); self.proj=nn.Linear(self.enc.out_channels,int(embed_dim))
-    def forward(self, query, gallery=None): q=F.normalize(self.proj(F.adaptive_avg_pool2d(self.enc(query),(1,1)).flatten(1)),dim=1); out={'query_embedding': q};
-
+    def forward(self, query, gallery=None):
+        q=F.normalize(self.proj(F.adaptive_avg_pool2d(self.enc(query),(1,1)).flatten(1)),dim=1)
+        out={'query_embedding': q}
         if gallery is not None:
             g=F.normalize(self.proj(F.adaptive_avg_pool2d(self.enc(gallery),(1,1)).flatten(1)),dim=1); out['gallery_embedding']=g; out['similarity']=q @ g.t()
         return out

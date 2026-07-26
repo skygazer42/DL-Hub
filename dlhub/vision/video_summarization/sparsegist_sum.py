@@ -32,7 +32,7 @@ class SparsegistSumVideoSummarizer(nn.Module):
     def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(video)
         scores = torch.sigmoid(self.scorer(feat))
-return {"scores": scores, "summary_mask": scores_to_mask(scores)}
+        return {"scores": scores, "summary_mask": scores_to_mask(scores)}
 
 
 def build_sparsegist_sum_video_summarizer(
