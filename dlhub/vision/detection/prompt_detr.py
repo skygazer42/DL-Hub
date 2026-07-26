@@ -146,7 +146,7 @@ _VARIANTS: dict[str, dict] = {
 }
 
 
-def build_prompt_prompt_detr_detector(
+def build_prompt_detr_detector(
     *,
     in_channels: int,
     num_classes: int,
@@ -181,7 +181,7 @@ def build_prompt_prompt_detr_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_prompt_prompt_detr_detector(
+    m = build_prompt_detr_detector(
         in_channels=3, num_classes=2, variant="prompt_detr_tiny", width_mult=0.5
     )
     out = m(x)

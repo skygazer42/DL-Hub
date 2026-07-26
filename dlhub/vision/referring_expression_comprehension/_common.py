@@ -39,7 +39,9 @@ class ToyRefExp(nn.Module):
         x = check_nchw(image)
         feat = self.enc(x).mean(dim=(2, 3))
         if text_feat is None:
-            text_feat = torch.randn(image.shape[0], 32, device=image.device)
+            # Deterministic "no text" default; randn here made eval outputs
+            # irreproducible and the hardcoded dim crashed when text_dim != 32.
+            text_feat = torch.zeros(image.shape[0], self.txt.in_features, device=image.device)
         fused = feat + self.txt(text_feat.to(feat.dtype))
         return {"boxes": torch.sigmoid(self.box(fused))}
 
