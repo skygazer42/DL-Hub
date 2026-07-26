@@ -27,7 +27,7 @@ jobs:
 
       - name: Lint (ruff)
         run: |
-          ruff check ml_algorithms/python optimization/python tests scripts
+          make lint
 
       - name: Tests (pytest)
         run: |
