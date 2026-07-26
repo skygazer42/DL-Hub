@@ -4,26 +4,29 @@ icon: material/server-network
 
 # 联邦学习 Zoo
 
-> **36 策略 / 13 类别** --- 覆盖优化、个性化、隐私、压缩、安全聚合等联邦学习全链路策略。
+> **76 策略族 / 228 Architecture IDs** --- 覆盖优化、个性化、公平性、隐私、压缩、安全聚合等联邦学习全链路策略（每族 `tiny/small/base` 三档变体，`dlfed:` 前缀，纯 PyTorch 教学实现）。
 
 ---
 
 ## CLI 快速上手
 
 ```bash
-# 列出全部联邦学习策略 ID
-python -m zoo.fl --list
+# 列出全部 228 个联邦策略 ID
+python scripts/federated_zoo.py --list
 
 # 模糊搜索
-python -m zoo.fl --search fed
+python scripts/federated_zoo.py --search fedavg
+
+# 按年份查看策略时间线
+python scripts/federated_zoo.py --timeline
 
 # Smoke Test（策略验证）
-python -m zoo.fl --smoke fedavg
+python scripts/federated_zoo.py --smoke dlfed:fedavg_tiny
 ```
 
 ---
 
-## 全部 36 策略总览
+## 代表策略总览（13 个分组）
 
 | 类别 | 策略 | 说明 |
 |:-----|:-----|:----|
@@ -40,6 +43,9 @@ python -m zoo.fl --smoke fedavg
 | Privacy | DP-FedAvg, DP-FedProx | 差分隐私保护 |
 | Compression | FedPAQ, STC | 通信压缩 |
 | Secure Aggregation | SecureAgg, LightSecAgg | 安全聚合协议 |
+
+上表列出 13 个分组中的 36 个代表策略；其余 40 个策略族（FedProx2、DP 系列扩展等）
+用 `python scripts/federated_zoo.py --list` 查看全部 76 族 / 228 个 ID。
 
 ---
 
@@ -59,9 +65,12 @@ python -m zoo.fl --smoke fedavg
 !!! tip "一行构建联邦策略"
 
     ```python
-    from zoo.fl import build
+    from dlhub.federated_zoo import build_local_strategy
 
-    strategy = build("fedprox", mu=0.01)
+    strategy = build_local_strategy(
+        "dlfed:fedprox_tiny",
+        param_dim=128, num_clients=8, local_steps=2,
+    )
     ```
 
 ---
@@ -219,32 +228,25 @@ python -m zoo.fl --smoke fedavg
 === "基础联邦训练"
 
     ```python
-    from zoo.fl import build
+    from dlhub.federated_zoo import build_local_strategy
 
-    strategy = build("fedavg")
-    # strategy.aggregate(client_updates) -> global_update
+    strategy = build_local_strategy(
+        "dlfed:fedavg_tiny",
+        param_dim=128, num_clients=8, local_steps=2,
+    )
     ```
 
-=== "个性化联邦"
+=== "列出全部策略"
 
     ```python
-    from zoo.fl import build
+    from dlhub.federated_zoo import list_local_arches
 
-    strategy = build("ditto", lambda_reg=0.1)
-    # strategy.local_train(model, data) -> personalized_model
-    ```
-
-=== "差分隐私"
-
-    ```python
-    from zoo.fl import build
-
-    strategy = build("dp_fedavg", epsilon=8.0, delta=1e-5, clip_norm=1.0)
-    # 自动裁剪 + 加噪
+    print(len(list_local_arches()))  # 228
     ```
 
 === "CLI 验证"
 
     ```bash
-    python -m zoo.fl --smoke scaffold
+    python scripts/federated_zoo.py --smoke dlfed:scaffold_tiny
+    python scripts/federated_zoo.py --smoke dlfed:dp_fedavg_tiny
     ```

@@ -4,23 +4,25 @@ icon: material/creation
 
 # Generative Zoo
 
-> **36 算法族** --- 覆盖 GAN（24 族）与 Diffusion（12 族）两大生成模型体系。
+> **76 算法族** --- 覆盖 GAN（44 族 / 132 IDs）与 Diffusion（32 族 / 96 IDs）两大生成模型体系，纯 PyTorch toy 实现。
 
 ---
 
 ## GAN Zoo
 
+> 44 算法族 / 132 Architecture IDs，每族 `tiny/small/base` 三档变体（`gan:` 前缀）。
+
 ### CLI 快速上手
 
 ```bash
-# 列出全部 GAN 架构 ID
-python -m zoo.gan --list
+# 列出全部 132 个 GAN 架构 ID
+python scripts/gan_zoo.py --list
 
 # 模糊搜索
-python -m zoo.gan --search stylegan
+python scripts/gan_zoo.py --search stylegan
 
 # Smoke Test（前向推理验证）
-python -m zoo.gan --smoke dcgan_64
+python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 ```
 
 ### 架构分类总览
@@ -32,6 +34,13 @@ python -m zoo.gan --smoke dcgan_64
 | 图像翻译 | CycleGAN, StarGAN, UNIT, MUNIT | 跨域风格迁移与图像翻译 |
 | 高分辨率 | ProGAN, StyleGAN, StyleGAN2, StyleGAN3 | 渐进式训练与风格控制，达到高保真生成 |
 | 轻量级 | LightGAN, FastGAN | 减少训练数据与计算量的高效 GAN |
+
+除上述经典类别外，Zoo 还收录 BigGAN、SAGAN、TransGAN、StyleSwin、StyleGAN-XL、ESRGAN / SRGAN（超分）、BicycleGAN / DualGAN / CUT-GAN（翻译）、Diffusion-GAN 等共 44 个家族，`--list` 查看全部。
+
+!!! note "变体命名说明"
+
+    下文表格中的「关键变体」（如 `dcgan_64`）为该家族在原论文中的代表分辨率 / 配置，
+    仓库内实际架构 ID 统一为 `gan:<family>_{tiny,small,base}` 三档（如 `gan:dcgan_tiny`）。
 
 ---
 
@@ -89,29 +98,29 @@ python -m zoo.gan --smoke dcgan_64
 | LightGAN | lightgan_256 | 轻量化生成器 + Skip-Layer Excitation |
 | FastGAN | fastgan_256, fastgan_512 | 少样本 (~100 张) 高效训练 |
 
-!!! tip "一行构建 GAN"
+!!! tip "CLI 一行冒烟任意 GAN"
 
-    ```python
-    from zoo.gan import build
-
-    generator, discriminator = build("stylegan2_512")
+    ```bash
+    python scripts/gan_zoo.py --smoke gan:stylegan2_tiny
     ```
 
 ---
 
 ## Diffusion Zoo
 
+> 32 算法族 / 96 Architecture IDs，每族 `tiny/small/base` 三档变体（`diff:` 前缀）。
+
 ### CLI 快速上手
 
 ```bash
-# 列出全部 Diffusion 架构 ID
-python -m zoo.diffusion --list
+# 列出全部 96 个 Diffusion 架构 ID
+python scripts/diffusion_zoo.py --list
 
 # 模糊搜索
-python -m zoo.diffusion --search ddpm
+python scripts/diffusion_zoo.py --search ddpm
 
 # Smoke Test（前向推理验证）
-python -m zoo.diffusion --smoke ddpm_cifar10
+python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 ```
 
 ### 架构分类总览
@@ -122,6 +131,13 @@ python -m zoo.diffusion --smoke ddpm_cifar10
 | 条件扩散 | Classifier-Guided, Classifier-Free | 条件引导生成 |
 | 隐空间扩散 | Latent Diffusion, Stable Diffusion | 在隐空间而非像素空间执行扩散，大幅降低计算成本 |
 | 快速采样 | DPM-Solver, Consistency Models | 加速采样步数从 1000 到 1~10 步 |
+
+除上述经典类别外，Zoo 还收录 DiT / U-ViT / PixArt / Hunyuan-DiT（Transformer 骨干）、SDXL / SD3 / Flux / Sana / Lumina-Next（新一代文生图）、Rectified Flow / Flow Matching / AuraFlow（流匹配）、LCM / SD-Turbo（少步蒸馏）等共 32 个家族，`--list` 查看全部。
+
+!!! note "变体命名说明"
+
+    下文表格中的「关键变体」（如 `ddpm_cifar10`）为该家族在原论文中的代表配置，
+    仓库内实际架构 ID 统一为 `diff:<family>_{tiny,small,base}` 三档（如 `diff:ddpm_tiny`）。
 
 ---
 
@@ -182,28 +198,14 @@ python -m zoo.diffusion --smoke ddpm_cifar10
 
 ## 用法示例
 
-=== "GAN 训练循环"
+=== "GAN Smoke Test"
 
-    ```python
-    from zoo.gan import build
-
-    G, D = build("wgangp_64")
-    # 标准 WGAN-GP 训练循环
-    for real in dataloader:
-        # Discriminator step
-        z = torch.randn(B, G.latent_dim)
-        fake = G(z)
-        d_loss = D(fake).mean() - D(real).mean() + gradient_penalty(D, real, fake)
-        # Generator step
-        g_loss = -D(G(z)).mean()
+    ```bash
+    python scripts/gan_zoo.py --smoke gan:wgangp_tiny
     ```
 
-=== "Diffusion 采样"
+=== "Diffusion Smoke Test"
 
-    ```python
-    from zoo.diffusion import build
-
-    model = build("ddim_celeba")
-    # 50 步 DDIM 采样
-    samples = model.sample(batch_size=16, steps=50)
+    ```bash
+    python scripts/diffusion_zoo.py --smoke diff:ddim_tiny
     ```

@@ -4,26 +4,29 @@ icon: material/image-text
 
 # VLM Zoo
 
-> **20 算法族** --- 覆盖 2021-2023 年视觉-语言多模态模型的核心演进路线，从对比学习到指令微调。
+> **70 算法族 / 210 Architecture IDs** --- 覆盖 2021-2025 年视觉-语言多模态模型的核心演进路线，从对比学习、指令微调到文档理解与端侧多模态（每族 `tiny/small/base` 三档变体，纯 PyTorch 教学实现）。
 
 ---
 
 ## CLI 快速上手
 
 ```bash
-# 列出全部 VLM 架构 ID
-python -m zoo.vlm --list
+# 列出全部 210 个 VLM 架构 ID（`vlm:` 前缀）
+python scripts/vlm_zoo.py --list
 
 # 模糊搜索
-python -m zoo.vlm --search blip
+python scripts/vlm_zoo.py --search llava
+
+# 按年份查看演进时间线
+python scripts/vlm_zoo.py --timeline
 
 # Smoke Test（前向推理验证）
-python -m zoo.vlm --smoke clip_base
+python scripts/vlm_zoo.py --smoke vlm:clip_tiny
 ```
 
 ---
 
-## 全部 20 算法族
+## 核心 20 算法族（2021-2023 演进主线）
 
 | # | 算法族 | 年份 | 核心创新 |
 |:--|:------|:-----|:---------|
@@ -47,6 +50,14 @@ python -m zoo.vlm --smoke clip_base
 | 18 | CogVLM | 2023 | Visual Expert Module 注入 LLM 每一层，深度视觉融合 |
 | 19 | PaLI-X | 2023 | Scaling up PaLI 至 55B，多任务多语言 SOTA |
 | 20 | Qwen-VL | 2023 | 高分辨率视觉编码 + 多粒度文本理解，中英双语 |
+
+---
+
+## 2024-2025 扩展算法族
+
+在上述 20 个核心家族之外，Zoo 还收录了 50 个 2024-2025 年方向的家族，覆盖文档理解 / OCR（Kosmos-2.5, DocOwl2, OCRVLM）、图表与科学图像（ChartVLM, Science-VLM）、网页与界面理解（WebVLM）、视频（Video-Qwen-VL）、多模态代理（Agent-VL, Rabbit-VLM）、端侧轻量推理（EdgeVLM, Bunny）以及 InternVL2、XGen-MM、Aria、LLaMA-Vision、SigLIP-VLM、MixVLM 等通用升级路线。
+
+> 完整列表与变体见 `python scripts/vlm_zoo.py --list`，按年份浏览用 `--timeline`。
 
 ---
 
@@ -113,10 +124,8 @@ graph LR
 
 ## 用法示例
 
-```python
-from zoo.vlm import build
-
-model = build("clip_base")
-# model.encode_image(images)  -> image_features  [B, D]
-# model.encode_text(texts)    -> text_features   [B, D]
+```bash
+# 构建并前向验证任意家族的任意变体
+python scripts/vlm_zoo.py --smoke vlm:clip_tiny
+python scripts/vlm_zoo.py --smoke vlm:agent_vl_tiny
 ```

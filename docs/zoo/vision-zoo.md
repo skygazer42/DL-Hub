@@ -4,21 +4,21 @@ icon: material/eye
 
 # Vision Zoo
 
-> **208 算法族 / 791 Architecture IDs** --- 覆盖从经典 CNN 到最新 Vision Transformer 的全部视觉主干网络，外加 8 个下游任务子系统。
+> **220 个 backbone 模块 / 791 Architecture IDs** --- 覆盖从经典 CNN 到最新 Vision Transformer 的全部视觉主干网络，外加 8 个下游任务子系统。
 
 ---
 
 ## CLI 快速上手
 
 ```bash
-# 列出全部 791 个架构 ID
-python -m zoo.vision --list
+# 列出所有可用架构（本地实现的 ID 使用 `dl:` 前缀）
+python scripts/vision_zoo.py --list
 
 # 模糊搜索
-python -m zoo.vision --search efficientnet
+python scripts/vision_zoo.py --list --search convnext
 
 # Smoke Test（前向推理验证）
-python -m zoo.vision --smoke resnet50
+python scripts/vision_zoo.py --smoke dl:resnet50
 ```
 
 ---
@@ -28,21 +28,21 @@ python -m zoo.vision --smoke resnet50
 | 类别 | 代表算法 | 约计数量 |
 |:-----|:---------|:---------|
 | 经典 CNN | AlexNet, VGG-11/13/16/19, GoogLeNet (Inception v1-v4), ResNet-18/34/50/101/152, DenseNet-121/169/201/264 | ~60 |
-| 高效网络 | MobileNet v1/v2/v3/v4, EfficientNet-B0~B7, GhostNet, ShuffleNet v1/v2 | ~80 |
-| 注意力 CNN | SENet, CBAM, BAM, ECA-Net | ~50 |
-| 现代 CNN | ConvNeXt v1/v2, RepVGG, RepLKNet | ~40 |
-| Vision Transformer | ViT-Ti/S/B/L/H, DeiT, BEiT, Swin v1/v2, CSwin | ~120 |
-| 高效 Transformer | EfficientViT, TinyViT, EdgeViT, FastViT | ~60 |
-| MLP 系列 | MLP-Mixer, gMLP, ResMLP, FNet | ~50 |
-| Hybrid | CoAtNet, MobileFormer, Uniformer, MaxViT | ~60 |
-| 特殊结构 | CapsNet, FractalNet, HRNet, NAS-derived, Mamba-Vision | ~50 |
+| 高效网络 | MobileNet v1/v2/v3/v4, EfficientNet v1/v2, GhostNet, ShuffleNet v1/v2 | ~80 |
+| 注意力 CNN | SENet, CBAM, BAM, ECA-Net, SK-Net, CoordAtt | ~50 |
+| 现代 CNN | ConvNeXt v1/v2, RepVGG, RepLKNet, HorNet, FocalNet | ~40 |
+| Vision Transformer | ViT, DeiT, BEiT, Swin v2, CSwin, CaiT, CrossViT | ~120 |
+| 高效 Transformer | EfficientViT, TinyViT, EdgeViT, FastViT, SwiftFormer | ~60 |
+| MLP 系列 | MLP-Mixer, gMLP, ResMLP, FNet, CycleMLP, WaveMLP | ~50 |
+| Hybrid | CoAtNet, MobileFormer, Uniformer, MaxViT, MobileViT | ~60 |
+| 特殊结构 | CapsNet, FractalNet, HRNet, NAS 系列, Mamba | ~50 |
 
 !!! tip "一行构建任意视觉主干"
 
     ```python
-    from zoo.vision import build
+    from dlhub.vision.local_zoo import build_local_model
 
-    model = build("swin_v2_base", num_classes=1000)
+    model = build_local_model("dl:swin_v2_tiny", in_channels=3, num_classes=1000)
     ```
 
 ---
@@ -99,12 +99,12 @@ python -m zoo.vision --smoke resnet50
 
 ### Detection Zoo 2D
 
-> ~120 个算法族 --- 覆盖 Anchor-based、Anchor-free、Transformer-based 检测器。
+> 132 个算法族 --- 覆盖 Anchor-based、Anchor-free、Transformer-based、轻量级检测器。
 
 ```bash
-python -m zoo.det2d --list
-python -m zoo.det2d --search yolo
-python -m zoo.det2d --smoke fasterrcnn_r50
+python scripts/detection_zoo.py --list
+python scripts/detection_zoo.py --search fcos
+python scripts/detection_zoo.py --smoke dldet:fcos_tiny
 ```
 
 !!! example "代表算法"
@@ -115,12 +115,12 @@ python -m zoo.det2d --smoke fasterrcnn_r50
 
 ### Instance Segmentation Zoo
 
-> 40 个算法族 --- 实例级像素分割。
+> 50 个算法族 --- 实例级像素分割。
 
 ```bash
-python -m zoo.instseg --list
-python -m zoo.instseg --search mask
-python -m zoo.instseg --smoke maskrcnn_r50
+python scripts/instance_segmentation_zoo.py --list
+python scripts/instance_segmentation_zoo.py --search mask
+python scripts/instance_segmentation_zoo.py --smoke dlinst:mask_rcnn_tiny
 ```
 
 !!! example "代表算法"
@@ -131,12 +131,12 @@ python -m zoo.instseg --smoke maskrcnn_r50
 
 ### Panoptic Segmentation Zoo
 
-> 40 个算法族 --- 统一语义分割与实例分割。
+> 50 个算法族 --- 统一语义分割与实例分割。
 
 ```bash
-python -m zoo.panoptic --list
-python -m zoo.panoptic --search panoptic
-python -m zoo.panoptic --smoke panoptic_fpn_r50
+python scripts/panoptic_segmentation_zoo.py --list
+python scripts/panoptic_segmentation_zoo.py --search panoptic
+python scripts/panoptic_segmentation_zoo.py --smoke dlpan:panoptic_fpn_tiny
 ```
 
 !!! example "代表算法"
@@ -147,12 +147,12 @@ python -m zoo.panoptic --smoke panoptic_fpn_r50
 
 ### Lane Detection Zoo
 
-> 24 个算法族 --- 车道线检测。
+> 44 个算法族 --- 车道线检测，Anchor / Parametric / Segmentation / Keypoint / Transformer 五大范式。
 
 ```bash
-python -m zoo.lane --list
-python -m zoo.lane --search lane
-python -m zoo.lane --smoke scnn
+python scripts/lane_detection_zoo.py --list
+python scripts/lane_detection_zoo.py --search laneatt
+python scripts/lane_detection_zoo.py --smoke dllane:laneatt_tiny
 ```
 
 !!! example "代表算法"
@@ -163,11 +163,11 @@ python -m zoo.lane --smoke scnn
 
 ### Co-segmentation Zoo
 
-> 6 个算法族 --- 协同分割，从多张图像中发现共同目标。
+> 26 个算法族 --- 协同分割（Group / Pair 级别），从多张图像中发现共同目标。
 
 ```bash
-python -m zoo.coseg --list
-python -m zoo.coseg --smoke coseg_base
+python scripts/co_segmentation_zoo.py --list
+python scripts/co_segmentation_zoo.py --smoke coseg:clip_coseg_tiny
 ```
 
 !!! example "代表算法"
@@ -178,13 +178,15 @@ python -m zoo.coseg --smoke coseg_base
 
 ### Fine-Grained Recognition Zoo
 
-> 72 个算法族 --- 细粒度图像识别（如鸟类、车型、航空器）。
+> 112 个算法族 --- 细粒度图像识别（FGVC），Bilinear / Part-based / Transformer / Prompt / CLIP / MLLM reasoning（toy-first，无需下载权重）。
 
 ```bash
-python -m zoo.finegrained --list
-python -m zoo.finegrained --search bilinear
-python -m zoo.finegrained --smoke bcnn
+python scripts/fine_grained_recognition_zoo.py --list
+python scripts/fine_grained_recognition_zoo.py --search transfg
+python scripts/fine_grained_recognition_zoo.py --smoke dlfgvc:fine_r1_tiny
 ```
+
+> 时间线与方法说明见 `dlhub/vision/fine_grained_recognition/README.md`
 
 !!! example "代表算法"
 
@@ -194,13 +196,16 @@ python -m zoo.finegrained --smoke bcnn
 
 ### Action Recognition Zoo
 
-> 22 个算法族 --- 视频动作识别。
+> 62 个算法族 --- 行为识别，Video (NCTHW，`dlactv:` 前缀) + Skeleton (NCTV，`dlacts:` 前缀)，toy-first，无需下载权重。
 
 ```bash
-python -m zoo.action --list
-python -m zoo.action --search slowfast
-python -m zoo.action --smoke slowfast_r50
+python scripts/action_recognition_zoo.py --list
+python scripts/action_recognition_zoo.py --search stgcn
+python scripts/action_recognition_zoo.py --smoke dlactv:c3d_tiny
+python scripts/action_recognition_zoo.py --smoke dlacts:stgcn_tiny
 ```
+
+> 时间线与方法说明见 `dlhub/vision/action_recognition/README.md`
 
 !!! example "代表算法"
 
@@ -210,13 +215,33 @@ python -m zoo.action --smoke slowfast_r50
 
 ### MOT Zoo
 
-> 81 个算法族 --- 多目标跟踪。
+> 100 个算法族 --- 2D 单相机多目标跟踪，每族 `tiny/small/base` 三档变体。
 
 ```bash
-python -m zoo.mot --list
-python -m zoo.mot --search byte
-python -m zoo.mot --smoke bytetrack
+python scripts/mot_zoo.py --list
+python scripts/mot_zoo.py --search bytetrack
+python scripts/mot_zoo.py --timeline
+python scripts/mot_zoo.py --smoke mot2d:sort_tiny
 ```
+
+除通用的 `--list / --search / --smoke` 外，MOT Zoo 还内置选型与批量训练工具链：
+
+```bash
+# 按场景推荐算法（realtime / occlusion 等 profile）
+python scripts/mot_zoo.py --recommend realtime --top-k 8 --variant tiny
+python scripts/mot_zoo.py --recommend occlusion --top-k 8 --variant tiny --emit-train-cmds
+
+# 直接批量执行推荐算法的训练命令
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --skip-existing
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --summary-only
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --rank-by loss
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --save-leaderboard outputs/vision/mot_leaderboard.json
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --save-artifacts-dir outputs/vision/mot_artifacts
+python scripts/mot_zoo.py --recommend realtime --top-k 3 --variant tiny --run-train-cmds --save-artifacts-dir auto
+```
+
+> 组别、选型建议与完整族列表见 `dlhub/vision/mot/README.md`
 
 !!! example "代表算法"
 

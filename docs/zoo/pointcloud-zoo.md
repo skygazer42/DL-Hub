@@ -11,14 +11,21 @@ icon: material/cube-outline
 ## CLI 快速上手
 
 ```bash
-# 列出全部 64 个架构 ID
-python -m zoo.pc --list
+# 列出全部 64 个架构 ID（本地实现的 ID 使用 `pc:` 前缀）
+python scripts/pointcloud_zoo.py --list
 
 # 模糊搜索
-python -m zoo.pc --search pointnet
+python scripts/pointcloud_zoo.py --list --search pointnet
 
 # Smoke Test（前向推理验证）
-python -m zoo.pc --smoke pointnet2_ssg
+python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
+```
+
+也可以直接在 lesson_04 中一行切换 backbone：
+
+```bash
+python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
+  --arch pointnet --dataset fake --epochs 1
 ```
 
 ---
@@ -49,9 +56,12 @@ python -m zoo.pc --smoke pointnet2_ssg
 !!! tip "一行构建点云模型"
 
     ```python
-    from zoo.pc import build
+    from dlhub.pointcloud.local_zoo import build_local_model
 
-    model = build("pointnet2_msg", num_classes=40)
+    model = build_local_model(
+        "pc:pointnet2_msg",
+        in_channels=3, num_classes=40, num_points=1024,
+    )
     ```
 
 ---
@@ -127,12 +137,12 @@ Self-Attention 机制应用于点云理解。
 
 ### 3D Detection Zoo
 
-> 40 个算法族 --- 3D 目标检测（LiDAR / Multi-modal）。
+> 60 个算法族 --- 3D 目标检测，Point-based / Voxel-based / Pillar-based / Multi-modal。
 
 ```bash
-python -m zoo.det3d --list
-python -m zoo.det3d --search voxel
-python -m zoo.det3d --smoke pointpillars
+python scripts/detection3d_zoo.py --list
+python scripts/detection3d_zoo.py --search pointpillars
+python scripts/detection3d_zoo.py --smoke pcdet3d:pointpillars_tiny
 ```
 
 !!! example "代表算法"
@@ -143,12 +153,12 @@ python -m zoo.det3d --smoke pointpillars
 
 ### 3D Segmentation Zoo
 
-> 40 个算法族 --- 3D 语义分割与场景理解。
+> 60 个算法族 --- 3D 语义分割与场景理解，Point / Voxel / Range-view / Fusion。
 
 ```bash
-python -m zoo.seg3d --list
-python -m zoo.seg3d --search cylinder
-python -m zoo.seg3d --smoke cylinder3d
+python scripts/segmentation3d_zoo.py --list
+python scripts/segmentation3d_zoo.py --search randlanet
+python scripts/segmentation3d_zoo.py --smoke pcseg3d:randlanet_tiny
 ```
 
 !!! example "代表算法"
@@ -159,12 +169,12 @@ python -m zoo.seg3d --smoke cylinder3d
 
 ### 3D Instance Segmentation Zoo
 
-> 30 个算法族 --- 3D 实例分割。
+> 50 个算法族 --- 3D 实例分割，Proposal-based / Grouping-based / Panoptic。
 
 ```bash
-python -m zoo.instseg3d --list
-python -m zoo.instseg3d --search point_group
-python -m zoo.instseg3d --smoke pointgroup
+python scripts/instance_segmentation3d_zoo.py --list
+python scripts/instance_segmentation3d_zoo.py --search pointgroup
+python scripts/instance_segmentation3d_zoo.py --smoke pcinst3d:pointgroup_tiny
 ```
 
 !!! example "代表算法"
@@ -175,12 +185,12 @@ python -m zoo.instseg3d --smoke pointgroup
 
 ### 3D Tracking Zoo
 
-> 131 个算法族 --- 3D 多目标跟踪。
+> 140 个算法族 --- 3D 多目标跟踪，LiDAR / Camera-LiDAR / Radar-LiDAR。
 
 ```bash
-python -m zoo.track3d --list
-python -m zoo.track3d --search simpletrack
-python -m zoo.track3d --smoke simpletrack
+python scripts/tracking3d_zoo.py --list
+python scripts/tracking3d_zoo.py --search centerpoint
+python scripts/tracking3d_zoo.py --smoke pctrk3d:centerpoint_track_tiny
 ```
 
 !!! example "代表算法"

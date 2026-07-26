@@ -4,6 +4,15 @@
 
 ---
 
+## 2026-07-26 · Zoo 与杂项文档数字刷新
+
+- 重建 `docs/zoo/index.md` 子系统总览（22 个子系统），CLI 全部改为真实存在的 `python scripts/<xxx>_zoo.py` 脚本。
+- 刷新 Zoo 统计至实测值：Lessons 339 / Vision 791 / NLP 814 / Point Cloud 64 / VLM 210 (70 族) / GAN 132 (44 族) / Diffusion 96 (32 族) / Federated 228 (76 族)，本地 Zoo 架构 ID 合计 8626（`python scripts/project_stats.py --json` 可复核）。
+- 新增 `docs/zoo/research-directions.md`，收录 22 批研究方向子领域的包路径明细。
+- 修复 quickstart 中 3 个失效的 lesson 命令（gnn / nlp / foundations），测试文件数改为实测口径（2026-07 实测 409）。
+
+---
+
 ## 2026-04-18 · 文档事实同步
 
 - 刷新 README 与 docs/ 全站统计数字至实测值：Lessons 339 / 测试 393 / ML 算法 31 / Zoo 架构 8545。

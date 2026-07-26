@@ -28,7 +28,7 @@
 | **Point Cloud** | Foundations, Vision | 三维几何、点集处理 |
 | **Generative** | Foundations, Vision | 概率分布、KL 散度、博弈论直觉 |
 | **LLM** | Foundations, NLP | Transformer 原理、注意力机制 |
-| **Multimodal** | Vision, NLP | 跨模态对齐、对比学习 |
+| **Multimodal** | Vision, NLP | 注意力机制、跨模态对齐、对比学习 |
 
 !!! tip "不必全部掌握"
 

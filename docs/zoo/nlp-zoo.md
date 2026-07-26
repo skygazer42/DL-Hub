@@ -11,14 +11,14 @@ icon: material/text
 ## CLI 快速上手
 
 ```bash
-# 列出全部 814 个架构 ID
-python -m zoo.nlp --list
+# 列出全部 814 个架构 ID（本地实现的 ID 使用 `nl:` 前缀）
+python scripts/nlp_zoo.py --list
 
 # 模糊搜索
-python -m zoo.nlp --search bert
+python scripts/nlp_zoo.py --list --search bert
 
 # Smoke Test（前向推理验证）
-python -m zoo.nlp --smoke bert_base
+python scripts/nlp_zoo.py --smoke nl:bert_base
 ```
 
 ---
@@ -53,9 +53,12 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 !!! tip "统一构建接口"
 
     ```python
-    from zoo.nlp import build
+    from dlhub.nlp.local_zoo import build_local_model
 
-    model = build("bert_base", num_classes=2)
+    model = build_local_model(
+        "nl:bert_base",
+        vocab_size=30522, pad_id=0, max_length=128, num_classes=2,
+    )
     ```
 
 ---
@@ -142,24 +145,26 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 === "分类任务"
 
     ```python
-    from zoo.nlp import build
+    from dlhub.nlp.local_zoo import build_local_model
 
-    model = build("bert_base", num_classes=4)
-    # model(input_ids, attention_mask) -> logits [B, 4]
+    model = build_local_model(
+        "nl:bert_base",
+        vocab_size=30522, pad_id=0, max_length=128, num_classes=4,
+    )
+    # model(input_ids) -> logits [B, 4]
     ```
 
-=== "特征提取"
+=== "列出全部架构"
 
     ```python
-    from zoo.nlp import build
+    from dlhub.nlp.local_zoo import list_local_arches
 
-    model = build("longformer_base", num_classes=0)  # num_classes=0 返回特征
-    # model(input_ids, attention_mask) -> features [B, D]
+    print(len(list_local_arches()))  # 814
     ```
 
 === "CLI Smoke Test"
 
     ```bash
-    # 验证 T5 Small 可正常前向推理
-    python -m zoo.nlp --smoke t5_small
+    # 验证 BERT Tiny 可正常前向推理
+    python scripts/nlp_zoo.py --smoke nl:bert_tiny
     ```

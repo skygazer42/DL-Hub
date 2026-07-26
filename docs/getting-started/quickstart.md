@@ -95,19 +95,19 @@ python scripts/run_lesson.py gnn --list
 ### GNN 赛道
 
 ```bash
-python -m tracks.gnn.lesson_01_gcn_node_classification.train --dataset fake --epochs 1
+python -m tracks.gnn.lesson_01_toy_graph_classification.train --dataset fake --epochs 1
 ```
 
 ### NLP 赛道
 
 ```bash
-python -m tracks.nlp.lesson_01_text_classification_rnn.train --dataset fake --epochs 1
+python -m tracks.nlp.lesson_01_toy_text_classification.train --dataset fake --epochs 1
 ```
 
 ### Foundations 赛道
 
 ```bash
-python -m tracks.foundations.lesson_01_tensor_basics.run
+python -m tracks.foundations.lesson_01_tensors.run
 ```
 
 ---
@@ -125,5 +125,5 @@ python -m tracks.foundations.lesson_01_tensor_basics.run
 ## 下一步
 
 - :material-map-marker-path: 选择一条 [学习赛道](../tracks/index.md) 开始系统学习
-- :material-archive: 浏览 [Model Zoo](../zoo/index.md)，了解 8000+ 可用架构
+- :material-archive: 浏览 [Model Zoo](../zoo/index.md)，了解 8600+ 可用架构
 - :material-cog: 阅读 [项目结构](../developer/structure.md)，理解代码组织方式

@@ -4,7 +4,7 @@ icon: material/paw
 
 # Model Zoo 总览
 
-全领域统一模型动物园 --- 纯 PyTorch 本地实现，无需下载预训练权重，**8 000+ 架构 ID** 一行切换。
+全领域统一模型动物园 --- 纯 PyTorch 本地实现，无需下载预训练权重，**8 600+ 本地架构 ID** 一行切换（实测 8626，`python scripts/project_stats.py --json` 可复核）。
 
 ---
 
@@ -16,7 +16,7 @@ icon: material/paw
 
     ---
 
-    **791** Architecture IDs / 208 算法族
+    **791** Architecture IDs / 220 个 backbone 模块
 
     [:octicons-arrow-right-24: Vision Zoo](vision-zoo.md)
 
@@ -40,7 +40,7 @@ icon: material/paw
 
     ---
 
-    **20** 算法族
+    **210** Architecture IDs / 70 算法族
 
     [:octicons-arrow-right-24: VLM Zoo](vlm-zoo.md)
 
@@ -48,7 +48,7 @@ icon: material/paw
 
     ---
 
-    **36** 算法族 (GAN 24 + Diffusion 12)
+    GAN **44 族 / 132 IDs** + Diffusion **32 族 / 96 IDs**
 
     [:octicons-arrow-right-24: Generative Zoo](generative-zoo.md)
 
@@ -56,7 +56,7 @@ icon: material/paw
 
     ---
 
-    **36** 联邦策略
+    **76** 联邦策略 / 228 Architecture IDs
 
     [:octicons-arrow-right-24: Federated Zoo](federated-zoo.md)
 
@@ -64,70 +64,78 @@ icon: material/paw
 
 ---
 
-## 21 个 Zoo 子系统
+## Zoo 子系统总览（22 个子系统）
 
-| 领域 | 子系统 | 算法族数量 | CLI 脚本 |
-|:-----|:------|:----------|:---------|
-| Vision | Backbones | 208 族 / 791 IDs | `python -m zoo.vision` |
-| Vision | Detection 2D | ~120 | `python -m zoo.det2d` |
-| Vision | Instance Segmentation | 40 | `python -m zoo.instseg` |
-| Vision | Panoptic Segmentation | 40 | `python -m zoo.panoptic` |
-| Vision | Lane Detection | 24 | `python -m zoo.lane` |
-| Vision | Co-segmentation | 6 | `python -m zoo.coseg` |
-| Vision | Fine-Grained Recognition | 72 | `python -m zoo.finegrained` |
-| Vision | Action Recognition | 22 | `python -m zoo.action` |
-| Vision | MOT | 81 | `python -m zoo.mot` |
-| NLP | Text Encoders | 49 族 / 814 IDs | `python -m zoo.nlp` |
-| Point Cloud | Backbones | 30 族 / 64 IDs | `python -m zoo.pc` |
-| Point Cloud | 3D Detection | 40 | `python -m zoo.det3d` |
-| Point Cloud | 3D Segmentation | 40 | `python -m zoo.seg3d` |
-| Point Cloud | 3D Instance Segmentation | 30 | `python -m zoo.instseg3d` |
-| Point Cloud | 3D Tracking | 131 | `python -m zoo.track3d` |
-| Multimodal | VLM | 20 | `python -m zoo.vlm` |
-| Generative | GAN | 24 | `python -m zoo.gan` |
-| Generative | Diffusion | 12 | `python -m zoo.diffusion` |
-| Federated | FL Strategies | 36 | `python -m zoo.fl` |
+| 领域 | 子系统 | 算法族 | CLI 脚本 |
+|:-----|:------|:-------|:---------|
+| Vision | Backbones | 220 模块 / 791 IDs | `scripts/vision_zoo.py` |
+| Vision | Detection (2D) | 132 | `scripts/detection_zoo.py` |
+| Vision | Instance Segmentation | 50 | `scripts/instance_segmentation_zoo.py` |
+| Vision | Panoptic Segmentation | 50 | `scripts/panoptic_segmentation_zoo.py` |
+| Vision | Lane Detection | 44 | `scripts/lane_detection_zoo.py` |
+| Vision | Co-segmentation | 26 | `scripts/co_segmentation_zoo.py` |
+| Vision | Fine-Grained Recognition | 112 | `scripts/fine_grained_recognition_zoo.py` |
+| Vision | Action Recognition | 62 | `scripts/action_recognition_zoo.py` |
+| Vision | MOT (2D) | 100 | `scripts/mot_zoo.py` |
+| NLP | Text Encoders | 49 族 / 814 IDs | `scripts/nlp_zoo.py` |
+| Point Cloud | Backbones | 30 族 / 64 IDs | `scripts/pointcloud_zoo.py` |
+| Point Cloud | 3D Detection | 60 | `scripts/detection3d_zoo.py` |
+| Point Cloud | 3D Segmentation | 60 | `scripts/segmentation3d_zoo.py` |
+| Point Cloud | 3D Instance Seg | 50 | `scripts/instance_segmentation3d_zoo.py` |
+| Point Cloud | 3D Tracking | 140 | `scripts/tracking3d_zoo.py` |
+| Point Cloud | Gaussian Splatting | 10 | `dlhub/pointcloud/gaussian_splatting_zoo.py` |
+| Multimodal | VLM | 70 | `scripts/vlm_zoo.py` |
+| Multimodal | Prompt Learning | 10 | `dlhub/multimodal/prompt_learning_zoo.py` |
+| Vision | New Directions Batch XIII | 80 | `dlhub/vision/*_zoo.py` |
+| Generative | GAN | 44 | `scripts/gan_zoo.py` |
+| Generative | Diffusion | 32 | `scripts/diffusion_zoo.py` |
+| Federated | FL Strategies | 76 | `scripts/federated_zoo.py` |
 
 !!! info "统计说明"
 
-    上表中 "~" 前缀表示近似值，实际数量随版本迭代持续增长。
+    数字为写作时实测值（`--list` 输出），实际数量随版本迭代持续增长。
+    没有独立 `scripts/` CLI 的子系统（Gaussian Splatting / Prompt Learning / New Directions）
+    直接给出 `dlhub/` 包内 zoo 模块路径。
+    此外还有 100+ 个 Research Direction 子领域（每个 10 族），
+    详见 [Research Directions](research-directions.md)。
 
 ---
 
 ## 设计原则
+
+所有 Zoo 遵循相同的设计模式：
 
 ### 一文件一算法族
 
 每个算法族（如 ResNet、ViT）对应一个独立 Python 文件，包含所有变体的构建逻辑。
 
 ```text
-zoo/
+dlhub/
   vision/
-    resnet.py          # ResNet-18 / 34 / 50 / 101 / 152 …
-    vit.py             # ViT-Ti / S / B / L / H …
-    convnext.py        # ConvNeXt-T / S / B / L / XL …
+    backbones/
+      resnet.py        # ResNet-18 / 34 / 50 / 101 / 152 …
+      vit.py           # ViT-Ti / S / B / L / H …
+      convnext.py      # ConvNeXt-T / S / B / L / XL …
+    detection/         # 2D 检测算法族（一文件一族）
+    mot/               # 多目标跟踪算法族
   nlp/
-    bert.py            # BERT-Tiny / Mini / Small / Base / Large …
+    algorithms/
+      bert.py          # BERT-Tiny / Mini / Small / Base / Large …
 ```
 
 ### Lazy Import
 
-所有算法族在 `import zoo` 时 **不会** 立即加载。仅在调用 `build()` 时才触发对应文件的导入，保证启动零开销。
+所有算法族仅在实际构建时才触发对应文件的导入，保证启动零开销。
 
 ### 统一接口
 
-```python
-from zoo.vision import build
-
-# 构建模型只需一行
-model = build("resnet50", num_classes=1000)
-```
-
-所有子系统共享相同签名：
+每个领域提供 `build_local_model(arch_id, ...)` / `list_local_arches()` 统一入口：
 
 ```python
-def build(arch_id: str, *, num_classes: int = 1000, **kwargs) -> nn.Module:
-    ...
+from dlhub.vision.local_zoo import build_local_model
+
+# 构建模型只需一行（本地实现的 ID 使用 `dl:` 前缀）
+model = build_local_model("dl:resnet50", in_channels=3, num_classes=10)
 ```
 
 ### CLI 工具
@@ -139,7 +147,7 @@ def build(arch_id: str, *, num_classes: int = 1000, **kwargs) -> nn.Module:
     列出所有可用架构 ID。
 
     ```bash
-    python -m zoo.vision --list
+    python scripts/vision_zoo.py --list
     ```
 
 === "`--search`"
@@ -147,7 +155,7 @@ def build(arch_id: str, *, num_classes: int = 1000, **kwargs) -> nn.Module:
     模糊搜索架构 ID。
 
     ```bash
-    python -m zoo.vision --search resnet
+    python scripts/vision_zoo.py --list --search resnet
     ```
 
 === "`--smoke`"
@@ -155,7 +163,7 @@ def build(arch_id: str, *, num_classes: int = 1000, **kwargs) -> nn.Module:
     对指定架构执行前向推理 Smoke Test。
 
     ```bash
-    python -m zoo.vision --smoke resnet50
+    python scripts/vision_zoo.py --smoke dl:resnet50
     ```
 
 ---
@@ -170,3 +178,4 @@ def build(arch_id: str, *, num_classes: int = 1000, **kwargs) -> nn.Module:
 | [VLM Zoo](vlm-zoo.md) | 视觉-语言多模态模型 |
 | [Generative Zoo](generative-zoo.md) | GAN 与 Diffusion 生成模型 |
 | [Federated Zoo](federated-zoo.md) | 联邦学习策略 |
+| [Research Directions](research-directions.md) | 100+ 研究方向子领域的包路径明细 |

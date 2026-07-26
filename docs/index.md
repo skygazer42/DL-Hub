@@ -183,7 +183,7 @@ CLIP→LLaVA，20 VLM 架构
 
 ### :material-archive: Model Zoo
 
-8000+ 预定义架构，开箱即用。
+8600+ 预定义架构，开箱即用。
 
 [:octicons-arrow-right-24: 浏览 Zoo](zoo/index.md)
 

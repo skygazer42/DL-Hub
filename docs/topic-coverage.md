@@ -35,3 +35,17 @@ Additional lightweight surfaces:
 Regression coverage is in `tests/test_topic_coverage.py`. The test checks that
 every topic in the requested pool has an existing path and an importable module,
 then exercises lookup, stream, framework, and method-kit behavior.
+
+```bash
+python -m pytest tests/test_topic_coverage.py
+```
+
+## 闭环层 / Coverage layers
+
+| 闭环层 | 代码入口 |
+|------|--------|
+| Topic manifest / 主题清单 | `dlhub/topic_coverage.py` |
+| Paper/resource/survey streams / 论文资源综述流 | `dlhub/research_streams.py` |
+| Framework probes / 框架探测 | `dlhub/framework_adapters.py` |
+| NAS/AutoML/pruning/distillation/SLAM kits | `dlhub/method_kits.py` |
+| Regression test / 回归测试 | `tests/test_topic_coverage.py` |
