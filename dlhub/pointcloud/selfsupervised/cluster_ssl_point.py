@@ -1,4 +1,4 @@
-﻿import torch
+import torch
 from torch import nn
 
 from dlhub.pointcloud.ops import farthest_point_sample, index_points, knn_query

@@ -1,4 +1,4 @@
-﻿"""ST-GCN - toy-first skeleton action classifier.
+"""ST-GCN - toy-first skeleton action classifier.
 
 Reference:
 - "Spatial Temporal Graph Convolutional Networks for Skeleton-Based Action Recognition" (AAAI 2018)

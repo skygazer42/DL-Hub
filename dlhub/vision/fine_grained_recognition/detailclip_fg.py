@@ -1,4 +1,4 @@
-﻿"""FG-CLIP (fine-grained CLIP-style) - toy-first FGVC classifier.
+"""FG-CLIP (fine-grained CLIP-style) - toy-first FGVC classifier.
 
 Reference:
 - "FG-CLIP: Fine-grained Visual and Textual Alignment" (arXiv 2025)

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from ._common import build_toy_stabilizer, smoke_test_stabilizer
 _VARIANTS = {'transformer_stab_tiny': {'width':24,'depth':1}, 'transformer_stab_small': {'width':32,'depth':2}, 'transformer_stab_base': {'width':48,'depth':3}}
 def build_transformer_stab_stabilizer(*, in_channels:int, variant:str='transformer_stab_small', width_mult:float=1.0):

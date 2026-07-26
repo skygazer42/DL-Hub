@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from ._common import build_toy_generator, smoke_test_generator
 _VARIANTS = {'control_synth_tiny': {'width':24,'depth':1}, 'control_synth_small': {'width':32,'depth':2}, 'control_synth_base': {'width':48,'depth':3}}
 def build_control_synth_generator(*, in_channels:int, variant:str='control_synth_small', width_mult:float=1.0):

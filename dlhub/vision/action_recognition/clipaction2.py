@@ -1,4 +1,4 @@
-﻿"""TimeSformer (space-time attention) - toy-first video action classifier.
+"""TimeSformer (space-time attention) - toy-first video action classifier.
 
 Reference:
 - "Is Space-Time Attention All You Need for Video Understanding?" (ICML 2021)

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from ._common import build_toy_generator, smoke_test_generator
 _VARIANTS = {'mamba_synth_tiny': {'width':24,'depth':1}, 'mamba_synth_small': {'width':32,'depth':2}, 'mamba_synth_base': {'width':48,'depth':3}}
 def build_mamba_synth_generator(*, in_channels:int, variant:str='mamba_synth_small', width_mult:float=1.0):

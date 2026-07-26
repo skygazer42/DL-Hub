@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from ._common import build_toy_stabilizer, smoke_test_stabilizer
 _VARIANTS = {'stabilizer_cnn_tiny': {'width':24,'depth':1}, 'stabilizer_cnn_small': {'width':32,'depth':2}, 'stabilizer_cnn_base': {'width':48,'depth':3}}
 def build_stabilizer_cnn_stabilizer(*, in_channels:int, variant:str='stabilizer_cnn_small', width_mult:float=1.0):

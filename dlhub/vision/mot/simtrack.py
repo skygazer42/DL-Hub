@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from ._common import MOTTracker2D, smoke_test_tracker
 
