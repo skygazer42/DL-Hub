@@ -1,8 +1,8 @@
-﻿import torch
+import torch
 from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
-from dlhub.vision.detection._open_vocab_detr_utils import (
+from dlhub.vision.detection._detr_utils import (
     MLP,
     SimpleTransformer,
     flatten_hw,
