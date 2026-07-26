@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import torch
-import torch.nn.functional as F
 from torch import nn
 
 from dlhub.vision.backbones._blocks import ConvBNAct
@@ -98,7 +97,9 @@ def build_pairformer_coseg_co_segmentor(
     del set_size, image_size
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Transformer-CoSeg variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Transformer-CoSeg variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     cfg = _VARIANTS[name]
     dim = max(32, int(int(cfg["embed_dim"]) * float(width_mult)))
     heads = int(cfg["heads"])
@@ -128,4 +129,3 @@ if __name__ == "__main__":
     loss = out["logits"].mean() + out["group_tokens"].mean()
     loss.backward()
     print("ok")
-

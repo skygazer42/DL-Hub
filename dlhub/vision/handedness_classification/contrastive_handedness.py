@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_hand_classifier, smoke_test_hand_classifier
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'contrastive_handedness_tiny': {'width': 24, 'depth': 1, 'num_classes': 2}, 'contrastive_handedness_small': {'width': 36, 'depth': 2, 'num_classes': 2}, 'contrastive_handedness_base': {'width': 48, 'depth': 3, 'num_classes': 2}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "contrastive_handedness_tiny": {"width": 24, "depth": 1, "num_classes": 2},
+    "contrastive_handedness_small": {"width": 36, "depth": 2, "num_classes": 2},
+    "contrastive_handedness_base": {"width": 48, "depth": 3, "num_classes": 2},
+}
 
 
 def build_contrastive_handedness_handedness_classifier(
     *,
     in_channels: int,
-    variant: str = 'contrastive_handedness_small',
+    variant: str = "contrastive_handedness_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_hand_classifier(
-        family='contrastive_handedness',
-        mode='contrastive',
+        family="contrastive_handedness",
+        mode="contrastive",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,6 @@ def build_contrastive_handedness_handedness_classifier(
 
 
 if __name__ == "__main__":
-    smoke_test_hand_classifier(build_contrastive_handedness_handedness_classifier, 'contrastive_handedness_tiny')
+    smoke_test_hand_classifier(
+        build_contrastive_handedness_handedness_classifier, "contrastive_handedness_tiny"
+    )

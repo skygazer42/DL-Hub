@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['gatys_style', 'adain_style', 'wct_style', 'transformer_style', 'prompt_style', 'dual_style', 'cycle_style', 'pix2pix_style', 'ref_style', 'mamba_style']
+_FAMILIES = [
+    "gatys_style",
+    "adain_style",
+    "wct_style",
+    "transformer_style",
+    "prompt_style",
+    "dual_style",
+    "cycle_style",
+    "pix2pix_style",
+    "ref_style",
+    "mamba_style",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'nst', arch_id
+        return "nst", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'neural_style_transfer', 'style_transfer'}:
-        prefix = 'nst'
-    if prefix not in {'nst', "local"}:
+    if prefix in {"neural_style_transfer", "style_transfer"}:
+        prefix = "nst"
+    if prefix not in {"nst", "local"}:
         raise ValueError(
             f"Unsupported neural style transfer prefix: {prefix!r} (arch_id={arch_id!r})"
         )

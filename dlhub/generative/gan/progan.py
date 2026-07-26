@@ -39,4 +39,3 @@ def build_progan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_progan_gan, "progan_tiny")
-

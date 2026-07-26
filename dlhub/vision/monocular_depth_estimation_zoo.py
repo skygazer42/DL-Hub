@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cnn_monodepth', 'ordinal_monodepth', 'scaleinv_monodepth', 'bins_monodepth', 'geometry_monodepth', 'transformer_monodepth', 'prompt_monodepth', 'coarse_monodepth', 'dual_monodepth', 'mamba_monodepth']
+_FAMILIES = [
+    "cnn_monodepth",
+    "ordinal_monodepth",
+    "scaleinv_monodepth",
+    "bins_monodepth",
+    "geometry_monodepth",
+    "transformer_monodepth",
+    "prompt_monodepth",
+    "coarse_monodepth",
+    "dual_monodepth",
+    "mamba_monodepth",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'monodepth', arch_id
+        return "monodepth", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -41,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.monocular_depth_estimation.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.monocular_depth_estimation.{family}"
+                )
                 fn = getattr(module, f"build_{family}_depth_model")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -62,9 +75,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'monocular_depth_estimation', 'monodepth'}:
-        prefix = 'monodepth'
-    if prefix not in {'monodepth', "local"}:
+    if prefix in {"monocular_depth_estimation", "monodepth"}:
+        prefix = "monodepth"
+    if prefix not in {"monodepth", "local"}:
         raise ValueError(
             f"Unsupported monocular depth estimation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

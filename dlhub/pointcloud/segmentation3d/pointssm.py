@@ -56,4 +56,3 @@ if __name__ == "__main__":
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

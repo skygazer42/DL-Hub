@@ -65,7 +65,15 @@ _PROFILES: dict[str, ProfileSpec] = {
         title="High Fidelity",
         summary="Prefer style and attention heavy high-fidelity families.",
         preferred_groups=("high_fidelity",),
-        preferred_families=("stylegan3", "stylegan2", "stylegan", "biggan", "sagan", "progan", "transgan"),
+        preferred_families=(
+            "stylegan3",
+            "stylegan2",
+            "stylegan",
+            "biggan",
+            "sagan",
+            "progan",
+            "transgan",
+        ),
         modern_bias=0.35,
     ),
     "conditional": ProfileSpec(
@@ -73,7 +81,15 @@ _PROFILES: dict[str, ProfileSpec] = {
         title="Conditional and Translation",
         summary="Prefer label-conditioned and image-translation GAN families.",
         preferred_groups=("conditional_gan", "image_translation"),
-        preferred_families=("cgan", "acgan", "projection_gan", "infogan", "pix2pix", "cyclegan", "cutgan"),
+        preferred_families=(
+            "cgan",
+            "acgan",
+            "projection_gan",
+            "infogan",
+            "pix2pix",
+            "cyclegan",
+            "cutgan",
+        ),
         modern_bias=0.2,
     ),
     "stable_training": ProfileSpec(
@@ -98,7 +114,9 @@ def _family_year_bonus(year: int | None, *, modern_bias: float) -> float:
     return float(modern_bias) * span
 
 
-def _score_family(spec: ProfileSpec, *, family: str, group: str, year: int | None) -> tuple[float, str]:
+def _score_family(
+    spec: ProfileSpec, *, family: str, group: str, year: int | None
+) -> tuple[float, str]:
     score = 0.0
     reasons: list[str] = []
     if group in spec.preferred_groups:

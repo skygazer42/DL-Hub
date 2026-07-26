@@ -76,7 +76,9 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"video_stab", "stabilization"}:
         prefix = "vstab"
     if prefix not in {"vstab", "local"}:
-        raise ValueError(f"Unsupported video stabilization prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported video stabilization prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

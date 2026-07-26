@@ -19,7 +19,9 @@ class StyleSwapStyleTransfer(nn.Module):
         )
         c_feat = int(self.encoder.out_channels)
         self.swap = SpatialCrossAttention(channels=c_feat, temperature=0.8)
-        self.fuse = nn.Sequential(nn.Conv2d(c_feat * 2, c_feat, kernel_size=1), nn.ReLU(inplace=True))
+        self.fuse = nn.Sequential(
+            nn.Conv2d(c_feat * 2, c_feat, kernel_size=1), nn.ReLU(inplace=True)
+        )
         self.decoder = TinyDecoder(
             out_channels=int(in_channels),
             in_channels=c_feat,

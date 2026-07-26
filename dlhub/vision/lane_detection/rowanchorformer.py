@@ -96,7 +96,13 @@ class RowanchorformerLaneDetector(nn.Module):
 
 _VARIANTS: dict[str, dict[str, int | float]] = {
     "rowanchorformer_tiny": {"stem": 16, "hidden": 32, "depth": 1, "token_dim": 32, "dropout": 0.0},
-    "rowanchorformer_small": {"stem": 24, "hidden": 48, "depth": 2, "token_dim": 48, "dropout": 0.0},
+    "rowanchorformer_small": {
+        "stem": 24,
+        "hidden": 48,
+        "depth": 2,
+        "token_dim": 48,
+        "dropout": 0.0,
+    },
     "rowanchorformer_base": {"stem": 32, "hidden": 64, "depth": 3, "token_dim": 64, "dropout": 0.1},
 }
 
@@ -151,4 +157,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

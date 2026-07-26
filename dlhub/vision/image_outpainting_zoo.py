@@ -76,9 +76,7 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"image_outpainting", "outpainting"}:
         prefix = "outpaint"
     if prefix not in {"outpaint", "local"}:
-        raise ValueError(
-            f"Unsupported image outpainting prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+        raise ValueError(f"Unsupported image outpainting prefix: {prefix!r} (arch_id={arch_id!r})")
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

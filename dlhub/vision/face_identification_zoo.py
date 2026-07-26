@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['softmax_faceid', 'arcface_faceid', 'cosface_faceid', 'proxy_faceid', 'transformer_faceid', 'prompt_faceid', 'region_faceid', 'multi_branch_faceid', 'efficient_faceid', 'mamba_faceid']
+_FAMILIES = [
+    "softmax_faceid",
+    "arcface_faceid",
+    "cosface_faceid",
+    "proxy_faceid",
+    "transformer_faceid",
+    "prompt_faceid",
+    "region_faceid",
+    "multi_branch_faceid",
+    "efficient_faceid",
+    "mamba_faceid",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'faceid', arch_id
+        return "faceid", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'face_identification', 'face_identify'}:
-        prefix = 'faceid'
-    if prefix not in {'faceid', "local"}:
+    if prefix in {"face_identification", "face_identify"}:
+        prefix = "faceid"
+    if prefix not in {"faceid", "local"}:
         raise ValueError(
             f"Unsupported face identification prefix: {prefix!r} (arch_id={arch_id!r})"
         )

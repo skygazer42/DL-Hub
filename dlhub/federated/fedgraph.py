@@ -51,4 +51,3 @@ def build_fedgraph_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedgraph_strategy, "fedgraph_tiny")
-

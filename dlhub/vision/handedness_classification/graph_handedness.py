@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_hand_classifier, smoke_test_hand_classifier
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'graph_handedness_tiny': {'width': 24, 'depth': 1, 'num_classes': 2}, 'graph_handedness_small': {'width': 36, 'depth': 2, 'num_classes': 2}, 'graph_handedness_base': {'width': 48, 'depth': 3, 'num_classes': 2}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "graph_handedness_tiny": {"width": 24, "depth": 1, "num_classes": 2},
+    "graph_handedness_small": {"width": 36, "depth": 2, "num_classes": 2},
+    "graph_handedness_base": {"width": 48, "depth": 3, "num_classes": 2},
+}
 
 
 def build_graph_handedness_handedness_classifier(
     *,
     in_channels: int,
-    variant: str = 'graph_handedness_small',
+    variant: str = "graph_handedness_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_hand_classifier(
-        family='graph_handedness',
-        mode='graph',
+        family="graph_handedness",
+        mode="graph",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,6 @@ def build_graph_handedness_handedness_classifier(
 
 
 if __name__ == "__main__":
-    smoke_test_hand_classifier(build_graph_handedness_handedness_classifier, 'graph_handedness_tiny')
+    smoke_test_hand_classifier(
+        build_graph_handedness_handedness_classifier, "graph_handedness_tiny"
+    )

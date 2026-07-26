@@ -39,4 +39,3 @@ def build_pix2pix_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_pix2pix_gan, "pix2pix_tiny")
-

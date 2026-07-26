@@ -51,7 +51,9 @@ class ToyText3DGenerator(nn.Module):
         self.density_head = nn.Linear(int(width), self.voxel_size**3)
         self.mesh_head = nn.Linear(int(width), self.voxel_size * 3)
 
-    def sample(self, *, batch_size: int = 2, device: torch.device | str | None = None) -> torch.Tensor:
+    def sample(
+        self, *, batch_size: int = 2, device: torch.device | str | None = None
+    ) -> torch.Tensor:
         return self.forward(batch_size=batch_size, device=device)["triplanes"]
 
     def forward(

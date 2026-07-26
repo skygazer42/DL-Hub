@@ -234,7 +234,13 @@ class SwAV2PointNet(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "swav2_pointnet_tiny": {"hidden": 32, "embed": 64, "proj": 64, "prototypes": 32, "dropout": 0.0},
+    "swav2_pointnet_tiny": {
+        "hidden": 32,
+        "embed": 64,
+        "proj": 64,
+        "prototypes": 32,
+        "dropout": 0.0,
+    },
     "swav2_pointnet_small": {
         "hidden": 64,
         "embed": 128,
@@ -291,4 +297,3 @@ if __name__ == "__main__":
     loss.backward()
     m.normalize_prototypes()
     print("ok", float(loss.item()))
-

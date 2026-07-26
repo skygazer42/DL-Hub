@@ -39,4 +39,3 @@ def build_cyclegan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_cyclegan_gan, "cyclegan_tiny")
-

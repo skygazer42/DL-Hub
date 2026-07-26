@@ -20,7 +20,9 @@ class CASTStyleTransfer(nn.Module):
         )
         c_feat = int(self.encoder.out_channels)
         self.attn = SpatialCrossAttention(channels=c_feat, temperature=0.9)
-        self.fuse = nn.Sequential(nn.Conv2d(c_feat * 2, c_feat, kernel_size=1), nn.ReLU(inplace=True))
+        self.fuse = nn.Sequential(
+            nn.Conv2d(c_feat * 2, c_feat, kernel_size=1), nn.ReLU(inplace=True)
+        )
         proj_dim = max(8, c_feat // 2)
         self.content_proj = nn.Conv2d(c_feat, proj_dim, kernel_size=1)
         self.style_proj = nn.Conv2d(c_feat, proj_dim, kernel_size=1)

@@ -34,4 +34,3 @@ def build_querytrack3d_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_querytrack3d_tracker3d, "querytrack3d_tiny")
-

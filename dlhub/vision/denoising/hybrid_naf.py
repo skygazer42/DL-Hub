@@ -189,4 +189,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

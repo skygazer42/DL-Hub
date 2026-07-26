@@ -294,12 +294,12 @@ if __name__ == "__main__":
 
     torch.manual_seed(0)
     pts = torch.randn(4, 128, 3)
-    m = build_cluster_ssl_point_pretrainer(in_channels=3, variant="cluster_ssl_point_tiny", dropout=0.0)
+    m = build_cluster_ssl_point_pretrainer(
+        in_channels=3, variant="cluster_ssl_point_tiny", dropout=0.0
+    )
     out = m(pts, mask_ratio=0.6)
     pred = out["pred"].reshape(-1, m.patch.group_size, 3)
     target = out["target"].reshape(-1, m.patch.group_size, 3)
     loss = chamfer_distance(pred, target)
     loss.backward()
     print("ok", float(loss.item()))
-
-

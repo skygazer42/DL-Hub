@@ -21,7 +21,9 @@ class TinyExposureBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor, guide: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -40,22 +42,35 @@ class TinyExposureBlock(nn.Module):
 
 
 class TinyExposureCorrector(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, steps: int) -> None:
+    def __init__(
+        self, *, family: str, mode: str, in_channels: int, width: int, depth: int, steps: int
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.steps = max(1, int(steps))
         self.encoder = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
         self.guide = nn.Conv2d(int(in_channels), int(width), 1)
-        self.blocks = nn.ModuleList([TinyExposureBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
-        self.decoder = nn.Sequential(nn.Conv2d(int(width), int(width), 3, padding=1), nn.ReLU(inplace=True), nn.Conv2d(int(width), int(in_channels), 3, padding=1))
+        self.blocks = nn.ModuleList(
+            [
+                TinyExposureBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
+        self.decoder = nn.Sequential(
+            nn.Conv2d(int(width), int(width), 3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(int(width), int(in_channels), 3, padding=1),
+        )
         self.map_head = nn.Conv2d(int(width), 1, 1)
 
     def forward(self, image: torch.Tensor) -> dict[str, torch.Tensor]:
         image = check_nchw(image)
         corrected = image
         for _ in range(self.steps):
-            exposure_residual = corrected.mean(dim=1, keepdim=True) - corrected.mean(dim=(1, 2, 3), keepdim=True)
+            exposure_residual = corrected.mean(dim=1, keepdim=True) - corrected.mean(
+                dim=(1, 2, 3), keepdim=True
+            )
             feat = F.relu(self.encoder(corrected), inplace=True)
             guide = self.guide(exposure_residual.expand_as(corrected))
             for block in self.blocks:
@@ -63,18 +78,39 @@ class TinyExposureCorrector(nn.Module):
             adjustment = self.decoder(feat)
             corrected = torch.clamp(corrected - 0.5 * adjustment, -1.0, 1.0)
         exposure_map = torch.sigmoid(self.map_head(F.relu(self.encoder(corrected), inplace=True)))
-        return {"corrected": corrected, "exposure_map": exposure_map, "adjustment": corrected - image}
+        return {
+            "corrected": corrected,
+            "exposure_map": exposure_map,
+            "adjustment": corrected - image,
+        }
 
 
-def build_toy_exposure_corrector(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_exposure_corrector(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(12, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
     steps = int(spec.get("steps", 1))
-    return TinyExposureCorrector(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth, steps=steps)
+    return TinyExposureCorrector(
+        family=str(family),
+        mode=str(mode),
+        in_channels=int(in_channels),
+        width=width,
+        depth=depth,
+        steps=steps,
+    )
 
 
 def smoke_test_exposure_corrector(builder, variant: str) -> None:

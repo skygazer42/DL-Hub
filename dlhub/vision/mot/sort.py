@@ -21,9 +21,7 @@ def build_sort_tracker(
 ):
     cfg = _VARIANTS.get(str(variant).lower().strip())
     if cfg is None:
-        raise ValueError(
-            f"Unknown variant for sort: {variant!r}. Available: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown variant for sort: {variant!r}. Available: {sorted(_VARIANTS)}")
 
     # Keep seq_len/image_size in signature for a unified zoo build API.
     _ = seq_len, image_size

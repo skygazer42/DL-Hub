@@ -34,4 +34,3 @@ def build_nanobev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_nanobev_track_tracker3d, "nanobev_track_tiny")
-

@@ -28,9 +28,7 @@ class TinyFewShotBlock(nn.Module):
             groups=int(channels),
         )
         self.prompt = (
-            nn.Parameter(torch.zeros(1, int(channels), 1, 1))
-            if self.mode == "prompt"
-            else None
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
         )
 
     def forward(self, x: torch.Tensor, support_feat: torch.Tensor) -> torch.Tensor:

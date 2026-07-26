@@ -256,7 +256,9 @@ def build_turbo_yolo_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_turbo_yolo_detector(in_channels=3, num_classes=3, variant="turbo_yolo_tiny", width_mult=0.5)
+    m = build_turbo_yolo_detector(
+        in_channels=3, num_classes=3, variant="turbo_yolo_tiny", width_mult=0.5
+    )
     out = m(x)
     print("turbo_yolo_tiny", [tuple(t.shape) for t in out["obj_logits"]])
     loss = (
@@ -267,4 +269,3 @@ if __name__ == "__main__":
     )
     loss.backward()
     print("ok")
-

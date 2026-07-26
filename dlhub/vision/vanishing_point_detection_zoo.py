@@ -51,12 +51,8 @@ def _registry() -> dict[str, Builder]:
         for size in _SIZES:
             variant = f"{family}_{size}"
 
-            def _builder(
-                cfg: BuildConfig, family: str = family, variant: str = variant
-            ):
-                module = importlib.import_module(
-                    f"dlhub.vision.vanishing_point_detection.{family}"
-                )
+            def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
+                module = importlib.import_module(f"dlhub.vision.vanishing_point_detection.{family}")
                 fn = getattr(module, f"build_{family}_vp_detector")
                 return fn(
                     in_channels=int(cfg.in_channels),

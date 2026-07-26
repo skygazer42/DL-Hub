@@ -27,13 +27,27 @@ class ToyPromptLearner(nn.Module):
         return {"prompts": prompts, "pooled": pooled}
 
 
-def build_toy_prompt_learner(*, family: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0, prompt_len: int = 8):
+def build_toy_prompt_learner(
+    *,
+    family: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+    prompt_len: int = 8,
+):
     spec = variants[str(variant)]
-    width = max(16, int(int(spec['width']) * float(width_mult)))
-    return ToyPromptLearner(family=str(family), in_channels=int(in_channels), width=width, depth=int(spec['depth']), prompt_len=int(prompt_len))
+    width = max(16, int(int(spec["width"]) * float(width_mult)))
+    return ToyPromptLearner(
+        family=str(family),
+        in_channels=int(in_channels),
+        width=width,
+        depth=int(spec["depth"]),
+        prompt_len=int(prompt_len),
+    )
 
 
 def smoke_test_prompt_learner(builder, variant: str) -> None:
     model = builder(in_channels=3, variant=variant, width_mult=0.5)
     out = model(torch.randn(2, 3, 64, 64))
-    print(variant, tuple(out['prompts'].shape), tuple(out['pooled'].shape))
+    print(variant, tuple(out["prompts"].shape), tuple(out["pooled"].shape))

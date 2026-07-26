@@ -1,18 +1,19 @@
-
 from __future__ import annotations
 
 from ._common import build_toy_vision_direction, smoke_test_direction
 
 _VARIANTS = {
-    'mamba_vfi_tiny': {'width': 24, 'depth': 1},
-    'mamba_vfi_small': {'width': 32, 'depth': 2},
-    'mamba_vfi_base': {'width': 48, 'depth': 3},
+    "mamba_vfi_tiny": {"width": 24, "depth": 1},
+    "mamba_vfi_small": {"width": 32, "depth": 2},
+    "mamba_vfi_base": {"width": 48, "depth": 3},
 }
 
 
-def build_mamba_vfi_interpolator(*, in_channels: int, variant: str = 'mamba_vfi_small', width_mult: float = 1.0):
+def build_mamba_vfi_interpolator(
+    *, in_channels: int, variant: str = "mamba_vfi_small", width_mult: float = 1.0
+):
     return build_toy_vision_direction(
-        family='mamba_vfi',
+        family="mamba_vfi",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -20,5 +21,5 @@ def build_mamba_vfi_interpolator(*, in_channels: int, variant: str = 'mamba_vfi_
     )
 
 
-if __name__ == '__main__':
-    smoke_test_direction(build_mamba_vfi_interpolator, 'mamba_vfi_tiny')
+if __name__ == "__main__":
+    smoke_test_direction(build_mamba_vfi_interpolator, "mamba_vfi_tiny")

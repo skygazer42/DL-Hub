@@ -40,4 +40,3 @@ def build_fgformer2_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_fgformer2_fgvc_classifier, "fgformer2_tiny")
-

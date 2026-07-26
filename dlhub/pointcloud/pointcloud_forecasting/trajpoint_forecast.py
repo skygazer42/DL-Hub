@@ -29,4 +29,6 @@ def build_trajpoint_forecast_forecasting_model(
 
 
 if __name__ == "__main__":
-    smoke_test_forecasting_model(build_trajpoint_forecast_forecasting_model, "trajpoint_forecast_tiny")
+    smoke_test_forecasting_model(
+        build_trajpoint_forecast_forecasting_model, "trajpoint_forecast_tiny"
+    )

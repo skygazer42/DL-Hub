@@ -131,10 +131,11 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     s = torch.randn(2, 3, 64, 64)
-    m = build_stytr2_style_transfer(in_channels=3, variant="stytr2_tiny", width_mult=0.5, num_layers=1)
+    m = build_stytr2_style_transfer(
+        in_channels=3, variant="stytr2_tiny", width_mult=0.5, num_layers=1
+    )
     out = m(x, s)
     print("stytr2_tiny", tuple(out["stylized"].shape))
     loss = out["stylized"].mean()
     loss.backward()
     print("ok")
-

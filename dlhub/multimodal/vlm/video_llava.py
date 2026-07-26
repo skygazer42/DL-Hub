@@ -41,4 +41,3 @@ def build_video_llava_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_video_llava_vlm, "video_llava_tiny")
-

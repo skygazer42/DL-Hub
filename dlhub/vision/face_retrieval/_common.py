@@ -20,8 +20,12 @@ class TinyFaceRetrievalBlock(nn.Module):
         self.conv1 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), kernel_size=1)
-        self.depthwise = nn.Conv2d(int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.depthwise = nn.Conv2d(
+            int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels)
+        )
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -44,12 +48,26 @@ class TinyFaceRetrievalBlock(nn.Module):
 
 
 class TinyFaceRetriever(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, embedding_dim: int = 64) -> None:
+    def __init__(
+        self,
+        *,
+        family: str,
+        mode: str,
+        in_channels: int,
+        width: int,
+        depth: int,
+        embedding_dim: int = 64,
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), kernel_size=3, padding=1)
-        self.blocks = nn.ModuleList([TinyFaceRetrievalBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [
+                TinyFaceRetrievalBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
         self.embed = nn.Linear(int(width), int(embedding_dim))
         self.quality = nn.Linear(int(embedding_dim), 1)
 
@@ -63,15 +81,32 @@ class TinyFaceRetriever(nn.Module):
         return {"embedding": embedding, "quality": torch.sigmoid(self.quality(embedding))}
 
 
-def build_toy_face_retriever(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_face_retriever(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
     embedding_dim = int(spec.get("embedding_dim", 64))
-    return TinyFaceRetriever(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth, embedding_dim=embedding_dim)
+    return TinyFaceRetriever(
+        family=str(family),
+        mode=str(mode),
+        in_channels=int(in_channels),
+        width=width,
+        depth=depth,
+        embedding_dim=embedding_dim,
+    )
 
 
 def smoke_test_face_retriever(builder, variant: str) -> None:

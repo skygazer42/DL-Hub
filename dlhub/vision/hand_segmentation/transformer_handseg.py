@@ -29,6 +29,4 @@ def build_transformer_handseg_hand_segmentor(
 
 
 if __name__ == "__main__":
-    smoke_test_hand_segmentor(
-        build_transformer_handseg_hand_segmentor, "transformer_handseg_tiny"
-    )
+    smoke_test_hand_segmentor(build_transformer_handseg_hand_segmentor, "transformer_handseg_tiny")

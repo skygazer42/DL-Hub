@@ -32,4 +32,3 @@ if __name__ == "__main__":
         builder=build_pedestrian_faster_rcnn_detector,
         variant="pedestrian_faster_rcnn",
     )
-

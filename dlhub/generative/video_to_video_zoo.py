@@ -83,7 +83,11 @@ def _make_lazy_builder(module_name: str, *, builder_name: str, variant: str) -> 
         fn = getattr(mod, builder_name, None)
         if fn is None:
             raise RuntimeError(f"video-to-video module {module_name!r} missing {builder_name}()")
-        kwargs = {"in_channels": int(cfg.in_channels), "variant": str(variant), "width_mult": float(cfg.width_mult)}
+        kwargs = {
+            "in_channels": int(cfg.in_channels),
+            "variant": str(variant),
+            "width_mult": float(cfg.width_mult),
+        }
         try:
             sig = inspect.signature(fn)
         except (TypeError, ValueError):
@@ -114,7 +118,9 @@ def _extend_registry(registry: dict[str, Builder]) -> None:
         for variant in variants:
             name = str(variant).lower().strip()
             if name and name not in registry:
-                registry[name] = _make_lazy_builder(module_name, builder_name=builder_name, variant=name)
+                registry[name] = _make_lazy_builder(
+                    module_name, builder_name=builder_name, variant=name
+                )
 
 
 def _registry() -> dict[str, Builder]:
@@ -133,7 +139,9 @@ def list_local_arches() -> list[str]:
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix_name, name = _split_arch_id(arch_id)
     if prefix_name not in {"v2v", "local"}:
-        raise ValueError(f"Unsupported video-to-video prefix: {prefix_name!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported video-to-video prefix: {prefix_name!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

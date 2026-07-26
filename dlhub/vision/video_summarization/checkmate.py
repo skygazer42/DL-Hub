@@ -43,10 +43,14 @@ class CheckMATEVideoSummarizer(nn.Module):
     def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(video)
         b, t, d = feat.shape
-        counts = torch.arange(1, int(t) + 1, device=feat.device, dtype=feat.dtype).view(1, int(t), 1)
+        counts = torch.arange(1, int(t) + 1, device=feat.device, dtype=feat.dtype).view(
+            1, int(t), 1
+        )
         left_avg = feat.cumsum(dim=1) / counts
         right_avg = _reverse_cumavg(feat)
-        center_avg = F.avg_pool1d(feat.transpose(1, 2), kernel_size=3, stride=1, padding=1).transpose(1, 2)
+        center_avg = F.avg_pool1d(
+            feat.transpose(1, 2), kernel_size=3, stride=1, padding=1
+        ).transpose(1, 2)
         mate = (left_avg + right_avg + center_avg) / 3.0
 
         proj_feat = F.normalize(self.proj(feat), dim=-1)
@@ -82,9 +86,7 @@ def build_checkmate_video_summarizer(
     del seq_len, image_size
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown CheckMATE variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown CheckMATE variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return CheckMATEVideoSummarizer(

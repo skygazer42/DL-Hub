@@ -57,12 +57,16 @@ class LLMPretrainVideoSummarizer(nn.Module):
             torch.einsum("btd,bkd->btk", frame_key, token_key) / math.sqrt(max(1, int(d))),
             dim=-1,
         )
-        oracle_context = torch.einsum("btk,bkd->btd", oracle_attn, tokens.unsqueeze(0).expand(int(b), -1, -1))
+        oracle_context = torch.einsum(
+            "btk,bkd->btd", oracle_attn, tokens.unsqueeze(0).expand(int(b), -1, -1)
+        )
         sequence_feat = torch.cat([feat, oracle_context], dim=-1)
 
         sequence_logits = self.sequence_scorer(sequence_feat)
         oracle_logits = self.oracle_head(sequence_feat).squeeze(-1)
-        oracle_alignment = (F.normalize(frame_key, dim=-1) * F.normalize(oracle_context, dim=-1)).sum(dim=-1)
+        oracle_alignment = (
+            F.normalize(frame_key, dim=-1) * F.normalize(oracle_context, dim=-1)
+        ).sum(dim=-1)
         scores = torch.sigmoid(sequence_logits + 0.35 * oracle_logits + 0.20 * oracle_alignment)
         summary_mask = scores_to_mask(scores)
         summary_prior = oracle_attn.mean(dim=1)

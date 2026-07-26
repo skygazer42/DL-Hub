@@ -34,4 +34,3 @@ def build_sparsebev_track2_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_sparsebev_track2_tracker3d, "sparsebev_track2_tiny")
-

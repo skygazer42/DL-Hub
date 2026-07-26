@@ -79,7 +79,9 @@ def _make_lazy_builder(module_name: str, *, builder_name: str, variant: str) -> 
         import importlib
         import inspect
 
-        mod = importlib.import_module(f"dlhub.pointcloud.pointcloud_anomaly_detection.{module_name}")
+        mod = importlib.import_module(
+            f"dlhub.pointcloud.pointcloud_anomaly_detection.{module_name}"
+        )
         fn = getattr(mod, builder_name, None)
         if fn is None:
             raise RuntimeError(

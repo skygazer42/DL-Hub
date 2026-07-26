@@ -73,7 +73,9 @@ class TinyFaceEncoder(nn.Module):
 
     @staticmethod
     def _stage(in_ch: int, out_ch: int, *, depth: int, dropout: float) -> nn.Sequential:
-        layers: list[nn.Module] = [ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=2, act="relu")]
+        layers: list[nn.Module] = [
+            ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=2, act="relu")
+        ]
         for _ in range(max(1, int(depth)) - 1):
             layers.append(ConvBNAct(int(out_ch), int(out_ch), kernel_size=3, stride=1, act="relu"))
             if float(dropout) > 0:
@@ -89,7 +91,9 @@ class TinyFaceEncoder(nn.Module):
 
 
 class ParsingHead(nn.Module):
-    def __init__(self, *, in_channels: int, hidden_channels: int, num_classes: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, hidden_channels: int, num_classes: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.net = nn.Sequential(
             ConvBNAct(int(in_channels), int(hidden_channels), kernel_size=3, stride=1, act="relu"),

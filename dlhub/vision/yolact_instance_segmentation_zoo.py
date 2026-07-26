@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['plain_yolact_seg', 'proto_yolact_seg', 'mask_yolact_seg', 'query_yolact_seg', 'topdown_yolact_seg', 'transformer_yolact_seg', 'prompt_yolact_seg', 'cascade_yolact_seg', 'dual_yolact_seg', 'mamba_yolact_seg']
+_FAMILIES = [
+    "plain_yolact_seg",
+    "proto_yolact_seg",
+    "mask_yolact_seg",
+    "query_yolact_seg",
+    "topdown_yolact_seg",
+    "transformer_yolact_seg",
+    "prompt_yolact_seg",
+    "cascade_yolact_seg",
+    "dual_yolact_seg",
+    "mamba_yolact_seg",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'yolactseg', arch_id
+        return "yolactseg", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -41,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.yolact_instance_segmentation.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.yolact_instance_segmentation.{family}"
+                )
                 fn = getattr(module, f"build_{family}_instance_segmentor")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -62,9 +75,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'yolact_instance_segmentation', 'yolact'}:
-        prefix = 'yolactseg'
-    if prefix not in {'yolactseg', "local"}:
+    if prefix in {"yolact_instance_segmentation", "yolact"}:
+        prefix = "yolactseg"
+    if prefix not in {"yolactseg", "local"}:
         raise ValueError(
             f"Unsupported yolact instance segmentation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

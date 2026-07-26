@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "dynami_toy_base": {"width": 48, "depth": 3, "frames": 6},
 }
 
-def build_dynami_toy_image_to_video(*, in_channels: int, variant: str = "dynami_toy_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_image_to_video(family="dynami_toy", mode="dynami", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_dynami_toy_image_to_video(
+    *, in_channels: int, variant: str = "dynami_toy_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_image_to_video(
+        family="dynami_toy",
+        mode="dynami",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_image_to_video(build_dynami_toy_image_to_video, "dynami_toy_tiny")

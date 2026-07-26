@@ -85,7 +85,9 @@ def _make_lazy_builder(module_name: str, *, builder_name: str, variant: str) -> 
         mod = importlib.import_module(f"dlhub.pointcloud.gaussian_splatting.{module_name}")
         fn = getattr(mod, builder_name, None)
         if fn is None:
-            raise RuntimeError(f"Gaussian splatting module {module_name!r} missing {builder_name}()")
+            raise RuntimeError(
+                f"Gaussian splatting module {module_name!r} missing {builder_name}()"
+            )
 
         kwargs: dict[str, object] = {
             "in_channels": int(cfg.in_channels),

@@ -142,7 +142,9 @@ def build_grounded_inst_instance_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown GroundedInst variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown GroundedInst variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     stem = scale_channels(int(spec["stem"]), float(width_mult), min_ch=16, divisor=8)
@@ -182,4 +184,3 @@ if __name__ == "__main__":
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

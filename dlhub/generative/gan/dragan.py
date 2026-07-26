@@ -39,4 +39,3 @@ def build_dragan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_dragan_gan, "dragan_tiny")
-

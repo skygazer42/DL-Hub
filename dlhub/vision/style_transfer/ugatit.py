@@ -96,7 +96,10 @@ class UGATITGenerator(nn.Module):
 
         self.attn = nn.Conv2d(cur, 1, kernel_size=1)
         self.blocks = nn.ModuleList(
-            [UGATITResBlock(channels=cur, style_dim=int(style_dim), dropout=float(dropout)) for _ in range(d)]
+            [
+                UGATITResBlock(channels=cur, style_dim=int(style_dim), dropout=float(dropout))
+                for _ in range(d)
+            ]
         )
 
         self.up = nn.Sequential(
@@ -107,7 +110,9 @@ class UGATITGenerator(nn.Module):
             nn.Conv2d(w, c_in, kernel_size=3, padding=1),
         )
 
-    def forward(self, x: torch.Tensor, style_code: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor, style_code: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         feat = self.down(x.to(torch.float32))
         attn_map = torch.sigmoid(self.attn(feat))
         feat = feat * (1.0 + attn_map)
@@ -198,4 +203,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["attn_map"].mean()
     loss.backward()
     print("ok")
-

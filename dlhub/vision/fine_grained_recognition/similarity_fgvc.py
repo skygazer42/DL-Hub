@@ -40,4 +40,3 @@ def build_similarity_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_similarity_fgvc_fgvc_classifier, "similarity_fgvc_tiny")
-

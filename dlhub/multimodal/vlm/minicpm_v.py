@@ -41,4 +41,3 @@ def build_minicpm_v_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_minicpm_v_vlm, "minicpm_v_tiny")
-

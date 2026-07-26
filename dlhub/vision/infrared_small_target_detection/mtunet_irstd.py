@@ -30,4 +30,3 @@ def build_mtunet_irstd_irstd_detector(
 
 if __name__ == "__main__":
     smoke_test_irstd_detector(build_mtunet_irstd_irstd_detector, "mtunet_irstd_tiny")
-

@@ -59,13 +59,21 @@ class FaRLParseFaceParser(nn.Module):
         _, c2, c3 = self.encoder(image)
         b, c, h, w = c3.shape
         tokens = c3.flatten(2).transpose(1, 2)
-        prompt = self.prompt_tokens.to(device=c3.device, dtype=c3.dtype).unsqueeze(0).expand(int(b), -1, -1)
+        prompt = (
+            self.prompt_tokens.to(device=c3.device, dtype=c3.dtype)
+            .unsqueeze(0)
+            .expand(int(b), -1, -1)
+        )
         attn = torch.softmax(
             torch.einsum("bnd,bkd->bnk", self.feat_proj(tokens), self.token_proj(prompt))
             / math.sqrt(max(1, int(c))),
             dim=-1,
         )
-        prompt_ctx = torch.einsum("bnk,bkd->bnd", attn, prompt).transpose(1, 2).reshape(int(b), int(c), int(h), int(w))
+        prompt_ctx = (
+            torch.einsum("bnk,bkd->bnd", attn, prompt)
+            .transpose(1, 2)
+            .reshape(int(b), int(c), int(h), int(w))
+        )
         gate = self.mm_gate(torch.cat([c3, prompt_ctx], dim=1))
         fused = torch.cat(
             [

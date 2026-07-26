@@ -346,7 +346,9 @@ TOPIC_COVERAGE: tuple[TopicRecord, ...] = (
         "Mamba",
         ("mamba",),
         (
-            _artifact("dlhub/vision/backbones/mambavision.py", "dlhub.vision.backbones.mambavision"),
+            _artifact(
+                "dlhub/vision/backbones/mambavision.py", "dlhub.vision.backbones.mambavision"
+            ),
             _artifact("dlhub/vision/backbones/vmamba.py", "dlhub.vision.backbones.vmamba"),
         ),
     ),
@@ -389,7 +391,9 @@ TOPIC_COVERAGE: tuple[TopicRecord, ...] = (
     _vision("显著性目标检测", "saliency_detection"),
     _vision("自动驾驶", "lane_detection"),
     _vision("人群密度估计", "crowd_counting"),
-    TopicRecord("NLP", ("自然语言处理",), (_artifact("dlhub/nlp/local_zoo.py", "dlhub.nlp.local_zoo"),)),
+    TopicRecord(
+        "NLP", ("自然语言处理",), (_artifact("dlhub/nlp/local_zoo.py", "dlhub.nlp.local_zoo"),)
+    ),
     _framework("PyTorch"),
     _vision("人脸", "face_detection"),
     _vision_zoo("车道线检测", "lane_detection"),
@@ -408,7 +412,11 @@ TOPIC_COVERAGE: tuple[TopicRecord, ...] = (
     _vision("边缘检测", "edge_detection"),
     _vision("场景文本检测", "scene_text_spotting"),
     _vision("视频实例分割", "video_instance_segmentation"),
-    TopicRecord("3D点云", ("点云",), (_artifact("dlhub/pointcloud/local_zoo.py", "dlhub.pointcloud.local_zoo"),)),
+    TopicRecord(
+        "3D点云",
+        ("点云",),
+        (_artifact("dlhub/pointcloud/local_zoo.py", "dlhub.pointcloud.local_zoo"),),
+    ),
     _method("模型压缩"),
     _vision("人脸对齐", "face_alignment"),
     _vision("去噪", "denoising"),
@@ -417,7 +425,11 @@ TOPIC_COVERAGE: tuple[TopicRecord, ...] = (
     _framework("OpenCV"),
     _vision("场景文本识别", "scene_text_spotting"),
     _vision_zoo("去雨", "image_deraining"),
-    TopicRecord("机器学习", ("ML",), (_artifact("ml_algorithms/python/__init__.py", "ml_algorithms.python"),)),
+    TopicRecord(
+        "机器学习",
+        ("ML",),
+        (_artifact("ml_algorithms/python/__init__.py", "ml_algorithms.python"),),
+    ),
     _vision_zoo("风格迁移", "style_transfer"),
     _vision_zoo("视频目标检测", "video_object_detection"),
     _vision("去模糊", "deblurring"),
@@ -468,13 +480,22 @@ TOPIC_COVERAGE: tuple[TopicRecord, ...] = (
     TopicRecord(
         "轻量级Transformer",
         (),
-        (_artifact("dlhub/vision/backbones/transformers.py", "dlhub.vision.backbones.transformers"),),
+        (
+            _artifact(
+                "dlhub/vision/backbones/transformers.py", "dlhub.vision.backbones.transformers"
+            ),
+        ),
     ),
     _pointcloud("点云Transformer", "segmentation3d"),
     TopicRecord(
         "Transformer可解释性",
         (),
-        (_artifact("dlhub/nlp/algorithms/_transformer_core.py", "dlhub.nlp.algorithms._transformer_core"),),
+        (
+            _artifact(
+                "dlhub/nlp/algorithms/_transformer_core.py",
+                "dlhub.nlp.algorithms._transformer_core",
+            ),
+        ),
     ),
     _vision("医学Transformer", "medical_segmentation"),
     _pointcloud("自监督Transformer", "selfsupervised"),
@@ -489,12 +510,24 @@ TOPIC_COVERAGE: tuple[TopicRecord, ...] = (
     _vision("自监督单目深度估计", "depth_estimation"),
     _pointcloud("自监督", "selfsupervised"),
     _pointcloud("自监督学习", "selfsupervised"),
-    TopicRecord("无监督", ("unsupervised",), (_artifact("ml_algorithms/python/clustering.py", "ml_algorithms.python.clustering"),)),
-    TopicRecord("无监督学习", ("unsupervised learning",), (_artifact("ml_algorithms/python/clustering.py", "ml_algorithms.python.clustering"),)),
+    TopicRecord(
+        "无监督",
+        ("unsupervised",),
+        (_artifact("ml_algorithms/python/clustering.py", "ml_algorithms.python.clustering"),),
+    ),
+    TopicRecord(
+        "无监督学习",
+        ("unsupervised learning",),
+        (_artifact("ml_algorithms/python/clustering.py", "ml_algorithms.python.clustering"),),
+    ),
     _vision_zoo("视频稳像", "video_stabilization"),
     _vision_zoo("布局生成", "layout_generation"),
     _vision_zoo("图像合成", "image_synthesis"),
-    TopicRecord("联邦学习", ("Federated Learning",), (_artifact("dlhub/federated_zoo.py", "dlhub.federated_zoo"),)),
+    TopicRecord(
+        "联邦学习",
+        ("Federated Learning",),
+        (_artifact("dlhub/federated_zoo.py", "dlhub.federated_zoo"),),
+    ),
     _vision_zoo("视频插帧", "video_frame_interpolation"),
     _vision("反光去除", "reflection_removal"),
     _vision("图像匹配", "image_matching"),
@@ -532,14 +565,18 @@ def iter_topic_records() -> tuple[TopicRecord, ...]:
     """Return records in the same order as the requested topic list."""
 
     by_key = _records_by_key()
-    return tuple(by_key[_normalize(topic)] for topic in REQUESTED_TOPICS if _normalize(topic) in by_key)
+    return tuple(
+        by_key[_normalize(topic)] for topic in REQUESTED_TOPICS if _normalize(topic) in by_key
+    )
 
 
 def describe_topic(topic: str) -> TopicRecord:
     key = _normalize(topic)
     record = _records_by_key().get(key)
     if record is None:
-        raise KeyError(f"Unknown topic: {topic!r}. Add it to TOPIC_COVERAGE before claiming coverage.")
+        raise KeyError(
+            f"Unknown topic: {topic!r}. Add it to TOPIC_COVERAGE before claiming coverage."
+        )
     return record
 
 

@@ -10,7 +10,11 @@ _VARIANTS = {
 
 
 def build_av_separation_audio_visual_model(
-    *, in_channels: int, variant: str = "av_separation_small", width_mult: float = 1.0, audio_bins: int = 32
+    *,
+    in_channels: int,
+    variant: str = "av_separation_small",
+    width_mult: float = 1.0,
+    audio_bins: int = 32,
 ):
     return build_toy_audio_visual_model(
         family="av_separation",

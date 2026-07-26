@@ -40,6 +40,4 @@ def build_bernoulli_mixture_track_tracker(
 
 
 if __name__ == "__main__":
-    smoke_test_tracker(
-        build_bernoulli_mixture_track_tracker, "bernoulli_mixture_track_tiny"
-    )
+    smoke_test_tracker(build_bernoulli_mixture_track_tracker, "bernoulli_mixture_track_tiny")

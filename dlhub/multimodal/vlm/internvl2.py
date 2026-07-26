@@ -41,4 +41,3 @@ def build_internvl2_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_internvl2_vlm, "internvl2_tiny")
-

@@ -10,7 +10,11 @@ _VARIANTS = {
 
 
 def build_av_caption_bridge_audio_visual_model(
-    *, in_channels: int, variant: str = "av_caption_bridge_small", width_mult: float = 1.0, audio_bins: int = 32
+    *,
+    in_channels: int,
+    variant: str = "av_caption_bridge_small",
+    width_mult: float = 1.0,
+    audio_bins: int = 32,
 ):
     return build_toy_audio_visual_model(
         family="av_caption_bridge",
@@ -23,4 +27,6 @@ def build_av_caption_bridge_audio_visual_model(
 
 
 if __name__ == "__main__":
-    smoke_test_audio_visual_model(build_av_caption_bridge_audio_visual_model, "av_caption_bridge_tiny")
+    smoke_test_audio_visual_model(
+        build_av_caption_bridge_audio_visual_model, "av_caption_bridge_tiny"
+    )

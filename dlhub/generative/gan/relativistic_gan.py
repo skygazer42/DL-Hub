@@ -39,4 +39,3 @@ def build_relativistic_gan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_relativistic_gan_gan, "relativistic_gan_tiny")
-

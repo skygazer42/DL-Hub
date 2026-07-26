@@ -39,5 +39,3 @@ def build_diffusion_gan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_diffusion_gan_gan, "diffusion_gan_tiny")
-
-

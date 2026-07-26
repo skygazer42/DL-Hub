@@ -22,8 +22,7 @@ def build_masktrack_rcnn_tracker(
     cfg = _VARIANTS.get(str(variant).lower().strip())
     if cfg is None:
         raise ValueError(
-            "Unknown variant for masktrack_rcnn: "
-            f"{variant!r}. Available: {sorted(_VARIANTS)}"
+            "Unknown variant for masktrack_rcnn: " f"{variant!r}. Available: {sorted(_VARIANTS)}"
         )
 
     _ = seq_len, image_size

@@ -48,7 +48,7 @@ class ToyReIdentifier(nn.Module):
         width: int,
         depth: int,
         embed_dim: int,
-        pooling: str = 'avg',
+        pooling: str = "avg",
         part_branches: int = 0,
         dropout: float = 0.0,
     ) -> None:
@@ -64,14 +64,22 @@ class ToyReIdentifier(nn.Module):
         self.cls = nn.Linear(int(embed_dim), int(num_classes))
 
     def _pool(self, feat: torch.Tensor) -> torch.Tensor:
-        if self.pooling == 'max':
+        if self.pooling == "max":
             pooled = F.adaptive_max_pool2d(feat, (1, 1)).flatten(1)
-        elif self.pooling == 'gem':
-            pooled = F.adaptive_avg_pool2d(feat.clamp_min(1e-6).pow(3.0), (1, 1)).pow(1.0 / 3.0).flatten(1)
+        elif self.pooling == "gem":
+            pooled = (
+                F.adaptive_avg_pool2d(feat.clamp_min(1e-6).pow(3.0), (1, 1))
+                .pow(1.0 / 3.0)
+                .flatten(1)
+            )
         else:
             pooled = F.adaptive_avg_pool2d(feat, (1, 1)).flatten(1)
         if self.part_branches > 0:
-            parts = F.adaptive_avg_pool2d(feat, (self.part_branches, 1)).flatten(2).reshape(feat.shape[0], -1)
+            parts = (
+                F.adaptive_avg_pool2d(feat, (self.part_branches, 1))
+                .flatten(2)
+                .reshape(feat.shape[0], -1)
+            )
             pooled = torch.cat([pooled, parts], dim=1)
         return pooled
 
@@ -80,7 +88,7 @@ class ToyReIdentifier(nn.Module):
         pooled = self._pool(feat)
         embedding = F.normalize(self.proj(pooled), dim=1)
         logits = self.cls(embedding)
-        return {'embedding': embedding, 'logits': logits}
+        return {"embedding": embedding, "logits": logits}
 
 
 def build_toy_reidentifier(
@@ -92,18 +100,18 @@ def build_toy_reidentifier(
     variant: str,
     width_mult: float = 1.0,
     dropout: float = 0.0,
-    pooling: str = 'avg',
+    pooling: str = "avg",
     part_branches: int = 0,
 ) -> nn.Module:
     spec = variants[str(variant)]
-    width = max(8, int(int(spec['width']) * float(width_mult)))
-    embed = max(32, int(int(spec['embed']) * float(width_mult)))
+    width = max(8, int(int(spec["width"]) * float(width_mult)))
+    embed = max(32, int(int(spec["embed"]) * float(width_mult)))
     return ToyReIdentifier(
         family=str(family),
         in_channels=int(in_channels),
         num_classes=int(num_classes),
         width=width,
-        depth=int(spec['depth']),
+        depth=int(spec["depth"]),
         embed_dim=embed,
         pooling=str(pooling),
         part_branches=int(part_branches),
@@ -116,4 +124,4 @@ def smoke_test_reid(builder, variant: str) -> None:
     x = torch.randn(2, 3, 128, 64)
     out = model(x)
     print(variant, {k: tuple(v.shape) for k, v in out.items()})
-    print('ok')
+    print("ok")

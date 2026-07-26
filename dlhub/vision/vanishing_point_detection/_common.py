@@ -20,13 +20,9 @@ class TinyVPBlock(nn.Module):
         self.conv1 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
-        self.depthwise = nn.Conv2d(
-            int(channels), int(channels), 5, padding=2, groups=int(channels)
-        )
+        self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
         self.prompt = (
-            nn.Parameter(torch.zeros(1, int(channels), 1, 1))
-            if self.mode == "prompt"
-            else None
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -48,9 +44,7 @@ class TinyVPBlock(nn.Module):
 
 
 class TinyVPDetector(nn.Module):
-    def __init__(
-        self, *, family: str, mode: str, in_channels: int, width: int, depth: int
-    ) -> None:
+    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)

@@ -12,7 +12,10 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 def build_temporal_consistency_v2v_video_to_video(
-    *, in_channels: int = 3, variant: str = "temporal_consistency_v2v_small", width_mult: float = 1.0
+    *,
+    in_channels: int = 3,
+    variant: str = "temporal_consistency_v2v_small",
+    width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_video_to_video(
         family="temporal_consistency_v2v",
@@ -25,4 +28,6 @@ def build_temporal_consistency_v2v_video_to_video(
 
 
 if __name__ == "__main__":
-    smoke_test_video_to_video(build_temporal_consistency_v2v_video_to_video, "temporal_consistency_v2v_tiny")
+    smoke_test_video_to_video(
+        build_temporal_consistency_v2v_video_to_video, "temporal_consistency_v2v_tiny"
+    )

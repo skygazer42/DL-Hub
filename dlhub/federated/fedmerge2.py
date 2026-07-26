@@ -51,4 +51,3 @@ def build_fedmerge2_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedmerge2_strategy, "fedmerge2_tiny")
-

@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['direct_hand_pose', 'heatmap_hand_pose', 'anchor_hand_pose', 'graph_hand_pose', 'transformer_hand_pose', 'prompt_hand_pose', 'coarse_to_fine_hand_pose', 'multiview_hand_pose', 'uncertainty_hand_pose', 'mamba_hand_pose']
+_FAMILIES = [
+    "direct_hand_pose",
+    "heatmap_hand_pose",
+    "anchor_hand_pose",
+    "graph_hand_pose",
+    "transformer_hand_pose",
+    "prompt_hand_pose",
+    "coarse_to_fine_hand_pose",
+    "multiview_hand_pose",
+    "uncertainty_hand_pose",
+    "mamba_hand_pose",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'handpose', arch_id
+        return "handpose", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'hand_pose_estimation', 'hand_pose'}:
-        prefix = 'handpose'
-    if prefix not in {'handpose', "local"}:
+    if prefix in {"hand_pose_estimation", "hand_pose"}:
+        prefix = "handpose"
+    if prefix not in {"handpose", "local"}:
         raise ValueError(
             f"Unsupported hand pose estimation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

@@ -51,4 +51,3 @@ def build_fedcoop_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedcoop_strategy, "fedcoop_tiny")
-

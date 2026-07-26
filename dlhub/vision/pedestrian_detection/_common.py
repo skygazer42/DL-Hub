@@ -27,7 +27,9 @@ class TinyPedestrianBlock(nn.Module):
             padding=2,
             groups=int(channels),
         )
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -58,12 +60,19 @@ class TinyPedestrianBlock(nn.Module):
 
 
 class TinyPedestrianDetector(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, num_queries: int) -> None:
+    def __init__(
+        self, *, family: str, mode: str, in_channels: int, width: int, depth: int, num_queries: int
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), kernel_size=3, padding=1)
-        self.blocks = nn.ModuleList([TinyPedestrianBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [
+                TinyPedestrianBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
         self.query_embed = nn.Parameter(torch.randn(1, int(num_queries), int(width)) * 0.02)
         self.query_proj = nn.Linear(int(width), int(width))
         self.cls_head = nn.Linear(int(width), 1)
@@ -76,17 +85,29 @@ class TinyPedestrianDetector(nn.Module):
         for block in self.blocks:
             feat = block(feat)
         pooled = F.adaptive_avg_pool2d(feat, 1).flatten(1)
-        queries = self.query_embed.expand(image.shape[0], -1, -1) + self.query_proj(pooled).unsqueeze(1)
+        queries = self.query_embed.expand(image.shape[0], -1, -1) + self.query_proj(
+            pooled
+        ).unsqueeze(1)
         logits = self.cls_head(queries).squeeze(-1)
         boxes = torch.sigmoid(self.box_head(queries))
         quality = torch.sigmoid(self.quality_head(queries).squeeze(-1))
         return {"pred_logits": logits, "pred_boxes": boxes, "quality": quality}
 
 
-def build_toy_pedestrian_detector(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_pedestrian_detector(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])

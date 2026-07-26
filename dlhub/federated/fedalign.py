@@ -50,4 +50,3 @@ def build_fedalign_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedalign_strategy, "fedalign_tiny")
-

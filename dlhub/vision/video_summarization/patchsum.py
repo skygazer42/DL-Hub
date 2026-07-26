@@ -69,4 +69,3 @@ if __name__ == "__main__":
     loss = out["scores"].mean()
     loss.backward()
     print("ok")
-

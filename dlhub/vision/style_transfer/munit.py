@@ -11,6 +11,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "munit_base": {"width": 48, "depth": 4},
 }
 
+
 class MUNITStyleTransfer(nn.Module):
     def __init__(self, *, in_channels: int, width: int, depth: int, style_dim: int = 64) -> None:
         super().__init__()
@@ -18,7 +19,9 @@ class MUNITStyleTransfer(nn.Module):
         w = int(width)
         d = max(1, int(depth))
         self.enc_depth = max(1, d - 1)
-        self.content_encoder = TinyEncoder(in_channels=c, width=w, depth=self.enc_depth, dropout=0.0)
+        self.content_encoder = TinyEncoder(
+            in_channels=c, width=w, depth=self.enc_depth, dropout=0.0
+        )
         self.style_encoder = StyleCodeEncoder(
             in_channels=c, width=max(8, w // 2), style_dim=int(style_dim)
         )

@@ -37,4 +37,3 @@ def build_latent_consistency_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_latent_consistency_diffusion, "latent_consistency_tiny")
-

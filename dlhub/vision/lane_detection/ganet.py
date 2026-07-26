@@ -108,9 +108,7 @@ def build_ganet_lane_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_ganet_lane_detector(
-        in_channels=3, num_lanes=4, num_points=16, variant="ganet_tiny"
-    )
+    m = build_ganet_lane_detector(in_channels=3, num_lanes=4, num_points=16, variant="ganet_tiny")
     out = m(x)
     print("ganet_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

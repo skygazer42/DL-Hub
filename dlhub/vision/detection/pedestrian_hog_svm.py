@@ -158,9 +158,7 @@ def build_pedestrian_hog_svm_detector(
     _ = float(width_mult)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown HOG+SVM variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown HOG+SVM variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
     return HOGSVMDetector(
         num_classes=int(num_classes),
@@ -181,4 +179,3 @@ if __name__ == "__main__":
     loss = out["score_map"].mean() + out["boxes"].mean()
     loss.backward()
     print("ok")
-

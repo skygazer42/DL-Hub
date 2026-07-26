@@ -39,4 +39,3 @@ def build_hingegan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_hingegan_gan, "hingegan_tiny")
-

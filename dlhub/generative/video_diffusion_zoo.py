@@ -88,9 +88,7 @@ def _make_lazy_builder(module_name: str, *, builder_name: str, variant: str) -> 
         mod = importlib.import_module(f"dlhub.generative.video_diffusion.{module_name}")
         fn = getattr(mod, builder_name, None)
         if fn is None:
-            raise RuntimeError(
-                f"Video diffusion module {module_name!r} missing {builder_name}()"
-            )
+            raise RuntimeError(f"Video diffusion module {module_name!r} missing {builder_name}()")
 
         kwargs: dict[str, object] = {
             "in_channels": int(cfg.in_channels),
@@ -170,16 +168,14 @@ def build_local_model(
     if prefix in {"vd", "video", "video_diffusion"}:
         prefix = "vdiff"
     if prefix not in {"vdiff", "local"}:
-        raise ValueError(
-            f"Unsupported video diffusion prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+        raise ValueError(f"Unsupported video diffusion prefix: {prefix!r} (arch_id={arch_id!r})")
 
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(
             "Unknown video diffusion arch: "
-            f"{arch_id!r}. Tip: run `python -c \"from dlhub.generative.video_diffusion_zoo "
-            "import list_local_arches; print(list_local_arches())\"`."
+            f'{arch_id!r}. Tip: run `python -c "from dlhub.generative.video_diffusion_zoo '
+            'import list_local_arches; print(list_local_arches())"`.'
         )
     return builder(
         BuildConfig(

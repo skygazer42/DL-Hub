@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "folding_upsample_base": {"width": 48, "depth": 3, "up_factor": 4},
 }
 
-def build_folding_upsample_upsampler(*, in_channels: int, variant: str = "folding_upsample_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_upsampler(family="folding_upsample", mode="folding", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_folding_upsample_upsampler(
+    *, in_channels: int, variant: str = "folding_upsample_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_upsampler(
+        family="folding_upsample",
+        mode="folding",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_upsampler(build_folding_upsample_upsampler, "folding_upsample_tiny")

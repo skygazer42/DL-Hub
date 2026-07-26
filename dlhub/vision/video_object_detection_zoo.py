@@ -76,7 +76,9 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"video_det", "viddet"}:
         prefix = "vdet"
     if prefix not in {"vdet", "local"}:
-        raise ValueError(f"Unsupported video object detection prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported video object detection prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

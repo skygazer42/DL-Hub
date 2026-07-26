@@ -63,10 +63,11 @@ def build_memorygraph_sum_video_summarizer(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 8, 3, 32, 32)
-    m = build_memorygraph_sum_video_summarizer(in_channels=3, variant="memorygraph_sum_tiny", width_mult=0.5)
+    m = build_memorygraph_sum_video_summarizer(
+        in_channels=3, variant="memorygraph_sum_tiny", width_mult=0.5
+    )
     out = m(x)
     print("memorygraph_sum_tiny", tuple(out["scores"].shape), tuple(out["summary_mask"].shape))
     loss = out["scores"].mean()
     loss.backward()
     print("ok")
-

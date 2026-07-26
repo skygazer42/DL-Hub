@@ -39,5 +39,3 @@ def build_attentiongan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_attentiongan_gan, "attentiongan_tiny")
-
-

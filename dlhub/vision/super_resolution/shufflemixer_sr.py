@@ -47,7 +47,9 @@ def build_shufflemixer_sr_super_resolver(
 
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown ShufflemixerSR variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown ShufflemixerSR variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     width = max(8, int(spec["width"] * float(width_mult)))
     bottleneck = max(4, width // 2)
@@ -64,4 +66,3 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 16, 16)
     y = m(x)
     print("shufflemixer_sr_tiny", tuple(y["sr"].shape))
-

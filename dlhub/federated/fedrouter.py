@@ -51,4 +51,3 @@ def build_fedrouter_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedrouter_strategy, "fedrouter_tiny")
-

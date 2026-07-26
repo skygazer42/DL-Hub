@@ -44,8 +44,16 @@ class A2SummVideoSummarizer(nn.Module):
     def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(video)
         b, t, d = feat.shape
-        audio = self.audio_prompt.to(device=feat.device, dtype=feat.dtype).unsqueeze(0).expand(int(b), -1, -1)
-        text = self.text_prompt.to(device=feat.device, dtype=feat.dtype).unsqueeze(0).expand(int(b), -1, -1)
+        audio = (
+            self.audio_prompt.to(device=feat.device, dtype=feat.dtype)
+            .unsqueeze(0)
+            .expand(int(b), -1, -1)
+        )
+        text = (
+            self.text_prompt.to(device=feat.device, dtype=feat.dtype)
+            .unsqueeze(0)
+            .expand(int(b), -1, -1)
+        )
 
         frame_key = self.frame_proj(feat)
         audio_key = self.audio_proj(audio)

@@ -50,4 +50,3 @@ def build_fedcluster_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedcluster_strategy, "fedcluster_tiny")
-

@@ -41,4 +41,3 @@ def build_stem_vl_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_stem_vl_vlm, "stem_vl_tiny")
-

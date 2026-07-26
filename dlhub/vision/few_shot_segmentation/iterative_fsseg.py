@@ -29,7 +29,4 @@ def build_iterative_fsseg_few_shot_segmentor(
 
 
 if __name__ == "__main__":
-    smoke_test_few_shot_segmentor(
-        build_iterative_fsseg_few_shot_segmentor, "iterative_fsseg_tiny"
-    )
-
+    smoke_test_few_shot_segmentor(build_iterative_fsseg_few_shot_segmentor, "iterative_fsseg_tiny")

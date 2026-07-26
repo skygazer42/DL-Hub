@@ -19,9 +19,7 @@ def _check_detections(detections: torch.Tensor | None, *, batch_size: int, seq_l
     if not isinstance(detections, torch.Tensor):
         raise TypeError(f"detections must be torch.Tensor, got {type(detections).__name__}")
     if detections.ndim != 4 or detections.shape[-1] != 4:
-        raise ValueError(
-            f"detections must have shape (B, T, N, 4), got {tuple(detections.shape)}"
-        )
+        raise ValueError(f"detections must have shape (B, T, N, 4), got {tuple(detections.shape)}")
     if int(detections.shape[0]) != int(batch_size) or int(detections.shape[1]) != int(seq_len):
         raise ValueError(
             "detections batch/temporal dims must match video "

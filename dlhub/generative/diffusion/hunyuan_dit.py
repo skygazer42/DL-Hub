@@ -37,4 +37,3 @@ def build_hunyuan_dit_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_hunyuan_dit_diffusion, "hunyuan_dit_tiny")
-

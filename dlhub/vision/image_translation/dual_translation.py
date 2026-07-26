@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_translator, smoke_test_translator
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'dual_translation_tiny': {'width': 24, 'depth': 1}, 'dual_translation_small': {'width': 36, 'depth': 2}, 'dual_translation_base': {'width': 48, 'depth': 3}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "dual_translation_tiny": {"width": 24, "depth": 1},
+    "dual_translation_small": {"width": 36, "depth": 2},
+    "dual_translation_base": {"width": 48, "depth": 3},
+}
 
 
 def build_dual_translation_translator(
     *,
     in_channels: int,
-    variant: str = 'dual_translation_small',
+    variant: str = "dual_translation_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_translator(
-        family='dual_translation',
-        mode='dual',
+        family="dual_translation",
+        mode="dual",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,4 @@ def build_dual_translation_translator(
 
 
 if __name__ == "__main__":
-    smoke_test_translator(build_dual_translation_translator, 'dual_translation_tiny')
+    smoke_test_translator(build_dual_translation_translator, "dual_translation_tiny")

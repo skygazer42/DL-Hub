@@ -238,5 +238,3 @@ if __name__ == "__main__":
     loss.backward()
     m.update_target(ema_decay=0.99)
     print("ok", float(loss.item()))
-
-

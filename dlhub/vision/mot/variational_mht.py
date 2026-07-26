@@ -22,8 +22,7 @@ def build_variational_mht_tracker(
     cfg = _VARIANTS.get(str(variant).lower().strip())
     if cfg is None:
         raise ValueError(
-            "Unknown variant for variational_mht: "
-            f"{variant!r}. Available: {sorted(_VARIANTS)}"
+            "Unknown variant for variational_mht: " f"{variant!r}. Available: {sorted(_VARIANTS)}"
         )
 
     _ = seq_len, image_size

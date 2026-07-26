@@ -24,7 +24,9 @@ class Pix2PixStyleTransfer(nn.Module):
             dropout=float(dropout),
         )
 
-    def forward(self, content: torch.Tensor, style: torch.Tensor | None = None) -> dict[str, torch.Tensor]:
+    def forward(
+        self, content: torch.Tensor, style: torch.Tensor | None = None
+    ) -> dict[str, torch.Tensor]:
         fake = self.generator(content)
         fake_logits = self.discriminator(
             torch.cat([content.to(torch.float32), fake.to(torch.float32)], dim=1)

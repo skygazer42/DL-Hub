@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['direct_face_landmark', 'heatmap_face_landmark', 'graph_face_landmark', 'anchor_face_landmark', 'transformer_face_landmark', 'prompt_face_landmark', 'multiview_face_landmark', 'coarse_face_landmark', 'skeleton_face_landmark', 'mamba_face_landmark']
+_FAMILIES = [
+    "direct_face_landmark",
+    "heatmap_face_landmark",
+    "graph_face_landmark",
+    "anchor_face_landmark",
+    "transformer_face_landmark",
+    "prompt_face_landmark",
+    "multiview_face_landmark",
+    "coarse_face_landmark",
+    "skeleton_face_landmark",
+    "mamba_face_landmark",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'facelm', arch_id
+        return "facelm", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'face_landmark_detection', 'face_landmark'}:
-        prefix = 'facelm'
-    if prefix not in {'facelm', "local"}:
+    if prefix in {"face_landmark_detection", "face_landmark"}:
+        prefix = "facelm"
+    if prefix not in {"facelm", "local"}:
         raise ValueError(
             f"Unsupported face landmark detection prefix: {prefix!r} (arch_id={arch_id!r})"
         )

@@ -94,4 +94,3 @@ if __name__ == "__main__":
     loss = out["scores"].mean() + out["features"].mean()
     loss.backward()
     print("ok")
-

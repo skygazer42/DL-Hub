@@ -68,7 +68,9 @@ class ToyTextToVideo(nn.Module):
         batch = int(batch_size)
         prompts = _normalize_prompts(prompt, batch_size=batch)
         prompt_feat = _prompt_features(prompts, device=dev)
-        time_feat = torch.linspace(0.0, 1.0, steps=batch, device=dev, dtype=torch.float32).unsqueeze(1)
+        time_feat = torch.linspace(
+            0.0, 1.0, steps=batch, device=dev, dtype=torch.float32
+        ).unsqueeze(1)
         time_feat = time_feat.expand(batch, self.prompt_proj[0].out_features)
         fused = self.backbone(torch.cat([self.prompt_proj(prompt_feat), time_feat], dim=1))
         seed = self.seed_head(fused).view(batch, self.in_channels, 8, 8)

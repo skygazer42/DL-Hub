@@ -65,7 +65,9 @@ class GroupProtoNet(nn.Module):
         proto_context = torch.einsum("btp,bpc->btc", bridge, proto)
         proto_context = proto_context.unsqueeze(-1).unsqueeze(-1).expand_as(g3)
 
-        refined = self.refine(torch.cat([flatten_group(fused), flatten_group(proto_context)], dim=1))
+        refined = self.refine(
+            torch.cat([flatten_group(fused), flatten_group(proto_context)], dim=1)
+        )
         refined = unflatten_group(refined, batch=b, set_size=t)
         logits = self.head(refined, out_hw=(h, w))
         masks = logits_to_masks(logits)
@@ -91,7 +93,9 @@ def build_group_proto_net_co_segmentor(
     del set_size, image_size
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Group-Proto-Net variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Group-Proto-Net variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return GroupProtoNet(

@@ -32,4 +32,3 @@ if __name__ == "__main__":
         builder=build_pedestrian_ppyoloe_detector,
         variant="pedestrian_ppyoloe",
     )
-

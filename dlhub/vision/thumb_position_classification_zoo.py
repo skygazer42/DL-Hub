@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cnn_thumb_position', 'region_thumb_position', 'attention_thumb_position', 'skeleton_thumb_position', 'transformer_thumb_position', 'prompt_thumb_position', 'contrastive_thumb_position', 'graph_thumb_position', 'efficient_thumb_position', 'mamba_thumb_position']
+_FAMILIES = [
+    "cnn_thumb_position",
+    "region_thumb_position",
+    "attention_thumb_position",
+    "skeleton_thumb_position",
+    "transformer_thumb_position",
+    "prompt_thumb_position",
+    "contrastive_thumb_position",
+    "graph_thumb_position",
+    "efficient_thumb_position",
+    "mamba_thumb_position",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'thumbpos', arch_id
+        return "thumbpos", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -41,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.thumb_position_classification.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.thumb_position_classification.{family}"
+                )
                 fn = getattr(module, f"build_{family}_thumb_position_classifier")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -62,9 +75,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'thumb_position_classification', 'thumb_position'}:
-        prefix = 'thumbpos'
-    if prefix not in {'thumbpos', "local"}:
+    if prefix in {"thumb_position_classification", "thumb_position"}:
+        prefix = "thumbpos"
+    if prefix not in {"thumbpos", "local"}:
         raise ValueError(
             f"Unsupported thumb position classification prefix: {prefix!r} (arch_id={arch_id!r})"
         )

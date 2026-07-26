@@ -113,9 +113,7 @@ def build_bevlanedet_lane_detector(
     del num_lanes, image_size, num_rows, grid_size, num_anchors
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown BEVLaneDet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown BEVLaneDet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
     stem = scaled_channels(int(spec["stem"]), float(width_mult))
     hidden = scaled_channels(int(spec["hidden"]), float(width_mult))

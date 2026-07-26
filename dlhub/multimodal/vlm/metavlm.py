@@ -41,4 +41,3 @@ def build_metavlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_metavlm_vlm, "metavlm_tiny")
-

@@ -51,12 +51,8 @@ def _registry() -> dict[str, Builder]:
         for size in _SIZES:
             variant = f"{family}_{size}"
 
-            def _builder(
-                cfg: BuildConfig, family: str = family, variant: str = variant
-            ):
-                module = importlib.import_module(
-                    f"dlhub.vision.few_shot_segmentation.{family}"
-                )
+            def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
+                module = importlib.import_module(f"dlhub.vision.few_shot_segmentation.{family}")
                 fn = getattr(module, f"build_{family}_few_shot_segmentor")
                 return fn(
                     in_channels=int(cfg.in_channels),

@@ -10,7 +10,11 @@ _VARIANTS = {
 
 
 def build_transformer_av_audio_visual_model(
-    *, in_channels: int, variant: str = "transformer_av_small", width_mult: float = 1.0, audio_bins: int = 32
+    *,
+    in_channels: int,
+    variant: str = "transformer_av_small",
+    width_mult: float = 1.0,
+    audio_bins: int = 32,
 ):
     return build_toy_audio_visual_model(
         family="transformer_av",

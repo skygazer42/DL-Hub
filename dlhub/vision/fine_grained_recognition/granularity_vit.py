@@ -40,4 +40,3 @@ def build_granularity_vit_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_granularity_vit_fgvc_classifier, "granularity_vit_tiny")
-

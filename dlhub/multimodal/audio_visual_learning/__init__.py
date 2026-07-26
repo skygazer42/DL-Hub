@@ -5,6 +5,7 @@ Conventions:
 - Each family exposes `build_<family>_audio_visual_model(...)`.
 - Each family keeps `_VARIANTS` and a `__main__` smoke test.
 """
+
 from __future__ import annotations
 
 from importlib import import_module

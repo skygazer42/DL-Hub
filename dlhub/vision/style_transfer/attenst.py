@@ -35,7 +35,9 @@ class ContentAwareAdaIN(nn.Module):
         self.gate = nn.Conv2d(c, c, kernel_size=1)
         self.eps = float(eps)
 
-    def forward(self, content_feat: torch.Tensor, style_feat: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, content_feat: torch.Tensor, style_feat: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         c_mean, c_std = channel_mean_std(content_feat, eps=float(self.eps))
         s_mean, s_std = channel_mean_std(style_feat, eps=float(self.eps))
         gate = torch.sigmoid(self.gate(content_feat).mean(dim=(2, 3), keepdim=True))
@@ -53,7 +55,9 @@ class _AttenSTBlock(nn.Module):
             raise ValueError("dim must be > 0")
         self.norm_q = nn.LayerNorm(d)
         self.norm_kv = nn.LayerNorm(d)
-        self.attn = nn.MultiheadAttention(d, int(num_heads), dropout=float(dropout), batch_first=True)
+        self.attn = nn.MultiheadAttention(
+            d, int(num_heads), dropout=float(dropout), batch_first=True
+        )
         self.norm_ff = nn.LayerNorm(d)
         self.ff = nn.Sequential(
             nn.Linear(d, max(d, d * 2)),
@@ -83,12 +87,17 @@ class AttenSTDenoiser(nn.Module):
         c = int(channels)
         self.time = _TimeToChannels(c)
         self.blocks = nn.ModuleList(
-            [_AttenSTBlock(dim=c, num_heads=4, dropout=float(dropout)) for _ in range(max(1, int(num_layers)))]
+            [
+                _AttenSTBlock(dim=c, num_heads=4, dropout=float(dropout))
+                for _ in range(max(1, int(num_layers)))
+            ]
         )
         self.out = nn.Conv2d(c, c, kernel_size=1)
         self.cadain = ContentAwareAdaIN(c)
 
-    def forward(self, x: torch.Tensor, *, t: torch.Tensor, style_feat: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor, *, t: torch.Tensor, style_feat: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         if x.ndim != 4 or style_feat.ndim != 4:
             raise ValueError(
                 f"Expected x/style_feat shapes (B, C, H, W), got {tuple(x.shape)} and {tuple(style_feat.shape)}"
@@ -208,4 +217,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["gate_mean"]
     loss.backward()
     print("ok")
-

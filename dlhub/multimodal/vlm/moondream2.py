@@ -41,4 +41,3 @@ def build_moondream2_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_moondream2_vlm, "moondream2_tiny")
-

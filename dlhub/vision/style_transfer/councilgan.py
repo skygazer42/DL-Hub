@@ -64,9 +64,7 @@ def build_councilgan_style_transfer(
     _ = int(image_size)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown CouncilGAN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown CouncilGAN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return CouncilGANStyleTransfer(

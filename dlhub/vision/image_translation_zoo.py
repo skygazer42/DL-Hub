@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cycle_translation', 'pix2pix_translation', 'dual_translation', 'transformer_translation', 'prompt_translation', 'gatys_translation', 'adain_translation', 'wct_translation', 'ref_translation', 'mamba_translation']
+_FAMILIES = [
+    "cycle_translation",
+    "pix2pix_translation",
+    "dual_translation",
+    "transformer_translation",
+    "prompt_translation",
+    "gatys_translation",
+    "adain_translation",
+    "wct_translation",
+    "ref_translation",
+    "mamba_translation",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'imgtrans', arch_id
+        return "imgtrans", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,12 +73,10 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'image_translation', 'translation'}:
-        prefix = 'imgtrans'
-    if prefix not in {'imgtrans', "local"}:
-        raise ValueError(
-            f"Unsupported image translation prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+    if prefix in {"image_translation", "translation"}:
+        prefix = "imgtrans"
+    if prefix not in {"imgtrans", "local"}:
+        raise ValueError(f"Unsupported image translation prefix: {prefix!r} (arch_id={arch_id!r})")
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

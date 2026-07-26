@@ -167,4 +167,3 @@ if __name__ == "__main__":
     loss = out["score_map"].mean() + out["boxes"].mean()
     loss.backward()
     print("ok")
-

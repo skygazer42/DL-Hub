@@ -40,4 +40,3 @@ def build_partvit_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_partvit_fgvc_fgvc_classifier, "partvit_fgvc_tiny")
-

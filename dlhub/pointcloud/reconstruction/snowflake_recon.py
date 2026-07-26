@@ -145,10 +145,11 @@ def build_snowflake_recon_autoencoder(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 128, 3)
-    m = build_snowflake_recon_autoencoder(in_channels=3, num_points=128, variant="snowflake_recon_tiny")
+    m = build_snowflake_recon_autoencoder(
+        in_channels=3, num_points=128, variant="snowflake_recon_tiny"
+    )
     y = m(x)
     print("snowflake_recon_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

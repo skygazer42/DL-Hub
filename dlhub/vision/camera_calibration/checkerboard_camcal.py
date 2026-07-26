@@ -29,5 +29,6 @@ def build_checkerboard_camcal_camera_calibrator(
 
 
 if __name__ == "__main__":
-    smoke_test_camera_calibrator(build_checkerboard_camcal_camera_calibrator, "checkerboard_camcal_tiny")
-
+    smoke_test_camera_calibrator(
+        build_checkerboard_camcal_camera_calibrator, "checkerboard_camcal_tiny"
+    )

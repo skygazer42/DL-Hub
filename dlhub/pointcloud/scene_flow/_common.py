@@ -19,7 +19,9 @@ def _check_pair(
             f"Expected scene-flow inputs with shape (B, N, C), got {tuple(src.shape)} and {tuple(tgt.shape)}"
         )
     if src.shape != tgt.shape:
-        raise ValueError(f"Source/target point clouds must match shape, got {tuple(src.shape)} vs {tuple(tgt.shape)}")
+        raise ValueError(
+            f"Source/target point clouds must match shape, got {tuple(src.shape)} vs {tuple(tgt.shape)}"
+        )
     if src.shape[-1] != int(in_channels):
         raise ValueError(f"Expected {int(in_channels)} channels, got {int(src.shape[-1])}")
     return src, tgt

@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "pix2struct_doc_base": {"width": 48, "depth": 3},
 }
 
-def build_pix2struct_doc_document_vlm(*, in_channels: int, variant: str = "pix2struct_doc_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_document_vlm(family="pix2struct_doc", mode="pix2struct", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_pix2struct_doc_document_vlm(
+    *, in_channels: int, variant: str = "pix2struct_doc_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_document_vlm(
+        family="pix2struct_doc",
+        mode="pix2struct",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_document_vlm(build_pix2struct_doc_document_vlm, "pix2struct_doc_tiny")

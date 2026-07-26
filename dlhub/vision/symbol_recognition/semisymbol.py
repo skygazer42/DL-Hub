@@ -1,9 +1,25 @@
 from __future__ import annotations
 from ._common import build_toy_model, smoke_test_model
-_VARIANTS = {'semisymbol_tiny': {'width':24,'depth':1}, 'semisymbol_small': {'width':32,'depth':2}, 'semisymbol_base': {'width':48,'depth':3}}
 
-def build_semisymbol_symbol_recognizer(*, in_channels:int, variant:str='semisymbol_small', width_mult:float=1.0, **kwargs):
-    return build_toy_model(family='semisymbol', variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult), **kwargs)
+_VARIANTS = {
+    "semisymbol_tiny": {"width": 24, "depth": 1},
+    "semisymbol_small": {"width": 32, "depth": 2},
+    "semisymbol_base": {"width": 48, "depth": 3},
+}
 
-if __name__ == '__main__':
-    smoke_test_model(build_semisymbol_symbol_recognizer, 'semisymbol_tiny')
+
+def build_semisymbol_symbol_recognizer(
+    *, in_channels: int, variant: str = "semisymbol_small", width_mult: float = 1.0, **kwargs
+):
+    return build_toy_model(
+        family="semisymbol",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+        **kwargs,
+    )
+
+
+if __name__ == "__main__":
+    smoke_test_model(build_semisymbol_symbol_recognizer, "semisymbol_tiny")

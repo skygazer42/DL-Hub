@@ -178,4 +178,3 @@ def build_clippart_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_clippart_fgvc_fgvc_classifier, "clippart_fgvc_tiny")
-

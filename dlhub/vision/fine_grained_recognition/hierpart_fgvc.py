@@ -40,4 +40,3 @@ def build_hierpart_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_hierpart_fgvc_fgvc_classifier, "hierpart_fgvc_tiny")
-

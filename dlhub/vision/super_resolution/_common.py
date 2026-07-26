@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import math
 
 import torch
 import torch.nn.functional as F
@@ -16,9 +15,7 @@ def check_low_res_image(x: torch.Tensor) -> torch.Tensor:
     if int(x.shape[1]) <= 0:
         raise ValueError(f"Expected C > 0, got {int(x.shape[1])}")
     if int(x.shape[-2]) < 4 or int(x.shape[-1]) < 4:
-        raise ValueError(
-            f"Expected spatial dims >= 4, got {(int(x.shape[-2]), int(x.shape[-1]))}"
-        )
+        raise ValueError(f"Expected spatial dims >= 4, got {(int(x.shape[-2]), int(x.shape[-1]))}")
     return x
 
 
@@ -96,12 +93,17 @@ def bicubic_upsample(x: torch.Tensor, *, upscale_factor: int = 2) -> torch.Tenso
     return F.interpolate(x, scale_factor=float(scale), mode="bicubic", align_corners=False)
 
 
-def compute_psnr(pred: torch.Tensor, target: torch.Tensor, *, data_range: float = 1.0) -> torch.Tensor:
+def compute_psnr(
+    pred: torch.Tensor, target: torch.Tensor, *, data_range: float = 1.0
+) -> torch.Tensor:
     pred = pred.to(torch.float32)
     target = target.to(torch.float32)
     mse = F.mse_loss(pred, target)
     eps = torch.tensor(1e-8, dtype=pred.dtype, device=pred.device)
-    return 10.0 * torch.log10(torch.tensor(float(data_range * data_range), dtype=pred.dtype, device=pred.device) / torch.clamp(mse, min=float(eps)))
+    return 10.0 * torch.log10(
+        torch.tensor(float(data_range * data_range), dtype=pred.dtype, device=pred.device)
+        / torch.clamp(mse, min=float(eps))
+    )
 
 
 def num_parameters(module: nn.Module) -> int:

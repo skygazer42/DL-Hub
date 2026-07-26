@@ -32,4 +32,3 @@ if __name__ == "__main__":
         builder=build_pedestrian_yolov9_detector,
         variant="pedestrian_yolov9",
     )
-

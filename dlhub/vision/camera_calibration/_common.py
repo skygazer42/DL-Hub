@@ -21,7 +21,9 @@ class TinyCameraCalibrationBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -48,7 +50,10 @@ class TinyCameraCalibrator(nn.Module):
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
         self.blocks = nn.ModuleList(
-            [TinyCameraCalibrationBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))]
+            [
+                TinyCameraCalibrationBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
         )
         self.intrinsics_head = nn.Linear(int(width), 4)
         self.distortion_head = nn.Linear(int(width), 5)
@@ -72,7 +77,9 @@ class TinyCameraCalibrator(nn.Module):
         cx = torch.sigmoid(params[:, 2]) * w
         cy = torch.sigmoid(params[:, 3]) * h
 
-        intrinsics = torch.eye(3, device=image.device, dtype=image.dtype).unsqueeze(0).repeat(b, 1, 1)
+        intrinsics = (
+            torch.eye(3, device=image.device, dtype=image.dtype).unsqueeze(0).repeat(b, 1, 1)
+        )
         intrinsics[:, 0, 0] = fx
         intrinsics[:, 1, 1] = fy
         intrinsics[:, 0, 2] = cx
@@ -101,7 +108,9 @@ def build_toy_camera_calibrator(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
@@ -119,4 +128,3 @@ def smoke_test_camera_calibrator(builder, variant: str) -> None:
     out = model(torch.randn(2, 3, 64, 64))
     print(variant, tuple(out["intrinsics"].shape), tuple(out["distortion"].shape))
     print("ok")
-

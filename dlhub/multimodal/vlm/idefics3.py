@@ -41,4 +41,3 @@ def build_idefics3_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_idefics3_vlm, "idefics3_tiny")
-

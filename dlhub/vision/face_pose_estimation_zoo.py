@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['direct_face_pose', 'heatmap_face_pose', 'axis_angle_face_pose', 'transformer_face_pose', 'prompt_face_pose', 'mamba_face_pose', 'profile_face_pose', 'coarse_to_fine_face_pose', 'landmark_face_pose', 'uncertainty_face_pose']
+_FAMILIES = [
+    "direct_face_pose",
+    "heatmap_face_pose",
+    "axis_angle_face_pose",
+    "transformer_face_pose",
+    "prompt_face_pose",
+    "mamba_face_pose",
+    "profile_face_pose",
+    "coarse_to_fine_face_pose",
+    "landmark_face_pose",
+    "uncertainty_face_pose",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'facepose', arch_id
+        return "facepose", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'face_pose_estimation', 'face_pose'}:
-        prefix = 'facepose'
-    if prefix not in {'facepose', "local"}:
+    if prefix in {"face_pose_estimation", "face_pose"}:
+        prefix = "facepose"
+    if prefix not in {"facepose", "local"}:
         raise ValueError(
             f"Unsupported face pose estimation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

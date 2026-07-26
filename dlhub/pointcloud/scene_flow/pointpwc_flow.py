@@ -5,9 +5,27 @@ from torch import nn
 from ._common import build_scene_flow_estimator, smoke_test_scene_flow_estimator
 
 _VARIANTS: dict[str, dict[str, int | float]] = {
-    "pointpwc_flow_tiny": {"width": 48, "depth": 3, "hidden_mult": 2, "refine_steps": 2, "delta_scale": 0.9},
-    "pointpwc_flow_small": {"width": 72, "depth": 4, "hidden_mult": 2, "refine_steps": 3, "delta_scale": 0.95},
-    "pointpwc_flow_base": {"width": 96, "depth": 5, "hidden_mult": 2, "refine_steps": 3, "delta_scale": 1.0},
+    "pointpwc_flow_tiny": {
+        "width": 48,
+        "depth": 3,
+        "hidden_mult": 2,
+        "refine_steps": 2,
+        "delta_scale": 0.9,
+    },
+    "pointpwc_flow_small": {
+        "width": 72,
+        "depth": 4,
+        "hidden_mult": 2,
+        "refine_steps": 3,
+        "delta_scale": 0.95,
+    },
+    "pointpwc_flow_base": {
+        "width": 96,
+        "depth": 5,
+        "hidden_mult": 2,
+        "refine_steps": 3,
+        "delta_scale": 1.0,
+    },
 }
 
 

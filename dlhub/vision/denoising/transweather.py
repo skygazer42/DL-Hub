@@ -89,7 +89,10 @@ class TransWeather(nn.Module):
         self.in_channels = c_in
         self.stem = nn.Conv2d(c_in, d, kernel_size=3, padding=1, bias=True)
         self.encoder = nn.ModuleList(
-            [_WeatherBlock(d, num_heads=int(num_heads), mlp_ratio=float(mlp_ratio)) for _ in range(n)]
+            [
+                _WeatherBlock(d, num_heads=int(num_heads), mlp_ratio=float(mlp_ratio))
+                for _ in range(n)
+            ]
         )
         self.fuse = nn.Sequential(
             nn.Conv2d(d, d, kernel_size=3, padding=1, bias=True),

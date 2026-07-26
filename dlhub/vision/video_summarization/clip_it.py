@@ -40,7 +40,9 @@ def _prepare_text(
 
     cur_dim = int(x.shape[-1])
     if cur_dim < int(dim):
-        pad = torch.zeros(int(batch), int(x.shape[1]), int(dim) - cur_dim, device=device, dtype=dtype)
+        pad = torch.zeros(
+            int(batch), int(x.shape[1]), int(dim) - cur_dim, device=device, dtype=dtype
+        )
         x = torch.cat([x, pad], dim=-1)
     elif cur_dim > int(dim):
         x = x[..., : int(dim)]
@@ -109,7 +111,9 @@ class CLIPItVideoSummarizer(nn.Module):
         guided_text = torch.einsum("btl,bld->btd", cross_attn, text_ctx)
         alignment = (F.normalize(video_ctx, dim=-1) * F.normalize(guided_text, dim=-1)).sum(dim=-1)
 
-        raw_scores = self.head(torch.cat([video_ctx, text_global + guided_text], dim=-1)).squeeze(-1)
+        raw_scores = self.head(torch.cat([video_ctx, text_global + guided_text], dim=-1)).squeeze(
+            -1
+        )
         scores = torch.sigmoid(raw_scores + 0.30 * alignment)
         summary_mask = scores_to_mask(scores)
         return {

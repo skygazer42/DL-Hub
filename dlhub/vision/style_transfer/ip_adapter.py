@@ -188,9 +188,7 @@ def build_ip_adapter_style_transfer(
     _ = int(image_size)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown IP-Adapter variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown IP-Adapter variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return IPAdapterStyleTransfer(
@@ -209,11 +207,15 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 64, 64)
     s = torch.randn(2, 3, 64, 64)
     m = build_ip_adapter_style_transfer(
-        in_channels=3, variant="ip_adapter_tiny", width_mult=0.5, steps=3, strength=0.3, num_layers=1
+        in_channels=3,
+        variant="ip_adapter_tiny",
+        width_mult=0.5,
+        steps=3,
+        strength=0.3,
+        num_layers=1,
     )
     out = m(x, s)
     print("ip_adapter_tiny", tuple(out["stylized"].shape))
     loss = out["stylized"].mean()
     loss.backward()
     print("ok")
-

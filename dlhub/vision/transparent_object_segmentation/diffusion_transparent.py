@@ -27,4 +27,6 @@ def build_diffusion_transparent_transparent_segmenter(
 
 
 if __name__ == "__main__":
-    smoke_test_model(build_diffusion_transparent_transparent_segmenter, "diffusion_transparent_tiny")
+    smoke_test_model(
+        build_diffusion_transparent_transparent_segmenter, "diffusion_transparent_tiny"
+    )

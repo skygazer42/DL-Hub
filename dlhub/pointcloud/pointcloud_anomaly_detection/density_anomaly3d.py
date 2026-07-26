@@ -25,6 +25,4 @@ def build_density_anomaly3d_anomaly_detector(
 
 
 if __name__ == "__main__":
-    smoke_test_anomaly_detector(
-        build_density_anomaly3d_anomaly_detector, "density_anomaly3d_tiny"
-    )
+    smoke_test_anomaly_detector(build_density_anomaly3d_anomaly_detector, "density_anomaly3d_tiny")

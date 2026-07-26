@@ -39,5 +39,3 @@ def build_uvcgan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_uvcgan_gan, "uvcgan_tiny")
-
-

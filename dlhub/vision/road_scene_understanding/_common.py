@@ -20,8 +20,12 @@ class TinyRoadSceneBlock(nn.Module):
         self.conv1 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), kernel_size=1)
-        self.depthwise = nn.Conv2d(int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.depthwise = nn.Conv2d(
+            int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels)
+        )
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -50,12 +54,27 @@ class TinyRoadSceneBlock(nn.Module):
 
 
 class TinyRoadSceneModel(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, scene_classes: int = 6, object_classes: int = 8) -> None:
+    def __init__(
+        self,
+        *,
+        family: str,
+        mode: str,
+        in_channels: int,
+        width: int,
+        depth: int,
+        scene_classes: int = 6,
+        object_classes: int = 8,
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), kernel_size=3, padding=1)
-        self.blocks = nn.ModuleList([TinyRoadSceneBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [
+                TinyRoadSceneBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
         self.scene_head = nn.Linear(int(width), int(scene_classes))
         self.object_head = nn.Linear(int(width), int(object_classes))
         self.route_head = nn.Linear(int(width), 4)
@@ -76,14 +95,26 @@ class TinyRoadSceneModel(nn.Module):
         }
 
 
-def build_toy_road_scene_model(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_road_scene_model(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
-    return TinyRoadSceneModel(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth)
+    return TinyRoadSceneModel(
+        family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth
+    )
 
 
 def smoke_test_road_scene_model(builder, variant: str) -> None:

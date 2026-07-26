@@ -21,7 +21,9 @@ class TinyIRSTDBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -101,7 +103,9 @@ def build_toy_irstd_detector(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
@@ -121,4 +125,3 @@ def smoke_test_irstd_detector(builder, variant: str) -> None:
     out = model(torch.randn(2, 3, 64, 64))
     print(variant, tuple(out["target_map"].shape), tuple(out["pred_boxes"].shape))
     print("ok")
-

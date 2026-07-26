@@ -30,4 +30,3 @@ def build_prompt_camcal_camera_calibrator(
 
 if __name__ == "__main__":
     smoke_test_camera_calibrator(build_prompt_camcal_camera_calibrator, "prompt_camcal_tiny")
-

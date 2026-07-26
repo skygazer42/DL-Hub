@@ -11,8 +11,24 @@ _VARIANTS: dict[str, dict[str, int]] = {
 }
 
 
-def build_prompt_world_world_model(*, in_channels: int = 3, action_dim: int = 4, context_dim: int = 24, variant: str = "prompt_world_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_world_model(family="prompt_world", mode="prompt", variants=_VARIANTS, in_channels=int(in_channels), action_dim=int(action_dim), context_dim=int(context_dim), variant=str(variant), width_mult=float(width_mult))
+def build_prompt_world_world_model(
+    *,
+    in_channels: int = 3,
+    action_dim: int = 4,
+    context_dim: int = 24,
+    variant: str = "prompt_world_small",
+    width_mult: float = 1.0,
+) -> nn.Module:
+    return build_toy_world_model(
+        family="prompt_world",
+        mode="prompt",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        action_dim=int(action_dim),
+        context_dim=int(context_dim),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
 
 
 if __name__ == "__main__":

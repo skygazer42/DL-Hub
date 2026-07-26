@@ -137,6 +137,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean()
     loss.backward()
     print("ok")
-
-
-

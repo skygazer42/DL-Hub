@@ -30,7 +30,9 @@ class ToyAudioVisualModel(nn.Module):
         )
         self.fusion = nn.Sequential(nn.Linear(c * 2, c), nn.ReLU(inplace=True))
 
-    def forward(self, video: torch.Tensor, audio: torch.Tensor | None = None) -> dict[str, torch.Tensor]:
+    def forward(
+        self, video: torch.Tensor, audio: torch.Tensor | None = None
+    ) -> dict[str, torch.Tensor]:
         x = video.to(torch.float32)
         if x.ndim != 4:
             raise ValueError(f"Expected input shape (B,C,H,W), got {tuple(x.shape)}")
@@ -47,7 +49,11 @@ class ToyAudioVisualModel(nn.Module):
             )
         audio_tokens = self.audio_encoder(audio)
         joint = self.fusion(torch.cat([pooled, audio_tokens], dim=1))
-        return {"video_embedding": pooled, "audio_embedding": audio_tokens, "joint_embedding": joint}
+        return {
+            "video_embedding": pooled,
+            "audio_embedding": audio_tokens,
+            "joint_embedding": joint,
+        }
 
 
 def build_toy_audio_visual_model(

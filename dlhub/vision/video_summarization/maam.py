@@ -49,7 +49,9 @@ class MAAMVideoSummarizer(nn.Module):
         attn_feat, attn_map = self.temporal(feat, feat, feat, need_weights=True)
         annotator_logits = self.annotator_head(attn_feat)  # (B,T,A)
         annotator_scores = torch.sigmoid(annotator_logits).transpose(1, 2)  # (B,A,T)
-        annotator_weights = torch.softmax(self.annotator_mixer(attn_feat.mean(dim=1)), dim=-1)  # (B,A)
+        annotator_weights = torch.softmax(
+            self.annotator_mixer(attn_feat.mean(dim=1)), dim=-1
+        )  # (B,A)
         latent_logits = torch.einsum("ba,bat->bt", annotator_weights, annotator_scores)
         scores = latent_logits.clamp(0.0, 1.0)
         summary_mask = scores_to_mask(scores)

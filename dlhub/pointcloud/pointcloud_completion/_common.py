@@ -111,13 +111,18 @@ class ToyPointCloudCompleter(nn.Module):
             "text",
             "snowflake",
         }
-        self._uses_state_space = self.encoder_kind == "state_space" or self.decoder_kind == "state_space"
+        self._uses_state_space = (
+            self.encoder_kind == "state_space" or self.decoder_kind == "state_space"
+        )
 
         self.input_proj = nn.Linear(int(in_channels), self.width)
         self.pointnet = PointNetEncoder(int(in_channels), width=self.width, dropout=float(dropout))
 
         self.edge_layers = nn.ModuleList(
-            [EdgeConv(self.width, self.width, k=8, dropout=float(dropout)) for _ in range(self.depth)]
+            [
+                EdgeConv(self.width, self.width, k=8, dropout=float(dropout))
+                for _ in range(self.depth)
+            ]
         )
         self.pos_proj = (
             nn.Linear(3 * 2 * 8, self.width) if self._uses_transformer else nn.Identity()
@@ -211,7 +216,9 @@ class ToyPointCloudCompleter(nn.Module):
         if self.decoder_kind in {"tree", "snowflake"}:
             coarse_tokens = self.coarse_token(summary).view(b, self.coarse_points, self.width)
             repeats = math.ceil(self.num_output_points / self.coarse_points)
-            expanded = coarse_tokens.repeat_interleave(repeats, dim=1)[:, : self.num_output_points, :]
+            expanded = coarse_tokens.repeat_interleave(repeats, dim=1)[
+                :, : self.num_output_points, :
+            ]
             queries = queries + expanded
 
         if self.decoder_kind == "anchor":

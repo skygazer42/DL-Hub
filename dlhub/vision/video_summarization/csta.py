@@ -52,7 +52,9 @@ class CSTAVideoSummarizer(nn.Module):
         q = self.to_q(feat)
         k = self.to_k(feat)
         v = self.to_v(feat)
-        attn = torch.softmax(torch.matmul(q, k.transpose(1, 2)) / math.sqrt(max(1, int(q.shape[-1]))), dim=-1)
+        attn = torch.softmax(
+            torch.matmul(q, k.transpose(1, 2)) / math.sqrt(max(1, int(q.shape[-1]))), dim=-1
+        )
         global_feat = torch.matmul(attn, v)
         fused = torch.cat([local, global_feat], dim=-1)
         scores = torch.sigmoid(self.head(fused).squeeze(-1))
@@ -92,4 +94,3 @@ if __name__ == "__main__":
     loss = out["scores"].mean() + out["attention_map"].mean()
     loss.backward()
     print("ok")
-

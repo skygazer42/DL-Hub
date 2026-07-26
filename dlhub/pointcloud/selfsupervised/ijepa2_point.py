@@ -222,7 +222,9 @@ def build_ijepa2_point_pointmae(
 if __name__ == "__main__":
     torch.manual_seed(0)
     pts = torch.randn(4, 96, 3)
-    m = build_ijepa2_point_pointmae(in_channels=3, variant="ijepa2_point_pointmae_tiny", dropout=0.0)
+    m = build_ijepa2_point_pointmae(
+        in_channels=3, variant="ijepa2_point_pointmae_tiny", dropout=0.0
+    )
 
     with torch.no_grad():
         t = m.forward_teacher(pts)["patch"]
@@ -231,4 +233,3 @@ if __name__ == "__main__":
     loss.backward()
     m.momentum_update_teacher(ema_decay=0.99)
     print("ok", float(loss.item()))
-

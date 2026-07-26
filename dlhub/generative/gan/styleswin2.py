@@ -39,5 +39,3 @@ def build_styleswin2_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_styleswin2_gan, "styleswin2_tiny")
-
-

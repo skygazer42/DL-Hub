@@ -51,4 +51,3 @@ def build_fedala_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedala_strategy, "fedala_tiny")
-

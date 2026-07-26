@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['direct_finger_spread', 'heatmap_finger_spread', 'graph_finger_spread', 'transformer_finger_spread', 'prompt_finger_spread', 'coarse_to_fine_finger_spread', 'multiview_finger_spread', 'region_finger_spread', 'uncertainty_finger_spread', 'mamba_finger_spread']
+_FAMILIES = [
+    "direct_finger_spread",
+    "heatmap_finger_spread",
+    "graph_finger_spread",
+    "transformer_finger_spread",
+    "prompt_finger_spread",
+    "coarse_to_fine_finger_spread",
+    "multiview_finger_spread",
+    "region_finger_spread",
+    "uncertainty_finger_spread",
+    "mamba_finger_spread",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'fspread', arch_id
+        return "fspread", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'finger_spread_estimation', 'finger_spread'}:
-        prefix = 'fspread'
-    if prefix not in {'fspread', "local"}:
+    if prefix in {"finger_spread_estimation", "finger_spread"}:
+        prefix = "fspread"
+    if prefix not in {"fspread", "local"}:
         raise ValueError(
             f"Unsupported finger spread estimation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

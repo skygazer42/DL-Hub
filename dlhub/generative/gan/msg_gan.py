@@ -39,5 +39,3 @@ def build_msg_gan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_msg_gan_gan, "msg_gan_tiny")
-
-

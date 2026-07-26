@@ -51,4 +51,3 @@ def build_fedmoe_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedmoe_strategy, "fedmoe_tiny")
-

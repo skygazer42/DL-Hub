@@ -39,4 +39,3 @@ def build_projection_gan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_projection_gan_gan, "projection_gan_tiny")
-

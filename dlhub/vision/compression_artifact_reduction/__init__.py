@@ -1,4 +1,5 @@
 """Compression artifact reduction models (toy-first, pure torch)."""
+
 from __future__ import annotations
 
 from importlib import import_module
@@ -27,4 +28,3 @@ def __dir__() -> list[str]:
 
 
 __all__: list[str] = []
-

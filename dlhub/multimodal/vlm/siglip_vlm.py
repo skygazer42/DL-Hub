@@ -41,4 +41,3 @@ def build_siglip_vlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_siglip_vlm_vlm, "siglip_vlm_tiny")
-

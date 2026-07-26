@@ -101,9 +101,9 @@ class LGRLNSummarizer(nn.Module):
         relation_ctx = torch.matmul(relation_scores, feat)
         fused = torch.cat([feat, relation_ctx, guided], dim=-1)
         raw_scores = self.scorer(fused)
-        language_alignment = F.normalize(feat, dim=-1).mul(
-            F.normalize(lang_expand, dim=-1)
-        ).sum(dim=-1)
+        language_alignment = (
+            F.normalize(feat, dim=-1).mul(F.normalize(lang_expand, dim=-1)).sum(dim=-1)
+        )
         scores = torch.sigmoid(raw_scores + language_alignment)
         summary_mask = scores_to_mask(scores)
         return {

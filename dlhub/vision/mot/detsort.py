@@ -42,4 +42,3 @@ def build_detsort_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_detsort_tracker, "detsort_tiny")
-

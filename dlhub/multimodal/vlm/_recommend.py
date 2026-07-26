@@ -63,7 +63,17 @@ _PROFILES: dict[str, ProfileSpec] = {
         title="Instruction-Tuned VLM",
         summary="Prefer bridge-based multimodal LLMs and instruction-aware families.",
         preferred_groups=("multimodal_llm", "fusion_encoder_decoder"),
-        preferred_families=("qwen_vl", "llava", "cogvlm", "mplug_owl2", "instructblip", "minigpt4", "blip2", "kosmos2", "flamingo"),
+        preferred_families=(
+            "qwen_vl",
+            "llava",
+            "cogvlm",
+            "mplug_owl2",
+            "instructblip",
+            "minigpt4",
+            "blip2",
+            "kosmos2",
+            "flamingo",
+        ),
         modern_bias=0.35,
     ),
     "lightweight": ProfileSpec(
@@ -96,7 +106,9 @@ def _family_priority_bonus(spec: ProfileSpec, family: str) -> float:
     return max(0.0, 0.5 - 0.05 * float(rank))
 
 
-def _score_family(spec: ProfileSpec, *, family: str, group: str, year: int | None) -> tuple[float, str]:
+def _score_family(
+    spec: ProfileSpec, *, family: str, group: str, year: int | None
+) -> tuple[float, str]:
     score = 0.0
     reasons: list[str] = []
     if group in spec.preferred_groups:

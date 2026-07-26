@@ -145,11 +145,11 @@ def build_seedformer_recon_autoencoder(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 128, 3)
-    m = build_seedformer_recon_autoencoder(in_channels=3, num_points=128, variant="seedformer_recon_tiny")
+    m = build_seedformer_recon_autoencoder(
+        in_channels=3, num_points=128, variant="seedformer_recon_tiny"
+    )
     y = m(x)
     print("seedformer_recon_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-
-

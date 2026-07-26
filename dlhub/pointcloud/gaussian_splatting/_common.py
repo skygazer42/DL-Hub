@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import torch
@@ -21,16 +20,25 @@ class ToyGaussianSplatModel(nn.Module):
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(points)
         return {
-            'means': self.mean_head(feat),
-            'scales': self.scale_head(feat).sigmoid(),
-            'depth_hint': torch.full((points.shape[0], points.shape[1], 1), float(self.depth), device=points.device),
+            "means": self.mean_head(feat),
+            "scales": self.scale_head(feat).sigmoid(),
+            "depth_hint": torch.full(
+                (points.shape[0], points.shape[1], 1), float(self.depth), device=points.device
+            ),
         }
 
 
-def build_toy_splatter(*, family: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0):
+def build_toy_splatter(
+    *,
+    family: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+):
     spec = dict(variants[str(variant)])
-    width = max(16, int(spec['width'] * float(width_mult)))
-    depth = int(spec['depth'])
+    width = max(16, int(spec["width"] * float(width_mult)))
+    depth = int(spec["depth"])
     return ToyGaussianSplatModel(width=width, depth=depth, in_channels=int(in_channels))
 
 

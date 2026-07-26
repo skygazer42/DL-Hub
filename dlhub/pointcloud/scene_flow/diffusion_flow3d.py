@@ -5,9 +5,27 @@ from torch import nn
 from ._common import build_scene_flow_estimator, smoke_test_scene_flow_estimator
 
 _VARIANTS: dict[str, dict[str, int | float]] = {
-    "diffusion_flow3d_tiny": {"width": 64, "depth": 5, "hidden_mult": 3, "refine_steps": 3, "delta_scale": 0.8},
-    "diffusion_flow3d_small": {"width": 96, "depth": 6, "hidden_mult": 3, "refine_steps": 4, "delta_scale": 0.85},
-    "diffusion_flow3d_base": {"width": 128, "depth": 7, "hidden_mult": 3, "refine_steps": 5, "delta_scale": 0.9},
+    "diffusion_flow3d_tiny": {
+        "width": 64,
+        "depth": 5,
+        "hidden_mult": 3,
+        "refine_steps": 3,
+        "delta_scale": 0.8,
+    },
+    "diffusion_flow3d_small": {
+        "width": 96,
+        "depth": 6,
+        "hidden_mult": 3,
+        "refine_steps": 4,
+        "delta_scale": 0.85,
+    },
+    "diffusion_flow3d_base": {
+        "width": 128,
+        "depth": 7,
+        "hidden_mult": 3,
+        "refine_steps": 5,
+        "delta_scale": 0.9,
+    },
 }
 
 
@@ -29,4 +47,6 @@ def build_diffusion_flow3d_scene_flow_estimator(
 
 
 if __name__ == "__main__":
-    smoke_test_scene_flow_estimator(build_diffusion_flow3d_scene_flow_estimator, "diffusion_flow3d_tiny")
+    smoke_test_scene_flow_estimator(
+        build_diffusion_flow3d_scene_flow_estimator, "diffusion_flow3d_tiny"
+    )

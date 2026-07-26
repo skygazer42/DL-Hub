@@ -178,4 +178,3 @@ def build_proto_clip_fg_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_proto_clip_fg_fgvc_classifier, "proto_clip_fg_tiny")
-

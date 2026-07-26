@@ -42,4 +42,3 @@ def build_clipsort_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_clipsort_tracker, "clipsort_tiny")
-

@@ -8,8 +8,21 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "geodesic_corr3d_base": {"width": 48, "depth": 3},
 }
 
-def build_geodesic_corr3d_shape_correspondence_model(*, in_channels: int, variant: str = "geodesic_corr3d_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_shape_correspondence_model(family="geodesic_corr3d", mode="geodesic", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_geodesic_corr3d_shape_correspondence_model(
+    *, in_channels: int, variant: str = "geodesic_corr3d_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_shape_correspondence_model(
+        family="geodesic_corr3d",
+        mode="geodesic",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
-    smoke_test_shape_correspondence_model(build_geodesic_corr3d_shape_correspondence_model, "geodesic_corr3d_tiny")
+    smoke_test_shape_correspondence_model(
+        build_geodesic_corr3d_shape_correspondence_model, "geodesic_corr3d_tiny"
+    )

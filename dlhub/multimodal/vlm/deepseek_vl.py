@@ -41,4 +41,3 @@ def build_deepseek_vl_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_deepseek_vl_vlm, "deepseek_vl_tiny")
-

@@ -41,4 +41,3 @@ def build_docowl2_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_docowl2_vlm, "docowl2_tiny")
-

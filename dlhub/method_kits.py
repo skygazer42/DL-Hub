@@ -51,7 +51,9 @@ def make_magnitude_pruning_mask(weights: list[float], *, keep_fraction: float) -
         raise ValueError("keep_fraction must be in (0, 1]")
 
     keep = max(1, int(round(len(weights) * keep_fraction)))
-    order = sorted(range(len(weights)), key=lambda idx: (abs(float(weights[idx])), idx), reverse=True)
+    order = sorted(
+        range(len(weights)), key=lambda idx: (abs(float(weights[idx])), idx), reverse=True
+    )
     keep_idx = set(order[:keep])
     return [1 if idx in keep_idx else 0 for idx in range(len(weights))]
 
@@ -68,7 +70,9 @@ def distillation_temperature_loss(
     t = float(temperature)
     if t <= 0:
         raise ValueError("temperature must be positive")
-    return mean(((float(s) / t) - (float(v) / t)) ** 2 for s, v in zip(student_logits, teacher_logits))
+    return mean(
+        ((float(s) / t) - (float(v) / t)) ** 2 for s, v in zip(student_logits, teacher_logits)
+    )
 
 
 @dataclass(frozen=True)

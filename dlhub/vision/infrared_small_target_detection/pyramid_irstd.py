@@ -30,4 +30,3 @@ def build_pyramid_irstd_irstd_detector(
 
 if __name__ == "__main__":
     smoke_test_irstd_detector(build_pyramid_irstd_irstd_detector, "pyramid_irstd_tiny")
-

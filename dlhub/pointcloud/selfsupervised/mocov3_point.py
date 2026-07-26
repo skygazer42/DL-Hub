@@ -234,9 +234,27 @@ class MoCoV3PointNet(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "mocov3_point_pointnet_tiny": {"hidden": 32, "embed": 64, "proj": 64, "queue": 512, "dropout": 0.0},
-    "mocov3_point_pointnet_small": {"hidden": 64, "embed": 128, "proj": 128, "queue": 1024, "dropout": 0.0},
-    "mocov3_point_pointnet_base": {"hidden": 96, "embed": 192, "proj": 192, "queue": 2048, "dropout": 0.0},
+    "mocov3_point_pointnet_tiny": {
+        "hidden": 32,
+        "embed": 64,
+        "proj": 64,
+        "queue": 512,
+        "dropout": 0.0,
+    },
+    "mocov3_point_pointnet_small": {
+        "hidden": 64,
+        "embed": 128,
+        "proj": 128,
+        "queue": 1024,
+        "dropout": 0.0,
+    },
+    "mocov3_point_pointnet_base": {
+        "hidden": 96,
+        "embed": 192,
+        "proj": 192,
+        "queue": 2048,
+        "dropout": 0.0,
+    },
 }
 
 
@@ -277,4 +295,3 @@ if __name__ == "__main__":
     loss.backward()
     m.dequeue_and_enqueue(out["k"])
     print("ok", float(loss.item()))
-

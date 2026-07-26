@@ -27,7 +27,9 @@ class TinyUWIEBlock(nn.Module):
             padding=2,
             groups=int(channels),
         )
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor, aux: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -127,7 +129,9 @@ def build_toy_enhancer(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(12, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])

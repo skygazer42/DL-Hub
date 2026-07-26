@@ -41,4 +41,3 @@ def build_qwen2_vl_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_qwen2_vl_vlm, "qwen2_vl_tiny")
-

@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "prompt_nav_base": {"width": 48, "depth": 3},
 }
 
-def build_prompt_nav_navigator(*, in_channels: int, variant: str = "prompt_nav_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_navigator(family="prompt_nav", mode="prompt", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_prompt_nav_navigator(
+    *, in_channels: int, variant: str = "prompt_nav_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_navigator(
+        family="prompt_nav",
+        mode="prompt",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_navigator(build_prompt_nav_navigator, "prompt_nav_tiny")

@@ -51,4 +51,3 @@ def build_fedmd_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedmd_strategy, "fedmd_tiny")
-

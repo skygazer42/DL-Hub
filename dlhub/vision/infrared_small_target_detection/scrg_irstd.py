@@ -30,4 +30,3 @@ def build_scrg_irstd_irstd_detector(
 
 if __name__ == "__main__":
     smoke_test_irstd_detector(build_scrg_irstd_irstd_detector, "scrg_irstd_tiny")
-

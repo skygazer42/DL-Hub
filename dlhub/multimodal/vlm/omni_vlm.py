@@ -41,4 +41,3 @@ def build_omni_vlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_omni_vlm_vlm, "omni_vlm_tiny")
-

@@ -37,4 +37,3 @@ def build_omni_gen_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_omni_gen_diffusion, "omni_gen_tiny")
-

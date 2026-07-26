@@ -89,7 +89,9 @@ def build_seaformer_seg_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown SeaFormerSeg variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown SeaFormerSeg variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     dim = scale_channels(int(spec["embed_dim"]), float(width_mult), min_ch=32, divisor=8)
     heads = int(spec["num_heads"])
@@ -118,4 +120,3 @@ if __name__ == "__main__":
     loss = y.mean()
     loss.backward()
     print("ok")
-

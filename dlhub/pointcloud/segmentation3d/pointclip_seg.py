@@ -51,9 +51,10 @@ def build_pointclip_seg_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    model = build_pointclip_seg_segmenter3d(in_channels=3, num_classes=6, variant="pointclip_seg_tiny")
+    model = build_pointclip_seg_segmenter3d(
+        in_channels=3, num_classes=6, variant="pointclip_seg_tiny"
+    )
     x = torch.randn(2, 128, 3)
     y = model(x)
     y.mean().backward()
     print("logits:", tuple(y.shape))
-

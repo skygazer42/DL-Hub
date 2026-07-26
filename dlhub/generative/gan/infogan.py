@@ -39,4 +39,3 @@ def build_infogan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_infogan_gan, "infogan_tiny")
-

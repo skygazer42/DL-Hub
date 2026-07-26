@@ -64,8 +64,12 @@ class CoAttentionFPN(nn.Module):
         g2, a2 = self.fuse2(unflatten_group(c2, batch=b, set_size=t))
         g3, a3 = self.fuse3(unflatten_group(c3, batch=b, set_size=t))
 
-        u2 = F.interpolate(flatten_group(g2), size=c1.shape[-2:], mode="bilinear", align_corners=False)
-        u3 = F.interpolate(flatten_group(g3), size=c1.shape[-2:], mode="bilinear", align_corners=False)
+        u2 = F.interpolate(
+            flatten_group(g2), size=c1.shape[-2:], mode="bilinear", align_corners=False
+        )
+        u3 = F.interpolate(
+            flatten_group(g3), size=c1.shape[-2:], mode="bilinear", align_corners=False
+        )
         fused = self.merge(torch.cat([flatten_group(g1), u2, u3], dim=1))
         logits = self.head(unflatten_group(fused, batch=b, set_size=t), out_hw=(h, w))
         masks = logits_to_masks(logits)
@@ -93,7 +97,9 @@ def build_co_attention_fpn_co_segmentor(
     del set_size, image_size
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown Co-Attention-FPN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown Co-Attention-FPN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return CoAttentionFPN(

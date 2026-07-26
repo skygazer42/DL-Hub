@@ -40,7 +40,9 @@ class CycleSUMVideoSummarizer(nn.Module):
         feat = self.encoder(video)
         scores = torch.sigmoid(self.scorer(feat))
         summary_mask = scores_to_mask(scores)
-        summary = (feat * scores.unsqueeze(-1)).sum(dim=1) / scores.sum(dim=1, keepdim=True).clamp_min(1e-6)
+        summary = (feat * scores.unsqueeze(-1)).sum(dim=1) / scores.sum(
+            dim=1, keepdim=True
+        ).clamp_min(1e-6)
         recon = self.reconstruct(summary)
         target = feat.mean(dim=1)
         recon_loss = (recon - target).pow(2).mean()

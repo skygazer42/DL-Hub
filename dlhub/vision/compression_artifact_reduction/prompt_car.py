@@ -30,4 +30,3 @@ def build_prompt_car_artifact_reducer(
 
 if __name__ == "__main__":
     smoke_test_artifact_reducer(build_prompt_car_artifact_reducer, "prompt_car_tiny")
-

@@ -41,4 +41,3 @@ def build_olmocr_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_olmocr_vlm, "olmocr_tiny")
-

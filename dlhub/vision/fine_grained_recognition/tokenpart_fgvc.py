@@ -40,4 +40,3 @@ def build_tokenpart_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_tokenpart_fgvc_fgvc_classifier, "tokenpart_fgvc_tiny")
-

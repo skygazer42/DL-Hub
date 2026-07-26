@@ -50,4 +50,3 @@ def build_fedboost_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedboost_strategy, "fedboost_tiny")
-

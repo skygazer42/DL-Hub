@@ -1,18 +1,19 @@
-
 from __future__ import annotations
 
 from ._common import build_toy_vision_direction, smoke_test_direction
 
 _VARIANTS = {
-    'textline_dewarp_tiny': {'width': 24, 'depth': 1},
-    'textline_dewarp_small': {'width': 32, 'depth': 2},
-    'textline_dewarp_base': {'width': 48, 'depth': 3},
+    "textline_dewarp_tiny": {"width": 24, "depth": 1},
+    "textline_dewarp_small": {"width": 32, "depth": 2},
+    "textline_dewarp_base": {"width": 48, "depth": 3},
 }
 
 
-def build_textline_dewarp_dewarper(*, in_channels: int, variant: str = 'textline_dewarp_small', width_mult: float = 1.0):
+def build_textline_dewarp_dewarper(
+    *, in_channels: int, variant: str = "textline_dewarp_small", width_mult: float = 1.0
+):
     return build_toy_vision_direction(
-        family='textline_dewarp',
+        family="textline_dewarp",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -20,5 +21,5 @@ def build_textline_dewarp_dewarper(*, in_channels: int, variant: str = 'textline
     )
 
 
-if __name__ == '__main__':
-    smoke_test_direction(build_textline_dewarp_dewarper, 'textline_dewarp_tiny')
+if __name__ == "__main__":
+    smoke_test_direction(build_textline_dewarp_dewarper, "textline_dewarp_tiny")

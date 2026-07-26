@@ -32,4 +32,3 @@ if __name__ == "__main__":
         builder=build_pedestrian_ssd_detector,
         variant="pedestrian_ssd",
     )
-

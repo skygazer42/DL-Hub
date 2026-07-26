@@ -41,4 +41,3 @@ def build_xgen_mm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_xgen_mm_vlm, "xgen_mm_tiny")
-

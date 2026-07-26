@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_hand_regressor, smoke_test_hand_regressor
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'graph_finger_curvature_tiny': {'width': 24, 'depth': 1}, 'graph_finger_curvature_small': {'width': 36, 'depth': 2}, 'graph_finger_curvature_base': {'width': 48, 'depth': 3}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "graph_finger_curvature_tiny": {"width": 24, "depth": 1},
+    "graph_finger_curvature_small": {"width": 36, "depth": 2},
+    "graph_finger_curvature_base": {"width": 48, "depth": 3},
+}
 
 
 def build_graph_finger_curvature_finger_curvature_estimator(
     *,
     in_channels: int,
-    variant: str = 'graph_finger_curvature_small',
+    variant: str = "graph_finger_curvature_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_hand_regressor(
-        family='graph_finger_curvature',
-        mode='graph',
+        family="graph_finger_curvature",
+        mode="graph",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,6 @@ def build_graph_finger_curvature_finger_curvature_estimator(
 
 
 if __name__ == "__main__":
-    smoke_test_hand_regressor(build_graph_finger_curvature_finger_curvature_estimator, 'graph_finger_curvature_tiny')
+    smoke_test_hand_regressor(
+        build_graph_finger_curvature_finger_curvature_estimator, "graph_finger_curvature_tiny"
+    )

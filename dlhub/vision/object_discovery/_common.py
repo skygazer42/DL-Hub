@@ -21,7 +21,9 @@ class TinyObjectDiscoveryBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -42,12 +44,26 @@ class TinyObjectDiscoveryBlock(nn.Module):
 
 
 class TinyObjectDiscoverer(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, num_slots: int = 8) -> None:
+    def __init__(
+        self,
+        *,
+        family: str,
+        mode: str,
+        in_channels: int,
+        width: int,
+        depth: int,
+        num_slots: int = 8,
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
-        self.blocks = nn.ModuleList([TinyObjectDiscoveryBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [
+                TinyObjectDiscoveryBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
         self.slots = nn.Parameter(torch.randn(1, int(num_slots), int(width)) * 0.02)
         self.proj = nn.Linear(int(width), int(width))
         self.mask_head = nn.Conv2d(int(width), int(num_slots), 1)
@@ -69,15 +85,32 @@ class TinyObjectDiscoverer(nn.Module):
         }
 
 
-def build_toy_object_discoverer(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_object_discoverer(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
     num_slots = int(spec.get("slots", 8))
-    return TinyObjectDiscoverer(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth, num_slots=num_slots)
+    return TinyObjectDiscoverer(
+        family=str(family),
+        mode=str(mode),
+        in_channels=int(in_channels),
+        width=width,
+        depth=depth,
+        num_slots=num_slots,
+    )
 
 
 def smoke_test_object_discoverer(builder, variant: str) -> None:

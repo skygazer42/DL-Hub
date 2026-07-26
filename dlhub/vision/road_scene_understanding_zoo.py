@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['scene_fusion_road', 'lane_object_road', 'bev_road_scene', 'transformer_road_scene', 'graph_road_scene', 'prompt_road_scene', 'occupancy_road_scene', 'panorama_road_scene', 'multitask_road_scene', 'mamba_road_scene']
+_FAMILIES = [
+    "scene_fusion_road",
+    "lane_object_road",
+    "bev_road_scene",
+    "transformer_road_scene",
+    "graph_road_scene",
+    "prompt_road_scene",
+    "occupancy_road_scene",
+    "panorama_road_scene",
+    "multitask_road_scene",
+    "mamba_road_scene",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'roadscene', arch_id
+        return "roadscene", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'road_scene_understanding', 'autodrive'}:
-        prefix = 'roadscene'
-    if prefix not in {'roadscene', "local"}:
+    if prefix in {"road_scene_understanding", "autodrive"}:
+        prefix = "roadscene"
+    if prefix not in {"roadscene", "local"}:
         raise ValueError(
             f"Unsupported road scene understanding prefix: {prefix!r} (arch_id={arch_id!r})"
         )

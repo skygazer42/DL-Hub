@@ -63,7 +63,9 @@ class GenLaneNetDetector(nn.Module):
         _, high = self.encoder(x)
         camera_embedding = self.camera_head(high)
         b = x.shape[0]
-        lane_tokens = self.query_embed.unsqueeze(0).expand(b, -1, -1) + camera_embedding.unsqueeze(1)
+        lane_tokens = self.query_embed.unsqueeze(0).expand(b, -1, -1) + camera_embedding.unsqueeze(
+            1
+        )
         lane_tokens = self.token_encoder(lane_tokens)
         lane_logits = self.lane_head(lane_tokens).squeeze(-1)
         curve_points = torch.tanh(self.curve_head(lane_tokens)).view(
@@ -118,9 +120,7 @@ def build_genlanenet_lane_detector(
     del num_lanes, image_size, num_rows, grid_size, num_anchors
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown GenLaneNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown GenLaneNet variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
     stem = scaled_channels(int(spec["stem"]), float(width_mult))
     hidden = scaled_channels(int(spec["hidden"]), float(width_mult))

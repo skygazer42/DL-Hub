@@ -21,7 +21,9 @@ class TinyIllumBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor, guide: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -48,7 +50,9 @@ class TinyIllumEstimator(nn.Module):
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
         self.guide = nn.Conv2d(int(in_channels), int(width), 1)
-        self.blocks = nn.ModuleList([TinyIllumBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [TinyIllumBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))]
+        )
         self.illum_head = nn.Conv2d(int(width), 1, 1)
         self.shading_head = nn.Conv2d(int(width), 1, 1)
         self.global_head = nn.Linear(int(width), 3)
@@ -67,14 +71,26 @@ class TinyIllumEstimator(nn.Module):
         }
 
 
-def build_toy_illumination_estimator(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_illumination_estimator(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
-    return TinyIllumEstimator(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth)
+    return TinyIllumEstimator(
+        family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth
+    )
 
 
 def smoke_test_illumination_estimator(builder, variant: str) -> None:

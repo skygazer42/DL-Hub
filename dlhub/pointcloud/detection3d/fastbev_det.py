@@ -64,4 +64,3 @@ if __name__ == "__main__":
     out = m(x)
     (out["boxes"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

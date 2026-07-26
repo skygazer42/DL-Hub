@@ -2,11 +2,22 @@ from __future__ import annotations
 
 from ._common import build_toy_video_matter, smoke_test_video_matter
 
-_VARIANTS = {"flow_vmatte_tiny": {"width": 24, "depth": 1}, "flow_vmatte_small": {"width": 32, "depth": 2}, "flow_vmatte_base": {"width": 48, "depth": 3}}
+_VARIANTS = {
+    "flow_vmatte_tiny": {"width": 24, "depth": 1},
+    "flow_vmatte_small": {"width": 32, "depth": 2},
+    "flow_vmatte_base": {"width": 48, "depth": 3},
+}
 
 
-def build_flow_vmatte_video_matter(*, in_channels: int, variant: str = "flow_vmatte_small", width_mult: float = 1.0):
-    return build_toy_video_matter(variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+def build_flow_vmatte_video_matter(
+    *, in_channels: int, variant: str = "flow_vmatte_small", width_mult: float = 1.0
+):
+    return build_toy_video_matter(
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
 
 
 if __name__ == "__main__":

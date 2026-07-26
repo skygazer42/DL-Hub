@@ -40,4 +40,3 @@ def build_dualpath_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_dualpath_fgvc_fgvc_classifier, "dualpath_fgvc_tiny")
-

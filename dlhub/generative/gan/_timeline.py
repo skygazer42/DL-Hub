@@ -19,15 +19,25 @@ _ENTRIES: list[TimelineEntry] = [
     TimelineEntry(2016, "lsgan", "LSGAN (least-squares adversarial loss)", "vanilla_adversarial"),
     TimelineEntry(2017, "wgan", "WGAN (Wasserstein GAN objective)", "vanilla_adversarial"),
     TimelineEntry(2017, "wgangp", "WGAN-GP (gradient penalty WGAN)", "vanilla_adversarial"),
-    TimelineEntry(2018, "hingegan", "HingeGAN (hinge adversarial objective)", "vanilla_adversarial"),
     TimelineEntry(
-        2019, "relativistic_gan", "Relativistic GAN (relative realism discriminator)", "vanilla_adversarial"
+        2018, "hingegan", "HingeGAN (hinge adversarial objective)", "vanilla_adversarial"
+    ),
+    TimelineEntry(
+        2019,
+        "relativistic_gan",
+        "Relativistic GAN (relative realism discriminator)",
+        "vanilla_adversarial",
     ),
     TimelineEntry(2018, "dragan", "DRAGAN (local gradient regularized GAN)", "vanilla_adversarial"),
-    TimelineEntry(2014, "cgan", "Conditional GAN (label-conditioned generation)", "conditional_gan"),
+    TimelineEntry(
+        2014, "cgan", "Conditional GAN (label-conditioned generation)", "conditional_gan"
+    ),
     TimelineEntry(2017, "acgan", "ACGAN (auxiliary classifier GAN)", "conditional_gan"),
     TimelineEntry(
-        2018, "projection_gan", "Projection GAN (projection discriminator conditioning)", "conditional_gan"
+        2018,
+        "projection_gan",
+        "Projection GAN (projection discriminator conditioning)",
+        "conditional_gan",
     ),
     TimelineEntry(2016, "infogan", "InfoGAN (mutual information guided GAN)", "conditional_gan"),
     TimelineEntry(2016, "stackgan", "StackGAN (stacked text-conditioned GAN)", "conditional_gan"),
@@ -35,7 +45,9 @@ _ENTRIES: list[TimelineEntry] = [
     TimelineEntry(2017, "cyclegan", "CycleGAN (unpaired translation GAN)", "image_translation"),
     TimelineEntry(2017, "dualgan", "DualGAN (dual learning translation GAN)", "image_translation"),
     TimelineEntry(2017, "unit", "UNIT (shared latent space translation GAN)", "image_translation"),
-    TimelineEntry(2020, "cutgan", "CUTGAN (contrastive unpaired translation GAN)", "image_translation"),
+    TimelineEntry(
+        2020, "cutgan", "CUTGAN (contrastive unpaired translation GAN)", "image_translation"
+    ),
     TimelineEntry(2019, "stylegan", "StyleGAN (style-based generator)", "high_fidelity"),
     TimelineEntry(2020, "stylegan2", "StyleGAN2 (improved style synthesis)", "high_fidelity"),
     TimelineEntry(2021, "stylegan3", "StyleGAN3 (alias-free style synthesis)", "high_fidelity"),

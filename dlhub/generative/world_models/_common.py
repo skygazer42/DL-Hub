@@ -76,11 +76,15 @@ class ToyWorldModel(nn.Module):
         if action is None:
             action = torch.zeros(batch, self.action_dim, device=dev, dtype=obs.dtype)
         elif tuple(action.shape) != (batch, self.action_dim):
-            raise ValueError(f"Expected action shape {(batch, self.action_dim)}, got {tuple(action.shape)}")
+            raise ValueError(
+                f"Expected action shape {(batch, self.action_dim)}, got {tuple(action.shape)}"
+            )
         if prompt is None:
             prompt = torch.zeros(batch, self.context_dim, device=dev, dtype=obs.dtype)
         elif tuple(prompt.shape) != (batch, self.context_dim):
-            raise ValueError(f"Expected prompt shape {(batch, self.context_dim)}, got {tuple(prompt.shape)}")
+            raise ValueError(
+                f"Expected prompt shape {(batch, self.context_dim)}, got {tuple(prompt.shape)}"
+            )
         fused = latent + self.action_proj(action) + self.prompt_proj(prompt)
         hidden = self.transition(fused)
         next_state = torch.tanh(self.state_head(hidden))

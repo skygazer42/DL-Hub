@@ -40,7 +40,9 @@ class ContentAttentionSummarizer(nn.Module):
         q = self.to_q(feat)
         k = self.to_k(global_ctx)
         v = self.to_v(global_ctx)
-        attn = torch.softmax((q * k).sum(dim=-1, keepdim=True) / max(1.0, float(q.shape[-1]) ** 0.5), dim=1)
+        attn = torch.softmax(
+            (q * k).sum(dim=-1, keepdim=True) / max(1.0, float(q.shape[-1]) ** 0.5), dim=1
+        )
         fused = feat + attn * v
         scores = torch.sigmoid(self.head(fused).squeeze(-1))
         summary_mask = scores_to_mask(scores)

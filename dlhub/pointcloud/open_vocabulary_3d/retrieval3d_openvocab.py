@@ -8,8 +8,21 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "retrieval3d_openvocab_base": {"width": 48, "depth": 3},
 }
 
-def build_retrieval3d_openvocab_open_vocabulary_3d_model(*, in_channels: int, variant: str = "retrieval3d_openvocab_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_open_vocabulary_3d_model(family="retrieval3d_openvocab", mode="retrieval3d", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_retrieval3d_openvocab_open_vocabulary_3d_model(
+    *, in_channels: int, variant: str = "retrieval3d_openvocab_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_open_vocabulary_3d_model(
+        family="retrieval3d_openvocab",
+        mode="retrieval3d",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
-    smoke_test_open_vocabulary_3d_model(build_retrieval3d_openvocab_open_vocabulary_3d_model, "retrieval3d_openvocab_tiny")
+    smoke_test_open_vocabulary_3d_model(
+        build_retrieval3d_openvocab_open_vocabulary_3d_model, "retrieval3d_openvocab_tiny"
+    )

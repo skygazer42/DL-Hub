@@ -74,7 +74,9 @@ class STNICNNFaceParser(nn.Module):
         _, g2, g3 = self.global_encoder(image)
         theta = self.locator(g3).view(-1, 2, 3)
         grid = F.affine_grid(theta, image.size(), align_corners=False)
-        warped = F.grid_sample(image, grid, mode="bilinear", padding_mode="border", align_corners=False)
+        warped = F.grid_sample(
+            image, grid, mode="bilinear", padding_mode="border", align_corners=False
+        )
 
         _, _, l3 = self.local_encoder(warped)
         l3 = F.interpolate(l3, size=g3.shape[-2:], mode="bilinear", align_corners=False)

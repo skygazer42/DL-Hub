@@ -79,7 +79,9 @@ def build_diffusioncnn_denoiser(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown DiffusionCNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown DiffusionCNN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return DiffusionCNNDenoiser(
         DiffusionCNN(
@@ -101,4 +103,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

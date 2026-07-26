@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "grounding_nav_base": {"width": 48, "depth": 3},
 }
 
-def build_grounding_nav_navigator(*, in_channels: int, variant: str = "grounding_nav_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_navigator(family="grounding_nav", mode="grounding", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_grounding_nav_navigator(
+    *, in_channels: int, variant: str = "grounding_nav_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_navigator(
+        family="grounding_nav",
+        mode="grounding",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_navigator(build_grounding_nav_navigator, "grounding_nav_tiny")

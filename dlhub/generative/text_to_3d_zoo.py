@@ -125,7 +125,9 @@ def _extend_registry(registry: dict[str, Builder]) -> None:
         for variant in variants:
             name = str(variant).lower().strip()
             if name and name not in registry:
-                registry[name] = _make_lazy_builder(module_name, builder_name=builder_name, variant=name)
+                registry[name] = _make_lazy_builder(
+                    module_name, builder_name=builder_name, variant=name
+                )
 
 
 def _registry() -> dict[str, Builder]:

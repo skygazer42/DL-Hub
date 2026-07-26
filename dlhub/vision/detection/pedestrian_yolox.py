@@ -32,4 +32,3 @@ if __name__ == "__main__":
         builder=build_pedestrian_yolox_detector,
         variant="pedestrian_yolox",
     )
-

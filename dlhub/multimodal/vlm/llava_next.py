@@ -41,4 +41,3 @@ def build_llava_next_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_llava_next_vlm, "llava_next_tiny")
-

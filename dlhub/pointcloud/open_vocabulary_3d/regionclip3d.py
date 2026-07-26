@@ -8,8 +8,21 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "regionclip3d_base": {"width": 48, "depth": 3},
 }
 
-def build_regionclip3d_open_vocabulary_3d_model(*, in_channels: int, variant: str = "regionclip3d_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_open_vocabulary_3d_model(family="regionclip3d", mode="regionclip3d", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_regionclip3d_open_vocabulary_3d_model(
+    *, in_channels: int, variant: str = "regionclip3d_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_open_vocabulary_3d_model(
+        family="regionclip3d",
+        mode="regionclip3d",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
-    smoke_test_open_vocabulary_3d_model(build_regionclip3d_open_vocabulary_3d_model, "regionclip3d_tiny")
+    smoke_test_open_vocabulary_3d_model(
+        build_regionclip3d_open_vocabulary_3d_model, "regionclip3d_tiny"
+    )

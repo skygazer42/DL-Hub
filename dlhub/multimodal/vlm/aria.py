@@ -41,4 +41,3 @@ def build_aria_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_aria_vlm, "aria_tiny")
-

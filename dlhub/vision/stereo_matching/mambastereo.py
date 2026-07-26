@@ -1,8 +1,25 @@
 from __future__ import annotations
 from ._common import build_toy_model, smoke_test_model
-_VARIANTS = {'mambastereo_tiny': {'width':24,'depth':1}, 'mambastereo_small': {'width':32,'depth':2}, 'mambastereo_base': {'width':48,'depth':3}}
 
-def build_mambastereo_stereo_matcher(*, in_channels:int, variant:str='mambastereo_small', width_mult:float=1.0, **kwargs):
-    return build_toy_model(family='mambastereo', variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult), **kwargs)
+_VARIANTS = {
+    "mambastereo_tiny": {"width": 24, "depth": 1},
+    "mambastereo_small": {"width": 32, "depth": 2},
+    "mambastereo_base": {"width": 48, "depth": 3},
+}
 
-if __name__ == '__main__': smoke_test_model(build_mambastereo_stereo_matcher, 'mambastereo_tiny')
+
+def build_mambastereo_stereo_matcher(
+    *, in_channels: int, variant: str = "mambastereo_small", width_mult: float = 1.0, **kwargs
+):
+    return build_toy_model(
+        family="mambastereo",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+        **kwargs,
+    )
+
+
+if __name__ == "__main__":
+    smoke_test_model(build_mambastereo_stereo_matcher, "mambastereo_tiny")

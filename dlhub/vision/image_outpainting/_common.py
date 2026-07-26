@@ -20,13 +20,9 @@ class TinyOutpaintBlock(nn.Module):
         self.conv1 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
-        self.depthwise = nn.Conv2d(
-            int(channels), int(channels), 5, padding=2, groups=int(channels)
-        )
+        self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
         self.prompt = (
-            nn.Parameter(torch.zeros(1, int(channels), 1, 1))
-            if self.mode == "prompt"
-            else None
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
         )
 
     def forward(self, x: torch.Tensor, cond: torch.Tensor) -> torch.Tensor:
@@ -63,7 +59,10 @@ class TinyOutpainter(nn.Module):
         self.encoder = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
         self.cond = nn.Conv2d(int(in_channels), int(width), 1)
         self.blocks = nn.ModuleList(
-            [TinyOutpaintBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))]
+            [
+                TinyOutpaintBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
         )
         self.out_head = nn.Sequential(
             nn.Conv2d(int(width), int(width), 3, padding=1),

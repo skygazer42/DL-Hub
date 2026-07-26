@@ -41,4 +41,3 @@ def build_llama_vision_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_llama_vision_vlm, "llama_vision_tiny")
-

@@ -178,4 +178,3 @@ def build_glsim_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_glsim_fgvc_classifier, "glsim_tiny")
-

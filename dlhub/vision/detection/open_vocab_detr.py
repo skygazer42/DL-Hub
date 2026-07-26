@@ -181,10 +181,11 @@ def build_open_vocab_open_vocab_detr_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_open_vocab_open_vocab_detr_detector(in_channels=3, num_classes=2, variant="open_vocab_detr_tiny", width_mult=0.5)
+    m = build_open_vocab_open_vocab_detr_detector(
+        in_channels=3, num_classes=2, variant="open_vocab_detr_tiny", width_mult=0.5
+    )
     out = m(x)
     print("open_vocab_detr_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = out["class_logits"].mean() + out["boxes"].mean()
     loss.backward()
     print("ok")
-

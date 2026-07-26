@@ -32,4 +32,3 @@ if __name__ == "__main__":
         builder=build_pedestrian_centernet_detector,
         variant="pedestrian_centernet",
     )
-

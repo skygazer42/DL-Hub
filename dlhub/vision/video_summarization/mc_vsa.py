@@ -42,11 +42,13 @@ class MCVSAVideoSummarizer(nn.Module):
         norm_feat = F.normalize(feat, dim=-1)
         norm_bank = F.normalize(bank, dim=-1)
 
-        concept_attn = torch.softmax(torch.matmul(norm_feat, norm_bank.transpose(0, 1)), dim=-1)  # (B,T,K)
+        concept_attn = torch.softmax(
+            torch.matmul(norm_feat, norm_bank.transpose(0, 1)), dim=-1
+        )  # (B,T,K)
         concept_context = torch.matmul(concept_attn, bank)
-        concept_scores = torch.sigmoid(
-            torch.einsum("btd,kd->btk", norm_feat, norm_bank)
-        ).transpose(1, 2)  # (B,K,T)
+        concept_scores = torch.sigmoid(torch.einsum("btd,kd->btk", norm_feat, norm_bank)).transpose(
+            1, 2
+        )  # (B,K,T)
 
         concept_weights = torch.softmax(concept_attn.mean(dim=1), dim=-1)
         weighted_concept_score = torch.einsum("bk,bkt->bt", concept_weights, concept_scores)

@@ -30,4 +30,3 @@ def build_pinhole_camcal_camera_calibrator(
 
 if __name__ == "__main__":
     smoke_test_camera_calibrator(build_pinhole_camcal_camera_calibrator, "pinhole_camcal_tiny")
-

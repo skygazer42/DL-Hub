@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_face_verifier, smoke_test_face_verifier
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'mamba_verify_tiny': {'width': 24, 'embedding_dim': 48}, 'mamba_verify_small': {'width': 36, 'embedding_dim': 64}, 'mamba_verify_base': {'width': 48, 'embedding_dim': 96}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "mamba_verify_tiny": {"width": 24, "embedding_dim": 48},
+    "mamba_verify_small": {"width": 36, "embedding_dim": 64},
+    "mamba_verify_base": {"width": 48, "embedding_dim": 96},
+}
 
 
 def build_mamba_verify_face_verifier(
     *,
     in_channels: int,
-    variant: str = 'mamba_verify_small',
+    variant: str = "mamba_verify_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_face_verifier(
-        family='mamba_verify',
-        mode='mamba',
+        family="mamba_verify",
+        mode="mamba",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,4 @@ def build_mamba_verify_face_verifier(
 
 
 if __name__ == "__main__":
-    smoke_test_face_verifier(build_mamba_verify_face_verifier, 'mamba_verify_tiny')
+    smoke_test_face_verifier(build_mamba_verify_face_verifier, "mamba_verify_tiny")

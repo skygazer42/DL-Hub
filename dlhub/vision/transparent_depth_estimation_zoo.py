@@ -78,9 +78,7 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"transparent_depth_estimation", "transparent_depth_model"}:
         prefix = "transdepth"
     if prefix not in {"transdepth", "local"}:
-        raise ValueError(
-            f"Unsupported transparent depth prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+        raise ValueError(f"Unsupported transparent depth prefix: {prefix!r} (arch_id={arch_id!r})")
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

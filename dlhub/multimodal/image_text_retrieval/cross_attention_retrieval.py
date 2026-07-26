@@ -8,8 +8,21 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "cross_attention_retrieval_base": {"width": 48, "depth": 3},
 }
 
-def build_cross_attention_retrieval_retriever(*, in_channels: int, variant: str = "cross_attention_retrieval_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_retriever(family="cross_attention_retrieval", mode="cross_attention", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_cross_attention_retrieval_retriever(
+    *, in_channels: int, variant: str = "cross_attention_retrieval_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_retriever(
+        family="cross_attention_retrieval",
+        mode="cross_attention",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
-    smoke_test_retriever(build_cross_attention_retrieval_retriever, "cross_attention_retrieval_tiny")
+    smoke_test_retriever(
+        build_cross_attention_retrieval_retriever, "cross_attention_retrieval_tiny"
+    )

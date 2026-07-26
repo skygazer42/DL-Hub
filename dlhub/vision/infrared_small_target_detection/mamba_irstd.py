@@ -30,4 +30,3 @@ def build_mamba_irstd_irstd_detector(
 
 if __name__ == "__main__":
     smoke_test_irstd_detector(build_mamba_irstd_irstd_detector, "mamba_irstd_tiny")
-

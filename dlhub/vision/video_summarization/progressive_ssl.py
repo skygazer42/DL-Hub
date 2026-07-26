@@ -28,7 +28,9 @@ class ProgressiveSSLVideoSummarizer(nn.Module):
         hidden = max(32, dim // 2)
         num_concepts = max(4, int(depth) + 2)
         self.concept_bank = nn.Parameter(torch.randn(num_concepts, dim) * 0.02)
-        self.stage1 = TemporalGRUScorer(dim=dim, hidden_dim=hidden, layers=1, dropout=float(dropout))
+        self.stage1 = TemporalGRUScorer(
+            dim=dim, hidden_dim=hidden, layers=1, dropout=float(dropout)
+        )
         self.refine = nn.Sequential(
             nn.Linear(dim * 2 + 1, hidden),
             nn.ReLU(inplace=True),
@@ -52,7 +54,9 @@ class ProgressiveSSLVideoSummarizer(nn.Module):
         temporal_teacher = torch.zeros(int(b), int(t), 1, device=feat.device, dtype=feat.dtype)
         temporal_teacher[:, :, 0] = stage1_scores
         if int(t) > 1:
-            temporal_teacher[:, 1:, 0] = 0.5 * temporal_teacher[:, 1:, 0] + 0.5 * stage1_scores[:, :-1]
+            temporal_teacher[:, 1:, 0] = (
+                0.5 * temporal_teacher[:, 1:, 0] + 0.5 * stage1_scores[:, :-1]
+            )
 
         refined_feat = torch.cat([feat, concept_context, temporal_teacher], dim=-1)
         refined_logits = self.refine(refined_feat).squeeze(-1)

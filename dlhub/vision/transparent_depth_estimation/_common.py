@@ -28,9 +28,7 @@ class TinyTransparentDepthBlock(nn.Module):
             groups=int(channels),
         )
         self.prompt = (
-            nn.Parameter(torch.zeros(1, int(channels), 1, 1))
-            if self.mode == "prompt"
-            else None
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
         )
 
     def forward(self, x: torch.Tensor, cues: torch.Tensor) -> torch.Tensor:
@@ -108,7 +106,9 @@ def build_toy_transparent_depth_model(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(12, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])

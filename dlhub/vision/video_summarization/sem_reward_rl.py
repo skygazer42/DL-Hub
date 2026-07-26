@@ -41,20 +41,27 @@ class SemRewardRLVideoSummarizer(nn.Module):
 
         summary_token = torch.einsum("bt,btd->bd", torch.softmax(base_scores, dim=-1), feat)
         full_token = feat.mean(dim=1)
-        semantic_reward = F.cosine_similarity(summary_token, full_token, dim=-1).unsqueeze(1).expand(-1, int(t))
+        semantic_reward = (
+            F.cosine_similarity(summary_token, full_token, dim=-1).unsqueeze(1).expand(-1, int(t))
+        )
 
         diversity_reward = torch.zeros(int(b), int(t), device=feat.device, dtype=feat.dtype)
         if int(t) > 1:
             diversity_reward[:, 1:] = (
-                F.normalize(feat[:, 1:], dim=-1) - F.normalize(feat[:, :-1], dim=-1)
-            ).pow(2).mean(dim=-1).sqrt()
+                (F.normalize(feat[:, 1:], dim=-1) - F.normalize(feat[:, :-1], dim=-1))
+                .pow(2)
+                .mean(dim=-1)
+                .sqrt()
+            )
 
         represent_reward = torch.matmul(
             F.normalize(feat, dim=-1),
             F.normalize(full_token, dim=-1).unsqueeze(-1),
         ).squeeze(-1)
 
-        reward_logits = raw_policy + 0.35 * semantic_reward + 0.20 * diversity_reward + 0.20 * represent_reward
+        reward_logits = (
+            raw_policy + 0.35 * semantic_reward + 0.20 * diversity_reward + 0.20 * represent_reward
+        )
         scores = torch.sigmoid(reward_logits)
         summary_mask = scores_to_mask(scores)
         return {

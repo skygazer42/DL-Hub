@@ -34,4 +34,3 @@ def build_lidartrack2_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_lidartrack2_tracker3d, "lidartrack2_tiny")
-

@@ -39,4 +39,3 @@ def build_stylegan3_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_stylegan3_gan, "stylegan3_tiny")
-

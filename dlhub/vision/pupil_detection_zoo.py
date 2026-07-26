@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ["direct_pupil", "heatmap_pupil", "ellipse_pupil", "contour_pupil", "starburst_pupil", "transformer_pupil", "prompt_pupil", "dual_pupil", "coarse_pupil", "mamba_pupil"]
+_FAMILIES = [
+    "direct_pupil",
+    "heatmap_pupil",
+    "ellipse_pupil",
+    "contour_pupil",
+    "starburst_pupil",
+    "transformer_pupil",
+    "prompt_pupil",
+    "dual_pupil",
+    "coarse_pupil",
+    "mamba_pupil",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -75,4 +86,3 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
 
 
 __all__ = ["BuildConfig", "UnknownLocalArch", "build_local_model", "list_local_arches"]
-

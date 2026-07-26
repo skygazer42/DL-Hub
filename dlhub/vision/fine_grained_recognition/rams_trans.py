@@ -40,4 +40,3 @@ def build_rams_trans_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_rams_trans_fgvc_classifier, "rams_trans_tiny")
-

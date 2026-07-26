@@ -39,4 +39,3 @@ def build_wgangp_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_wgangp_gan, "wgangp_tiny")
-

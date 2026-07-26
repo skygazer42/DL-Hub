@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['attr_cnn_face', 'region_attr_face', 'attention_attr_face', 'multitask_attr_face', 'transformer_attr_face', 'prompt_attr_face', 'contrastive_attr_face', 'relation_attr_face', 'masked_attr_face', 'mamba_attr_face']
+_FAMILIES = [
+    "attr_cnn_face",
+    "region_attr_face",
+    "attention_attr_face",
+    "multitask_attr_face",
+    "transformer_attr_face",
+    "prompt_attr_face",
+    "contrastive_attr_face",
+    "relation_attr_face",
+    "masked_attr_face",
+    "mamba_attr_face",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'faceattr', arch_id
+        return "faceattr", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -41,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.face_attribute_recognition.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.face_attribute_recognition.{family}"
+                )
                 fn = getattr(module, f"build_{family}_attribute_recognizer")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -62,9 +75,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'face_attribute_recognition', 'face_attribute'}:
-        prefix = 'faceattr'
-    if prefix not in {'faceattr', "local"}:
+    if prefix in {"face_attribute_recognition", "face_attribute"}:
+        prefix = "faceattr"
+    if prefix not in {"faceattr", "local"}:
         raise ValueError(
             f"Unsupported face attribute recognition prefix: {prefix!r} (arch_id={arch_id!r})"
         )

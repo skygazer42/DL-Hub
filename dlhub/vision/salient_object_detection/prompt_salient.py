@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_salient_detector, smoke_test_salient_detector
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'prompt_salient_tiny': {'width': 24, 'depth': 1}, 'prompt_salient_small': {'width': 36, 'depth': 2}, 'prompt_salient_base': {'width': 48, 'depth': 3}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "prompt_salient_tiny": {"width": 24, "depth": 1},
+    "prompt_salient_small": {"width": 36, "depth": 2},
+    "prompt_salient_base": {"width": 48, "depth": 3},
+}
 
 
 def build_prompt_salient_salient_detector(
     *,
     in_channels: int,
-    variant: str = 'prompt_salient_small',
+    variant: str = "prompt_salient_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_salient_detector(
-        family='prompt_salient',
-        mode='prompt',
+        family="prompt_salient",
+        mode="prompt",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,4 @@ def build_prompt_salient_salient_detector(
 
 
 if __name__ == "__main__":
-    smoke_test_salient_detector(build_prompt_salient_salient_detector, 'prompt_salient_tiny')
+    smoke_test_salient_detector(build_prompt_salient_salient_detector, "prompt_salient_tiny")

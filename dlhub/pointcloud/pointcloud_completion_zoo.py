@@ -86,7 +86,9 @@ def _make_lazy_builder(module_name: str, *, builder_name: str, variant: str) -> 
         module = importlib.import_module(f"dlhub.pointcloud.pointcloud_completion.{module_name}")
         fn = getattr(module, builder_name, None)
         if fn is None:
-            raise RuntimeError(f"Point cloud completion module {module_name!r} missing {builder_name}()")
+            raise RuntimeError(
+                f"Point cloud completion module {module_name!r} missing {builder_name}()"
+            )
 
         kwargs: dict[str, object] = {
             "in_channels": int(cfg.in_channels),

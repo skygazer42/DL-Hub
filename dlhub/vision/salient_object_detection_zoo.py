@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['u2net_salient', 'poolnet_salient', 'bassnet_salient', 'boundary_salient', 'transformer_salient', 'focal_salient', 'cascade_salient', 'prompt_salient', 'diffusion_salient', 'mamba_salient']
+_FAMILIES = [
+    "u2net_salient",
+    "poolnet_salient",
+    "bassnet_salient",
+    "boundary_salient",
+    "transformer_salient",
+    "focal_salient",
+    "cascade_salient",
+    "prompt_salient",
+    "diffusion_salient",
+    "mamba_salient",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'salobj', arch_id
+        return "salobj", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'salient_object_detection', 'salient'}:
-        prefix = 'salobj'
-    if prefix not in {'salobj', "local"}:
+    if prefix in {"salient_object_detection", "salient"}:
+        prefix = "salobj"
+    if prefix not in {"salobj", "local"}:
         raise ValueError(
             f"Unsupported salient object detection prefix: {prefix!r} (arch_id={arch_id!r})"
         )

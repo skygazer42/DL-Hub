@@ -13,7 +13,9 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class ScoreDiffusion(nn.Module):
-    def __init__(self, *, feat_dim: int, hidden_dim: int, steps: int = 4, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, feat_dim: int, hidden_dim: int, steps: int = 4, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.steps = int(max(1, steps))
         self.time = nn.Sequential(
@@ -63,7 +65,9 @@ class SummDiffVideoSummarizer(nn.Module):
         )
         dim = int(self.encoder.out_dim)
         hidden = max(32, dim // 2)
-        self.diff = ScoreDiffusion(feat_dim=dim, hidden_dim=hidden, steps=max(2, int(depth)), dropout=float(dropout))
+        self.diff = ScoreDiffusion(
+            feat_dim=dim, hidden_dim=hidden, steps=max(2, int(depth)), dropout=float(dropout)
+        )
 
     def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(video)
@@ -105,4 +109,3 @@ if __name__ == "__main__":
     loss = out["scores"].mean() + out["initial_noise"].mean()
     loss.backward()
     print("ok")
-

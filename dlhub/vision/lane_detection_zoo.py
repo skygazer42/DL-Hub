@@ -141,15 +141,15 @@ def _filter_kwargs_for_signature(fn, kwargs: dict[str, object]) -> dict[str, obj
         return kwargs
 
     if any(
-        parameter.kind is inspect.Parameter.VAR_KEYWORD
-        for parameter in sig.parameters.values()
+        parameter.kind is inspect.Parameter.VAR_KEYWORD for parameter in sig.parameters.values()
     ):
         return kwargs
 
     accepted = {
         name
         for name, parameter in sig.parameters.items()
-        if parameter.kind in {inspect.Parameter.POSITIONAL_OR_KEYWORD, inspect.Parameter.KEYWORD_ONLY}
+        if parameter.kind
+        in {inspect.Parameter.POSITIONAL_OR_KEYWORD, inspect.Parameter.KEYWORD_ONLY}
     }
     return {key: value for key, value in kwargs.items() if key in accepted}
 
@@ -247,9 +247,7 @@ def build_local_model(
     if prefix == "lane":
         prefix = "dllane"
     if prefix not in {"dllane", "local"}:
-        raise ValueError(
-            f"Unsupported lane detection prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+        raise ValueError(f"Unsupported lane detection prefix: {prefix!r} (arch_id={arch_id!r})")
 
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:

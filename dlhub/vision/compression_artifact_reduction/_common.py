@@ -27,7 +27,9 @@ class TinyCARBlock(nn.Module):
             padding=2,
             groups=int(channels),
         )
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor, guide: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -115,7 +117,9 @@ def build_toy_artifact_reducer(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(12, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
@@ -135,4 +139,3 @@ def smoke_test_artifact_reducer(builder, variant: str) -> None:
     out = model(torch.randn(2, 3, 32, 32))
     print(variant, tuple(out["restored"].shape), tuple(out["quality"].shape))
     print("ok")
-

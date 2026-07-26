@@ -93,7 +93,9 @@ class EAGRNetFaceParser(nn.Module):
         feat_flat = fused.flatten(2)
         edge_weight = 1.0 + edge_low.flatten(2)
         weighted_assign = assign * edge_weight
-        weighted_assign = weighted_assign / weighted_assign.sum(dim=-1, keepdim=True).clamp_min(1e-6)
+        weighted_assign = weighted_assign / weighted_assign.sum(dim=-1, keepdim=True).clamp_min(
+            1e-6
+        )
 
         nodes = torch.einsum("bgn,bcn->bgc", weighted_assign, feat_flat)
         refined_nodes, affinity = self.reason(nodes)

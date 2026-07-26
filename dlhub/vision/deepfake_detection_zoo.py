@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['artifact_deepfake', 'frequency_deepfake', 'patch_deepfake', 'region_deepfake', 'transformer_deepfake', 'contrastive_deepfake', 'prompt_deepfake', 'diffusion_deepfake', 'mamba_deepfake', 'multiview_deepfake']
+_FAMILIES = [
+    "artifact_deepfake",
+    "frequency_deepfake",
+    "patch_deepfake",
+    "region_deepfake",
+    "transformer_deepfake",
+    "contrastive_deepfake",
+    "prompt_deepfake",
+    "diffusion_deepfake",
+    "mamba_deepfake",
+    "multiview_deepfake",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'dfake', arch_id
+        return "dfake", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,12 +73,10 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'deepfake_detection', 'deepfake'}:
-        prefix = 'dfake'
-    if prefix not in {'dfake', "local"}:
-        raise ValueError(
-            f"Unsupported deepfake detection prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+    if prefix in {"deepfake_detection", "deepfake"}:
+        prefix = "dfake"
+    if prefix not in {"dfake", "local"}:
+        raise ValueError(f"Unsupported deepfake detection prefix: {prefix!r} (arch_id={arch_id!r})")
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

@@ -21,7 +21,9 @@ class TinyFlareBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor, guide: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -40,15 +42,23 @@ class TinyFlareBlock(nn.Module):
 
 
 class TinyFlareRemover(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, steps: int) -> None:
+    def __init__(
+        self, *, family: str, mode: str, in_channels: int, width: int, depth: int, steps: int
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.steps = max(1, int(steps))
         self.encoder = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
         self.guide = nn.Conv2d(int(in_channels), int(width), 1)
-        self.blocks = nn.ModuleList([TinyFlareBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
-        self.decoder = nn.Sequential(nn.Conv2d(int(width), int(width), 3, padding=1), nn.ReLU(inplace=True), nn.Conv2d(int(width), int(in_channels), 3, padding=1))
+        self.blocks = nn.ModuleList(
+            [TinyFlareBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))]
+        )
+        self.decoder = nn.Sequential(
+            nn.Conv2d(int(width), int(width), 3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(int(width), int(in_channels), 3, padding=1),
+        )
         self.map_head = nn.Conv2d(int(width), 1, 1)
 
     def forward(self, image: torch.Tensor) -> dict[str, torch.Tensor]:
@@ -66,15 +76,32 @@ class TinyFlareRemover(nn.Module):
         return {"restored": restored, "flare_map": flare_map, "residual": restored - image}
 
 
-def build_toy_flare_remover(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_flare_remover(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(12, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
     steps = int(spec.get("steps", 1))
-    return TinyFlareRemover(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth, steps=steps)
+    return TinyFlareRemover(
+        family=str(family),
+        mode=str(mode),
+        in_channels=int(in_channels),
+        width=width,
+        depth=depth,
+        steps=steps,
+    )
 
 
 def smoke_test_flare_remover(builder, variant: str) -> None:

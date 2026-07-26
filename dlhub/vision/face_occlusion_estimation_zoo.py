@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['occlusion_cnn_face', 'patch_occlusion_face', 'region_occlusion_face', 'attention_occlusion_face', 'transformer_occlusion_face', 'contour_occlusion_face', 'masked_occlusion_face', 'prompt_occlusion_face', 'uncertainty_occlusion_face', 'mamba_occlusion_face']
+_FAMILIES = [
+    "occlusion_cnn_face",
+    "patch_occlusion_face",
+    "region_occlusion_face",
+    "attention_occlusion_face",
+    "transformer_occlusion_face",
+    "contour_occlusion_face",
+    "masked_occlusion_face",
+    "prompt_occlusion_face",
+    "uncertainty_occlusion_face",
+    "mamba_occlusion_face",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'faceocc', arch_id
+        return "faceocc", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'face_occlusion_estimation', 'face_occlusion'}:
-        prefix = 'faceocc'
-    if prefix not in {'faceocc', "local"}:
+    if prefix in {"face_occlusion_estimation", "face_occlusion"}:
+        prefix = "faceocc"
+    if prefix not in {"faceocc", "local"}:
         raise ValueError(
             f"Unsupported face occlusion estimation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

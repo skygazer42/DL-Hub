@@ -217,7 +217,9 @@ def _family_year_bonus(year: int | None, *, modern_bias: float) -> float:
     return float(modern_bias) * span
 
 
-def _score_family(spec: ProfileSpec, *, family: str, group: str, year: int | None) -> tuple[float, str]:
+def _score_family(
+    spec: ProfileSpec, *, family: str, group: str, year: int | None
+) -> tuple[float, str]:
     score = 0.0
     reasons: list[str] = []
 
@@ -247,7 +249,9 @@ def recommend_arches(
     spec = _PROFILES.get(profile_key)
     if spec is None:
         supported = ", ".join(sorted(_PROFILES))
-        raise ValueError(f"Unknown Tracking3D recommendation profile: {profile!r}. Supported: {supported}")
+        raise ValueError(
+            f"Unknown Tracking3D recommendation profile: {profile!r}. Supported: {supported}"
+        )
 
     variant_name = str(variant).strip().lower()
     if variant_name not in {"tiny", "small", "base"}:

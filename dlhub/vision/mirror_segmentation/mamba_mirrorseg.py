@@ -5,10 +5,16 @@ from torch import nn
 from ._common import build_toy_mirror_segmentor, smoke_test_mirror_segmentor
 
 
-_VARIANTS: dict[str, dict[str, int]] = {"mamba_mirrorseg_tiny": {"width": 24, "depth": 1}, "mamba_mirrorseg_small": {"width": 36, "depth": 2}, "mamba_mirrorseg_base": {"width": 48, "depth": 3}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "mamba_mirrorseg_tiny": {"width": 24, "depth": 1},
+    "mamba_mirrorseg_small": {"width": 36, "depth": 2},
+    "mamba_mirrorseg_base": {"width": 48, "depth": 3},
+}
 
 
-def build_mamba_mirrorseg_mirror_segmentor(*, in_channels: int, variant: str = "mamba_mirrorseg_small", width_mult: float = 1.0) -> nn.Module:
+def build_mamba_mirrorseg_mirror_segmentor(
+    *, in_channels: int, variant: str = "mamba_mirrorseg_small", width_mult: float = 1.0
+) -> nn.Module:
     return build_toy_mirror_segmentor(
         family="mamba_mirrorseg",
         mode="mamba",

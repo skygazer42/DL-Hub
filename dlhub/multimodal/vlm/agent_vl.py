@@ -41,4 +41,3 @@ def build_agent_vl_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_agent_vl_vlm, "agent_vl_tiny")
-

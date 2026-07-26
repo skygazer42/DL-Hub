@@ -4,7 +4,12 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from ._common import PixelShuffleUpsampler, ResidualBlock, check_low_res_image, validate_upscale_factor
+from ._common import (
+    PixelShuffleUpsampler,
+    ResidualBlock,
+    check_low_res_image,
+    validate_upscale_factor,
+)
 
 
 class CARNSR(nn.Module):
@@ -81,4 +86,3 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 16, 16)
     y = m(x)
     print("carn_sr_tiny", tuple(y["sr"].shape))
-

@@ -51,4 +51,3 @@ def build_fedlaw_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedlaw_strategy, "fedlaw_tiny")
-

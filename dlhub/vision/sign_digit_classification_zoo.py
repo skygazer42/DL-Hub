@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cnn_sign_digit', 'region_sign_digit', 'attention_sign_digit', 'skeleton_sign_digit', 'transformer_sign_digit', 'prompt_sign_digit', 'contrastive_sign_digit', 'graph_sign_digit', 'efficient_sign_digit', 'mamba_sign_digit']
+_FAMILIES = [
+    "cnn_sign_digit",
+    "region_sign_digit",
+    "attention_sign_digit",
+    "skeleton_sign_digit",
+    "transformer_sign_digit",
+    "prompt_sign_digit",
+    "contrastive_sign_digit",
+    "graph_sign_digit",
+    "efficient_sign_digit",
+    "mamba_sign_digit",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'signdigit', arch_id
+        return "signdigit", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'sign_digit_classification', 'sign_digit'}:
-        prefix = 'signdigit'
-    if prefix not in {'signdigit', "local"}:
+    if prefix in {"sign_digit_classification", "sign_digit"}:
+        prefix = "signdigit"
+    if prefix not in {"signdigit", "local"}:
         raise ValueError(
             f"Unsupported sign digit classification prefix: {prefix!r} (arch_id={arch_id!r})"
         )

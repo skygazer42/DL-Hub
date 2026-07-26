@@ -57,7 +57,9 @@ class LSTRLaneDetector(nn.Module):
         queries = self.query_embed.unsqueeze(0).expand(b, -1, -1)
         decoded = self.decoder(tgt=queries, memory=memory)
         lane_logits = self.lane_head(decoded).squeeze(-1)
-        curve_points = torch.tanh(self.curve_head(decoded)).view(b, self.num_queries, self.num_points, 2)
+        curve_points = torch.tanh(self.curve_head(decoded)).view(
+            b, self.num_queries, self.num_points, 2
+        )
         return {"curve_points": curve_points, "lane_logits": lane_logits}
 
 

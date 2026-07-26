@@ -190,4 +190,3 @@ if __name__ == "__main__":
     loss = vicreg2_loss(out1["z"], out2["z"])
     loss.backward()
     print("ok", float(loss.item()))
-

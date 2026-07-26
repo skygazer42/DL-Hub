@@ -1,6 +1,25 @@
 from __future__ import annotations
 from ._common import build_toy_model, smoke_test_model
-_VARIANTS = {'ynet_tiny': {'width':24,'depth':1}, 'ynet_small': {'width':32,'depth':2}, 'ynet_base': {'width':48,'depth':3}}
-def build_ynet_trajectory_predictor(*, coord_dim:int, variant:str='ynet_small', width_mult:float=1.0, pred_steps:int=12):
-    return build_toy_model(family='ynet', variants=_VARIANTS, coord_dim=int(coord_dim), variant=str(variant), width_mult=float(width_mult), pred_steps=int(pred_steps))
-if __name__ == '__main__': smoke_test_model(build_ynet_trajectory_predictor, 'ynet_tiny')
+
+_VARIANTS = {
+    "ynet_tiny": {"width": 24, "depth": 1},
+    "ynet_small": {"width": 32, "depth": 2},
+    "ynet_base": {"width": 48, "depth": 3},
+}
+
+
+def build_ynet_trajectory_predictor(
+    *, coord_dim: int, variant: str = "ynet_small", width_mult: float = 1.0, pred_steps: int = 12
+):
+    return build_toy_model(
+        family="ynet",
+        variants=_VARIANTS,
+        coord_dim=int(coord_dim),
+        variant=str(variant),
+        width_mult=float(width_mult),
+        pred_steps=int(pred_steps),
+    )
+
+
+if __name__ == "__main__":
+    smoke_test_model(build_ynet_trajectory_predictor, "ynet_tiny")

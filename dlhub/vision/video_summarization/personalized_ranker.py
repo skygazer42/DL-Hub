@@ -99,13 +99,19 @@ class PersonalizedRankerVideoSummarizer(nn.Module):
         local_scores = []
         for idx, head in enumerate(self.local_rankers):
             bank_expand = bank[idx].view(1, 1, int(d)).expand(int(b), int(t), int(d))
-            local_scores.append(head(torch.cat([feat, feat * torch.tanh(bank_expand)], dim=-1)).squeeze(-1))
+            local_scores.append(
+                head(torch.cat([feat, feat * torch.tanh(bank_expand)], dim=-1)).squeeze(-1)
+            )
         local_rankings = torch.stack(local_scores, dim=1)  # (B,R,T)
 
-        preference_logits = torch.matmul(F.normalize(pref, dim=-1), F.normalize(bank, dim=-1).transpose(0, 1))
+        preference_logits = torch.matmul(
+            F.normalize(pref, dim=-1), F.normalize(bank, dim=-1).transpose(0, 1)
+        )
         preference_weights = torch.softmax(preference_logits, dim=-1)
         personalized_logits = torch.einsum("br,brt->bt", preference_weights, local_rankings)
-        global_logits = self.global_head(torch.cat([feat, feat * torch.tanh(pref_expand)], dim=-1)).squeeze(-1)
+        global_logits = self.global_head(
+            torch.cat([feat, feat * torch.tanh(pref_expand)], dim=-1)
+        ).squeeze(-1)
         scores = torch.sigmoid(torch.maximum(global_logits, personalized_logits))
         summary_mask = scores_to_mask(scores)
         return {

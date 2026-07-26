@@ -39,5 +39,3 @@ def build_styleunet_gan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_styleunet_gan_gan, "styleunet_gan_tiny")
-
-

@@ -176,10 +176,11 @@ def build_dyhead_det_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_dyhead_det_detector(in_channels=3, num_classes=3, variant="dyhead_det_tiny", width_mult=1.0)
+    m = build_dyhead_det_detector(
+        in_channels=3, num_classes=3, variant="dyhead_det_tiny", width_mult=1.0
+    )
     out = m(x)
     print("dyhead_det_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())
     loss.backward()
     print("ok")
-

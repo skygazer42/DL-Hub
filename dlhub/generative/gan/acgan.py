@@ -39,4 +39,3 @@ def build_acgan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_acgan_gan, "acgan_tiny")
-

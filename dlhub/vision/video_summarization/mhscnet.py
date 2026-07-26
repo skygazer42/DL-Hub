@@ -56,7 +56,11 @@ class MHSCNetVideoSummarizer(nn.Module):
 
         scores = torch.sigmoid(self.head(torch.cat([fused, boundary], dim=-1)).squeeze(-1))
         summary_mask = scores_to_mask(scores)
-        return {"scores": scores, "summary_mask": summary_mask, "boundary_scores": boundary.squeeze(-1)}
+        return {
+            "scores": scores,
+            "summary_mask": summary_mask,
+            "boundary_scores": boundary.squeeze(-1),
+        }
 
 
 def build_mhscnet_video_summarizer(
@@ -91,4 +95,3 @@ if __name__ == "__main__":
     loss = out["scores"].mean() + out["boundary_scores"].mean()
     loss.backward()
     print("ok")
-

@@ -34,4 +34,3 @@ def build_briskbev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_briskbev_track_tracker3d, "briskbev_track_tiny")
-

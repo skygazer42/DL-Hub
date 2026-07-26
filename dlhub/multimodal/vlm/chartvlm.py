@@ -41,4 +41,3 @@ def build_chartvlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_chartvlm_vlm, "chartvlm_tiny")
-

@@ -27,4 +27,3 @@ def build_variance_blurdet_blur_detector(
 
 if __name__ == "__main__":
     smoke_test_blur_detector(build_variance_blurdet_blur_detector, "variance_blurdet_tiny")
-

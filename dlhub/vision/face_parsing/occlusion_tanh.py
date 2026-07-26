@@ -67,7 +67,9 @@ class OcclusionTanhFaceParser(nn.Module):
             device=image.device,
             dtype=image.dtype,
         )
-        warped = F.grid_sample(image, grid, mode="bilinear", padding_mode="border", align_corners=False)
+        warped = F.grid_sample(
+            image, grid, mode="bilinear", padding_mode="border", align_corners=False
+        )
         _, _, w3 = self.warp_encoder(warped)
         w3 = F.interpolate(w3, size=b3.shape[-2:], mode="bilinear", align_corners=False)
 

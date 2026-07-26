@@ -34,4 +34,3 @@ def build_relaybev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_relaybev_track_tracker3d, "relaybev_track_tiny")
-

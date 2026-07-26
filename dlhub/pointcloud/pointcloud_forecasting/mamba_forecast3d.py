@@ -29,6 +29,4 @@ def build_mamba_forecast3d_forecasting_model(
 
 
 if __name__ == "__main__":
-    smoke_test_forecasting_model(
-        build_mamba_forecast3d_forecasting_model, "mamba_forecast3d_tiny"
-    )
+    smoke_test_forecasting_model(build_mamba_forecast3d_forecasting_model, "mamba_forecast3d_tiny")

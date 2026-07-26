@@ -21,7 +21,9 @@ class TinyLandmarkBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -42,12 +44,26 @@ class TinyLandmarkBlock(nn.Module):
 
 
 class TinyLandmarkDetector(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, num_landmarks: int = 8) -> None:
+    def __init__(
+        self,
+        *,
+        family: str,
+        mode: str,
+        in_channels: int,
+        width: int,
+        depth: int,
+        num_landmarks: int = 8,
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
-        self.blocks = nn.ModuleList([TinyLandmarkBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [
+                TinyLandmarkBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
         self.landmarks = nn.Linear(int(width), int(num_landmarks) * 2)
         self.conf = nn.Linear(int(width), int(num_landmarks))
         self.maps = nn.Conv2d(int(width), int(num_landmarks), 1)
@@ -59,18 +75,39 @@ class TinyLandmarkDetector(nn.Module):
             feat = block(feat)
         pooled = F.adaptive_avg_pool2d(feat, 1).flatten(1)
         landmarks = torch.tanh(self.landmarks(pooled)).view(image.shape[0], -1, 2)
-        return {"landmarks": landmarks, "confidence": torch.sigmoid(self.conf(pooled)), "heatmaps": self.maps(feat)}
+        return {
+            "landmarks": landmarks,
+            "confidence": torch.sigmoid(self.conf(pooled)),
+            "heatmaps": self.maps(feat),
+        }
 
 
-def build_toy_landmark_detector(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_landmark_detector(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
     num_landmarks = int(spec.get("num_landmarks", 8))
-    return TinyLandmarkDetector(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth, num_landmarks=num_landmarks)
+    return TinyLandmarkDetector(
+        family=str(family),
+        mode=str(mode),
+        in_channels=int(in_channels),
+        width=width,
+        depth=depth,
+        num_landmarks=num_landmarks,
+    )
 
 
 def smoke_test_landmark_detector(builder, variant: str) -> None:

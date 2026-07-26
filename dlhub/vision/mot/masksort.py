@@ -42,4 +42,3 @@ def build_masksort_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_masksort_tracker, "masksort_tiny")
-

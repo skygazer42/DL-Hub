@@ -41,4 +41,3 @@ def build_edgevlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_edgevlm_vlm, "edgevlm_tiny")
-

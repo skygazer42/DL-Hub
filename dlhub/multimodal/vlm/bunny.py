@@ -41,4 +41,3 @@ def build_bunny_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_bunny_vlm, "bunny_tiny")
-

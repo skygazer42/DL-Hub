@@ -5,7 +5,9 @@ import math
 import torch
 
 
-def _validate_boxes_scores(boxes: torch.Tensor, scores: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+def _validate_boxes_scores(
+    boxes: torch.Tensor, scores: torch.Tensor
+) -> tuple[torch.Tensor, torch.Tensor]:
     if not torch.is_tensor(boxes):
         raise TypeError(f"boxes must be a torch.Tensor, got {type(boxes)!r}")
     if not torch.is_tensor(scores):
@@ -189,6 +191,7 @@ def diou_nms(boxes: torch.Tensor, scores: torch.Tensor, *, threshold: float = 0.
 
     return torch.stack(keep).to(torch.int64)
 
+
 def nms(boxes: torch.Tensor, scores: torch.Tensor, *, iou_threshold: float = 0.5) -> torch.Tensor:
     """Standard IoU-based NMS for xyxy boxes.
 
@@ -302,5 +305,6 @@ def weighted_box_fusion(
     scores_out = torch.stack(fused_scores, dim=0)
     sort = scores_out.argsort(descending=True)
     return boxes_out[sort], scores_out[sort]
+
 
 __all__ = ["diou_nms", "nms", "soft_nms", "weighted_box_fusion"]

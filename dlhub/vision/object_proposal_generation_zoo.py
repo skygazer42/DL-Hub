@@ -52,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.object_proposal_generation.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.object_proposal_generation.{family}"
+                )
                 fn = getattr(module, f"build_{family}_proposer")
                 return fn(
                     in_channels=int(cfg.in_channels),

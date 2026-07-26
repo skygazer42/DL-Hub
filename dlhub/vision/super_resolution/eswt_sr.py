@@ -64,4 +64,3 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 16, 16)
     y = m(x)
     print("eswt_sr_tiny", tuple(y["sr"].shape))
-

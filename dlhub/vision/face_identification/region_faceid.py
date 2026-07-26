@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_face_identifier, smoke_test_face_identifier
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'region_faceid_tiny': {'width': 24, 'depth': 1, 'embedding_dim': 48}, 'region_faceid_small': {'width': 36, 'depth': 2, 'embedding_dim': 64}, 'region_faceid_base': {'width': 48, 'depth': 3, 'embedding_dim': 96}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "region_faceid_tiny": {"width": 24, "depth": 1, "embedding_dim": 48},
+    "region_faceid_small": {"width": 36, "depth": 2, "embedding_dim": 64},
+    "region_faceid_base": {"width": 48, "depth": 3, "embedding_dim": 96},
+}
 
 
 def build_region_faceid_face_identifier(
     *,
     in_channels: int,
-    variant: str = 'region_faceid_small',
+    variant: str = "region_faceid_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_face_identifier(
-        family='region_faceid',
-        mode='region',
+        family="region_faceid",
+        mode="region",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,4 @@ def build_region_faceid_face_identifier(
 
 
 if __name__ == "__main__":
-    smoke_test_face_identifier(build_region_faceid_face_identifier, 'region_faceid_tiny')
+    smoke_test_face_identifier(build_region_faceid_face_identifier, "region_faceid_tiny")

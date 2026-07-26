@@ -42,4 +42,3 @@ def build_trackclip_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_trackclip_tracker, "trackclip_tiny")
-

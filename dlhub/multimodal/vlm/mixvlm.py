@@ -41,4 +41,3 @@ def build_mixvlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_mixvlm_vlm, "mixvlm_tiny")
-

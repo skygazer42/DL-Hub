@@ -52,9 +52,9 @@ class DiscoGANStyleTransfer(nn.Module):
         feat_fake = self.encoder(fake_b)
         feat_style = self.encoder(style)
         discovery_score = F.normalize(feat_fake.mean(dim=(2, 3)), dim=1)
-        discovery_score = (discovery_score * F.normalize(feat_style.mean(dim=(2, 3)), dim=1)).sum(
-            dim=1
-        ).mean()
+        discovery_score = (
+            (discovery_score * F.normalize(feat_style.mean(dim=(2, 3)), dim=1)).sum(dim=1).mean()
+        )
         return {
             "stylized": fake_b,
             "fake_a": fake_a,
@@ -77,9 +77,7 @@ def build_disco_gan_style_transfer(
     _ = int(image_size)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown DiscoGAN variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown DiscoGAN variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return DiscoGANStyleTransfer(

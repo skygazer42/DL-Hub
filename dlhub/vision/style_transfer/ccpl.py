@@ -21,7 +21,9 @@ class CCPLStyleTransfer(nn.Module):
         c_feat = int(self.encoder.out_channels)
         self.attn = SpatialCrossAttention(channels=c_feat, temperature=0.85)
         self.patch_proj = nn.Conv2d(c_feat, c_feat, kernel_size=1)
-        self.fuse = nn.Sequential(nn.Conv2d(c_feat * 2, c_feat, kernel_size=1), nn.ReLU(inplace=True))
+        self.fuse = nn.Sequential(
+            nn.Conv2d(c_feat * 2, c_feat, kernel_size=1), nn.ReLU(inplace=True)
+        )
         self.decoder = TinyDecoder(
             out_channels=int(in_channels),
             in_channels=c_feat,

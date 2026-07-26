@@ -108,9 +108,9 @@ class IntentVizorVideoSummarizer(nn.Module):
             prompt=self.intent_prompt.to(device=feat.device, dtype=feat.dtype),
         )
         basis = self.intent_basis.to(device=feat.device, dtype=feat.dtype)
-        intent_logits = torch.matmul(self.intent_proj(query_state), basis.transpose(0, 1)) / math.sqrt(
-            max(1, int(d))
-        )
+        intent_logits = torch.matmul(
+            self.intent_proj(query_state), basis.transpose(0, 1)
+        ) / math.sqrt(max(1, int(d)))
         intent_probs = torch.softmax(intent_logits, dim=-1)
         intent_state = torch.matmul(intent_probs, basis)
 
@@ -118,7 +118,9 @@ class IntentVizorVideoSummarizer(nn.Module):
         intent_expand = intent_state.unsqueeze(1).expand(-1, int(t), -1)
         fused = torch.cat([feat, graph_feat, feat * torch.tanh(intent_expand)], dim=-1)
         raw_scores = self.head(fused).squeeze(-1)
-        intent_alignment = F.normalize(feat, dim=-1).mul(F.normalize(intent_expand, dim=-1)).sum(dim=-1)
+        intent_alignment = (
+            F.normalize(feat, dim=-1).mul(F.normalize(intent_expand, dim=-1)).sum(dim=-1)
+        )
         scores = torch.sigmoid(raw_scores + 0.35 * intent_alignment)
         summary_mask = scores_to_mask(scores)
         return {

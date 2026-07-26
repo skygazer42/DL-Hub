@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "map_memory_nav_base": {"width": 48, "depth": 3},
 }
 
-def build_map_memory_nav_navigator(*, in_channels: int, variant: str = "map_memory_nav_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_navigator(family="map_memory_nav", mode="map_memory", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_map_memory_nav_navigator(
+    *, in_channels: int, variant: str = "map_memory_nav_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_navigator(
+        family="map_memory_nav",
+        mode="map_memory",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_navigator(build_map_memory_nav_navigator, "map_memory_nav_tiny")

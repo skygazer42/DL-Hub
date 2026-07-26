@@ -37,4 +37,3 @@ def build_pixart_alpha_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_pixart_alpha_diffusion, "pixart_alpha_tiny")
-

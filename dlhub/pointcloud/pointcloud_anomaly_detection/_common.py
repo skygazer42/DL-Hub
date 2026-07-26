@@ -24,9 +24,7 @@ class TinyAnomalyBlock(nn.Module):
             nn.Linear(int(width), int(width)),
         )
         self.mix = nn.Linear(int(width), int(width))
-        self.prompt = (
-            nn.Parameter(torch.zeros(1, 1, int(width))) if self.mode == "prompt" else None
-        )
+        self.prompt = nn.Parameter(torch.zeros(1, 1, int(width))) if self.mode == "prompt" else None
 
     def forward(self, feat: torch.Tensor, context: torch.Tensor) -> torch.Tensor:
         h = self.norm(feat)
@@ -86,9 +84,13 @@ class TinyAnomalyDetector(nn.Module):
             feat = block(feat, context)
         reconstruction = self.reconstruction_head(feat)
         residual = torch.abs(reconstruction - pts)
-        point_scores = residual.mean(dim=-1) + 0.25 * torch.sigmoid(self.score_head(feat)).squeeze(-1)
+        point_scores = residual.mean(dim=-1) + 0.25 * torch.sigmoid(self.score_head(feat)).squeeze(
+            -1
+        )
         if self.mode == "density":
-            point_scores = point_scores + 0.1 * torch.norm(pts - pts.mean(dim=1, keepdim=True), dim=-1)
+            point_scores = point_scores + 0.1 * torch.norm(
+                pts - pts.mean(dim=1, keepdim=True), dim=-1
+            )
         elif self.mode == "openvocab":
             point_scores = point_scores + 0.05 * torch.relu(pts[..., 0])
         global_score = point_scores.mean(dim=1)

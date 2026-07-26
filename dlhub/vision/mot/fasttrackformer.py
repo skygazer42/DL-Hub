@@ -42,4 +42,3 @@ def build_fasttrackformer_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_fasttrackformer_tracker, "fasttrackformer_tiny")
-

@@ -92,9 +92,7 @@ class ToyGAN(nn.Module):
         if labels.ndim != 1:
             raise ValueError(f"labels must be 1D, got shape {tuple(labels.shape)}")
         if labels.shape[0] != int(batch_size):
-            raise ValueError(
-                f"labels batch mismatch: expected {batch_size}, got {labels.shape[0]}"
-            )
+            raise ValueError(f"labels batch mismatch: expected {batch_size}, got {labels.shape[0]}")
         return labels.to(device=device, dtype=torch.long)
 
     def _fuse_with_labels(
@@ -123,9 +121,7 @@ class ToyGAN(nn.Module):
         if z is None:
             z = torch.randn(b, self.latent_dim, device=dev)
         if z.ndim != 2 or z.shape[1] != self.latent_dim:
-            raise ValueError(
-                f"z must have shape (B, {self.latent_dim}), got {tuple(z.shape)}"
-            )
+            raise ValueError(f"z must have shape (B, {self.latent_dim}), got {tuple(z.shape)}")
         z = z.to(device=dev, dtype=torch.float32)
         cond = self._prepare_labels(batch_size=b, device=z.device, labels=labels)
         g_in = self._fuse_with_labels(z, labels=cond)
@@ -139,10 +135,7 @@ class ToyGAN(nn.Module):
         labels: torch.Tensor | None = None,
     ) -> torch.Tensor:
         if images.ndim != 4:
-            raise ValueError(
-                "images must have shape (B, C, H, W), "
-                f"got {tuple(images.shape)}"
-            )
+            raise ValueError("images must have shape (B, C, H, W), " f"got {tuple(images.shape)}")
         b, c, h, w = images.shape
         if int(c) != self.in_channels or int(h) != self.image_size or int(w) != self.image_size:
             raise ValueError(
@@ -168,7 +161,11 @@ class ToyGAN(nn.Module):
             fake = self.sample(batch_size=int(batch_size), device=dev, labels=cond)
             fake_logits = self.discriminate(fake, labels=cond)
             assert cond is not None
-            return {"fake_images": fake, "fake_logits": fake_logits, "labels": cond.to(torch.float32)}
+            return {
+                "fake_images": fake,
+                "fake_logits": fake_logits,
+                "labels": cond.to(torch.float32),
+            }
         fake = self.sample(batch_size=int(batch_size), device=dev, labels=None)
         fake_logits = self.discriminate(fake, labels=None)
         return {"fake_images": fake, "fake_logits": fake_logits}
@@ -189,4 +186,3 @@ def smoke_test_gan(builder, variant: str) -> None:
     print(variant, shapes)
     assert "fake_images" in out and "fake_logits" in out
     print("ok")
-

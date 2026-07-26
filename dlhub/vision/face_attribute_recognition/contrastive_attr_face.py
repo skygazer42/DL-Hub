@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_face_attribute_recognizer, smoke_test_face_attribute_recognizer
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'contrastive_attr_face_tiny': {'width': 24, 'depth': 1}, 'contrastive_attr_face_small': {'width': 36, 'depth': 2}, 'contrastive_attr_face_base': {'width': 48, 'depth': 3}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "contrastive_attr_face_tiny": {"width": 24, "depth": 1},
+    "contrastive_attr_face_small": {"width": 36, "depth": 2},
+    "contrastive_attr_face_base": {"width": 48, "depth": 3},
+}
 
 
 def build_contrastive_attr_face_attribute_recognizer(
     *,
     in_channels: int,
-    variant: str = 'contrastive_attr_face_small',
+    variant: str = "contrastive_attr_face_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_face_attribute_recognizer(
-        family='contrastive_attr_face',
-        mode='contrastive',
+        family="contrastive_attr_face",
+        mode="contrastive",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,6 @@ def build_contrastive_attr_face_attribute_recognizer(
 
 
 if __name__ == "__main__":
-    smoke_test_face_attribute_recognizer(build_contrastive_attr_face_attribute_recognizer, 'contrastive_attr_face_tiny')
+    smoke_test_face_attribute_recognizer(
+        build_contrastive_attr_face_attribute_recognizer, "contrastive_attr_face_tiny"
+    )

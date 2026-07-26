@@ -4,9 +4,7 @@ import torch
 from torch import nn
 
 from ._common import (
-    SegmentPooler,
     TemporalAttentionScorer,
-    TemporalGRUScorer,
     TinyFrameEncoder,
     scores_to_mask,
 )
@@ -27,7 +25,12 @@ class SumformerVideoSummarizer(nn.Module):
             depth=int(depth),
             dropout=float(dropout),
         )
-        self.scorer = TemporalAttentionScorer(dim=int(self.encoder.out_dim), heads=4, depth=max(1, int(depth) - 1), dropout=float(dropout))
+        self.scorer = TemporalAttentionScorer(
+            dim=int(self.encoder.out_dim),
+            heads=4,
+            depth=max(1, int(depth) - 1),
+            dropout=float(dropout),
+        )
 
     def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(video)
@@ -60,7 +63,9 @@ if __name__ == "__main__":
     x = torch.randn(2, 8, 3, 32, 32)
     m = build_sumformer_video_summarizer(in_channels=3, variant="sumformer_tiny", width_mult=0.5)
     out = m(x)
-    print("sumformer_tiny", {k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
+    print(
+        "sumformer_tiny", {k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)}
+    )
     loss = sum(v.mean() for v in out.values() if isinstance(v, torch.Tensor))
     loss.backward()
     print("ok")

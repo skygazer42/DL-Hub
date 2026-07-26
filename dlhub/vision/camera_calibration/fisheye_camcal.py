@@ -30,4 +30,3 @@ def build_fisheye_camcal_camera_calibrator(
 
 if __name__ == "__main__":
     smoke_test_camera_calibrator(build_fisheye_camcal_camera_calibrator, "fisheye_camcal_tiny")
-

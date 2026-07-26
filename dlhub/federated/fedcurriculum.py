@@ -51,4 +51,3 @@ def build_fedcurriculum_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedcurriculum_strategy, "fedcurriculum_tiny")
-

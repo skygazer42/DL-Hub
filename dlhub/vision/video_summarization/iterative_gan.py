@@ -25,7 +25,9 @@ class IterativeGANVideoSummarizer(nn.Module):
         )
         dim = int(self.encoder.out_dim)
         hidden = max(32, dim // 2)
-        self.selector = TemporalGRUScorer(dim=dim, hidden_dim=hidden, layers=1, dropout=float(dropout))
+        self.selector = TemporalGRUScorer(
+            dim=dim, hidden_dim=hidden, layers=1, dropout=float(dropout)
+        )
         self.refiner = nn.Sequential(
             nn.Linear(dim + 1, hidden),
             nn.ReLU(inplace=True),
@@ -46,11 +48,17 @@ class IterativeGANVideoSummarizer(nn.Module):
     def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(video)
         init_scores = torch.sigmoid(self.selector(feat))
-        refined_logits = self.refiner(torch.cat([feat, init_scores.unsqueeze(-1)], dim=-1)).squeeze(-1)
-        scores = torch.sigmoid(0.6 * refined_logits + 0.4 * torch.logit(init_scores.clamp(1e-4, 1 - 1e-4)))
+        refined_logits = self.refiner(torch.cat([feat, init_scores.unsqueeze(-1)], dim=-1)).squeeze(
+            -1
+        )
+        scores = torch.sigmoid(
+            0.6 * refined_logits + 0.4 * torch.logit(init_scores.clamp(1e-4, 1 - 1e-4))
+        )
         summary_mask = scores_to_mask(scores)
 
-        summary_vec = (feat * scores.unsqueeze(-1)).sum(dim=1) / scores.sum(dim=1, keepdim=True).clamp_min(1e-6)
+        summary_vec = (feat * scores.unsqueeze(-1)).sum(dim=1) / scores.sum(
+            dim=1, keepdim=True
+        ).clamp_min(1e-6)
         recon = self.reconstruct(summary_vec)
         target = feat.mean(dim=1)
         recon_gap = (recon - target).pow(2).mean(dim=-1, keepdim=True)
@@ -97,7 +105,9 @@ if __name__ == "__main__":
         width_mult=0.5,
     )
     out = m(x)
-    print("iterative_gan_tiny", tuple(out["scores"].shape), tuple(out["discriminator_logits"].shape))
+    print(
+        "iterative_gan_tiny", tuple(out["scores"].shape), tuple(out["discriminator_logits"].shape)
+    )
     loss = out["scores"].mean() + out["reconstruction_gap"].mean()
     loss.backward()
     print("ok")

@@ -5,9 +5,27 @@ from torch import nn
 from ._common import build_scene_flow_estimator, smoke_test_scene_flow_estimator
 
 _VARIANTS: dict[str, dict[str, int | float]] = {
-    "transformer_flow3d_tiny": {"width": 64, "depth": 4, "hidden_mult": 4, "refine_steps": 2, "delta_scale": 0.9},
-    "transformer_flow3d_small": {"width": 96, "depth": 5, "hidden_mult": 4, "refine_steps": 3, "delta_scale": 0.95},
-    "transformer_flow3d_base": {"width": 128, "depth": 6, "hidden_mult": 4, "refine_steps": 3, "delta_scale": 1.0},
+    "transformer_flow3d_tiny": {
+        "width": 64,
+        "depth": 4,
+        "hidden_mult": 4,
+        "refine_steps": 2,
+        "delta_scale": 0.9,
+    },
+    "transformer_flow3d_small": {
+        "width": 96,
+        "depth": 5,
+        "hidden_mult": 4,
+        "refine_steps": 3,
+        "delta_scale": 0.95,
+    },
+    "transformer_flow3d_base": {
+        "width": 128,
+        "depth": 6,
+        "hidden_mult": 4,
+        "refine_steps": 3,
+        "delta_scale": 1.0,
+    },
 }
 
 

@@ -36,7 +36,9 @@ class TACSUMVideoSummarizer(nn.Module):
         norm_feat = feat / feat.norm(dim=-1, keepdim=True).clamp_min(1e-6)
 
         num_proto = max(2, min(4, int(t)))
-        proto_idx = torch.linspace(0, int(t) - 1, steps=num_proto, device=feat.device).round().long()
+        proto_idx = (
+            torch.linspace(0, int(t) - 1, steps=num_proto, device=feat.device).round().long()
+        )
         prototypes = norm_feat[:, proto_idx]  # (B,P,D)
         affinity = torch.einsum("btd,bpd->btp", norm_feat, prototypes).amax(dim=-1)
 
@@ -88,4 +90,3 @@ if __name__ == "__main__":
     loss = out["scores"].mean() + out["prototype_affinity"].mean()
     loss.backward()
     print("ok")
-

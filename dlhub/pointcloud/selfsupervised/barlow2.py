@@ -213,4 +213,3 @@ if __name__ == "__main__":
     loss = barlow_twins_loss(o1["z"], o2["z"], lambda_offdiag=0.005)
     loss.backward()
     print("ok", float(loss.item()))
-

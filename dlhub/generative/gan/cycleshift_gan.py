@@ -39,5 +39,3 @@ def build_cycleshift_gan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_cycleshift_gan_gan, "cycleshift_gan_tiny")
-
-

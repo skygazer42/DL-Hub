@@ -173,5 +173,3 @@ if __name__ == "__main__":
     loss = nt_xent_loss(out1["z"], out2["z"], temperature=0.2)
     loss.backward()
     print("ok", float(loss.item()))
-
-

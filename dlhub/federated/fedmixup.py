@@ -51,4 +51,3 @@ def build_fedmixup_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedmixup_strategy, "fedmixup_tiny")
-

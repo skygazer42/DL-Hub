@@ -12,7 +12,10 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 def build_audio_bert_understanding_audio_text_model(
-    *, in_channels: int = 1, variant: str = "audio_bert_understanding_small", width_mult: float = 1.0
+    *,
+    in_channels: int = 1,
+    variant: str = "audio_bert_understanding_small",
+    width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_atu(
         family="audio_bert_understanding",

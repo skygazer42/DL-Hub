@@ -61,7 +61,9 @@ class LaneATTLaneDetector(nn.Module):
         mixed, _ = self.token_mixer(tokens, tokens, tokens, need_weights=False)
         tokens = self.norm(tokens + mixed)
         cls_logits = self.cls_head(tokens).squeeze(-1)
-        curve_points = torch.tanh(self.curve_head(tokens)).view(b, self.num_anchors, self.num_points, 2)
+        curve_points = torch.tanh(self.curve_head(tokens)).view(
+            b, self.num_anchors, self.num_points, 2
+        )
         return {
             "anchor_embeddings": tokens,
             "cls_logits": cls_logits,
@@ -93,9 +95,7 @@ def build_laneatt_lane_detector(
     del num_lanes, image_size, num_rows, grid_size, num_queries
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown LaneATT variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown LaneATT variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
 
     spec = _VARIANTS[name]
     stem = scaled_channels(int(spec["stem"]), float(width_mult))

@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ["direct_illum", "shading_illum", "retinex_illum", "intrinsic_illum", "transformer_illum", "prompt_illum", "dual_illum", "coarse_illum", "color_illum", "mamba_illum"]
+_FAMILIES = [
+    "direct_illum",
+    "shading_illum",
+    "retinex_illum",
+    "intrinsic_illum",
+    "transformer_illum",
+    "prompt_illum",
+    "dual_illum",
+    "coarse_illum",
+    "color_illum",
+    "mamba_illum",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -43,7 +54,11 @@ def _registry() -> dict[str, Builder]:
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
                 module = importlib.import_module(f"dlhub.vision.illumination_estimation.{family}")
                 fn = getattr(module, f"build_{family}_illumination_estimator")
-                return fn(in_channels=int(cfg.in_channels), variant=str(variant), width_mult=float(cfg.width_mult))
+                return fn(
+                    in_channels=int(cfg.in_channels),
+                    variant=str(variant),
+                    width_mult=float(cfg.width_mult),
+                )
 
             registry[variant] = _builder
     return registry
@@ -61,10 +76,14 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"illumination_estimation", "illumination"}:
         prefix = "illum"
     if prefix not in {"illum", "local"}:
-        raise ValueError(f"Unsupported illumination estimation prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported illumination estimation prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
-        raise UnknownLocalArch(f"Unknown illumination estimation arch: {arch_id!r}. Tip: import `dlhub.vision.illumination_estimation_zoo` and call `list_local_arches()`.")
+        raise UnknownLocalArch(
+            f"Unknown illumination estimation arch: {arch_id!r}. Tip: import `dlhub.vision.illumination_estimation_zoo` and call `list_local_arches()`."
+        )
     return builder(BuildConfig(in_channels=int(in_channels), width_mult=float(width_mult)))
 
 

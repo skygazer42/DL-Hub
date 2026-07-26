@@ -39,7 +39,9 @@ class TinyAudioTextUnderstandingModel(nn.Module):
         self.fusion = nn.Linear(int(width), int(width))
         self.classifier = nn.Linear(int(width), 4)
 
-    def forward(self, audio: torch.Tensor, text: torch.Tensor | None = None) -> dict[str, torch.Tensor]:
+    def forward(
+        self, audio: torch.Tensor, text: torch.Tensor | None = None
+    ) -> dict[str, torch.Tensor]:
         clip = check_audio(audio)
         audio_embedding = self.audio_pool(self.audio_encoder(clip)).flatten(1)
 

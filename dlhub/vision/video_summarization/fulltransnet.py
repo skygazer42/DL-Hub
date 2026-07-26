@@ -114,4 +114,3 @@ if __name__ == "__main__":
     loss = out["scores"].mean() + out["decoder_tokens"].mean()
     loss.backward()
     print("ok")
-

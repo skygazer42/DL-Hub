@@ -37,4 +37,3 @@ def build_mini_diffusion_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_mini_diffusion_diffusion, "mini_diffusion_tiny")
-

@@ -161,7 +161,9 @@ def build_mobile_panoptic_segmenter(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown MobilePanoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown MobilePanoptic variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
 
     def sc(v: int, *, min_ch: int = 16) -> int:
@@ -212,4 +214,3 @@ if __name__ == "__main__":
     )
     loss.backward()
     print("ok")
-

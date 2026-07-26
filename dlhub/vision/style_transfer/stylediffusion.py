@@ -57,7 +57,10 @@ class StyleDiffusionDenoiser(nn.Module):
         d = max(1, int(depth))
         self.in_proj = _conv_norm_act(c, w, kernel=3, stride=1, norm="gn")
         self.blocks = nn.ModuleList(
-            [_CondResBlock(channels=w, cond_dim=int(cond_dim), dropout=float(dropout)) for _ in range(d)]
+            [
+                _CondResBlock(channels=w, cond_dim=int(cond_dim), dropout=float(dropout))
+                for _ in range(d)
+            ]
         )
         self.out_proj = nn.Conv2d(w, c, kernel_size=3, padding=1)
 
@@ -126,7 +129,9 @@ class StyleDiffusionStyleTransfer(nn.Module):
         self.steps = int(max(1, steps))
         self.strength = float(strength)
 
-    def _sample(self, x0: torch.Tensor, style_code: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def _sample(
+        self, x0: torch.Tensor, style_code: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         bsz = int(x0.shape[0])
         noise = torch.randn_like(x0) * float(self.strength)
         x = x0 + noise
@@ -195,4 +200,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["latent"].mean() + out["noise_mean_abs"]
     loss.backward()
     print("ok")
-

@@ -51,4 +51,3 @@ def build_fedgsa_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedgsa_strategy, "fedgsa_tiny")
-

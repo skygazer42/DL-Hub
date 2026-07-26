@@ -34,4 +34,3 @@ def build_quickmap_bev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_quickmap_bev_track_tracker3d, "quickmap_bev_track_tiny")
-

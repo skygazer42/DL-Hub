@@ -41,4 +41,3 @@ def build_mobilevlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_mobilevlm_vlm, "mobilevlm_tiny")
-

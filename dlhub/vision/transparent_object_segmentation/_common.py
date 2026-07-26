@@ -49,7 +49,9 @@ class ToyTransparentSegmenter(nn.Module):
         feat = self.encoder(x)
         logits = self.mask_head(feat)
         alpha = torch.sigmoid(self.alpha_head(feat))
-        boundary = torch.sigmoid(torch.abs(logits - F.avg_pool2d(logits, kernel_size=3, stride=1, padding=1)))
+        boundary = torch.sigmoid(
+            torch.abs(logits - F.avg_pool2d(logits, kernel_size=3, stride=1, padding=1))
+        )
         refraction = torch.tanh(self.refraction_head(feat))
         mask = torch.sigmoid(logits)
         composite = torch.clamp(x + 0.1 * refraction * alpha, 0.0, 1.0)

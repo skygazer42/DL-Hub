@@ -63,12 +63,16 @@ class CoSalUFormer(nn.Module):
         g3 = unflatten_group(c3, batch=b, set_size=t)
         g3, _ = self.fuse3(g3)
 
-        up3 = F.interpolate(flatten_group(g3), size=c2.shape[-2:], mode="bilinear", align_corners=False)
+        up3 = F.interpolate(
+            flatten_group(g3), size=c2.shape[-2:], mode="bilinear", align_corners=False
+        )
         d2 = self.decode2(torch.cat([c2, up3], dim=1))
         gd2 = unflatten_group(d2, batch=b, set_size=t)
         gd2, _ = self.fuse2(gd2)
 
-        up2 = F.interpolate(flatten_group(gd2), size=c1.shape[-2:], mode="bilinear", align_corners=False)
+        up2 = F.interpolate(
+            flatten_group(gd2), size=c1.shape[-2:], mode="bilinear", align_corners=False
+        )
         d1 = self.decode1(torch.cat([c1, up2], dim=1))
         logits = self.head(unflatten_group(d1, batch=b, set_size=t), out_hw=(h, w))
         masks = logits_to_masks(logits)
@@ -93,7 +97,9 @@ def build_cosal_uformer_co_segmentor(
     del set_size, image_size
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown CoSal-UFormer variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown CoSal-UFormer variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return CoSalUFormer(

@@ -34,4 +34,3 @@ def build_minipower_bev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_minipower_bev_track_tracker3d, "minipower_bev_track_tiny")
-

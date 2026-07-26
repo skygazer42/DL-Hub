@@ -163,4 +163,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["hint_latent_mean_abs"]
     loss.backward()
     print("ok")
-

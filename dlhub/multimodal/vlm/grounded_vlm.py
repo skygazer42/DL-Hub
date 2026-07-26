@@ -41,4 +41,3 @@ def build_grounded_vlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_grounded_vlm_vlm, "grounded_vlm_tiny")
-

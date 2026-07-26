@@ -51,7 +51,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.multimodal.audio_text_understanding.{family}")
+                module = importlib.import_module(
+                    f"dlhub.multimodal.audio_text_understanding.{family}"
+                )
                 fn = getattr(module, f"build_{family}_audio_text_model")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -73,7 +75,9 @@ def list_local_arches() -> list[str]:
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix_name, name = _split_arch_id(arch_id)
     if prefix_name not in {"atu", "local"}:
-        raise ValueError(f"Unsupported audio-text understanding prefix: {prefix_name!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported audio-text understanding prefix: {prefix_name!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

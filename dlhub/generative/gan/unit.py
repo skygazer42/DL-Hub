@@ -39,4 +39,3 @@ def build_unit_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_unit_gan, "unit_tiny")
-

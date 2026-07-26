@@ -13,7 +13,15 @@ _VARIANTS: dict[str, dict[str, int]] = {
 class DsvtDetector3D(nn.Module):
     """Toy query-based 3D detector for the dsvt family."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, d_model: int, num_queries: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        d_model: int,
+        num_queries: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.det = PointQueryDetector3D(
             in_channels=int(in_channels),

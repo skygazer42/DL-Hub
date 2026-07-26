@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cnn_thumb_contact', 'region_thumb_contact', 'attention_thumb_contact', 'skeleton_thumb_contact', 'transformer_thumb_contact', 'prompt_thumb_contact', 'contrastive_thumb_contact', 'graph_thumb_contact', 'efficient_thumb_contact', 'mamba_thumb_contact']
+_FAMILIES = [
+    "cnn_thumb_contact",
+    "region_thumb_contact",
+    "attention_thumb_contact",
+    "skeleton_thumb_contact",
+    "transformer_thumb_contact",
+    "prompt_thumb_contact",
+    "contrastive_thumb_contact",
+    "graph_thumb_contact",
+    "efficient_thumb_contact",
+    "mamba_thumb_contact",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'thumbcontact', arch_id
+        return "thumbcontact", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -41,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.thumb_contact_classification.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.thumb_contact_classification.{family}"
+                )
                 fn = getattr(module, f"build_{family}_thumb_contact_classifier")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -62,9 +75,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'thumb_contact_classification', 'thumb_contact'}:
-        prefix = 'thumbcontact'
-    if prefix not in {'thumbcontact', "local"}:
+    if prefix in {"thumb_contact_classification", "thumb_contact"}:
+        prefix = "thumbcontact"
+    if prefix not in {"thumbcontact", "local"}:
         raise ValueError(
             f"Unsupported thumb contact classification prefix: {prefix!r} (arch_id={arch_id!r})"
         )

@@ -41,4 +41,3 @@ def build_kosmos25_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_kosmos25_vlm, "kosmos25_tiny")
-

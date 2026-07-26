@@ -5,7 +5,9 @@ from torch import nn
 
 
 class ToyReasoner(nn.Module):
-    def __init__(self, *, family: str, in_channels: int, width: int, depth: int, reasoning_steps: int):
+    def __init__(
+        self, *, family: str, in_channels: int, width: int, depth: int, reasoning_steps: int
+    ):
         super().__init__()
         self.family = str(family)
         c = int(width)

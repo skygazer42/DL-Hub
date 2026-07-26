@@ -76,7 +76,9 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"image_moire_removal", "moire_removal"}:
         prefix = "moire"
     if prefix not in {"moire", "local"}:
-        raise ValueError(f"Unsupported image moire removal prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported image moire removal prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

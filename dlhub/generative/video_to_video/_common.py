@@ -16,9 +16,14 @@ class ToyVideoToVideo(nn.Module):
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
-        layers = [nn.Conv3d(int(in_channels), int(width), kernel_size=3, padding=1), nn.ReLU(inplace=True)]
+        layers = [
+            nn.Conv3d(int(in_channels), int(width), kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+        ]
         for _ in range(max(0, int(depth) - 1)):
-            layers.extend([nn.Conv3d(int(width), int(width), kernel_size=3, padding=1), nn.ReLU(inplace=True)])
+            layers.extend(
+                [nn.Conv3d(int(width), int(width), kernel_size=3, padding=1), nn.ReLU(inplace=True)]
+            )
         self.encoder = nn.Sequential(*layers)
         self.residual_head = nn.Conv3d(int(width), int(in_channels), kernel_size=3, padding=1)
         self.mix_head = nn.Conv3d(int(width), int(in_channels), kernel_size=1)

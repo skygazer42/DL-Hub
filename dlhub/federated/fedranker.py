@@ -51,4 +51,3 @@ def build_fedranker_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedranker_strategy, "fedranker_tiny")
-

@@ -40,4 +40,3 @@ def build_granule_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_granule_fgvc_fgvc_classifier, "granule_fgvc_tiny")
-

@@ -68,13 +68,20 @@ class MaskFPANFaceParser(nn.Module):
                 align_corners=False,
             )
         )
-        uv_proxy = F.interpolate(self.uv_head(c3), size=inp_hw, mode="bilinear", align_corners=False)
+        uv_proxy = F.interpolate(
+            self.uv_head(c3), size=inp_hw, mode="bilinear", align_corners=False
+        )
 
         deocc_feat = c3 + self.deocc(c3)
-        deocc_gate = 1.0 - F.interpolate(occlusion_mask, size=c3.shape[-2:], mode="bilinear", align_corners=False)
+        deocc_gate = 1.0 - F.interpolate(
+            occlusion_mask, size=c3.shape[-2:], mode="bilinear", align_corners=False
+        )
         fused_high = torch.cat([c3, deocc_feat * deocc_gate], dim=1)
         fused_high = torch.cat(
-            [fused_high, F.interpolate(c2, size=c3.shape[-2:], mode="bilinear", align_corners=False)],
+            [
+                fused_high,
+                F.interpolate(c2, size=c3.shape[-2:], mode="bilinear", align_corners=False),
+            ],
             dim=1,
         )
         logits = self.head(fused_high, out_hw=inp_hw)

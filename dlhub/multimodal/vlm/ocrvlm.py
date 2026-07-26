@@ -41,4 +41,3 @@ def build_ocrvlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_ocrvlm_vlm, "ocrvlm_tiny")
-

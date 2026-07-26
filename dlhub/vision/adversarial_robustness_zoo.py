@@ -76,7 +76,9 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"adv", "robust"}:
         prefix = "advrob"
     if prefix not in {"advrob", "local"}:
-        raise ValueError(f"Unsupported adversarial robustness prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported adversarial robustness prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

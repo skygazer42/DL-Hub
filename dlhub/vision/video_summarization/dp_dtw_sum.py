@@ -49,11 +49,17 @@ class DPDTWSumVideoSummarizer(nn.Module):
 
         temporal_cost = torch.zeros(int(b), int(t), device=feat.device, dtype=feat.dtype)
         if int(t) > 1:
-            temporal_cost[:, 1:] = (aligned_proto[:, 1:] - aligned_proto[:, :-1]).pow(2).mean(dim=-1).sqrt()
+            temporal_cost[:, 1:] = (
+                (aligned_proto[:, 1:] - aligned_proto[:, :-1]).pow(2).mean(dim=-1).sqrt()
+            )
 
         best_proto_score = proto_affinity.amax(dim=-1, keepdim=True)
-        raw_scores = self.head(torch.cat([feat, aligned_proto, best_proto_score], dim=-1)).squeeze(-1)
-        scores = torch.sigmoid(raw_scores + 0.30 * proto_affinity.amax(dim=-1) - 0.15 * temporal_cost)
+        raw_scores = self.head(torch.cat([feat, aligned_proto, best_proto_score], dim=-1)).squeeze(
+            -1
+        )
+        scores = torch.sigmoid(
+            raw_scores + 0.30 * proto_affinity.amax(dim=-1) - 0.15 * temporal_cost
+        )
         summary_mask = scores_to_mask(scores)
         return {
             "scores": scores,
@@ -75,9 +81,7 @@ def build_dp_dtw_sum_video_summarizer(
     del seq_len, image_size
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown DP-DTW-SUM variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown DP-DTW-SUM variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return DPDTWSumVideoSummarizer(

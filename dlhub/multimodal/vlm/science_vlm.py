@@ -41,4 +41,3 @@ def build_science_vlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_science_vlm_vlm, "science_vlm_tiny")
-

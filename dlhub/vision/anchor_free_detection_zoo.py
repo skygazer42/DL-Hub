@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['center_anchorfree', 'fcos_anchorfree', 'corner_anchorfree', 'yolo_anchorfree', 'query_anchorfree', 'transformer_anchorfree', 'prompt_anchorfree', 'pyramid_anchorfree', 'cascade_anchorfree', 'mamba_anchorfree']
+_FAMILIES = [
+    "center_anchorfree",
+    "fcos_anchorfree",
+    "corner_anchorfree",
+    "yolo_anchorfree",
+    "query_anchorfree",
+    "transformer_anchorfree",
+    "prompt_anchorfree",
+    "pyramid_anchorfree",
+    "cascade_anchorfree",
+    "mamba_anchorfree",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'afdet', arch_id
+        return "afdet", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'anchor_free_detection', 'anchorfree'}:
-        prefix = 'afdet'
-    if prefix not in {'afdet', "local"}:
+    if prefix in {"anchor_free_detection", "anchorfree"}:
+        prefix = "afdet"
+    if prefix not in {"afdet", "local"}:
         raise ValueError(
             f"Unsupported anchor free detection prefix: {prefix!r} (arch_id={arch_id!r})"
         )

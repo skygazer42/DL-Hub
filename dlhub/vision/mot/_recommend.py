@@ -201,7 +201,9 @@ def _family_year_bonus(year: int | None, *, modern_bias: float) -> float:
     return float(modern_bias) * span
 
 
-def _score_family(spec: ProfileSpec, *, family: str, group: str, year: int | None) -> tuple[float, str]:
+def _score_family(
+    spec: ProfileSpec, *, family: str, group: str, year: int | None
+) -> tuple[float, str]:
     score = 0.0
     reasons: list[str] = []
 

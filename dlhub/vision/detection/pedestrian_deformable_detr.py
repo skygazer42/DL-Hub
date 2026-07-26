@@ -34,4 +34,3 @@ if __name__ == "__main__":
         builder=build_pedestrian_deformable_detr_detector,
         variant="pedestrian_deformable_detr",
     )
-

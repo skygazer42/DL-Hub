@@ -41,4 +41,3 @@ def build_evo_vl_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_evo_vl_vlm, "evo_vl_tiny")
-

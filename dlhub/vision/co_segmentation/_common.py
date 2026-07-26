@@ -59,7 +59,9 @@ class TinyCoSegEncoder(nn.Module):
 
     @staticmethod
     def _stage(in_ch: int, out_ch: int, *, depth: int, dropout: float) -> nn.Sequential:
-        layers: list[nn.Module] = [ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=2, act="relu")]
+        layers: list[nn.Module] = [
+            ConvBNAct(int(in_ch), int(out_ch), kernel_size=3, stride=2, act="relu")
+        ]
         for _ in range(max(1, int(depth)) - 1):
             layers.append(ConvBNAct(int(out_ch), int(out_ch), kernel_size=3, stride=1, act="relu"))
             if float(dropout) > 0:
@@ -99,9 +101,13 @@ class GroupFusionBlock(nn.Module):
             self.proto_proj = nn.Linear(c, c)
         self.mix = ConvBNAct(c * 2, c, kernel_size=3, stride=1, act="relu")
 
-    def forward(self, feat: torch.Tensor) -> tuple[torch.Tensor, dict[str, torch.Tensor | tuple[torch.Tensor, ...]]]:
+    def forward(
+        self, feat: torch.Tensor
+    ) -> tuple[torch.Tensor, dict[str, torch.Tensor | tuple[torch.Tensor, ...]]]:
         if feat.ndim != 5:
-            raise ValueError(f"Expected grouped feature map (B, T, C, H, W), got {tuple(feat.shape)}")
+            raise ValueError(
+                f"Expected grouped feature map (B, T, C, H, W), got {tuple(feat.shape)}"
+            )
         b, t, c, h, w = feat.shape
         desc = feat.mean(dim=(-1, -2))
         aux: dict[str, torch.Tensor | tuple[torch.Tensor, ...]] = {}
@@ -123,7 +129,9 @@ class GroupFusionBlock(nn.Module):
             proto = torch.einsum("btp,btc->bpc", weights, desc)
             denom = weights.sum(dim=1).transpose(1, 0).transpose(0, 1).unsqueeze(-1)
             proto = proto / denom.clamp_min(1e-6)
-            bridge = torch.matmul(self.proto_proj(desc), proto.transpose(-1, -2)) / math.sqrt(max(1, c))
+            bridge = torch.matmul(self.proto_proj(desc), proto.transpose(-1, -2)) / math.sqrt(
+                max(1, c)
+            )
             bridge = torch.softmax(bridge, dim=-1)
             context = torch.matmul(bridge, proto)
             aux["group_tokens"] = proto
@@ -142,7 +150,9 @@ class GroupFusionBlock(nn.Module):
 
 
 class CoSegHead(nn.Module):
-    def __init__(self, *, in_channels: int, hidden_channels: int, num_classes: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, hidden_channels: int, num_classes: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.net = nn.Sequential(
             ConvBNAct(int(in_channels), int(hidden_channels), kernel_size=3, stride=1, act="relu"),
@@ -160,7 +170,9 @@ class CoSegHead(nn.Module):
             grouped = False
             b = t = 0
         else:
-            raise ValueError(f"Expected feature shape (B, T, C, H, W) or (N, C, H, W), got {tuple(feat.shape)}")
+            raise ValueError(
+                f"Expected feature shape (B, T, C, H, W) or (N, C, H, W), got {tuple(feat.shape)}"
+            )
         logits = self.net(flat)
         logits = F.interpolate(logits, size=out_hw, mode="bilinear", align_corners=False)
         if grouped:

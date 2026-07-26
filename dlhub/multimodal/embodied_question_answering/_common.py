@@ -70,7 +70,9 @@ class TinyEmbodiedQAModel(nn.Module):
         route_state = trajectory[:, -1]
 
         if question is None:
-            question = torch.zeros(batch, self.question_dim, dtype=route_state.dtype, device=route_state.device)
+            question = torch.zeros(
+                batch, self.question_dim, dtype=route_state.dtype, device=route_state.device
+            )
         else:
             question = question.to(torch.float32)
         question_state = self.question_encoder(question)

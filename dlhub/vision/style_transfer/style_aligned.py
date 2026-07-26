@@ -82,7 +82,9 @@ class StyleAlignedDenoiser(nn.Module):
         self.time = _TimeToChannels(c)
         self.blocks = nn.ModuleList(
             [
-                _StyleAlignedBlock(dim=c, num_heads=int(num_heads), mlp_ratio=2.0, dropout=float(dropout))
+                _StyleAlignedBlock(
+                    dim=c, num_heads=int(num_heads), mlp_ratio=2.0, dropout=float(dropout)
+                )
                 for _ in range(max(1, int(num_layers)))
             ]
         )
@@ -227,4 +229,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean()
     loss.backward()
     print("ok")
-

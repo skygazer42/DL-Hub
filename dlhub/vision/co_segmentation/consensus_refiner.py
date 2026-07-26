@@ -69,7 +69,9 @@ class ConsensusRefiner(nn.Module):
         g3 = unflatten_group(c3, batch=b, set_size=t)
 
         coarse_logits = self.coarse_head(g3, out_hw=(h, w))
-        consensus = torch.softmax(coarse_logits, dim=2).mean(dim=1, keepdim=True).expand(-1, t, -1, -1, -1)
+        consensus = (
+            torch.softmax(coarse_logits, dim=2).mean(dim=1, keepdim=True).expand(-1, t, -1, -1, -1)
+        )
         consensus_low = F.interpolate(
             consensus.reshape(b * t, self.num_classes, h, w),
             size=c3.shape[-2:],

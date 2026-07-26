@@ -38,7 +38,9 @@ class CUTStyleTransfer(nn.Module):
             dropout=float(dropout),
         )
 
-    def forward(self, content: torch.Tensor, style: torch.Tensor | None = None) -> dict[str, torch.Tensor]:
+    def forward(
+        self, content: torch.Tensor, style: torch.Tensor | None = None
+    ) -> dict[str, torch.Tensor]:
         _ = style
         fake = self.g(content)
         logits = self.d(fake)

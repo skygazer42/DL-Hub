@@ -51,4 +51,3 @@ def build_fedprior_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedprior_strategy, "fedprior_tiny")
-

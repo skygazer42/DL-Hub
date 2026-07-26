@@ -30,4 +30,3 @@ def build_tophat_irstd_irstd_detector(
 
 if __name__ == "__main__":
     smoke_test_irstd_detector(build_tophat_irstd_irstd_detector, "tophat_irstd_tiny")
-

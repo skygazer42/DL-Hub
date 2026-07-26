@@ -113,4 +113,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["attn_strength"]
     loss.backward()
     print("ok")
-

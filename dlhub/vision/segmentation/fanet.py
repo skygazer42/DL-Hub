@@ -110,12 +110,9 @@ def build_fanet_segmenter(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_fanet_segmenter(
-        in_channels=3, num_classes=4, variant="fanet_tiny", width_mult=0.5
-    )
+    m = build_fanet_segmenter(in_channels=3, num_classes=4, variant="fanet_tiny", width_mult=0.5)
     y = m(x)
     print("fanet_tiny", tuple(y.shape))
     loss = y.mean()
     loss.backward()
     print("ok")
-

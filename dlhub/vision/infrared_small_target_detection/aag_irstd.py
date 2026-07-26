@@ -30,4 +30,3 @@ def build_aag_irstd_irstd_detector(
 
 if __name__ == "__main__":
     smoke_test_irstd_detector(build_aag_irstd_irstd_detector, "aag_irstd_tiny")
-

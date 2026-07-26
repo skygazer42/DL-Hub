@@ -51,4 +51,3 @@ def build_fedgen_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fedgen_strategy, "fedgen_tiny")
-

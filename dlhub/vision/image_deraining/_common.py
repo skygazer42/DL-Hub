@@ -84,7 +84,10 @@ class TinyDerainer(nn.Module):
         self.encoder = nn.Conv2d(int(in_channels), int(width), kernel_size=3, padding=1)
         self.guide = nn.Conv2d(int(in_channels), int(width), kernel_size=1)
         self.blocks = nn.ModuleList(
-            [TinyDerainBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))]
+            [
+                TinyDerainBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
         )
         self.decoder = nn.Sequential(
             nn.Conv2d(int(width), int(width), kernel_size=3, padding=1),
@@ -124,7 +127,9 @@ def build_toy_derainer(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(12, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])

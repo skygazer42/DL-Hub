@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['direct_finger_curvature', 'heatmap_finger_curvature', 'graph_finger_curvature', 'transformer_finger_curvature', 'prompt_finger_curvature', 'coarse_to_fine_finger_curvature', 'multiview_finger_curvature', 'region_finger_curvature', 'uncertainty_finger_curvature', 'mamba_finger_curvature']
+_FAMILIES = [
+    "direct_finger_curvature",
+    "heatmap_finger_curvature",
+    "graph_finger_curvature",
+    "transformer_finger_curvature",
+    "prompt_finger_curvature",
+    "coarse_to_fine_finger_curvature",
+    "multiview_finger_curvature",
+    "region_finger_curvature",
+    "uncertainty_finger_curvature",
+    "mamba_finger_curvature",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'fcurv', arch_id
+        return "fcurv", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -41,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.finger_curvature_estimation.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.finger_curvature_estimation.{family}"
+                )
                 fn = getattr(module, f"build_{family}_finger_curvature_estimator")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -62,9 +75,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'finger_curvature_estimation', 'finger_curvature'}:
-        prefix = 'fcurv'
-    if prefix not in {'fcurv', "local"}:
+    if prefix in {"finger_curvature_estimation", "finger_curvature"}:
+        prefix = "fcurv"
+    if prefix not in {"fcurv", "local"}:
         raise ValueError(
             f"Unsupported finger curvature estimation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

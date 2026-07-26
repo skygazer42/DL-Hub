@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "patch_upsample_base": {"width": 48, "depth": 3, "up_factor": 4},
 }
 
-def build_patch_upsample_upsampler(*, in_channels: int, variant: str = "patch_upsample_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_upsampler(family="patch_upsample", mode="patch", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_patch_upsample_upsampler(
+    *, in_channels: int, variant: str = "patch_upsample_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_upsampler(
+        family="patch_upsample",
+        mode="patch",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_upsampler(build_patch_upsample_upsampler, "patch_upsample_tiny")

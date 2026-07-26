@@ -80,7 +80,13 @@ _PROFILES: dict[str, ProfileSpec] = {
         title="Fast Sampling",
         summary="Prefer deterministic or few-step samplers for quick experiments.",
         preferred_groups=("pixel_diffusion", "latent_diffusion", "flow_matching"),
-        preferred_families=("ddim", "consistency_model", "rectified_flow", "flow_matching", "stable_diffusion"),
+        preferred_families=(
+            "ddim",
+            "consistency_model",
+            "rectified_flow",
+            "flow_matching",
+            "stable_diffusion",
+        ),
         modern_bias=0.25,
     ),
 }
@@ -104,7 +110,9 @@ def _family_priority_bonus(spec: ProfileSpec, family: str) -> float:
     return max(0.0, 0.5 - 0.05 * float(rank))
 
 
-def _score_family(spec: ProfileSpec, *, family: str, group: str, year: int | None) -> tuple[float, str]:
+def _score_family(
+    spec: ProfileSpec, *, family: str, group: str, year: int | None
+) -> tuple[float, str]:
     score = 0.0
     reasons: list[str] = []
     if group in spec.preferred_groups:

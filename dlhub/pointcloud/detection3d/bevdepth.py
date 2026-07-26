@@ -13,7 +13,18 @@ _VARIANTS: dict[str, dict[str, int]] = {
 class BevdepthDetector3D(nn.Module):
     """Toy two-stage 3D detector for the bevdepth family."""
 
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, bev_h: int, bev_w: int, topk: int, roi_k: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self,
+        *,
+        in_channels: int,
+        num_classes: int,
+        width: int,
+        bev_h: int,
+        bev_w: int,
+        topk: int,
+        roi_k: int,
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
         self.det = BEVTwoStageDetector3D(
             in_channels=int(in_channels),

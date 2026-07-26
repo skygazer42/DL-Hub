@@ -40,4 +40,3 @@ def build_region_prompt_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_region_prompt_fgvc_fgvc_classifier, "region_prompt_fgvc_tiny")
-

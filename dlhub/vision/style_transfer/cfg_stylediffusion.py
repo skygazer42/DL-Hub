@@ -144,8 +144,9 @@ if __name__ == "__main__":
         guidance_scale=2.0,
     )
     out = m(x, s)
-    print("cfg_stylediffusion_tiny", tuple(out["stylized"].shape), float(out["guidance_scale"].item()))
+    print(
+        "cfg_stylediffusion_tiny", tuple(out["stylized"].shape), float(out["guidance_scale"].item())
+    )
     loss = out["stylized"].mean() + out["guidance_scale"]
     loss.backward()
     print("ok")
-

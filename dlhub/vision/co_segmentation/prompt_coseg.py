@@ -21,7 +21,9 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class PromptCoseg(nn.Module):
-    def __init__(self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0) -> None:
+    def __init__(
+        self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0
+    ) -> None:
         super().__init__()
         self.encoder = TinyCoSegEncoder(
             in_channels=int(in_channels),
@@ -84,9 +86,14 @@ def build_prompt_coseg_co_segmentor(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 3, 64, 64)
-    m = build_prompt_coseg_co_segmentor(in_channels=3, num_classes=2, variant="prompt_coseg_tiny", width_mult=0.5)
+    m = build_prompt_coseg_co_segmentor(
+        in_channels=3, num_classes=2, variant="prompt_coseg_tiny", width_mult=0.5
+    )
     out = m(x)
-    print("prompt_coseg_tiny", {k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
+    print(
+        "prompt_coseg_tiny",
+        {k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)},
+    )
     loss = sum(v.mean() for v in out.values() if isinstance(v, torch.Tensor))
     loss.backward()
     print("ok")

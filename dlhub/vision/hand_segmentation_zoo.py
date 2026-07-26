@@ -51,12 +51,8 @@ def _registry() -> dict[str, Builder]:
         for size in _SIZES:
             variant = f"{family}_{size}"
 
-            def _builder(
-                cfg: BuildConfig, family: str = family, variant: str = variant
-            ):
-                module = importlib.import_module(
-                    f"dlhub.vision.hand_segmentation.{family}"
-                )
+            def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
+                module = importlib.import_module(f"dlhub.vision.hand_segmentation.{family}")
                 fn = getattr(module, f"build_{family}_hand_segmentor")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -80,17 +76,13 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"hand_segmentation", "hand_segmentor"}:
         prefix = "handseg"
     if prefix not in {"handseg", "local"}:
-        raise ValueError(
-            f"Unsupported hand segmentation prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+        raise ValueError(f"Unsupported hand segmentation prefix: {prefix!r} (arch_id={arch_id!r})")
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(
             f"Unknown hand segmentation arch: {arch_id!r}. Tip: import `dlhub.vision.hand_segmentation_zoo` and call `list_local_arches()`."
         )
-    return builder(
-        BuildConfig(in_channels=int(in_channels), width_mult=float(width_mult))
-    )
+    return builder(BuildConfig(in_channels=int(in_channels), width_mult=float(width_mult)))
 
 
 __all__ = ["BuildConfig", "UnknownLocalArch", "build_local_model", "list_local_arches"]

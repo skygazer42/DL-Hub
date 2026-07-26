@@ -34,4 +34,3 @@ def build_ultralite_bev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_ultralite_bev_track_tracker3d, "ultralite_bev_track_tiny")
-

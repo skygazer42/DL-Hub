@@ -21,7 +21,9 @@ class TinyHomographyBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -49,11 +51,18 @@ class TinyHomographyEstimator(nn.Module):
         self.family = str(family)
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels) * 2, int(width), 3, padding=1)
-        self.blocks = nn.ModuleList([TinyHomographyBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [
+                TinyHomographyBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
         self.offset_head = nn.Linear(int(width), 8)
         self.conf_head = nn.Linear(int(width), 8)
 
-    def forward(self, image: torch.Tensor, reference: torch.Tensor | None = None) -> dict[str, torch.Tensor]:
+    def forward(
+        self, image: torch.Tensor, reference: torch.Tensor | None = None
+    ) -> dict[str, torch.Tensor]:
         image = check_nchw(image)
         if reference is None:
             reference = torch.roll(image, shifts=1, dims=-1)
@@ -65,7 +74,11 @@ class TinyHomographyEstimator(nn.Module):
         pooled = F.adaptive_avg_pool2d(feat, 1).flatten(1)
         offsets = 0.25 * torch.tanh(self.offset_head(pooled)).view(image.shape[0], 4, 2)
         confidence = torch.sigmoid(self.conf_head(pooled)).view(image.shape[0], 4, 2)
-        eye = torch.eye(3, device=image.device, dtype=image.dtype).unsqueeze(0).repeat(image.shape[0], 1, 1)
+        eye = (
+            torch.eye(3, device=image.device, dtype=image.dtype)
+            .unsqueeze(0)
+            .repeat(image.shape[0], 1, 1)
+        )
         homo = eye.clone()
         homo[:, 0, 0] = 1.0 + offsets[:, 0, 0]
         homo[:, 0, 1] = offsets[:, 1, 0]
@@ -78,14 +91,26 @@ class TinyHomographyEstimator(nn.Module):
         return {"offsets": offsets, "homography": homo, "confidence": confidence}
 
 
-def build_toy_homography_estimator(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_homography_estimator(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
-    return TinyHomographyEstimator(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth)
+    return TinyHomographyEstimator(
+        family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth
+    )
 
 
 def smoke_test_homography_estimator(builder, variant: str) -> None:

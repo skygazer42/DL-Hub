@@ -3,7 +3,6 @@ from torch import nn
 
 from ._common import (
     GlobalContextHead,
-    SpatialMessagePassing,
     TinyLaneEncoder,
     choose_attention_heads,
     scaled_channels,
@@ -84,9 +83,27 @@ class SparseLaneformerLaneDetector(nn.Module):
 
 
 _VARIANTS: dict[str, dict[str, int | float]] = {
-    "sparse_laneformer_tiny": {"stem": 16, "hidden": 32, "depth": 1, "token_dim": 32, "dropout": 0.0},
-    "sparse_laneformer_small": {"stem": 24, "hidden": 48, "depth": 2, "token_dim": 48, "dropout": 0.0},
-    "sparse_laneformer_base": {"stem": 32, "hidden": 64, "depth": 3, "token_dim": 64, "dropout": 0.1},
+    "sparse_laneformer_tiny": {
+        "stem": 16,
+        "hidden": 32,
+        "depth": 1,
+        "token_dim": 32,
+        "dropout": 0.0,
+    },
+    "sparse_laneformer_small": {
+        "stem": 24,
+        "hidden": 48,
+        "depth": 2,
+        "token_dim": 48,
+        "dropout": 0.0,
+    },
+    "sparse_laneformer_base": {
+        "stem": 32,
+        "hidden": 64,
+        "depth": 3,
+        "token_dim": 64,
+        "dropout": 0.1,
+    },
 }
 
 
@@ -125,7 +142,9 @@ def build_sparse_laneformer_lane_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
-    m = build_sparse_laneformer_lane_detector(in_channels=3, num_lanes=4, num_points=16, variant="sparse_laneformer_tiny")
+    m = build_sparse_laneformer_lane_detector(
+        in_channels=3, num_lanes=4, num_points=16, variant="sparse_laneformer_tiny"
+    )
     out = m(x)
     print("sparse_laneformer_tiny", {k: tuple(v.shape) for k, v in out.items()})
     loss = sum(v.mean() for v in out.values())

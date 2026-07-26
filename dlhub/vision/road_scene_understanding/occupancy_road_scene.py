@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_road_scene_model, smoke_test_road_scene_model
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'occupancy_road_scene_tiny': {'width': 24, 'depth': 1}, 'occupancy_road_scene_small': {'width': 36, 'depth': 2}, 'occupancy_road_scene_base': {'width': 48, 'depth': 3}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "occupancy_road_scene_tiny": {"width": 24, "depth": 1},
+    "occupancy_road_scene_small": {"width": 36, "depth": 2},
+    "occupancy_road_scene_base": {"width": 48, "depth": 3},
+}
 
 
 def build_occupancy_road_scene_road_scene_model(
     *,
     in_channels: int,
-    variant: str = 'occupancy_road_scene_small',
+    variant: str = "occupancy_road_scene_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_road_scene_model(
-        family='occupancy_road_scene',
-        mode='occupancy',
+        family="occupancy_road_scene",
+        mode="occupancy",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,6 @@ def build_occupancy_road_scene_road_scene_model(
 
 
 if __name__ == "__main__":
-    smoke_test_road_scene_model(build_occupancy_road_scene_road_scene_model, 'occupancy_road_scene_tiny')
+    smoke_test_road_scene_model(
+        build_occupancy_road_scene_road_scene_model, "occupancy_road_scene_tiny"
+    )

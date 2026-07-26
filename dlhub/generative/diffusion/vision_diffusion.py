@@ -37,4 +37,3 @@ def build_vision_diffusion_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_vision_diffusion_diffusion, "vision_diffusion_tiny")
-

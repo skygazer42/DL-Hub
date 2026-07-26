@@ -8,8 +8,19 @@ _VARIANTS: dict[str, dict[str, int]] = {
     "transformer_i2v_base": {"width": 48, "depth": 3, "frames": 6},
 }
 
-def build_transformer_i2v_image_to_video(*, in_channels: int, variant: str = "transformer_i2v_small", width_mult: float = 1.0) -> nn.Module:
-    return build_toy_image_to_video(family="transformer_i2v", mode="transformer", variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
+
+def build_transformer_i2v_image_to_video(
+    *, in_channels: int, variant: str = "transformer_i2v_small", width_mult: float = 1.0
+) -> nn.Module:
+    return build_toy_image_to_video(
+        family="transformer_i2v",
+        mode="transformer",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
 
 if __name__ == "__main__":
     smoke_test_image_to_video(build_transformer_i2v_image_to_video, "transformer_i2v_tiny")

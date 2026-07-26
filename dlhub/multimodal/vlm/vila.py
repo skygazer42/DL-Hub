@@ -41,4 +41,3 @@ def build_vila_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_vila_vlm, "vila_tiny")
-

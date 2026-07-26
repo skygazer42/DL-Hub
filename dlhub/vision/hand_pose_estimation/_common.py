@@ -20,8 +20,12 @@ class TinyHandPoseBlock(nn.Module):
         self.conv1 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), kernel_size=1)
-        self.depthwise = nn.Conv2d(int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.depthwise = nn.Conv2d(
+            int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels)
+        )
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -44,12 +48,26 @@ class TinyHandPoseBlock(nn.Module):
 
 
 class TinyHandPoseEstimator(nn.Module):
-    def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int, num_keypoints: int = 10) -> None:
+    def __init__(
+        self,
+        *,
+        family: str,
+        mode: str,
+        in_channels: int,
+        width: int,
+        depth: int,
+        num_keypoints: int = 10,
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.mode = str(mode)
         self.stem = nn.Conv2d(int(in_channels), int(width), kernel_size=3, padding=1)
-        self.blocks = nn.ModuleList([TinyHandPoseBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [
+                TinyHandPoseBlock(channels=int(width), mode=str(mode))
+                for _ in range(max(1, int(depth)))
+            ]
+        )
         self.keypoint_head = nn.Linear(int(width), int(num_keypoints) * 2)
         self.conf_head = nn.Linear(int(width), int(num_keypoints))
         self.heatmap_head = nn.Conv2d(int(width), int(num_keypoints), kernel_size=1)
@@ -66,15 +84,32 @@ class TinyHandPoseEstimator(nn.Module):
         return {"keypoints": keypoints, "confidence": confidence, "heatmaps": heatmaps}
 
 
-def build_toy_hand_pose_estimator(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_hand_pose_estimator(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])
     num_keypoints = int(spec.get("num_keypoints", 10))
-    return TinyHandPoseEstimator(family=str(family), mode=str(mode), in_channels=int(in_channels), width=width, depth=depth, num_keypoints=num_keypoints)
+    return TinyHandPoseEstimator(
+        family=str(family),
+        mode=str(mode),
+        in_channels=int(in_channels),
+        width=width,
+        depth=depth,
+        num_keypoints=num_keypoints,
+    )
 
 
 def smoke_test_hand_pose_estimator(builder, variant: str) -> None:

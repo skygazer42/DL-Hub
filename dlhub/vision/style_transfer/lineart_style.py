@@ -62,10 +62,11 @@ if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 64, 64)
     s = torch.randn(2, 3, 64, 64)
-    m = build_lineart_style_style_transfer(in_channels=3, variant="lineart_style_tiny", width_mult=0.5)
+    m = build_lineart_style_style_transfer(
+        in_channels=3, variant="lineart_style_tiny", width_mult=0.5
+    )
     out = m(x, s)
     print("lineart_style_tiny", tuple(out["stylized"].shape))
     loss = out["stylized"].mean()
     loss.backward()
     print("ok")
-

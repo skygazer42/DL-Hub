@@ -74,9 +74,7 @@ def build_isbnet_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_isbnet_instance_segmenter3d(
-        in_channels=3, num_classes=6, variant="isbnet_tiny"
-    )
+    m = build_isbnet_instance_segmenter3d(in_channels=3, num_classes=6, variant="isbnet_tiny")
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()

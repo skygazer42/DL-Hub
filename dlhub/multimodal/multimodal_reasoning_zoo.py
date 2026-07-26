@@ -81,7 +81,9 @@ def build_local_model(
     if prefix in {"reason", "reasoning"}:
         prefix = "mmr"
     if prefix not in {"mmr", "local"}:
-        raise ValueError(f"Unsupported multimodal reasoning prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported multimodal reasoning prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

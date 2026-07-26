@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['triplet_retrieval_face', 'proxy_retrieval_face', 'contrastive_retrieval_face', 'transformer_retrieval_face', 'prompt_retrieval_face', 'graph_retrieval_face', 'memory_retrieval_face', 'part_retrieval_face', 'hash_retrieval_face', 'mamba_retrieval_face']
+_FAMILIES = [
+    "triplet_retrieval_face",
+    "proxy_retrieval_face",
+    "contrastive_retrieval_face",
+    "transformer_retrieval_face",
+    "prompt_retrieval_face",
+    "graph_retrieval_face",
+    "memory_retrieval_face",
+    "part_retrieval_face",
+    "hash_retrieval_face",
+    "mamba_retrieval_face",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'faceret', arch_id
+        return "faceret", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,12 +73,10 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'face_retrieval', 'face_search'}:
-        prefix = 'faceret'
-    if prefix not in {'faceret', "local"}:
-        raise ValueError(
-            f"Unsupported face retrieval prefix: {prefix!r} (arch_id={arch_id!r})"
-        )
+    if prefix in {"face_retrieval", "face_search"}:
+        prefix = "faceret"
+    if prefix not in {"faceret", "local"}:
+        raise ValueError(f"Unsupported face retrieval prefix: {prefix!r} (arch_id={arch_id!r})")
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

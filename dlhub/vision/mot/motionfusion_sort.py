@@ -22,8 +22,7 @@ def build_motionfusion_sort_tracker(
     cfg = _VARIANTS.get(str(variant).lower().strip())
     if cfg is None:
         raise ValueError(
-            "Unknown variant for motionfusion_sort: "
-            f"{variant!r}. Available: {sorted(_VARIANTS)}"
+            "Unknown variant for motionfusion_sort: " f"{variant!r}. Available: {sorted(_VARIANTS)}"
         )
 
     _ = seq_len, image_size

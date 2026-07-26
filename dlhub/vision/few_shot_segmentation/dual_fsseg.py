@@ -30,4 +30,3 @@ def build_dual_fsseg_few_shot_segmentor(
 
 if __name__ == "__main__":
     smoke_test_few_shot_segmentor(build_dual_fsseg_few_shot_segmentor, "dual_fsseg_tiny")
-

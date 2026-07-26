@@ -30,4 +30,3 @@ def build_residual_car_artifact_reducer(
 
 if __name__ == "__main__":
     smoke_test_artifact_reducer(build_residual_car_artifact_reducer, "residual_car_tiny")
-

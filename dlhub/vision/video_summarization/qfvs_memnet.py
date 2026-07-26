@@ -93,7 +93,11 @@ class QFVSMemNetVideoSummarizer(nn.Module):
             prompt=self.query_prompt.to(device=feat.device, dtype=feat.dtype),
         )
 
-        memory = self.memory_bank.to(device=feat.device, dtype=feat.dtype).unsqueeze(0).expand(int(b), -1, -1)
+        memory = (
+            self.memory_bank.to(device=feat.device, dtype=feat.dtype)
+            .unsqueeze(0)
+            .expand(int(b), -1, -1)
+        )
         q = self.query_proj(query_vec)
         mem_key = self.mem_proj(memory)
         mem_attn = torch.softmax(
@@ -116,9 +120,9 @@ class QFVSMemNetVideoSummarizer(nn.Module):
         raw_scores = self.head(fused).squeeze(-1) + frame_attn
         scores = torch.sigmoid(raw_scores)
         summary_mask = scores_to_mask(scores)
-        query_alignment = F.normalize(frame_key, dim=-1).mul(
-            F.normalize(state_expand, dim=-1)
-        ).sum(dim=-1)
+        query_alignment = (
+            F.normalize(frame_key, dim=-1).mul(F.normalize(state_expand, dim=-1)).sum(dim=-1)
+        )
         return {
             "scores": scores,
             "summary_mask": summary_mask,

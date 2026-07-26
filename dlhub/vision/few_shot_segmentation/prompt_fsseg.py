@@ -30,4 +30,3 @@ def build_prompt_fsseg_few_shot_segmentor(
 
 if __name__ == "__main__":
     smoke_test_few_shot_segmentor(build_prompt_fsseg_few_shot_segmentor, "prompt_fsseg_tiny")
-

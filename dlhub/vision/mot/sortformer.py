@@ -21,7 +21,9 @@ def build_sortformer_tracker(
 ):
     cfg = _VARIANTS.get(str(variant).lower().strip())
     if cfg is None:
-        raise ValueError(f"Unknown variant for sortformer: {variant!r}. Available: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown variant for sortformer: {variant!r}. Available: {sorted(_VARIANTS)}"
+        )
     _ = seq_len, image_size
     width = max(16, int(round(int(cfg["width"]) * float(width_mult))))
     return MOTTracker2D(

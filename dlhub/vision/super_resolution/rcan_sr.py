@@ -4,7 +4,12 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from ._common import ChannelAttention, PixelShuffleUpsampler, check_low_res_image, validate_upscale_factor
+from ._common import (
+    ChannelAttention,
+    PixelShuffleUpsampler,
+    check_low_res_image,
+    validate_upscale_factor,
+)
 
 
 class RCABlock(nn.Module):

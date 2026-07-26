@@ -34,4 +34,3 @@ def build_mambatrack3d_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_mambatrack3d_tracker3d, "mambatrack3d_tiny")
-

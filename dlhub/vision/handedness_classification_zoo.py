@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cnn_handedness', 'region_handedness', 'attention_handedness', 'skeleton_handedness', 'transformer_handedness', 'prompt_handedness', 'contrastive_handedness', 'graph_handedness', 'efficient_handedness', 'mamba_handedness']
+_FAMILIES = [
+    "cnn_handedness",
+    "region_handedness",
+    "attention_handedness",
+    "skeleton_handedness",
+    "transformer_handedness",
+    "prompt_handedness",
+    "contrastive_handedness",
+    "graph_handedness",
+    "efficient_handedness",
+    "mamba_handedness",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'handedness', arch_id
+        return "handedness", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'handedness_classification', 'handedness'}:
-        prefix = 'handedness'
-    if prefix not in {'handedness', "local"}:
+    if prefix in {"handedness_classification", "handedness"}:
+        prefix = "handedness"
+    if prefix not in {"handedness", "local"}:
         raise ValueError(
             f"Unsupported handedness classification prefix: {prefix!r} (arch_id={arch_id!r})"
         )

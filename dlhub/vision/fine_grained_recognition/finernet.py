@@ -40,4 +40,3 @@ def build_finernet_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_finernet_fgvc_classifier, "finernet_tiny")
-

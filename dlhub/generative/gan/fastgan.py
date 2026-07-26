@@ -39,5 +39,3 @@ def build_fastgan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_fastgan_gan, "fastgan_tiny")
-
-

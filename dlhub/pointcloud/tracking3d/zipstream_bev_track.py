@@ -34,4 +34,3 @@ def build_zipstream_bev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_zipstream_bev_track_tracker3d, "zipstream_bev_track_tiny")
-

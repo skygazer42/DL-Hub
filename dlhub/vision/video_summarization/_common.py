@@ -129,7 +129,9 @@ class SegmentPooler(nn.Module):
             nn.Linear(h, 1),
         )
 
-    def forward(self, feat: torch.Tensor, *, windows: tuple[int, ...]) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, feat: torch.Tensor, *, windows: tuple[int, ...]
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         if feat.ndim != 3:
             raise ValueError(f"feat must have shape (B, T, D), got {tuple(feat.shape)}")
         b, t, _ = feat.shape
@@ -144,7 +146,9 @@ class SegmentPooler(nn.Module):
             for start in range(0, int(t) - w + 1):
                 seg = feat[:, start : start + w].mean(dim=1)
                 score = self.proj(seg).squeeze(-1)
-                frame_scores[:, start : start + w] = frame_scores[:, start : start + w] + score.unsqueeze(1)
+                frame_scores[:, start : start + w] = frame_scores[
+                    :, start : start + w
+                ] + score.unsqueeze(1)
                 counts[:, start : start + w] = counts[:, start : start + w] + 1.0
                 chunks.append(score.unsqueeze(1))
             if chunks:
@@ -155,7 +159,9 @@ class SegmentPooler(nn.Module):
             padded = []
             for x in seg_scores:
                 if int(x.shape[1]) < max_len:
-                    pad = torch.zeros(int(b), max_len - int(x.shape[1]), device=x.device, dtype=x.dtype)
+                    pad = torch.zeros(
+                        int(b), max_len - int(x.shape[1]), device=x.device, dtype=x.dtype
+                    )
                     x = torch.cat([x, pad], dim=1)
                 padded.append(x.unsqueeze(1))
             seg_tensor = torch.cat(padded, dim=1)

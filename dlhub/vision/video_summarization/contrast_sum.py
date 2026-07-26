@@ -26,7 +26,9 @@ class ContrastSumVideoSummarizer(nn.Module):
         )
         dim = int(self.encoder.out_dim)
         hidden = max(32, dim // 2)
-        self.anchor_scorer = TemporalGRUScorer(dim=dim, hidden_dim=hidden, layers=1, dropout=float(dropout))
+        self.anchor_scorer = TemporalGRUScorer(
+            dim=dim, hidden_dim=hidden, layers=1, dropout=float(dropout)
+        )
         self.pair_head = nn.Sequential(
             nn.Linear(dim * 3, hidden),
             nn.ReLU(inplace=True),
@@ -51,7 +53,9 @@ class ContrastSumVideoSummarizer(nn.Module):
         anchor_logits = self.anchor_scorer(feat)
         fused = torch.cat([feat, view2, (feat - view2).abs()], dim=-1)
         pair_logits = self.pair_head(fused).squeeze(-1)
-        scores = torch.sigmoid(pair_logits + 0.30 * anchor_logits + 0.25 * positive_alignment + 0.15 * novelty)
+        scores = torch.sigmoid(
+            pair_logits + 0.30 * anchor_logits + 0.25 * positive_alignment + 0.15 * novelty
+        )
         summary_mask = scores_to_mask(scores)
         return {
             "scores": scores,

@@ -40,7 +40,9 @@ class SumGANVideoSummarizer(nn.Module):
         feat = self.encoder(video)
         scores = torch.sigmoid(self.generator(feat))
         summary_mask = scores_to_mask(scores)
-        pooled = (feat * scores.unsqueeze(-1)).sum(dim=1) / scores.sum(dim=1, keepdim=True).clamp_min(1e-6)
+        pooled = (feat * scores.unsqueeze(-1)).sum(dim=1) / scores.sum(
+            dim=1, keepdim=True
+        ).clamp_min(1e-6)
         disc = self.discriminator(pooled)
         return {
             "scores": scores,

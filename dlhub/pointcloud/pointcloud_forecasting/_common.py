@@ -24,9 +24,7 @@ class TinyForecastBlock(nn.Module):
             nn.Linear(int(width), int(width)),
         )
         self.mix = nn.Linear(int(width), int(width))
-        self.prompt = (
-            nn.Parameter(torch.zeros(1, 1, int(width))) if self.mode == "prompt" else None
-        )
+        self.prompt = nn.Parameter(torch.zeros(1, 1, int(width))) if self.mode == "prompt" else None
 
     def forward(self, feat: torch.Tensor, temporal: torch.Tensor) -> torch.Tensor:
         h = self.norm(feat)

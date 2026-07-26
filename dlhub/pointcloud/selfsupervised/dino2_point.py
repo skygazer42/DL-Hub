@@ -264,9 +264,27 @@ class DINO2PointNet(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    "dino2_point_pointnet_tiny": {"hidden": 32, "embed": 64, "proj": 128, "out": 64, "dropout": 0.0},
-    "dino2_point_pointnet_small": {"hidden": 64, "embed": 128, "proj": 256, "out": 128, "dropout": 0.0},
-    "dino2_point_pointnet_base": {"hidden": 96, "embed": 192, "proj": 384, "out": 256, "dropout": 0.0},
+    "dino2_point_pointnet_tiny": {
+        "hidden": 32,
+        "embed": 64,
+        "proj": 128,
+        "out": 64,
+        "dropout": 0.0,
+    },
+    "dino2_point_pointnet_small": {
+        "hidden": 64,
+        "embed": 128,
+        "proj": 256,
+        "out": 128,
+        "dropout": 0.0,
+    },
+    "dino2_point_pointnet_base": {
+        "hidden": 96,
+        "embed": 192,
+        "proj": 384,
+        "out": 256,
+        "dropout": 0.0,
+    },
 }
 
 
@@ -312,4 +330,3 @@ if __name__ == "__main__":
     m.update_center([t1, t2], center_momentum=0.9)
     m.momentum_update_teacher(ema_decay=0.99)
     print("ok", float(loss.item()))
-

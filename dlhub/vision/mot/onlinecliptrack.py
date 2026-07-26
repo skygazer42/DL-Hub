@@ -42,4 +42,3 @@ def build_onlinecliptrack_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_onlinecliptrack_tracker, "onlinecliptrack_tiny")
-

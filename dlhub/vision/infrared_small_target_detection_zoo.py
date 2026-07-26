@@ -52,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.infrared_small_target_detection.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.infrared_small_target_detection.{family}"
+                )
                 fn = getattr(module, f"build_{family}_irstd_detector")
                 return fn(
                     in_channels=int(cfg.in_channels),
@@ -88,4 +90,3 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
 
 
 __all__ = ["BuildConfig", "UnknownLocalArch", "build_local_model", "list_local_arches"]
-

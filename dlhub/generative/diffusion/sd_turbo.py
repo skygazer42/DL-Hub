@@ -37,4 +37,3 @@ def build_sd_turbo_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_sd_turbo_diffusion, "sd_turbo_tiny")
-

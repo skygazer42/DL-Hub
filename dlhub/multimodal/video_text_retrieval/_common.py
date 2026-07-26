@@ -37,7 +37,9 @@ class TinyVideoTextRetriever(nn.Module):
         )
         self.fusion = nn.Linear(int(width), int(width))
 
-    def forward(self, video: torch.Tensor, text: torch.Tensor | None = None) -> dict[str, torch.Tensor]:
+    def forward(
+        self, video: torch.Tensor, text: torch.Tensor | None = None
+    ) -> dict[str, torch.Tensor]:
         clip = check_video(video)
         batch, frames, _, _, _ = clip.shape
         clip_2d = clip.reshape(batch * frames, *clip.shape[2:])

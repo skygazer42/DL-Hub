@@ -34,4 +34,3 @@ def build_meshbev_track_tracker3d(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_meshbev_track_tracker3d, "meshbev_track_tiny")
-

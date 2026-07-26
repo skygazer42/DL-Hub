@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_box_detector, smoke_test_box_detector
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'mamba_salbox_tiny': {'width': 24, 'depth': 1, 'queries': 8}, 'mamba_salbox_small': {'width': 36, 'depth': 2, 'queries': 12}, 'mamba_salbox_base': {'width': 48, 'depth': 3, 'queries': 16}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "mamba_salbox_tiny": {"width": 24, "depth": 1, "queries": 8},
+    "mamba_salbox_small": {"width": 36, "depth": 2, "queries": 12},
+    "mamba_salbox_base": {"width": 48, "depth": 3, "queries": 16},
+}
 
 
 def build_mamba_salbox_box_detector(
     *,
     in_channels: int,
-    variant: str = 'mamba_salbox_small',
+    variant: str = "mamba_salbox_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_box_detector(
-        family='mamba_salbox',
-        mode='mamba',
+        family="mamba_salbox",
+        mode="mamba",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,4 @@ def build_mamba_salbox_box_detector(
 
 
 if __name__ == "__main__":
-    smoke_test_box_detector(build_mamba_salbox_box_detector, 'mamba_salbox_tiny')
+    smoke_test_box_detector(build_mamba_salbox_box_detector, "mamba_salbox_tiny")

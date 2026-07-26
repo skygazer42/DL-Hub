@@ -40,4 +40,3 @@ def build_granprompt_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_granprompt_fgvc_fgvc_classifier, "granprompt_fgvc_tiny")
-

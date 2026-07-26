@@ -41,4 +41,3 @@ def build_internlm_xcomposer_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_internlm_xcomposer_vlm, "internlm_xcomposer_tiny")
-

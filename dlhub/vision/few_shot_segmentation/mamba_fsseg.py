@@ -30,4 +30,3 @@ def build_mamba_fsseg_few_shot_segmentor(
 
 if __name__ == "__main__":
     smoke_test_few_shot_segmentor(build_mamba_fsseg_few_shot_segmentor, "mamba_fsseg_tiny")
-

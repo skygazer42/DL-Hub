@@ -104,7 +104,9 @@ class AGRNetFaceParser(nn.Module):
         confidence = coarse_prob.max(dim=1, keepdim=True).values
 
         boundary_low = torch.sigmoid(self.boundary_head(torch.cat([c1, c2_up], dim=1)))
-        boundary_out = F.interpolate(boundary_low, size=inp_hw, mode="bilinear", align_corners=False)
+        boundary_out = F.interpolate(
+            boundary_low, size=inp_hw, mode="bilinear", align_corners=False
+        )
 
         assign_logits = self.region_head(fused) + self.prior_head(coarse_prob)
         assign_logits = assign_logits + 0.25 * boundary_low - 0.25 * (1.0 - confidence)

@@ -53,7 +53,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.multimodal.embodied_question_answering.{family}")
+                module = importlib.import_module(
+                    f"dlhub.multimodal.embodied_question_answering.{family}"
+                )
                 fn = getattr(module, f"build_{family}_embodied_qa_model")
                 return fn(
                     in_channels=int(cfg.in_channels),

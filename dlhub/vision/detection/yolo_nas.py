@@ -256,7 +256,9 @@ def build_yolo_nas_detector(
 if __name__ == "__main__":
     torch.manual_seed(0)
     x = torch.randn(2, 3, 128, 128)
-    m = build_yolo_nas_detector(in_channels=3, num_classes=3, variant="yolo_nas_tiny", width_mult=0.5)
+    m = build_yolo_nas_detector(
+        in_channels=3, num_classes=3, variant="yolo_nas_tiny", width_mult=0.5
+    )
     out = m(x)
     print("yolo_nas_tiny", [tuple(t.shape) for t in out["obj_logits"]])
     loss = (
@@ -267,4 +269,3 @@ if __name__ == "__main__":
     )
     loss.backward()
     print("ok")
-

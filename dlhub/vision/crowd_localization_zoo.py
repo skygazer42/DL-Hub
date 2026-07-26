@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ["heatmap_crowdloc", "density_crowdloc", "peak_crowdloc", "graph_crowdloc", "transformer_crowdloc", "prompt_crowdloc", "multiscale_crowdloc", "coarse_crowdloc", "patch_crowdloc", "mamba_crowdloc"]
+_FAMILIES = [
+    "heatmap_crowdloc",
+    "density_crowdloc",
+    "peak_crowdloc",
+    "graph_crowdloc",
+    "transformer_crowdloc",
+    "prompt_crowdloc",
+    "multiscale_crowdloc",
+    "coarse_crowdloc",
+    "patch_crowdloc",
+    "mamba_crowdloc",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -43,7 +54,11 @@ def _registry() -> dict[str, Builder]:
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
                 module = importlib.import_module(f"dlhub.vision.crowd_localization.{family}")
                 fn = getattr(module, f"build_{family}_crowd_localizer")
-                return fn(in_channels=int(cfg.in_channels), variant=str(variant), width_mult=float(cfg.width_mult))
+                return fn(
+                    in_channels=int(cfg.in_channels),
+                    variant=str(variant),
+                    width_mult=float(cfg.width_mult),
+                )
 
             registry[variant] = _builder
     return registry
@@ -64,7 +79,9 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
         raise ValueError(f"Unsupported crowd localization prefix: {prefix!r} (arch_id={arch_id!r})")
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
-        raise UnknownLocalArch(f"Unknown crowd localization arch: {arch_id!r}. Tip: import `dlhub.vision.crowd_localization_zoo` and call `list_local_arches()`.")
+        raise UnknownLocalArch(
+            f"Unknown crowd localization arch: {arch_id!r}. Tip: import `dlhub.vision.crowd_localization_zoo` and call `list_local_arches()`."
+        )
     return builder(BuildConfig(in_channels=int(in_channels), width_mult=float(width_mult)))
 
 

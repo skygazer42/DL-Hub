@@ -39,4 +39,3 @@ def build_cutgan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_cutgan_gan, "cutgan_tiny")
-

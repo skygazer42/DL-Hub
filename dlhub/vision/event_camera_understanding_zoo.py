@@ -52,7 +52,9 @@ def _registry() -> dict[str, Builder]:
             variant = f"{family}_{size}"
 
             def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.event_camera_understanding.{family}")
+                module = importlib.import_module(
+                    f"dlhub.vision.event_camera_understanding.{family}"
+                )
                 fn = getattr(module, f"build_{family}_event_model")
                 return fn(
                     in_channels=int(cfg.in_channels),

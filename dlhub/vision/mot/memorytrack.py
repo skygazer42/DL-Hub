@@ -42,4 +42,3 @@ def build_memorytrack_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_memorytrack_tracker, "memorytrack_tiny")
-

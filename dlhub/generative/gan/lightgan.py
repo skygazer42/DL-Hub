@@ -39,5 +39,3 @@ def build_lightgan_gan(
 
 if __name__ == "__main__":
     smoke_test_gan(build_lightgan_gan, "lightgan_tiny")
-
-

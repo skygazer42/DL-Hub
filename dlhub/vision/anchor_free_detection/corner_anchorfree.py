@@ -5,18 +5,22 @@ from torch import nn
 from ._common import build_toy_detector, smoke_test_detector
 
 
-_VARIANTS: dict[str, dict[str, int]] = {'corner_anchorfree_tiny': {'width': 24, 'depth': 1, 'queries': 20}, 'corner_anchorfree_small': {'width': 36, 'depth': 2, 'queries': 24}, 'corner_anchorfree_base': {'width': 48, 'depth': 3, 'queries': 32}}
+_VARIANTS: dict[str, dict[str, int]] = {
+    "corner_anchorfree_tiny": {"width": 24, "depth": 1, "queries": 20},
+    "corner_anchorfree_small": {"width": 36, "depth": 2, "queries": 24},
+    "corner_anchorfree_base": {"width": 48, "depth": 3, "queries": 32},
+}
 
 
 def build_corner_anchorfree_detector(
     *,
     in_channels: int,
-    variant: str = 'corner_anchorfree_small',
+    variant: str = "corner_anchorfree_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
     return build_toy_detector(
-        family='corner_anchorfree',
-        mode='corner',
+        family="corner_anchorfree",
+        mode="corner",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),
@@ -25,4 +29,4 @@ def build_corner_anchorfree_detector(
 
 
 if __name__ == "__main__":
-    smoke_test_detector(build_corner_anchorfree_detector, 'corner_anchorfree_tiny')
+    smoke_test_detector(build_corner_anchorfree_detector, "corner_anchorfree_tiny")

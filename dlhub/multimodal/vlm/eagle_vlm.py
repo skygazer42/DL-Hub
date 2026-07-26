@@ -41,4 +41,3 @@ def build_eagle_vlm_vlm(
 
 if __name__ == "__main__":
     smoke_test_vlm(build_eagle_vlm_vlm, "eagle_vlm_tiny")
-

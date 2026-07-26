@@ -46,7 +46,9 @@ class _InstantStyleBlock(nn.Module):
             raise ValueError("dim/style_dim must be > 0")
         self.norm_q = nn.LayerNorm(d)
         self.norm_kv = nn.LayerNorm(d)
-        self.attn = nn.MultiheadAttention(d, int(num_heads), dropout=float(dropout), batch_first=True)
+        self.attn = nn.MultiheadAttention(
+            d, int(num_heads), dropout=float(dropout), batch_first=True
+        )
         self.to_gamma = nn.Linear(s, d)
         self.to_beta = nn.Linear(s, d)
         self.norm_ff = nn.LayerNorm(d)
@@ -99,7 +101,9 @@ class InstantStyleDenoiser(nn.Module):
         )
         self.out = nn.Conv2d(c, c, kernel_size=1)
 
-    def forward(self, x: torch.Tensor, t: torch.Tensor, style_feat: torch.Tensor, style_code: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self, x: torch.Tensor, t: torch.Tensor, style_feat: torch.Tensor, style_code: torch.Tensor
+    ) -> torch.Tensor:
         if x.ndim != 4 or style_feat.ndim != 4:
             raise ValueError(
                 f"Expected x/style_feat shapes (B, C, H, W), got {tuple(x.shape)} and {tuple(style_feat.shape)}"
@@ -242,4 +246,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["structure_weight"]
     loss.backward()
     print("ok")
-

@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cnn_face_liveness', 'artifact_face_liveness', 'patch_face_liveness', 'region_face_liveness', 'transformer_face_liveness', 'prompt_face_liveness', 'contrastive_face_liveness', 'graph_face_liveness', 'dual_face_liveness', 'mamba_face_liveness']
+_FAMILIES = [
+    "cnn_face_liveness",
+    "artifact_face_liveness",
+    "patch_face_liveness",
+    "region_face_liveness",
+    "transformer_face_liveness",
+    "prompt_face_liveness",
+    "contrastive_face_liveness",
+    "graph_face_liveness",
+    "dual_face_liveness",
+    "mamba_face_liveness",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'facelive', arch_id
+        return "facelive", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'face_liveness_detection', 'face_liveness'}:
-        prefix = 'facelive'
-    if prefix not in {'facelive', "local"}:
+    if prefix in {"face_liveness_detection", "face_liveness"}:
+        prefix = "facelive"
+    if prefix not in {"facelive", "local"}:
         raise ValueError(
             f"Unsupported face liveness detection prefix: {prefix!r} (arch_id={arch_id!r})"
         )

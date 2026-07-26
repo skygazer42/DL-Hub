@@ -40,4 +40,3 @@ def build_protofgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_protofgvc_fgvc_classifier, "protofgvc_tiny")
-

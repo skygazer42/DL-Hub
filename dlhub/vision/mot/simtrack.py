@@ -42,4 +42,3 @@ def build_simtrack_tracker(
 
 if __name__ == "__main__":
     smoke_test_tracker(build_simtrack_tracker, "simtrack_tiny")
-

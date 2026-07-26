@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['cnn_finger_count', 'region_finger_count', 'attention_finger_count', 'skeleton_finger_count', 'transformer_finger_count', 'prompt_finger_count', 'contrastive_finger_count', 'graph_finger_count', 'efficient_finger_count', 'mamba_finger_count']
+_FAMILIES = [
+    "cnn_finger_count",
+    "region_finger_count",
+    "attention_finger_count",
+    "skeleton_finger_count",
+    "transformer_finger_count",
+    "prompt_finger_count",
+    "contrastive_finger_count",
+    "graph_finger_count",
+    "efficient_finger_count",
+    "mamba_finger_count",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'fingercount', arch_id
+        return "fingercount", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'finger_count_estimation', 'finger_count'}:
-        prefix = 'fingercount'
-    if prefix not in {'fingercount', "local"}:
+    if prefix in {"finger_count_estimation", "finger_count"}:
+        prefix = "fingercount"
+    if prefix not in {"fingercount", "local"}:
         raise ValueError(
             f"Unsupported finger count estimation prefix: {prefix!r} (arch_id={arch_id!r})"
         )

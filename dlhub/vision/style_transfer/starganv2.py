@@ -111,9 +111,7 @@ def build_starganv2_style_transfer(
     _ = int(image_size)
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown StarGAN v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown StarGAN v2 variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     cfg = _VARIANTS[name]
     width = max(8, int(int(cfg["width"]) * float(width_mult)))
     return StarGANv2StyleTransfer(
@@ -135,4 +133,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["style_code"].mean()
     loss.backward()
     print("ok")
-

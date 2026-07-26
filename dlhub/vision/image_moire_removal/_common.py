@@ -21,7 +21,9 @@ class TinyMoireBlock(nn.Module):
         self.conv2 = nn.Conv2d(int(channels), int(channels), 3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), 1)
         self.depthwise = nn.Conv2d(int(channels), int(channels), 5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, x: torch.Tensor, guide: torch.Tensor) -> torch.Tensor:
         h = self.norm(x)
@@ -62,7 +64,9 @@ class TinyMoireRemover(nn.Module):
         self.passes = max(1, int(passes))
         self.encoder = nn.Conv2d(int(in_channels), int(width), 3, padding=1)
         self.guide = nn.Conv2d(int(in_channels), int(width), 1)
-        self.blocks = nn.ModuleList([TinyMoireBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))])
+        self.blocks = nn.ModuleList(
+            [TinyMoireBlock(channels=int(width), mode=str(mode)) for _ in range(max(1, int(depth)))]
+        )
         self.decoder = nn.Sequential(
             nn.Conv2d(int(width), int(width), 3, padding=1),
             nn.ReLU(inplace=True),
@@ -106,7 +110,9 @@ def build_toy_moire_remover(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(12, int(int(spec["width"]) * float(width_mult)))
     depth = int(spec["depth"])

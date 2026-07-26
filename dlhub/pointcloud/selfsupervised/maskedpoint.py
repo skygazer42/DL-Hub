@@ -301,4 +301,3 @@ if __name__ == "__main__":
     loss = chamfer_distance(pred, target)
     loss.backward()
     print("ok", float(loss.item()))
-

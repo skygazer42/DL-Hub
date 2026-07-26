@@ -13,7 +13,9 @@ def check_nchw(x: torch.Tensor) -> torch.Tensor:
 
 
 class TinyDepthEstimator(nn.Module):
-    def __init__(self, *, family: str, in_channels: int, width: int, depth: int, bins: bool = False) -> None:
+    def __init__(
+        self, *, family: str, in_channels: int, width: int, depth: int, bins: bool = False
+    ) -> None:
         super().__init__()
         self.family = str(family)
         self.bins = bool(bins)
@@ -29,17 +31,33 @@ class TinyDepthEstimator(nn.Module):
         raw = self.head(x)
         if self.bins:
             prob = torch.softmax(raw, dim=1)
-            centers = torch.linspace(0.1, 10.0, steps=prob.shape[1], device=prob.device, dtype=prob.dtype).view(1, -1, 1, 1)
+            centers = torch.linspace(
+                0.1, 10.0, steps=prob.shape[1], device=prob.device, dtype=prob.dtype
+            ).view(1, -1, 1, 1)
             depth = (prob * centers).sum(dim=1, keepdim=True)
-            return {'depth': depth, 'bin_logits': raw}
+            return {"depth": depth, "bin_logits": raw}
         depth = F.softplus(raw) + 1e-3
-        return {'depth': depth}
+        return {"depth": depth}
 
 
-def build_toy_depth_estimator(*, family: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0, bins: bool = False) -> nn.Module:
+def build_toy_depth_estimator(
+    *,
+    family: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+    bins: bool = False,
+) -> nn.Module:
     spec = variants[str(variant)]
-    width = max(16, int(int(spec['width']) * float(width_mult)))
-    return TinyDepthEstimator(family=str(family), in_channels=int(in_channels), width=width, depth=int(spec['depth']), bins=bool(bins))
+    width = max(16, int(int(spec["width"]) * float(width_mult)))
+    return TinyDepthEstimator(
+        family=str(family),
+        in_channels=int(in_channels),
+        width=width,
+        depth=int(spec["depth"]),
+        bins=bool(bins),
+    )
 
 
 def smoke_test_depth(builder, variant: str) -> None:
@@ -47,4 +65,4 @@ def smoke_test_depth(builder, variant: str) -> None:
     x = torch.randn(2, 3, 64, 64)
     out = model(x)
     print(variant, {k: tuple(v.shape) for k, v in out.items()})
-    print('ok')
+    print("ok")

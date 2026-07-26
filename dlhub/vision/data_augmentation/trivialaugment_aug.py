@@ -1,6 +1,24 @@
 from __future__ import annotations
 from ._common import build_toy_augmenter, smoke_test_augmenter
-_VARIANTS = {'trivialaugment_aug_tiny': {'width':24,'depth':1}, 'trivialaugment_aug_small': {'width':32,'depth':2}, 'trivialaugment_aug_base': {'width':48,'depth':3}}
-def build_trivialaugment_aug_augmenter(*, in_channels:int, variant:str='trivialaugment_aug_small', width_mult:float=1.0):
-    return build_toy_augmenter(family='trivialaugment_aug', variants=_VARIANTS, in_channels=int(in_channels), variant=str(variant), width_mult=float(width_mult))
-if __name__ == '__main__': smoke_test_augmenter(build_trivialaugment_aug_augmenter, 'trivialaugment_aug_tiny')
+
+_VARIANTS = {
+    "trivialaugment_aug_tiny": {"width": 24, "depth": 1},
+    "trivialaugment_aug_small": {"width": 32, "depth": 2},
+    "trivialaugment_aug_base": {"width": 48, "depth": 3},
+}
+
+
+def build_trivialaugment_aug_augmenter(
+    *, in_channels: int, variant: str = "trivialaugment_aug_small", width_mult: float = 1.0
+):
+    return build_toy_augmenter(
+        family="trivialaugment_aug",
+        variants=_VARIANTS,
+        in_channels=int(in_channels),
+        variant=str(variant),
+        width_mult=float(width_mult),
+    )
+
+
+if __name__ == "__main__":
+    smoke_test_augmenter(build_trivialaugment_aug_augmenter, "trivialaugment_aug_tiny")

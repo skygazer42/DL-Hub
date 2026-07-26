@@ -144,4 +144,3 @@ if __name__ == "__main__":
     loss = out["stylized"].mean() + out["edited_latent"].mean() + out["edit_scale"]
     loss.backward()
     print("ok")
-

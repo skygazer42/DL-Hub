@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ['fcos_pedestrian', 'center_pedestrian', 'yolo_pedestrian', 'anchor_pedestrian', 'cascade_pedestrian', 'transformer_pedestrian', 'occlusion_pedestrian', 'scale_pedestrian', 'night_pedestrian', 'mamba_pedestrian']
+_FAMILIES = [
+    "fcos_pedestrian",
+    "center_pedestrian",
+    "yolo_pedestrian",
+    "anchor_pedestrian",
+    "cascade_pedestrian",
+    "transformer_pedestrian",
+    "occlusion_pedestrian",
+    "scale_pedestrian",
+    "night_pedestrian",
+    "mamba_pedestrian",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -25,7 +36,7 @@ Builder = Callable[[BuildConfig], object]
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
     arch_id = str(arch_id).strip()
     if ":" not in arch_id:
-        return 'peddet', arch_id
+        return "peddet", arch_id
     prefix, name = arch_id.split(":", 1)
     prefix = prefix.strip().lower()
     name = name.strip()
@@ -62,9 +73,9 @@ def list_local_arches() -> list[str]:
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):
     prefix, name = _split_arch_id(arch_id)
-    if prefix in {'pedestrian_detection', 'pedestrian'}:
-        prefix = 'peddet'
-    if prefix not in {'peddet', "local"}:
+    if prefix in {"pedestrian_detection", "pedestrian"}:
+        prefix = "peddet"
+    if prefix not in {"peddet", "local"}:
         raise ValueError(
             f"Unsupported pedestrian detection prefix: {prefix!r} (arch_id={arch_id!r})"
         )

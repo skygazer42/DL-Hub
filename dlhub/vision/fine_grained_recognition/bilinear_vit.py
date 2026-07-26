@@ -40,4 +40,3 @@ def build_bilinear_vit_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_bilinear_vit_fgvc_classifier, "bilinear_vit_tiny")
-

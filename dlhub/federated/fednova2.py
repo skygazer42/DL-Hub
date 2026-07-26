@@ -51,4 +51,3 @@ def build_fednova2_strategy(
 
 if __name__ == "__main__":
     smoke_test_strategy(build_fednova2_strategy, "fednova2_tiny")
-

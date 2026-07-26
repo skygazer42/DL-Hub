@@ -40,4 +40,3 @@ def build_regionswin_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_regionswin_fgvc_fgvc_classifier, "regionswin_fgvc_tiny")
-

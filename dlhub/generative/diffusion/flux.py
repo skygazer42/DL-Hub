@@ -37,4 +37,3 @@ def build_flux_diffusion(
 
 if __name__ == "__main__":
     smoke_test_diffusion(build_flux_diffusion, "flux_tiny")
-

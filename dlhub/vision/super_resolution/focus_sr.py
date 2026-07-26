@@ -17,7 +17,13 @@ def _window_partition(x: torch.Tensor, window_size: int) -> torch.Tensor:
 
 
 def _window_reverse(
-    windows: torch.Tensor, window_size: int, *, batch_size: int, height: int, width: int, channels: int
+    windows: torch.Tensor,
+    window_size: int,
+    *,
+    batch_size: int,
+    height: int,
+    width: int,
+    channels: int,
 ) -> torch.Tensor:
     ws = int(window_size)
     x = windows.view(batch_size, height // ws, width // ws, ws, ws, channels)
@@ -169,9 +175,7 @@ def build_focus_sr_super_resolver(
 
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(
-            f"Unknown SwinIR-SR variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
-        )
+        raise ValueError(f"Unknown SwinIR-SR variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
     spec = _VARIANTS[name]
     embed = max(8, int(int(spec["embed"]) * float(width_mult)))
     heads = max(1, int(spec["heads"]))
@@ -194,4 +198,3 @@ if __name__ == "__main__":
     x = torch.randn(2, 3, 16, 16)
     y = m(x)
     print("focus_sr_tiny", tuple(y["sr"].shape))
-

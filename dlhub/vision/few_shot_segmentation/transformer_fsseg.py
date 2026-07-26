@@ -32,4 +32,3 @@ if __name__ == "__main__":
     smoke_test_few_shot_segmentor(
         build_transformer_fsseg_few_shot_segmentor, "transformer_fsseg_tiny"
     )
-

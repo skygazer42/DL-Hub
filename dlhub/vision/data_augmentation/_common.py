@@ -23,13 +23,22 @@ class ToyAugmenter(nn.Module):
         return {"augmented": augmented}
 
 
-def build_toy_augmenter(*, family: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0):
+def build_toy_augmenter(
+    *,
+    family: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+):
     spec = variants[str(variant)]
-    width = max(16, int(int(spec['width']) * float(width_mult)))
-    return ToyAugmenter(family=str(family), in_channels=int(in_channels), width=width, depth=int(spec['depth']))
+    width = max(16, int(int(spec["width"]) * float(width_mult)))
+    return ToyAugmenter(
+        family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
+    )
 
 
 def smoke_test_augmenter(builder, variant: str) -> None:
     model = builder(in_channels=3, variant=variant, width_mult=0.5)
     out = model(torch.randn(2, 3, 64, 64))
-    print(variant, tuple(out['augmented'].shape))
+    print(variant, tuple(out["augmented"].shape))

@@ -5,7 +5,18 @@ from dataclasses import dataclass
 import importlib
 
 
-_FAMILIES = ["direct_mirrorseg", "edge_mirrorseg", "context_mirrorseg", "boundary_mirrorseg", "transformer_mirrorseg", "prompt_mirrorseg", "dual_mirrorseg", "coarse_mirrorseg", "pyramid_mirrorseg", "mamba_mirrorseg"]
+_FAMILIES = [
+    "direct_mirrorseg",
+    "edge_mirrorseg",
+    "context_mirrorseg",
+    "boundary_mirrorseg",
+    "transformer_mirrorseg",
+    "prompt_mirrorseg",
+    "dual_mirrorseg",
+    "coarse_mirrorseg",
+    "pyramid_mirrorseg",
+    "mamba_mirrorseg",
+]
 _SIZES = ("tiny", "small", "base")
 
 
@@ -65,7 +76,9 @@ def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0
     if prefix in {"mirror_segmentation", "mirrorsegmentation"}:
         prefix = "mirrorseg"
     if prefix not in {"mirrorseg", "local"}:
-        raise ValueError(f"Unsupported mirror segmentation prefix: {prefix!r} (arch_id={arch_id!r})")
+        raise ValueError(
+            f"Unsupported mirror segmentation prefix: {prefix!r} (arch_id={arch_id!r})"
+        )
     builder = _REGISTRY.get(str(name).lower().strip())
     if builder is None:
         raise UnknownLocalArch(

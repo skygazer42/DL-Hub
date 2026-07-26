@@ -58,9 +58,10 @@ def build_texttextmask3d_instance_segmenter3d(
 
 if __name__ == "__main__":
     torch.manual_seed(0)
-    m = build_texttextmask3d_instance_segmenter3d(in_channels=3, num_classes=6, variant="textmask3d_tiny")
+    m = build_texttextmask3d_instance_segmenter3d(
+        in_channels=3, num_classes=6, variant="textmask3d_tiny"
+    )
     x = torch.randn(2, 128, 3)
     out = m(x)
     (out["mask_logits"].mean() + out["cls_logits"].mean()).backward()
     print({k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)})
-

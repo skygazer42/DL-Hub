@@ -40,4 +40,3 @@ def build_tokenmix_fgvc_fgvc_classifier(
 
 if __name__ == "__main__":
     smoke_test_classifier(build_tokenmix_fgvc_fgvc_classifier, "tokenmix_fgvc_tiny")
-

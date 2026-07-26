@@ -1,4 +1,5 @@
 """Multimodal reasoning models (toy-first, pure torch)."""
+
 from __future__ import annotations
 
 from importlib import import_module

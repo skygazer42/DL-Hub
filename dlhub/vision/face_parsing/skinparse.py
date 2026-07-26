@@ -80,7 +80,9 @@ class SkinparseFaceParser(nn.Module):
         class_bias = class_context.mean(dim=1, keepdim=True)
         boundary_feat = torch.cat([c1, c2_up], dim=1)
         boundary_map = torch.sigmoid(
-            F.interpolate(self.boundary_head(boundary_feat), size=inp_hw, mode="bilinear", align_corners=False)
+            F.interpolate(
+                self.boundary_head(boundary_feat), size=inp_hw, mode="bilinear", align_corners=False
+            )
         )
         logits = logits + 0.1 * class_bias + 0.15 * boundary_map
         parsing_map = logits_to_parsing(logits)
@@ -130,4 +132,3 @@ if __name__ == "__main__":
     loss = out["logits"].mean() + out["boundary_map"].mean()
     loss.backward()
     print("ok")
-

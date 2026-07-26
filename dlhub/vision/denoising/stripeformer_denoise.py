@@ -169,7 +169,9 @@ def build_stripeformer_denoise_denoiser(
 ) -> nn.Module:
     name = str(variant).lower().strip()
     if name not in _VARIANTS:
-        raise ValueError(f"Unknown StripeformerDenoise variant: {variant!r}. Supported: {sorted(_VARIANTS)}")
+        raise ValueError(
+            f"Unknown StripeformerDenoise variant: {variant!r}. Supported: {sorted(_VARIANTS)}"
+        )
     spec = _VARIANTS[name]
     return StripeformerDenoise(
         in_channels=int(in_channels),
@@ -189,4 +191,3 @@ if __name__ == "__main__":
     loss = (y - x).pow(2).mean()
     loss.backward()
     print("ok")
-

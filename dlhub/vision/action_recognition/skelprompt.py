@@ -157,4 +157,3 @@ if __name__ == "__main__":
     loss = y.mean()
     loss.backward()
     print("ok")
-
