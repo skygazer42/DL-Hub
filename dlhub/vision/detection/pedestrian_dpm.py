@@ -75,7 +75,6 @@ def _quadratic_def_cost(
     """
 
     d = int(max_disp)
-    k = 2 * d + 1
     ys = torch.arange(-d, d + 1, device=w_dy.device, dtype=torch.float32)
     xs = torch.arange(-d, d + 1, device=w_dy.device, dtype=torch.float32)
     dy, dx = torch.meshgrid(ys, xs, indexing="ij")
@@ -176,7 +175,9 @@ class PedestrianDPMDetector(nn.Module):
         k = 2 * max_disp + 1
         k2 = k * k
 
-        total_part_score = torch.zeros((b, c, out_h, out_w), device=x.device, dtype=root_score.dtype)
+        total_part_score = torch.zeros(
+            (b, c, out_h, out_w), device=x.device, dtype=root_score.dtype
+        )
 
         # Deformation cost template per part/class (C, K).
         def_w = F.softplus(self.def_w_raw)
@@ -269,4 +270,3 @@ if __name__ == "__main__":
     loss = out["score_map"].mean() + out["boxes"].mean()
     loss.backward()
     print("ok")
-

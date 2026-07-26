@@ -100,9 +100,9 @@ class SyntheticPedestrianDetection(Dataset):
         ltrb = np.array([left, top, right, bottom], dtype=np.float32)
 
         # FCOS-style centerness target derived from ltrb.
-        l, t, r, b = (float(v) for v in ltrb.tolist())
-        lr = min(l, r) / max(l, r, 1e-12)
-        tb = min(t, b) / max(t, b, 1e-12)
+        lv, tv, rv, bv = (float(v) for v in ltrb.tolist())
+        lr = min(lv, rv) / max(lv, rv, 1e-12)
+        tb = min(tv, bv) / max(tv, bv, 1e-12)
         centerness = float(np.sqrt(max(0.0, lr * tb)))
 
         cls_target = np.zeros((1, g, g), dtype=np.float32)

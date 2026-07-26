@@ -5,8 +5,10 @@ import torch.nn.functional as F
 from torch import nn
 
 
-def check_face_pair(pair: torch.Tensor | tuple[torch.Tensor, torch.Tensor] | list[torch.Tensor]) -> torch.Tensor:
-    if isinstance(pair, (tuple, list)):
+def check_face_pair(
+    pair: torch.Tensor | tuple[torch.Tensor, torch.Tensor] | list[torch.Tensor]
+) -> torch.Tensor:
+    if isinstance(pair, tuple | list):
         if len(pair) != 2:
             raise ValueError(f"Expected 2 face tensors, got {len(pair)}")
         pair = torch.stack([pair[0], pair[1]], dim=1)
@@ -24,8 +26,12 @@ class TinyVerificationEncoder(nn.Module):
         self.conv1 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(int(channels), int(channels), kernel_size=3, padding=1)
         self.mix = nn.Conv2d(int(channels), int(channels), kernel_size=1)
-        self.depthwise = nn.Conv2d(int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels))
-        self.prompt = nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        self.depthwise = nn.Conv2d(
+            int(channels), int(channels), kernel_size=5, padding=2, groups=int(channels)
+        )
+        self.prompt = (
+            nn.Parameter(torch.zeros(1, int(channels), 1, 1)) if self.mode == "prompt" else None
+        )
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
         x = F.relu(self.stem(image), inplace=True)
@@ -60,7 +66,9 @@ class TinyFaceVerifier(nn.Module):
             nn.Linear(int(embedding_dim), 1),
         )
 
-    def forward(self, pair: torch.Tensor | tuple[torch.Tensor, torch.Tensor] | list[torch.Tensor]) -> dict[str, torch.Tensor]:
+    def forward(
+        self, pair: torch.Tensor | tuple[torch.Tensor, torch.Tensor] | list[torch.Tensor]
+    ) -> dict[str, torch.Tensor]:
         pair = check_face_pair(pair)
         left = self.proj(self.encoder(pair[:, 0]))
         right = self.proj(self.encoder(pair[:, 1]))
@@ -69,19 +77,35 @@ class TinyFaceVerifier(nn.Module):
         fused = torch.cat([torch.abs(left - right), left * right], dim=-1)
         match_logit = self.head(fused)
         embeddings = torch.stack([left, right], dim=1)
-        return {"embeddings": embeddings, "match_logit": match_logit, "similarity": (left * right).sum(dim=-1, keepdim=True)}
+        return {
+            "embeddings": embeddings,
+            "match_logit": match_logit,
+            "similarity": (left * right).sum(dim=-1, keepdim=True),
+        }
 
 
-def build_toy_face_verifier(*, family: str, mode: str, variants: dict[str, dict[str, int]], in_channels: int, variant: str, width_mult: float = 1.0) -> nn.Module:
+def build_toy_face_verifier(
+    *,
+    family: str,
+    mode: str,
+    variants: dict[str, dict[str, int]],
+    in_channels: int,
+    variant: str,
+    width_mult: float = 1.0,
+) -> nn.Module:
     if int(in_channels) != 3:
         raise ValueError(f"TinyFaceVerifier expects 3-channel inputs, got {in_channels}")
     name = str(variant).lower().strip()
     if name not in variants:
-        raise ValueError(f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}")
+        raise ValueError(
+            f"Unknown variant for {family}: {variant!r}. Available: {sorted(variants)}"
+        )
     spec = dict(variants[name])
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     embedding_dim = int(spec.get("embedding_dim", 64))
-    return TinyFaceVerifier(family=str(family), mode=str(mode), width=width, embedding_dim=embedding_dim)
+    return TinyFaceVerifier(
+        family=str(family), mode=str(mode), width=width, embedding_dim=embedding_dim
+    )
 
 
 def smoke_test_face_verifier(builder, variant: str) -> None:

@@ -55,7 +55,6 @@ class SyntheticVideoRestorationDataset(Dataset):
             torch.arange(size, dtype=torch.float32),
             indexing="ij",
         )
-        x_norm = xx / max(1.0, float(size - 1))
         y_norm = yy / max(1.0, float(size - 1))
 
         background = 0.10 + 0.20 * (1.0 - y_norm)

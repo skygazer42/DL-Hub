@@ -50,7 +50,6 @@ class SyntheticPanopticSegmentationDataset:
         thing = int(self.cfg.num_thing_classes)
         stuff = int(self.cfg.num_stuff_classes)
         max_instances = int(self.cfg.max_instances)
-        total_classes = thing + stuff
         rng = np.random.default_rng(int(self.cfg.seed) * 1_000_003 + int(idx))
 
         semantic = np.zeros((h, w), dtype=np.int64)

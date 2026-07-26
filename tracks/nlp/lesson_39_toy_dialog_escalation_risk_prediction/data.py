@@ -42,7 +42,7 @@ def _build_vocab(texts: list[str]) -> Vocab:
 def _build_example(risk_level: str, rng: np.random.Generator) -> tuple[str, int]:
     issue = str(rng.choice(ISSUES))
     channel = str(rng.choice(CHANNELS))
-    mood = str(rng.choice(MOODS))
+    _mood = str(rng.choice(MOODS))  # draw kept so later per-sample draws stay aligned
     agent_state = str(rng.choice(AGENT_STATES))
 
     if risk_level == "low":

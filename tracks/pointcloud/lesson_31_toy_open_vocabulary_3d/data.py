@@ -102,7 +102,7 @@ class ToyOpenVocabulary3DDataset(Dataset):
         shape_a = int(torch.randint(0, 3, (1,), generator=g).item())
         shape_b = int(torch.randint(0, 3, (1,), generator=g).item())
         color_a = int(torch.randint(0, 3, (1,), generator=g).item())
-        color_b = int(torch.randint(0, 3, (1,), generator=g).item())
+        _color_b = int(torch.randint(0, 3, (1,), generator=g).item())  # draw kept so later per-sample draws stay aligned
 
         points_a = _sample_shape_points(shape_id=shape_a, num_points=obj_points, g=g)
         points_b = _sample_shape_points(shape_id=shape_b, num_points=obj_points, g=g)
