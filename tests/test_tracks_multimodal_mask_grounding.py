@@ -3,7 +3,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-import torch
+import pytest
+
+torch = pytest.importorskip("torch")
 
 
 def _repo_root() -> Path:
