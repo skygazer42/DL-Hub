@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/1.png" width="100%" alt="DL-Hub — Deep Learning from Scratch" />
+<img src="assets/dl_hub_logo.png" width="72%" alt="DL-Hub logo" />
 
 # DL-Hub
 
