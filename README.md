@@ -1,10 +1,8 @@
 <div align="center">
 
-<img src="assets/dl_hub_logo.png" width="72%" alt="DL-Hub logo" />
+<img src="assets/dl_hub_logo.png" width="64%" alt="DL-Hub logo" />
 
-# DL-Hub
-
-**从零手写，循序渐进 — PyTorch 深度学习统一学习项目**
+**从原理到实现 — 一站式 PyTorch 深度学习实践库**
 
 <br/>
 
