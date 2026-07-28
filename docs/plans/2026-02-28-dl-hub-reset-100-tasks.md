@@ -62,7 +62,7 @@
 24. `dlhub/training/early_stop.py`：早停（简化实现）。
 25. `dlhub/training/ema.py`：EMA（可选，高阶课）。
 26. `dlhub/data/splits.py`：train/val split helper（可复现）。
-27. `dlhub/data/compact.py`：compact 数据集（用于引擎单测，不依赖下载）。
+27. `dlhub/data/synthetic.py`：synthetic 数据集（用于引擎单测，不依赖下载）。
 28. `dlhub/nn/modules.py`：常用模块（MLP/ConvBlock）可读实现。
 29. `dlhub/nn/init.py`：权重初始化工具（学习用）。
 30. `dlhub/eval/confusion.py`：混淆矩阵（小工具）。
