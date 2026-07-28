@@ -47,7 +47,7 @@ class FaceIdentityConfig:
     vision_width: int = 32
 
 
-class ToyFaceIdentityVLM(nn.Module):
+class CompactFaceIdentityVLM(nn.Module):
     def __init__(self, cfg: FaceIdentityConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -87,7 +87,7 @@ def face_identity_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
 
 __all__ = [
     "FaceIdentityConfig",
-    "ToyFaceIdentityVLM",
+    "CompactFaceIdentityVLM",
     "face_identity_accuracy",
     "face_identity_loss",
 ]

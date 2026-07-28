@@ -11,7 +11,7 @@ icon: material/text
 ## CLI 快速上手
 
 ```bash
-# 列出全部 814 个架构 ID（本地实现的 ID 使用 `nl:` 前缀）
+# 列出全部 814 个注册 ID（本地实现的 ID 使用 `nl:` 前缀）
 python scripts/nlp_zoo.py --list
 
 # 模糊搜索

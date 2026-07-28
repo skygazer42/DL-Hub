@@ -7,7 +7,7 @@ torch = pytest.importorskip("torch")
 
 
 def test_few_shot_text_classification_episode_shapes() -> None:
-    from tracks.nlp.lesson_11_toy_few_shot_text_classification.data import (
+    from tracks.nlp.lesson_11_compact_few_shot_text_classification.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -43,11 +43,11 @@ def test_few_shot_text_classification_episode_shapes() -> None:
 
 
 def test_few_shot_text_classification_model_forward_and_metrics() -> None:
-    from tracks.nlp.lesson_11_toy_few_shot_text_classification.data import (
+    from tracks.nlp.lesson_11_compact_few_shot_text_classification.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_11_toy_few_shot_text_classification.model import (
+    from tracks.nlp.lesson_11_compact_few_shot_text_classification.model import (
         ModelConfig,
         PrototypicalTextClassifier,
         episode_accuracy,
@@ -94,8 +94,8 @@ def test_few_shot_text_classification_model_forward_and_metrics() -> None:
 
 
 def test_few_shot_text_classification_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_11_toy_few_shot_text_classification.data import DataConfig
-    from tracks.nlp.lesson_11_toy_few_shot_text_classification.train import TrainConfig, run_training
+    from tracks.nlp.lesson_11_compact_few_shot_text_classification.data import DataConfig
+    from tracks.nlp.lesson_11_compact_few_shot_text_classification.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -128,7 +128,7 @@ def test_few_shot_text_classification_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_11_toy_few_shot_text_classification" / "pytest_few_shot_text_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_11_compact_few_shot_text_classification" / "pytest_few_shot_text_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

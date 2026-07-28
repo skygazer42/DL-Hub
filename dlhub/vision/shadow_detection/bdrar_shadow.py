@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_shadow_detector, smoke_test_shadow_detector
+from ._common import build_baseline_shadow_detector, smoke_test_shadow_detector
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "bdrar_shadow_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_bdrar_shadow_shadow_detector(
     *, in_channels: int, variant: str = "bdrar_shadow_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_shadow_detector(
+    return build_baseline_shadow_detector(
         family="bdrar_shadow",
         mode="bdrar",
         variants=_VARIANTS,

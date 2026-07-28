@@ -12,13 +12,13 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class PanopticDeepLab(nn.Module):
-    """Panoptic-DeepLab (toy-first).
+    """Panoptic-DeepLab (compact-first).
 
     Heads:
     - semantic logits (stuff + thing)
     - center heatmap for things
     - center offset (dx, dy)
-    - instance masks via prototypes (toy convenience)
+    - instance masks via prototypes (compact convenience)
     """
 
     def __init__(
@@ -76,7 +76,7 @@ class PanopticDeepLab(nn.Module):
             nn.Conv2d(hc, 2, kernel_size=1, bias=True),
         )
 
-        # Toy instance masks: prototypes + query coefficients.
+        # Compact instance masks: prototypes + query coefficients.
         self.proto = ProtoNet(hc, np, depth=3, act="relu")
         self.query = nn.Parameter(torch.randn(ni, hc) * 0.02)
         self.q_proj = nn.Linear(hc, hc)

@@ -53,7 +53,7 @@ def test_multimodal_reasoning_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_24_multimodal_reasoning.model import (
         MultimodalReasoningConfig,
-        ToyMultimodalReasoningModel,
+        CompactMultimodalReasoningModel,
         reasoning_loss,
     )
 
@@ -70,7 +70,7 @@ def test_multimodal_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyMultimodalReasoningModel(
+    model = CompactMultimodalReasoningModel(
         MultimodalReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

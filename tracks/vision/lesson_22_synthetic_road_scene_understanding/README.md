@@ -2,12 +2,12 @@
 
 This lesson extends the lane-focused Batch 18 lessons into a compact scene-understanding task:
 
-- render a toy road image with lane slots, simple objects, and scene cues
+- render a compact road image with lane slots, simple objects, and scene cues
 - predict which lane slots are available
 - predict which object types are present
 - classify the overall road-scene pattern
 
-The implementation stays toy-first and CPU-friendly so the whole loop is easy to inspect.
+The implementation stays compact-first and CPU-friendly so the whole loop is easy to inspect.
 
 ## Files
 

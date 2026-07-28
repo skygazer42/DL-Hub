@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, check_nch
 
 
 class DNDTRPanoptic(nn.Module):
-    """DN-DETR-style panoptic segmentation (toy-first).
+    """DN-DETR-style panoptic segmentation (compact-first).
 
     Adds an extra set of "denoising" queries alongside the normal DETR queries.
     This is a lightweight educational skeleton (not a full training recipe).

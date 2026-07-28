@@ -50,7 +50,7 @@ def test_multimodal_facial_expression_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_35_face_expression_vlm_recognition.model import (
         FacialExpressionModelConfig,
-        ToyFacialExpressionVLM,
+        CompactFacialExpressionVLM,
         classification_accuracy,
         expression_loss,
     )
@@ -67,7 +67,7 @@ def test_multimodal_facial_expression_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFacialExpressionVLM(
+    model = CompactFacialExpressionVLM(
         FacialExpressionModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

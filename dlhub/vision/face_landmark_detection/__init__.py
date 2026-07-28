@@ -1,4 +1,4 @@
-"""face landmark detection models (toy-first, pure torch)."""
+"""face landmark detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

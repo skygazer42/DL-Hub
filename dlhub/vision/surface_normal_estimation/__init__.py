@@ -1,4 +1,4 @@
-"""Surface normal estimation models (toy-first, pure torch)."""
+"""Surface normal estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

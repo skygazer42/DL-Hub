@@ -1,6 +1,6 @@
 # Lesson 57: Finger Spread VLM Reasoning
 
-This toy lesson regresses a normalized **finger spread** target from a grayscale hand crop and a
+This compact lesson regresses a normalized **finger spread** target from a grayscale hand crop and a
 short text query. Each sample renders a palm with four fingers whose separation changes with the
 target spread value in `[0, 1]`.
 

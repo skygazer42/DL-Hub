@@ -38,7 +38,7 @@ def _hog_cell_histograms(
     if h < cell or w < cell:
         raise ValueError("Input smaller than one HOG cell.")
     if h % cell != 0 or w % cell != 0:
-        raise ValueError("Input H and W must be divisible by cell_size for this toy HOG.")
+        raise ValueError("Input H and W must be divisible by cell_size for this compact HOG.")
 
     bins = int(num_bins)
     if bins <= 1:
@@ -87,7 +87,7 @@ def _quadratic_def_cost(
 
 
 class PedestrianDPMDetector(nn.Module):
-    """Deformable Part Model (DPM) style detector (toy-first).
+    """Deformable Part Model (DPM) style detector (compact-first).
 
     This is a simplified, torch-native DPM:
     - compute HOG per cell

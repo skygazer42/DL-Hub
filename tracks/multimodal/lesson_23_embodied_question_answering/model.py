@@ -73,7 +73,7 @@ class EmbodiedQaConfig:
     text_width: int = 32
 
 
-class ToyEmbodiedQaModel(nn.Module):
+class CompactEmbodiedQaModel(nn.Module):
     def __init__(self, cfg: EmbodiedQaConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -139,7 +139,7 @@ __all__ = [
     "EmbodiedQaConfig",
     "TextQuestionEncoder",
     "TinyObservationEncoder",
-    "ToyEmbodiedQaModel",
+    "CompactEmbodiedQaModel",
     "TrajectoryEncoder",
     "eqa_accuracy",
     "eqa_loss",

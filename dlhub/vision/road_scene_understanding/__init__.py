@@ -1,4 +1,4 @@
-"""road scene understanding models (toy-first, pure torch)."""
+"""road scene understanding models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

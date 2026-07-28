@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyTextRecognizer(nn.Module):
+class CompactTextRecognizer(nn.Module):
     def __init__(
         self,
         *,
@@ -67,7 +67,7 @@ class ToyTextRecognizer(nn.Module):
         return {"logits": logits, "tokens": logits.argmax(dim=-1)}
 
 
-def build_toy_text_recognizer(
+def build_baseline_text_recognizer(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -80,7 +80,7 @@ def build_toy_text_recognizer(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyTextRecognizer(
+    return CompactTextRecognizer(
         family=str(family),
         in_channels=int(in_channels),
         vocab_size=int(vocab_size),

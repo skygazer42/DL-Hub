@@ -11,7 +11,7 @@ def check_btchw(x):
     return x
 
 
-class ToyVOSModel(nn.Module):
+class CompactVOSModel(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, num_masks: int):
         super().__init__()
         self.family = str(family)
@@ -39,7 +39,7 @@ class ToyVOSModel(nn.Module):
         return {"logits": logits, "masks": masks}
 
 
-def build_toy_vos(
+def build_baseline_vos(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -50,7 +50,7 @@ def build_toy_vos(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyVOSModel(
+    return CompactVOSModel(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_dialog_state_tracking_batch_contract() -> None:
-    from tracks.nlp.lesson_29_toy_dialog_state_tracking.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_29_toy_dialog_state_tracking.model import (
+    from tracks.nlp.lesson_29_compact_dialog_state_tracking.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_29_compact_dialog_state_tracking.model import (
         DialogStateTracker,
         ModelConfig,
         compute_state_metrics,
@@ -83,8 +83,8 @@ def test_dialog_state_tracking_batch_contract() -> None:
 
 
 def test_dialog_state_tracking_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_29_toy_dialog_state_tracking.data import DataConfig
-    from tracks.nlp.lesson_29_toy_dialog_state_tracking.train import TrainConfig, run_training
+    from tracks.nlp.lesson_29_compact_dialog_state_tracking.data import DataConfig
+    from tracks.nlp.lesson_29_compact_dialog_state_tracking.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -117,7 +117,7 @@ def test_dialog_state_tracking_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_29_toy_dialog_state_tracking"
+        / "lesson_29_compact_dialog_state_tracking"
         / "pytest_dialog_state_tracking_smoke"
     )
     assert (run_dir / "config.json").is_file()

@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_textual_entailment_batch_contract() -> None:
-    from tracks.nlp.lesson_27_toy_textual_entailment.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_27_toy_textual_entailment.model import (
+    from tracks.nlp.lesson_27_compact_textual_entailment.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_27_compact_textual_entailment.model import (
         ModelConfig,
         TextualEntailmentClassifier,
         classification_accuracy,
@@ -50,8 +50,8 @@ def test_textual_entailment_batch_contract() -> None:
 
 
 def test_textual_entailment_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_27_toy_textual_entailment.data import DataConfig
-    from tracks.nlp.lesson_27_toy_textual_entailment.train import TrainConfig, run_training
+    from tracks.nlp.lesson_27_compact_textual_entailment.data import DataConfig
+    from tracks.nlp.lesson_27_compact_textual_entailment.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -84,7 +84,7 @@ def test_textual_entailment_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_27_toy_textual_entailment"
+        / "lesson_27_compact_textual_entailment"
         / "pytest_textual_entailment_smoke"
     )
     assert (run_dir / "config.json").is_file()

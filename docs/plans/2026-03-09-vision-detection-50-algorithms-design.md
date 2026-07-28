@@ -2,7 +2,7 @@
 
 **Context**
 
-`dlhub/vision/detection/` already contains 42 toy-first object detection families, but it does not yet provide:
+`dlhub/vision/detection/` already contains 42 compact-first object detection families, but it does not yet provide:
 
 - a broader, more historically complete detector family archive
 - timeline metadata spanning `2014-2026`
@@ -16,7 +16,7 @@ The goal for this expansion is to add **50 more real detector families** while p
 - `build_*_detector(...)` builder per module
 - `if __name__ == "__main__":` forward/backward smoke
 - zero external detection-framework dependency
-- toy-first implementations that emphasize forward structure and stable gradients over benchmark fidelity
+- compact-first implementations that emphasize forward structure and stable gradients over benchmark fidelity
 
 ## Scope
 

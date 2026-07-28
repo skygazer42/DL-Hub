@@ -42,10 +42,10 @@ class _Fuse(nn.Module):
 
 
 class UNet3Plus(nn.Module):
-    """U-Net 3+ (UNet3+) style denoiser (toy-first, pure torch).
+    """U-Net 3+ (UNet3+) style denoiser (compact-first, pure torch).
 
     UNet3+ uses full-scale skip connections: each decoder stage fuses features from multiple encoder depths.
-    This toy-first implementation keeps the spirit (multi-scale fusion) while remaining compact.
+    This compact-first implementation keeps the spirit (multi-scale fusion) while remaining compact.
 
     Predicts a residual/noise map and returns `x - residual`.
     """

@@ -2,7 +2,7 @@
 
 **Goal**
 
-Add a local, toy-first video summarization algorithm family to DL-Hub with:
+Add a local, compact-first video summarization algorithm family to DL-Hub with:
 - local video summarization model families
 - a unified zoo + CLI
 - fast smoke tests that run on CPU with no downloads
@@ -44,15 +44,15 @@ Add:
 - `tests/test_dlhub_vision_video_summarization_zoo.py`
 
 Initial local families:
-- `dsn`: reinforcement-learning style scoring baseline (toy deterministic scorer)
-- `sum_gan`: adversarial summarization (toy generator + discriminator)
-- `cycle_sum`: cycle-consistent summary/reconstruction (toy)
+- `dsn`: reinforcement-learning style scoring baseline (compact deterministic scorer)
+- `sum_gan`: adversarial summarization (compact generator + discriminator)
+- `cycle_sum`: cycle-consistent summary/reconstruction (compact)
 - `vasnet`: self-attention frame scorer
 - `dsnet`: detect-to-summarize segment proposal scorer
 - `ca_sum`: content-attention summarizer
 - `pgl_sum`: local-global hybrid attention summarizer
-- `mhscnet`: shot-aware multi-scale conv summarizer (toy unimodal adaptation)
-- `tac_sum`: temporal-aware clustering summarizer (toy training-free adaptation)
+- `mhscnet`: shot-aware multi-scale conv summarizer (compact unimodal adaptation)
+- `tac_sum`: temporal-aware clustering summarizer (compact training-free adaptation)
 - `csta`: CNN-based spatiotemporal attention summarizer
 - `fulltransnet`: full transformer encoder-decoder summarizer
 - `summdiff`: diffusion-style score generation summarizer

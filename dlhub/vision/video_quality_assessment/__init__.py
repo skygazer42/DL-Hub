@@ -1,4 +1,4 @@
-"""Video quality assessment models (toy-first, pure torch)."""
+"""Video quality assessment models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

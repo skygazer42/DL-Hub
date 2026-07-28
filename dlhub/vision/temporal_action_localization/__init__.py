@@ -1,4 +1,4 @@
-"""Temporal action localization models (toy-first, pure torch)."""
+"""Temporal action-localization registry and compact PyTorch baselines."""
 
 from __future__ import annotations
 from importlib import import_module

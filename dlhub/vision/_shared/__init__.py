@@ -1,1 +1,1 @@
-"""Shared toy-model building blocks reused by dlhub.vision task packages."""
+"""Shared compact-model building blocks reused by dlhub.vision task packages."""

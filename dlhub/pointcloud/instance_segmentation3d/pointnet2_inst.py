@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointNet2Inst(nn.Module):
-    """PointNet++ instance segmentation (toy): hierarchical encoder + prototype head."""
+    """PointNet++ instance segmentation (compact): hierarchical encoder + prototype head."""
 
     def __init__(
         self,

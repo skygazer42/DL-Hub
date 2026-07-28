@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class PAAHead(nn.Module):
-    """PAA-style head (toy): cls, box and iou prediction."""
+    """PAA-style head (compact): cls, box and iou prediction."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -32,7 +32,7 @@ class PAAHead(nn.Module):
 
 
 class PAADetector(nn.Module):
-    """PAA-style detector (toy-first)."""
+    """PAA-style detector (compact-first)."""
 
     def __init__(
         self,

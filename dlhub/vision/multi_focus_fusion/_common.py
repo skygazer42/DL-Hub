@@ -10,7 +10,7 @@ def check_nchw(x):
     return x
 
 
-class ToyMFF(nn.Module):
+class CompactMFF(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -33,7 +33,7 @@ class ToyMFF(nn.Module):
         return {"fused": fused}
 
 
-def build_toy_mff(
+def build_baseline_mff(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -43,7 +43,7 @@ def build_toy_mff(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyMFF(
+    return CompactMFF(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

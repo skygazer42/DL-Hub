@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class OctFormerSeg(nn.Module):
-    """OctFormer semantic segmentation (toy octree-style token encoder)."""
+    """OctFormer semantic segmentation (compact octree-style token encoder)."""
 
     def __init__(
         self,

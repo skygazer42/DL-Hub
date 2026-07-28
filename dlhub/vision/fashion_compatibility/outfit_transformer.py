@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "outfit_transformer_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_outfit_transformer_fashion_compat_model(
     width_mult: float = 1.0,
     **kwargs,
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="outfit_transformer",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class FrustumPointNet(nn.Module):
-    """Frustum PointNet (toy): filter points by a random 'frustum' direction then detect."""
+    """Frustum PointNet (compact): filter points by a random 'frustum' direction then detect."""
 
     def __init__(
         self,

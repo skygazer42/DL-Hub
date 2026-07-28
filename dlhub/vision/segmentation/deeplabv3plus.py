@@ -96,7 +96,7 @@ class ASPP(nn.Module):
 
 
 class DeepLabV3Plus(nn.Module):
-    """DeepLabV3+ (toy-first, pure torch).
+    """DeepLabV3+ (compact-first, pure torch).
 
     Forward: (B, C, H, W) -> logits (B, num_classes, H, W)
     """

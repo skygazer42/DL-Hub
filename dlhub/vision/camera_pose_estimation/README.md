@@ -1,6 +1,6 @@
 # Camera pose estimation
 
-Toy-first local families for `camera pose estimation`.
+Compact-first local families for `camera pose estimation`.
 
 ## Families
 

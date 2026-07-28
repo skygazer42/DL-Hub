@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_prompt_learner, smoke_test_prompt_learner
+from ._common import build_baseline_prompt_learner, smoke_test_prompt_learner
 
 _VARIANTS = {
     "proda_prompt_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_proda_prompt_prompt_learner(
     width_mult: float = 1.0,
     prompt_len: int = 8,
 ):
-    return build_toy_prompt_learner(
+    return build_baseline_prompt_learner(
         family="proda_prompt",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -1,6 +1,6 @@
 # Gesture Recognition
 
-Toy-first local families for `gesture recognition`.
+Compact-first local families for `gesture recognition`.
 
 ## Families
 

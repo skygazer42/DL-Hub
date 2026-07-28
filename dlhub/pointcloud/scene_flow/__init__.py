@@ -1,4 +1,4 @@
-"""Point cloud scene flow estimators (pure torch, toy-first).
+"""Point cloud scene flow estimators (pure torch, compact-first).
 
 Conventions:
 - One scene-flow family per file (variants live in that file via `_VARIANTS`).

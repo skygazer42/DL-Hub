@@ -12,11 +12,11 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class PanopticFCN(nn.Module):
-    """Panoptic FCN (toy-first).
+    """Panoptic FCN (compact-first).
 
     Bottom-up style:
     - semantic logits (stuff + thing)
-    - instance masks from per-pixel embeddings + prototype masks (toy simplification)
+    - instance masks from per-pixel embeddings + prototype masks (compact simplification)
     """
 
     def __init__(
@@ -65,13 +65,13 @@ class PanopticFCN(nn.Module):
         self.proj = ConvBNAct(int(c3_channels), hc, kernel_size=1, stride=1, padding=0, act="relu")
         self.semantic = nn.Conv2d(hc, nt + ns, kernel_size=1, bias=True)
 
-        # Pixel embeddings for grouping (toy output).
+        # Pixel embeddings for grouping (compact output).
         self.embed = nn.Sequential(
             ConvBNAct(hc, hc, kernel_size=3, stride=1, act="relu"),
             nn.Conv2d(hc, ed, kernel_size=1, bias=True),
         )
 
-        # Prototype masks + instance coefficients (toy).
+        # Prototype masks + instance coefficients (compact).
         self.proto = ProtoNet(hc, np, depth=3, act="relu")
         self.query = nn.Parameter(torch.randn(ni, hc) * 0.02)
         self.q_proj = nn.Linear(hc, hc)

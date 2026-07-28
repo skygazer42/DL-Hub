@@ -179,7 +179,7 @@ def _render_face(image_size: int, face_box: np.ndarray, eye_vector: np.ndarray) 
     return np.clip(image, 0.0, 1.0)
 
 
-class ToyFaceGazeReasoningDataset(Dataset):
+class SyntheticFaceGazeReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.num_samples) <= 0:
             raise ValueError("num_samples must be positive")
@@ -215,7 +215,7 @@ class ToyFaceGazeReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceGazeReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceGazeReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -238,7 +238,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyFaceGazeReasoningDataset",
+    "SyntheticFaceGazeReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

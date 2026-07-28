@@ -4,10 +4,21 @@
 
 ---
 
+## 2026-07-28 · 实现语义与仓库叙事重构
+
+- 课程与模型规模统一使用 `compact`，程序生成输入统一使用 `synthetic`，共享实现统一使用 `baseline`；维护代码不再保留旧的随意规模标签或双重兼容导入。
+- 重命名 187 个课程目录与相关模块/API，并同步训练日志、测试、文档链接和运行示例。
+- 新增[实现契约](implementation-contract.md)与 `scripts/narrative_check.py`，明确课程、数据、验证和 Model Zoo 审计之间的完整链路。
+- 新增 Model Zoo 保真度台账；仅有通用基线的论文入口明确标为 `baseline-alias`，未审计实现保持 `unreviewed`。
+- 移除 15 个旧规模标签注册别名后，本地 Zoo 注册 ID 实测为 8611；历史 8626 数字保留在下方版本记录中。
+- 作者元数据统一为 `skygazer42 <207829897@qq.com>`；本地开发默认 `make verify` 后只运行与改动相关的最小测试。
+
+---
+
 ## 2026-07-26 · Zoo 与杂项文档数字刷新
 
 - 重建 `docs/zoo/index.md` 子系统总览（22 个子系统），CLI 全部改为真实存在的 `python scripts/<xxx>_zoo.py` 脚本。
-- 刷新 Zoo 统计至实测值：Lessons 339 / Vision 791 / NLP 814 / Point Cloud 64 / VLM 210 (70 族) / GAN 132 (44 族) / Diffusion 96 (32 族) / Federated 228 (76 族)，本地 Zoo 架构 ID 合计 8626（`python scripts/project_stats.py --json` 可复核）。
+- 刷新 Zoo 统计至当时实测值：Lessons 339 / Vision 791 / NLP 814 / Point Cloud 64 / VLM 210 (70 族) / GAN 132 (44 族) / Diffusion 96 (32 族) / Federated 228 (76 族)，本地 Zoo 架构 ID 合计 8626（2026-07-26 统计快照）。
 - 新增 `docs/zoo/research-directions.md`，收录 22 批研究方向子领域的包路径明细。
 - 修复 quickstart 中 3 个失效的 lesson 命令（gnn / nlp / foundations），测试文件数改为实测口径（2026-07 实测 409）。
 

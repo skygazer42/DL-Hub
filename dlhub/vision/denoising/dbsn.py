@@ -125,7 +125,7 @@ class DirectionalStack(nn.Module):
 
 
 class DBSN(nn.Module):
-    """Dilated Blind-Spot Network (toy-first, pure torch).
+    """Dilated Blind-Spot Network (compact-first, pure torch).
 
     Compared to `BSN`, this version:
     - Runs multiple directional stacks at different dilation rates.

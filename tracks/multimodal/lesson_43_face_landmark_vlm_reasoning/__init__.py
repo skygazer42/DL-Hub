@@ -1,5 +1,5 @@
-from .data import LANDMARK_TO_ID, LANDMARKS, DataConfig, ToyFaceLandmarkReasoningDataset, Vocab, get_dataloaders
-from .model import FaceLandmarkReasoningConfig, ToyFaceLandmarkReasoningModel, face_landmark_distance, face_landmark_loss
+from .data import LANDMARK_TO_ID, LANDMARKS, DataConfig, SyntheticFaceLandmarkReasoningDataset, Vocab, get_dataloaders
+from .model import FaceLandmarkReasoningConfig, CompactFaceLandmarkReasoningModel, face_landmark_distance, face_landmark_loss
 from .train import TrainConfig, run_training
 
 __all__ = [
@@ -7,8 +7,8 @@ __all__ = [
     "FaceLandmarkReasoningConfig",
     "LANDMARK_TO_ID",
     "LANDMARKS",
-    "ToyFaceLandmarkReasoningDataset",
-    "ToyFaceLandmarkReasoningModel",
+    "SyntheticFaceLandmarkReasoningDataset",
+    "CompactFaceLandmarkReasoningModel",
     "TrainConfig",
     "Vocab",
     "face_landmark_distance",

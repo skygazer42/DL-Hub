@@ -64,7 +64,7 @@ class _Up(nn.Module):
 
 
 class AttentionUNet(nn.Module):
-    """Attention U-Net denoiser (toy-first, pure torch).
+    """Attention U-Net denoiser (compact-first, pure torch).
 
     Encoder-decoder with attention-gated skip connections. Predicts a residual/noise map
     and returns `x - residual`.

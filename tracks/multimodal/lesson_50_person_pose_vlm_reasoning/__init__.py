@@ -1,12 +1,12 @@
-from .data import DataConfig, ToyPersonPoseReasoningDataset, Vocab, get_dataloaders
-from .model import PersonPoseReasoningConfig, ToyPersonPoseReasoningModel, person_pose_loss, pose_mae
+from .data import DataConfig, SyntheticPersonPoseReasoningDataset, Vocab, get_dataloaders
+from .model import PersonPoseReasoningConfig, CompactPersonPoseReasoningModel, person_pose_loss, pose_mae
 from .train import TrainConfig, run_training
 
 __all__ = [
     "DataConfig",
     "PersonPoseReasoningConfig",
-    "ToyPersonPoseReasoningDataset",
-    "ToyPersonPoseReasoningModel",
+    "SyntheticPersonPoseReasoningDataset",
+    "CompactPersonPoseReasoningModel",
     "TrainConfig",
     "Vocab",
     "get_dataloaders",

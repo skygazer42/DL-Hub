@@ -47,7 +47,7 @@ class FaceVerificationConfig:
     vision_width: int = 32
 
 
-class ToyFaceVerificationModel(nn.Module):
+class CompactFaceVerificationModel(nn.Module):
     def __init__(self, cfg: FaceVerificationConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -89,7 +89,7 @@ def verification_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
 
 __all__ = [
     "FaceVerificationConfig",
-    "ToyFaceVerificationModel",
+    "CompactFaceVerificationModel",
     "verification_accuracy",
     "verification_loss",
 ]

@@ -1,4 +1,4 @@
-"""Document dewarping models (toy-first, pure torch)."""
+"""Document dewarping models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

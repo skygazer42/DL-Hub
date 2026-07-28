@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_derainer, smoke_test_derainer
+from ._common import build_baseline_derainer, smoke_test_derainer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_transformer_derain_derainer(
     variant: str = "transformer_derain_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_derainer(
+    return build_baseline_derainer(
         family="transformer_derain",
         mode="transformer",
         variants=_VARIANTS,

@@ -1,6 +1,6 @@
 # Keypoint Regression
 
-Toy-first local families for `keypoint regression`.
+Compact-first local families for `keypoint regression`.
 
 ## Families
 

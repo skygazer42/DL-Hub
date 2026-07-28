@@ -1,6 +1,6 @@
 # Crowd localization
 
-Toy-first local families for `crowd localization`.
+Compact-first local families for `crowd localization`.
 
 ## Families
 

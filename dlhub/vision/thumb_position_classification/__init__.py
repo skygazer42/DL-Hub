@@ -1,4 +1,4 @@
-"""thumb position classification models (toy-first, pure torch)."""
+"""thumb position classification models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

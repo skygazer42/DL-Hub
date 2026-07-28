@@ -13,23 +13,25 @@
   同一个单层 GRU + 双线性头（actionformer 无注意力、mambatal 无 SSM）。
 - video_temporal_grounding：momentdetr/qdetr_ground 无 query/decoder 机制。
 - referring_expression_comprehension：transvg/reftr 无 transformer 融合。
-- video_summarization：queryfocus_sum 无 query 输入；segmentformer/memorytokensum
-  与 sumformer 同构。
+- video_summarization：queryfocus_sum 已于 2026-07-28 补上 query 条件化并转为
+  compact-inspired；memorytokensum 已补上双向 memory token 读写并转为 compact-inspired；
+  segmentformer 已有 segment pooling 但无 Transformer。
 - open_vocabulary_segmentation / referring_expression_segmentation：20 个名字对应
   完全相同的模型。
-- co_segmentation：clip_coseg 无 CLIP/文本分支；token_affinity 只有图像级亲和。
+- co_segmentation：clip_coseg 已于 2026-07-28 补上文本输入和图文相似度调制，
+  转为 compact-inspired，但仍无预训练 CLIP 编码器；token_affinity 只有图像级亲和。
 
 可选处理：a) 保持现状（zoo 定位是统一玩具脚手架，README/docs 说明即可）；
 b) 给差异化程度最低的家族补上名义机制的最小实现；c) 在各包 docstring 声明
 "变体仅作注册名区分"。
 
-## 2. TAL / VTG 的 `depth` 参数无效
+## 2. TAL / VTG 的 `depth` 参数无效（2026-07-28 已解决）
 
-`_common.py` 的 ToyModel 接受 `depth` 但未使用（GRU 恒单层），tiny/small/base
-只差 width。修法与 video_understanding 相同（GRU num_layers=depth 或堆叠），
-但会改变这两个包全部变体的参数量。
+两个 `_common.py` 现已将 `depth` 传给 GRU 的 `num_layers`；tiny/small/base
+分别使用 1/2/3 层，参数量和实际时序深度都会随配置变化。旧版 small/base
+checkpoint 因新增 GRU 层参数，不能再直接 strict load。
 
-## 3. lesson_09 toy RLHF PPO 的冻结 old-policy
+## 3. lesson_09 compact RLHF PPO 的冻结 old-policy
 
 ratio 的 old policy 是永不更新的初始参考模型、样本来自固定数据集——
 是对 init 的 trust region 而非真 PPO。已在代码中注释说明；如需教学上更接近

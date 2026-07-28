@@ -108,7 +108,7 @@ class TinyDropRemover(nn.Module):
         }
 
 
-def build_toy_drop_remover(
+def build_baseline_drop_remover(
     *,
     family: str,
     mode: str,

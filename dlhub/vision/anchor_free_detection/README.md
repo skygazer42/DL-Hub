@@ -1,6 +1,6 @@
 # Anchor-Free Detection
 
-Toy-first local families for `anchor-free detection`.
+Compact-first local families for `anchor-free detection`.
 
 ## Families
 

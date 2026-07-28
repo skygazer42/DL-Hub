@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_pupil_detector, smoke_test_pupil_detector
+from ._common import build_baseline_pupil_detector, smoke_test_pupil_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_coarse_pupil_pupil_detector(
     *, in_channels: int, variant: str = "coarse_pupil_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_pupil_detector(
+    return build_baseline_pupil_detector(
         family="coarse_pupil",
         mode="coarse",
         variants=_VARIANTS,

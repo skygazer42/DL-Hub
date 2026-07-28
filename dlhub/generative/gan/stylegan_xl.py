@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import ToyGAN, smoke_test_gan
+from ._common import CompactGAN, smoke_test_gan
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "stylegan_xl_tiny": {"width": 112, "depth": 4, "latent": 128},
@@ -24,7 +24,7 @@ def build_stylegan_xl_gan(
     cfg = _VARIANTS[str(variant)]
     width = int(int(cfg["width"]) * float(width_mult))
     latent = max(int(latent_dim), int(cfg["latent"]))
-    return ToyGAN(
+    return CompactGAN(
         family="stylegan_xl",
         in_channels=int(in_channels),
         image_size=int(image_size),

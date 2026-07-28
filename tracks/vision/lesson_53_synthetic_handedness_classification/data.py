@@ -90,7 +90,7 @@ class SyntheticHandednessDataset:
         thumb = ((xx - tx) / float(params["thumb_rx"])) ** 2 + ((yy - ty) / float(params["thumb_ry"])) ** 2
         thumb_mask = np.exp(-thumb).astype(np.float32)
 
-        # Boost the thumb region so handedness is visually separable in a toy setting.
+        # Boost the thumb region so handedness is visually separable in a synthetic setting.
         image += 0.70 * palm_mask
         image += 0.55 * thumb_mask
 

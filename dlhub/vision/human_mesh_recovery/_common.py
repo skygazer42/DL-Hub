@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return F.adaptive_avg_pool2d(self.net(check_nchw(x)), (1, 1)).flatten(1)
 
 
-class ToyMeshRecovery(nn.Module):
+class CompactMeshRecovery(nn.Module):
     def __init__(
         self, *, family: str, in_channels: int, width: int, depth: int, num_vertices: int = 32
     ):
@@ -43,7 +43,7 @@ class ToyMeshRecovery(nn.Module):
         return {"vertices": verts, "pose": pose}
 
 
-def build_toy_mesh(
+def build_baseline_mesh(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -54,7 +54,7 @@ def build_toy_mesh(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyMeshRecovery(
+    return CompactMeshRecovery(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

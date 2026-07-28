@@ -38,7 +38,7 @@ def test_multimodal_thumb_position_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_58_thumb_position_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_58_thumb_position_vlm_reasoning.model import (
         ThumbPositionReasoningConfig,
-        ToyThumbPositionReasoningModel,
+        CompactThumbPositionReasoningModel,
         compute_accuracy,
         thumb_position_loss,
     )
@@ -55,7 +55,7 @@ def test_multimodal_thumb_position_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyThumbPositionReasoningModel(
+    model = CompactThumbPositionReasoningModel(
         ThumbPositionReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

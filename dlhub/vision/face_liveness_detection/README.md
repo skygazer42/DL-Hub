@@ -1,6 +1,6 @@
 # Face Liveness Detection
 
-Toy-first local families for `face liveness detection`.
+Compact-first local families for `face liveness detection`.
 
 ## Families
 

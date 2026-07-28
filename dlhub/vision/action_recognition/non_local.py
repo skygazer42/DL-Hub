@@ -1,9 +1,9 @@
-"""Non-local block - toy-first video action classifier.
+"""Non-local block - compact-first video action classifier.
 
 Reference:
 - "Non-local Neural Networks" (CVPR 2018)
 
-Toy interpretation:
+Compact interpretation:
 - Insert a light non-local self-attention block into a small 3D CNN.
 - Important: apply the non-local block after spatial/temporal downsampling to keep
   attention matrix sizes manageable on CPU.
@@ -72,7 +72,7 @@ class NonLocal3D(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         b, c, t, h, w = x.shape
         thw = int(t * h * w)
-        # Guard: keep this toy block sane.
+        # Guard: keep this compact block sane.
         if thw > 1024:
             raise ValueError(
                 f"NonLocal3D expects a downsampled feature map (T*H*W <= 1024), got {t}*{h}*{w}={thw}."

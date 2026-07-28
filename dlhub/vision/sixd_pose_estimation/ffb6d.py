@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_pose6d, smoke_test_6d
+from ._common import build_baseline_pose6d, smoke_test_6d
 
 _VARIANTS = {
     "ffb6d_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_ffb6d_pose6d_estimator(
     *, in_channels: int, num_objects: int, variant: str = "ffb6d_small", width_mult: float = 1.0
 ):
-    return build_toy_pose6d(
+    return build_baseline_pose6d(
         family="ffb6d",
         variants=_VARIANTS,
         in_channels=int(in_channels),

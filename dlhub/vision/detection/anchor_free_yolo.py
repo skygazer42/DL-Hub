@@ -34,7 +34,7 @@ class C2fBlock(nn.Module):
 
 
 class YOLOv8Backbone(nn.Module):
-    """Toy YOLOv8 backbone returning stride-8/16/32 features."""
+    """Compact YOLOv8 backbone returning stride-8/16/32 features."""
 
     def __init__(
         self,

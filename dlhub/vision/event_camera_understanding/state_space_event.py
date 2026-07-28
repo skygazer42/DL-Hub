@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_event_model, smoke_test_event_model
+from ._common import build_baseline_event_model, smoke_test_event_model
 
 _VARIANTS = {
     "state_space_event_tiny": {"width": 24, "depth": 1, "steps": 2},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_state_space_event_event_model(
     *, in_channels: int, variant: str = "state_space_event_small", width_mult: float = 1.0
 ):
-    return build_toy_event_model(
+    return build_baseline_event_model(
         family="state_space_event",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -1,4 +1,4 @@
-# Lesson 53: Finger Count VLM Reasoning (Toy)
+# Lesson 53: Finger Count VLM Reasoning (Compact)
 
 This lesson is a small multimodal classification exercise:
 

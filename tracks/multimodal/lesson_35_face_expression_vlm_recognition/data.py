@@ -121,7 +121,7 @@ def _build_record(*, cfg: DataConfig, vocab: Vocab, generator: torch.Generator) 
     }
 
 
-class ToyFacialExpressionDataset(Dataset[dict[str, object]]):
+class SyntheticFacialExpressionDataset(Dataset[dict[str, object]]):
     def __init__(self, cfg: DataConfig) -> None:
         self.cfg = cfg
         self.vocab = _build_vocab()
@@ -139,7 +139,7 @@ class ToyFacialExpressionDataset(Dataset[dict[str, object]]):
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
-    dataset = ToyFacialExpressionDataset(cfg)
+    dataset = SyntheticFacialExpressionDataset(cfg)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -166,7 +166,7 @@ __all__ = [
     "EMOTION_TO_ID",
     "EMOTIONS",
     "DataConfig",
-    "ToyFacialExpressionDataset",
+    "SyntheticFacialExpressionDataset",
     "Vocab",
     "get_dataloaders",
 ]

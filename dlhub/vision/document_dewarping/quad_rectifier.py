@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_vision_direction, smoke_test_direction
+from ._common import build_baseline_vision_direction, smoke_test_direction
 
 _VARIANTS = {
     "quad_rectifier_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_quad_rectifier_dewarper(
     *, in_channels: int, variant: str = "quad_rectifier_small", width_mult: float = 1.0
 ):
-    return build_toy_vision_direction(
+    return build_baseline_vision_direction(
         family="quad_rectifier",
         variants=_VARIANTS,
         in_channels=int(in_channels),

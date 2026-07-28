@@ -1,6 +1,6 @@
 # Object discovery
 
-Toy-first local families for `object discovery`.
+Compact-first local families for `object discovery`.
 
 ## Families
 

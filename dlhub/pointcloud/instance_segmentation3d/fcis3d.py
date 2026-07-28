@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class FCIS3D(nn.Module):
-    """FCIS3D (toy): position-sensitive features via xyz MLP + prototype masks."""
+    """FCIS3D (compact): position-sensitive features via xyz MLP + prototype masks."""
 
     def __init__(
         self,

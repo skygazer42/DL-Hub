@@ -1,10 +1,10 @@
-"""Finer-CAM (toy-first) for FGVC.
+"""Finer-CAM (compact-first) for FGVC.
 
 Reference:
 - "Finer-CAM: Spotting Difference Reveals Finer Details for Visual Explanation" (arXiv 2025)
   https://arxiv.org/abs/2501.11309
 
-Toy interpretation in this repo (offline, no pretrained weights):
+Compact interpretation in this repo (offline, no pretrained weights):
 - Use a tiny ViT-style patch encoder to obtain patch tokens.
 - Learn class-specific prompt vectors.
 - Build a contrast prompt per class by subtracting the mean of "other class" prompts.

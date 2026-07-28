@@ -1,6 +1,6 @@
 # Shadow detection
 
-Toy-first local families for `shadow detection`.
+Compact-first local families for `shadow detection`.
 
 ## Families
 

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class MinkUNetSeg(nn.Module):
-    """MinkUNet semantic segmentation (toy): dense voxel UNet as a stand-in for sparse UNet."""
+    """MinkUNet semantic segmentation (compact): dense voxel UNet as a stand-in for sparse UNet."""
 
     def __init__(
         self,

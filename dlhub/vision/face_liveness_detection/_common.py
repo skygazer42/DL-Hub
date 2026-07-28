@@ -79,7 +79,7 @@ class TinyLivenessDetector(nn.Module):
         }
 
 
-def build_toy_liveness_detector(
+def build_baseline_liveness_detector(
     *,
     family: str,
     mode: str,

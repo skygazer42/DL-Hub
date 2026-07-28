@@ -1,6 +1,6 @@
 # Salient Object Detection Boxes
 
-Toy-first local families for `salient object detection boxes`.
+Compact-first local families for `salient object detection boxes`.
 
 ## Families
 

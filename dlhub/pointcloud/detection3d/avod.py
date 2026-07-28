@@ -22,7 +22,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class AVOD(nn.Module):
-    """AVOD (toy): fuses a coarse+fine BEV backbone before ROI refinement."""
+    """AVOD (compact): fuses a coarse+fine BEV backbone before ROI refinement."""
 
     def __init__(
         self,

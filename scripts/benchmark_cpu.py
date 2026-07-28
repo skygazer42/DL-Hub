@@ -30,13 +30,13 @@ def main() -> int:
         print(f"- reason: {exc}")
         return 0
 
-    from dlhub.data.toy import ToyClassificationConfig, make_toy_classification_dataloaders
+    from dlhub.data.synthetic import SyntheticClassificationConfig, make_synthetic_classification_dataloaders
     from dlhub.seed import set_seed
     from dlhub.training.loop import fit_classifier
 
     set_seed(0)
-    train_loader, _ = make_toy_classification_dataloaders(
-        ToyClassificationConfig(
+    train_loader, _ = make_synthetic_classification_dataloaders(
+        SyntheticClassificationConfig(
             num_samples=int(args.num_samples),
             num_features=32,
             noise_std=0.1,

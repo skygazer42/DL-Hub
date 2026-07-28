@@ -7,14 +7,14 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_instance_segmentation3d_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_29_toy_3d_instance_segmentation.data import (
+    from tracks.pointcloud.lesson_29_compact_3d_instance_segmentation.data import (
         DataConfig,
-        ToyInstanceSegmentation3DDataset,
+        SyntheticInstanceSegmentation3DDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_29_toy_3d_instance_segmentation.model import (
+    from tracks.pointcloud.lesson_29_compact_3d_instance_segmentation.model import (
         ModelConfig,
-        ToyInstanceSegmentation3DNet,
+        CompactInstanceSegmentation3DNet,
         instance_segmentation_loss,
     )
 
@@ -29,7 +29,7 @@ def test_pointcloud_instance_segmentation3d_batch_contract_and_loss_smoke() -> N
         cluster_std=0.08,
     )
 
-    ds = ToyInstanceSegmentation3DDataset(cfg)
+    ds = SyntheticInstanceSegmentation3DDataset(cfg)
     points, instance_ids = ds[0]
     assert tuple(points.shape) == (48, 3)
     assert tuple(instance_ids.shape) == (48,)
@@ -42,7 +42,7 @@ def test_pointcloud_instance_segmentation3d_batch_contract_and_loss_smoke() -> N
     assert tuple(points_batch.shape) == (4, 48, 3)
     assert tuple(ids_batch.shape) == (4, 48)
 
-    model = ToyInstanceSegmentation3DNet(ModelConfig(hidden_features=32, embedding_dim=8))
+    model = CompactInstanceSegmentation3DNet(ModelConfig(hidden_features=32, embedding_dim=8))
     pred = model(points_batch)
     assert set(pred.keys()) == {"embeddings", "logits"}
     assert tuple(pred["embeddings"].shape) == (4, 48, 8)
@@ -59,9 +59,9 @@ def test_pointcloud_instance_segmentation3d_batch_contract_and_loss_smoke() -> N
 def test_pointcloud_instance_segmentation3d_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_29_toy_3d_instance_segmentation.data import DataConfig
-    from tracks.pointcloud.lesson_29_toy_3d_instance_segmentation.model import ModelConfig
-    from tracks.pointcloud.lesson_29_toy_3d_instance_segmentation.train import (
+    from tracks.pointcloud.lesson_29_compact_3d_instance_segmentation.data import DataConfig
+    from tracks.pointcloud.lesson_29_compact_3d_instance_segmentation.model import ModelConfig
+    from tracks.pointcloud.lesson_29_compact_3d_instance_segmentation.train import (
         TrainConfig,
         run_training,
     )
@@ -95,7 +95,7 @@ def test_pointcloud_instance_segmentation3d_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_29_toy_3d_instance_segmentation"
+        / "lesson_29_compact_3d_instance_segmentation"
         / "pytest_instance_seg3d_smoke"
     )
     assert (run_dir / "config.json").is_file()

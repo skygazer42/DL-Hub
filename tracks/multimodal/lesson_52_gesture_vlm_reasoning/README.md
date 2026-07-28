@@ -1,6 +1,6 @@
 # Lesson 52: Gesture VLM Reasoning
 
-This toy lesson classifies a compact gesture state from grayscale image evidence plus a short text
+This compact lesson classifies a compact gesture state from grayscale image evidence plus a short text
 query. Each sample renders a simple stick-figure upper body whose arm configuration maps to one of
 four gesture classes:
 

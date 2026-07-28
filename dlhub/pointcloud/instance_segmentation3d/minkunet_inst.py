@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class MinkUNetInst(nn.Module):
-    """MinkUNet instance segmentation (toy): dense voxel UNet features + query masks."""
+    """MinkUNet instance segmentation (compact): dense voxel UNet features + query masks."""
 
     def __init__(
         self,

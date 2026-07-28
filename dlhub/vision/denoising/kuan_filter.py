@@ -20,7 +20,7 @@ def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
 
 
 class KuanFilter(nn.Module):
-    """Kuan filter baseline for speckle-like multiplicative noise (torch-only, toy-first).
+    """Kuan filter baseline for speckle-like multiplicative noise (torch-only, compact-first).
 
     This is a closely related alternative to Lee filtering. We estimate local mean/variance
     and apply a shrinkage weight that depends on the assumed speckle variance `sigma^2`.

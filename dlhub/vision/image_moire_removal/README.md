@@ -1,6 +1,6 @@
 # Image Moire Removal
 
-Toy-first local families for `image moire removal`.
+Compact-first local families for `image moire removal`.
 
 ## Families
 

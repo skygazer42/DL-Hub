@@ -1,4 +1,4 @@
-"""Point cloud upsampling models (toy-first, pure torch)."""
+"""Point cloud upsampling models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

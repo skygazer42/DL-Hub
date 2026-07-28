@@ -1,4 +1,4 @@
-"""6D pose estimation models (toy-first, pure torch)."""
+"""6D pose estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

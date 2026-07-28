@@ -1,4 +1,4 @@
-"""Image dehazing models (toy-first, pure torch)."""
+"""Image dehazing models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

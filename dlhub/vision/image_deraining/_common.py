@@ -116,7 +116,7 @@ class TinyDerainer(nn.Module):
         return {"derained": clean, "rain": rain_layer}
 
 
-def build_toy_derainer(
+def build_baseline_derainer(
     *,
     family: str,
     mode: str,

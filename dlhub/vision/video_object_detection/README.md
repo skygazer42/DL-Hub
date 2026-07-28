@@ -1,7 +1,7 @@
 
     # Video object detection
 
-    Toy-first local families for `video object detection`.
+    Compact-first local families for `video object detection`.
 
     ## Families
 

@@ -88,7 +88,7 @@ class Upsample(nn.Module):
 
 
 class DDPMUNet(nn.Module):
-    """A small noise-conditioned U-Net used by diffusion models (toy-first).
+    """A small noise-conditioned U-Net used by diffusion models (compact-first).
 
     This module predicts the *noise / residual*. A wrapper converts it into a denoiser.
     """

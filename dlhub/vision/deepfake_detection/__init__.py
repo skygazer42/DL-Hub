@@ -1,4 +1,4 @@
-"""deepfake detection models (toy-first, pure torch)."""
+"""deepfake detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

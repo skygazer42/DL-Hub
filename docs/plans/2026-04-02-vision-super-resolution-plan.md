@@ -1,8 +1,6 @@
 # Vision Super-Resolution Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add a local toy-first image super-resolution zoo under `dlhub.vision`, plus a CPU-friendly paired synthetic training lesson and focused smoke tests.
+**Goal:** Add a local compact-first image super-resolution zoo under `dlhub.vision`, plus a CPU-friendly paired synthetic training lesson and focused smoke tests.
 
 **Architecture:** Create a dedicated `dlhub/vision/super_resolution/` package with one family per file, each exposing `_VARIANTS` and `build_*_super_resolver(...)`. Reuse the repository's AST-based lazy zoo discovery pattern and follow `@test-driven-development` for each task before touching production code.
 
@@ -157,7 +155,7 @@ Implement:
 - `build_rdn_sr_super_resolver(...)`
 
 Requirements:
-- lightweight toy-first versions only
+- lightweight compact-first versions only
 - shared residual building blocks from `_common.py`
 - output dict must always include `sr`
 
@@ -196,7 +194,7 @@ Implement:
 - `build_swinir_sr_super_resolver(...)`
 
 Requirements:
-- use a small toy windowed-attention or transformer-inspired block
+- use a small compact windowed-attention or transformer-inspired block
 - keep CPU smoke cost small
 - output dict must include `sr`
 

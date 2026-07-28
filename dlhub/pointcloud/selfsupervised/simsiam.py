@@ -143,7 +143,7 @@ class SimSiamPointNet(nn.Module):
             embed_dim=int(embed_dim),
             dropout=float(dropout),
         )
-        # SimSiam uses a stronger projector; keep a 3-layer MLP toy version.
+        # SimSiam uses a stronger projector; keep a 3-layer MLP compact version.
         self.projector = MLPHead(
             int(embed_dim),
             int(proj_dim),

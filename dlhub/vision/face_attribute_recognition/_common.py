@@ -91,7 +91,7 @@ class TinyFaceAttributeRecognizer(nn.Module):
         }
 
 
-def build_toy_face_attribute_recognizer(
+def build_baseline_face_attribute_recognizer(
     *,
     family: str,
     mode: str,

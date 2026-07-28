@@ -1,6 +1,6 @@
-# Lesson 21 — PointCloud 自监督：MSN（Masked Siamese Networks, toy-first）
+# Lesson 21 — PointCloud 自监督：MSN（Masked Siamese Networks, compact-first）
 
-目标：在点云上跑通一个 **MSN-style** 的最小闭环（toy 版本）：
+目标：在点云上跑通一个 **MSN-style** 的最小闭环（compact 版本）：
 
 - Backbone：PointMAE-style patch tokens + Transformer（有 `[CLS]` token）
 - Student 输入 **masked patches**（更难的视图），Teacher 输入 **unmasked**（EMA 更新）

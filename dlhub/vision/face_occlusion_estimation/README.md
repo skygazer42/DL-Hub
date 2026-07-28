@@ -1,6 +1,6 @@
 # Face Occlusion Estimation
 
-Toy-first local families for `face occlusion estimation`.
+Compact-first local families for `face occlusion estimation`.
 
 ## Families
 

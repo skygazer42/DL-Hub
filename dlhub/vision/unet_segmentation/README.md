@@ -1,6 +1,6 @@
 # UNet Segmentation
 
-Toy-first local families for `unet segmentation`.
+Compact-first local families for `unet segmentation`.
 
 ## Families
 

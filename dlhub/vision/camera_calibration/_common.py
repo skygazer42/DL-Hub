@@ -97,7 +97,7 @@ class TinyCameraCalibrator(nn.Module):
         }
 
 
-def build_toy_camera_calibrator(
+def build_baseline_camera_calibrator(
     *,
     family: str,
     mode: str,

@@ -89,7 +89,7 @@ class TinyOutpainter(nn.Module):
         }
 
 
-def build_toy_outpainter(
+def build_baseline_outpainter(
     *,
     family: str,
     mode: str,

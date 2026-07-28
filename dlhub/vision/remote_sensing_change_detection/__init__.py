@@ -1,4 +1,4 @@
-"""Remote sensing change detection models (toy-first, pure torch)."""
+"""Remote sensing change detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

@@ -1,4 +1,4 @@
-"""Image stitching models (toy-first, pure torch)."""
+"""Image stitching models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

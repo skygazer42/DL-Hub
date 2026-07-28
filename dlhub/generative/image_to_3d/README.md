@@ -1,10 +1,10 @@
 # Image-to-3D
 
-Toy-first local families for `image-to-3D`.
+Compact-first local families for `image-to-3D`.
 
 ## Families
 
-- `zero123_toy` -> `build_zero123_toy_image_to_3d_generator(...)`
+- `zero123_baseline` -> `build_zero123_baseline_image_to_3d_generator(...)`
 - `triplane_i23d` -> `build_triplane_i23d_image_to_3d_generator(...)`
 - `lift3d_i23d` -> `build_lift3d_i23d_image_to_3d_generator(...)`
 - `mesh_i23d` -> `build_mesh_i23d_image_to_3d_generator(...)`

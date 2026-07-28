@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_debate_prompting_batch_mask_and_loss_smoke() -> None:
-    from tracks.llm.lesson_24_toy_debate_prompting.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_24_toy_debate_prompting.model import ModelConfig, ToyDebatePromptingTransformerLM
+    from tracks.llm.lesson_24_compact_debate_prompting.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_24_compact_debate_prompting.model import ModelConfig, CompactDebatePromptingTransformerLM
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -30,7 +30,7 @@ def test_llm_debate_prompting_batch_mask_and_loss_smoke() -> None:
         assert torch.all(labels[row_idx, : int(judge_pos)] == int(vocab.ignore_index))
     assert (labels != int(vocab.ignore_index)).any()
 
-    model = ToyDebatePromptingTransformerLM(
+    model = CompactDebatePromptingTransformerLM(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -54,8 +54,8 @@ def test_llm_debate_prompting_batch_mask_and_loss_smoke() -> None:
 
 
 def test_llm_debate_prompting_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_24_toy_debate_prompting.data import DataConfig
-    from tracks.llm.lesson_24_toy_debate_prompting.train import TrainConfig, run_training
+    from tracks.llm.lesson_24_compact_debate_prompting.data import DataConfig
+    from tracks.llm.lesson_24_compact_debate_prompting.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -93,7 +93,7 @@ def test_llm_debate_prompting_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_24_toy_debate_prompting"
+        / "lesson_24_compact_debate_prompting"
         / "pytest_debate_prompting_smoke"
     )
     assert (run_dir / "config.json").is_file()

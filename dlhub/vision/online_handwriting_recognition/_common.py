@@ -10,7 +10,7 @@ def check_btnf(x):
     return x
 
 
-class ToyHandwritingRecognizer(nn.Module):
+class CompactHandwritingRecognizer(nn.Module):
     def __init__(self, *, family: str, input_dim: int, vocab_size: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -25,7 +25,7 @@ class ToyHandwritingRecognizer(nn.Module):
         return {"logits": logits, "tokens": logits.argmax(dim=-1)}
 
 
-def build_toy_hw(
+def build_baseline_hw(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -36,7 +36,7 @@ def build_toy_hw(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyHandwritingRecognizer(
+    return CompactHandwritingRecognizer(
         family=str(family),
         input_dim=int(input_dim),
         vocab_size=int(vocab_size),

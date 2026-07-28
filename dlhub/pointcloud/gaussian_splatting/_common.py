@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyGaussianSplatModel(nn.Module):
+class CompactGaussianSplatModel(nn.Module):
     def __init__(self, *, width: int, depth: int, in_channels: int):
         super().__init__()
         self.depth = int(depth)
@@ -28,7 +28,7 @@ class ToyGaussianSplatModel(nn.Module):
         }
 
 
-def build_toy_splatter(
+def build_baseline_splatter(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -39,7 +39,7 @@ def build_toy_splatter(
     spec = dict(variants[str(variant)])
     width = max(16, int(spec["width"] * float(width_mult)))
     depth = int(spec["depth"])
-    return ToyGaussianSplatModel(width=width, depth=depth, in_channels=int(in_channels))
+    return CompactGaussianSplatModel(width=width, depth=depth, in_channels=int(in_channels))
 
 
 def smoke_test_splatter(builder, variant: str) -> None:

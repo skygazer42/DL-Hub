@@ -7,7 +7,7 @@ multimodal classifier to recognize one of four facial expressions: `happy`, `sad
 ## What It Teaches
 
 - prompt-conditioned emotion recognition with lightweight multimodal fusion
-- toy feature synthesis for expression-aware face embeddings
+- compact feature synthesis for expression-aware face embeddings
 - CPU-friendly train/eval loops with reproducible outputs
 
 ## Run

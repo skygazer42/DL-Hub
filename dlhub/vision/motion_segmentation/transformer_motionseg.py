@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_motion_segmentor, smoke_test_motion_segmentor
+from ._common import build_baseline_motion_segmentor, smoke_test_motion_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_transformer_motionseg_motion_segmentor(
     *, in_channels: int, variant: str = "transformer_motionseg_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_motion_segmentor(
+    return build_baseline_motion_segmentor(
         family="transformer_motionseg",
         mode="transformer",
         variants=_VARIANTS,

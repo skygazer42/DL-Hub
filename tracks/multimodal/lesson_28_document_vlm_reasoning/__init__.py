@@ -3,7 +3,7 @@ from .model import (
     DocumentVlmReasoningConfig,
     MaskedTextEncoder,
     TinyVisionEncoder,
-    ToyDocumentVlmReasoningModel,
+    CompactDocumentVlmReasoningModel,
     reasoning_accuracy,
     reasoning_loss,
 )
@@ -13,7 +13,7 @@ __all__ = [
     "DocumentVlmReasoningConfig",
     "MaskedTextEncoder",
     "TinyVisionEncoder",
-    "ToyDocumentVlmReasoningModel",
+    "CompactDocumentVlmReasoningModel",
     "Vocab",
     "get_dataloaders",
     "reasoning_accuracy",

@@ -99,7 +99,7 @@ class TinyMoireRemover(nn.Module):
         return {"restored": restored, "moire_residual": moire_residual, "moire_map": moire_map}
 
 
-def build_toy_moire_remover(
+def build_baseline_moire_remover(
     *,
     family: str,
     mode: str,

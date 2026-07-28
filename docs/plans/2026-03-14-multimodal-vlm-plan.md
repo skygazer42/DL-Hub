@@ -1,10 +1,8 @@
 # Multimodal VLM Zoo Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Build a local multimodal VLM zoo with 12 families, 36 local arches, year-first timeline tooling, recommendation profiles, and an offline smoke CLI.
 
-**Architecture:** Add a new top-level `dlhub.multimodal` package, implement a shared toy VLM core in `dlhub/multimodal/vlm/_common.py`, keep one family per file under `dlhub/multimodal/vlm/`, and expose the registry through `dlhub/multimodal/vlm_zoo.py`. Present the space by year in timeline and README while keeping code organized by family for maintainability.
+**Architecture:** Add a new top-level `dlhub.multimodal` package, implement a shared compact VLM core in `dlhub/multimodal/vlm/_common.py`, keep one family per file under `dlhub/multimodal/vlm/`, and expose the registry through `dlhub/multimodal/vlm_zoo.py`. Present the space by year in timeline and README while keeping code organized by family for maintainability.
 
 **Tech Stack:** Python, PyTorch, pytest, ruff
 
@@ -79,7 +77,7 @@ Expected: FAIL because the family builders and modules are still missing.
 
 **Step 3: Write minimal implementation**
 
-Implement a shared `ToyVLM` that returns:
+Implement a shared `CompactVLM` that returns:
 
 - `image_embed`
 - `text_embed`

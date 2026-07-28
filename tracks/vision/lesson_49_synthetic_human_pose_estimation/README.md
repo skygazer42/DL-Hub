@@ -1,6 +1,6 @@
 # Lesson 49: Synthetic Human Pose Estimation
 
-This toy lesson renders simple grayscale stick figures and regresses eight normalized human
+This compact lesson renders simple grayscale stick figures and regresses eight normalized human
 keypoints:
 
 - head

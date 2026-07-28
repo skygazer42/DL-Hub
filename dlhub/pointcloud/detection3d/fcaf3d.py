@@ -48,7 +48,7 @@ def _topk_heatmap_3d(
 
 
 class FCAF3D(nn.Module):
-    """FCAF3D (toy): dense 3D conv head on a coarse voxel grid."""
+    """FCAF3D (compact): dense 3D conv head on a coarse voxel grid."""
 
     def __init__(
         self,

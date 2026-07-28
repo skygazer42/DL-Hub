@@ -1,4 +1,4 @@
-"""Depth completion models (toy-first, pure torch)."""
+"""Depth completion models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

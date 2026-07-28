@@ -1,6 +1,6 @@
 # Point Cloud Completion
 
-Toy-first point cloud completion families for partial-to-complete shape prediction.
+Compact-first point cloud completion families for partial-to-complete shape prediction.
 
 Included families:
 

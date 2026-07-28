@@ -27,7 +27,7 @@ def _prompt_features(prompts: Sequence[str], *, device: torch.device) -> torch.T
     return features
 
 
-class ToyTextToVideo(nn.Module):
+class CompactTextToVideo(nn.Module):
     def __init__(
         self,
         *,
@@ -83,7 +83,7 @@ class ToyTextToVideo(nn.Module):
         return {"video": video, "prompt_features": prompt_feat, "motion": motion}
 
 
-def build_toy_text_to_video(
+def build_baseline_text_to_video(
     *,
     family: str,
     mode: str,
@@ -94,7 +94,7 @@ def build_toy_text_to_video(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyTextToVideo(
+    return CompactTextToVideo(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),
@@ -106,8 +106,8 @@ def build_toy_text_to_video(
 
 def smoke_test_text_to_video(builder: Callable[..., nn.Module], variant: str) -> None:
     model = builder(in_channels=3, variant=variant, width_mult=0.5)
-    out = model(prompt=["a toy robot", "a paper airplane"], batch_size=2)
+    out = model(prompt=["a small robot", "a paper airplane"], batch_size=2)
     print(variant, tuple(out["video"].shape))
 
 
-__all__ = ["ToyTextToVideo", "build_toy_text_to_video", "smoke_test_text_to_video"]
+__all__ = ["CompactTextToVideo", "build_baseline_text_to_video", "smoke_test_text_to_video"]

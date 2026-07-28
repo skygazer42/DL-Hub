@@ -178,7 +178,7 @@ python scripts/co_segmentation_zoo.py --smoke coseg:clip_coseg_tiny
 
 ### Fine-Grained Recognition Zoo
 
-> 112 个算法族 --- 细粒度图像识别（FGVC），Bilinear / Part-based / Transformer / Prompt / CLIP / MLLM reasoning（toy-first，无需下载权重）。
+> 112 个算法族 --- 细粒度图像识别（FGVC），Bilinear / Part-based / Transformer / Prompt / CLIP / MLLM reasoning；本地实现无需下载权重，具体实现等级以保真度审计为准。
 
 ```bash
 python scripts/fine_grained_recognition_zoo.py --list
@@ -196,7 +196,7 @@ python scripts/fine_grained_recognition_zoo.py --smoke dlfgvc:fine_r1_tiny
 
 ### Action Recognition Zoo
 
-> 62 个算法族 --- 行为识别，Video (NCTHW，`dlactv:` 前缀) + Skeleton (NCTV，`dlacts:` 前缀)，toy-first，无需下载权重。
+> 62 个算法族 --- 行为识别，Video (NCTHW，`dlactv:` 前缀) + Skeleton (NCTV，`dlacts:` 前缀)；本地实现无需下载权重，具体实现等级以保真度审计为准。
 
 ```bash
 python scripts/action_recognition_zoo.py --list

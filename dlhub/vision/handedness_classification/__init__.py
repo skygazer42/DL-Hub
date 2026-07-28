@@ -1,4 +1,4 @@
-"""handedness classification models (toy-first, pure torch)."""
+"""handedness classification models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -45,7 +45,7 @@ class _KPConv(nn.Module):
 
 
 class KPConvSeg(nn.Module):
-    """KPConv semantic segmentation (toy): KPConv blocks + per-point logits."""
+    """KPConv semantic segmentation (compact): KPConv blocks + per-point logits."""
 
     def __init__(
         self,

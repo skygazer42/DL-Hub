@@ -7,7 +7,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nch
 
 
 class Mask2Former(nn.Module):
-    """Mask2Former-style instance segmentation (toy-first).
+    """Mask2Former-style instance segmentation (compact-first).
 
     Multi-scale pixel embedding (low + upsampled det) + query-based masks.
     """

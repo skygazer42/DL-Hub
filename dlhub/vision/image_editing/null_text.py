@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_editor, smoke_test_editor
+from ._common import build_baseline_editor, smoke_test_editor
 
 _VARIANTS = {
     "null_text_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_null_text_editor(
     *, in_channels: int, variant: str = "null_text_small", width_mult: float = 1.0
 ):
-    return build_toy_editor(
+    return build_baseline_editor(
         family="null_text",
         variants=_VARIANTS,
         in_channels=int(in_channels),

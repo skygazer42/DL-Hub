@@ -11,9 +11,9 @@ def _repo_root() -> Path:
 
 
 def test_llm_grpo_alignment_batch_and_loss_smoke() -> None:
-    from tracks.llm.lesson_10_toy_grpo_alignment.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_10_toy_grpo_alignment.model import ModelConfig, ToyGrpoPolicyLM
-    from tracks.llm.lesson_10_toy_grpo_alignment.train import grpo_group_loss
+    from tracks.llm.lesson_10_compact_grpo_alignment.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_10_compact_grpo_alignment.model import ModelConfig, CompactGrpoPolicyLM
+    from tracks.llm.lesson_10_compact_grpo_alignment.train import grpo_group_loss
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -34,7 +34,7 @@ def test_llm_grpo_alignment_batch_and_loss_smoke() -> None:
     assert tuple(batch["group_rewards"].shape) == (3, 4)
     assert (batch["response_mask"].sum(dim=-1) > 0).all()
 
-    policy = ToyGrpoPolicyLM(
+    policy = CompactGrpoPolicyLM(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -64,14 +64,14 @@ def test_llm_grpo_alignment_batch_and_loss_smoke() -> None:
 
 
 def test_llm_grpo_alignment_training_smoke() -> None:
-    from tracks.llm.lesson_10_toy_grpo_alignment.data import DataConfig
-    from tracks.llm.lesson_10_toy_grpo_alignment.train import TrainConfig, run_training
+    from tracks.llm.lesson_10_compact_grpo_alignment.data import DataConfig
+    from tracks.llm.lesson_10_compact_grpo_alignment.train import TrainConfig, run_training
 
     run_dir = (
         _repo_root()
         / "outputs"
         / "llm"
-        / "lesson_10_toy_grpo_alignment"
+        / "lesson_10_compact_grpo_alignment"
         / "pytest_grpo_alignment_smoke"
     )
     if run_dir.exists():

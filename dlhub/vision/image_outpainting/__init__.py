@@ -1,4 +1,4 @@
-"""image outpainting models (toy-first, pure torch)."""
+"""image outpainting models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

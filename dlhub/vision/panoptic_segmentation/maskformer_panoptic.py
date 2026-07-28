@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, check_nch
 
 
 class MaskFormerPanoptic(nn.Module):
-    """MaskFormer-style panoptic segmentation (toy-first).
+    """MaskFormer-style panoptic segmentation (compact-first).
 
     Query-based class prediction + mask prediction via dot-product with a pixel embedding map,
     plus a semantic head for stuff/classes.

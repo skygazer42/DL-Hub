@@ -1,6 +1,6 @@
 # Infrared small target detection
 
-Toy-first local families for `infrared small target detection`.
+Compact-first local families for `infrared small target detection`.
 
 ## Families
 

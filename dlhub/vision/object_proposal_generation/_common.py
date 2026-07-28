@@ -84,7 +84,7 @@ class TinyProposalModel(nn.Module):
         }
 
 
-def build_toy_proposer(
+def build_baseline_proposer(
     *,
     family: str,
     mode: str,

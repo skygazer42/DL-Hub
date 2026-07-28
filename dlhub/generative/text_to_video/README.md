@@ -1,6 +1,6 @@
 # Text-to-video
 
-Toy-first local families for `text-to-video`.
+Compact-first local families for `text-to-video`.
 
 ## Families
 

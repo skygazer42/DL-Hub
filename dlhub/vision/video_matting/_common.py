@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyVideoMatter(nn.Module):
+class CompactVideoMatter(nn.Module):
     def __init__(self, *, in_channels: int, width: int, depth: int):
         super().__init__()
         c = int(in_channels)
@@ -29,7 +29,7 @@ class ToyVideoMatter(nn.Module):
         return {"alpha": alpha, "foreground": foreground, "composite": composite}
 
 
-def build_toy_video_matter(
+def build_baseline_video_matter(
     *,
     variants: dict[str, dict[str, int]],
     in_channels: int,
@@ -39,7 +39,7 @@ def build_toy_video_matter(
     spec = dict(variants[str(variant)])
     width = max(8, int(spec["width"] * float(width_mult)))
     depth = int(spec["depth"])
-    return ToyVideoMatter(in_channels=int(in_channels), width=width, depth=depth)
+    return CompactVideoMatter(in_channels=int(in_channels), width=width, depth=depth)
 
 
 def smoke_test_video_matter(builder, variant: str) -> None:

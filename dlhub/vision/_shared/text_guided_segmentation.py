@@ -1,4 +1,4 @@
-"""Shared toy text-guided segmentation model (open-vocabulary / referring)."""
+"""Shared text-guided segmentation baseline for compatibility aliases."""
 
 from __future__ import annotations
 
@@ -13,7 +13,9 @@ def check_nchw(x: torch.Tensor) -> torch.Tensor:
     return x
 
 
-class TinyEncoder(nn.Module):
+class CompactImageEncoder(nn.Module):
+    """Encode an image with a configurable compact convolutional stack."""
+
     def __init__(self, in_channels: int, width: int, depth: int) -> None:
         super().__init__()
         c = int(width)
@@ -27,13 +29,15 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyModel(nn.Module):
+class TextGuidedSegmentationBaseline(nn.Module):
+    """Condition dense mask logits with a projected text feature vector."""
+
     def __init__(
-        self, *, family: str, in_channels: int, width: int, depth: int, text_dim: int = 32
+        self, *, registered_alias: str, in_channels: int, width: int, depth: int, text_dim: int = 32
     ) -> None:
         super().__init__()
-        self.family = str(family)
-        self.enc = TinyEncoder(in_channels, width, depth)
+        self.registered_alias = str(registered_alias)
+        self.enc = CompactImageEncoder(in_channels, width, depth)
         c = self.enc.out_channels
         self.txt = nn.Linear(text_dim, c)
         self.mask = nn.Conv2d(c, 1, 1)
@@ -53,19 +57,24 @@ class ToyModel(nn.Module):
         return {"logits": logits, "mask": torch.sigmoid(logits)}
 
 
-def build_toy_model(
+def build_text_guided_segmentation_baseline(
     *,
-    family: str,
+    registered_alias: str,
     variants: dict[str, dict[str, int]],
     in_channels: int,
     variant: str,
     width_mult: float = 1.0,
     **kwargs,
-) -> ToyModel:
+) -> TextGuidedSegmentationBaseline:
+    """Build the shared baseline behind a registered compatibility alias."""
+
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyModel(
-        family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
+    return TextGuidedSegmentationBaseline(
+        registered_alias=str(registered_alias),
+        in_channels=int(in_channels),
+        width=width,
+        depth=int(spec["depth"]),
     )
 
 

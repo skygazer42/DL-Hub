@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_diffusion_family, smoke_test_diffusion
+from ._common import build_baseline_diffusion_family, smoke_test_diffusion
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "ncsnpp_tiny": {"width": 88, "depth": 2, "latent": 64},
@@ -21,7 +21,7 @@ def build_ncsnpp_diffusion(
     width_mult: float = 1.0,
     dropout: float = 0.0,
 ) -> nn.Module:
-    return build_toy_diffusion_family(
+    return build_baseline_diffusion_family(
         family="ncsnpp",
         variants=_VARIANTS,
         in_channels=int(in_channels),

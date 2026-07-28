@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PVRCNN(nn.Module):
-    """PV-RCNN (toy): BEV proposals + point ROI refinement."""
+    """PV-RCNN (compact): BEV proposals + point ROI refinement."""
 
     def __init__(
         self,

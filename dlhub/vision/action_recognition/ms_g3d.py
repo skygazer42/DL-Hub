@@ -1,9 +1,9 @@
-"""MS-G3D (Multi-Scale Graph 3D) - toy-first skeleton action classifier.
+"""MS-G3D (Multi-Scale Graph 3D) - compact-first skeleton action classifier.
 
 Reference (idea):
 - "MS-G3D: Multi-Scale Graph 3D Convolution Network for Skeleton-based Action Recognition" (CVPR 2020)
 
-Toy interpretation:
+Compact interpretation:
 - Build multiple k-hop adjacency matrices (ring graph) and aggregate them.
 - Follow with a temporal conv + residual connections, then global average pool.
 """

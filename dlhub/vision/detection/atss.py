@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class ATSSHead(nn.Module):
-    """ATSS-style head (toy): cls, box, and centerness branch."""
+    """ATSS-style head (compact): cls, box, and centerness branch."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -32,7 +32,7 @@ class ATSSHead(nn.Module):
 
 
 class ATSSDetector(nn.Module):
-    """ATSS-style detector (toy-first)."""
+    """ATSS-style detector (compact-first)."""
 
     def __init__(
         self,

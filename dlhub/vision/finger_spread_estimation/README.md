@@ -1,6 +1,6 @@
 # Finger Spread Estimation
 
-Toy-first local families for `finger spread estimation`.
+Compact-first local families for `finger spread estimation`.
 
 ## Families
 

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointMambaSeg(nn.Module):
-    """PointMamba semantic segmentation (toy state-space flavored encoder)."""
+    """PointMamba semantic segmentation (compact state-space flavored encoder)."""
 
     def __init__(
         self,

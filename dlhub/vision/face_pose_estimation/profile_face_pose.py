@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_face_pose_estimator, smoke_test_face_pose_estimator
+from ._common import build_baseline_face_pose_estimator, smoke_test_face_pose_estimator
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_profile_face_pose_face_pose_estimator(
     variant: str = "profile_face_pose_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_face_pose_estimator(
+    return build_baseline_face_pose_estimator(
         family="profile_face_pose",
         mode="profile",
         variants=_VARIANTS,

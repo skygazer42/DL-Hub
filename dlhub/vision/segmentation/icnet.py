@@ -24,7 +24,7 @@ class _Branch(nn.Module):
 
 
 class ICNet(nn.Module):
-    """ICNet semantic segmentation (toy-first).
+    """ICNet semantic segmentation (compact-first).
 
     Multi-resolution branches (1x, 1/2x, 1/4x) fused coarse-to-fine.
     """

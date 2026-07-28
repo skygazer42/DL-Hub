@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_homography_estimator, smoke_test_homography_estimator
+from ._common import build_baseline_homography_estimator, smoke_test_homography_estimator
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_correlation_homography_homography_estimator(
     *, in_channels: int, variant: str = "correlation_homography_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_homography_estimator(
+    return build_baseline_homography_estimator(
         family="correlation_homography",
         mode="correlation",
         variants=_VARIANTS,

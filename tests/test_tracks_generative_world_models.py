@@ -7,11 +7,11 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_world_models_data_and_model_contract() -> None:
-    from tracks.generative.lesson_51_toy_world_models.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_51_toy_world_models.model import (
+def test_compact_world_models_data_and_model_contract() -> None:
+    from tracks.generative.lesson_51_compact_world_models.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_51_compact_world_models.model import (
         ModelConfig,
-        ToyWorldModelsModel,
+        CompactWorldModelsModel,
         world_models_loss,
     )
 
@@ -38,7 +38,7 @@ def test_toy_world_models_data_and_model_contract() -> None:
     assert tuple(targets["reward"].shape) == (4, 1)
     assert tuple(targets["done"].shape) == (4, 1)
 
-    model = ToyWorldModelsModel(
+    model = CompactWorldModelsModel(
         ModelConfig(
             in_channels=3,
             action_dim=4,
@@ -66,10 +66,10 @@ def test_toy_world_models_data_and_model_contract() -> None:
     loss.backward()
 
 
-def test_toy_world_models_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_51_toy_world_models.data import DataConfig
-    from tracks.generative.lesson_51_toy_world_models.model import ModelConfig
-    from tracks.generative.lesson_51_toy_world_models.train import TrainConfig, run_training
+def test_compact_world_models_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from tracks.generative.lesson_51_compact_world_models.data import DataConfig
+    from tracks.generative.lesson_51_compact_world_models.model import ModelConfig
+    from tracks.generative.lesson_51_compact_world_models.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -107,7 +107,7 @@ def test_toy_world_models_training_and_dry_run(tmp_path, monkeypatch: pytest.Mon
     )
 
     assert exit_code == 0
-    run_dir = tmp_path / "generative" / "lesson_51_toy_world_models" / "pytest_world_models_smoke"
+    run_dir = tmp_path / "generative" / "lesson_51_compact_world_models" / "pytest_world_models_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
@@ -129,7 +129,7 @@ def test_toy_world_models_training_and_dry_run(tmp_path, monkeypatch: pytest.Mon
             sys.executable,
             "scripts/run_lesson.py",
             "generative",
-            "lesson_51_toy_world_models",
+            "lesson_51_compact_world_models",
             "--dry-run",
         ],
         check=False,
@@ -137,4 +137,4 @@ def test_toy_world_models_training_and_dry_run(tmp_path, monkeypatch: pytest.Mon
         text=True,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.generative.lesson_51_toy_world_models.train" in proc.stdout
+    assert "tracks.generative.lesson_51_compact_world_models.train" in proc.stdout

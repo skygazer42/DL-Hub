@@ -67,7 +67,8 @@ make smoke     # 冒烟测试
 make format
 
 # 检查但不修改
-make lint
+make lint      # Ruff
+make contract  # 课程与文档契约
 ```
 
 ---
@@ -79,14 +80,15 @@ make lint
 | 文件 | 要求 |
 |------|------|
 | `model.py` | 模型定义，纯 `nn.Module` |
-| `data.py` | 数据加载，**必须支持** `--dataset fake` |
+| `data.py` | 数据加载，必须提供显式 fake 或内置 synthetic 离线路径 |
 | `train.py` | 训练入口，使用 `dlhub/` 脚手架 |
 | `README.md` | 课程文档，包含原理、架构、运行方式 |
 
 !!! warning "离线测试必须通过"
 
-    每个 lesson 的 `--dataset fake` 模式必须能在无网络、无 GPU 的环境下正常运行。
-    CI 会自动验证此项。
+    每个 lesson 必须能在无网络、纯 CPU 环境下运行：可选真实数据集的课程提供
+    `--dataset fake`，其余课程直接使用内置数据。`make contract` 会检查入口和文档参数，
+    新增训练链路还应补充针对性的 pytest。
 
 ---
 
@@ -100,18 +102,18 @@ make lint
 ### 使用 dlhub/ 脚手架
 
 ```python
-from dlhub.seed import seed_everything
-from dlhub.device import auto_device
-from dlhub.paths import get_output_dir
+from dlhub.device import resolve_device
+from dlhub.paths import build_run_paths
+from dlhub.seed import set_seed
 
 # 固定随机种子
-seed_everything(42)
+set_seed(42)
 
 # 自动设备选择
-device = auto_device()
+device_info = resolve_device("auto")
 
 # 获取输出目录
-output_dir = get_output_dir("vision", "lesson_01", run_name="baseline")
+paths = build_run_paths(track="vision", lesson="lesson_01", run_name="baseline")
 ```
 
 ---
@@ -120,7 +122,8 @@ output_dir = get_output_dir("vision", "lesson_01", run_name="baseline")
 
 | 命令 | 功能 |
 |------|------|
-| `make lint` | 运行 ruff + black --check + isort --check |
-| `make format` | 自动格式化（black + isort） |
+| `make lint` | 运行 Ruff 静态检查 |
+| `make format` | 自动运行 isort、Black 和 Ruff 修复 |
+| `make contract` | 检查课程入口、核心 CLI、文档命令和精选 Smoke 覆盖 |
 | `make test` | 运行 pytest 完整测试套件 |
-| `make smoke` | 冒烟测试所有 lesson 的 fake 模式 |
+| `make smoke` | 运行覆盖 8 个 track 的精选离线冒烟测试 |

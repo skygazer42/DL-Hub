@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_vision_direction, smoke_test_direction
+from ._common import build_baseline_vision_direction, smoke_test_direction
 
 _VARIANTS = {
     "doc_layout_gen_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_doc_layout_gen_layout_generator(
     *, in_channels: int, variant: str = "doc_layout_gen_small", width_mult: float = 1.0
 ):
-    return build_toy_vision_direction(
+    return build_baseline_vision_direction(
         family="doc_layout_gen",
         variants=_VARIANTS,
         in_channels=int(in_channels),

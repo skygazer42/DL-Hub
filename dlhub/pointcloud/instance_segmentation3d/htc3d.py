@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class HTC3D(nn.Module):
-    """HTC3D (toy): cascade instance refinement over multiple stages."""
+    """HTC3D (compact): cascade instance refinement over multiple stages."""
 
     def __init__(
         self,

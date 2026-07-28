@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_proposer, smoke_test_proposer
+from ._common import build_baseline_proposer, smoke_test_proposer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_center_opg_proposer(
     variant: str = "center_opg_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_proposer(
+    return build_baseline_proposer(
         family="center_opg",
         mode="center",
         variants=_VARIANTS,

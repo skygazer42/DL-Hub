@@ -48,7 +48,7 @@ class FaceGazeReasoningConfig:
     vision_width: int = 32
 
 
-class ToyFaceGazeReasoningModel(nn.Module):
+class CompactFaceGazeReasoningModel(nn.Module):
     def __init__(self, cfg: FaceGazeReasoningConfig) -> None:
         super().__init__()
         self.face_encoder = TinyVisionEncoder(vision_width=int(cfg.vision_width))
@@ -87,7 +87,7 @@ def face_gaze_loss(pred_gaze: torch.Tensor, target_gaze: torch.Tensor) -> torch.
 
 __all__ = [
     "FaceGazeReasoningConfig",
-    "ToyFaceGazeReasoningModel",
+    "CompactFaceGazeReasoningModel",
     "face_gaze_loss",
     "gaze_l1",
 ]

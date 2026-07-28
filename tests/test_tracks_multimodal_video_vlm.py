@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_video_vlm_batch_shapes() -> None:
-    from tracks.multimodal.lesson_13_video_vlm_toy_temporal_qa.data import (
+    from tracks.multimodal.lesson_13_video_vlm_compact_temporal_qa.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -47,12 +47,12 @@ def test_multimodal_video_vlm_batch_shapes() -> None:
 
 
 def test_multimodal_video_vlm_model_outputs() -> None:
-    from tracks.multimodal.lesson_13_video_vlm_toy_temporal_qa.data import (
+    from tracks.multimodal.lesson_13_video_vlm_compact_temporal_qa.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_13_video_vlm_toy_temporal_qa.model import (
-        ToyVideoVlmModel,
+    from tracks.multimodal.lesson_13_video_vlm_compact_temporal_qa.model import (
+        CompactVideoVlmModel,
         VideoVlmModelConfig,
         qa_loss,
     )
@@ -70,7 +70,7 @@ def test_multimodal_video_vlm_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyVideoVlmModel(
+    model = CompactVideoVlmModel(
         VideoVlmModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -101,7 +101,7 @@ def test_multimodal_video_vlm_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_13_video_vlm_toy_temporal_qa"
+        / "lesson_13_video_vlm_compact_temporal_qa"
         / "pytest_video_vlm_smoke"
     )
     if run_dir.exists():
@@ -111,7 +111,7 @@ def test_multimodal_video_vlm_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_13_video_vlm_toy_temporal_qa.train",
+            "tracks.multimodal.lesson_13_video_vlm_compact_temporal_qa.train",
             "--epochs",
             "1",
             "--num-samples",

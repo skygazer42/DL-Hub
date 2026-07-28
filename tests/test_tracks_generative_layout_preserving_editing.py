@@ -3,15 +3,15 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_diffusion_layout_preserving_editing_data_and_model_contract() -> None:
-    from tracks.generative.lesson_32_toy_diffusion_layout_preserving_editing.data import (
+def test_compact_diffusion_layout_preserving_editing_data_and_model_contract() -> None:
+    from tracks.generative.lesson_32_compact_diffusion_layout_preserving_editing.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.generative.lesson_32_toy_diffusion_layout_preserving_editing.model import (
+    from tracks.generative.lesson_32_compact_diffusion_layout_preserving_editing.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyLayoutPreservingDiffusionModel,
+        CompactLayoutPreservingDiffusionModel,
         q_sample,
     )
 
@@ -33,7 +33,7 @@ def test_toy_diffusion_layout_preserving_editing_data_and_model_contract() -> No
 
     cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=16, time_embed_dim=16)
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToyLayoutPreservingDiffusionModel(cfg)
+    model = CompactLayoutPreservingDiffusionModel(cfg)
 
     noise = torch.randn_like(target)
     timesteps = torch.randint(low=0, high=schedule.num_steps, size=(6,), dtype=torch.long)
@@ -53,15 +53,15 @@ def test_toy_diffusion_layout_preserving_editing_data_and_model_contract() -> No
     assert torch.all(sampled <= 1.0)
 
 
-def test_toy_diffusion_layout_preserving_editing_training_smoke(
+def test_compact_diffusion_layout_preserving_editing_training_smoke(
     tmp_path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.generative.lesson_32_toy_diffusion_layout_preserving_editing.data import DataConfig
-    from tracks.generative.lesson_32_toy_diffusion_layout_preserving_editing.model import (
+    from tracks.generative.lesson_32_compact_diffusion_layout_preserving_editing.data import DataConfig
+    from tracks.generative.lesson_32_compact_diffusion_layout_preserving_editing.model import (
         DiffusionSchedule,
         ModelConfig,
     )
-    from tracks.generative.lesson_32_toy_diffusion_layout_preserving_editing.train import (
+    from tracks.generative.lesson_32_compact_diffusion_layout_preserving_editing.train import (
         TrainConfig,
         run_training,
     )
@@ -85,7 +85,7 @@ def test_toy_diffusion_layout_preserving_editing_training_smoke(
 
     assert exit_code == 0
     run_dir = (
-        tmp_path / "generative" / "lesson_32_toy_diffusion_layout_preserving_editing" / "pytest_layout_preserving_editing_smoke"
+        tmp_path / "generative" / "lesson_32_compact_diffusion_layout_preserving_editing" / "pytest_layout_preserving_editing_smoke"
     )
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

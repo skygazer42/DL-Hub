@@ -1,6 +1,6 @@
 # Point cloud upsampling
 
-Toy-first local families for `point cloud upsampling`.
+Compact-first local families for `point cloud upsampling`.
 
 ## Families
 

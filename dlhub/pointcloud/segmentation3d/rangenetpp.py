@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class RangeNetPPSeg(nn.Module):
-    """RangeNet++ semantic segmentation (toy): range-view projection + 2D UNet."""
+    """RangeNet++ semantic segmentation (compact): range-view projection + 2D UNet."""
 
     def __init__(
         self,

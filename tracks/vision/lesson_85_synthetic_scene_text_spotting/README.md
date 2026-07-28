@@ -1,6 +1,6 @@
 # Lesson 85: Synthetic Scene Text Spotting
 
-This lesson provides a toy-first, CPU-friendly scene text spotting loop:
+This lesson provides a compact-first, CPU-friendly scene text spotting loop:
 
 - synthesize one text region per image with a dense spotting score map target
 - decode a short fixed-length token sequence for recognition

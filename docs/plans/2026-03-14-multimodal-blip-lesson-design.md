@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_02_blip_toy_captioning` as an independent BLIP-inspired teaching lesson that introduces multimodal fusion, caption generation, and image-text matching without depending on zoo model code.
+**Goal:** Add `tracks/multimodal/lesson_02_blip_compact_captioning` as an independent BLIP-inspired teaching lesson that introduces multimodal fusion, caption generation, and image-text matching without depending on zoo model code.
 
 ## Problem
 
@@ -12,7 +12,7 @@ The new multimodal track now has lesson 1 for CLIP-style dual-encoder retrieval,
 
 This lesson adds one complete runnable module:
 
-- `tracks/multimodal/lesson_02_blip_toy_captioning/`
+- `tracks/multimodal/lesson_02_blip_compact_captioning/`
 - focused tests for lesson discovery and behavior
 - track README updates so the new lesson appears in the teaching roadmap
 
@@ -131,7 +131,7 @@ This provides one metric for text quality, one for full-sequence correctness, an
 The lesson should follow existing `tracks/*/lesson_xx/*/train.py` conventions:
 
 - CLI arguments for data size, batch size, widths, epoch count, and smoke batch caps
-- `outputs/multimodal/lesson_02_blip_toy_captioning/<run_name>/`
+- `outputs/multimodal/lesson_02_blip_compact_captioning/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 The sample logger should write a few rows containing:
@@ -166,7 +166,7 @@ Focused tests should cover:
 
 Lesson 2 is complete when:
 
-- `lesson_02_blip_toy_captioning` is discoverable through `scripts/run_lesson.py`
+- `lesson_02_blip_compact_captioning` is discoverable through `scripts/run_lesson.py`
 - the lesson runs as a module on CPU
 - the implementation is independent of zoo family files
 - focused tests for discovery, batch contract, model outputs, and smoke training pass

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "l2cs_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_l2cs_gaze_estimator(
     *, in_channels: int, variant: str = "l2cs_small", width_mult: float = 1.0
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="l2cs",
         variants=_VARIANTS,
         in_channels=int(in_channels),

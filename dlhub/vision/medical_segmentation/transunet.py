@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_medical_segmenter, smoke_test_med
+from ._common import build_baseline_medical_segmenter, smoke_test_med
 
 _VARIANTS = {
     "transunet_tiny": {"width": 16, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_transunet_medical_segmenter(
     *, in_channels: int, num_classes: int, variant: str = "transunet_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_medical_segmenter(
+    return build_baseline_medical_segmenter(
         family="transunet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

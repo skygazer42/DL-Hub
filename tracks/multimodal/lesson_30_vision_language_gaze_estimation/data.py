@@ -142,7 +142,7 @@ def _sample_record(*, generator: torch.Generator) -> tuple[torch.Tensor, torch.T
     return head_xy, gaze_xy, direction
 
 
-class ToyGazeEstimationDataset(Dataset):
+class SyntheticGazeEstimationDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         self.cfg = cfg
         self.vocab = vocab
@@ -185,7 +185,7 @@ class ToyGazeEstimationDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyGazeEstimationDataset(cfg, vocab=vocab)
+    dataset = SyntheticGazeEstimationDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )

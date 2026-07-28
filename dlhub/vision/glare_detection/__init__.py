@@ -1,4 +1,4 @@
-"""glare detection models (toy-first, pure torch)."""
+"""glare detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

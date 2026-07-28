@@ -1,6 +1,6 @@
 # Lesson 84: Synthetic Medical Segmentation
 
-This lesson builds a toy-first medical segmentation pipeline:
+This lesson builds a compact-first medical segmentation pipeline:
 
 - generate synthetic grayscale slices with tissue and lesion regions
 - train a tiny medical segmenter from `dlhub.vision.medical_segmentation`

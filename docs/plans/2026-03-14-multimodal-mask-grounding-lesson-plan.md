@@ -1,8 +1,6 @@
 # Multimodal Lesson 05 Mask-Grounding-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_05_mask_grounding_toy_refexp` as a teaching lesson for text-conditioned region grounding with low-resolution target masks.
+**Goal:** Add `tracks/multimodal/lesson_05_mask_grounding_compact_refexp` as a teaching lesson for text-conditioned region grounding with low-resolution target masks.
 
 **Architecture:** The lesson will define its own synthetic multi-object referring-expression dataset, lesson-local vocabulary, spatial CNN backbone, lightweight text encoder, per-location multimodal fusion, and a mask head that predicts a low-resolution binary mask. Training will combine BCE-with-logits and dice loss, then evaluate IoU, dice, and foreground accuracy.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_05_mask_grounding_toy_refexp` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_05_mask_grounding_toy_refexp.train`
+- `lesson_05_mask_grounding_compact_refexp` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_05_mask_grounding_compact_refexp.train`
 - batch dictionaries containing mask-grounding fields
 - forward outputs containing `mask_logits` and `pred_mask`
 - a tiny training smoke run writing standard artifacts
@@ -50,9 +48,9 @@ Use the next failure as the next implementation target.
 
 **Files:**
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/__init__.py`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/data.py`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/README.md`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/__init__.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/data.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/README.md`
 - Test: `tests/test_tracks_multimodal_mask_grounding.py`
 
 **Step 1: Write the failing test**
@@ -90,7 +88,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the mask-grounding model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/model.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/model.py`
 - Test: `tests/test_tracks_multimodal_mask_grounding.py`
 
 **Step 1: Write the failing test**
@@ -126,20 +124,20 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and smoke run
 
 **Files:**
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/train.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/train.py`
 - Test: `tests/test_tracks_multimodal_mask_grounding.py`
 
 **Step 1: Write the failing test**
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_05_mask_grounding_toy_refexp.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --mask-size 8 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_mask_grounding_smoke`
+`python -m tracks.multimodal.lesson_05_mask_grounding_compact_refexp.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --mask-size 8 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_mask_grounding_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_05_mask_grounding_toy_refexp/pytest_mask_grounding_smoke/config.json`
-- `outputs/multimodal/lesson_05_mask_grounding_toy_refexp/pytest_mask_grounding_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_05_mask_grounding_toy_refexp/pytest_mask_grounding_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_05_mask_grounding_compact_refexp/pytest_mask_grounding_smoke/config.json`
+- `outputs/multimodal/lesson_05_mask_grounding_compact_refexp/pytest_mask_grounding_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_05_mask_grounding_compact_refexp/pytest_mask_grounding_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -168,11 +166,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_mask_grounding.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/__init__.py`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/data.py`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/model.py`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/train.py`
-- Create: `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/README.md`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/__init__.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/data.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/model.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/train.py`
+- Create: `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/README.md`
 
 **Step 1: Run lint**
 
@@ -195,6 +193,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_05_mask_grounding_toy_refexp --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_05_mask_grounding_compact_refexp --dry-run`
 
 Expected: lesson 5 appears in the track listing and resolves to the train module.

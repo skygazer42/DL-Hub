@@ -13,7 +13,7 @@ class SimpleGate(nn.Module):
 
 
 class NAFBlock(nn.Module):
-    """LiteRestormer block (Nonlinear Activation Free), toy-first implementation."""
+    """LiteRestormer block (Nonlinear Activation Free), compact-first implementation."""
 
     def __init__(
         self,
@@ -67,7 +67,7 @@ class NAFBlock(nn.Module):
 
 
 class LiteRestormer(nn.Module):
-    """LiteRestormer-style encoder/decoder denoiser (pure torch, toy-first)."""
+    """LiteRestormer-style encoder/decoder denoiser (pure torch, compact-first)."""
 
     def __init__(
         self,

@@ -118,6 +118,26 @@ def test_run_lesson_dry_run_resolves_train_module() -> None:
     assert "tracks.vision.lesson_01_mnist_lenet.train" in proc.stdout
 
 
+def test_run_lesson_describes_lesson_specific_cli() -> None:
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "scripts/run_lesson.py",
+            "gnn",
+            "lesson_01_compact_graph_classification",
+            "--describe",
+        ],
+        cwd=str(_repo_root()),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "Offline data: built in" in proc.stdout
+    assert "\n- --dataset\n" not in proc.stdout
+    assert "--epochs" in proc.stdout
+
+
 def test_run_lesson_lists_lessons_for_multimodal_track() -> None:
     proc = subprocess.run(
         [sys.executable, "scripts/run_lesson.py", "multimodal", "--list"],
@@ -128,22 +148,22 @@ def test_run_lesson_lists_lessons_for_multimodal_track() -> None:
     )
     assert proc.returncode == 0
     assert "Lessons (multimodal):" in proc.stdout
-    assert "lesson_01_clip_toy_retrieval" in proc.stdout
-    assert "lesson_02_blip_toy_captioning" in proc.stdout
-    assert "lesson_03_llava_toy_instruction_vlm" in proc.stdout
-    assert "lesson_04_grounding_toy_refexp" in proc.stdout
-    assert "lesson_05_mask_grounding_toy_refexp" in proc.stdout
-    assert "lesson_06_flamingo_toy_interleaved_vlm" in proc.stdout
-    assert "lesson_07_qformer_toy_bridge_vlm" in proc.stdout
-    assert "lesson_08_perceiver_resampler_toy_vlm" in proc.stdout
-    assert "lesson_09_paligemma_toy_siglip_decoder_vlm" in proc.stdout
-    assert "lesson_10_owlvit_toy_open_vocab_detection" in proc.stdout
-    assert "lesson_11_grounded_sam_toy_open_vocab_segmentation" in proc.stdout
-    assert "lesson_12_key_value_ocr_toy_doc_vlm" in proc.stdout
-    assert "lesson_13_video_vlm_toy_temporal_qa" in proc.stdout
-    assert "lesson_14_bmn_toy_temporal_grounding" in proc.stdout
-    assert "lesson_15_2dtan_toy_temporal_grounding" in proc.stdout
-    assert "lesson_16_multiscale_2dtan_toy_temporal_grounding" in proc.stdout
+    assert "lesson_01_clip_compact_retrieval" in proc.stdout
+    assert "lesson_02_blip_compact_captioning" in proc.stdout
+    assert "lesson_03_llava_compact_instruction_vlm" in proc.stdout
+    assert "lesson_04_grounding_compact_refexp" in proc.stdout
+    assert "lesson_05_mask_grounding_compact_refexp" in proc.stdout
+    assert "lesson_06_flamingo_compact_interleaved_vlm" in proc.stdout
+    assert "lesson_07_qformer_compact_bridge_vlm" in proc.stdout
+    assert "lesson_08_perceiver_resampler_compact_vlm" in proc.stdout
+    assert "lesson_09_paligemma_compact_siglip_decoder_vlm" in proc.stdout
+    assert "lesson_10_owlvit_compact_open_vocab_detection" in proc.stdout
+    assert "lesson_11_grounded_sam_compact_open_vocab_segmentation" in proc.stdout
+    assert "lesson_12_key_value_ocr_compact_doc_vlm" in proc.stdout
+    assert "lesson_13_video_vlm_compact_temporal_qa" in proc.stdout
+    assert "lesson_14_bmn_compact_temporal_grounding" in proc.stdout
+    assert "lesson_15_2dtan_compact_temporal_grounding" in proc.stdout
+    assert "lesson_16_multiscale_2dtan_compact_temporal_grounding" in proc.stdout
     assert "lesson_17_video_text_retrieval" in proc.stdout
     assert "lesson_18_prompt_learning_vlm" in proc.stdout
     assert "lesson_19_audio_text_understanding" in proc.stdout
@@ -198,49 +218,49 @@ def test_run_lesson_lists_lessons_for_llm_track() -> None:
     )
     assert proc.returncode == 0
     assert "Lessons (llm):" in proc.stdout
-    assert "lesson_01_toy_causal_lm_transformer" in proc.stdout
-    assert "lesson_02_toy_chat_sft" in proc.stdout
-    assert "lesson_03_toy_mamba_language_model" in proc.stdout
-    assert "lesson_04_toy_instruction_tuning" in proc.stdout
-    assert "lesson_05_toy_prefix_tuning" in proc.stdout
-    assert "lesson_06_toy_preference_optimization" in proc.stdout
-    assert "lesson_07_toy_reward_modeling" in proc.stdout
-    assert "lesson_08_toy_span_corruption" in proc.stdout
-    assert "lesson_09_toy_rlhf_ppo" in proc.stdout
-    assert "lesson_10_toy_grpo_alignment" in proc.stdout
-    assert "lesson_11_toy_rag_language_model" in proc.stdout
-    assert "lesson_12_toy_transformer_interpretability" in proc.stdout
-    assert "lesson_13_toy_tool_calling_agent" in proc.stdout
-    assert "lesson_14_toy_replaced_token_detection_transformer" in proc.stdout
-    assert "lesson_15_toy_llm_judge" in proc.stdout
-    assert "lesson_16_toy_multi_turn_memory_sft" in proc.stdout
-    assert "lesson_17_toy_self_refine_prompting" in proc.stdout
-    assert "lesson_18_toy_reflection_memory_agent" in proc.stdout
-    assert "lesson_19_toy_plan_execute_prompting" in proc.stdout
-    assert "lesson_20_toy_react_tool_prompting" in proc.stdout
-    assert "lesson_21_toy_tree_of_thought_prompting" in proc.stdout
-    assert "lesson_22_toy_self_consistency_prompting" in proc.stdout
-    assert "lesson_23_toy_critic_rerank_prompting" in proc.stdout
-    assert "lesson_24_toy_debate_prompting" in proc.stdout
-    assert "lesson_25_toy_verifier_guided_prompting" in proc.stdout
-    assert "lesson_26_toy_process_supervision_prompting" in proc.stdout
-    assert "lesson_27_toy_self_correction_prompting" in proc.stdout
-    assert "lesson_28_toy_reference_grounded_prompting" in proc.stdout
-    assert "lesson_29_toy_constraint_repair_prompting" in proc.stdout
-    assert "lesson_30_toy_citation_grounded_prompting" in proc.stdout
-    assert "lesson_31_toy_schema_constrained_prompting" in proc.stdout
-    assert "lesson_32_toy_json_constrained_prompting" in proc.stdout
-    assert "lesson_33_toy_function_signature_prompting" in proc.stdout
-    assert "lesson_34_toy_xml_constrained_prompting" in proc.stdout
-    assert "lesson_35_toy_regex_constrained_prompting" in proc.stdout
-    assert "lesson_36_toy_ebnf_constrained_prompting" in proc.stdout
-    assert "lesson_37_toy_sql_constrained_prompting" in proc.stdout
-    assert "lesson_38_toy_yaml_constrained_prompting" in proc.stdout
-    assert "lesson_39_toy_csv_constrained_prompting" in proc.stdout
-    assert "lesson_40_toy_toml_constrained_prompting" in proc.stdout
-    assert "lesson_41_toy_markdown_table_constrained_prompting" in proc.stdout
-    assert "lesson_42_toy_ini_constrained_prompting" in proc.stdout
-    assert "lesson_43_toy_tsv_constrained_prompting" in proc.stdout
+    assert "lesson_01_compact_causal_lm_transformer" in proc.stdout
+    assert "lesson_02_compact_chat_sft" in proc.stdout
+    assert "lesson_03_compact_mamba_language_model" in proc.stdout
+    assert "lesson_04_compact_instruction_tuning" in proc.stdout
+    assert "lesson_05_compact_prefix_tuning" in proc.stdout
+    assert "lesson_06_compact_preference_optimization" in proc.stdout
+    assert "lesson_07_compact_reward_modeling" in proc.stdout
+    assert "lesson_08_compact_span_corruption" in proc.stdout
+    assert "lesson_09_compact_rlhf_ppo" in proc.stdout
+    assert "lesson_10_compact_grpo_alignment" in proc.stdout
+    assert "lesson_11_compact_rag_language_model" in proc.stdout
+    assert "lesson_12_compact_transformer_interpretability" in proc.stdout
+    assert "lesson_13_compact_tool_calling_agent" in proc.stdout
+    assert "lesson_14_compact_replaced_token_detection_transformer" in proc.stdout
+    assert "lesson_15_compact_llm_judge" in proc.stdout
+    assert "lesson_16_compact_multi_turn_memory_sft" in proc.stdout
+    assert "lesson_17_compact_self_refine_prompting" in proc.stdout
+    assert "lesson_18_compact_reflection_memory_agent" in proc.stdout
+    assert "lesson_19_compact_plan_execute_prompting" in proc.stdout
+    assert "lesson_20_compact_react_tool_prompting" in proc.stdout
+    assert "lesson_21_compact_tree_of_thought_prompting" in proc.stdout
+    assert "lesson_22_compact_self_consistency_prompting" in proc.stdout
+    assert "lesson_23_compact_critic_rerank_prompting" in proc.stdout
+    assert "lesson_24_compact_debate_prompting" in proc.stdout
+    assert "lesson_25_compact_verifier_guided_prompting" in proc.stdout
+    assert "lesson_26_compact_process_supervision_prompting" in proc.stdout
+    assert "lesson_27_compact_self_correction_prompting" in proc.stdout
+    assert "lesson_28_compact_reference_grounded_prompting" in proc.stdout
+    assert "lesson_29_compact_constraint_repair_prompting" in proc.stdout
+    assert "lesson_30_compact_citation_grounded_prompting" in proc.stdout
+    assert "lesson_31_compact_schema_constrained_prompting" in proc.stdout
+    assert "lesson_32_compact_json_constrained_prompting" in proc.stdout
+    assert "lesson_33_compact_function_signature_prompting" in proc.stdout
+    assert "lesson_34_compact_xml_constrained_prompting" in proc.stdout
+    assert "lesson_35_compact_regex_constrained_prompting" in proc.stdout
+    assert "lesson_36_compact_ebnf_constrained_prompting" in proc.stdout
+    assert "lesson_37_compact_sql_constrained_prompting" in proc.stdout
+    assert "lesson_38_compact_yaml_constrained_prompting" in proc.stdout
+    assert "lesson_39_compact_csv_constrained_prompting" in proc.stdout
+    assert "lesson_40_compact_toml_constrained_prompting" in proc.stdout
+    assert "lesson_41_compact_markdown_table_constrained_prompting" in proc.stdout
+    assert "lesson_42_compact_ini_constrained_prompting" in proc.stdout
+    assert "lesson_43_compact_tsv_constrained_prompting" in proc.stdout
 
 
 def test_run_lesson_lists_lessons_for_generative_track() -> None:
@@ -255,55 +275,55 @@ def test_run_lesson_lists_lessons_for_generative_track() -> None:
     assert "Lessons (generative):" in proc.stdout
     assert "lesson_01_vae_mnist" in proc.stdout
     assert "lesson_02_gan_mnist" in proc.stdout
-    assert "lesson_03_toy_diffusion_mnist" in proc.stdout
-    assert "lesson_04_toy_latent_diffusion" in proc.stdout
-    assert "lesson_05_toy_consistency_model" in proc.stdout
-    assert "lesson_06_toy_flow_matching" in proc.stdout
-    assert "lesson_07_toy_rectified_flow" in proc.stdout
-    assert "lesson_08_toy_diffusion_transformer" in proc.stdout
-    assert "lesson_09_toy_conditional_gan" in proc.stdout
-    assert "lesson_10_toy_diffusion_image_editing" in proc.stdout
-    assert "lesson_11_toy_controlnet" in proc.stdout
-    assert "lesson_12_toy_layout_to_image" in proc.stdout
-    assert "lesson_13_toy_text_to_image_diffusion" in proc.stdout
-    assert "lesson_14_toy_diffusion_inpainting" in proc.stdout
-    assert "lesson_15_toy_diffusion_super_resolution" in proc.stdout
-    assert "lesson_16_toy_diffusion_deblurring" in proc.stdout
-    assert "lesson_17_toy_diffusion_denoising" in proc.stdout
-    assert "lesson_18_toy_diffusion_deraining" in proc.stdout
-    assert "lesson_19_toy_diffusion_dehazing" in proc.stdout
-    assert "lesson_20_toy_diffusion_reflection_removal" in proc.stdout
-    assert "lesson_21_toy_diffusion_image_fusion" in proc.stdout
-    assert "lesson_22_toy_diffusion_style_transfer" in proc.stdout
-    assert "lesson_23_toy_diffusion_multi_focus_fusion" in proc.stdout
-    assert "lesson_24_toy_diffusion_image_synthesis" in proc.stdout
-    assert "lesson_25_toy_diffusion_compositional_generation" in proc.stdout
-    assert "lesson_26_toy_diffusion_image_variation" in proc.stdout
-    assert "lesson_27_toy_diffusion_reference_guided_generation" in proc.stdout
-    assert "lesson_28_toy_diffusion_subject_driven_generation" in proc.stdout
-    assert "lesson_29_toy_diffusion_multi_reference_generation" in proc.stdout
-    assert "lesson_30_toy_diffusion_identity_preserving_editing" in proc.stdout
-    assert "lesson_31_toy_diffusion_reference_editing" in proc.stdout
-    assert "lesson_32_toy_diffusion_layout_preserving_editing" in proc.stdout
-    assert "lesson_33_toy_diffusion_masked_reference_editing" in proc.stdout
-    assert "lesson_34_toy_diffusion_layout_reference_fusion" in proc.stdout
-    assert "lesson_35_toy_diffusion_box_mask_editing" in proc.stdout
-    assert "lesson_36_toy_diffusion_layout_subject_fusion" in proc.stdout
-    assert "lesson_37_toy_diffusion_polygon_mask_editing" in proc.stdout
-    assert "lesson_38_toy_diffusion_layout_attribute_fusion" in proc.stdout
-    assert "lesson_39_toy_diffusion_scribble_mask_editing" in proc.stdout
-    assert "lesson_40_toy_diffusion_layout_style_fusion" in proc.stdout
-    assert "lesson_41_toy_diffusion_stroke_mask_editing" in proc.stdout
-    assert "lesson_42_toy_diffusion_layout_palette_fusion" in proc.stdout
-    assert "lesson_43_toy_diffusion_path_mask_editing" in proc.stdout
-    assert "lesson_44_toy_diffusion_layout_lighting_fusion" in proc.stdout
-    assert "lesson_45_toy_video_diffusion" in proc.stdout
-    assert "lesson_46_toy_image_to_video_diffusion" in proc.stdout
-    assert "lesson_47_toy_text_to_3d" in proc.stdout
-    assert "lesson_48_toy_image_to_3d" in proc.stdout
-    assert "lesson_49_toy_text_to_video" in proc.stdout
-    assert "lesson_50_toy_video_to_video" in proc.stdout
-    assert "lesson_51_toy_world_models" in proc.stdout
+    assert "lesson_03_compact_diffusion_mnist" in proc.stdout
+    assert "lesson_04_compact_latent_diffusion" in proc.stdout
+    assert "lesson_05_compact_consistency_model" in proc.stdout
+    assert "lesson_06_compact_flow_matching" in proc.stdout
+    assert "lesson_07_compact_rectified_flow" in proc.stdout
+    assert "lesson_08_compact_diffusion_transformer" in proc.stdout
+    assert "lesson_09_compact_conditional_gan" in proc.stdout
+    assert "lesson_10_compact_diffusion_image_editing" in proc.stdout
+    assert "lesson_11_compact_controlnet" in proc.stdout
+    assert "lesson_12_compact_layout_to_image" in proc.stdout
+    assert "lesson_13_compact_text_to_image_diffusion" in proc.stdout
+    assert "lesson_14_compact_diffusion_inpainting" in proc.stdout
+    assert "lesson_15_compact_diffusion_super_resolution" in proc.stdout
+    assert "lesson_16_compact_diffusion_deblurring" in proc.stdout
+    assert "lesson_17_compact_diffusion_denoising" in proc.stdout
+    assert "lesson_18_compact_diffusion_deraining" in proc.stdout
+    assert "lesson_19_compact_diffusion_dehazing" in proc.stdout
+    assert "lesson_20_compact_diffusion_reflection_removal" in proc.stdout
+    assert "lesson_21_compact_diffusion_image_fusion" in proc.stdout
+    assert "lesson_22_compact_diffusion_style_transfer" in proc.stdout
+    assert "lesson_23_compact_diffusion_multi_focus_fusion" in proc.stdout
+    assert "lesson_24_compact_diffusion_image_synthesis" in proc.stdout
+    assert "lesson_25_compact_diffusion_compositional_generation" in proc.stdout
+    assert "lesson_26_compact_diffusion_image_variation" in proc.stdout
+    assert "lesson_27_compact_diffusion_reference_guided_generation" in proc.stdout
+    assert "lesson_28_compact_diffusion_subject_driven_generation" in proc.stdout
+    assert "lesson_29_compact_diffusion_multi_reference_generation" in proc.stdout
+    assert "lesson_30_compact_diffusion_identity_preserving_editing" in proc.stdout
+    assert "lesson_31_compact_diffusion_reference_editing" in proc.stdout
+    assert "lesson_32_compact_diffusion_layout_preserving_editing" in proc.stdout
+    assert "lesson_33_compact_diffusion_masked_reference_editing" in proc.stdout
+    assert "lesson_34_compact_diffusion_layout_reference_fusion" in proc.stdout
+    assert "lesson_35_compact_diffusion_box_mask_editing" in proc.stdout
+    assert "lesson_36_compact_diffusion_layout_subject_fusion" in proc.stdout
+    assert "lesson_37_compact_diffusion_polygon_mask_editing" in proc.stdout
+    assert "lesson_38_compact_diffusion_layout_attribute_fusion" in proc.stdout
+    assert "lesson_39_compact_diffusion_scribble_mask_editing" in proc.stdout
+    assert "lesson_40_compact_diffusion_layout_style_fusion" in proc.stdout
+    assert "lesson_41_compact_diffusion_stroke_mask_editing" in proc.stdout
+    assert "lesson_42_compact_diffusion_layout_palette_fusion" in proc.stdout
+    assert "lesson_43_compact_diffusion_path_mask_editing" in proc.stdout
+    assert "lesson_44_compact_diffusion_layout_lighting_fusion" in proc.stdout
+    assert "lesson_45_compact_video_diffusion" in proc.stdout
+    assert "lesson_46_compact_image_to_video_diffusion" in proc.stdout
+    assert "lesson_47_compact_text_to_3d" in proc.stdout
+    assert "lesson_48_compact_image_to_3d" in proc.stdout
+    assert "lesson_49_compact_text_to_video" in proc.stdout
+    assert "lesson_50_compact_video_to_video" in proc.stdout
+    assert "lesson_51_compact_world_models" in proc.stdout
 
 
 def test_run_lesson_lists_lessons_for_pointcloud_track() -> None:
@@ -316,22 +336,22 @@ def test_run_lesson_lists_lessons_for_pointcloud_track() -> None:
     )
     assert proc.returncode == 0
     assert "Lessons (pointcloud):" in proc.stdout
-    assert "lesson_01_pointnet_toy_classification" in proc.stdout
-    assert "lesson_07_pointnet_toy_reconstruction" in proc.stdout
+    assert "lesson_01_pointnet_compact_classification" in proc.stdout
+    assert "lesson_07_pointnet_compact_reconstruction" in proc.stdout
     assert "lesson_23_pointcloud_selfsupervised_ressl" in proc.stdout
-    assert "lesson_24_toy_pointcloud_completion" in proc.stdout
-    assert "lesson_25_toy_scene_flow_estimation" in proc.stdout
-    assert "lesson_26_toy_gaussian_splatting" in proc.stdout
-    assert "lesson_27_toy_3d_object_detection" in proc.stdout
-    assert "lesson_28_toy_3d_semantic_segmentation" in proc.stdout
-    assert "lesson_29_toy_3d_instance_segmentation" in proc.stdout
-    assert "lesson_30_toy_3d_object_tracking" in proc.stdout
-    assert "lesson_31_toy_open_vocabulary_3d" in proc.stdout
-    assert "lesson_32_toy_pointcloud_forecasting" in proc.stdout
-    assert "lesson_33_toy_pointcloud_anomaly_detection" in proc.stdout
-    assert "lesson_34_toy_pointcloud_upsampling" in proc.stdout
-    assert "lesson_35_toy_shape_correspondence_3d" in proc.stdout
-    assert "lesson_36_toy_pointcloud_registration" in proc.stdout
+    assert "lesson_24_compact_pointcloud_completion" in proc.stdout
+    assert "lesson_25_compact_scene_flow_estimation" in proc.stdout
+    assert "lesson_26_compact_gaussian_splatting" in proc.stdout
+    assert "lesson_27_compact_3d_object_detection" in proc.stdout
+    assert "lesson_28_compact_3d_semantic_segmentation" in proc.stdout
+    assert "lesson_29_compact_3d_instance_segmentation" in proc.stdout
+    assert "lesson_30_compact_3d_object_tracking" in proc.stdout
+    assert "lesson_31_compact_open_vocabulary_3d" in proc.stdout
+    assert "lesson_32_compact_pointcloud_forecasting" in proc.stdout
+    assert "lesson_33_compact_pointcloud_anomaly_detection" in proc.stdout
+    assert "lesson_34_compact_pointcloud_upsampling" in proc.stdout
+    assert "lesson_35_compact_shape_correspondence_3d" in proc.stdout
+    assert "lesson_36_compact_pointcloud_registration" in proc.stdout
 
 
 def test_run_lesson_lists_lessons_for_nlp_track() -> None:
@@ -344,47 +364,47 @@ def test_run_lesson_lists_lessons_for_nlp_track() -> None:
     )
     assert proc.returncode == 0
     assert "Lessons (nlp):" in proc.stdout
-    assert "lesson_01_toy_text_classification" in proc.stdout
+    assert "lesson_01_compact_text_classification" in proc.stdout
     assert "lesson_07_reading_comprehension" in proc.stdout
-    assert "lesson_08_toy_text_matching_biencoder" in proc.stdout
-    assert "lesson_09_toy_transformer_summarization" in proc.stdout
-    assert "lesson_10_toy_prompt_tuning_classifier" in proc.stdout
-    assert "lesson_11_toy_few_shot_text_classification" in proc.stdout
-    assert "lesson_12_toy_in_context_text_classification" in proc.stdout
-    assert "lesson_13_toy_masked_language_modeling" in proc.stdout
-    assert "lesson_14_toy_contrastive_sentence_embedding" in proc.stdout
-    assert "lesson_15_toy_cross_encoder_reranking" in proc.stdout
-    assert "lesson_16_toy_text_clustering" in proc.stdout
-    assert "lesson_17_toy_text_anomaly_detection" in proc.stdout
-    assert "lesson_18_toy_topic_modeling" in proc.stdout
-    assert "lesson_19_toy_distilled_text_classifier" in proc.stdout
-    assert "lesson_20_toy_adversarial_text_classification" in proc.stdout
-    assert "lesson_21_toy_adversarial_example_detection" in proc.stdout
-    assert "lesson_22_toy_weak_supervision_text_classification" in proc.stdout
-    assert "lesson_23_toy_sentence_denoising_autoencoder" in proc.stdout
-    assert "lesson_24_toy_meta_few_shot_text_classification" in proc.stdout
-    assert "lesson_25_toy_low_shot_intent_detection" in proc.stdout
-    assert "lesson_26_toy_joint_intent_slot_parsing" in proc.stdout
-    assert "lesson_27_toy_textual_entailment" in proc.stdout
-    assert "lesson_28_toy_semantic_textual_similarity" in proc.stdout
-    assert "lesson_29_toy_dialog_state_tracking" in proc.stdout
-    assert "lesson_30_toy_dialog_response_selection" in proc.stdout
-    assert "lesson_31_toy_slot_carryover_prediction" in proc.stdout
-    assert "lesson_32_toy_dialog_act_prediction" in proc.stdout
-    assert "lesson_33_toy_dialog_intent_prediction" in proc.stdout
-    assert "lesson_34_toy_dialog_policy_prediction" in proc.stdout
-    assert "lesson_35_toy_dialog_domain_prediction" in proc.stdout
-    assert "lesson_36_toy_dialog_slot_prediction" in proc.stdout
-    assert "lesson_37_toy_dialog_outcome_prediction" in proc.stdout
-    assert "lesson_38_toy_dialog_satisfaction_prediction" in proc.stdout
-    assert "lesson_39_toy_dialog_escalation_risk_prediction" in proc.stdout
-    assert "lesson_40_toy_dialog_priority_prediction" in proc.stdout
-    assert "lesson_41_toy_dialog_transfer_prediction" in proc.stdout
-    assert "lesson_42_toy_dialog_resolution_time_prediction" in proc.stdout
-    assert "lesson_43_toy_dialog_callback_prediction" in proc.stdout
-    assert "lesson_44_toy_dialog_sla_breach_prediction" in proc.stdout
-    assert "lesson_45_toy_dialog_followup_channel_prediction" in proc.stdout
-    assert "lesson_46_toy_dialog_reopen_prediction" in proc.stdout
-    assert "lesson_47_toy_dialog_resolution_owner_prediction" in proc.stdout
-    assert "lesson_48_toy_dialog_resolution_action_prediction" in proc.stdout
-    assert "lesson_49_toy_dialog_owner_handoff_prediction" in proc.stdout
+    assert "lesson_08_compact_text_matching_biencoder" in proc.stdout
+    assert "lesson_09_compact_transformer_summarization" in proc.stdout
+    assert "lesson_10_compact_prompt_tuning_classifier" in proc.stdout
+    assert "lesson_11_compact_few_shot_text_classification" in proc.stdout
+    assert "lesson_12_compact_in_context_text_classification" in proc.stdout
+    assert "lesson_13_compact_masked_language_modeling" in proc.stdout
+    assert "lesson_14_compact_contrastive_sentence_embedding" in proc.stdout
+    assert "lesson_15_compact_cross_encoder_reranking" in proc.stdout
+    assert "lesson_16_compact_text_clustering" in proc.stdout
+    assert "lesson_17_compact_text_anomaly_detection" in proc.stdout
+    assert "lesson_18_compact_topic_modeling" in proc.stdout
+    assert "lesson_19_compact_distilled_text_classifier" in proc.stdout
+    assert "lesson_20_compact_adversarial_text_classification" in proc.stdout
+    assert "lesson_21_compact_adversarial_example_detection" in proc.stdout
+    assert "lesson_22_compact_weak_supervision_text_classification" in proc.stdout
+    assert "lesson_23_compact_sentence_denoising_autoencoder" in proc.stdout
+    assert "lesson_24_compact_meta_few_shot_text_classification" in proc.stdout
+    assert "lesson_25_compact_low_shot_intent_detection" in proc.stdout
+    assert "lesson_26_compact_joint_intent_slot_parsing" in proc.stdout
+    assert "lesson_27_compact_textual_entailment" in proc.stdout
+    assert "lesson_28_compact_semantic_textual_similarity" in proc.stdout
+    assert "lesson_29_compact_dialog_state_tracking" in proc.stdout
+    assert "lesson_30_compact_dialog_response_selection" in proc.stdout
+    assert "lesson_31_compact_slot_carryover_prediction" in proc.stdout
+    assert "lesson_32_compact_dialog_act_prediction" in proc.stdout
+    assert "lesson_33_compact_dialog_intent_prediction" in proc.stdout
+    assert "lesson_34_compact_dialog_policy_prediction" in proc.stdout
+    assert "lesson_35_compact_dialog_domain_prediction" in proc.stdout
+    assert "lesson_36_compact_dialog_slot_prediction" in proc.stdout
+    assert "lesson_37_compact_dialog_outcome_prediction" in proc.stdout
+    assert "lesson_38_compact_dialog_satisfaction_prediction" in proc.stdout
+    assert "lesson_39_compact_dialog_escalation_risk_prediction" in proc.stdout
+    assert "lesson_40_compact_dialog_priority_prediction" in proc.stdout
+    assert "lesson_41_compact_dialog_transfer_prediction" in proc.stdout
+    assert "lesson_42_compact_dialog_resolution_time_prediction" in proc.stdout
+    assert "lesson_43_compact_dialog_callback_prediction" in proc.stdout
+    assert "lesson_44_compact_dialog_sla_breach_prediction" in proc.stdout
+    assert "lesson_45_compact_dialog_followup_channel_prediction" in proc.stdout
+    assert "lesson_46_compact_dialog_reopen_prediction" in proc.stdout
+    assert "lesson_47_compact_dialog_resolution_owner_prediction" in proc.stdout
+    assert "lesson_48_compact_dialog_resolution_action_prediction" in proc.stdout
+    assert "lesson_49_compact_dialog_owner_handoff_prediction" in proc.stdout

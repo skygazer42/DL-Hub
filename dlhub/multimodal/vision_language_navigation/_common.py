@@ -10,7 +10,7 @@ def check_nchw(image: torch.Tensor) -> torch.Tensor:
     return image
 
 
-class ToyNavigator(nn.Module):
+class CompactNavigator(nn.Module):
     def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int) -> None:
         super().__init__()
         self.family = str(family)
@@ -41,7 +41,7 @@ class ToyNavigator(nn.Module):
         return {"policy_logits": self.policy_head(joint), "waypoint": self.waypoint_head(joint)}
 
 
-def build_toy_navigator(
+def build_baseline_navigator(
     *,
     family: str,
     mode: str,
@@ -52,7 +52,7 @@ def build_toy_navigator(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyNavigator(
+    return CompactNavigator(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),

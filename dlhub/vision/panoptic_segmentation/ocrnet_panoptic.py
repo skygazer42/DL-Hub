@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneC2C3C4C5, check_n
 
 
 class OCRNetPanoptic(nn.Module):
-    """OCRNet-style panoptic segmentation (toy-first).
+    """OCRNet-style panoptic segmentation (compact-first).
 
     Uses coarse logits to compute object-context features, refines semantic logits,
     and adds a lightweight query-based instance mask head.

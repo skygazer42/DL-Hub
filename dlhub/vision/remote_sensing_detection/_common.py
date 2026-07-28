@@ -37,7 +37,7 @@ class TinyRSDetector(nn.Module):
         return {"cls_logits": self.cls(feat), "boxes": self.box(feat)}
 
 
-def build_toy_rs_detector(
+def build_baseline_rs_detector(
     *,
     family: str,
     variants: dict[str, dict[str, int]],

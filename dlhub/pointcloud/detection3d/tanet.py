@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class TANet(nn.Module):
-    """TANet (toy): triple attention on BEV features (channel + spatial)."""
+    """TANet (compact): triple attention on BEV features (channel + spatial)."""
 
     def __init__(
         self,

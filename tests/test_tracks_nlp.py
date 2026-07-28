@@ -4,8 +4,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_nlp_lesson_01_shapes_smoke() -> None:
-    from tracks.nlp.lesson_01_toy_text_classification.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_01_toy_text_classification.model import (
+    from tracks.nlp.lesson_01_compact_text_classification.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_01_compact_text_classification.model import (
         MeanPoolTextClassifier,
         ModelConfig,
     )
@@ -32,11 +32,11 @@ def test_nlp_lesson_01_shapes_smoke() -> None:
 
 
 def test_nlp_lesson_02_transformer_shapes_smoke() -> None:
-    from tracks.nlp.lesson_02_toy_text_classification_transformer.data import (
+    from tracks.nlp.lesson_02_compact_text_classification_transformer.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_02_toy_text_classification_transformer.model import (
+    from tracks.nlp.lesson_02_compact_text_classification_transformer.model import (
         ModelConfig,
         TransformerTextClassifier,
     )
@@ -71,8 +71,8 @@ def test_nlp_lesson_02_transformer_shapes_smoke() -> None:
 
 
 def test_nlp_lesson_03_ner_shapes_smoke() -> None:
-    from tracks.nlp.lesson_03_toy_ner_bilstm.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_03_toy_ner_bilstm.model import BiLstmNerTagger, ModelConfig
+    from tracks.nlp.lesson_03_compact_ner_bilstm.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_03_compact_ner_bilstm.model import BiLstmNerTagger, ModelConfig
 
     train_loader, _, vocab, tag_vocab = get_dataloaders(
         DataConfig(
@@ -138,11 +138,11 @@ def test_nlp_lesson_07_reading_comprehension_shapes_smoke() -> None:
 
 
 def test_nlp_lesson_04_seq2seq_attention_shapes_smoke() -> None:
-    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.data import (
+    from tracks.nlp.lesson_04_compact_seq2seq_attention_generation.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.model import (
+    from tracks.nlp.lesson_04_compact_seq2seq_attention_generation.model import (
         ModelConfig,
         Seq2SeqWithAttention,
     )
@@ -187,11 +187,11 @@ def test_nlp_lesson_04_seq2seq_attention_shapes_smoke() -> None:
 
 
 def test_nlp_lesson_05_textcnn_shapes_smoke() -> None:
-    from tracks.nlp.lesson_05_toy_text_classification_textcnn.data import (
+    from tracks.nlp.lesson_05_compact_text_classification_textcnn.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_05_toy_text_classification_textcnn.model import (
+    from tracks.nlp.lesson_05_compact_text_classification_textcnn.model import (
         ModelConfig,
         TextCNNClassifier,
     )
@@ -220,8 +220,8 @@ def test_nlp_lesson_05_textcnn_shapes_smoke() -> None:
 
 
 def test_nlp_lesson_06_bilstm_shapes_smoke() -> None:
-    from tracks.nlp.lesson_06_toy_text_classification_bilstm.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_06_toy_text_classification_bilstm.model import (
+    from tracks.nlp.lesson_06_compact_text_classification_bilstm.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_06_compact_text_classification_bilstm.model import (
         BiLSTMTextClassifier,
         ModelConfig,
     )

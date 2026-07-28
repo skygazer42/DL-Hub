@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class BoNet(nn.Module):
-    """3D-BoNet (toy): fixed proposal embeddings predict masks + classes."""
+    """3D-BoNet (compact): fixed proposal embeddings predict masks + classes."""
 
     def __init__(
         self,

@@ -36,7 +36,7 @@ class _SimpleEncoder(nn.Module):
 
 
 class CenterNetDetector(nn.Module):
-    """CenterNet-style keypoint detector (toy-first).
+    """CenterNet-style keypoint detector (compact-first).
 
     Outputs (raw, stride=4):
     - heatmap: (B, num_classes, H/4, W/4) logits (use sigmoid in loss/inference)

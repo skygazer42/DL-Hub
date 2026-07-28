@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa` as an independent teaching lesson for short-video temporal QA.
+**Goal:** Add `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa` as an independent teaching lesson for short-video temporal QA.
 
 ## Problem
 
@@ -27,7 +27,7 @@ What is still missing is a teaching-sized lesson where the visual input is a sho
 
 ### Option A: Single-object temporal QA
 
-- short toy video with one moving object
+- short compact video with one moving object
 - ask about color, shape, or motion direction
 - generate a short answer
 
@@ -43,7 +43,7 @@ Cons:
 
 ### Option B: Multi-object temporal QA
 
-- short toy video with multiple objects
+- short compact video with multiple objects
 - ask about one target object or relations
 - generate a short answer
 
@@ -159,7 +159,7 @@ Metrics:
 Follow the same conventions as earlier lessons:
 
 - CLI args for dataset size, sequence length, image size, and text length
-- `outputs/multimodal/lesson_13_video_vlm_toy_temporal_qa/<run_name>/`
+- `outputs/multimodal/lesson_13_video_vlm_compact_temporal_qa/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

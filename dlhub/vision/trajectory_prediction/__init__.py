@@ -1,4 +1,4 @@
-"""Trajectory prediction models (toy-first, pure torch)."""
+"""Trajectory prediction models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

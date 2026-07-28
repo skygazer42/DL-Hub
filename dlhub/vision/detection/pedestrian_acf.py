@@ -61,7 +61,7 @@ def _acf_feature_map(
 
 
 class PedestrianACFDetector(nn.Module):
-    """Aggregated Channel Features (ACF) style detector (toy-first).
+    """Aggregated Channel Features (ACF) style detector (compact-first).
 
     This classic pipeline is implemented in torch:
     - compute a stack of simple channels (RGB + gradient mag + oriented gradients)
@@ -110,7 +110,7 @@ class PedestrianACFDetector(nn.Module):
 
         cell = int(self.cell_size)
         if h % cell != 0 or w % cell != 0:
-            raise ValueError("Input H and W must be divisible by cell_size for this toy ACF.")
+            raise ValueError("Input H and W must be divisible by cell_size for this compact ACF.")
 
         feat = _acf_feature_map(x, num_orients=int(self.num_orients), eps=float(self.eps))
         agg = F.avg_pool2d(feat, kernel_size=cell, stride=cell)

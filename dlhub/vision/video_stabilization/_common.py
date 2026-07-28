@@ -11,7 +11,7 @@ def check_btchw(x: torch.Tensor) -> torch.Tensor:
     return x
 
 
-class ToyVideoStabilizer(nn.Module):
+class CompactVideoStabilizer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -30,7 +30,7 @@ class ToyVideoStabilizer(nn.Module):
         return {"stabilized": stabilized}
 
 
-def build_toy_stabilizer(
+def build_baseline_stabilizer(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -40,7 +40,7 @@ def build_toy_stabilizer(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyVideoStabilizer(
+    return CompactVideoStabilizer(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

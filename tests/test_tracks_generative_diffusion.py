@@ -5,9 +5,9 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_diffusion_fake_dataloaders_and_noise_prediction_shapes() -> None:
-    from tracks.generative.lesson_03_toy_diffusion_mnist.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_03_toy_diffusion_mnist.model import (
+def test_compact_diffusion_fake_dataloaders_and_noise_prediction_shapes() -> None:
+    from tracks.generative.lesson_03_compact_diffusion_mnist.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_03_compact_diffusion_mnist.model import (
         DiffusionMLP,
         DiffusionSchedule,
         ModelConfig,
@@ -42,13 +42,13 @@ def test_toy_diffusion_fake_dataloaders_and_noise_prediction_shapes() -> None:
     assert torch.isfinite(pred_noise).all()
 
 
-def test_toy_diffusion_training_writes_expected_artifacts(tmp_path: Path) -> None:
-    from tracks.generative.lesson_03_toy_diffusion_mnist.data import DataConfig
-    from tracks.generative.lesson_03_toy_diffusion_mnist.model import ModelConfig
-    from tracks.generative.lesson_03_toy_diffusion_mnist.train import TrainConfig, run_training
+def test_compact_diffusion_training_writes_expected_artifacts(tmp_path: Path) -> None:
+    from tracks.generative.lesson_03_compact_diffusion_mnist.data import DataConfig
+    from tracks.generative.lesson_03_compact_diffusion_mnist.model import ModelConfig
+    from tracks.generative.lesson_03_compact_diffusion_mnist.train import TrainConfig, run_training
 
     run_name = "pytest_diffusion_smoke"
-    output_dir = Path("outputs/generative/lesson_03_toy_diffusion_mnist") / run_name
+    output_dir = Path("outputs/generative/lesson_03_compact_diffusion_mnist") / run_name
     if output_dir.exists():
         import shutil
 

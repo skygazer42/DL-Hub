@@ -47,7 +47,7 @@ class GestureReasoningConfig:
     vision_width: int = 40
 
 
-class ToyGestureReasoningModel(nn.Module):
+class CompactGestureReasoningModel(nn.Module):
     def __init__(self, cfg: GestureReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -83,7 +83,7 @@ def compute_accuracy(logits: torch.Tensor, target: torch.Tensor) -> float:
 
 __all__ = [
     "GestureReasoningConfig",
-    "ToyGestureReasoningModel",
+    "CompactGestureReasoningModel",
     "compute_accuracy",
     "gesture_loss",
 ]

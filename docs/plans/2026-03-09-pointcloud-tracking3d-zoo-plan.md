@@ -1,10 +1,8 @@
 # PointCloud Tracking3D Zoo Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add a first 3D object tracking zoo for point-cloud/LiDAR-style tracking families with discovery, timeline metadata, CLI utilities, and smoke coverage.
 
-**Architecture:** Create a new `dlhub/pointcloud/tracking3d/` package parallel to `detection3d`, with one tracking family per file. Add a lightweight `tracking3d_zoo.py` registry, `scripts/tracking3d_zoo.py` CLI, best-effort timeline metadata, and toy-first trackers that operate on short point-cloud sequences and return stable track tensors.
+**Architecture:** Create a new `dlhub/pointcloud/tracking3d/` package parallel to `detection3d`, with one tracking family per file. Add a lightweight `tracking3d_zoo.py` registry, `scripts/tracking3d_zoo.py` CLI, best-effort timeline metadata, and compact-first trackers that operate on short point-cloud sequences and return stable track tensors.
 
 **Tech Stack:** Python 3.10+, PyTorch, pytest, existing `dlhub.pointcloud` zoo conventions.
 
@@ -75,7 +73,7 @@ pytest -q tests/test_dlhub_pointcloud_tracking3d_timeline.py tests/test_dlhub_po
 **Step 3: Write minimal implementation**
 
 - Add a sequence-oriented `BuildConfig`.
-- Add shared helpers for checking `(B,T,N,C)` point-cloud sequences and producing toy track tensors.
+- Add shared helpers for checking `(B,T,N,C)` point-cloud sequences and producing compact track tensors.
 - Add best-effort timeline metadata and CLI support for `--list`, `--timeline`, `--smoke`.
 
 **Step 4: Run test to verify GREEN**
@@ -112,7 +110,7 @@ pytest -q tests/test_dlhub_pointcloud_tracking3d_algorithms.py
 
 **Step 3: Write minimal implementation**
 
-- Keep trackers toy-first and sequence-first.
+- Keep trackers compact-first and sequence-first.
 - Each file must expose `_VARIANTS`, `build_*_tracker3d(...)`, and a `__main__` smoke path.
 - Reuse shared sequence tracking helpers instead of duplicating association/motion scaffolding.
 

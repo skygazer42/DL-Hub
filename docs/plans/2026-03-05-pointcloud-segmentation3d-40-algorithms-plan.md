@@ -1,8 +1,6 @@
 # Pointcloud 3D Semantic Segmentation Zoo (40 算法族) Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** 为 DL-Hub 增加一个「纯 torch、toy-first、CPU 友好」的 **3D 点云语义分割** 本地模型 zoo：支持枚举/构建 arch id、提供 CLI 脚本和 pytest forward+backward 冒烟测试。
+**Goal:** 为 DL-Hub 增加一个「纯 torch、compact-first、CPU 友好」的 **3D 点云语义分割** 本地模型 zoo：支持枚举/构建 arch id、提供 CLI 脚本和 pytest forward+backward 冒烟测试。
 
 **Architecture:** 新增 `dlhub/pointcloud/segmentation3d/` 作为算法族目录（**一算法族一文件**，变种写在 `_VARIANTS` 里），`dlhub/pointcloud/segmentation3d_zoo.py` 用 AST 从源码提取变种并 lazy 构建，避免 import 负担；所有模型统一 I/O（`(B,N,C)` -> `(B,N,num_classes)`）。
 
@@ -10,7 +8,7 @@
 
 ---
 
-## I/O 约定（Toy）
+## I/O 约定（Compact）
 
 - **Input**: `points` tensor, shape `(B, N, C)`，其中 `C>=3`，前 3 维为 `xyz`，其余可选为点特征。
 - **Output**: `logits` tensor, shape `(B, N, num_classes)`（每点语义分类 logits）。
@@ -22,7 +20,7 @@
 ### Core package
 - Create: `dlhub/pointcloud/segmentation3d/__init__.py`（lazy builder import）
 - Create: `dlhub/pointcloud/segmentation3d/_common.py`
-  - toy blocks: Point MLP、EdgeConv、PointNet++ SA/FP、tiny transformer
+  - compact blocks: Point MLP、EdgeConv、PointNet++ SA/FP、tiny transformer
   - 投影/体素辅助: 2D/3D scatter+gather、TinyUNet2D/TinyUNet3D、Point-Voxel fusion
 
 ### Zoo / CLI tooling

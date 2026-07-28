@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_blur_detector, smoke_test_blur_detector
+from ._common import build_baseline_blur_detector, smoke_test_blur_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_variance_blurdet_blur_detector(
     *, in_channels: int, variant: str = "variance_blurdet_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_blur_detector(
+    return build_baseline_blur_detector(
         family="variance_blurdet",
         mode="variance",
         variants=_VARIANTS,

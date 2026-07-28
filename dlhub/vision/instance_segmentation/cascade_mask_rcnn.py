@@ -46,7 +46,7 @@ class _ROIStage(nn.Module):
 
 
 class CascadeMaskRCNN(nn.Module):
-    """Cascade Mask R-CNN-style instance segmenter (toy-first)."""
+    """Cascade Mask R-CNN-style instance segmenter (compact-first)."""
 
     def __init__(
         self,

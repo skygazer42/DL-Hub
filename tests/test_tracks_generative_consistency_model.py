@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_consistency_model_fake_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_05_toy_consistency_model.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_05_compact_consistency_model.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, seed=0, num_workers=0, val_fraction=0.25)
@@ -29,7 +29,7 @@ def test_consistency_model_fake_dataloaders_smoke() -> None:
 
 
 def test_consistency_model_boundary_condition_and_loss() -> None:
-    from tracks.generative.lesson_05_toy_consistency_model.model import (
+    from tracks.generative.lesson_05_compact_consistency_model.model import (
         ConsistencyModel,
         ConsistencySchedule,
         ModelConfig,
@@ -63,7 +63,7 @@ def test_consistency_model_boundary_condition_and_loss() -> None:
 
 
 def test_consistency_model_sampling_smoke() -> None:
-    from tracks.generative.lesson_05_toy_consistency_model.model import (
+    from tracks.generative.lesson_05_compact_consistency_model.model import (
         ConsistencyModel,
         ConsistencySchedule,
         ModelConfig,
@@ -94,7 +94,7 @@ def test_consistency_model_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_05_toy_consistency_model"
+        / "lesson_05_compact_consistency_model"
         / "pytest_consistency_model_smoke"
     )
     if run_dir.exists():
@@ -104,7 +104,7 @@ def test_consistency_model_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_05_toy_consistency_model.train",
+            "tracks.generative.lesson_05_compact_consistency_model.train",
             "--epochs",
             "1",
             "--num-samples",

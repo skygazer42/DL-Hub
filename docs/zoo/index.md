@@ -4,7 +4,7 @@ icon: material/paw
 
 # Model Zoo 总览
 
-全领域统一模型动物园 --- 纯 PyTorch 本地实现，无需下载预训练权重，**8 600+ 本地架构 ID** 一行切换（实测 8626，`python scripts/project_stats.py --json` 可复核）。
+全领域统一模型注册表 --- 纯 PyTorch 本地实现，无需下载预训练权重，**8 600+ 可构建注册 ID** 一行切换（当前实测 8611，`python scripts/project_stats.py --json` 可复核）。注册数量描述接口覆盖，不等同于独立论文复现数量；命名、数据和验证边界见[实现契约](../implementation-contract.md)，机制对齐情况见 [Model Zoo 保真度审计](fidelity.md)。
 
 ---
 
@@ -16,7 +16,7 @@ icon: material/paw
 
     ---
 
-    **791** Architecture IDs / 220 个 backbone 模块
+    **791** 注册 ID / 220 个 backbone 模块
 
     [:octicons-arrow-right-24: Vision Zoo](vision-zoo.md)
 
@@ -24,7 +24,7 @@ icon: material/paw
 
     ---
 
-    **814** Architecture IDs / 49 算法族
+    **814** 注册 ID / 49 个注册族
 
     [:octicons-arrow-right-24: NLP Zoo](nlp-zoo.md)
 
@@ -32,7 +32,7 @@ icon: material/paw
 
     ---
 
-    **64** Architecture IDs / 30 算法族
+    **64** 注册 ID / 30 个注册族
 
     [:octicons-arrow-right-24: Point Cloud Zoo](pointcloud-zoo.md)
 
@@ -40,7 +40,7 @@ icon: material/paw
 
     ---
 
-    **210** Architecture IDs / 70 算法族
+    **210** 注册 ID / 70 个注册族
 
     [:octicons-arrow-right-24: VLM Zoo](vlm-zoo.md)
 
@@ -56,7 +56,7 @@ icon: material/paw
 
     ---
 
-    **76** 联邦策略 / 228 Architecture IDs
+    **76** 联邦策略 / 228 注册 ID
 
     [:octicons-arrow-right-24: Federated Zoo](federated-zoo.md)
 
@@ -94,6 +94,8 @@ icon: material/paw
 !!! info "统计说明"
 
     数字为写作时实测值（`--list` 输出），实际数量随版本迭代持续增长。
+    “注册 ID”只表示统一构建接口可识别的配置；多个 ID 可能共享通用基线，
+    未经审计的实现统一标记为 `unreviewed`，不能据此推断论文机制完整。
     没有独立 `scripts/` CLI 的子系统（Gaussian Splatting / Prompt Learning / New Directions）
     直接给出 `dlhub/` 包内 zoo 模块路径。
     此外还有 100+ 个 Research Direction 子领域（每个 10 族），
@@ -105,9 +107,9 @@ icon: material/paw
 
 所有 Zoo 遵循相同的设计模式：
 
-### 一文件一算法族
+### 一文件一注册族
 
-每个算法族（如 ResNet、ViT）对应一个独立 Python 文件，包含所有变体的构建逻辑。
+每个注册族通常对应一个独立 Python 文件，包含其变体构建逻辑；部分教学型注册族会共享轻量基线。文件名和注册名用于定位实现，不构成论文级复现承诺，差异见[保真度审计](fidelity.md)。
 
 ```text
 dlhub/
@@ -144,7 +146,7 @@ model = build_local_model("dl:resnet50", in_channels=3, num_classes=10)
 
 === "`--list`"
 
-    列出所有可用架构 ID。
+    列出所有可用注册 ID。
 
     ```bash
     python scripts/vision_zoo.py --list
@@ -152,7 +154,7 @@ model = build_local_model("dl:resnet50", in_channels=3, num_classes=10)
 
 === "`--search`"
 
-    模糊搜索架构 ID。
+    模糊搜索注册 ID。
 
     ```bash
     python scripts/vision_zoo.py --list --search resnet
@@ -172,6 +174,7 @@ model = build_local_model("dl:resnet50", in_channels=3, num_classes=10)
 
 | 页面 | 说明 |
 |:-----|:----|
+| [保真度审计](fidelity.md) | 已审计实现的机制对齐等级、证据与下一步 |
 | [Vision Zoo](vision-zoo.md) | CNN、Transformer、MLP、Hybrid 等视觉主干及 8 个下游子系统 |
 | [NLP Zoo](nlp-zoo.md) | Transformer、RNN、CNN、MLP 等文本编码器 |
 | [Point Cloud Zoo](pointcloud-zoo.md) | 点云主干及 3D Detection / Segmentation / Tracking |

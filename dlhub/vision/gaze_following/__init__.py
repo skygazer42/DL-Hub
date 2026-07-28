@@ -1,4 +1,4 @@
-"""gaze following models (toy-first, pure torch)."""
+"""gaze following models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,10 +1,10 @@
-"""Zooming without Zooming / Region-to-Image Distillation (toy-first) for FGVC.
+"""Zooming without Zooming / Region-to-Image Distillation (compact-first) for FGVC.
 
 Reference:
 - "Zooming without Zooming: Region-to-Image Distillation for Fine-Grained Multimodal Perception"
   (arXiv 2026): https://arxiv.org/abs/2602.11858
 
-Toy interpretation:
+Compact interpretation:
 - Build a single-image classifier that also produces a "region" embedding by selecting top-k patch tokens.
 - Expose a distillation loss term (region -> image) so training can mimic the paper's idea without
   requiring any external VLM or crop-based tool use.

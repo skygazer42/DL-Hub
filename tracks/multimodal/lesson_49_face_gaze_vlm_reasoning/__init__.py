@@ -1,12 +1,12 @@
-from .data import DataConfig, ToyFaceGazeReasoningDataset, Vocab, get_dataloaders
-from .model import FaceGazeReasoningConfig, ToyFaceGazeReasoningModel, face_gaze_loss, gaze_l1
+from .data import DataConfig, SyntheticFaceGazeReasoningDataset, Vocab, get_dataloaders
+from .model import FaceGazeReasoningConfig, CompactFaceGazeReasoningModel, face_gaze_loss, gaze_l1
 from .train import TrainConfig, run_training
 
 __all__ = [
     "DataConfig",
     "FaceGazeReasoningConfig",
-    "ToyFaceGazeReasoningDataset",
-    "ToyFaceGazeReasoningModel",
+    "SyntheticFaceGazeReasoningDataset",
+    "CompactFaceGazeReasoningModel",
     "TrainConfig",
     "Vocab",
     "face_gaze_loss",

@@ -1,7 +1,7 @@
 # 行人检测 Presets（Detection Zoo）设计说明
 
 **日期**：2026-03-10  
-**范围**：DL-Hub / `dlhub.vision.detection_zoo`（本地模型 zoo，纯 torch，toy-first）
+**范围**：DL-Hub / `dlhub.vision.detection_zoo`（本地模型 zoo，纯 torch，compact-first）
 
 ## 背景
 
@@ -24,7 +24,7 @@
 
 - 不实现传统行人检测（HOG+SVM / ACF / DPM / Haar 等）。
 - 不做真实数据集训练、评测、mAP 计算或后处理（NMS/解码/匹配）。
-- 不保证与原论文/官方实现一致；遵循仓库“toy-first”定位。
+- 不保证与原论文/官方实现一致；遵循仓库“compact-first”定位。
 
 ## 方案选择
 

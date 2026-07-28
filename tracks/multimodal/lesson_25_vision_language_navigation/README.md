@@ -1,4 +1,4 @@
-# Lesson 25: Toy Vision-Language Navigation
+# Lesson 25: Compact Vision-Language Navigation
 
 This lesson introduces a compact vision-language navigation (VLN) setup in a tiny grid world.
 

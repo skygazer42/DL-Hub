@@ -3,15 +3,15 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_diffusion_subject_driven_generation_data_and_model_contract() -> None:
-    from tracks.generative.lesson_28_toy_diffusion_subject_driven_generation.data import (
+def test_compact_diffusion_subject_driven_generation_data_and_model_contract() -> None:
+    from tracks.generative.lesson_28_compact_diffusion_subject_driven_generation.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.generative.lesson_28_toy_diffusion_subject_driven_generation.model import (
+    from tracks.generative.lesson_28_compact_diffusion_subject_driven_generation.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToySubjectDrivenDiffusionModel,
+        CompactSubjectDrivenDiffusionModel,
         q_sample,
     )
 
@@ -33,7 +33,7 @@ def test_toy_diffusion_subject_driven_generation_data_and_model_contract() -> No
 
     cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=16, time_embed_dim=16)
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToySubjectDrivenDiffusionModel(cfg)
+    model = CompactSubjectDrivenDiffusionModel(cfg)
 
     noise = torch.randn_like(target)
     timesteps = torch.randint(low=0, high=schedule.num_steps, size=(6,), dtype=torch.long)
@@ -53,15 +53,15 @@ def test_toy_diffusion_subject_driven_generation_data_and_model_contract() -> No
     assert torch.all(sampled <= 1.0)
 
 
-def test_toy_diffusion_subject_driven_generation_training_smoke(
+def test_compact_diffusion_subject_driven_generation_training_smoke(
     tmp_path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.generative.lesson_28_toy_diffusion_subject_driven_generation.data import DataConfig
-    from tracks.generative.lesson_28_toy_diffusion_subject_driven_generation.model import (
+    from tracks.generative.lesson_28_compact_diffusion_subject_driven_generation.data import DataConfig
+    from tracks.generative.lesson_28_compact_diffusion_subject_driven_generation.model import (
         DiffusionSchedule,
         ModelConfig,
     )
-    from tracks.generative.lesson_28_toy_diffusion_subject_driven_generation.train import (
+    from tracks.generative.lesson_28_compact_diffusion_subject_driven_generation.train import (
         TrainConfig,
         run_training,
     )
@@ -87,7 +87,7 @@ def test_toy_diffusion_subject_driven_generation_training_smoke(
     run_dir = (
         tmp_path
         / "generative"
-        / "lesson_28_toy_diffusion_subject_driven_generation"
+        / "lesson_28_compact_diffusion_subject_driven_generation"
         / "pytest_subject_driven_generation_smoke"
     )
     assert (run_dir / "config.json").is_file()

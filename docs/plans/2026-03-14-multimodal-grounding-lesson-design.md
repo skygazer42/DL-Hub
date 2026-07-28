@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_04_grounding_toy_refexp` as an independent teaching lesson for single-target referring expression grounding with grid-cell localization plus box decoding.
+**Goal:** Add `tracks/multimodal/lesson_04_grounding_compact_refexp` as an independent teaching lesson for single-target referring expression grounding with grid-cell localization plus box decoding.
 
 ## Problem
 
@@ -18,7 +18,7 @@ What is still missing is a region-aware multimodal lesson that shows how languag
 
 This lesson adds one full runnable module:
 
-- `tracks/multimodal/lesson_04_grounding_toy_refexp/`
+- `tracks/multimodal/lesson_04_grounding_compact_refexp/`
 - focused tests for discovery, batch contract, model outputs, and smoke training
 - an update to `tracks/multimodal/README.md` so lesson 4 appears in the progression
 
@@ -136,14 +136,14 @@ Metrics:
 - `bbox_l1`
 - `center_acc`
 
-`center_acc` should check whether the predicted box center falls inside the GT box. This is a simple, interpretable toy grounding metric.
+`center_acc` should check whether the predicted box center falls inside the GT box. This is a simple, interpretable compact grounding metric.
 
 ## Training Script
 
 The lesson should follow the same conventions as the existing multimodal lessons:
 
 - CLI args for dataset size, image size, grid size, and batch caps
-- output directory under `outputs/multimodal/lesson_04_grounding_toy_refexp/<run_name>/`
+- output directory under `outputs/multimodal/lesson_04_grounding_compact_refexp/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 The sample logger should write:
@@ -179,7 +179,7 @@ Focused tests should cover:
 
 Lesson 4 is complete when:
 
-- `lesson_04_grounding_toy_refexp` is discoverable through `scripts/run_lesson.py`
+- `lesson_04_grounding_compact_refexp` is discoverable through `scripts/run_lesson.py`
 - it runs as a module on CPU
 - it contains an independent teaching implementation
 - focused tests for discovery, batch contract, model outputs, and smoke training pass

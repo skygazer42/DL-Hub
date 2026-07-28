@@ -46,7 +46,7 @@ class FaceLandmarkReasoningConfig:
     vision_width: int = 32
 
 
-class ToyFaceLandmarkReasoningModel(nn.Module):
+class CompactFaceLandmarkReasoningModel(nn.Module):
     def __init__(self, cfg: FaceLandmarkReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -82,7 +82,7 @@ def face_landmark_loss(pred_point: torch.Tensor, target_point: torch.Tensor) -> 
 
 __all__ = [
     "FaceLandmarkReasoningConfig",
-    "ToyFaceLandmarkReasoningModel",
+    "CompactFaceLandmarkReasoningModel",
     "face_landmark_distance",
     "face_landmark_loss",
 ]

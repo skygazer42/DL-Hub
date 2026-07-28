@@ -54,7 +54,7 @@ class ModelConfig:
     init_temperature: float = 0.07
 
 
-class ToyPersonSearchModel(nn.Module):
+class CompactPersonSearchModel(nn.Module):
     def __init__(self, cfg: ModelConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -129,7 +129,7 @@ __all__ = [
     "ModelConfig",
     "TextEncoder",
     "TinyVisionEncoder",
-    "ToyPersonSearchModel",
+    "CompactPersonSearchModel",
     "person_search_loss",
     "recall_at_k",
     "retrieval_accuracy",

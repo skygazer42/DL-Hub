@@ -1,4 +1,4 @@
-"""homography estimation models (toy-first, pure torch)."""
+"""homography estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

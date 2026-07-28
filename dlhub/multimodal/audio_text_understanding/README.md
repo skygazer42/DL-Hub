@@ -1,6 +1,6 @@
 # Audio-text understanding
 
-Toy-first local families for `audio_text_understanding`.
+Compact-first local families for `audio_text_understanding`.
 
 ## Families
 

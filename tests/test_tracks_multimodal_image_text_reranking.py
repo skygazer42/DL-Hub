@@ -44,7 +44,7 @@ def test_multimodal_image_text_reranking_model_outputs() -> None:
     from tracks.multimodal.lesson_26_image_text_reranking.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_26_image_text_reranking.model import (
         ImageTextRerankerConfig,
-        ToyImageTextReranker,
+        CompactImageTextReranker,
         reranking_accuracy,
         reranking_loss,
     )
@@ -62,7 +62,7 @@ def test_multimodal_image_text_reranking_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyImageTextReranker(
+    model = CompactImageTextReranker(
         ImageTextRerankerConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

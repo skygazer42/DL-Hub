@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nch
 
 
 class DETRMask(nn.Module):
-    """DETR-style instance segmentation with masks (toy-first).
+    """DETR-style instance segmentation with masks (compact-first).
 
     Encoder over tokens + query cross-attn; predicts class/box and mask logits.
     """

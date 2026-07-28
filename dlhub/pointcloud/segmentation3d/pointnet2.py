@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointNet2Seg(nn.Module):
-    """PointNet++ semantic segmentation (toy): SA+FP hierarchy."""
+    """PointNet++ semantic segmentation (compact): SA+FP hierarchy."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, dropout: float = 0.0

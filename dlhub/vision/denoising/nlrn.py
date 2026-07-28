@@ -17,7 +17,7 @@ class _ResBlock(nn.Module):
 
 
 class NonLocalBlock(nn.Module):
-    """Non-local block (self-attention over spatial positions), toy-first."""
+    """Non-local block (self-attention over spatial positions), compact-first."""
 
     def __init__(self, channels: int, *, inter_channels: int | None = None) -> None:
         super().__init__()
@@ -53,7 +53,7 @@ class NonLocalBlock(nn.Module):
 
 
 class NLRN(nn.Module):
-    """NLRN (Non-Local Recurrent Network) style denoiser (toy-first).
+    """NLRN (Non-Local Recurrent Network) style denoiser (compact-first).
 
     Applies a recurrent unit composed of residual conv + non-local block several times.
     Predicts a residual/noise map and returns `x - residual`.

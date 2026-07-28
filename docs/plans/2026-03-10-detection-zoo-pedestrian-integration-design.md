@@ -50,7 +50,7 @@ Define a minimal differentiable scalar:
 - For tensor outputs: mean of float32 cast
 - For dict/list/tuple outputs: sum of scalar means recursively
 
-This matches the repo’s existing “toy smoke” convention.
+This matches the repo’s existing “compact smoke” convention.
 
 ## Testing
 

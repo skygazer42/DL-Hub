@@ -7,10 +7,10 @@ from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_h
 
 
 class DeformableDETRDetector(nn.Module):
-    """Deformable DETR *style* (toy).
+    """Deformable DETR *style* (compact).
 
     Real Deformable DETR uses sparse sampling attention; here we approximate with
-    multi-scale memory concatenation while keeping pure-torch and toy-first.
+    multi-scale memory concatenation while keeping pure-torch and compact-first.
     """
 
     def __init__(

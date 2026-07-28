@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class Sam3DInst(nn.Module):
-    """Sam3DInst (toy): transformer point encoder + query mask head."""
+    """Sam3DInst (compact): transformer point encoder + query mask head."""
 
     def __init__(
         self,

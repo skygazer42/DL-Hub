@@ -4,13 +4,13 @@ torch = pytest.importorskip("torch")
 
 
 def test_gnn_pinsage_encode_and_loss_smoke() -> None:
-    from tracks.gnn.lesson_10_pinsage_toy_recommender.data import (
+    from tracks.gnn.lesson_10_pinsage_compact_recommender.data import (
         DataConfig,
-        build_toy_recommender_data,
+        build_baseline_recommender_data,
     )
-    from tracks.gnn.lesson_10_pinsage_toy_recommender.model import ModelConfig, PinSAGEItemEncoder
+    from tracks.gnn.lesson_10_pinsage_compact_recommender.model import ModelConfig, PinSAGEItemEncoder
 
-    data = build_toy_recommender_data(
+    data = build_baseline_recommender_data(
         DataConfig(
             num_users=32,
             num_items=64,

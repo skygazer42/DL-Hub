@@ -115,7 +115,7 @@ class TinyEmbodiedQAModel(nn.Module):
         }
 
 
-def build_toy_eqa(
+def build_baseline_eqa(
     *,
     family: str,
     mode: str,

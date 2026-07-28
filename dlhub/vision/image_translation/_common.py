@@ -67,7 +67,7 @@ class TinyImageTranslator(nn.Module):
         return {"translated": translated, "residual": translated - image}
 
 
-def build_toy_translator(
+def build_baseline_translator(
     *,
     family: str,
     mode: str,

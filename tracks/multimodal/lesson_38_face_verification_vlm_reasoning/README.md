@@ -1,6 +1,6 @@
 # Lesson 38: Face Verification VLM Reasoning
 
-This lesson builds a toy multimodal verifier that compares two synthetic face crops and a short
+This lesson builds a compact multimodal verifier that compares two synthetic face crops and a short
 query prompt, then predicts whether both faces belong to the same identity.
 
 ## What It Teaches

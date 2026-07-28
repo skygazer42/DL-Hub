@@ -1,6 +1,6 @@
 # Open Vocabulary Detection
 
-Toy-first local families for `open-vocabulary detection`.
+Compact-first local families for `open-vocabulary detection`.
 
 ## Families
 

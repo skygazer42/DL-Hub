@@ -7,14 +7,14 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_scene_flow_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_25_toy_scene_flow_estimation.data import (
+    from tracks.pointcloud.lesson_25_compact_scene_flow_estimation.data import (
         DataConfig,
-        ToySceneFlowDataset,
+        SyntheticSceneFlowDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_25_toy_scene_flow_estimation.model import (
+    from tracks.pointcloud.lesson_25_compact_scene_flow_estimation.model import (
         ModelConfig,
-        ToySceneFlowEstimator,
+        CompactSceneFlowEstimator,
         scene_flow_loss,
     )
 
@@ -28,7 +28,7 @@ def test_pointcloud_scene_flow_batch_contract_and_loss_smoke() -> None:
         translation_scale=0.35,
     )
 
-    ds = ToySceneFlowDataset(cfg)
+    ds = SyntheticSceneFlowDataset(cfg)
     source, target, flow = ds[0]
     assert tuple(source.shape) == (48, 3)
     assert tuple(target.shape) == (48, 3)
@@ -44,7 +44,7 @@ def test_pointcloud_scene_flow_batch_contract_and_loss_smoke() -> None:
     assert tuple(target_batch.shape) == (4, 48, 3)
     assert tuple(flow_batch.shape) == (4, 48, 3)
 
-    model = ToySceneFlowEstimator(ModelConfig(hidden_features=32))
+    model = CompactSceneFlowEstimator(ModelConfig(hidden_features=32))
     pred_flow = model(source_batch, target_batch)
     assert tuple(pred_flow.shape) == (4, 48, 3)
 
@@ -59,11 +59,11 @@ def test_pointcloud_scene_flow_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_scene_flow_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_25_toy_scene_flow_estimation.data import DataConfig
-    from tracks.pointcloud.lesson_25_toy_scene_flow_estimation.model import (
+    from tracks.pointcloud.lesson_25_compact_scene_flow_estimation.data import DataConfig
+    from tracks.pointcloud.lesson_25_compact_scene_flow_estimation.model import (
         ModelConfig,
     )
-    from tracks.pointcloud.lesson_25_toy_scene_flow_estimation.train import (
+    from tracks.pointcloud.lesson_25_compact_scene_flow_estimation.train import (
         TrainConfig,
         run_training,
     )
@@ -94,7 +94,7 @@ def test_pointcloud_scene_flow_training_smoke(
 
     assert exit_code == 0
 
-    run_dir = tmp_path / "pointcloud" / "lesson_25_toy_scene_flow_estimation" / "pytest_scene_flow_smoke"
+    run_dir = tmp_path / "pointcloud" / "lesson_25_compact_scene_flow_estimation" / "pytest_scene_flow_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "logs" / "train.log").is_file()

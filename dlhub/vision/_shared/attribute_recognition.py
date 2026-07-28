@@ -26,7 +26,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyAttributeRecognizer(nn.Module):
+class CompactAttributeRecognizer(nn.Module):
     def __init__(
         self, *, family: str, in_channels: int, num_attributes: int, width: int, depth: int
     ):
@@ -42,7 +42,7 @@ class ToyAttributeRecognizer(nn.Module):
         return {"attribute_logits": logits}
 
 
-def build_toy_attr(
+def build_baseline_attr(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -53,7 +53,7 @@ def build_toy_attr(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyAttributeRecognizer(
+    return CompactAttributeRecognizer(
         family=str(family),
         in_channels=int(in_channels),
         num_attributes=int(num_attributes),

@@ -1,6 +1,6 @@
-# Lesson 20 — PointCloud 自监督：I-JEPA（toy-first）
+# Lesson 20 — PointCloud 自监督：I-JEPA（compact-first）
 
-目标：在点云上跑通一个 **I-JEPA-style** 的最小闭环（toy 版本）：
+目标：在点云上跑通一个 **I-JEPA-style** 的最小闭环（compact 版本）：
 
 - Student：带 mask token 的 patch transformer + predictor
 - Teacher：无 mask 的 patch transformer（EMA 更新）

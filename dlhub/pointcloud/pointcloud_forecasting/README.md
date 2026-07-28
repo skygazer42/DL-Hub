@@ -1,6 +1,6 @@
 # Point cloud forecasting
 
-Toy-first local families for `pointcloud forecasting`.
+Compact-first local families for `pointcloud forecasting`.
 
 ## Families
 

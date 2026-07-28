@@ -76,7 +76,7 @@ class TinyFacePoseEstimator(nn.Module):
         }
 
 
-def build_toy_face_pose_estimator(
+def build_baseline_face_pose_estimator(
     *,
     family: str,
     mode: str,

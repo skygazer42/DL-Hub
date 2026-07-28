@@ -13,7 +13,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class QueryInstPanoptic(nn.Module):
-    """QueryInst-style panoptic segmentation (toy-first).
+    """QueryInst-style panoptic segmentation (compact-first).
 
     Learned queries with cross-attention over a feature map; masks via prototypes; plus a semantic head.
     """

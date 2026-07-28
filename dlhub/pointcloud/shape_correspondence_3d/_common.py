@@ -52,7 +52,7 @@ class TinyShapeCorrespondenceModel(nn.Module):
         return {"scores": scores, "matches": scores.argmax(dim=-1)}
 
 
-def build_toy_shape_correspondence_model(
+def build_baseline_shape_correspondence_model(
     *,
     family: str,
     mode: str,

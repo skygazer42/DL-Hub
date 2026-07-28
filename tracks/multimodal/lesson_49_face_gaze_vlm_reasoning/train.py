@@ -14,7 +14,7 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import DataConfig, get_dataloaders
-from .model import FaceGazeReasoningConfig, ToyFaceGazeReasoningModel, face_gaze_loss, gaze_l1
+from .model import FaceGazeReasoningConfig, CompactFaceGazeReasoningModel, face_gaze_loss, gaze_l1
 
 
 @dataclass(frozen=True)
@@ -34,7 +34,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 49 (Multimodal): toy face gaze VLM reasoning."
+        description="Lesson 49 (Multimodal): compact face gaze VLM reasoning."
     )
     parser.add_argument("--num-samples", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=16)
@@ -91,7 +91,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyFaceGazeReasoningModel,
+    model: CompactFaceGazeReasoningModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -128,7 +128,7 @@ def _run_epoch(
 
 
 @torch.no_grad()
-def _collect_sample_predictions(model: ToyFaceGazeReasoningModel, loader, device: torch.device) -> list[dict[str, object]]:
+def _collect_sample_predictions(model: CompactFaceGazeReasoningModel, loader, device: torch.device) -> list[dict[str, object]]:
     model.eval()
     batch = next(iter(loader))
     moved = _move_batch(batch, device)
@@ -159,7 +159,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyFaceGazeReasoningModel(
+    model = CompactFaceGazeReasoningModel(
         FaceGazeReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

@@ -49,7 +49,7 @@ class MultimodalReasoningConfig:
     vision_width: int = 32
 
 
-class ToyMultimodalReasoningModel(nn.Module):
+class CompactMultimodalReasoningModel(nn.Module):
     def __init__(self, cfg: MultimodalReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -94,7 +94,7 @@ def classification_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float
 
 __all__ = [
     "MultimodalReasoningConfig",
-    "ToyMultimodalReasoningModel",
+    "CompactMultimodalReasoningModel",
     "classification_accuracy",
     "reasoning_loss",
 ]

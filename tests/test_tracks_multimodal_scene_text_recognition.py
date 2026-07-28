@@ -50,7 +50,7 @@ def test_multimodal_scene_text_recognition_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_27_scene_text_vlm_recognition.model import (
         SceneTextRecognizerConfig,
-        ToySceneTextRecognizer,
+        CompactSceneTextRecognizer,
         recognition_accuracy,
         recognition_loss,
     )
@@ -67,7 +67,7 @@ def test_multimodal_scene_text_recognition_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToySceneTextRecognizer(
+    model = CompactSceneTextRecognizer(
         SceneTextRecognizerConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_eqa, smoke_test_eqa
+from ._common import build_baseline_eqa, smoke_test_eqa
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "mapqa_embodied_tiny": {"width": 24, "depth": 1},
@@ -19,7 +19,7 @@ def build_mapqa_embodied_embodied_qa_model(
     question_dim: int = 32,
     num_answers: int = 8,
 ) -> nn.Module:
-    return build_toy_eqa(
+    return build_baseline_eqa(
         family="mapqa_embodied",
         mode="mapqa",
         variants=_VARIANTS,

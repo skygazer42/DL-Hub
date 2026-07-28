@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_pedestrian_detector, smoke_test_pedestrian_detector
+from ._common import build_baseline_pedestrian_detector, smoke_test_pedestrian_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_fcos_pedestrian_pedestrian_detector(
     variant: str = "fcos_pedestrian_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_pedestrian_detector(
+    return build_baseline_pedestrian_detector(
         family="fcos_pedestrian",
         mode="fcos",
         variants=_VARIANTS,

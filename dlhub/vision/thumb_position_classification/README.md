@@ -1,6 +1,6 @@
 # Thumb Position Classification
 
-Toy-first local families for `thumb position classification`.
+Compact-first local families for `thumb position classification`.
 
 ## Families
 

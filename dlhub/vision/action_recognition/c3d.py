@@ -1,9 +1,9 @@
-"""C3D (3D CNN) - toy-first video action classifier.
+"""C3D (3D CNN) - compact-first video action classifier.
 
 Reference (classic baseline):
 - "Learning Spatiotemporal Features with 3D Convolutional Networks" (ICCV 2015)
 
-Toy interpretation:
+Compact interpretation:
 - A small 3D ConvNet with a few stages and global average pooling.
 """
 

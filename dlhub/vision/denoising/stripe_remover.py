@@ -40,7 +40,7 @@ def _smooth_w(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
 
 
 class StripeRemover(nn.Module):
-    """A simple stripe remover for sinusoidal banding (torch-only, toy-first).
+    """A simple stripe remover for sinusoidal banding (torch-only, compact-first).
 
     Idea:
     - Stripe noise is often approximately constant along one axis.

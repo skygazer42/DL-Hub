@@ -22,7 +22,7 @@ class DataConfig:
 
 
 class SyntheticPanopticSegmentationDataset:
-    """Toy panoptic dataset with stuff regions + fixed-count rectangular thing instances."""
+    """Synthetic panoptic dataset with stuff regions + fixed-count rectangular thing instances."""
 
     def __init__(self, cfg: DataConfig) -> None:
         if int(cfg.image_size) < 32:

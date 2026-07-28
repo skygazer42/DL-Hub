@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 6 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with paper-shaped implementations for ScienceQA, Dolly, and GPT4All, covering multimodal CoT question answering, human-generated instruction finetuning, and large-scale distilled assistant training.
 
 **Architecture:** Implement `ScienceQA` as a multimodal QA wrapper with rationale-aware prompt formatting and answer scoring rather than a full benchmark dataset dump. Implement `Dolly` as a Pythia-based instruction-following wrapper with the paper’s prompt sections and human-generated `dolly-15k` metadata. Implement `GPT4All` as a distilled assistant-training wrapper over a LLaMA-like backbone, exposing data curation metadata, LoRA-style finetuning strategy, and CPU-friendly quantization metadata.

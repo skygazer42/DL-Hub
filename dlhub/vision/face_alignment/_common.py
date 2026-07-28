@@ -11,7 +11,7 @@ def check_nchw(x):
     return x
 
 
-class ToyFaceAligner(nn.Module):
+class CompactFaceAligner(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, num_points: int):
         super().__init__()
         self.family = str(family)
@@ -30,7 +30,7 @@ class ToyFaceAligner(nn.Module):
         return {"landmarks": landmarks}
 
 
-def build_toy_aligner(
+def build_baseline_aligner(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -41,7 +41,7 @@ def build_toy_aligner(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyFaceAligner(
+    return CompactFaceAligner(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

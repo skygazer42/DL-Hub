@@ -1,4 +1,4 @@
-"""Human-object interaction detection models (toy-first, pure torch)."""
+"""Human-object interaction detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

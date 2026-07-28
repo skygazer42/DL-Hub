@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_editor, smoke_test_editor
+from ._common import build_baseline_editor, smoke_test_editor
 
 _VARIANTS = {
     "paint_by_example_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_paint_by_example_editor(
     *, in_channels: int, variant: str = "paint_by_example_small", width_mult: float = 1.0
 ):
-    return build_toy_editor(
+    return build_baseline_editor(
         family="paint_by_example",
         variants=_VARIANTS,
         in_channels=int(in_channels),

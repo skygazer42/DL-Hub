@@ -13,7 +13,7 @@ def _check_obs(obs: torch.Tensor) -> torch.Tensor:
     return obs
 
 
-class ToyWorldModel(nn.Module):
+class CompactWorldModel(nn.Module):
     def __init__(
         self,
         *,
@@ -101,7 +101,7 @@ class ToyWorldModel(nn.Module):
         }
 
 
-def build_toy_world_model(
+def build_baseline_world_model(
     *,
     family: str,
     mode: str,
@@ -114,7 +114,7 @@ def build_toy_world_model(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyWorldModel(
+    return CompactWorldModel(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),
@@ -133,4 +133,4 @@ def smoke_test_world_model(builder: Callable[..., nn.Module], variant: str) -> N
     print(variant, shapes)
 
 
-__all__ = ["ToyWorldModel", "build_toy_world_model", "smoke_test_world_model"]
+__all__ = ["CompactWorldModel", "build_baseline_world_model", "smoke_test_world_model"]

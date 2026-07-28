@@ -51,11 +51,11 @@ class _AxialBlock(nn.Module):
 
 
 class AxialDeepLabPanoptic(nn.Module):
-    """Axial-DeepLab style panoptic segmentation (toy-first).
+    """Axial-DeepLab style panoptic segmentation (compact-first).
 
     Uses axial attention blocks on a low-resolution feature map and predicts:
     - semantic logits
-    - instance masks via prototypes (toy convenience)
+    - instance masks via prototypes (compact convenience)
     """
 
     def __init__(
@@ -110,7 +110,7 @@ class AxialDeepLabPanoptic(nn.Module):
             nn.Conv2d(dm, nt + ns, kernel_size=1, bias=True),
         )
 
-        # Toy instance masks from /8 features.
+        # Compact instance masks from /8 features.
         self.inst_proj = ConvBNAct(
             int(c3_channels), dm, kernel_size=1, stride=1, padding=0, act="relu"
         )

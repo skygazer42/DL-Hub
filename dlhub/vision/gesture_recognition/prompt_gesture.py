@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_classifier, smoke_test_hand_classifier
+from ._common import build_baseline_hand_classifier, smoke_test_hand_classifier
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_prompt_gesture_gesture_recognizer(
     variant: str = "prompt_gesture_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_classifier(
+    return build_baseline_hand_classifier(
         family="prompt_gesture",
         mode="prompt",
         variants=_VARIANTS,

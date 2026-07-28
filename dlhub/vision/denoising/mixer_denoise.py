@@ -8,7 +8,7 @@ class MixerDnCNN(nn.Module):
     Notes:
     - The core MixerDnCNN predicts the noise/residual. A wrapper `MixerDnCNNDenoiser` converts it
       to a denoised image by subtracting the predicted residual from the input.
-    - This implementation is small and training-friendly for toy datasets.
+    - This implementation is small and training-friendly for synthetic datasets.
     """
 
     def __init__(
@@ -62,7 +62,7 @@ class MixerDnCNNDenoiser(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    # Canonical-ish depths (toy-friendly: keep features modest).
+    # Canonical-ish depths (compact-friendly: keep features modest).
     "mixer_denoise_9": {"features": 48, "depth": 9, "use_bn": True},
     "mixer_denoise_17": {"features": 64, "depth": 17, "use_bn": True},
     "mixer_denoise_20": {"features": 64, "depth": 20, "use_bn": True},

@@ -46,7 +46,7 @@ class PalmOrientationReasoningConfig:
     vision_width: int = 40
 
 
-class ToyPalmOrientationReasoningModel(nn.Module):
+class CompactPalmOrientationReasoningModel(nn.Module):
     def __init__(self, cfg: PalmOrientationReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -82,7 +82,7 @@ def compute_mae(prediction: torch.Tensor, target: torch.Tensor) -> float:
 
 __all__ = [
     "PalmOrientationReasoningConfig",
-    "ToyPalmOrientationReasoningModel",
+    "CompactPalmOrientationReasoningModel",
     "compute_mae",
     "palm_orientation_loss",
 ]

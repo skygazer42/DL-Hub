@@ -80,7 +80,7 @@ class ModelConfig:
     init_temperature: float = 0.07
 
 
-class ToyVideoTextRetrievalModel(nn.Module):
+class CompactVideoTextRetrievalModel(nn.Module):
     def __init__(self, cfg: ModelConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -172,7 +172,7 @@ __all__ = [
     "TemporalPoolingEncoder",
     "TextEncoder",
     "TinyFrameEncoder",
-    "ToyVideoTextRetrievalModel",
+    "CompactVideoTextRetrievalModel",
     "clip_contrastive_loss",
     "recall_at_k",
     "retrieval_accuracy",

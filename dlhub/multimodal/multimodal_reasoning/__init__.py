@@ -1,4 +1,4 @@
-"""Multimodal reasoning models (toy-first, pure torch)."""
+"""Multimodal reasoning models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

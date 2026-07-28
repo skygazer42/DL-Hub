@@ -218,12 +218,12 @@ def _bm3d_stage(
 
 
 class BM3D(nn.Module):
-    """A small, torch-only BM3D implementation (educational / toy-first).
+    """A small, torch-only BM3D implementation (educational / compact-first).
 
     Important:
     - This is a simplified BM3D: it implements the core block-matching + collaborative filtering idea
       with orthonormal DCTs. It is intended for small images (e.g., 32-128px) and CPU baselines.
-    - It is not optimized and uses Python loops (acceptable for lessons / toy datasets).
+    - It is not optimized and uses Python loops (acceptable for lessons / synthetic datasets).
     """
 
     def __init__(

@@ -82,7 +82,7 @@ class TinyDeepfakeDetector(nn.Module):
         }
 
 
-def build_toy_deepfake_detector(
+def build_baseline_deepfake_detector(
     *,
     family: str,
     mode: str,

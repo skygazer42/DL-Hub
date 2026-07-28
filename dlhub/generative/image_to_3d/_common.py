@@ -10,7 +10,7 @@ def check_nchw(image: torch.Tensor) -> torch.Tensor:
     return image
 
 
-class ToyImageTo3DGenerator(nn.Module):
+class CompactImageTo3DGenerator(nn.Module):
     def __init__(
         self,
         *,
@@ -47,7 +47,7 @@ class ToyImageTo3DGenerator(nn.Module):
         return {"triplanes": triplanes, "density": density, "mesh_tokens": mesh_tokens}
 
 
-def build_toy_image_to_3d_generator(
+def build_baseline_image_to_3d_generator(
     *,
     family: str,
     mode: str,
@@ -58,7 +58,7 @@ def build_toy_image_to_3d_generator(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyImageTo3DGenerator(
+    return CompactImageTo3DGenerator(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),

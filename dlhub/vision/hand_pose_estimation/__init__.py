@@ -1,4 +1,4 @@
-"""hand pose estimation models (toy-first, pure torch)."""
+"""hand pose estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_hoi_detector, smoke_test_hoi
+from ._common import build_baseline_hoi_detector, smoke_test_hoi
 
 _VARIANTS = {
     "idn_hoi_tiny": {"width": 24, "depth": 1},
@@ -17,7 +17,7 @@ def build_idn_hoi_hoi_detector(
     width_mult: float = 1.0,
     num_queries: int = 16,
 ):
-    return build_toy_hoi_detector(
+    return build_baseline_hoi_detector(
         family="idn_hoi",
         variants=_VARIANTS,
         in_channels=int(in_channels),

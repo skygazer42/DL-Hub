@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class MaskRCNN3D(nn.Module):
-    """Mask R-CNN 3D (toy): PointNet++ features + center proposals + ROI refinement."""
+    """Mask R-CNN 3D (compact): PointNet++ features + center proposals + ROI refinement."""
 
     def __init__(
         self,

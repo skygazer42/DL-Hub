@@ -1,9 +1,9 @@
-"""2S-AGCN (Adaptive Graph Convolutional Network) - toy-first skeleton action classifier.
+"""2S-AGCN (Adaptive Graph Convolutional Network) - compact-first skeleton action classifier.
 
 Reference (idea):
 - "Two-Stream Adaptive Graph Convolutional Networks for Skeleton-Based Action Recognition" (CVPR 2019)
 
-Toy interpretation:
+Compact interpretation:
 - Start from a fixed adjacency (ring + self loops).
 - Learn an additive adjacency bias, softmax-normalized per row.
 - Use two simple streams (A and A^T) and sum their outputs.

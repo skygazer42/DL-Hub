@@ -4,7 +4,7 @@ from torch import nn
 
 
 class MedianFilter(nn.Module):
-    """Median filter baseline (torch-only, toy-first).
+    """Median filter baseline (torch-only, compact-first).
 
     This is a simple non-learnable denoiser that can be useful for impulse noise.
     """

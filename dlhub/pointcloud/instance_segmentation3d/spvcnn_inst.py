@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SPVCNNInst(nn.Module):
-    """SPVCNN instance segmentation (toy): point-voxel fusion + query mask head."""
+    """SPVCNN instance segmentation (compact): point-voxel fusion + query mask head."""
 
     def __init__(
         self,

@@ -6,7 +6,7 @@ description: 从 PointNet 到 30+ Backbone Zoo — 3D 点云分类、分割与�
 # 点云赛道
 
 !!! abstract "赛道概览"
-    **36 个 Lesson**（4 个核心 + 32 个进阶） · 预计 3-4 周 · PointNet、DGCNN、PointNet++ 与 64 架构 Zoo
+    **36 个 Lesson**（4 个核心 + 32 个进阶） · 预计 3-4 周 · PointNet、DGCNN、PointNet++ 与 64 注册 ID Zoo
 
     Point Cloud 赛道从最经典的 PointNet 出发，逐步引入图卷积（DGCNN）和层级采样（PointNet++），并通过 30+ Backbone Zoo 统一对比各类 3D 点云架构。进阶内容涵盖部件分割、点云重建、15 种自监督预训练方法，以及补全、场景流、3D 检测/分割/跟踪、开放词表理解、预测与异常检测等 3D 感知任务，共计 36 个 Lesson。
 
@@ -48,19 +48,19 @@ flowchart LR
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 01 | **PointNet 点云分类** | [`pointnet_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_01_pointnet_toy_classification/) | 点集排列不变性, T-Net |
-| 02 | **DGCNN 点云分类** | [`dgcnn_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_02_dgcnn_toy_classification/) | 动态图, EdgeConv |
-| 03 | **PointNet++ 点云分类** | [`pointnet2_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_03_pointnet2_toy_classification/) | 层级采样, Set Abstraction |
-| 04 | **30+ Backbone Zoo 对比** | [`pointcloud_zoo_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_04_pointcloud_zoo_toy_classification/) | 统一接口, Backbone 对比 |
+| 01 | **PointNet 点云分类** | [`pointnet_compact_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_01_pointnet_compact_classification/) | 点集排列不变性, T-Net |
+| 02 | **DGCNN 点云分类** | [`dgcnn_compact_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_02_dgcnn_compact_classification/) | 动态图, EdgeConv |
+| 03 | **PointNet++ 点云分类** | [`pointnet2_compact_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_03_pointnet2_compact_classification/) | 层级采样, Set Abstraction |
+| 04 | **30+ Backbone Zoo 对比** | [`pointcloud_zoo_compact_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_04_pointcloud_zoo_compact_classification/) | 统一接口, Backbone 对比 |
 
 ### 部件分割与重建（05-08）
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 05 | **PointNet 部件分割** | [`pointnet_toy_partseg`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_05_pointnet_toy_partseg/) | per-point 分割头, 部件标签, toy 点云 |
-| 06 | **DGCNN 部件分割** | [`dgcnn_toy_partseg`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_06_dgcnn_toy_partseg/) | EdgeConv 逐点特征, 部件分割 |
-| 07 | **PointNet 点云重建** | [`pointnet_toy_reconstruction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_07_pointnet_toy_reconstruction/) | AutoEncoder, Chamfer Distance |
-| 08 | **部件分割 Zoo 对比** | [`pointcloud_partseg_zoo_toy`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_08_pointcloud_partseg_zoo_toy/) | 统一分割接口, 多 Backbone 对比 |
+| 05 | **PointNet 部件分割** | [`pointnet_compact_partseg`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_05_pointnet_compact_partseg/) | per-point 分割头, 部件标签, compact 点云 |
+| 06 | **DGCNN 部件分割** | [`dgcnn_compact_partseg`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_06_dgcnn_compact_partseg/) | EdgeConv 逐点特征, 部件分割 |
+| 07 | **PointNet 点云重建** | [`pointnet_compact_reconstruction`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_07_pointnet_compact_reconstruction/) | AutoEncoder, Chamfer Distance |
+| 08 | **部件分割 Zoo 对比** | [`pointcloud_partseg_zoo_compact`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_08_pointcloud_partseg_zoo_compact/) | 统一分割接口, 多 Backbone 对比 |
 
 ### 自监督预训练（09-23）
 
@@ -86,19 +86,19 @@ flowchart LR
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 24 | **点云补全** | [`toy_pointcloud_completion`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_24_toy_pointcloud_completion/) | partial-to-complete 重建, Chamfer distance, PointNet AE |
-| 25 | **点云场景流** | [`toy_scene_flow_estimation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_25_toy_scene_flow_estimation/) | 双帧点云运动回归, per-point flow, 合成形变场 |
-| 26 | **Toy Gaussian Splatting** | [`toy_gaussian_splatting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_26_toy_gaussian_splatting/) | 点到高斯参数映射, 可微 splat 渲染, 图像监督 |
-| 27 | **3D 目标检测** | [`toy_3d_object_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_27_toy_3d_object_detection/) | 点云到 3D box 回归, 类别预测, 检测损失 |
-| 28 | **3D 语义分割** | [`toy_3d_semantic_segmentation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_28_toy_3d_semantic_segmentation/) | per-point 类别预测, PointNet 风格聚合, CE 监督 |
-| 29 | **3D 实例分割** | [`toy_3d_instance_segmentation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_29_toy_3d_instance_segmentation/) | 实例 ID 预测, 点级聚类监督, per-point logits |
-| 30 | **3D 目标跟踪** | [`toy_3d_object_tracking`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_30_toy_3d_object_tracking/) | 跨帧轨迹状态回归, 目标关联, 时序点云监督 |
-| 31 | **Open-Vocabulary 3D** | [`toy_open_vocabulary_3d`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_31_toy_open_vocabulary_3d/) | 文本条件 3D 识别/grounding, 对齐损失, 语言引导定位 |
-| 32 | **点云预测** | [`toy_pointcloud_forecasting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_32_toy_pointcloud_forecasting/) | 历史点云到未来轨迹预测, 时序建模, 多步回归 |
-| 33 | **点云异常检测** | [`toy_pointcloud_anomaly_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_33_toy_pointcloud_anomaly_detection/) | 重建残差 + 异常得分, 点级/全局监督, 异常判别 |
-| 34 | **点云上采样** | [`toy_pointcloud_upsampling`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_34_toy_pointcloud_upsampling/) | sparse-to-dense 点集恢复, 上采样倍率建模, Chamfer 监督 |
-| 35 | **三维形状对应** | [`toy_shape_correspondence_3d`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_35_toy_shape_correspondence_3d/) | source/target 对应学习, per-point matching, correspondence loss |
-| 36 | **点云配准** | [`toy_pointcloud_registration`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_36_toy_pointcloud_registration/) | source/target 刚体对齐, pose6d 回归, registration loss |
+| 24 | **点云补全** | [`compact_pointcloud_completion`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_24_compact_pointcloud_completion/) | partial-to-complete 重建, Chamfer distance, PointNet AE |
+| 25 | **点云场景流** | [`compact_scene_flow_estimation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_25_compact_scene_flow_estimation/) | 双帧点云运动回归, per-point flow, 合成形变场 |
+| 26 | **Compact Gaussian Splatting** | [`compact_gaussian_splatting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_26_compact_gaussian_splatting/) | 点到高斯参数映射, 可微 splat 渲染, 图像监督 |
+| 27 | **3D 目标检测** | [`compact_3d_object_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_27_compact_3d_object_detection/) | 点云到 3D box 回归, 类别预测, 检测损失 |
+| 28 | **3D 语义分割** | [`compact_3d_semantic_segmentation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_28_compact_3d_semantic_segmentation/) | per-point 类别预测, PointNet 风格聚合, CE 监督 |
+| 29 | **3D 实例分割** | [`compact_3d_instance_segmentation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_29_compact_3d_instance_segmentation/) | 实例 ID 预测, 点级聚类监督, per-point logits |
+| 30 | **3D 目标跟踪** | [`compact_3d_object_tracking`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_30_compact_3d_object_tracking/) | 跨帧轨迹状态回归, 目标关联, 时序点云监督 |
+| 31 | **Open-Vocabulary 3D** | [`compact_open_vocabulary_3d`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_31_compact_open_vocabulary_3d/) | 文本条件 3D 识别/grounding, 对齐损失, 语言引导定位 |
+| 32 | **点云预测** | [`compact_pointcloud_forecasting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_32_compact_pointcloud_forecasting/) | 历史点云到未来轨迹预测, 时序建模, 多步回归 |
+| 33 | **点云异常检测** | [`compact_pointcloud_anomaly_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_33_compact_pointcloud_anomaly_detection/) | 重建残差 + 异常得分, 点级/全局监督, 异常判别 |
+| 34 | **点云上采样** | [`compact_pointcloud_upsampling`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_34_compact_pointcloud_upsampling/) | sparse-to-dense 点集恢复, 上采样倍率建模, Chamfer 监督 |
+| 35 | **三维形状对应** | [`compact_shape_correspondence_3d`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_35_compact_shape_correspondence_3d/) | source/target 对应学习, per-point matching, correspondence loss |
+| 36 | **点云配准** | [`compact_pointcloud_registration`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/pointcloud/lesson_36_compact_pointcloud_registration/) | source/target 刚体对齐, pose6d 回归, registration loss |
 
 ---
 
@@ -117,24 +117,24 @@ flowchart LR
 === "Lesson 01 — PointNet"
 
     ```bash
-    python -m tracks.pointcloud.lesson_01_pointnet_toy_classification.train \
-      --dataset fake --epochs 1 \
+    python -m tracks.pointcloud.lesson_01_pointnet_compact_classification.train \
+      --epochs 1 \
       --max-train-batches 2 --max-eval-batches 2
     ```
 
 === "Lesson 02 — DGCNN"
 
     ```bash
-    python -m tracks.pointcloud.lesson_02_dgcnn_toy_classification.train \
-      --dataset fake --epochs 1 \
+    python -m tracks.pointcloud.lesson_02_dgcnn_compact_classification.train \
+      --epochs 1 \
       --max-train-batches 2 --max-eval-batches 2
     ```
 
 === "Lesson 03 — PointNet++"
 
     ```bash
-    python -m tracks.pointcloud.lesson_03_pointnet2_toy_classification.train \
-      --dataset fake --epochs 1 \
+    python -m tracks.pointcloud.lesson_03_pointnet2_compact_classification.train \
+      --epochs 1 \
       --max-train-batches 2 --max-eval-batches 2
     ```
 
@@ -142,24 +142,24 @@ flowchart LR
 
     ```bash
     # 使用 PointNet backbone
-    python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
-      --arch pointnet --dataset fake --epochs 1
+    python -m tracks.pointcloud.lesson_04_pointcloud_zoo_compact_classification.train \
+      --arch pointnet --epochs 1
 
     # 使用 DGCNN backbone
-    python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
-      --arch dgcnn --dataset fake --epochs 1
+    python -m tracks.pointcloud.lesson_04_pointcloud_zoo_compact_classification.train \
+      --arch dgcnn --epochs 1
 
     # 使用 PCT backbone
-    python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
-      --arch pct --dataset fake --epochs 1
+    python -m tracks.pointcloud.lesson_04_pointcloud_zoo_compact_classification.train \
+      --arch pct --epochs 1
     ```
 
 ---
 
 ## Point Cloud Backbone Zoo
 
-!!! note "64 架构可供切换"
-    Point Cloud Zoo 包含 **30 个算法族 / 64 个架构 ID**，涵盖点集模型、图模型、MLP 模型、Transformer 和卷积模型。
+!!! note "64 注册 ID 可供切换"
+    Point Cloud Zoo 包含 **30 个算法族 / 64 个注册 ID**，涵盖点集模型、图模型、MLP 模型、Transformer 和卷积模型。
 
 ```bash
 # 列出所有可用架构

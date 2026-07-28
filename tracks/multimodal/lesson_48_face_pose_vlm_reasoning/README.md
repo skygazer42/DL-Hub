@@ -1,6 +1,6 @@
 # Lesson 48: Face Pose VLM Reasoning
 
-This lesson builds a toy multimodal face pose estimator that consumes a synthetic face crop plus
+This lesson builds a compact multimodal face pose estimator that consumes a synthetic face crop plus
 an instruction-like query and predicts normalized yaw, pitch, and roll.
 
 ## What It Teaches

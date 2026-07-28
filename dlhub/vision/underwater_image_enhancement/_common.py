@@ -118,7 +118,7 @@ class TinyUWIEEnhancer(nn.Module):
         }
 
 
-def build_toy_enhancer(
+def build_baseline_enhancer(
     *,
     family: str,
     mode: str,

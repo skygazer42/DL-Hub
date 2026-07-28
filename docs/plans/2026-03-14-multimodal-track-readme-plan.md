@@ -1,7 +1,5 @@
 # Multimodal Track README Enhancement Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Rewrite `tracks/multimodal/README.md` into a practical learning guide for the multimodal lesson track.
 
 **Architecture:** This is a documentation-only enhancement. The README will become the single track-level entrypoint that explains lesson order, architectural progression, quick-start commands, and the relationship between the teaching lessons and the local VLM zoo.

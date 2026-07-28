@@ -1,6 +1,6 @@
 # Monocular Depth Estimation
 
-Toy-first local families for `monocular depth estimation`.
+Compact-first local families for `monocular depth estimation`.
 
 ## Families
 

@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class PolarMaskPanoptic(nn.Module):
-    """PolarMask-style panoptic segmentation (toy-first).
+    """PolarMask-style panoptic segmentation (compact-first).
 
     Predicts per-location class logits + radial distances (rays) and emits prototype masks,
     plus a semantic head for stuff.

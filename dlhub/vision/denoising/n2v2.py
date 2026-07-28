@@ -8,7 +8,7 @@ class N2V2(nn.Module):
     Notes:
     - The core N2V2 predicts the noise/residual. A wrapper `N2V2Denoiser` converts it
       to a denoised image by subtracting the predicted residual from the input.
-    - This implementation is small and training-friendly for toy datasets.
+    - This implementation is small and training-friendly for synthetic datasets.
     """
 
     def __init__(
@@ -62,7 +62,7 @@ class N2V2Denoiser(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    # Canonical-ish depths (toy-friendly: keep features modest).
+    # Canonical-ish depths (compact-friendly: keep features modest).
     "n2v2_9": {"features": 48, "depth": 9, "use_bn": True},
     "n2v2_17": {"features": 64, "depth": 17, "use_bn": True},
     "n2v2_20": {"features": 64, "depth": 20, "use_bn": True},

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class Point2SeqSeg(nn.Module):
-    """Point2Seq semantic segmentation (toy): sort points, run GRU, then unsort."""
+    """Point2Seq semantic segmentation (compact): sort points, run GRU, then unsort."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, layers: int, dropout: float = 0.0

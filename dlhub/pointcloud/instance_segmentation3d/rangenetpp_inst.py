@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class RangeNetPPInst(nn.Module):
-    """RangeNet++ instance segmentation (toy): range-view features + query masks."""
+    """RangeNet++ instance segmentation (compact): range-view features + query masks."""
 
     def __init__(
         self,

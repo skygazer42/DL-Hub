@@ -1,0 +1,6 @@
+"""Lesson 05 (NLP): compact text classification with TextCNN."""
+
+from .data import DataConfig, Vocab, get_dataloaders
+from .model import ModelConfig, TextCNNClassifier
+
+__all__ = ["DataConfig", "Vocab", "get_dataloaders", "TextCNNClassifier", "ModelConfig"]

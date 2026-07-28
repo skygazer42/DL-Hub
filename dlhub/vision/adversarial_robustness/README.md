@@ -1,7 +1,7 @@
 
     # Adversarial robustness
 
-    Toy-first local families for `adversarial robustness`.
+    Compact-first local families for `adversarial robustness`.
 
     ## Families
 

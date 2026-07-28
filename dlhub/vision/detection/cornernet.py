@@ -28,7 +28,7 @@ class _EncoderStride4(nn.Module):
 
 
 class CornerNetDetector(nn.Module):
-    """CornerNet-style keypoint detector (toy-first).
+    """CornerNet-style keypoint detector (compact-first).
 
     Output (raw, stride=4):
     - tl_heatmap / br_heatmap: (B, C, H/4, W/4)

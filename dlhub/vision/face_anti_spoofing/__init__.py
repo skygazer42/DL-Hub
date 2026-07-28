@@ -1,4 +1,4 @@
-"""Face anti-spoofing models (toy-first, pure torch)."""
+"""Face anti-spoofing models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

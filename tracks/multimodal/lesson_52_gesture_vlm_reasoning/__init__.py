@@ -1,7 +1,7 @@
-from .data import DataConfig, ToyGestureReasoningDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticGestureReasoningDataset, Vocab, get_dataloaders
 from .model import (
     GestureReasoningConfig,
-    ToyGestureReasoningModel,
+    CompactGestureReasoningModel,
     compute_accuracy,
     gesture_loss,
 )
@@ -10,8 +10,8 @@ from .train import TrainConfig, run_training
 __all__ = [
     "DataConfig",
     "GestureReasoningConfig",
-    "ToyGestureReasoningDataset",
-    "ToyGestureReasoningModel",
+    "SyntheticGestureReasoningDataset",
+    "CompactGestureReasoningModel",
     "TrainConfig",
     "Vocab",
     "compute_accuracy",

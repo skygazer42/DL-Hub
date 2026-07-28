@@ -38,7 +38,7 @@ def test_multimodal_hand_pose_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_51_hand_pose_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_51_hand_pose_vlm_reasoning.model import (
         HandPoseReasoningConfig,
-        ToyHandPoseReasoningModel,
+        CompactHandPoseReasoningModel,
         hand_pose_loss,
         keypoint_l2,
     )
@@ -55,7 +55,7 @@ def test_multimodal_hand_pose_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyHandPoseReasoningModel(
+    model = CompactHandPoseReasoningModel(
         HandPoseReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

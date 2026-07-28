@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_restoration, smoke_test_restoration
+from ._common import build_baseline_restoration, smoke_test_restoration
 
 _VARIANTS = {
     "gcpanet_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_gcpanet_saliency_detector(
     *, in_channels: int, variant: str = "gcpanet_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_restoration(
+    return build_baseline_restoration(
         family="gcpanet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

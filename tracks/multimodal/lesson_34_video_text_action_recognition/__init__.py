@@ -3,7 +3,7 @@ from .model import (
     ActionRecognitionModelConfig,
     QueryEncoder,
     TemporalVideoEncoder,
-    ToyActionRecognitionModel,
+    CompactActionRecognitionModel,
     action_recognition_loss,
     classification_accuracy,
 )
@@ -14,7 +14,7 @@ __all__ = [
     "DataConfig",
     "QueryEncoder",
     "TemporalVideoEncoder",
-    "ToyActionRecognitionModel",
+    "CompactActionRecognitionModel",
     "Vocab",
     "action_recognition_loss",
     "classification_accuracy",

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_liveness_detector, smoke_test_liveness_detector
+from ._common import build_baseline_liveness_detector, smoke_test_liveness_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_contrastive_face_liveness_liveness_detector(
     variant: str = "contrastive_face_liveness_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_liveness_detector(
+    return build_baseline_liveness_detector(
         family="contrastive_face_liveness",
         mode="contrastive",
         variants=_VARIANTS,

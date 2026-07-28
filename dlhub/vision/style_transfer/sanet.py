@@ -45,7 +45,7 @@ class StyleAttention(nn.Module):
 
 
 class SANetStyleTransfer(nn.Module):
-    """Style-Attentional Networks (SANet) style transfer (toy).
+    """Style-Attentional Networks (SANet) style transfer (compact).
 
     This is a compact approximation that keeps the key ingredient: content->style spatial attention
     over encoded feature maps, followed by a tiny decoder.

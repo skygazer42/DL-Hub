@@ -47,7 +47,7 @@ class SignDigitReasoningConfig:
     vision_width: int = 40
 
 
-class ToySignDigitReasoningModel(nn.Module):
+class CompactSignDigitReasoningModel(nn.Module):
     def __init__(self, cfg: SignDigitReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -83,7 +83,7 @@ def compute_accuracy(logits: torch.Tensor, target: torch.Tensor) -> float:
 
 __all__ = [
     "SignDigitReasoningConfig",
-    "ToySignDigitReasoningModel",
+    "CompactSignDigitReasoningModel",
     "compute_accuracy",
     "sign_digit_loss",
 ]

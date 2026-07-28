@@ -1,6 +1,6 @@
 # Shape correspondence 3D
 
-Toy-first local families for `3D shape correspondence`.
+Compact-first local families for `3D shape correspondence`.
 
 ## Families
 

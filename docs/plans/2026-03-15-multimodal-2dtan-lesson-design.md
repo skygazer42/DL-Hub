@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-15
 
-**Goal:** Add `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding` as an independent teaching lesson for text-conditioned temporal localization with a dense 2D temporal map.
+**Goal:** Add `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding` as an independent teaching lesson for text-conditioned temporal localization with a dense 2D temporal map.
 
 ## Problem
 
@@ -188,7 +188,7 @@ Metrics:
 Follow the same conventions as earlier lessons:
 
 - CLI args for dataset size, frame count, image size, and query length
-- `outputs/multimodal/lesson_15_2dtan_toy_temporal_grounding/<run_name>/`
+- `outputs/multimodal/lesson_15_2dtan_compact_temporal_grounding/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

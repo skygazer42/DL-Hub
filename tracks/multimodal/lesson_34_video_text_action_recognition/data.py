@@ -140,7 +140,7 @@ def _build_record(
     }
 
 
-class ToyVideoTextActionRecognitionDataset(Dataset[dict[str, object]]):
+class SyntheticVideoTextActionRecognitionDataset(Dataset[dict[str, object]]):
     def __init__(self, cfg: DataConfig) -> None:
         self.cfg = cfg
         self.vocab = _build_vocab()
@@ -158,7 +158,7 @@ class ToyVideoTextActionRecognitionDataset(Dataset[dict[str, object]]):
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
-    dataset = ToyVideoTextActionRecognitionDataset(cfg)
+    dataset = SyntheticVideoTextActionRecognitionDataset(cfg)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -185,7 +185,7 @@ __all__ = [
     "ACTION_TO_ID",
     "ACTION_TYPES",
     "DataConfig",
-    "ToyVideoTextActionRecognitionDataset",
+    "SyntheticVideoTextActionRecognitionDataset",
     "Vocab",
     "get_dataloaders",
 ]

@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class RangeFormerSeg(nn.Module):
-    """RangeFormer semantic segmentation (toy): range-view tokens + transformer encoder."""
+    """RangeFormer semantic segmentation (compact): range-view tokens + transformer encoder."""
 
     def __init__(
         self,

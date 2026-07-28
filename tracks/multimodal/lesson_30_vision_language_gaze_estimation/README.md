@@ -1,6 +1,6 @@
-# Lesson 30: Vision-Language Gaze Estimation (Toy)
+# Lesson 30: Vision-Language Gaze Estimation (Compact)
 
-This toy lesson predicts a gaze target point and heatmap from:
+This compact lesson predicts a gaze target point and heatmap from:
 
 - image features,
 - normalized head location cues, and

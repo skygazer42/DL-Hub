@@ -16,7 +16,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SASSD(nn.Module):
-    """SA-SSD (toy): keypoint sampling + self-attention + single-stage regression."""
+    """SA-SSD (compact): keypoint sampling + self-attention + single-stage regression."""
 
     def __init__(
         self,

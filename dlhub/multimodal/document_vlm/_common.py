@@ -10,7 +10,7 @@ def check_nchw(image: torch.Tensor) -> torch.Tensor:
     return image
 
 
-class ToyDocumentVLM(nn.Module):
+class CompactDocumentVLM(nn.Module):
     def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int) -> None:
         super().__init__()
         self.family = str(family)
@@ -36,7 +36,7 @@ class ToyDocumentVLM(nn.Module):
         return {"token_logits": self.head(fused), "pooled_embedding": fused}
 
 
-def build_toy_document_vlm(
+def build_baseline_document_vlm(
     *,
     family: str,
     mode: str,
@@ -47,7 +47,7 @@ def build_toy_document_vlm(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyDocumentVLM(
+    return CompactDocumentVLM(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),

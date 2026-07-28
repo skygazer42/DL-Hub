@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class ASIS(nn.Module):
-    """ASIS (toy): semantic logits + instance embedding similarity."""
+    """ASIS (compact): semantic logits + instance embedding similarity."""
 
     def __init__(
         self,

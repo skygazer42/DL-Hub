@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_change, smoke_test_change
+from ._common import build_baseline_change, smoke_test_change
 
 _VARIANTS = {
     "fcsiamdiff_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_fcsiamdiff_change_detector(
     *, in_channels: int, variant: str = "fcsiamdiff_small", width_mult: float = 1.0
 ):
-    return build_toy_change(
+    return build_baseline_change(
         family="fcsiamdiff",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class YOLACTPanoptic(nn.Module):
-    """YOLACT-style panoptic segmentation (toy-first).
+    """YOLACT-style panoptic segmentation (compact-first).
 
     Instance branch: prototypes + dense mask coefficients at stride /8.
     Semantic branch: stride /4 semantic logits.

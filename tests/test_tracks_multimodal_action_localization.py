@@ -50,7 +50,7 @@ def test_multimodal_action_localization_model_outputs() -> None:
         get_dataloaders,
     )
     from tracks.multimodal.lesson_32_video_text_action_localization.model import (
-        ToyActionLocalizationModel,
+        CompactActionLocalizationModel,
         ActionLocalizationModelConfig,
         action_localization_loss,
     )
@@ -68,7 +68,7 @@ def test_multimodal_action_localization_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyActionLocalizationModel(
+    model = CompactActionLocalizationModel(
         ActionLocalizationModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

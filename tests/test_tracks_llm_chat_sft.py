@@ -7,7 +7,7 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_lesson_02_chat_sft_masks_non_assistant_tokens() -> None:
-    from tracks.llm.lesson_02_toy_chat_sft.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_02_compact_chat_sft.data import DataConfig, get_dataloaders
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -40,9 +40,9 @@ def test_llm_lesson_02_chat_sft_masks_non_assistant_tokens() -> None:
 
 
 def test_llm_lesson_02_chat_sft_model_and_generation_smoke() -> None:
-    from tracks.llm.lesson_02_toy_chat_sft.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_02_toy_chat_sft.model import ChatTransformerLM, ModelConfig
-    from tracks.llm.lesson_02_toy_chat_sft.train import generate_reply
+    from tracks.llm.lesson_02_compact_chat_sft.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_02_compact_chat_sft.model import ChatTransformerLM, ModelConfig
+    from tracks.llm.lesson_02_compact_chat_sft.train import generate_reply
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -94,8 +94,8 @@ def test_llm_lesson_02_chat_sft_model_and_generation_smoke() -> None:
 
 
 def test_llm_lesson_02_chat_sft_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_02_toy_chat_sft.data import DataConfig
-    from tracks.llm.lesson_02_toy_chat_sft.train import TrainConfig, run_training
+    from tracks.llm.lesson_02_compact_chat_sft.data import DataConfig
+    from tracks.llm.lesson_02_compact_chat_sft.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -129,7 +129,7 @@ def test_llm_lesson_02_chat_sft_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "llm" / "lesson_02_toy_chat_sft" / "smoke"
+    run_dir = tmp_path / "outputs" / "llm" / "lesson_02_compact_chat_sft" / "smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

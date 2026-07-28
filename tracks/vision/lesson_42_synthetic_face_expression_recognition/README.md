@@ -1,6 +1,6 @@
 # Lesson 42: Synthetic Face Expression Recognition
 
-This lesson builds a toy expression-recognition task over small synthetic grayscale face crops.
+This lesson builds a compact expression-recognition task over small synthetic grayscale face crops.
 Each sample is paired with a single expression class:
 `0=neutral`, `1=happy`, `2=sad`, `3=surprised`.
 

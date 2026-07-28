@@ -41,7 +41,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PVRCNNPlusPlus(nn.Module):
-    """PV-RCNN++ (toy): stronger ROI refinement (stacked MLP)."""
+    """PV-RCNN++ (compact): stronger ROI refinement (stacked MLP)."""
 
     def __init__(
         self,
@@ -75,7 +75,7 @@ class PVRCNNPlusPlus(nn.Module):
         self.extra_refine = nn.Sequential(*blocks) if blocks else nn.Identity()
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
-        # Re-run the two-stage refinement with an extra MLP stack (toy "++").
+        # Re-run the two-stage refinement with an extra MLP stack (compact "++").
         check_points(points)
         xyz, feats = split_xyz_features(points)
         if feats is None:

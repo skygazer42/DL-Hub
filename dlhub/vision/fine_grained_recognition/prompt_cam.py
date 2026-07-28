@@ -1,10 +1,10 @@
-"""Prompt-CAM (toy-first).
+"""Prompt-CAM (compact-first).
 
 Reference:
 - "Prompt-CAM: A Simpler Interpretable Transformer for Fine-Grained Analysis" (arXiv 2025)
   https://arxiv.org/abs/2501.09333
 
-Toy interpretation:
+Compact interpretation:
 - Use a ViT-style patch encoder to produce patch tokens.
 - Learn class-specific prompt/query vectors.
 - Produce a class-wise "CAM-like" attention map over patches via dot-product.

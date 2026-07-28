@@ -39,7 +39,7 @@ class YOLOXHead(nn.Module):
 
 
 class YOLOXDetector(nn.Module):
-    """YOLOX-style detector with a shared decoupled head (toy-first)."""
+    """YOLOX-style detector with a shared decoupled head (compact-first)."""
 
     def __init__(
         self,

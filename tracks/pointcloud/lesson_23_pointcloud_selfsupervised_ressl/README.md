@@ -1,6 +1,6 @@
-# Lesson 23 — PointCloud 自监督：ReSSL（Relational Self-Supervised Learning, toy-first）
+# Lesson 23 — PointCloud 自监督：ReSSL（Relational Self-Supervised Learning, compact-first）
 
-目标：在点云上跑通一个 **ReSSL-style** 的最小闭环（toy 版本）：
+目标：在点云上跑通一个 **ReSSL-style** 的最小闭环（compact 版本）：
 
 - Student / Teacher（EMA）双网络
 - Student 看 “strong augmentation”，Teacher 看 “weak augmentation”

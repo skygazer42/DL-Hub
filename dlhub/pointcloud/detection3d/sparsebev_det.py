@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SparsebevDet(nn.Module):
-    """3DETR (toy): point transformer encoder + DETR-like query head."""
+    """3DETR (compact): point transformer encoder + DETR-like query head."""
 
     def __init__(
         self,

@@ -1,4 +1,4 @@
-"""Event camera understanding models (toy-first, pure torch)."""
+"""Event camera understanding models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

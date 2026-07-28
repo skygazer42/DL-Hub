@@ -7,11 +7,11 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_text_to_video_data_and_model_contract() -> None:
-    from tracks.generative.lesson_49_toy_text_to_video.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_49_toy_text_to_video.model import (
+def test_compact_text_to_video_data_and_model_contract() -> None:
+    from tracks.generative.lesson_49_compact_text_to_video.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_49_compact_text_to_video.model import (
         ModelConfig,
-        ToyTextToVideoModel,
+        CompactTextToVideoModel,
         text_to_video_loss,
     )
 
@@ -30,7 +30,7 @@ def test_toy_text_to_video_data_and_model_contract() -> None:
     assert len(prompts) == 4
     assert tuple(target_video.shape) == (4, 4, 3, 8, 8)
 
-    model = ToyTextToVideoModel(
+    model = CompactTextToVideoModel(
         ModelConfig(
             in_channels=3,
             family="diffusion_t2v",
@@ -53,10 +53,10 @@ def test_toy_text_to_video_data_and_model_contract() -> None:
     loss.backward()
 
 
-def test_toy_text_to_video_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_49_toy_text_to_video.data import DataConfig
-    from tracks.generative.lesson_49_toy_text_to_video.model import ModelConfig
-    from tracks.generative.lesson_49_toy_text_to_video.train import TrainConfig, run_training
+def test_compact_text_to_video_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from tracks.generative.lesson_49_compact_text_to_video.data import DataConfig
+    from tracks.generative.lesson_49_compact_text_to_video.model import ModelConfig
+    from tracks.generative.lesson_49_compact_text_to_video.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -86,7 +86,7 @@ def test_toy_text_to_video_training_and_dry_run(tmp_path, monkeypatch: pytest.Mo
     )
 
     assert exit_code == 0
-    run_dir = tmp_path / "generative" / "lesson_49_toy_text_to_video" / "pytest_text_to_video_smoke"
+    run_dir = tmp_path / "generative" / "lesson_49_compact_text_to_video" / "pytest_text_to_video_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
@@ -108,7 +108,7 @@ def test_toy_text_to_video_training_and_dry_run(tmp_path, monkeypatch: pytest.Mo
             sys.executable,
             "scripts/run_lesson.py",
             "generative",
-            "lesson_49_toy_text_to_video",
+            "lesson_49_compact_text_to_video",
             "--dry-run",
         ],
         check=False,
@@ -116,4 +116,4 @@ def test_toy_text_to_video_training_and_dry_run(tmp_path, monkeypatch: pytest.Mo
         text=True,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.generative.lesson_49_toy_text_to_video.train" in proc.stdout
+    assert "tracks.generative.lesson_49_compact_text_to_video.train" in proc.stdout

@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class AdaLIN(nn.Module):
-    """Adaptive Layer-Instance Normalization (toy).
+    """Adaptive Layer-Instance Normalization (compact).
 
     Mixes instance norm and layer norm, then applies a FiLM-like affine using a style code.
     """
@@ -123,7 +123,7 @@ class UGATITGenerator(nn.Module):
 
 
 class UGATITStyleTransfer(nn.Module):
-    """U-GAT-IT style transfer (toy, reference-conditioned).
+    """U-GAT-IT style transfer (compact, reference-conditioned).
 
     The original U-GAT-IT is an unpaired translation method. This local family keeps the spirit:
     attention maps + adaptive normalization, but conditions on a style reference image.

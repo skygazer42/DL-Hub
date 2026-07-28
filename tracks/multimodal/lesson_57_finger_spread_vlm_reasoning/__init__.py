@@ -1,11 +1,11 @@
-from .data import DataConfig, ToyFingerSpreadReasoningDataset, Vocab, get_dataloaders
-from .model import FingerSpreadReasoningConfig, ToyFingerSpreadReasoningModel, compute_mae, finger_spread_loss
+from .data import DataConfig, SyntheticFingerSpreadReasoningDataset, Vocab, get_dataloaders
+from .model import FingerSpreadReasoningConfig, CompactFingerSpreadReasoningModel, compute_mae, finger_spread_loss
 
 __all__ = [
     "DataConfig",
     "FingerSpreadReasoningConfig",
-    "ToyFingerSpreadReasoningDataset",
-    "ToyFingerSpreadReasoningModel",
+    "SyntheticFingerSpreadReasoningDataset",
+    "CompactFingerSpreadReasoningModel",
     "Vocab",
     "compute_mae",
     "finger_spread_loss",

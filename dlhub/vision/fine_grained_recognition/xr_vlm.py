@@ -1,10 +1,10 @@
-"""XR-VLM (toy-first) for FGVC.
+"""XR-VLM (compact-first) for FGVC.
 
 Reference:
 - "XR-VLM: Cross-Relationship Modeling with Multi-part Prompts and Visual Features for Fine-Grained Recognition"
   (arXiv 2025): https://arxiv.org/abs/2503.07075
 
-Toy interpretation (offline, no pretrained weights):
+Compact interpretation (offline, no pretrained weights):
 - A tiny ViT patch encoder produces patch tokens.
 - Each class owns multiple learnable "part prompts" that attend over patches.
 - Per-class features are refined by a small self-attention block over the class dimension (class interaction).

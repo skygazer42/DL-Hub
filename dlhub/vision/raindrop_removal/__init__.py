@@ -1,4 +1,4 @@
-"""Raindrop removal models (toy-first, pure torch)."""
+"""Raindrop removal models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -3,15 +3,15 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_diffusion_multi_reference_generation_data_and_model_contract() -> None:
-    from tracks.generative.lesson_29_toy_diffusion_multi_reference_generation.data import (
+def test_compact_diffusion_multi_reference_generation_data_and_model_contract() -> None:
+    from tracks.generative.lesson_29_compact_diffusion_multi_reference_generation.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.generative.lesson_29_toy_diffusion_multi_reference_generation.model import (
+    from tracks.generative.lesson_29_compact_diffusion_multi_reference_generation.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyMultiReferenceDiffusionModel,
+        CompactMultiReferenceDiffusionModel,
         q_sample,
     )
 
@@ -37,7 +37,7 @@ def test_toy_diffusion_multi_reference_generation_data_and_model_contract() -> N
 
     cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=16, time_embed_dim=16)
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToyMultiReferenceDiffusionModel(cfg)
+    model = CompactMultiReferenceDiffusionModel(cfg)
 
     noise = torch.randn_like(target)
     timesteps = torch.randint(low=0, high=schedule.num_steps, size=(6,), dtype=torch.long)
@@ -64,15 +64,15 @@ def test_toy_diffusion_multi_reference_generation_data_and_model_contract() -> N
     assert torch.all(sampled <= 1.0)
 
 
-def test_toy_diffusion_multi_reference_generation_training_smoke(
+def test_compact_diffusion_multi_reference_generation_training_smoke(
     tmp_path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.generative.lesson_29_toy_diffusion_multi_reference_generation.data import DataConfig
-    from tracks.generative.lesson_29_toy_diffusion_multi_reference_generation.model import (
+    from tracks.generative.lesson_29_compact_diffusion_multi_reference_generation.data import DataConfig
+    from tracks.generative.lesson_29_compact_diffusion_multi_reference_generation.model import (
         DiffusionSchedule,
         ModelConfig,
     )
-    from tracks.generative.lesson_29_toy_diffusion_multi_reference_generation.train import (
+    from tracks.generative.lesson_29_compact_diffusion_multi_reference_generation.train import (
         TrainConfig,
         run_training,
     )
@@ -98,7 +98,7 @@ def test_toy_diffusion_multi_reference_generation_training_smoke(
     run_dir = (
         tmp_path
         / "generative"
-        / "lesson_29_toy_diffusion_multi_reference_generation"
+        / "lesson_29_compact_diffusion_multi_reference_generation"
         / "pytest_multi_reference_generation_smoke"
     )
     assert (run_dir / "config.json").is_file()

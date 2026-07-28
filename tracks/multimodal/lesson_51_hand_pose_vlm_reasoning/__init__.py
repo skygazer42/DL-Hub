@@ -1,7 +1,7 @@
-from .data import DataConfig, ToyHandPoseReasoningDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticHandPoseReasoningDataset, Vocab, get_dataloaders
 from .model import (
     HandPoseReasoningConfig,
-    ToyHandPoseReasoningModel,
+    CompactHandPoseReasoningModel,
     hand_pose_loss,
     keypoint_l2,
 )
@@ -9,8 +9,8 @@ from .model import (
 __all__ = [
     "DataConfig",
     "HandPoseReasoningConfig",
-    "ToyHandPoseReasoningDataset",
-    "ToyHandPoseReasoningModel",
+    "SyntheticHandPoseReasoningDataset",
+    "CompactHandPoseReasoningModel",
     "Vocab",
     "get_dataloaders",
     "hand_pose_loss",

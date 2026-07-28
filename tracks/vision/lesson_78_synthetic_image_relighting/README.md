@@ -1,6 +1,6 @@
 # Lesson 78: Synthetic Image Relighting
 
-This lesson is a toy-first relighting task for CPU-friendly training loops.
+This lesson is a compact-first relighting task for CPU-friendly training loops.
 
 ## Task
 

@@ -28,7 +28,7 @@ class _EncoderStride4(nn.Module):
 
 
 class ExtremeNetDetector(nn.Module):
-    """ExtremeNet-style keypoint detector (toy-first).
+    """ExtremeNet-style keypoint detector (compact-first).
 
     Predicts heatmaps for extreme points (left/right/top/bottom) and center.
     Output (raw, stride=4):

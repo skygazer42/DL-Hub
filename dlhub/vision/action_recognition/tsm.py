@@ -1,9 +1,9 @@
-"""TSM (Temporal Shift Module) - toy-first video action classifier.
+"""TSM (Temporal Shift Module) - compact-first video action classifier.
 
 Reference:
 - "TSM: Temporal Shift Module for Efficient Video Understanding" (ICCV 2019)
 
-Toy interpretation:
+Compact interpretation:
 - Perform a cheap channel-wise temporal shift on the input tensor.
 - Apply a shared 2D CNN on frames (TSN-style).
 - Mean-pool across time and classify.

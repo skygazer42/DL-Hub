@@ -1,9 +1,9 @@
 # Lesson 23: Synthetic Image Dehazing
 
-This lesson adds a toy-first paired dehazing loop to the vision track:
+This lesson adds a compact-first paired dehazing loop to the vision track:
 
 - render a clean synthetic image with simple geometric content
-- build a transmission map from a toy depth prior
+- build a transmission map from a compact depth prior
 - mix the clean image with atmospheric light to create haze
 - train a small model to predict both the restored image and the transmission map
 

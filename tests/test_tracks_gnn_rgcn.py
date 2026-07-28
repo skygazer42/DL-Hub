@@ -4,13 +4,13 @@ torch = pytest.importorskip("torch")
 
 
 def test_gnn_rgcn_forward_smoke() -> None:
-    from tracks.gnn.lesson_11_rgcn_toy_node_classification.data import (
+    from tracks.gnn.lesson_11_rgcn_compact_node_classification.data import (
         DataConfig,
-        load_toy_rel_graph,
+        load_synthetic_rel_graph,
     )
-    from tracks.gnn.lesson_11_rgcn_toy_node_classification.model import RGCN, ModelConfig
+    from tracks.gnn.lesson_11_rgcn_compact_node_classification.model import RGCN, ModelConfig
 
-    data = load_toy_rel_graph(
+    data = load_synthetic_rel_graph(
         DataConfig(
             num_nodes=60,
             num_rels=3,

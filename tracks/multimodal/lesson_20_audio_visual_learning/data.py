@@ -203,7 +203,7 @@ def _render_audio(spec: EventSpec, cfg: DataConfig, variant_id: int) -> torch.Te
     return spectrogram.unsqueeze(0).clamp(0.0, 1.0)
 
 
-class ToyAudioVisualLearningDataset(Dataset):
+class SyntheticAudioVisualLearningDataset(Dataset):
     def __init__(self, cfg: DataConfig) -> None:
         self.cfg = cfg
         self.samples = _build_samples(cfg)
@@ -227,7 +227,7 @@ class ToyAudioVisualLearningDataset(Dataset):
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
-    dataset = ToyAudioVisualLearningDataset(cfg)
+    dataset = SyntheticAudioVisualLearningDataset(cfg)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -263,7 +263,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
 __all__ = [
     "DataConfig",
     "EventSpec",
-    "ToyAudioVisualLearningDataset",
+    "SyntheticAudioVisualLearningDataset",
     "get_dataloaders",
     "num_events",
     "num_motions",

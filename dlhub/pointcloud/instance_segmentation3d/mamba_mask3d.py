@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class MambaMask3D(nn.Module):
-    """MambaMask3D (toy): transformer point encoder + query mask head."""
+    """MambaMask3D (compact): transformer point encoder + query mask head."""
 
     def __init__(
         self,

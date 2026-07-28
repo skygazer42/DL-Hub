@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, check_nch
 
 
 class DETRPanoptic(nn.Module):
-    """DETR-style panoptic segmentation with mask logits (toy-first).
+    """DETR-style panoptic segmentation with mask logits (compact-first).
 
     Encoder over flattened features + query cross-attn; predicts query class/box and mask logits.
     """

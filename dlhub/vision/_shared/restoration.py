@@ -38,7 +38,7 @@ class TinyRestorationNet(nn.Module):
         return {self.out_key: out}
 
 
-def build_toy_restoration(
+def build_baseline_restoration(
     *,
     family: str,
     variants: dict[str, dict[str, int]],

@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyEventModel(nn.Module):
+class CompactEventModel(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, steps: int):
         super().__init__()
         self.family = str(family)
@@ -29,7 +29,7 @@ class ToyEventModel(nn.Module):
         return {"logits": self.head(pooled), "event_features": feat, "pooled": pooled}
 
 
-def build_toy_event_model(
+def build_baseline_event_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -39,7 +39,7 @@ def build_toy_event_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyEventModel(
+    return CompactEventModel(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

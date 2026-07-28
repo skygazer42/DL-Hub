@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_editor, smoke_test_editor
+from ._common import build_baseline_editor, smoke_test_editor
 
 _VARIANTS = {
     "instructpix2pix_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_instructpix2pix_editor(
     *, in_channels: int, variant: str = "instructpix2pix_small", width_mult: float = 1.0
 ):
-    return build_toy_editor(
+    return build_baseline_editor(
         family="instructpix2pix",
         variants=_VARIANTS,
         in_channels=int(in_channels),

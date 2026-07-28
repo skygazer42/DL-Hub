@@ -164,7 +164,7 @@ class DINOHead(nn.Module):
 
 
 class DINOPointNet(nn.Module):
-    """DINO for point clouds (toy-first, 2-crop compatible).
+    """DINO for point clouds (compact-first, 2-crop compatible).
 
     - Student network is trained by gradient.
     - Teacher network is updated by EMA from the student.

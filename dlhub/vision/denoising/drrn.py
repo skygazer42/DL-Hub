@@ -21,7 +21,7 @@ class _RecursiveResBlock(nn.Module):
 
 
 class DRRN(nn.Module):
-    """DRRN (Deep Recursive Residual Network), adapted for denoising (toy-first, pure torch).
+    """DRRN (Deep Recursive Residual Network), adapted for denoising (compact-first, pure torch).
 
     DRRN is originally used for SR/restoration. We keep resolution and use a recursive residual unit.
     Output is `x - residual`.

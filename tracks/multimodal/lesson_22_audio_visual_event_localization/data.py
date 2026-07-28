@@ -158,7 +158,7 @@ def _query_tokens(spec: EventSpec) -> list[str]:
     return ["when", "does", "the", spec.color_name, spec.shape_name, sound_word, "happen"]
 
 
-class ToyAudioVisualEventLocalizationDataset(Dataset):
+class SyntheticAudioVisualEventLocalizationDataset(Dataset):
     def __init__(self, cfg: DataConfig, vocab: Vocab) -> None:
         self.cfg = cfg
         self.vocab = vocab
@@ -194,7 +194,7 @@ class ToyAudioVisualEventLocalizationDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyAudioVisualEventLocalizationDataset(cfg, vocab)
+    dataset = SyntheticAudioVisualEventLocalizationDataset(cfg, vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )

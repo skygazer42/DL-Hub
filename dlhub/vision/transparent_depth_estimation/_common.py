@@ -95,7 +95,7 @@ class TinyTransparentDepthModel(nn.Module):
         return {"depth": depth, "confidence": confidence}
 
 
-def build_toy_transparent_depth_model(
+def build_baseline_transparent_depth_model(
     *,
     family: str,
     mode: str,

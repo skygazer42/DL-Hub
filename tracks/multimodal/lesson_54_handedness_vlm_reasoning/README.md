@@ -1,6 +1,6 @@
 # Lesson 54: Handedness VLM Reasoning
 
-This toy lesson classifies **handedness** (`left` vs `right`) from grayscale image evidence plus a
+This compact lesson classifies **handedness** (`left` vs `right`) from grayscale image evidence plus a
 short text query. Each sample renders a simple hand-like blob where a "thumb" bump appears on the
 left or right side of the palm.
 

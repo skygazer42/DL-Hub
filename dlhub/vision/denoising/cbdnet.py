@@ -18,7 +18,7 @@ class _ConvAct(nn.Module):
 
 
 class NoiseEstimationNet(nn.Module):
-    """CBDNet noise estimation sub-network (toy-first).
+    """CBDNet noise estimation sub-network (compact-first).
 
     Produces a per-pixel noise-level map. In the original CBDNet, this is trained with
     a dedicated noise estimation loss; here we keep it end-to-end and let supervision
@@ -61,7 +61,7 @@ class _UNetBlock(nn.Module):
 
 
 class ConditionalDenoiserUNet(nn.Module):
-    """A small conditional U-Net used by CBDNet (toy-first).
+    """A small conditional U-Net used by CBDNet (compact-first).
 
     Input is `[noisy, noise_map]` concatenated along channels.
     Output is a predicted residual/noise that gets subtracted from the input noisy image.
@@ -124,7 +124,7 @@ class ConditionalDenoiserUNet(nn.Module):
 
 
 class CBDNet(nn.Module):
-    """CBDNet-style blind denoiser (toy-first, pure torch).
+    """CBDNet-style blind denoiser (compact-first, pure torch).
 
     Key idea:
     - Estimate a noise-level map from the noisy image.

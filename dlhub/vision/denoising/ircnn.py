@@ -4,9 +4,9 @@ from torch import nn
 
 
 class IRCNN(nn.Module):
-    """IRCNN-style dilated residual CNN denoiser (toy-first, pure torch).
+    """IRCNN-style dilated residual CNN denoiser (compact-first, pure torch).
 
-    IRCNN is often used as a restoration prior with dilated convolutions. This toy-first
+    IRCNN is often used as a restoration prior with dilated convolutions. This compact-first
     implementation:
     - uses a stack of dilated conv layers
     - predicts a residual/noise map and returns `x - residual`

@@ -45,7 +45,7 @@ class Stats:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 11 (Vision): synthetic instance segmentation (YOLACT-style, toy-first)."
+        description="Lesson 11 (Vision): synthetic instance segmentation (YOLACT-style, compact-first)."
     )
 
     parser.add_argument("--num-samples", type=int, default=2048)

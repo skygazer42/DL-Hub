@@ -1,4 +1,4 @@
-"""camera calibration models (toy-first, pure torch)."""
+"""camera calibration models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

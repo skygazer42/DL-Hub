@@ -138,7 +138,7 @@ def _render_face_with_occlusion(*, image_size: int, sample_seed: int) -> tuple[t
     return torch.from_numpy(image).unsqueeze(0), occlusion_ratio
 
 
-class ToyFaceOcclusionReasoningDataset(Dataset):
+class SyntheticFaceOcclusionReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 32:
             raise ValueError("image_size must be >= 32")
@@ -176,7 +176,7 @@ class ToyFaceOcclusionReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceOcclusionReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceOcclusionReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -201,7 +201,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyFaceOcclusionReasoningDataset",
+    "SyntheticFaceOcclusionReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

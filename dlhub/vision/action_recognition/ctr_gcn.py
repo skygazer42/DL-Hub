@@ -1,10 +1,10 @@
-"""CTR-GCN (dynamic topology refinement) - toy-first skeleton action classifier.
+"""CTR-GCN (dynamic topology refinement) - compact-first skeleton action classifier.
 
 Reference (idea):
 - "Channel-wise Topology Refinement Graph Convolution for Skeleton-Based Action Recognition"
   (CVPR 2021)
 
-Toy interpretation:
+Compact interpretation:
 - Replace hand-designed adjacency with a per-frame learned joint-to-joint attention matrix.
 - Use attention to aggregate joint features, then temporal conv and residual connections.
 """

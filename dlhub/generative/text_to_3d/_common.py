@@ -14,7 +14,7 @@ def _resolve_device(device: torch.device | str | None) -> torch.device:
     return torch.device(device)
 
 
-class ToyText3DGenerator(nn.Module):
+class CompactText3DGenerator(nn.Module):
     def __init__(
         self,
         *,
@@ -81,7 +81,7 @@ class ToyText3DGenerator(nn.Module):
         return {"triplanes": triplanes, "density": density, "mesh_tokens": mesh_tokens}
 
 
-def build_toy_text3d_family(
+def build_baseline_text3d_family(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -93,7 +93,7 @@ def build_toy_text3d_family(
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
     latent = max(int(latent_dim), int(cfg["latent"]))
-    return ToyText3DGenerator(
+    return CompactText3DGenerator(
         family=str(family),
         in_channels=int(in_channels),
         latent_dim=latent,
@@ -109,4 +109,4 @@ def smoke_test_text3d(builder: Callable[..., nn.Module], variant: str) -> None:
     print(variant, shapes)
 
 
-__all__ = ["ToyText3DGenerator", "build_toy_text3d_family", "smoke_test_text3d"]
+__all__ = ["CompactText3DGenerator", "build_baseline_text3d_family", "smoke_test_text3d"]

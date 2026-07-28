@@ -123,7 +123,7 @@ def _render_observation(
     return image.clamp(0.0, 1.0)
 
 
-class ToyVisionLanguageNavigationDataset(Dataset):
+class SyntheticVisionLanguageNavigationDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         _validate_config(cfg)
         self.cfg = cfg
@@ -162,7 +162,7 @@ class ToyVisionLanguageNavigationDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyVisionLanguageNavigationDataset(cfg, vocab=vocab)
+    dataset = SyntheticVisionLanguageNavigationDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -198,4 +198,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyVisionLanguageNavigationDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticVisionLanguageNavigationDataset", "Vocab", "get_dataloaders"]

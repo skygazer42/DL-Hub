@@ -1,8 +1,6 @@
 # Multimodal Lesson 10 OWL-ViT-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection` as a teaching lesson for text-conditioned open-vocabulary detection.
+**Goal:** Add `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection` as a teaching lesson for text-conditioned open-vocabulary detection.
 
 **Architecture:** The lesson will generate multi-object synthetic scenes with unique color-shape categories. A text query may or may not match an object in the image. A tiny CNN plus text encoder will fuse query and image features to predict presence, the target cell, and box deltas.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_10_owlvit_toy_open_vocab_detection` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.train`
+- `lesson_10_owlvit_compact_open_vocab_detection` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the open-vocab detection dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/__init__.py`
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/data.py`
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/README.md`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/__init__.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/data.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/README.md`
 - Test: `tests/test_tracks_multimodal_owlvit.py`
 
 **Step 1: Write the failing test**
@@ -81,7 +79,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the OWL-ViT-lite model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/model.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/model.py`
 - Test: `tests/test_tracks_multimodal_owlvit.py`
 
 **Step 1: Write the failing test**
@@ -119,7 +117,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and smoke run
 
 **Files:**
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/train.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_owlvit.py`
 
@@ -127,13 +125,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --grid-size 4 --max-text-length 6 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_owlvit_smoke`
+`python -m tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --grid-size 4 --max-text-length 6 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_owlvit_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_10_owlvit_toy_open_vocab_detection/pytest_owlvit_smoke/config.json`
-- `outputs/multimodal/lesson_10_owlvit_toy_open_vocab_detection/pytest_owlvit_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_10_owlvit_toy_open_vocab_detection/pytest_owlvit_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_10_owlvit_compact_open_vocab_detection/pytest_owlvit_smoke/config.json`
+- `outputs/multimodal/lesson_10_owlvit_compact_open_vocab_detection/pytest_owlvit_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_10_owlvit_compact_open_vocab_detection/pytest_owlvit_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -163,11 +161,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_owlvit.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/__init__.py`
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/data.py`
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/model.py`
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/train.py`
-- Create: `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/README.md`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/__init__.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/data.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/model.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/train.py`
+- Create: `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/README.md`
 
 **Step 1: Run lint**
 
@@ -190,6 +188,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_10_owlvit_toy_open_vocab_detection --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_10_owlvit_compact_open_vocab_detection --dry-run`
 
 Expected: lesson 10 appears in the listing and resolves to the train module.

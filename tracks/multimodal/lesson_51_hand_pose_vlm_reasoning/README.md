@@ -1,4 +1,4 @@
-# Lesson 51: Hand Pose VLM Reasoning (Toy)
+# Lesson 51: Hand Pose VLM Reasoning (Compact)
 
 This lesson extends the multimodal reasoning arc to a hand-centric pose target. A synthetic
 grayscale hand skeleton is rendered deterministically and paired with a short query. The model

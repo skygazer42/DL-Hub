@@ -1,7 +1,5 @@
 # Pedestrian Detection Presets Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add 8 “pedestrian detection” preset arch ids to the local detection zoo (`dldet:pedestrian_*`) that forward/backward smoke successfully and can be discovered via `--search pedestrian`.
 
 **Architecture:** Each preset is a tiny alias wrapper around an existing detector family (FCOS/RetinaNet/Faster R-CNN/SSD/YOLO/RT-DETR). The presets live as 8 independent `dlhub/vision/detection/pedestrian_*.py` modules exposing `_VARIANTS` + `build_*_detector`, so `dlhub.vision.detection_zoo` discovers them automatically by source scanning.

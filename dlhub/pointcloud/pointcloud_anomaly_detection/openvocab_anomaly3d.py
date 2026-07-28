@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_anomaly_detector, smoke_test_anomaly_detector
+from ._common import build_baseline_anomaly_detector, smoke_test_anomaly_detector
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "openvocab_anomaly3d_tiny": {"width": 24, "depth": 1},
@@ -14,7 +14,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_openvocab_anomaly3d_anomaly_detector(
     *, in_channels: int, variant: str = "openvocab_anomaly3d_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_anomaly_detector(
+    return build_baseline_anomaly_detector(
         family="openvocab_anomaly3d",
         mode="openvocab",
         variants=_VARIANTS,

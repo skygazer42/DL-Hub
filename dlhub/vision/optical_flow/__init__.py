@@ -1,4 +1,4 @@
-"""Optical flow models (toy-first, pure torch)."""
+"""Optical flow models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

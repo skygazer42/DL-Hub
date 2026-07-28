@@ -1,4 +1,4 @@
-"""neural style transfer models (toy-first, pure torch)."""
+"""neural style transfer models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

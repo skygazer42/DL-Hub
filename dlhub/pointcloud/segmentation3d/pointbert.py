@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointBERTSeg(nn.Module):
-    """PointBERT semantic segmentation (toy): deeper transformer encoder backbone."""
+    """PointBERT semantic segmentation (compact): deeper transformer encoder backbone."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0

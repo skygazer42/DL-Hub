@@ -70,7 +70,7 @@ class AudioVisualEventLocalizationConfig:
     text_dim: int = 32
 
 
-class ToyAudioVisualEventLocalizationModel(nn.Module):
+class CompactAudioVisualEventLocalizationModel(nn.Module):
     def __init__(self, cfg: AudioVisualEventLocalizationConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -133,7 +133,7 @@ __all__ = [
     "QueryEncoder",
     "TinyAudioEncoder",
     "TinyFrameEncoder",
-    "ToyAudioVisualEventLocalizationModel",
+    "CompactAudioVisualEventLocalizationModel",
     "frame_accuracy",
     "localization_loss",
 ]

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_detector, smoke_test_detector
+from ._common import build_baseline_detector, smoke_test_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_transformer_anchorfree_detector(
     variant: str = "transformer_anchorfree_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_detector(
+    return build_baseline_detector(
         family="transformer_anchorfree",
         mode="transformer",
         variants=_VARIANTS,

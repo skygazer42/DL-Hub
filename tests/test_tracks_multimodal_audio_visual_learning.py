@@ -42,7 +42,7 @@ def test_multimodal_audio_visual_learning_model_outputs() -> None:
     from tracks.multimodal.lesson_20_audio_visual_learning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_20_audio_visual_learning.model import (
         AudioVisualLearningConfig,
-        ToyAudioVisualLearningModel,
+        CompactAudioVisualLearningModel,
         clip_contrastive_loss,
         retrieval_accuracy,
     )
@@ -61,7 +61,7 @@ def test_multimodal_audio_visual_learning_model_outputs() -> None:
     train_loader, _val_loader = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyAudioVisualLearningModel(
+    model = CompactAudioVisualLearningModel(
         AudioVisualLearningConfig(
             num_frames=data_cfg.num_frames,
             image_size=data_cfg.image_size,

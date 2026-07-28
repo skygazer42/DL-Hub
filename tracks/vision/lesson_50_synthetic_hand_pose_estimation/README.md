@@ -1,6 +1,6 @@
 # Lesson 50: Synthetic Hand Pose Estimation
 
-This toy lesson renders a compact grayscale hand skeleton and regresses ten normalized keypoints:
+This compact lesson renders a compact grayscale hand skeleton and regresses ten normalized keypoints:
 one wrist anchor, a thumb tip, and four finger base-tip pairs. The renderer is deterministic given
 the seed and stays light enough for CPU-only smoke tests.
 

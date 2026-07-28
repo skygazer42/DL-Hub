@@ -10,7 +10,7 @@ def check_nchw(x):
     return x
 
 
-class ToyLaneTopology(nn.Module):
+class CompactLaneTopology(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, num_nodes: int):
         super().__init__()
         self.family = str(family)
@@ -38,7 +38,7 @@ class ToyLaneTopology(nn.Module):
         return {"nodes": nodes, "edges": edges}
 
 
-def build_toy_topology(
+def build_baseline_topology(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -49,7 +49,7 @@ def build_toy_topology(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyLaneTopology(
+    return CompactLaneTopology(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

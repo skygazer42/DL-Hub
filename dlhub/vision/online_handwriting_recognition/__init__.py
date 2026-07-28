@@ -1,4 +1,4 @@
-"""Online handwriting recognition models (toy-first, pure torch)."""
+"""Online handwriting recognition models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

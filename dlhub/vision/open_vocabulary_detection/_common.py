@@ -96,7 +96,7 @@ class TinyOVDetector(nn.Module):
         }
 
 
-def build_toy_ov_detector(
+def build_baseline_ov_detector(
     *,
     family: str,
     mode: str,

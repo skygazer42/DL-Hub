@@ -2,7 +2,7 @@
 
 **Goal**
 
-Add a local, toy-first co-segmentation algorithm family to DL-Hub with:
+Add a local, compact-first co-segmentation algorithm family to DL-Hub with:
 - local co-segmentation model families
 - a unified zoo + CLI
 - fast smoke tests that run on CPU with no downloads

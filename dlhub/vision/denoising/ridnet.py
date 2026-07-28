@@ -38,7 +38,7 @@ class RIDBlock(nn.Module):
 
 
 class RIDNetDenoiser(nn.Module):
-    """RIDNet-style denoiser (toy-first, pure torch).
+    """RIDNet-style denoiser (compact-first, pure torch).
 
     A residual-in-residual CNN with channel attention blocks.
     """

@@ -56,7 +56,7 @@ def _patch_ssd(
 
 
 class NonLocalMeans(nn.Module):
-    """Non-local means (NLM) baseline (torch-only, toy-first).
+    """Non-local means (NLM) baseline (torch-only, compact-first).
 
     This is a simplified NLM implementation that:
     - uses patch SSD computed via depthwise conv

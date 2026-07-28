@@ -1,8 +1,6 @@
 # Vision Deraining Expansion Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Expand `tracks/vision/lesson_10_synthetic_denoising` with six additional toy-first deraining families, wire them into lesson discovery, and document the enlarged deraining cluster.
+**Goal:** Expand `tracks/vision/lesson_10_synthetic_denoising` with six additional compact-first deraining families, wire them into lesson discovery, and document the enlarged deraining cluster.
 
 **Architecture:** Keep deraining inside the existing denoising lesson rather than creating a new package or lesson. Each new family lives in its own file under `dlhub/vision/denoising/`, follows the existing `build_*_denoiser(...)` factory convention, and is surfaced through `tracks/vision/lesson_10_synthetic_denoising/model.py` so it automatically participates in lesson discovery and training.
 

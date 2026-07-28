@@ -41,7 +41,7 @@ class _ChannelAttention(nn.Module):
 
 
 class DANet(nn.Module):
-    """DANet (Dual Attention Network) semantic segmentation (toy-first)."""
+    """DANet (Dual Attention Network) semantic segmentation (compact-first)."""
 
     def __init__(
         self,

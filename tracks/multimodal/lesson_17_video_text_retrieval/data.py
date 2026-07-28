@@ -211,7 +211,7 @@ def _render_video(
     return torch.stack(frames, dim=0)
 
 
-class ToyVideoTextRetrievalDataset(Dataset):
+class SyntheticVideoTextRetrievalDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         self.cfg = cfg
         self.vocab = vocab
@@ -252,7 +252,7 @@ class ToyVideoTextRetrievalDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyVideoTextRetrievalDataset(cfg, vocab=vocab)
+    dataset = SyntheticVideoTextRetrievalDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -292,4 +292,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyVideoTextRetrievalDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticVideoTextRetrievalDataset", "Vocab", "get_dataloaders"]

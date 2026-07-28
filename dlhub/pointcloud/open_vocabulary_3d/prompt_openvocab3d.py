@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_open_vocabulary_3d_model, smoke_test_open_vocabulary_3d_model
+from ._common import build_baseline_open_vocabulary_3d_model, smoke_test_open_vocabulary_3d_model
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "prompt_openvocab3d_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_prompt_openvocab3d_open_vocabulary_3d_model(
     *, in_channels: int, variant: str = "prompt_openvocab3d_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_open_vocabulary_3d_model(
+    return build_baseline_open_vocabulary_3d_model(
         family="prompt_openvocab3d",
         mode="prompt",
         variants=_VARIANTS,

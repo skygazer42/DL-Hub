@@ -7,7 +7,7 @@ from dlhub.vision.segmentation._common import BackboneC2C3C4C5, check_nchw
 
 
 class RefineNet(nn.Module):
-    """RefineNet-style semantic segmentation (toy-first).
+    """RefineNet-style semantic segmentation (compact-first).
 
     Uses a top-down refinement pathway over multi-scale backbone features.
     """

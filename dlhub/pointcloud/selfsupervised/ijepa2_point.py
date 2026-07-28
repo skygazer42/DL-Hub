@@ -81,7 +81,7 @@ class PatchPredictor(nn.Module):
 
 
 class IJEPA2PointMAE(nn.Module):
-    """Toy-first I-JEPA-style masked prediction for point clouds.
+    """Compact-first I-JEPA-style masked prediction for point clouds.
 
     - Student: patch transformer with mask tokens + predictor head.
     - Teacher: patch transformer without masking (EMA updated from student).

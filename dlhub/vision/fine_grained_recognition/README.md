@@ -1,6 +1,6 @@
 # Fine-Grained Visual Recognition (FGVC)
 
-本目录提供**细粒度视觉识别**（Fine-Grained Visual Recognition, FGVC）的 toy-first / pure-torch 实现：
+本目录提供**细粒度视觉识别**（Fine-Grained Visual Recognition, FGVC）的 compact-first / pure-torch 实现：
 
 - 不依赖预训练权重，不触发任何下载
 - 统一为 `build_*_fgvc_classifier(...)` 工厂函数
@@ -17,7 +17,7 @@ python scripts/fine_grained_recognition_zoo.py --smoke dlfgvc:transfg_tiny
 
 ## Timeline (按年份的代表性里程碑)
 
-注意：这里的实现是**教学/验证友好**的“结构化 toy 版本”，目的是让你能在本仓库里快速跑通 forward/backward、做对比实验，
+注意：这里的实现是**教学/验证友好**的“结构化 compact 版本”，目的是让你能在本仓库里快速跑通 forward/backward、做对比实验，
 而不是逐行复现论文的完整训练 recipe 或性能。
 
 | 年份 | 代表方法 | 本仓库 family / 例子 |
@@ -56,7 +56,7 @@ python scripts/fine_grained_recognition_zoo.py --timeline
 说明：
 
 - 年份为 best-effort（以代表性论文/最早常用版本为主），与预印本/期刊最终版本可能存在 1 年左右差异
-- 本仓库实现是 “toy 结构复刻”，用于学习、对比与快速验证；不承诺复现原论文完整训练 recipe
+- 本仓库实现是 “compact 结构复刻”，用于学习、对比与快速验证；不承诺复现原论文完整训练 recipe
 - 归档元数据来源：`dlhub/vision/fine_grained_recognition/_timeline.py`
 
 | 年份 | Group | family | 方法 (简写) | 例子 |

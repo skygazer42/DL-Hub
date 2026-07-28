@@ -1,8 +1,6 @@
 # Vision Panoptic Segmentation Zoo (40 Families) Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add a pure-torch, toy-first panoptic segmentation zoo with ~40 algorithm families, each implemented as a full `nn.Module` in a single file with variants and a `__main__` smoke test, plus pytest forward/backward smoke coverage.
+**Goal:** Add a pure-torch, compact-first panoptic segmentation zoo with ~40 algorithm families, each implemented as a full `nn.Module` in a single file with variants and a `__main__` smoke test, plus pytest forward/backward smoke coverage.
 
 **Architecture:** Create a dedicated package `dlhub/vision/panoptic_segmentation/` with a shared `_common.py` (tiny backbones, FPN, prototype masks, and panoptic fusion). Each algorithm family lives in its own file and exposes `build_<name>_panoptic_segmenter(...)`. Add a single pytest that instantiates each builder on a small input and runs forward + backward.
 
@@ -46,7 +44,7 @@
 - Add each algorithm name to the pytest parametrization list and run the test to confirm it fails because the file/builder doesn’t exist yet.
 
 **Step 2: GREEN**
-- Implement the file with a toy-first architecture that produces at least:
+- Implement the file with a compact-first architecture that produces at least:
   - `semantic_logits` (B, num_thing+num_stuff, H, W)
   - `mask_logits` (B, N, H, W)
   - an instance confidence signal (e.g. `query_cls_logits` or `instance_scores`)

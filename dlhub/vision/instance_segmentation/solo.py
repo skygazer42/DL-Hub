@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class SOLO(nn.Module):
-    """SOLO-style instance segmentation (toy-first).
+    """SOLO-style instance segmentation (compact-first).
 
     Outputs:
     - cat_logits: (B, C, H/8, W/8)

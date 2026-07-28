@@ -40,7 +40,7 @@ class _MSBackbone(nn.Module):
 
 
 class VoxelNeXt(nn.Module):
-    """VoxelNeXt (toy): multi-scale BEV backbone + dense head."""
+    """VoxelNeXt (compact): multi-scale BEV backbone + dense head."""
 
     def __init__(
         self,

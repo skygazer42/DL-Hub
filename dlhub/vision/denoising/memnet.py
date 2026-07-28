@@ -58,7 +58,7 @@ class _MemoryBlock(nn.Module):
 
 
 class MemNet(nn.Module):
-    """MemNet (Persistent Memory Network) adapted for denoising (toy-first, pure torch).
+    """MemNet (Persistent Memory Network) adapted for denoising (compact-first, pure torch).
 
     MemNet is typically used for image restoration; here we keep resolution and predict a residual/noise map.
     Output is `x - residual`.

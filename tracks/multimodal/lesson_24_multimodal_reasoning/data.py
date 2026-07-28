@@ -93,7 +93,7 @@ def _render_color_patch(color_name: str, image_size: int) -> torch.Tensor:
     return image.clamp(0.0, 1.0)
 
 
-class ToyMultimodalReasoningDataset(Dataset):
+class SyntheticMultimodalReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, vocab: Vocab) -> None:
         self.cfg = cfg
         self.vocab = vocab
@@ -153,7 +153,7 @@ class ToyMultimodalReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyMultimodalReasoningDataset(cfg, vocab)
+    dataset = SyntheticMultimodalReasoningDataset(cfg, vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )

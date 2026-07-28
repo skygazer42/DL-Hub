@@ -30,7 +30,7 @@ class _BackboneStride4(nn.Module):
 
 
 class SCNetPanoptic(nn.Module):
-    """SCNet-style panoptic segmentation (toy-first).
+    """SCNet-style panoptic segmentation (compact-first).
 
     ROI queries gated by global context + lightweight mask head, plus a semantic head for stuff.
     """

@@ -27,7 +27,7 @@ class TinyGeoEncoder(nn.Module):
         return F.normalize(F.adaptive_avg_pool2d(feat, (1, 1)).flatten(1), dim=1)
 
 
-class ToyGeoLocalizer(nn.Module):
+class CompactGeoLocalizer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, embed_dim: int):
         super().__init__()
         self.family = str(family)
@@ -46,7 +46,7 @@ class ToyGeoLocalizer(nn.Module):
         return out
 
 
-def build_toy_geo(
+def build_baseline_geo(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -57,7 +57,7 @@ def build_toy_geo(
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     embed = max(64, int(int(spec["embed"]) * float(width_mult)))
-    return ToyGeoLocalizer(
+    return CompactGeoLocalizer(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_process_supervision_prompting_batch_mask_and_loss_smoke() -> None:
-    from tracks.llm.lesson_26_toy_process_supervision_prompting.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_26_toy_process_supervision_prompting.model import (
+    from tracks.llm.lesson_26_compact_process_supervision_prompting.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_26_compact_process_supervision_prompting.model import (
         ModelConfig,
         ProcessSupervisionTransformerLM,
     )
@@ -57,8 +57,8 @@ def test_llm_process_supervision_prompting_batch_mask_and_loss_smoke() -> None:
 
 
 def test_llm_process_supervision_prompting_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_26_toy_process_supervision_prompting.data import DataConfig
-    from tracks.llm.lesson_26_toy_process_supervision_prompting.train import TrainConfig, run_training
+    from tracks.llm.lesson_26_compact_process_supervision_prompting.data import DataConfig
+    from tracks.llm.lesson_26_compact_process_supervision_prompting.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -96,7 +96,7 @@ def test_llm_process_supervision_prompting_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_26_toy_process_supervision_prompting"
+        / "lesson_26_compact_process_supervision_prompting"
         / "pytest_process_supervision_prompting_smoke"
     )
     assert (run_dir / "config.json").is_file()

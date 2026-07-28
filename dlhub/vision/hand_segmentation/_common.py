@@ -82,7 +82,7 @@ class TinyHandSegmentor(nn.Module):
         }
 
 
-def build_toy_hand_segmentor(
+def build_baseline_hand_segmentor(
     *,
     family: str,
     mode: str,

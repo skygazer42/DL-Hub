@@ -6,12 +6,12 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_diffusion_inpainting_data_and_model_contract() -> None:
-    from tracks.generative.lesson_14_toy_diffusion_inpainting.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_14_toy_diffusion_inpainting.model import (
+def test_compact_diffusion_inpainting_data_and_model_contract() -> None:
+    from tracks.generative.lesson_14_compact_diffusion_inpainting.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_14_compact_diffusion_inpainting.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyInpaintingDiffusionModel,
+        CompactInpaintingDiffusionModel,
         q_sample,
     )
 
@@ -26,7 +26,7 @@ def test_toy_diffusion_inpainting_data_and_model_contract() -> None:
 
     cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=16)
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToyInpaintingDiffusionModel(cfg)
+    model = CompactInpaintingDiffusionModel(cfg)
 
     noise = torch.randn_like(target_image)
     timesteps = torch.randint(low=0, high=schedule.num_steps, size=(6,), dtype=torch.long)
@@ -48,10 +48,10 @@ def test_toy_diffusion_inpainting_data_and_model_contract() -> None:
     assert torch.allclose(sampled[known_region], context_image[known_region], atol=1e-3)
 
 
-def test_toy_diffusion_inpainting_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_14_toy_diffusion_inpainting.data import DataConfig
-    from tracks.generative.lesson_14_toy_diffusion_inpainting.model import DiffusionSchedule, ModelConfig
-    from tracks.generative.lesson_14_toy_diffusion_inpainting.train import TrainConfig, run_training
+def test_compact_diffusion_inpainting_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from tracks.generative.lesson_14_compact_diffusion_inpainting.data import DataConfig
+    from tracks.generative.lesson_14_compact_diffusion_inpainting.model import DiffusionSchedule, ModelConfig
+    from tracks.generative.lesson_14_compact_diffusion_inpainting.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -71,7 +71,7 @@ def test_toy_diffusion_inpainting_training_and_dry_run(tmp_path, monkeypatch: py
     )
 
     assert exit_code == 0
-    run_dir = tmp_path / "generative" / "lesson_14_toy_diffusion_inpainting" / "pytest_inpainting_smoke"
+    run_dir = tmp_path / "generative" / "lesson_14_compact_diffusion_inpainting" / "pytest_inpainting_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
@@ -83,7 +83,7 @@ def test_toy_diffusion_inpainting_training_and_dry_run(tmp_path, monkeypatch: py
             sys.executable,
             "scripts/run_lesson.py",
             "generative",
-            "lesson_14_toy_diffusion_inpainting",
+            "lesson_14_compact_diffusion_inpainting",
             "--dry-run",
         ],
         check=False,
@@ -91,4 +91,4 @@ def test_toy_diffusion_inpainting_training_and_dry_run(tmp_path, monkeypatch: py
         text=True,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.generative.lesson_14_toy_diffusion_inpainting.train" in proc.stdout
+    assert "tracks.generative.lesson_14_compact_diffusion_inpainting.train" in proc.stdout

@@ -20,7 +20,7 @@ class _DWConvTower(nn.Module):
 
 
 class RTMDetHead(nn.Module):
-    """RTMDet-style decoupled head (toy)."""
+    """RTMDet-style decoupled head (compact)."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 2) -> None:
         super().__init__()
@@ -72,7 +72,7 @@ class PAFPN(nn.Module):
 
 
 class RTMDetDetector(nn.Module):
-    """RTMDet-style real-time detector (toy-first)."""
+    """RTMDet-style real-time detector (compact-first)."""
 
     def __init__(
         self,

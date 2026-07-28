@@ -85,7 +85,7 @@ class TinyObjectDiscoverer(nn.Module):
         }
 
 
-def build_toy_object_discoverer(
+def build_baseline_object_discoverer(
     *,
     family: str,
     mode: str,

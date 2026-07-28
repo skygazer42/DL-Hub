@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_salient_instance_segmentor, smoke_test_salient_instance_segmentor
+from ._common import build_baseline_salient_instance_segmentor, smoke_test_salient_instance_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_mamba_siseg_salient_instance_segmentor(
     *, in_channels: int, variant: str = "mamba_siseg_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_salient_instance_segmentor(
+    return build_baseline_salient_instance_segmentor(
         family="mamba_siseg",
         mode="mamba",
         variants=_VARIANTS,

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_inter, smoke_test_inter
+from ._common import build_baseline_inter, smoke_test_inter
 
 _VARIANTS = {
     "boxprompt_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_boxprompt_(
     *, in_channels: int, variant: str = "boxprompt_small", width_mult: float = 1.0
 ):
-    return build_toy_inter(
+    return build_baseline_inter(
         family="boxprompt",
         variants=_VARIANTS,
         in_channels=int(in_channels),

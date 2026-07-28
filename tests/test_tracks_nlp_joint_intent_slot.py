@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_joint_intent_slot_batch_contract() -> None:
-    from tracks.nlp.lesson_26_toy_joint_intent_slot_parsing.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_26_toy_joint_intent_slot_parsing.model import (
+    from tracks.nlp.lesson_26_compact_joint_intent_slot_parsing.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_26_compact_joint_intent_slot_parsing.model import (
         JointIntentSlotModel,
         ModelConfig,
         compute_joint_metrics,
@@ -71,8 +71,8 @@ def test_joint_intent_slot_batch_contract() -> None:
 
 
 def test_joint_intent_slot_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_26_toy_joint_intent_slot_parsing.data import DataConfig
-    from tracks.nlp.lesson_26_toy_joint_intent_slot_parsing.train import TrainConfig, run_training
+    from tracks.nlp.lesson_26_compact_joint_intent_slot_parsing.data import DataConfig
+    from tracks.nlp.lesson_26_compact_joint_intent_slot_parsing.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -106,7 +106,7 @@ def test_joint_intent_slot_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_26_toy_joint_intent_slot_parsing"
+        / "lesson_26_compact_joint_intent_slot_parsing"
         / "pytest_joint_intent_slot_smoke"
     )
     assert (run_dir / "config.json").is_file()

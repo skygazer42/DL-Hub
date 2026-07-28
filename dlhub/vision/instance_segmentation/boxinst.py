@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nch
 
 
 class BoxInst(nn.Module):
-    """BoxInst-style instance segmentation (toy-first).
+    """BoxInst-style instance segmentation (compact-first).
 
     BoxInst trains masks using only boxes; here we focus on the model skeleton:
     dense box prediction + dynamic masks from a mask feature map.

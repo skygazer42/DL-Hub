@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_face_occlusion_estimator, smoke_test_face_occlusion_estimator
+from ._common import build_baseline_face_occlusion_estimator, smoke_test_face_occlusion_estimator
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_occlusion_cnn_face_occlusion_estimator(
     variant: str = "occlusion_cnn_face_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_face_occlusion_estimator(
+    return build_baseline_face_occlusion_estimator(
         family="occlusion_cnn_face",
         mode="occlusion_cnn",
         variants=_VARIANTS,

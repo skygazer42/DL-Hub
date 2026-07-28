@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyImageSynthesizer(nn.Module):
+class CompactImageSynthesizer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -23,7 +23,7 @@ class ToyImageSynthesizer(nn.Module):
         return {"generated": generated}
 
 
-def build_toy_generator(
+def build_baseline_generator(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -33,7 +33,7 @@ def build_toy_generator(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyImageSynthesizer(
+    return CompactImageSynthesizer(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

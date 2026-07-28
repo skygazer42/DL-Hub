@@ -26,7 +26,7 @@ class TinyEncoder(nn.Module):
         return F.normalize(F.adaptive_avg_pool2d(feat, (1, 1)).flatten(1), dim=1)
 
 
-class ToyFewShot(nn.Module):
+class CompactFewShot(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, embed_dim: int):
         super().__init__()
         self.family = str(family)
@@ -39,7 +39,7 @@ class ToyFewShot(nn.Module):
         return {"similarity": q @ s.t()}
 
 
-def build_toy_fewshot(
+def build_baseline_fewshot(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -50,7 +50,7 @@ def build_toy_fewshot(
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     embed = max(64, int(int(spec["embed"]) * float(width_mult)))
-    return ToyFewShot(
+    return CompactFewShot(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

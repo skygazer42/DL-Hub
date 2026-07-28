@@ -1,4 +1,4 @@
-"""pedestrian detection models (toy-first, pure torch)."""
+"""pedestrian detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

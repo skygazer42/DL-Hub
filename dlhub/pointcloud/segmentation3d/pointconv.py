@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointConvSeg(nn.Module):
-    """PointConv semantic segmentation (toy): uses PointNet++ style hierarchy as a proxy."""
+    """PointConv semantic segmentation (compact): uses PointNet++ style hierarchy as a proxy."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, dropout: float = 0.0

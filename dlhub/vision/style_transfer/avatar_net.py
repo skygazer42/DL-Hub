@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class FeatureDecoration(nn.Module):
-    """Toy 'feature decoration' (WCT + lightweight attention refinement)."""
+    """Compact 'feature decoration' (WCT + lightweight attention refinement)."""
 
     def __init__(self, channels: int) -> None:
         super().__init__()
@@ -38,7 +38,7 @@ class FeatureDecoration(nn.Module):
 
 
 class AvatarNetStyleTransfer(nn.Module):
-    """Avatar-Net style transfer (toy).
+    """Avatar-Net style transfer (compact).
 
     The original method decorates content features with style features across multiple scales.
     Here we keep a simplified version:

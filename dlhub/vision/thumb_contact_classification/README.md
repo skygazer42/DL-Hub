@@ -1,6 +1,6 @@
 # Thumb Contact Classification
 
-Toy-first local families for `thumb contact classification`.
+Compact-first local families for `thumb contact classification`.
 
 ## Families
 

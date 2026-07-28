@@ -139,7 +139,7 @@ class ProtoNet(nn.Module):
 
 
 class DensePredHead(nn.Module):
-    """Dense prediction head for one-stage instance segmentation (toy-first)."""
+    """Dense prediction head for one-stage instance segmentation (compact-first)."""
 
     def __init__(
         self,

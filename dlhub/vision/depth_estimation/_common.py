@@ -40,7 +40,7 @@ class TinyDepthEstimator(nn.Module):
         return {"depth": depth}
 
 
-def build_toy_depth_estimator(
+def build_baseline_depth_estimator(
     *,
     family: str,
     variants: dict[str, dict[str, int]],

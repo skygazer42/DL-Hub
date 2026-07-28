@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_forecasting_model, smoke_test_forecasting_model
+from ._common import build_baseline_forecasting_model, smoke_test_forecasting_model
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_motion_field_forecast_forecasting_model(
     variant: str = "motion_field_forecast_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_forecasting_model(
+    return build_baseline_forecasting_model(
         family="motion_field_forecast",
         mode="motion",
         variants=_VARIANTS,

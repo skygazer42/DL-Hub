@@ -67,7 +67,7 @@ class TinyImageStylizer(nn.Module):
         return {"stylized": stylized, "residual": stylized - image}
 
 
-def build_toy_stylizer(
+def build_baseline_stylizer(
     *,
     family: str,
     mode: str,

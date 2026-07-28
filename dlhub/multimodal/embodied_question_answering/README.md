@@ -1,6 +1,6 @@
 # Embodied question answering
 
-Toy-first local families for `embodied_question_answering`.
+Compact-first local families for `embodied_question_answering`.
 
 ## Families
 

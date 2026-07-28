@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_hw, smoke_test_hw
+from ._common import build_baseline_hw, smoke_test_hw
 
 _VARIANTS = {
     "attention_hwr_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_attention_hwr_handwriting_recognizer(
     variant: str = "attention_hwr_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_hw(
+    return build_baseline_hw(
         family="attention_hwr",
         variants=_VARIANTS,
         input_dim=int(input_dim),

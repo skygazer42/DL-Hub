@@ -13,9 +13,9 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class DeformableDETRPanoptic(nn.Module):
-    """Deformable-DETR-style panoptic segmentation (toy-first).
+    """Deformable-DETR-style panoptic segmentation (compact-first).
 
-    This toy version mimics the key idea: multi-scale memory tokens and query-based masks.
+    This compact version mimics the key idea: multi-scale memory tokens and query-based masks.
     It does NOT implement true deformable attention; instead it uses a lightweight transformer
     over concatenated multi-scale tokens.
     """

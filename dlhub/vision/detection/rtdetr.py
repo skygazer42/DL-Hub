@@ -7,7 +7,7 @@ from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_h
 
 
 class RTDETRDetector(nn.Module):
-    """RT-DETR *style* (toy).
+    """RT-DETR *style* (compact).
 
     Uses a lightweight conv encoder before the transformer decoder.
     """

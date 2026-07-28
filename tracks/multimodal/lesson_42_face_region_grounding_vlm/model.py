@@ -46,7 +46,7 @@ class FaceRegionGroundingConfig:
     vision_width: int = 32
 
 
-class ToyFaceRegionGroundingModel(nn.Module):
+class CompactFaceRegionGroundingModel(nn.Module):
     def __init__(self, cfg: FaceRegionGroundingConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -98,7 +98,7 @@ def face_region_grounding_loss(pred_boxes: torch.Tensor, target_boxes: torch.Ten
 
 __all__ = [
     "FaceRegionGroundingConfig",
-    "ToyFaceRegionGroundingModel",
+    "CompactFaceRegionGroundingModel",
     "box_iou_xyxy",
     "face_region_grounding_loss",
 ]

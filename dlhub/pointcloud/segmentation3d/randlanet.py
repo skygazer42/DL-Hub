@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class RandLANetSeg(nn.Module):
-    """RandLA-Net semantic segmentation (toy): random/decimated hierarchy + attention pooling."""
+    """RandLA-Net semantic segmentation (compact): random/decimated hierarchy + attention pooling."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, k: int, dropout: float = 0.0

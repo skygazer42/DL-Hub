@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_self_refine_prompting_batch_mask_and_loss_smoke() -> None:
-    from tracks.llm.lesson_17_toy_self_refine_prompting.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_17_toy_self_refine_prompting.model import (
+    from tracks.llm.lesson_17_compact_self_refine_prompting.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_17_compact_self_refine_prompting.model import (
         ModelConfig,
         SelfRefineTransformerLM,
     )
@@ -57,8 +57,8 @@ def test_llm_self_refine_prompting_batch_mask_and_loss_smoke() -> None:
 
 
 def test_llm_self_refine_prompting_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_17_toy_self_refine_prompting.data import DataConfig
-    from tracks.llm.lesson_17_toy_self_refine_prompting.train import TrainConfig, run_training
+    from tracks.llm.lesson_17_compact_self_refine_prompting.data import DataConfig
+    from tracks.llm.lesson_17_compact_self_refine_prompting.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -93,7 +93,7 @@ def test_llm_self_refine_prompting_training_smoke(tmp_path) -> None:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
     run_dir = (
-        tmp_path / "outputs" / "llm" / "lesson_17_toy_self_refine_prompting" / "pytest_self_refine_prompting_smoke"
+        tmp_path / "outputs" / "llm" / "lesson_17_compact_self_refine_prompting" / "pytest_self_refine_prompting_smoke"
     )
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()

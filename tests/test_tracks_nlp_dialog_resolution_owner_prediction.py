@@ -7,11 +7,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_dialog_resolution_owner_prediction_batch_contract() -> None:
-    from tracks.nlp.lesson_47_toy_dialog_resolution_owner_prediction.data import (
+    from tracks.nlp.lesson_47_compact_dialog_resolution_owner_prediction.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_47_toy_dialog_resolution_owner_prediction.model import (
+    from tracks.nlp.lesson_47_compact_dialog_resolution_owner_prediction.model import (
         DialogResolutionOwnerClassifier,
         ModelConfig,
         compute_accuracy,
@@ -59,8 +59,8 @@ def test_dialog_resolution_owner_prediction_batch_contract() -> None:
 
 
 def test_dialog_resolution_owner_prediction_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_47_toy_dialog_resolution_owner_prediction.data import DataConfig
-    from tracks.nlp.lesson_47_toy_dialog_resolution_owner_prediction.train import (
+    from tracks.nlp.lesson_47_compact_dialog_resolution_owner_prediction.data import DataConfig
+    from tracks.nlp.lesson_47_compact_dialog_resolution_owner_prediction.train import (
         TrainConfig,
         run_training,
     )
@@ -96,7 +96,7 @@ def test_dialog_resolution_owner_prediction_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_47_toy_dialog_resolution_owner_prediction"
+        / "lesson_47_compact_dialog_resolution_owner_prediction"
         / "pytest_dialog_resolution_owner_prediction_smoke"
     )
     assert (run_dir / "config.json").is_file()

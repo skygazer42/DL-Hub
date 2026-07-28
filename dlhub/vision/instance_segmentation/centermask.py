@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class CenterMask(nn.Module):
-    """CenterMask-style instance segmentation (toy-first).
+    """CenterMask-style instance segmentation (compact-first).
 
     Center-based detection heads + prototype-mask representation.
     """

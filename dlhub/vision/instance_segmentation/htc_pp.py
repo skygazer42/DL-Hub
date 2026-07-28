@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class HTCPP(nn.Module):
-    """HTCPP-style instance segmentation (toy-first).
+    """HTCPP-style instance segmentation (compact-first).
 
     Uses learned queries with cross-attention over a feature map, then predicts masks via prototypes.
     """

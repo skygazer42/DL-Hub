@@ -1,6 +1,6 @@
 # Face Landmark Detection
 
-Toy-first local families for `face landmark detection`.
+Compact-first local families for `face landmark detection`.
 
 ## Families
 

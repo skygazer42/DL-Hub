@@ -1,4 +1,4 @@
-# Lesson 31: Person-Search Attribute Retrieval (Toy)
+# Lesson 31: Person-Search Attribute Retrieval (Compact)
 
 This lesson maps person-search to a tiny image-text retrieval setup inspired by Re-ID:
 synthetic person images are paired with short attribute queries like
@@ -29,5 +29,5 @@ python -m tracks.multimodal.lesson_31_person_search_attribute_retrieval.train --
 
 ## Notes
 
-- This is intentionally toy-first for data flow and retrieval mechanics.
+- This is intentionally compact-first for data flow and retrieval mechanics.
 - It is not a production Re-ID system and uses simple synthetic visuals.

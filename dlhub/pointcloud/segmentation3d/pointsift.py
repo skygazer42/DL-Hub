@@ -28,7 +28,7 @@ class _ScaleMix(nn.Module):
 
 
 class PointSIFTSeg(nn.Module):
-    """PointSIFT semantic segmentation (toy): multi-scale neighbor mixing."""
+    """PointSIFT semantic segmentation (compact): multi-scale neighbor mixing."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, ks: tuple[int, int, int]

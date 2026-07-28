@@ -65,22 +65,22 @@ This track is intentionally ordered as a fifty-eight-step path:
 
 That progression maps directly to the fifty-eight current lessons:
 
-- `lesson_01_clip_toy_retrieval/`
-- `lesson_02_blip_toy_captioning/`
-- `lesson_03_llava_toy_instruction_vlm/`
-- `lesson_04_grounding_toy_refexp/`
-- `lesson_05_mask_grounding_toy_refexp/`
-- `lesson_06_flamingo_toy_interleaved_vlm/`
-- `lesson_07_qformer_toy_bridge_vlm/`
-- `lesson_08_perceiver_resampler_toy_vlm/`
-- `lesson_09_paligemma_toy_siglip_decoder_vlm/`
-- `lesson_10_owlvit_toy_open_vocab_detection/`
-- `lesson_11_grounded_sam_toy_open_vocab_segmentation/`
-- `lesson_12_key_value_ocr_toy_doc_vlm/`
-- `lesson_13_video_vlm_toy_temporal_qa/`
-- `lesson_14_bmn_toy_temporal_grounding/`
-- `lesson_15_2dtan_toy_temporal_grounding/`
-- `lesson_16_multiscale_2dtan_toy_temporal_grounding/`
+- `lesson_01_clip_compact_retrieval/`
+- `lesson_02_blip_compact_captioning/`
+- `lesson_03_llava_compact_instruction_vlm/`
+- `lesson_04_grounding_compact_refexp/`
+- `lesson_05_mask_grounding_compact_refexp/`
+- `lesson_06_flamingo_compact_interleaved_vlm/`
+- `lesson_07_qformer_compact_bridge_vlm/`
+- `lesson_08_perceiver_resampler_compact_vlm/`
+- `lesson_09_paligemma_compact_siglip_decoder_vlm/`
+- `lesson_10_owlvit_compact_open_vocab_detection/`
+- `lesson_11_grounded_sam_compact_open_vocab_segmentation/`
+- `lesson_12_key_value_ocr_compact_doc_vlm/`
+- `lesson_13_video_vlm_compact_temporal_qa/`
+- `lesson_14_bmn_compact_temporal_grounding/`
+- `lesson_15_2dtan_compact_temporal_grounding/`
+- `lesson_16_multiscale_2dtan_compact_temporal_grounding/`
 - `lesson_17_video_text_retrieval/`
 - `lesson_18_prompt_learning_vlm/`
 - `lesson_19_audio_text_understanding/`
@@ -139,7 +139,7 @@ Use the track to understand the ideas. Use the zoo to browse families, variants,
 
 ### Lesson 1: CLIP-Style Retrieval
 
-Path: `lesson_01_clip_toy_retrieval/`
+Path: `lesson_01_clip_compact_retrieval/`
 
 Core idea:
 
@@ -155,7 +155,7 @@ You should finish this lesson understanding:
 
 ### Lesson 2: BLIP-Lite Captioning And ITM
 
-Path: `lesson_02_blip_toy_captioning/`
+Path: `lesson_02_blip_compact_captioning/`
 
 Core idea:
 
@@ -171,7 +171,7 @@ You should finish this lesson understanding:
 
 ### Lesson 3: LLaVA-Lite Visual Instruction VLM
 
-Path: `lesson_03_llava_toy_instruction_vlm/`
+Path: `lesson_03_llava_compact_instruction_vlm/`
 
 Core idea:
 
@@ -187,7 +187,7 @@ You should finish this lesson understanding:
 
 ### Lesson 4: Grounding-Lite Referring Expressions
 
-Path: `lesson_04_grounding_toy_refexp/`
+Path: `lesson_04_grounding_compact_refexp/`
 
 Core idea:
 
@@ -203,7 +203,7 @@ You should finish this lesson understanding:
 
 ### Lesson 5: Mask-Grounding-Lite Referring Expressions
 
-Path: `lesson_05_mask_grounding_toy_refexp/`
+Path: `lesson_05_mask_grounding_compact_refexp/`
 
 Core idea:
 
@@ -219,7 +219,7 @@ You should finish this lesson understanding:
 
 ### Lesson 6: Flamingo-Lite Interleaved VLM
 
-Path: `lesson_06_flamingo_toy_interleaved_vlm/`
+Path: `lesson_06_flamingo_compact_interleaved_vlm/`
 
 Core idea:
 
@@ -235,7 +235,7 @@ You should finish this lesson understanding:
 
 ### Lesson 7: Q-Former-Lite Bridge VLM
 
-Path: `lesson_07_qformer_toy_bridge_vlm/`
+Path: `lesson_07_qformer_compact_bridge_vlm/`
 
 Core idea:
 
@@ -251,7 +251,7 @@ You should finish this lesson understanding:
 
 ### Lesson 8: Perceiver-Resampler-Lite VLM
 
-Path: `lesson_08_perceiver_resampler_toy_vlm/`
+Path: `lesson_08_perceiver_resampler_compact_vlm/`
 
 Core idea:
 
@@ -267,7 +267,7 @@ You should finish this lesson understanding:
 
 ### Lesson 9: PaliGemma-Lite SigLIP Decoder VLM
 
-Path: `lesson_09_paligemma_toy_siglip_decoder_vlm/`
+Path: `lesson_09_paligemma_compact_siglip_decoder_vlm/`
 
 Core idea:
 
@@ -283,7 +283,7 @@ You should finish this lesson understanding:
 
 ### Lesson 10: OWL-ViT-Lite Open-Vocabulary Detection
 
-Path: `lesson_10_owlvit_toy_open_vocab_detection/`
+Path: `lesson_10_owlvit_compact_open_vocab_detection/`
 
 Core idea:
 
@@ -299,7 +299,7 @@ You should finish this lesson understanding:
 
 ### Lesson 11: Grounded-SAM-Lite Open-Vocabulary Segmentation
 
-Path: `lesson_11_grounded_sam_toy_open_vocab_segmentation/`
+Path: `lesson_11_grounded_sam_compact_open_vocab_segmentation/`
 
 Core idea:
 
@@ -313,9 +313,9 @@ You should finish this lesson understanding:
 - why positive-only mask losses must be gated by presence
 - how a small prompt encoder and mask decoder can explain Grounded-SAM-like behavior
 
-### Lesson 12: Key-Value OCR-Lite Toy Document VLM
+### Lesson 12: Key-Value OCR-Lite Compact Document VLM
 
-Path: `lesson_12_key_value_ocr_toy_doc_vlm/`
+Path: `lesson_12_key_value_ocr_compact_doc_vlm/`
 
 Core idea:
 
@@ -329,9 +329,9 @@ You should finish this lesson understanding:
 - why a fixed field inventory still teaches a useful OCR extraction pattern
 - how lesson 9's text-generation interface extends naturally into document understanding
 
-### Lesson 13: Video-VLM-Lite Toy Temporal QA
+### Lesson 13: Video-VLM-Lite Compact Temporal QA
 
-Path: `lesson_13_video_vlm_toy_temporal_qa/`
+Path: `lesson_13_video_vlm_compact_temporal_qa/`
 
 Core idea:
 
@@ -345,9 +345,9 @@ You should finish this lesson understanding:
 - why frame encoding plus temporal aggregation is a clean teaching bridge into video-language modeling
 - how motion questions differ from single-image QA even when the decoder interface stays the same
 
-### Lesson 14: BMN-Lite Toy Temporal Grounding
+### Lesson 14: BMN-Lite Compact Temporal Grounding
 
-Path: `lesson_14_bmn_toy_temporal_grounding/`
+Path: `lesson_14_bmn_compact_temporal_grounding/`
 
 Core idea:
 
@@ -361,9 +361,9 @@ You should finish this lesson understanding:
 - how boundary supervision and proposal supervision complement each other
 - why BMN-style proposal maps are a useful teaching bridge into temporal localization
 
-### Lesson 15: 2D-TAN-Lite Toy Temporal Grounding
+### Lesson 15: 2D-TAN-Lite Compact Temporal Grounding
 
-Path: `lesson_15_2dtan_toy_temporal_grounding/`
+Path: `lesson_15_2dtan_compact_temporal_grounding/`
 
 Core idea:
 
@@ -377,9 +377,9 @@ You should finish this lesson understanding:
 - how 2D temporal maps differ from boundary-first proposal scoring
 - why segment-level structure can be encoded before final scoring
 
-### Lesson 16: Multi-Scale 2D-TAN-Lite Toy Temporal Grounding
+### Lesson 16: Multi-Scale 2D-TAN-Lite Compact Temporal Grounding
 
-Path: `lesson_16_multiscale_2dtan_toy_temporal_grounding/`
+Path: `lesson_16_multiscale_2dtan_compact_temporal_grounding/`
 
 Core idea:
 
@@ -454,7 +454,7 @@ Core idea:
 You should finish this lesson understanding:
 
 - how synchronized audio and video complement each other for event recognition
-- why a small fusion block is enough to expose cross-modal gains in a toy setting
+- why a small fusion block is enough to expose cross-modal gains in a compact setting
 - how clip-level multimodal classification differs from text-conditioned retrieval or generation
 
 ### Lesson 21: Audio-Grounded Retrieval
@@ -525,22 +525,22 @@ You should finish this lesson understanding:
 
 | Lesson | Main Task | Input Form | Model Bridge | Main Loss | Main Metrics |
 |---|---|---|---|---|---|
-| `lesson_01_clip_toy_retrieval` | image-text retrieval | image + attribute text | shared embedding space | contrastive loss | image-to-text acc, text-to-image acc |
-| `lesson_02_blip_toy_captioning` | captioning + ITM | image + sentence caption | visual token fusion into decoder | caption CE + ITM CE | token acc, exact match, ITM acc |
-| `lesson_03_llava_toy_instruction_vlm` | visual QA | image + instruction | projected visual prefix into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
-| `lesson_04_grounding_toy_refexp` | referring-expression grounding | image + referring expression | per-cell text-conditioned fusion | cell CE + box regression | cell acc, bbox L1, center acc |
-| `lesson_05_mask_grounding_toy_refexp` | mask grounding | image + referring expression | per-location text-conditioned fusion | BCE with logits + dice | mask IoU, dice, foreground acc |
-| `lesson_06_flamingo_toy_interleaved_vlm` | interleaved few-shot VLM | support images + query image + prompt | image-slot injection in decoder stream | QA token CE | answer token acc, exact match |
-| `lesson_07_qformer_toy_bridge_vlm` | query-bottleneck visual QA | image + question | learned query bridge into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
-| `lesson_08_perceiver_resampler_toy_vlm` | multi-view resampled visual QA | full scene + crop views + question | Perceiver-style latent resampler into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
-| `lesson_09_paligemma_toy_siglip_decoder_vlm` | prompt-native multitask VLM | image + task prompt | SigLIP-style vision tokens into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
-| `lesson_10_owlvit_toy_open_vocab_detection` | open-vocabulary detection | image + text query | per-cell text-conditioned detector | presence BCE + cell CE + box regression | presence acc, bbox L1, center acc |
-| `lesson_11_grounded_sam_toy_open_vocab_segmentation` | open-vocabulary segmentation | image + text query | prompt-conditioned mask decoder | presence BCE + mask BCE + dice | presence acc, mask IoU, dice, foreground acc |
-| `lesson_12_key_value_ocr_toy_doc_vlm` | key-value document OCR | document image + field prompt | visual prefix into decoder LM | answer token CE | answer token acc, exact match, present acc |
-| `lesson_13_video_vlm_toy_temporal_qa` | temporal video QA | short video + question prompt | frame encoder + temporal aggregator into decoder LM | answer token CE | answer token acc, exact match, yes/no acc |
-| `lesson_14_bmn_toy_temporal_grounding` | temporal grounding | short video + event query | query-conditioned temporal encoder + BMN-lite proposal map | start BCE + end BCE + proposal MSE | start acc, end acc, mean tIoU, R@1 IoU=0.5 |
-| `lesson_15_2dtan_toy_temporal_grounding` | temporal grounding | short video + event query | dense 2D temporal segment map + 2D conv scoring | masked map MSE | mean tIoU, R@1 IoU=0.5, R@1 IoU=0.7 |
-| `lesson_16_multiscale_2dtan_toy_temporal_grounding` | temporal grounding | short video + event query | multi-scale dense temporal segment maps + fused scoring | fused map MSE + auxiliary masked map MSE | mean tIoU, R@1 IoU=0.5, R@1 IoU=0.7 |
+| `lesson_01_clip_compact_retrieval` | image-text retrieval | image + attribute text | shared embedding space | contrastive loss | image-to-text acc, text-to-image acc |
+| `lesson_02_blip_compact_captioning` | captioning + ITM | image + sentence caption | visual token fusion into decoder | caption CE + ITM CE | token acc, exact match, ITM acc |
+| `lesson_03_llava_compact_instruction_vlm` | visual QA | image + instruction | projected visual prefix into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
+| `lesson_04_grounding_compact_refexp` | referring-expression grounding | image + referring expression | per-cell text-conditioned fusion | cell CE + box regression | cell acc, bbox L1, center acc |
+| `lesson_05_mask_grounding_compact_refexp` | mask grounding | image + referring expression | per-location text-conditioned fusion | BCE with logits + dice | mask IoU, dice, foreground acc |
+| `lesson_06_flamingo_compact_interleaved_vlm` | interleaved few-shot VLM | support images + query image + prompt | image-slot injection in decoder stream | QA token CE | answer token acc, exact match |
+| `lesson_07_qformer_compact_bridge_vlm` | query-bottleneck visual QA | image + question | learned query bridge into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
+| `lesson_08_perceiver_resampler_compact_vlm` | multi-view resampled visual QA | full scene + crop views + question | Perceiver-style latent resampler into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
+| `lesson_09_paligemma_compact_siglip_decoder_vlm` | prompt-native multitask VLM | image + task prompt | SigLIP-style vision tokens into decoder LM | QA token CE | answer token acc, exact match, yes/no acc |
+| `lesson_10_owlvit_compact_open_vocab_detection` | open-vocabulary detection | image + text query | per-cell text-conditioned detector | presence BCE + cell CE + box regression | presence acc, bbox L1, center acc |
+| `lesson_11_grounded_sam_compact_open_vocab_segmentation` | open-vocabulary segmentation | image + text query | prompt-conditioned mask decoder | presence BCE + mask BCE + dice | presence acc, mask IoU, dice, foreground acc |
+| `lesson_12_key_value_ocr_compact_doc_vlm` | key-value document OCR | document image + field prompt | visual prefix into decoder LM | answer token CE | answer token acc, exact match, present acc |
+| `lesson_13_video_vlm_compact_temporal_qa` | temporal video QA | short video + question prompt | frame encoder + temporal aggregator into decoder LM | answer token CE | answer token acc, exact match, yes/no acc |
+| `lesson_14_bmn_compact_temporal_grounding` | temporal grounding | short video + event query | query-conditioned temporal encoder + BMN-lite proposal map | start BCE + end BCE + proposal MSE | start acc, end acc, mean tIoU, R@1 IoU=0.5 |
+| `lesson_15_2dtan_compact_temporal_grounding` | temporal grounding | short video + event query | dense 2D temporal segment map + 2D conv scoring | masked map MSE | mean tIoU, R@1 IoU=0.5, R@1 IoU=0.7 |
+| `lesson_16_multiscale_2dtan_compact_temporal_grounding` | temporal grounding | short video + event query | multi-scale dense temporal segment maps + fused scoring | fused map MSE + auxiliary masked map MSE | mean tIoU, R@1 IoU=0.5, R@1 IoU=0.7 |
 | `lesson_17_video_text_retrieval` | video-text retrieval | short video + text query | frame encoder + temporal pooling into shared embedding space | symmetric contrastive loss | top-1 retrieval acc, recall@3 |
 | `lesson_18_prompt_learning_vlm` | prompt learning retrieval | image + learnable prompt text | frozen encoders + soft text prompts | contrastive loss on prompted text embeddings | top-1 retrieval acc, prompt-only adaptation gap |
 | `lesson_19_audio_text_understanding` | audio-text retrieval + event classification | waveform clip + event text | audio encoder + text encoder in shared event space | symmetric contrastive loss + event CE | retrieval acc, event acc |
@@ -571,103 +571,103 @@ python scripts/run_lesson.py multimodal --list
 Dry-run a specific lesson:
 
 ```bash
-python scripts/run_lesson.py multimodal lesson_03_llava_toy_instruction_vlm --dry-run
+python scripts/run_lesson.py multimodal lesson_03_llava_compact_instruction_vlm --dry-run
 ```
 
 Smoke run lesson 1:
 
 ```bash
-python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_clip
+python -m tracks.multimodal.lesson_01_clip_compact_retrieval.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_clip
 ```
 
 Smoke run lesson 2:
 
 ```bash
-python -m tracks.multimodal.lesson_02_blip_toy_captioning.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_blip
+python -m tracks.multimodal.lesson_02_blip_compact_captioning.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_blip
 ```
 
 Smoke run lesson 3:
 
 ```bash
-python -m tracks.multimodal.lesson_03_llava_toy_instruction_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_llava
+python -m tracks.multimodal.lesson_03_llava_compact_instruction_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_llava
 ```
 
 Smoke run lesson 4:
 
 ```bash
-python -m tracks.multimodal.lesson_04_grounding_toy_refexp.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_grounding
+python -m tracks.multimodal.lesson_04_grounding_compact_refexp.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_grounding
 ```
 
 Smoke run lesson 5:
 
 ```bash
-python -m tracks.multimodal.lesson_05_mask_grounding_toy_refexp.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_mask_grounding
+python -m tracks.multimodal.lesson_05_mask_grounding_compact_refexp.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_mask_grounding
 ```
 
 Smoke run lesson 6:
 
 ```bash
-python -m tracks.multimodal.lesson_06_flamingo_toy_interleaved_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_flamingo
+python -m tracks.multimodal.lesson_06_flamingo_compact_interleaved_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_flamingo
 ```
 
 Smoke run lesson 7:
 
 ```bash
-python -m tracks.multimodal.lesson_07_qformer_toy_bridge_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_qformer
+python -m tracks.multimodal.lesson_07_qformer_compact_bridge_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_qformer
 ```
 
 Smoke run lesson 8:
 
 ```bash
-python -m tracks.multimodal.lesson_08_perceiver_resampler_toy_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_perceiver
+python -m tracks.multimodal.lesson_08_perceiver_resampler_compact_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_perceiver
 ```
 
 Smoke run lesson 9:
 
 ```bash
-python -m tracks.multimodal.lesson_09_paligemma_toy_siglip_decoder_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_paligemma
+python -m tracks.multimodal.lesson_09_paligemma_compact_siglip_decoder_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_paligemma
 ```
 
 Smoke run lesson 10:
 
 ```bash
-python -m tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_owlvit
+python -m tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_owlvit
 ```
 
 Smoke run lesson 11:
 
 ```bash
-python -m tracks.multimodal.lesson_11_grounded_sam_toy_open_vocab_segmentation.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_grounded_sam
+python -m tracks.multimodal.lesson_11_grounded_sam_compact_open_vocab_segmentation.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_grounded_sam
 ```
 
 Smoke run lesson 12:
 
 ```bash
-python -m tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_key_value_ocr
+python -m tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_key_value_ocr
 ```
 
 Smoke run lesson 13:
 
 ```bash
-python -m tracks.multimodal.lesson_13_video_vlm_toy_temporal_qa.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_video_vlm
+python -m tracks.multimodal.lesson_13_video_vlm_compact_temporal_qa.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_video_vlm
 ```
 
 Smoke run lesson 14:
 
 ```bash
-python -m tracks.multimodal.lesson_14_bmn_toy_temporal_grounding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_bmn
+python -m tracks.multimodal.lesson_14_bmn_compact_temporal_grounding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_bmn
 ```
 
 Smoke run lesson 15:
 
 ```bash
-python -m tracks.multimodal.lesson_15_2dtan_toy_temporal_grounding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_2dtan
+python -m tracks.multimodal.lesson_15_2dtan_compact_temporal_grounding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_2dtan
 ```
 
 Smoke run lesson 16:
 
 ```bash
-python -m tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_multiscale_2dtan
+python -m tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.train --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 1 --run-name smoke_multiscale_2dtan
 ```
 
 Smoke run lesson 17:

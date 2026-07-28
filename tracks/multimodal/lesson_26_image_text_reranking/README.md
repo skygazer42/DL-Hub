@@ -1,4 +1,4 @@
-# Lesson 26: Image-Text Reranking (Toy)
+# Lesson 26: Image-Text Reranking (Compact)
 
 This lesson builds a tiny cross-modal reranker for a single image and a small list of
 candidate text descriptions.
@@ -18,4 +18,4 @@ python -m tracks.multimodal.lesson_26_image_text_reranking.train --device cpu --
 ## Notes
 
 - The model is intentionally small: two tiny encoders and a shallow scorer MLP.
-- This is a toy lesson for data flow and training structure, not production retrieval quality.
+- This is a compact lesson for data flow and training structure, not production retrieval quality.

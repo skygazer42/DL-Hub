@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_face_retriever, smoke_test_face_retriever
+from ._common import build_baseline_face_retriever, smoke_test_face_retriever
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_proxy_retrieval_face_face_retriever(
     variant: str = "proxy_retrieval_face_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_face_retriever(
+    return build_baseline_face_retriever(
         family="proxy_retrieval_face",
         mode="proxy",
         variants=_VARIANTS,

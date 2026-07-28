@@ -10,7 +10,7 @@ def check_btj2(x):
     return x
 
 
-class ToyPose3D(nn.Module):
+class CompactPose3D(nn.Module):
     def __init__(self, *, family: str, num_joints: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -29,7 +29,7 @@ class ToyPose3D(nn.Module):
         return {"pose3d": out}
 
 
-def build_toy_pose3d(
+def build_baseline_pose3d(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -39,7 +39,7 @@ def build_toy_pose3d(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyPose3D(
+    return CompactPose3D(
         family=str(family), num_joints=int(num_joints), width=width, depth=int(spec["depth"])
     )
 

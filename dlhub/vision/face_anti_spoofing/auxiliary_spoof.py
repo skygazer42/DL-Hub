@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_spoofer, smoke_test_spoof
+from ._common import build_baseline_spoofer, smoke_test_spoof
 
 _VARIANTS = {
     "auxiliary_spoof_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_auxiliary_spoof_anti_spoofer(
     *, in_channels: int, variant: str = "auxiliary_spoof_small", width_mult: float = 1.0
 ):
-    return build_toy_spoofer(
+    return build_baseline_spoofer(
         family="auxiliary_spoof",
         variants=_VARIANTS,
         in_channels=int(in_channels),

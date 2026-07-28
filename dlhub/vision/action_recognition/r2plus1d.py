@@ -1,9 +1,9 @@
-"""R(2+1)D - toy-first video action classifier.
+"""R(2+1)D - compact-first video action classifier.
 
 Reference:
 - "A Closer Look at Spatiotemporal Convolutions for Action Recognition" (CVPR 2018)
 
-Toy interpretation:
+Compact interpretation:
 - Replace a 3D conv with a factorized (1,3,3) spatial conv followed by (3,1,1) temporal conv.
 - Build a tiny residual stack, global average pool, then classify.
 """

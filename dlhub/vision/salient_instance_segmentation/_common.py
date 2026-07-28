@@ -87,7 +87,7 @@ class TinySalientInstanceSegmentor(nn.Module):
         }
 
 
-def build_toy_salient_instance_segmentor(
+def build_baseline_salient_instance_segmentor(
     *,
     family: str,
     mode: str,

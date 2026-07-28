@@ -82,7 +82,7 @@ class TinySalientDetector(nn.Module):
         }
 
 
-def build_toy_salient_detector(
+def build_baseline_salient_detector(
     *,
     family: str,
     mode: str,

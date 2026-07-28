@@ -26,7 +26,7 @@ class TinyEncoder(nn.Module):
         return F.normalize(F.adaptive_avg_pool2d(self.net(check_nchw(x)), (1, 1)).flatten(1), dim=1)
 
 
-class ToyCrossView(nn.Module):
+class CompactCrossView(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, embed_dim: int):
         super().__init__()
         self.family = str(family)
@@ -39,7 +39,7 @@ class ToyCrossView(nn.Module):
         return {"aerial_embedding": a, "ground_embedding": g, "similarity": a @ g.t()}
 
 
-def build_toy_cross_view(
+def build_baseline_cross_view(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -50,7 +50,7 @@ def build_toy_cross_view(
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     embed = max(64, int(int(spec["embed"]) * float(width_mult)))
-    return ToyCrossView(
+    return CompactCrossView(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

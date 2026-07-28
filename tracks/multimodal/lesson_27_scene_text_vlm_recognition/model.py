@@ -49,7 +49,7 @@ class SceneTextRecognizerConfig:
     text_width: int = 32
 
 
-class ToySceneTextRecognizer(nn.Module):
+class CompactSceneTextRecognizer(nn.Module):
     def __init__(self, cfg: SceneTextRecognizerConfig) -> None:
         super().__init__()
         self.scene_encoder = TinySceneEncoder(int(cfg.vision_width))
@@ -87,7 +87,7 @@ __all__ = [
     "SceneTextRecognizerConfig",
     "TextPromptEncoder",
     "TinySceneEncoder",
-    "ToySceneTextRecognizer",
+    "CompactSceneTextRecognizer",
     "recognition_accuracy",
     "recognition_loss",
 ]

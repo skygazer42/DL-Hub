@@ -53,7 +53,7 @@ class CrossAttentionBlock(nn.Module):
 
 
 class TexturestyleStyleTransfer(nn.Module):
-    """Transformer style transfer (StyTr2-like, toy).
+    """Transformer style transfer (StyTr2-like, compact).
 
     Keeps the core idea: cross-attention between content and style feature tokens.
     """

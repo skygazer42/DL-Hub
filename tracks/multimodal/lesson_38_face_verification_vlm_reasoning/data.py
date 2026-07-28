@@ -118,7 +118,7 @@ def _render_face(*, image_size: int, identity_id: int, variant_seed: int) -> tor
     return torch.from_numpy(image).unsqueeze(0)
 
 
-class ToyFaceVerificationDataset(Dataset):
+class SyntheticFaceVerificationDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 32:
             raise ValueError("image_size must be >= 32")
@@ -172,7 +172,7 @@ class ToyFaceVerificationDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceVerificationDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceVerificationDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -195,4 +195,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyFaceVerificationDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticFaceVerificationDataset", "Vocab", "get_dataloaders"]

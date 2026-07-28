@@ -1,7 +1,5 @@
 # Federated Learning Zoo Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add a first federated-learning algorithm zoo with classic optimization families, timeline metadata, CLI discovery, and smoke tests.
 
 **Architecture:** Create a new top-level `dlhub/federated/` package that exposes one family per file, plus a lightweight simulation-oriented strategy interface for one communication round. Mirror the existing zoo pattern used elsewhere in the repo: timeline metadata, AST-discovered builders, `scripts/*_zoo.py` CLI, and pytest smoke coverage.
@@ -111,7 +109,7 @@ pytest -q tests/test_dlhub_federated_algorithms.py
 
 **Step 3: Write minimal implementation**
 
-- Keep implementations toy-first and simulation-first.
+- Keep implementations compact-first and simulation-first.
 - Each file must expose `_VARIANTS`, `build_*_strategy(...)`, and a `__main__` smoke path.
 - Use shared helpers instead of duplicating round-generation logic.
 

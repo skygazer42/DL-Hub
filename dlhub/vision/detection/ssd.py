@@ -100,7 +100,7 @@ class SSDHead(nn.Module):
 
 
 class SSDDetector(nn.Module):
-    """SSD-style single-stage detector (toy-first).
+    """SSD-style single-stage detector (compact-first).
 
     Forward returns raw outputs (no decoding):
     - cls_logits: list[(B, A*C, Hi, Wi)]

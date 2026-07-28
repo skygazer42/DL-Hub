@@ -1,4 +1,4 @@
-"""Image denoising algorithms (toy-first, pure torch implementations).
+"""Image denoising algorithms (compact-first, pure torch implementations).
 
 Conventions:
 - One algorithm family per file (variants live in that file).

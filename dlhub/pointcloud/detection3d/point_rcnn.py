@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointRCNN(nn.Module):
-    """PointRCNN (toy): stage1 point-wise objectness -> proposals -> ROI refinement."""
+    """PointRCNN (compact): stage1 point-wise objectness -> proposals -> ROI refinement."""
 
     def __init__(
         self,

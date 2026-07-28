@@ -1,6 +1,6 @@
 # Lesson 42: Face Region Grounding VLM
 
-This lesson builds a toy multimodal grounding model that takes a synthetic face image plus a
+This lesson builds a compact multimodal grounding model that takes a synthetic face image plus a
 region query and predicts the normalized bounding box for the queried face region.
 
 ## What It Teaches

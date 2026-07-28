@@ -1,4 +1,4 @@
-"""face identification models (toy-first, pure torch)."""
+"""face identification models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

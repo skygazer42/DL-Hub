@@ -37,7 +37,7 @@ class _Res2D(nn.Module):
 
 
 class SalsaNextSeg(nn.Module):
-    """SalsaNext semantic segmentation (toy): range-view UNet + residual refinement."""
+    """SalsaNext semantic segmentation (compact): range-view UNet + residual refinement."""
 
     def __init__(
         self,

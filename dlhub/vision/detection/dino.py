@@ -7,7 +7,7 @@ from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_h
 
 
 class DINODetector(nn.Module):
-    """DINO-style query detector (toy).
+    """DINO-style query detector (compact).
 
     This keeps two key DINO ideas in a lightweight form:
     - anchor-like reference boxes refined by decoder outputs

@@ -8,4 +8,4 @@ captures the standard structure used by modern 6D pose pipelines.
 
 - synthetic image generation for pose supervision
 - compact CNN-based pose regression
-- evaluation of normalized pose-vector error in a toy setup
+- evaluation of normalized pose-vector error in a compact setup

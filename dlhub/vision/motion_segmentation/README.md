@@ -1,6 +1,6 @@
 # Motion segmentation
 
-Toy-first local families for `motion segmentation`.
+Compact-first local families for `motion segmentation`.
 
 ## Families
 

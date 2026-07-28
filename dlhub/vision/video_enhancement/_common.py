@@ -10,7 +10,7 @@ def check_btchw(x):
     return x
 
 
-class ToyVideoEnhancer(nn.Module):
+class CompactVideoEnhancer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -31,7 +31,7 @@ class ToyVideoEnhancer(nn.Module):
         return {"enhanced": enhanced}
 
 
-def build_toy_video_enhancer(
+def build_baseline_video_enhancer(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -41,7 +41,7 @@ def build_toy_video_enhancer(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyVideoEnhancer(
+    return CompactVideoEnhancer(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

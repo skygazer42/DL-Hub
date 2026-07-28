@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class Groupformer3D(nn.Module):
-    """Groupformer3D (toy): transformer point encoder + query mask head."""
+    """Groupformer3D (compact): transformer point encoder + query mask head."""
 
     def __init__(
         self,

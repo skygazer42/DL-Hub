@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_world_model, smoke_test_world_model
+from ._common import build_baseline_world_model, smoke_test_world_model
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "latent_dynamics_world_tiny": {
@@ -37,7 +37,7 @@ def build_latent_dynamics_world_world_model(
     variant: str = "latent_dynamics_world_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_world_model(
+    return build_baseline_world_model(
         family="latent_dynamics_world",
         mode="latent_dynamics",
         variants=_VARIANTS,

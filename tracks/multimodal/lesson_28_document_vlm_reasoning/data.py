@@ -184,7 +184,7 @@ def _render_document(
     return image.clamp(0.0, 1.0)
 
 
-class ToyDocumentVlmReasoningDataset(Dataset):
+class SyntheticDocumentVlmReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         self.cfg = cfg
         self.vocab = vocab
@@ -243,7 +243,7 @@ class ToyDocumentVlmReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyDocumentVlmReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticDocumentVlmReasoningDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )

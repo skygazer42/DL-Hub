@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_classifier, smoke_test_hand_classifier
+from ._common import build_baseline_hand_classifier, smoke_test_hand_classifier
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_efficient_sign_digit_sign_digit_classifier(
     variant: str = "efficient_sign_digit_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_classifier(
+    return build_baseline_hand_classifier(
         family="efficient_sign_digit",
         mode="efficient",
         variants=_VARIANTS,

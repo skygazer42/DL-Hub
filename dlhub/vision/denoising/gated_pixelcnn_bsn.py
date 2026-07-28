@@ -89,7 +89,7 @@ class GatedPixelCNNBlindSpotBackbone(nn.Module):
 
 
 class GatedPixelCNNBSN(nn.Module):
-    """Gated PixelCNN masked-conv + rotation fusion blind-spot denoiser (toy-first).
+    """Gated PixelCNN masked-conv + rotation fusion blind-spot denoiser (compact-first).
 
     Same overall idea as `PixelCNNBSN`, but uses gated masked residual blocks.
     """

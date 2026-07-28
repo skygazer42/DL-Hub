@@ -75,7 +75,7 @@ class TinyShadowDetector(nn.Module):
         }
 
 
-def build_toy_shadow_detector(
+def build_baseline_shadow_detector(
     *,
     family: str,
     mode: str,

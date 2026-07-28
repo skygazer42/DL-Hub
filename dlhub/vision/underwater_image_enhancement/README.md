@@ -1,6 +1,6 @@
 # Underwater image enhancement
 
-Toy-first local families for `underwater image enhancement`.
+Compact-first local families for `underwater image enhancement`.
 
 ## Families
 

@@ -13,7 +13,7 @@ class SimpleGate(nn.Module):
 
 
 class NAFBlock(nn.Module):
-    """LightUNetDenoise block (Nonlinear Activation Free), toy-first implementation."""
+    """LightUNetDenoise block (Nonlinear Activation Free), compact-first implementation."""
 
     def __init__(
         self,
@@ -67,7 +67,7 @@ class NAFBlock(nn.Module):
 
 
 class LightUNetDenoise(nn.Module):
-    """LightUNetDenoise-style encoder/decoder denoiser (pure torch, toy-first)."""
+    """LightUNetDenoise-style encoder/decoder denoiser (pure torch, compact-first)."""
 
     def __init__(
         self,

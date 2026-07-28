@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_video_understander, smoke_test_vu
+from ._common import build_baseline_video_understander, smoke_test_vu
 
 _VARIANTS = {
     "e3dlstm_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_e3dlstm_(
     variant: str = "e3dlstm_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_video_understander(
+    return build_baseline_video_understander(
         family="e3dlstm",
         variants=_VARIANTS,
         in_channels=int(in_channels),

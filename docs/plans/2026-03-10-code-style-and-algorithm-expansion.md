@@ -1,7 +1,5 @@
 # Code Style And Algorithm Expansion Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Normalize the repository to its declared formatting/linting standards, then add a small, well-tested batch of new NumPy ML algorithms.
 
 **Architecture:** First align the existing codebase with the repo's declared `black`/`isort`/`ruff` standards using automated formatting plus targeted lint fixes. Then expand `ml_algorithms/python` with deterministic, lightweight algorithms that fit the current educational scope and are easy to regression test.

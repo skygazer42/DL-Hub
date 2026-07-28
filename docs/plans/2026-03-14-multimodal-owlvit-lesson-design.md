@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection` as an independent teaching lesson for open-vocabulary detection with text queries.
+**Goal:** Add `tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection` as an independent teaching lesson for open-vocabulary detection with text queries.
 
 ## Problem
 
@@ -159,7 +159,7 @@ Metrics:
 Follow the same conventions as lessons 1-9:
 
 - CLI args for dataset size, image size, grid size, text length, and batch caps
-- `outputs/multimodal/lesson_10_owlvit_toy_open_vocab_detection/<run_name>/`
+- `outputs/multimodal/lesson_10_owlvit_compact_open_vocab_detection/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

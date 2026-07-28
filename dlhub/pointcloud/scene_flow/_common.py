@@ -52,7 +52,7 @@ class _ResidualMixer(nn.Module):
         return x + self.ffn(torch.cat([self.norm(x), ctx], dim=-1))
 
 
-class ToySceneFlowEstimator(nn.Module):
+class CompactSceneFlowEstimator(nn.Module):
     """Compact scene-flow estimator for local zoo coverage.
 
     The model is intentionally lightweight: it encodes paired point features, mixes
@@ -132,7 +132,7 @@ def build_scene_flow_estimator(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToySceneFlowEstimator(
+    return CompactSceneFlowEstimator(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

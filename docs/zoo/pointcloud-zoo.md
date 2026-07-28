@@ -11,7 +11,7 @@ icon: material/cube-outline
 ## CLI 快速上手
 
 ```bash
-# 列出全部 64 个架构 ID（本地实现的 ID 使用 `pc:` 前缀）
+# 列出全部 64 个注册 ID（本地实现的 ID 使用 `pc:` 前缀）
 python scripts/pointcloud_zoo.py --list
 
 # 模糊搜索
@@ -19,13 +19,6 @@ python scripts/pointcloud_zoo.py --list --search pointnet
 
 # Smoke Test（前向推理验证）
 python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
-```
-
-也可以直接在 lesson_04 中一行切换 backbone：
-
-```bash
-python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
-  --arch pointnet --dataset fake --epochs 1
 ```
 
 ---

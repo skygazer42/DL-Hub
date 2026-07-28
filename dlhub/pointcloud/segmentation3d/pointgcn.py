@@ -26,7 +26,7 @@ class _GraphConv(nn.Module):
 
 
 class PointGCNSeg(nn.Module):
-    """PointGCN semantic segmentation (toy): kNN graph conv layers."""
+    """PointGCN semantic segmentation (compact): kNN graph conv layers."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int

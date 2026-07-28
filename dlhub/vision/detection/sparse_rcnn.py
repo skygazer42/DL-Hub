@@ -6,7 +6,7 @@ from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_h
 
 
 class SparseRCNNDetector(nn.Module):
-    """Sparse R-CNN *style* (toy).
+    """Sparse R-CNN *style* (compact).
 
     Implements a small query-based ROI refinement loop without external ops.
     Output:

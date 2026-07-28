@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PanopticQuery3D(nn.Module):
-    """PanopticQuery3D (toy): transformer point encoder + query mask head."""
+    """PanopticQuery3D (compact): transformer point encoder + query mask head."""
 
     def __init__(
         self,

@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nch
 
 
 class CondInst(nn.Module):
-    """CondInst-style instance segmentation (toy-first).
+    """CondInst-style instance segmentation (compact-first).
 
     Generates dynamic mask kernels from detection features and applies them to a mask feature map.
     """

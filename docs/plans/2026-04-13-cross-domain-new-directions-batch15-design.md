@@ -5,7 +5,7 @@
 ## Goal
 
 Add one new 100-family expansion batch built from **10 previously unimplemented directions** across
-`vision`, `pointcloud`, `multimodal`, and `generative`, with **10 toy-first families per direction**.
+`vision`, `pointcloud`, `multimodal`, and `generative`, with **10 compact-first families per direction**.
 
 This batch is intentionally scoped to:
 
@@ -27,7 +27,7 @@ The batch must follow four rules:
 
 1. Every chosen direction must be absent as a first-class package in the current repository.
 2. The batch should stay cross-domain instead of collapsing into a `vision`-only expansion.
-3. Every direction must fit the existing `10 families + toy-first + tiny/small/base` contract.
+3. Every direction must fit the existing `10 families + compact-first + tiny/small/base` contract.
 4. Shared integration changes must stay on a final integration branch rather than leaking into
    direction branches.
 
@@ -177,9 +177,9 @@ modern variants.
 
 ### 9. Image-to-Video
 
-- `i2vgen_toy`
-- `lavie_toy`
-- `dynami_toy`
+- `i2vgen_baseline`
+- `lavie_baseline`
+- `dynami_baseline`
 - `motion_adapter_i2v`
 - `temporal_unet_i2v`
 - `cascade_i2v`
@@ -190,7 +190,7 @@ modern variants.
 
 ### 10. Image-to-3D
 
-- `zero123_toy`
+- `zero123_baseline`
 - `triplane_i23d`
 - `lift3d_i23d`
 - `mesh_i23d`
@@ -215,7 +215,7 @@ Each family file must follow the same contract:
 
 - define `_VARIANTS` for `tiny`, `small`, and `base`
 - expose exactly one public builder
-- remain toy-first and CPU-friendly
+- remain compact-first and CPU-friendly
 - include a `__main__` smoke path
 
 ## Builder Suffixes

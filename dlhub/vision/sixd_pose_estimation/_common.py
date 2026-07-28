@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyPose6D(nn.Module):
+class CompactPose6D(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, num_objects: int):
         super().__init__()
         self.family = str(family)
@@ -45,7 +45,7 @@ class ToyPose6D(nn.Module):
         }
 
 
-def build_toy_pose6d(
+def build_baseline_pose6d(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -56,7 +56,7 @@ def build_toy_pose6d(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyPose6D(
+    return CompactPose6D(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

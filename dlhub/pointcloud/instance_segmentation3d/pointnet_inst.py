@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointNetInst(nn.Module):
-    """PointNet instance segmentation (toy): Point MLP encoder + prototype masks."""
+    """PointNet instance segmentation (compact): Point MLP encoder + prototype masks."""
 
     def __init__(
         self,

@@ -1,4 +1,4 @@
-"""Lesson 85: synthetic scene text spotting (toy-first)."""
+"""Lesson 85: synthetic scene text spotting (compact-first)."""
 
 from .data import DataConfig, SyntheticSceneTextSpottingDataset, SpottingVocab, get_dataloaders
 from .model import (

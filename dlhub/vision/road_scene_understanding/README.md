@@ -1,6 +1,6 @@
 # Road Scene Understanding
 
-Toy-first local families for `road scene understanding`.
+Compact-first local families for `road scene understanding`.
 
 ## Families
 

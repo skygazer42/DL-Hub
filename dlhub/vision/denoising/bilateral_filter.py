@@ -25,7 +25,7 @@ def _spatial_kernel(
 
 
 class BilateralFilter(nn.Module):
-    """Bilateral filter baseline (torch-only, toy-first).
+    """Bilateral filter baseline (torch-only, compact-first).
 
     Applies edge-preserving smoothing by combining:
     - spatial weighting (distance in pixel grid)

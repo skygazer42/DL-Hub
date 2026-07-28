@@ -40,7 +40,7 @@ class Stats:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 07 (NLP): toy reading comprehension (span prediction)."
+        description="Lesson 07 (NLP): compact reading comprehension (span prediction)."
     )
 
     parser.add_argument("--num-samples", type=int, default=2048)
@@ -155,7 +155,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     paths = build_run_paths(
         track="nlp", lesson="lesson_07_reading_comprehension", run_name=train_cfg.run_name
     )
-    logger = get_logger("nlp.toy_rc", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("nlp.synthetic_rc", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 

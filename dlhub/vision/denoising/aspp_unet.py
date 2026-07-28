@@ -42,7 +42,7 @@ class _Up(nn.Module):
 
 
 class ASPP(nn.Module):
-    """Atrous Spatial Pyramid Pooling (ASPP), toy-first."""
+    """Atrous Spatial Pyramid Pooling (ASPP), compact-first."""
 
     def __init__(
         self, in_ch: int, out_ch: int, *, dilations: tuple[int, ...] = (1, 2, 4, 6)
@@ -82,7 +82,7 @@ class ASPP(nn.Module):
 
 
 class ASPPUNet(nn.Module):
-    """U-Net + ASPP bottleneck denoiser (toy-first, pure torch).
+    """U-Net + ASPP bottleneck denoiser (compact-first, pure torch).
 
     Uses ASPP at the bottleneck to aggregate multi-dilation context.
     Predicts a residual/noise map and returns `x - residual`.

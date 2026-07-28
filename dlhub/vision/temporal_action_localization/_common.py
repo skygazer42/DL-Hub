@@ -1,37 +1,32 @@
+"""Shared GRU baseline for temporal action-localization aliases."""
+
 from __future__ import annotations
+
 import torch
 from torch import nn
 
 
-def check_nchw(x):
-    x = x.to(torch.float32)
-    if x.ndim != 4:
-        raise ValueError(f"Expected input shape (B,C,H,W), got {tuple(x.shape)}")
-    return x
+class TemporalActionLocalizationBaseline(nn.Module):
+    """Project frame features through a stacked GRU and prediction heads."""
 
-
-class TinyEncoder(nn.Module):
-    def __init__(self, in_channels: int, width: int, depth: int):
-        super().__init__()
-        c = int(width)
-        layers = [nn.Conv2d(int(in_channels), c, 3, 1, 1), nn.ReLU(inplace=True)]
-        for _ in range(max(1, int(depth))):
-            layers += [nn.Conv2d(c, c, 3, 1, 1), nn.ReLU(inplace=True)]
-        self.net = nn.Sequential(*layers)
-        self.out_channels = c
-
-    def forward(self, x):
-        return self.net(check_nchw(x))
-
-
-class ToyModel(nn.Module):
     def __init__(
-        self, *, family: str, in_channels: int, width: int, depth: int, num_classes: int = 5
+        self,
+        *,
+        registered_alias: str,
+        in_channels: int,
+        width: int,
+        depth: int,
+        num_classes: int = 5,
     ):
         super().__init__()
-        self.family = str(family)
+        self.registered_alias = str(registered_alias)
         self.proj = nn.Linear(int(in_channels), int(width))
-        self.temporal = nn.GRU(int(width), int(width), batch_first=True)
+        self.temporal = nn.GRU(
+            int(width),
+            int(width),
+            num_layers=max(1, int(depth)),
+            batch_first=True,
+        )
         self.cls = nn.Linear(int(width), int(num_classes))
         self.boundary = nn.Linear(int(width), 2)
 
@@ -44,9 +39,9 @@ class ToyModel(nn.Module):
         return {"class_logits": self.cls(seq), "boundaries": torch.sigmoid(self.boundary(seq))}
 
 
-def build_toy_model(
+def build_temporal_action_localization_baseline(
     *,
-    family: str,
+    registered_alias: str,
     variants: dict[str, dict[str, int]],
     in_channels: int,
     variant: str,
@@ -54,10 +49,12 @@ def build_toy_model(
     num_classes: int = 5,
     **kwargs,
 ):
+    """Build the shared baseline behind a registered compatibility alias."""
+
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyModel(
-        family=str(family),
+    return TemporalActionLocalizationBaseline(
+        registered_alias=str(registered_alias),
         in_channels=int(in_channels),
         width=width,
         depth=int(spec["depth"]),

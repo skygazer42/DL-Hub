@@ -83,7 +83,7 @@ class TinyFaceIdentifier(nn.Module):
         return {"embedding": embedding, "logits": logits}
 
 
-def build_toy_face_identifier(
+def build_baseline_face_identifier(
     *,
     family: str,
     mode: str,

@@ -1,6 +1,6 @@
-# Lesson 13 — PointCloud：自监督表征的 Linear Probe / Fine-tune（toy-first）
+# Lesson 13 — PointCloud：自监督表征的 Linear Probe / Fine-tune（compact-first）
 
-目标：把前面自监督（SimCLR / BYOL / VICReg）学到的表征，接一个 **线性分类头** 做 toy 分类（Cube vs Sphere）。
+目标：把前面自监督（SimCLR / BYOL / VICReg）学到的表征，接一个 **线性分类头** 做 compact 分类（Cube vs Sphere）。
 
 你可以用两种模式：
 

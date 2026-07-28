@@ -1,6 +1,6 @@
 # Lens flare removal
 
-Toy-first local families for `lens flare removal`.
+Compact-first local families for `lens flare removal`.
 
 ## Families
 

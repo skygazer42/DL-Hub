@@ -91,7 +91,7 @@ class TinyHomographyEstimator(nn.Module):
         return {"offsets": offsets, "homography": homo, "confidence": confidence}
 
 
-def build_toy_homography_estimator(
+def build_baseline_homography_estimator(
     *,
     family: str,
     mode: str,

@@ -52,17 +52,17 @@ python -m tracks.vision.lesson_01_mnist_lenet.train --dataset fake
 
 **问题**：网络问题导致数据集下载失败或超时。
 
-**解决**：使用 `--dataset fake` 或 `--dataset toy` 模式进行离线测试。
+**解决**：可选真实数据的课程使用 `--dataset fake`；synthetic 课程默认使用内置数据。
 
 ```bash
-# 所有 lesson 都支持 fake 模式
+# MNIST 等可选真实数据课程支持 fake 模式
 python -m tracks.vision.lesson_01_mnist_lenet.train --dataset fake --epochs 1
 ```
 
 !!! info "fake 模式"
 
-    fake 模式使用随机生成的数据，形状与真实数据一致，
-    适用于验证代码逻辑、CI 测试、无网络环境。
+    fake 模式使用随机生成的数据，形状与真实数据一致。没有 `--dataset` 参数的课程
+    已经使用内置离线数据，可先运行 `run_lesson.py ... --describe` 查看实际能力。
 
 ---
 

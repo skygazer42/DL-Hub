@@ -35,7 +35,7 @@ def test_multimodal_face_verification_model_outputs() -> None:
     from tracks.multimodal.lesson_38_face_verification_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_38_face_verification_vlm_reasoning.model import (
         FaceVerificationConfig,
-        ToyFaceVerificationModel,
+        CompactFaceVerificationModel,
         verification_accuracy,
         verification_loss,
     )
@@ -52,7 +52,7 @@ def test_multimodal_face_verification_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFaceVerificationModel(
+    model = CompactFaceVerificationModel(
         FaceVerificationConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class OpenSceneInst(nn.Module):
-    """OpenSceneInst (toy): transformer point encoder + query mask head."""
+    """OpenSceneInst (compact): transformer point encoder + query mask head."""
 
     def __init__(
         self,

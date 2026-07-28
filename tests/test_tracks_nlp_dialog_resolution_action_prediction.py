@@ -7,12 +7,12 @@ torch = pytest.importorskip("torch")
 
 
 def test_dialog_resolution_action_prediction_batch_contract() -> None:
-    from tracks.nlp.lesson_48_toy_dialog_resolution_action_prediction.data import (
+    from tracks.nlp.lesson_48_compact_dialog_resolution_action_prediction.data import (
         ACTIONS,
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_48_toy_dialog_resolution_action_prediction.model import (
+    from tracks.nlp.lesson_48_compact_dialog_resolution_action_prediction.model import (
         DialogResolutionActionClassifier,
         ModelConfig,
         compute_accuracy,
@@ -60,8 +60,8 @@ def test_dialog_resolution_action_prediction_batch_contract() -> None:
 
 
 def test_dialog_resolution_action_prediction_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_48_toy_dialog_resolution_action_prediction.data import DataConfig
-    from tracks.nlp.lesson_48_toy_dialog_resolution_action_prediction.train import (
+    from tracks.nlp.lesson_48_compact_dialog_resolution_action_prediction.data import DataConfig
+    from tracks.nlp.lesson_48_compact_dialog_resolution_action_prediction.train import (
         TrainConfig,
         run_training,
     )
@@ -97,7 +97,7 @@ def test_dialog_resolution_action_prediction_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_48_toy_dialog_resolution_action_prediction"
+        / "lesson_48_compact_dialog_resolution_action_prediction"
         / "pytest_dialog_resolution_action_prediction_smoke"
     )
     assert (run_dir / "config.json").is_file()

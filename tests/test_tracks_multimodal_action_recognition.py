@@ -51,7 +51,7 @@ def test_multimodal_action_recognition_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_34_video_text_action_recognition.model import (
         ActionRecognitionModelConfig,
-        ToyActionRecognitionModel,
+        CompactActionRecognitionModel,
         action_recognition_loss,
         classification_accuracy,
     )
@@ -69,7 +69,7 @@ def test_multimodal_action_recognition_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyActionRecognitionModel(
+    model = CompactActionRecognitionModel(
         ActionRecognitionModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

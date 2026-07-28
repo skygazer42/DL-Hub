@@ -12,7 +12,7 @@ from dlhub.vision.instance_segmentation._common import (
 
 
 class RTMDetIns(nn.Module):
-    """RTMDet-Ins style anchor-free instance segmenter (toy-first)."""
+    """RTMDet-Ins style anchor-free instance segmenter (compact-first)."""
 
     def __init__(
         self,

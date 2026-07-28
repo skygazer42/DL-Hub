@@ -83,7 +83,7 @@ class TinyFaceOcclusionEstimator(nn.Module):
         }
 
 
-def build_toy_face_occlusion_estimator(
+def build_baseline_face_occlusion_estimator(
     *,
     family: str,
     mode: str,

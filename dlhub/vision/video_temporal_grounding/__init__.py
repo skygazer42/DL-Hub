@@ -1,4 +1,4 @@
-"""Video temporal grounding models (toy-first, pure torch)."""
+"""Video temporal-grounding registry and compact PyTorch baselines."""
 
 from __future__ import annotations
 from importlib import import_module

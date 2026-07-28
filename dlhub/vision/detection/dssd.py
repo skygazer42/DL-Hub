@@ -53,7 +53,7 @@ class _BackboneC3C5(nn.Module):
         c4 = self.c4(c3)
         c5 = self.c5(c4)
 
-        # DSSD-style fusion: deconv/top-down refinement (toy: nearest upsample + lateral add).
+        # DSSD-style fusion: deconv/top-down refinement (compact: nearest upsample + lateral add).
         p5 = self.lat5(c5)
         p4 = self.lat4(c4) + F.interpolate(p5, size=c4.shape[-2:], mode="nearest")
         p3 = c3 + F.interpolate(p4, size=c3.shape[-2:], mode="nearest")
@@ -96,7 +96,7 @@ class DSSDHead(nn.Module):
 
 
 class DSSDDetector(nn.Module):
-    """DSSD-style SSD with simple top-down refinement (toy-first)."""
+    """DSSD-style SSD with simple top-down refinement (compact-first)."""
 
     def __init__(
         self,

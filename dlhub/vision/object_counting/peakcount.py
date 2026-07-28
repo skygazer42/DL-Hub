@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_counter, smoke_test_counter
+from ._common import build_baseline_counter, smoke_test_counter
 
 _VARIANTS = {
     "peakcount_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_peakcount_(
     *, in_channels: int, variant: str = "peakcount_small", width_mult: float = 1.0
 ):
-    return build_toy_counter(
+    return build_baseline_counter(
         family="peakcount",
         variants=_VARIANTS,
         in_channels=int(in_channels),

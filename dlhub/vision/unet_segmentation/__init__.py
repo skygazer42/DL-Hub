@@ -1,4 +1,4 @@
-"""unet segmentation models (toy-first, pure torch)."""
+"""unet segmentation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -13,7 +13,7 @@ class SimpleGate(nn.Module):
 
 
 class NAFBlock(nn.Module):
-    """BlurfixDenoise block (Nonlinear Activation Free), toy-first implementation."""
+    """BlurfixDenoise block (Nonlinear Activation Free), compact-first implementation."""
 
     def __init__(
         self,
@@ -67,7 +67,7 @@ class NAFBlock(nn.Module):
 
 
 class BlurfixDenoise(nn.Module):
-    """BlurfixDenoise-style encoder/decoder denoiser (pure torch, toy-first)."""
+    """BlurfixDenoise-style encoder/decoder denoiser (pure torch, compact-first)."""
 
     def __init__(
         self,

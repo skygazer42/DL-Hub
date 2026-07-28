@@ -1,10 +1,10 @@
-from .data import DataConfig, EventSpec, ToyAudioGroundedRetrievalDataset, Vocab, get_dataloaders
+from .data import DataConfig, EventSpec, SyntheticAudioGroundedRetrievalDataset, Vocab, get_dataloaders
 from .model import (
     AudioGroundedRetrievalConfig,
     TextEncoder,
     TinyAudioEncoder,
     TinyFrameEncoder,
-    ToyAudioGroundedRetrievalModel,
+    CompactAudioGroundedRetrievalModel,
     clip_contrastive_loss,
     retrieval_accuracy,
 )
@@ -16,8 +16,8 @@ __all__ = [
     "TextEncoder",
     "TinyAudioEncoder",
     "TinyFrameEncoder",
-    "ToyAudioGroundedRetrievalDataset",
-    "ToyAudioGroundedRetrievalModel",
+    "SyntheticAudioGroundedRetrievalDataset",
+    "CompactAudioGroundedRetrievalModel",
     "Vocab",
     "clip_contrastive_loss",
     "get_dataloaders",

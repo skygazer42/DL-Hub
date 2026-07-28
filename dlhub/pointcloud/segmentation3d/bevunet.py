@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class BEVUNetSeg(nn.Module):
-    """BEV UNet semantic segmentation (toy): XY BEV projection + 2D UNet."""
+    """BEV UNet semantic segmentation (compact): XY BEV projection + 2D UNet."""
 
     def __init__(
         self,

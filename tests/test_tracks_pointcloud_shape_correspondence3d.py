@@ -7,12 +7,12 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_shape_correspondence3d_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_35_toy_shape_correspondence_3d.data import (
+    from tracks.pointcloud.lesson_35_compact_shape_correspondence_3d.data import (
         DataConfig,
-        ToyShapeCorrespondenceDataset,
+        SyntheticShapeCorrespondenceDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_35_toy_shape_correspondence_3d.model import (
+    from tracks.pointcloud.lesson_35_compact_shape_correspondence_3d.model import (
         ModelConfig,
         build_model,
         correspondence_accuracy,
@@ -30,7 +30,7 @@ def test_pointcloud_shape_correspondence3d_batch_contract_and_loss_smoke() -> No
         noise_std=0.01,
     )
 
-    ds = ToyShapeCorrespondenceDataset(cfg)
+    ds = SyntheticShapeCorrespondenceDataset(cfg)
     source, target, correspondence = ds[0]
     assert tuple(source.shape) == (48, 3)
     assert tuple(target.shape) == (48, 3)
@@ -72,9 +72,9 @@ def test_pointcloud_shape_correspondence3d_batch_contract_and_loss_smoke() -> No
 def test_pointcloud_shape_correspondence3d_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_35_toy_shape_correspondence_3d.data import DataConfig
-    from tracks.pointcloud.lesson_35_toy_shape_correspondence_3d.model import ModelConfig
-    from tracks.pointcloud.lesson_35_toy_shape_correspondence_3d.train import (
+    from tracks.pointcloud.lesson_35_compact_shape_correspondence_3d.data import DataConfig
+    from tracks.pointcloud.lesson_35_compact_shape_correspondence_3d.model import ModelConfig
+    from tracks.pointcloud.lesson_35_compact_shape_correspondence_3d.train import (
         TrainConfig,
         run_training,
     )
@@ -116,7 +116,7 @@ def test_pointcloud_shape_correspondence3d_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_35_toy_shape_correspondence_3d"
+        / "lesson_35_compact_shape_correspondence_3d"
         / "pytest_shape_corr3d_smoke"
     )
     assert (run_dir / "config.json").is_file()

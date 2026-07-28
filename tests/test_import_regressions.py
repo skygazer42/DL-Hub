@@ -132,9 +132,9 @@ REGRESSION_IMPORTS = (
     "tracks.gnn.lesson_06_graphsage_cora.train",
     "tracks.gnn.lesson_07_sdne_karate_embedding.train",
     "tracks.gnn.lesson_08_line_karate_embedding.train",
-    "tracks.gnn.lesson_09_metapath2vec_toy_hetero_embedding.train",
-    "tracks.gnn.lesson_10_pinsage_toy_recommender.train",
-    "tracks.gnn.lesson_11_rgcn_toy_node_classification.train",
+    "tracks.gnn.lesson_09_metapath2vec_compact_hetero_embedding.train",
+    "tracks.gnn.lesson_10_pinsage_compact_recommender.train",
+    "tracks.gnn.lesson_11_rgcn_compact_node_classification.train",
 )
 
 

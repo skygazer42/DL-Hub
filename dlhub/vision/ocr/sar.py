@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_ocr_model, smoke_test_ocr
+from ._common import build_baseline_ocr_model, smoke_test_ocr
 
 _VARIANTS = {
     "sar_tiny": {"width": 32, "depth": 1},
@@ -17,7 +17,7 @@ def build_sar_ocr_model(
     variant: str = "sar_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_ocr_model(
+    return build_baseline_ocr_model(
         family="sar",
         variants=_VARIANTS,
         in_channels=int(in_channels),

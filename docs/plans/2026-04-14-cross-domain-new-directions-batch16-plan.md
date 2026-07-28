@@ -1,12 +1,10 @@
 # Cross-Domain New Directions Batch 16 Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add 100 new toy-first algorithm families across 10 previously unimplemented directions spanning `vision`, `pointcloud`, `multimodal`, and `generative`, without adding lessons, dependencies, or pytest files.
+**Goal:** Add 100 new compact-first algorithm families across 10 previously unimplemented directions spanning `vision`, `pointcloud`, `multimodal`, and `generative`, without adding lessons, dependencies, or pytest files.
 
 **Architecture:** Create one package per new direction, one family per file, and one direction-local zoo or registry surface per direction. Keep each direction branch local-only, then land shared README and domain export wiring on one integration branch after all direction-level smoke checks pass.
 
-**Tech Stack:** Python 3, `torch`, repo-local toy model helpers, lazy package `__init__.py` files, explicit registries for `vision` and `multimodal`, AST-discovery zoos for `pointcloud` and `generative`, `.worktrees/` git worktrees, and minimal import/list smoke verification.
+**Tech Stack:** Python 3, `torch`, repo-local compact model helpers, lazy package `__init__.py` files, explicit registries for `vision` and `multimodal`, AST-discovery zoos for `pointcloud` and `generative`, `.worktrees/` git worktrees, and minimal import/list smoke verification.
 
 ---
 
@@ -106,7 +104,7 @@ build_<family>_deweatherer(...)
 **Step 3: Add the 10 family files**
 
 Each family file must define `_VARIANTS` for `tiny`, `small`, and `base`, expose one builder, stay
-toy-first and CPU-friendly, and include a `__main__` smoke path. Keep outputs weather-restoration
+compact-first and CPU-friendly, and include a `__main__` smoke path. Keep outputs weather-restoration
 focused rather than dataset-specific.
 
 **Step 4: Add `image_deweathering_zoo.py`**
@@ -134,7 +132,7 @@ Run:
 ```powershell
 git add dlhub/vision/image_deweathering dlhub/vision/image_deweathering_zoo.py
 @'
-Add toy-first image deweathering families as a standalone direction
+Add compact-first image deweathering families as a standalone direction
 
 This branch lands the local vision direction package and its explicit zoo
 without touching shared exports or the global README.
@@ -185,7 +183,7 @@ build_<family>_transparent_depth_model(...)
 
 **Step 3: Add the 10 family files**
 
-Keep outputs toy-first and transparent-geometry focused. Do not add extra shared abstractions
+Keep outputs compact-first and transparent-geometry focused. Do not add extra shared abstractions
 unless at least three files need the same helper.
 
 **Step 4: Add `transparent_depth_estimation_zoo.py`**
@@ -211,7 +209,7 @@ Run:
 ```powershell
 git add dlhub/vision/transparent_depth_estimation dlhub/vision/transparent_depth_estimation_zoo.py
 @'
-Add toy-first transparent depth estimation families as a standalone direction
+Add compact-first transparent depth estimation families as a standalone direction
 
 This branch lands the local vision direction package and its explicit zoo
 without touching shared exports or the global README.
@@ -262,7 +260,7 @@ build_<family>_forecasting_model(...)
 
 **Step 3: Add the 10 family files**
 
-Keep outputs toy-first and temporally aware. Do not add extra shared abstractions unless at least
+Keep outputs compact-first and temporally aware. Do not add extra shared abstractions unless at least
 three files need the same helper.
 
 **Step 4: Add `pointcloud_forecasting_zoo.py`**
@@ -289,7 +287,7 @@ Run:
 ```powershell
 git add dlhub/pointcloud/pointcloud_forecasting dlhub/pointcloud/pointcloud_forecasting_zoo.py
 @'
-Add toy-first point cloud forecasting families as a standalone direction
+Add compact-first point cloud forecasting families as a standalone direction
 
 This branch lands the local pointcloud package and discovery zoo without
 touching shared exports or the global README.
@@ -340,7 +338,7 @@ build_<family>_anomaly_detector(...)
 
 **Step 3: Add the 10 family files**
 
-Keep outputs toy-first and anomaly-focused. Do not add extra shared abstractions unless at least
+Keep outputs compact-first and anomaly-focused. Do not add extra shared abstractions unless at least
 three files need the same helper.
 
 **Step 4: Add `pointcloud_anomaly_detection_zoo.py`**
@@ -366,7 +364,7 @@ Run:
 ```powershell
 git add dlhub/pointcloud/pointcloud_anomaly_detection dlhub/pointcloud/pointcloud_anomaly_detection_zoo.py
 @'
-Add toy-first point cloud anomaly detection families as a standalone direction
+Add compact-first point cloud anomaly detection families as a standalone direction
 
 This branch lands the local pointcloud package and discovery zoo without
 touching shared exports or the global README.
@@ -421,7 +419,7 @@ build_<family>_retriever(...)
 **Step 3: Add the 10 family files**
 
 Each family file must define `_VARIANTS` for `tiny`, `small`, and `base`, expose one builder, stay
-toy-first and CPU-friendly, and include a `__main__` smoke path.
+compact-first and CPU-friendly, and include a `__main__` smoke path.
 
 **Step 4: Add `video_text_retrieval_zoo.py`**
 
@@ -448,7 +446,7 @@ Run:
 ```powershell
 git add dlhub/multimodal/video_text_retrieval dlhub/multimodal/video_text_retrieval_zoo.py
 @'
-Add toy-first video-text retrieval families as a standalone direction
+Add compact-first video-text retrieval families as a standalone direction
 
 This branch lands the local multimodal direction package and its explicit zoo
 without touching shared exports or the global README.
@@ -502,7 +500,7 @@ build_<family>_embodied_qa_model(...)
 
 **Step 3: Add the 10 family files**
 
-Keep outputs toy-first and navigation-aware. Do not add extra shared abstractions unless at least
+Keep outputs compact-first and navigation-aware. Do not add extra shared abstractions unless at least
 three files need the same helper.
 
 **Step 4: Add `embodied_question_answering_zoo.py`**
@@ -530,7 +528,7 @@ Run:
 ```powershell
 git add dlhub/multimodal/embodied_question_answering dlhub/multimodal/embodied_question_answering_zoo.py
 @'
-Add toy-first embodied question answering families as a standalone direction
+Add compact-first embodied question answering families as a standalone direction
 
 This branch lands the local multimodal direction package and its explicit zoo
 without touching shared exports or the global README.
@@ -584,7 +582,7 @@ build_<family>_audio_text_model(...)
 
 **Step 3: Add the 10 family files**
 
-Keep outputs toy-first and audio-language focused. Do not add extra shared abstractions unless at
+Keep outputs compact-first and audio-language focused. Do not add extra shared abstractions unless at
 least three files need the same helper.
 
 **Step 4: Add `audio_text_understanding_zoo.py`**
@@ -612,7 +610,7 @@ Run:
 ```powershell
 git add dlhub/multimodal/audio_text_understanding dlhub/multimodal/audio_text_understanding_zoo.py
 @'
-Add toy-first audio-text understanding families as a standalone direction
+Add compact-first audio-text understanding families as a standalone direction
 
 This branch lands the local multimodal direction package and its explicit zoo
 without touching shared exports or the global README.
@@ -664,7 +662,7 @@ build_<family>_text_to_video(...)
 **Step 3: Add the 10 family files**
 
 Reuse the same lazy package conventions already used by `dlhub/generative/image_to_video/` and
-keep the implementations toy-first rather than photorealistic.
+keep the implementations compact-first rather than photorealistic.
 
 **Step 4: Add `text_to_video_zoo.py`**
 
@@ -690,7 +688,7 @@ Run:
 ```powershell
 git add dlhub/generative/text_to_video dlhub/generative/text_to_video_zoo.py
 @'
-Add toy-first text-to-video families as a standalone direction
+Add compact-first text-to-video families as a standalone direction
 
 This branch lands the local generative package and discovery zoo without
 touching shared exports or the global README.
@@ -741,7 +739,7 @@ build_<family>_video_to_video(...)
 
 **Step 3: Add the 10 family files**
 
-Keep them toy-first and temporally consistent rather than photorealistic.
+Keep them compact-first and temporally consistent rather than photorealistic.
 
 **Step 4: Add `video_to_video_zoo.py`**
 
@@ -765,7 +763,7 @@ Run:
 ```powershell
 git add dlhub/generative/video_to_video dlhub/generative/video_to_video_zoo.py
 @'
-Add toy-first video-to-video families as a standalone direction
+Add compact-first video-to-video families as a standalone direction
 
 This branch lands the local generative package and discovery zoo without
 touching shared exports or the global README.
@@ -816,7 +814,7 @@ build_<family>_world_model(...)
 
 **Step 3: Add the 10 family files**
 
-Keep them toy-first and dynamics-focused rather than benchmark-specific.
+Keep them compact-first and dynamics-focused rather than benchmark-specific.
 
 **Step 4: Add `world_models_zoo.py`**
 
@@ -840,7 +838,7 @@ Run:
 ```powershell
 git add dlhub/generative/world_models dlhub/generative/world_models_zoo.py
 @'
-Add toy-first world-model families as a standalone direction
+Add compact-first world-model families as a standalone direction
 
 This branch lands the local generative package and discovery zoo without
 touching shared exports or the global README.

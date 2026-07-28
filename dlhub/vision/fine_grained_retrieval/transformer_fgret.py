@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_retrieval_model, smoke_test_retrieval
+from ._common import build_baseline_retrieval_model, smoke_test_retrieval
 
 _VARIANTS = {
     "transformer_fgret_tiny": {"width": 24, "depth": 1, "embed": 128},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_transformer_fgret_(
     *, in_channels: int, variant: str = "transformer_fgret_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_retrieval_model(
+    return build_baseline_retrieval_model(
         family="transformer_fgret",
         variants=_VARIANTS,
         in_channels=int(in_channels),

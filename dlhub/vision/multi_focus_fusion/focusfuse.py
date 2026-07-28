@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_mff, smoke_test_mff
+from ._common import build_baseline_mff, smoke_test_mff
 
 _VARIANTS = {
     "focusfuse_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_focusfuse_multi_focus_fuser(
     *, in_channels: int, variant: str = "focusfuse_small", width_mult: float = 1.0
 ):
-    return build_toy_mff(
+    return build_baseline_mff(
         family="focusfuse",
         variants=_VARIANTS,
         in_channels=int(in_channels),

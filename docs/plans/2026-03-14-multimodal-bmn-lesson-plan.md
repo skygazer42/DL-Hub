@@ -1,8 +1,6 @@
 # Multimodal Lesson 14 BMN-Lite Temporal Grounding Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding` as a teaching lesson for text-conditioned temporal localization over short videos.
+**Goal:** Add `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding` as a teaching lesson for text-conditioned temporal localization over short videos.
 
 **Architecture:** The lesson will synthesize short videos with a single object and one target event segment. A small frame encoder and temporal encoder will produce per-frame features, a small text encoder will condition them on the query, and three heads will predict start logits, end logits, and an upper-triangular BMN-lite proposal map.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_14_bmn_toy_temporal_grounding` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_14_bmn_toy_temporal_grounding.train`
+- `lesson_14_bmn_compact_temporal_grounding` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_14_bmn_compact_temporal_grounding.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the temporal grounding dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/__init__.py`
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/data.py`
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/README.md`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/__init__.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/data.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/README.md`
 - Test: `tests/test_tracks_multimodal_bmn.py`
 
 **Step 1: Write the failing test**
@@ -84,7 +82,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the BMN-lite temporal grounding model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/model.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/model.py`
 - Test: `tests/test_tracks_multimodal_bmn.py`
 
 **Step 1: Write the failing test**
@@ -121,7 +119,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and track integration
 
 **Files:**
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/train.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_bmn.py`
 
@@ -129,13 +127,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_14_bmn_toy_temporal_grounding.train --epochs 1 --num-samples 64 --batch-size 8 --num-frames 8 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_bmn_smoke`
+`python -m tracks.multimodal.lesson_14_bmn_compact_temporal_grounding.train --epochs 1 --num-samples 64 --batch-size 8 --num-frames 8 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_bmn_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_14_bmn_toy_temporal_grounding/pytest_bmn_smoke/config.json`
-- `outputs/multimodal/lesson_14_bmn_toy_temporal_grounding/pytest_bmn_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_14_bmn_toy_temporal_grounding/pytest_bmn_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_14_bmn_compact_temporal_grounding/pytest_bmn_smoke/config.json`
+- `outputs/multimodal/lesson_14_bmn_compact_temporal_grounding/pytest_bmn_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_14_bmn_compact_temporal_grounding/pytest_bmn_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -165,11 +163,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_bmn.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/__init__.py`
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/data.py`
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/model.py`
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/train.py`
-- Create: `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/README.md`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/__init__.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/data.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/model.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/train.py`
+- Create: `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/README.md`
 
 **Step 1: Run lint**
 
@@ -192,6 +190,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_14_bmn_toy_temporal_grounding --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_14_bmn_compact_temporal_grounding --dry-run`
 
 Expected: lesson 14 appears in the listing and resolves to the train module.

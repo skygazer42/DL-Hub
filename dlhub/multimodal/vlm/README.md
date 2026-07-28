@@ -1,6 +1,6 @@
 # VLM Local Zoo
 
-This directory provides a local, toy-first Vision-Language Model zoo.
+This directory provides a local, compact-first Vision-Language Model zoo.
 
 Families in the first batch:
 

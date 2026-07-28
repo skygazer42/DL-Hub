@@ -1,6 +1,6 @@
 # Face Retrieval
 
-Toy-first local families for `face retrieval`.
+Compact-first local families for `face retrieval`.
 
 ## Families
 

@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToySketchRetriever(nn.Module):
+class CompactSketchRetriever(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, embed_dim: int):
         super().__init__()
         self.family = str(family)
@@ -44,7 +44,7 @@ class ToySketchRetriever(nn.Module):
         return out
 
 
-def build_toy_sketch(
+def build_baseline_sketch(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -55,7 +55,7 @@ def build_toy_sketch(
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     embed = max(64, int(int(spec["embed"]) * float(width_mult)))
-    return ToySketchRetriever(
+    return CompactSketchRetriever(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

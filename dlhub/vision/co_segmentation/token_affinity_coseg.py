@@ -94,6 +94,8 @@ if __name__ == "__main__":
         "token_affinity_coseg_tiny",
         {k: tuple(v.shape) for k, v in out.items() if isinstance(v, torch.Tensor)},
     )
-    loss = sum(v.mean() for v in out.values() if isinstance(v, torch.Tensor) and v.is_floating_point())
+    loss = sum(
+        v.mean() for v in out.values() if isinstance(v, torch.Tensor) and v.is_floating_point()
+    )
     loss.backward()
     print("ok")

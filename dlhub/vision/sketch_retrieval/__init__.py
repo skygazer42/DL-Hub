@@ -1,4 +1,4 @@
-"""Sketch retrieval models (toy-first, pure torch)."""
+"""Sketch retrieval models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

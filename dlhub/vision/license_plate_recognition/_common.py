@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyPlateRecognizer(nn.Module):
+class CompactPlateRecognizer(nn.Module):
     def __init__(
         self,
         *,
@@ -56,7 +56,7 @@ class ToyPlateRecognizer(nn.Module):
         return {"logits": logits, "tokens": logits.argmax(dim=-1)}
 
 
-def build_toy_plate(
+def build_baseline_plate(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -68,7 +68,7 @@ def build_toy_plate(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyPlateRecognizer(
+    return CompactPlateRecognizer(
         family=str(family),
         in_channels=int(in_channels),
         vocab_size=int(vocab_size),

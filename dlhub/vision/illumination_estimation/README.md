@@ -1,6 +1,6 @@
 # Illumination estimation
 
-Toy-first local families for `illumination estimation`.
+Compact-first local families for `illumination estimation`.
 
 ## Families
 

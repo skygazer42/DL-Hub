@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return F.adaptive_avg_pool2d(self.net(check_nchw(x)), (1, 1)).flatten(1)
 
 
-class ToyModel(nn.Module):
+class CompactModel(nn.Module):
     def __init__(
         self, *, family: str, in_channels: int, width: int, depth: int, vocab_size: int = 32
     ):
@@ -46,7 +46,7 @@ class ToyModel(nn.Module):
         return {"answer_logits": logits}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -58,7 +58,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyModel(
+    return CompactModel(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

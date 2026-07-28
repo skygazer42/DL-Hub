@@ -75,22 +75,22 @@ flowchart TD
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 01 | **CLIP-Style Retrieval** | [`clip_toy_retrieval`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_01_clip_toy_retrieval/) | 对比学习, 双塔编码器 |
-| 02 | **BLIP-Lite Captioning + ITM** | [`blip_toy_captioning`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_02_blip_toy_captioning/) | 视觉 token 融合, ITM |
-| 03 | **LLaVA-Lite Instruction VLM** | [`llava_toy_instruction_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_03_llava_toy_instruction_vlm/) | 视觉前缀, 指令跟随 |
-| 04 | **Grounding Referring** | [`grounding_toy_refexp`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_04_grounding_toy_refexp/) | 指代表达, Box 回归 |
-| 05 | **Mask Grounding** | [`mask_grounding_toy_refexp`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_05_mask_grounding_toy_refexp/) | 文本条件 Mask 预测 |
-| 06 | **Flamingo Interleaved VLM** | [`flamingo_toy_interleaved_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_06_flamingo_toy_interleaved_vlm/) | 交错图文, Few-shot |
-| 07 | **Q-Former Bridge VLM** | [`qformer_toy_bridge_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_07_qformer_toy_bridge_vlm/) | Cross-attention 瓶颈 |
-| 08 | **Perceiver Resampler VLM** | [`perceiver_resampler_toy_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/) | 多视图 token 池化 |
-| 09 | **PaliGemma Multitask VLM** | [`paligemma_toy_siglip_decoder_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/) | 提示式多任务 |
-| 10 | **OWL-ViT Open-Vocab Detection** | [`owlvit_toy_open_vocab_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_10_owlvit_toy_open_vocab_detection/) | 开放词汇检测 |
-| 11 | **Grounded-SAM Segmentation** | [`grounded_sam_toy_open_vocab_segmentation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/) | 开放词汇分割 |
-| 12 | **Key-Value OCR Document VLM** | [`key_value_ocr_toy_doc_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/) | 文档字段提取 |
-| 13 | **Video VLM Temporal QA** | [`video_vlm_toy_temporal_qa`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/) | 短视频 QA |
-| 14 | **BMN Temporal Grounding** | [`bmn_toy_temporal_grounding`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_14_bmn_toy_temporal_grounding/) | 时序定位, 边界预测 |
-| 15 | **2D-TAN Temporal Grounding** | [`2dtan_toy_temporal_grounding`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/) | 密集时序段图 |
-| 16 | **Multi-Scale 2D-TAN** | [`multiscale_2dtan_toy_temporal_grounding`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/) | 多尺度时序金字塔 |
+| 01 | **CLIP-Style Retrieval** | [`clip_compact_retrieval`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_01_clip_compact_retrieval/) | 对比学习, 双塔编码器 |
+| 02 | **BLIP-Lite Captioning + ITM** | [`blip_compact_captioning`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_02_blip_compact_captioning/) | 视觉 token 融合, ITM |
+| 03 | **LLaVA-Lite Instruction VLM** | [`llava_compact_instruction_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_03_llava_compact_instruction_vlm/) | 视觉前缀, 指令跟随 |
+| 04 | **Grounding Referring** | [`grounding_compact_refexp`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_04_grounding_compact_refexp/) | 指代表达, Box 回归 |
+| 05 | **Mask Grounding** | [`mask_grounding_compact_refexp`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_05_mask_grounding_compact_refexp/) | 文本条件 Mask 预测 |
+| 06 | **Flamingo Interleaved VLM** | [`flamingo_compact_interleaved_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_06_flamingo_compact_interleaved_vlm/) | 交错图文, Few-shot |
+| 07 | **Q-Former Bridge VLM** | [`qformer_compact_bridge_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_07_qformer_compact_bridge_vlm/) | Cross-attention 瓶颈 |
+| 08 | **Perceiver Resampler VLM** | [`perceiver_resampler_compact_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/) | 多视图 token 池化 |
+| 09 | **PaliGemma Multitask VLM** | [`paligemma_compact_siglip_decoder_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/) | 提示式多任务 |
+| 10 | **OWL-ViT Open-Vocab Detection** | [`owlvit_compact_open_vocab_detection`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_10_owlvit_compact_open_vocab_detection/) | 开放词汇检测 |
+| 11 | **Grounded-SAM Segmentation** | [`grounded_sam_compact_open_vocab_segmentation`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/) | 开放词汇分割 |
+| 12 | **Key-Value OCR Document VLM** | [`key_value_ocr_compact_doc_vlm`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/) | 文档字段提取 |
+| 13 | **Video VLM Temporal QA** | [`video_vlm_compact_temporal_qa`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/) | 短视频 QA |
+| 14 | **BMN Temporal Grounding** | [`bmn_compact_temporal_grounding`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_14_bmn_compact_temporal_grounding/) | 时序定位, 边界预测 |
+| 15 | **2D-TAN Temporal Grounding** | [`2dtan_compact_temporal_grounding`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/) | 密集时序段图 |
+| 16 | **Multi-Scale 2D-TAN** | [`multiscale_2dtan_compact_temporal_grounding`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/) | 多尺度时序金字塔 |
 
 ### 视频 / 音频跨模态（17-22）
 
@@ -156,7 +156,7 @@ flowchart TD
 === "Lesson 01 — CLIP"
 
     ```bash
-    python -m tracks.multimodal.lesson_01_clip_toy_retrieval.train \
+    python -m tracks.multimodal.lesson_01_clip_compact_retrieval.train \
       --device cpu --epochs 1 \
       --max-train-batches 2 --max-eval-batches 1
     ```
@@ -164,7 +164,7 @@ flowchart TD
 === "Lesson 03 — LLaVA"
 
     ```bash
-    python -m tracks.multimodal.lesson_03_llava_toy_instruction_vlm.train \
+    python -m tracks.multimodal.lesson_03_llava_compact_instruction_vlm.train \
       --device cpu --epochs 1 \
       --max-train-batches 2 --max-eval-batches 1
     ```
@@ -172,7 +172,7 @@ flowchart TD
 === "Lesson 10 — OWL-ViT"
 
     ```bash
-    python -m tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.train \
+    python -m tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.train \
       --device cpu --epochs 1 \
       --max-train-batches 2 --max-eval-batches 1
     ```
@@ -180,7 +180,7 @@ flowchart TD
 === "Lesson 16 — Multi-Scale 2D-TAN"
 
     ```bash
-    python -m tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.train \
+    python -m tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.train \
       --device cpu --epochs 1 \
       --max-train-batches 2 --max-eval-batches 1
     ```

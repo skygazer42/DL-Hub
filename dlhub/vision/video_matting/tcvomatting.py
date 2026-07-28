@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_video_matter, smoke_test_video_matter
+from ._common import build_baseline_video_matter, smoke_test_video_matter
 
 _VARIANTS = {
     "tcvomatting_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_tcvomatting_video_matter(
     *, in_channels: int, variant: str = "tcvomatting_small", width_mult: float = 1.0
 ):
-    return build_toy_video_matter(
+    return build_baseline_video_matter(
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),

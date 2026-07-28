@@ -2,7 +2,7 @@
 
 from dlhub.vision._shared.anomaly_detection import (  # noqa: F401
     TinyAnomalyDetector,
-    build_toy_anomaly_detector,
+    build_baseline_anomaly_detector,
     check_nchw,
     smoke_test_anomaly,
 )

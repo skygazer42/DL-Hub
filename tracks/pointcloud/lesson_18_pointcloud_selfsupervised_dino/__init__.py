@@ -1,1 +1,1 @@
-"""Lesson 18: PointCloud self-supervised learning with DINO (toy-first)."""
+"""Lesson 18: PointCloud self-supervised learning with DINO (compact-first)."""

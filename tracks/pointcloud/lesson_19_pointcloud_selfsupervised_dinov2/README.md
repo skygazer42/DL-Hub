@@ -1,6 +1,6 @@
-# Lesson 19 — PointCloud 自监督：DINOv2（toy-first）
+# Lesson 19 — PointCloud 自监督：DINOv2（compact-first）
 
-目标：在点云上跑通一个 **DINOv2-style** 的最小闭环（toy 版本）：
+目标：在点云上跑通一个 **DINOv2-style** 的最小闭环（compact 版本）：
 
 - Backbone：PointMAE-style patch tokens + Transformer（有 `[CLS]` token）
 - Loss 由两部分组成：

@@ -49,7 +49,7 @@ class _Up(nn.Module):
 
 
 class TransUNetPanoptic(nn.Module):
-    """TransUNet-style panoptic segmentation (toy-first).
+    """TransUNet-style panoptic segmentation (compact-first).
 
     U-Net encoder-decoder with a Transformer encoder at the bottleneck.
     Semantic logits are produced at full resolution; instance masks are produced via learned queries

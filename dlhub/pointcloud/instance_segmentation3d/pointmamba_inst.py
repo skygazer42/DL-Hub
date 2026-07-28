@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointMambaInst(nn.Module):
-    """PointMambaInst (toy): initial queries, then refine by pooling point features with masks."""
+    """PointMambaInst (compact): initial queries, then refine by pooling point features with masks."""
 
     def __init__(
         self,

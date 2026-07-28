@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_expr, smoke_test_expr
+from ._common import build_baseline_expr, smoke_test_expr
 
 _VARIANTS = {
     "emotionvit_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_emotionvit_expression_recognizer(
     variant: str = "emotionvit_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_expr(
+    return build_baseline_expr(
         family="emotionvit",
         variants=_VARIANTS,
         in_channels=int(in_channels),

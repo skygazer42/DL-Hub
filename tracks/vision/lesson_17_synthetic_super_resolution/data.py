@@ -147,7 +147,7 @@ def degrade_to_low_res(hr: torch.Tensor, *, cfg: DataConfig, idx: int) -> torch.
     return x.squeeze(0).clamp(0.0, 1.0)
 
 
-class ToySuperResolutionDataset(Dataset):
+class SyntheticSuperResolutionDataset(Dataset):
     def __init__(self, cfg: DataConfig) -> None:
         _validate_config(cfg)
         self.cfg = cfg
@@ -163,7 +163,7 @@ class ToySuperResolutionDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     _validate_config(cfg)
-    ds = ToySuperResolutionDataset(cfg)
+    ds = SyntheticSuperResolutionDataset(cfg)
     train_idx, val_idx = train_val_split_indices(
         n=len(ds),
         val_fraction=float(cfg.val_fraction),
@@ -184,7 +184,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
 
 __all__ = [
     "DataConfig",
-    "ToySuperResolutionDataset",
+    "SyntheticSuperResolutionDataset",
     "degrade_to_low_res",
     "get_dataloaders",
     "make_high_res_image",

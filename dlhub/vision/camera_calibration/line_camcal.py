@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_camera_calibrator, smoke_test_camera_calibrator
+from ._common import build_baseline_camera_calibrator, smoke_test_camera_calibrator
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_line_camcal_camera_calibrator(
     variant: str = "line_camcal_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_camera_calibrator(
+    return build_baseline_camera_calibrator(
         family="line_camcal",
         mode="line",
         variants=_VARIANTS,

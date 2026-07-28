@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_few_shot_segmentor, smoke_test_few_shot_segmentor
+from ._common import build_baseline_few_shot_segmentor, smoke_test_few_shot_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_iterative_fsseg_few_shot_segmentor(
     variant: str = "iterative_fsseg_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_few_shot_segmentor(
+    return build_baseline_few_shot_segmentor(
         family="iterative_fsseg",
         mode="iterative",
         variants=_VARIANTS,

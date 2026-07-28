@@ -1,4 +1,4 @@
-# Lesson 33: Pedestrian Attribute Recognition (Toy)
+# Lesson 33: Pedestrian Attribute Recognition (Compact)
 
 This lesson teaches a small image-text retrieval setup for pedestrian attributes.
 A synthetic pedestrian image is paired with a compact attribute query such as
@@ -29,5 +29,5 @@ python -m tracks.multimodal.lesson_33_pedestrian_attribute_recognition.train --d
 
 ## Notes
 
-- This lesson is toy-first for understanding multimodal attribute prediction flow.
+- This lesson is compact-first for understanding multimodal attribute prediction flow.
 - It is not intended as a production pedestrian attribute recognition system.

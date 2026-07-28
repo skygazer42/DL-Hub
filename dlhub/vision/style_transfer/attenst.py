@@ -114,7 +114,7 @@ class AttenSTDenoiser(nn.Module):
 
 
 class AttenSTStyleTransfer(nn.Module):
-    """AttenST-style training-free diffusion stylization (toy).
+    """AttenST-style training-free diffusion stylization (compact).
 
     Uses attention-driven reference fusion followed by content-aware AdaIN at each denoising step.
     """

@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_anomaly_detector, smoke_test_anomaly
+from ._common import build_baseline_anomaly_detector, smoke_test_anomaly
 
 _VARIANTS = {
     "mambaad_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_mambaad_anomaly_detector(
     *, in_channels: int, variant: str = "mambaad_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_anomaly_detector(
+    return build_baseline_anomaly_detector(
         family="mambaad",
         variants=_VARIANTS,
         in_channels=int(in_channels),

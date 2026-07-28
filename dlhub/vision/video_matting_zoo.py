@@ -8,7 +8,7 @@ import importlib
 _FAMILIES = [
     "dim_vmatte",
     "fba_vmatte",
-    "rvm_toy",
+    "rvm_baseline",
     "gca_vmatte",
     "tcvomatting",
     "memory_vmatte",

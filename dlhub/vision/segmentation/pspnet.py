@@ -85,7 +85,7 @@ class PyramidPooling(nn.Module):
 
 
 class PSPNet(nn.Module):
-    """PSPNet semantic segmentation (toy-first)."""
+    """PSPNet semantic segmentation (compact-first)."""
 
     def __init__(
         self,

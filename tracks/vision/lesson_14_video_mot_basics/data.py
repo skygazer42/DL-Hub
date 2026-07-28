@@ -42,7 +42,7 @@ def _bbox_from_center(*, cx: float, cy: float, w: float, h: float, image_size: i
 
 
 class SyntheticVideoMOTDataset(Dataset):
-    """Synthetic video MOT toy dataset.
+    """Synthetic video MOT synthetic dataset.
 
     Output:
     - video: (T, C, H, W)

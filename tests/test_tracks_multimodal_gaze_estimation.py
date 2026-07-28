@@ -51,7 +51,7 @@ def test_multimodal_gaze_estimation_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_30_vision_language_gaze_estimation.model import (
         GazeEstimationConfig,
-        ToyVisionLanguageGazeEstimator,
+        CompactVisionLanguageGazeEstimator,
         gaze_heatmap_loss,
         gaze_point_l1,
         gaze_point_loss,
@@ -70,7 +70,7 @@ def test_multimodal_gaze_estimation_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyVisionLanguageGazeEstimator(
+    model = CompactVisionLanguageGazeEstimator(
         GazeEstimationConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

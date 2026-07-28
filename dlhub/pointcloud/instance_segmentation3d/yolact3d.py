@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class YOLACT3D(nn.Module):
-    """YOLACT3D (toy): point features -> prototypes + coeffs."""
+    """YOLACT3D (compact): point features -> prototypes + coeffs."""
 
     def __init__(
         self,

@@ -122,7 +122,7 @@ class PredictorMLP(nn.Module):
 
 
 class Data2VecPointMAE(nn.Module):
-    """Toy-first data2vec-style masked representation regression for point clouds.
+    """Compact-first data2vec-style masked representation regression for point clouds.
 
     - Student: patch transformer with mask tokens + predictor MLP.
     - Teacher: patch transformer without masking (EMA updated from student).

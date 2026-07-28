@@ -7,7 +7,7 @@ torch = pytest.importorskip("torch")
 
 
 def test_masked_language_modeling_batch_contract() -> None:
-    from tracks.nlp.lesson_13_toy_masked_language_modeling.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_13_compact_masked_language_modeling.data import DataConfig, get_dataloaders
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -36,10 +36,10 @@ def test_masked_language_modeling_batch_contract() -> None:
 
 
 def test_masked_language_modeling_model_forward_and_loss() -> None:
-    from tracks.nlp.lesson_13_toy_masked_language_modeling.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_13_toy_masked_language_modeling.model import (
+    from tracks.nlp.lesson_13_compact_masked_language_modeling.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_13_compact_masked_language_modeling.model import (
         ModelConfig,
-        ToyMaskedLanguageModel,
+        CompactMaskedLanguageModel,
         masked_token_accuracy,
     )
 
@@ -55,7 +55,7 @@ def test_masked_language_modeling_model_forward_and_loss() -> None:
         )
     )
     inputs, targets = next(iter(train_loader))
-    model = ToyMaskedLanguageModel(
+    model = CompactMaskedLanguageModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -84,8 +84,8 @@ def test_masked_language_modeling_model_forward_and_loss() -> None:
 
 
 def test_masked_language_modeling_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_13_toy_masked_language_modeling.data import DataConfig
-    from tracks.nlp.lesson_13_toy_masked_language_modeling.train import TrainConfig, run_training
+    from tracks.nlp.lesson_13_compact_masked_language_modeling.data import DataConfig
+    from tracks.nlp.lesson_13_compact_masked_language_modeling.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -118,7 +118,7 @@ def test_masked_language_modeling_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_13_toy_masked_language_modeling" / "pytest_masked_lm_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_13_compact_masked_language_modeling" / "pytest_masked_lm_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

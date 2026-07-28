@@ -34,7 +34,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 16 (Vision): Translation style transfer (CycleGAN-style, toy-first)."
+        description="Lesson 16 (Vision): Translation style transfer (CycleGAN-style, compact-first)."
     )
 
     parser.add_argument("--epochs", type=int, default=5)

@@ -1,4 +1,4 @@
-# Lesson 17: Video-Text Retrieval Toy CLIP
+# Lesson 17: Video-Text Retrieval Compact CLIP
 
 This lesson follows the temporal grounding block with a lightweight video-text retrieval task:
 

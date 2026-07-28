@@ -34,7 +34,7 @@ class _GraphAttn(nn.Module):
 
 
 class PointGATSeg(nn.Module):
-    """PointGAT semantic segmentation (toy): kNN graph attention layers."""
+    """PointGAT semantic segmentation (compact): kNN graph attention layers."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int

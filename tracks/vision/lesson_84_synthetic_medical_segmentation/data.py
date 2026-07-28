@@ -20,7 +20,7 @@ class DataConfig:
 
 
 class SyntheticMedicalSegmentationDataset:
-    """Toy medical slices with background, tissue and lesion labels."""
+    """Synthetic medical slices with background, tissue and lesion labels."""
 
     def __init__(self, cfg: DataConfig) -> None:
         if int(cfg.image_size) < 48:

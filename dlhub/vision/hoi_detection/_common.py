@@ -25,7 +25,7 @@ class TinyHOIBackbone(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyHOIDetector(nn.Module):
+class CompactHOIDetector(nn.Module):
     def __init__(
         self,
         *,
@@ -57,7 +57,7 @@ class ToyHOIDetector(nn.Module):
         }
 
 
-def build_toy_hoi_detector(
+def build_baseline_hoi_detector(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -70,7 +70,7 @@ def build_toy_hoi_detector(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyHOIDetector(
+    return CompactHOIDetector(
         family=str(family),
         in_channels=int(in_channels),
         num_verbs=int(num_verbs),

@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PillarNet(nn.Module):
-    """PillarNet (toy): stronger BEV backbone with down/up stages."""
+    """PillarNet (compact): stronger BEV backbone with down/up stages."""
 
     def __init__(
         self,

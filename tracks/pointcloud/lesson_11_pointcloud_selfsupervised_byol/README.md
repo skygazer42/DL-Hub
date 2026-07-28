@@ -1,4 +1,4 @@
-# Lesson 11 — PointCloud 自监督：BYOL（toy-first）
+# Lesson 11 — PointCloud 自监督：BYOL（compact-first）
 
 目标：在点云上跑通 **BYOL**（Bootstrap Your Own Latent）的最小闭环：
 
@@ -23,6 +23,6 @@ python -m tracks.pointcloud.lesson_11_pointcloud_selfsupervised_byol.train --lis
 
 ## 你应该看到
 
-- loss 能稳定下降（toy 数据不追求极致，只要能训练、能反向传播）
+- loss 能稳定下降（compact 数据不追求极致，只要能训练、能反向传播）
 - `runs/pointcloud/lesson_11_pointcloud_selfsupervised_byol/<run-name>/` 下有 `config.json`、`metrics.jsonl` 和 checkpoint
 

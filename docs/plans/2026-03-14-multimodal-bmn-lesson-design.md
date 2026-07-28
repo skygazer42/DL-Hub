@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_14_bmn_toy_temporal_grounding` as an independent teaching lesson for text-conditioned temporal localization over short videos.
+**Goal:** Add `tracks/multimodal/lesson_14_bmn_compact_temporal_grounding` as an independent teaching lesson for text-conditioned temporal localization over short videos.
 
 ## Problem
 
@@ -198,7 +198,7 @@ Metrics:
 Follow the same conventions as earlier lessons:
 
 - CLI args for dataset size, frame count, image size, and query length
-- `outputs/multimodal/lesson_14_bmn_toy_temporal_grounding/<run_name>/`
+- `outputs/multimodal/lesson_14_bmn_compact_temporal_grounding/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

@@ -25,7 +25,7 @@ class DataConfig:
 
 
 class SyntheticPedestrianDetection(Dataset):
-    """Synthetic single-object pedestrian detection (toy-first).
+    """Synthetic single-object pedestrian detection (synthetic-first).
 
     Each sample contains exactly one "pedestrian" represented by a tall bright rectangle
     over a noisy background.

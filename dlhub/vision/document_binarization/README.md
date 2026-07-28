@@ -1,6 +1,6 @@
 # Document binarization
 
-Toy-first local families for `document binarization`.
+Compact-first local families for `document binarization`.
 
 ## Families
 

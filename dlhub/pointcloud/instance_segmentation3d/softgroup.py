@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SoftGroup(nn.Module):
-    """SoftGroup (toy): embedding similarity to pivots defines soft groups."""
+    """SoftGroup (compact): embedding similarity to pivots defines soft groups."""
 
     def __init__(
         self,

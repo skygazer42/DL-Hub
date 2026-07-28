@@ -1,4 +1,4 @@
-# Lesson 14 — PointCloud 自监督：MoCo v2（toy-first）
+# Lesson 14 — PointCloud 自监督：MoCo v2（compact-first）
 
 目标：在点云上跑通 **MoCo v2** 的最小闭环：
 

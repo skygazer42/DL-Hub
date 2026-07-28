@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class RetNet3DSeg(nn.Module):
-    """Point Transformer semantic segmentation (toy): transformer encoder on point tokens."""
+    """Point Transformer semantic segmentation (compact): transformer encoder on point tokens."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, d_model: int, depth: int, dropout: float = 0.0

@@ -94,7 +94,7 @@ class TinyBlurDetector(nn.Module):
         }
 
 
-def build_toy_blur_detector(
+def build_baseline_blur_detector(
     *,
     family: str,
     mode: str,

@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_rectified_flow_fake_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_07_toy_rectified_flow.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_07_compact_rectified_flow.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
@@ -29,7 +29,7 @@ def test_rectified_flow_fake_dataloaders_smoke() -> None:
 
 
 def test_rectified_flow_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_07_toy_rectified_flow.model import (
+    from tracks.generative.lesson_07_compact_rectified_flow.model import (
         ModelConfig,
         RectifiedFlowModel,
         build_rectified_targets,
@@ -64,7 +64,7 @@ def test_rectified_flow_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_07_toy_rectified_flow"
+        / "lesson_07_compact_rectified_flow"
         / "pytest_rectified_flow_smoke"
     )
     if run_dir.exists():
@@ -74,7 +74,7 @@ def test_rectified_flow_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_07_toy_rectified_flow.train",
+            "tracks.generative.lesson_07_compact_rectified_flow.train",
             "--epochs",
             "1",
             "--num-samples",

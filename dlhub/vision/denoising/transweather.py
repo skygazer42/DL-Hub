@@ -64,7 +64,7 @@ class _WeatherBlock(nn.Module):
 
 
 class TransWeather(nn.Module):
-    """Compact TransWeather-style derainer for toy data and CPU tests."""
+    """Compact TransWeather-style derainer for synthetic data and CPU tests."""
 
     def __init__(
         self,

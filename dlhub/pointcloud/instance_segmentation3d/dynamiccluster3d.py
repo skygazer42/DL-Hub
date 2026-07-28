@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class DynamicCluster3D(nn.Module):
-    """DynamicCluster3D (toy): embedding similarity to pivots defines soft groups."""
+    """DynamicCluster3D (compact): embedding similarity to pivots defines soft groups."""
 
     def __init__(
         self,

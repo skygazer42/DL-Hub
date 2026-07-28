@@ -45,7 +45,7 @@ class _CascadeStage(nn.Module):
 
 
 class CascadeRCNNDetector(nn.Module):
-    """Cascade R-CNN-style multi-stage refinement (toy-first)."""
+    """Cascade R-CNN-style multi-stage refinement (compact-first)."""
 
     def __init__(
         self,

@@ -1,8 +1,6 @@
 # Multimodal Lesson 03 LLaVA-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_03_llava_toy_instruction_vlm` as a teaching lesson for single-turn visual question answering with short generated answers.
+**Goal:** Add `tracks/multimodal/lesson_03_llava_compact_instruction_vlm` as a teaching lesson for single-turn visual question answering with short generated answers.
 
 **Architecture:** The lesson will define its own synthetic instruction-VLM dataset, lesson-local vocabulary, tiny CNN visual token encoder, explicit vision projector, and a causal decoder-style language model that consumes projected visual tokens as a prefix before textual instruction and answer tokens. Training will supervise only the answer span with a decoder-only loss.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_03_llava_toy_instruction_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_03_llava_toy_instruction_vlm.train`
+- `lesson_03_llava_compact_instruction_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_03_llava_compact_instruction_vlm.train`
 - batch dictionaries containing instruction VLM keys
 - forward outputs containing `logits` and `visual_tokens`
 - a tiny training smoke run writing standard artifacts
@@ -50,9 +48,9 @@ Use the next failure as the next implementation target.
 
 **Files:**
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/data.py`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/README.md`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/data.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/README.md`
 - Test: `tests/test_tracks_multimodal_llava.py`
 
 **Step 1: Write the failing test**
@@ -89,7 +87,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the LLaVA-lite teaching model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/model.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/model.py`
 - Test: `tests/test_tracks_multimodal_llava.py`
 
 **Step 1: Write the failing test**
@@ -116,7 +114,7 @@ Implement:
 - `VisionEncoder`
 - `VisionProjector`
 - `TinyMultimodalDecoderLM`
-- `ToyLLaVAModel`
+- `CompactLLaVAModel`
 - QA loss and accuracy helpers
 
 **Step 4: Run test to verify it passes**
@@ -126,20 +124,20 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and smoke run
 
 **Files:**
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/train.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/train.py`
 - Test: `tests/test_tracks_multimodal_llava.py`
 
 **Step 1: Write the failing test**
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_03_llava_toy_instruction_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 16 --max-text-length 12 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_llava_smoke`
+`python -m tracks.multimodal.lesson_03_llava_compact_instruction_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 16 --max-text-length 12 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_llava_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_03_llava_toy_instruction_vlm/pytest_llava_smoke/config.json`
-- `outputs/multimodal/lesson_03_llava_toy_instruction_vlm/pytest_llava_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_03_llava_toy_instruction_vlm/pytest_llava_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_03_llava_compact_instruction_vlm/pytest_llava_smoke/config.json`
+- `outputs/multimodal/lesson_03_llava_compact_instruction_vlm/pytest_llava_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_03_llava_compact_instruction_vlm/pytest_llava_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -168,11 +166,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_llava.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/data.py`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/model.py`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/train.py`
-- Create: `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/README.md`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/data.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/model.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/train.py`
+- Create: `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/README.md`
 
 **Step 1: Run lint**
 
@@ -195,6 +193,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_03_llava_toy_instruction_vlm --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_03_llava_compact_instruction_vlm --dry-run`
 
 Expected: lesson 3 appears in the track listing and resolves to the train module.

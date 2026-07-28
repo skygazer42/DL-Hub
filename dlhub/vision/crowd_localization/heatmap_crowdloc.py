@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_crowd_localizer, smoke_test_crowd_localizer
+from ._common import build_baseline_crowd_localizer, smoke_test_crowd_localizer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_heatmap_crowdloc_crowd_localizer(
     *, in_channels: int, variant: str = "heatmap_crowdloc_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_crowd_localizer(
+    return build_baseline_crowd_localizer(
         family="heatmap_crowdloc",
         mode="heatmap",
         variants=_VARIANTS,

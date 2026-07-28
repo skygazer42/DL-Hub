@@ -1,9 +1,9 @@
-"""TSN (Temporal Segment Network) - toy-first video action classifier.
+"""TSN (Temporal Segment Network) - compact-first video action classifier.
 
 Reference:
 - "Temporal Segment Networks: Towards Good Practices for Deep Action Recognition" (ECCV 2016)
 
-Toy interpretation:
+Compact interpretation:
 - Treat a video as a set of sampled frames.
 - Apply a shared 2D CNN to each frame.
 - Aggregate frame-level embeddings via mean pooling ("consensus") then classify.

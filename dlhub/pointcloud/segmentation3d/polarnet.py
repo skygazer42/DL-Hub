@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PolarNetSeg(nn.Module):
-    """PolarNet semantic segmentation (toy): polar BEV projection (theta, r) -> 2D UNet."""
+    """PolarNet semantic segmentation (compact): polar BEV projection (theta, r) -> 2D UNet."""
 
     def __init__(
         self,

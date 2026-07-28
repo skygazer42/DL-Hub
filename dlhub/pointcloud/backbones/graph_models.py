@@ -35,7 +35,7 @@ class DGCNNConfig:
 
 
 class DGCNNClassifier(nn.Module):
-    """A small DGCNN-style classifier for toy point clouds."""
+    """A small DGCNN-style classifier for synthetic point clouds."""
 
     def __init__(self, cfg: DGCNNConfig) -> None:
         super().__init__()

@@ -30,7 +30,7 @@ class _BackboneStride4(nn.Module):
 
 
 class MaskScoringRCNN(nn.Module):
-    """Mask Scoring R-CNN-style instance segmenter (toy-first).
+    """Mask Scoring R-CNN-style instance segmenter (compact-first).
 
     Adds a mask-quality prediction head (mask_iou) on top of a Mask R-CNN-like skeleton.
     """

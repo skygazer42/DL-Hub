@@ -92,7 +92,7 @@ class TinyIRSTDDetector(nn.Module):
         }
 
 
-def build_toy_irstd_detector(
+def build_baseline_irstd_detector(
     *,
     family: str,
     mode: str,

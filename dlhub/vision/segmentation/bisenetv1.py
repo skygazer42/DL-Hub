@@ -26,7 +26,7 @@ class _SEGate(nn.Module):
 
 
 class BiSeNetV1(nn.Module):
-    """BiSeNetV1 semantic segmentation (toy-first)."""
+    """BiSeNetV1 semantic segmentation (compact-first)."""
 
     def __init__(
         self,

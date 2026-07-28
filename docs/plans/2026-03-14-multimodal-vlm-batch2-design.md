@@ -54,9 +54,9 @@ The second batch should not invent a new structure. It should deepen the existin
 
 This preserves the original four-group taxonomy and avoids exploding the recommendation surface with over-specific subgroups.
 
-## Toy Implementation Shape
+## Compact Implementation Shape
 
-The shared `ToyVLM` core remains sufficient. The second batch only needs new family wrappers and modest scoring/timeline updates:
+The shared `CompactVLM` core remains sufficient. The second batch only needs new family wrappers and modest scoring/timeline updates:
 
 - `lit` uses the `dual_encoder` path
 - `simvlm`, `pali`, `pali_x` use the generative fusion path

@@ -1,6 +1,6 @@
 # Raindrop Removal Local Zoo
 
-Toy-first raindrop removal models implemented in pure PyTorch.
+Compact-first raindrop removal models implemented in pure PyTorch.
 
 ## Included Families
 

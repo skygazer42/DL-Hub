@@ -3,15 +3,15 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_diffusion_layout_palette_fusion_data_and_model_contract() -> None:
-    from tracks.generative.lesson_42_toy_diffusion_layout_palette_fusion.data import (
+def test_compact_diffusion_layout_palette_fusion_data_and_model_contract() -> None:
+    from tracks.generative.lesson_42_compact_diffusion_layout_palette_fusion.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.generative.lesson_42_toy_diffusion_layout_palette_fusion.model import (
+    from tracks.generative.lesson_42_compact_diffusion_layout_palette_fusion.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyLayoutPaletteFusionDiffusionModel,
+        CompactLayoutPaletteFusionDiffusionModel,
         q_sample,
     )
 
@@ -45,7 +45,7 @@ def test_toy_diffusion_layout_palette_fusion_data_and_model_contract() -> None:
         palette_dim=6,
     )
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToyLayoutPaletteFusionDiffusionModel(cfg)
+    model = CompactLayoutPaletteFusionDiffusionModel(cfg)
 
     noise = torch.randn_like(target)
     timesteps = torch.randint(low=0, high=schedule.num_steps, size=(6,), dtype=torch.long)
@@ -65,15 +65,15 @@ def test_toy_diffusion_layout_palette_fusion_data_and_model_contract() -> None:
     assert torch.all(sampled <= 1.0)
 
 
-def test_toy_diffusion_layout_palette_fusion_training_smoke(
+def test_compact_diffusion_layout_palette_fusion_training_smoke(
     tmp_path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.generative.lesson_42_toy_diffusion_layout_palette_fusion.data import DataConfig
-    from tracks.generative.lesson_42_toy_diffusion_layout_palette_fusion.model import (
+    from tracks.generative.lesson_42_compact_diffusion_layout_palette_fusion.data import DataConfig
+    from tracks.generative.lesson_42_compact_diffusion_layout_palette_fusion.model import (
         DiffusionSchedule,
         ModelConfig,
     )
-    from tracks.generative.lesson_42_toy_diffusion_layout_palette_fusion.train import (
+    from tracks.generative.lesson_42_compact_diffusion_layout_palette_fusion.train import (
         TrainConfig,
         run_training,
     )
@@ -114,7 +114,7 @@ def test_toy_diffusion_layout_palette_fusion_training_smoke(
     run_dir = (
         tmp_path
         / "generative"
-        / "lesson_42_toy_diffusion_layout_palette_fusion"
+        / "lesson_42_compact_diffusion_layout_palette_fusion"
         / "pytest_layout_palette_fusion_smoke"
     )
     assert (run_dir / "config.json").is_file()

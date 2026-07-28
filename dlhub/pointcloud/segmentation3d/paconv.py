@@ -28,7 +28,7 @@ class _PAConv(nn.Module):
 
 
 class PAConvSeg(nn.Module):
-    """PAConv semantic segmentation (toy): position-adaptive neighbor mixing."""
+    """PAConv semantic segmentation (compact): position-adaptive neighbor mixing."""
 
     def __init__(
         self,

@@ -1,4 +1,4 @@
-"""Point cloud forecasting models (toy-first, pure torch)."""
+"""Point cloud forecasting models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

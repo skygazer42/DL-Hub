@@ -25,7 +25,7 @@ class _AsymBlock(nn.Module):
 
 
 class LEDNet(nn.Module):
-    """LEDNet semantic segmentation (toy-first)."""
+    """LEDNet semantic segmentation (compact-first)."""
 
     def __init__(
         self,

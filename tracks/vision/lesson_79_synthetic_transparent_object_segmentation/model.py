@@ -9,7 +9,7 @@ from dlhub.vision.transparent_object_segmentation import (
     build_boundary_glass_seg_transparent_segmenter,
     build_camotransparent_seg_transparent_segmenter,
     build_diffusion_transparent_transparent_segmenter,
-    build_glassseg_toy_transparent_segmenter,
+    build_glassseg_baseline_transparent_segmenter,
     build_mamba_transparent_transparent_segmenter,
     build_prompt_transparent_transparent_segmenter,
     build_refractmask_seg_transparent_segmenter,
@@ -20,7 +20,7 @@ from dlhub.vision.transparent_object_segmentation import (
 
 
 _ARCH_BUILDERS = {
-    "glassseg_toy": build_glassseg_toy_transparent_segmenter,
+    "glassseg_baseline": build_glassseg_baseline_transparent_segmenter,
     "boundary_glass_seg": build_boundary_glass_seg_transparent_segmenter,
     "camotransparent_seg": build_camotransparent_seg_transparent_segmenter,
     "diffusion_transparent": build_diffusion_transparent_transparent_segmenter,
@@ -36,8 +36,8 @@ _ARCH_BUILDERS = {
 @dataclass(frozen=True)
 class ModelConfig:
     in_channels: int = 3
-    arch: str = "glassseg_toy"
-    variant: str = "glassseg_toy_small"
+    arch: str = "glassseg_baseline"
+    variant: str = "glassseg_baseline_small"
     width_mult: float = 1.0
 
 

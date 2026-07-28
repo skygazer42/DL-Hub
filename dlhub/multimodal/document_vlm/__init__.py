@@ -1,4 +1,4 @@
-"""Document VLM models (toy-first, pure torch)."""
+"""Document VLM models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

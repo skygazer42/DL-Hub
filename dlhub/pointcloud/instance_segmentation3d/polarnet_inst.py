@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PolarNetInst(nn.Module):
-    """PolarNet instance segmentation (toy): polar projection features + prototype masks."""
+    """PolarNet instance segmentation (compact): polar projection features + prototype masks."""
 
     def __init__(
         self,

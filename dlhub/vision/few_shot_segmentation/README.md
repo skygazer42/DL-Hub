@@ -1,6 +1,6 @@
 # Few Shot Segmentation
 
-Toy-first local families for `few shot segmentation`.
+Compact-first local families for `few shot segmentation`.
 
 ## Families
 

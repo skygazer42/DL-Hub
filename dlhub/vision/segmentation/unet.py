@@ -44,7 +44,7 @@ class _Up(nn.Module):
 
 
 class UNetSegmenter(nn.Module):
-    """U-Net semantic segmentation (toy-first).
+    """U-Net semantic segmentation (compact-first).
 
     Forward: (B, C, H, W) -> logits (B, num_classes, H, W)
     """

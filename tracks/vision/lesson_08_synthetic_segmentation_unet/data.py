@@ -19,7 +19,7 @@ class DataConfig:
     max_rect: int = 28
 
 
-class ToyRectanglesSegmentation:
+class SyntheticRectanglesSegmentation:
     """Synthetic binary segmentation: one bright rectangle per image."""
 
     def __init__(self, cfg: DataConfig) -> None:
@@ -81,7 +81,7 @@ def get_dataloaders(cfg: DataConfig):
 
     from torch.utils.data import DataLoader, Subset
 
-    ds = ToyRectanglesSegmentation(cfg)
+    ds = SyntheticRectanglesSegmentation(cfg)
     train_idx, val_idx = train_val_split_indices(
         n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -101,4 +101,4 @@ def get_dataloaders(cfg: DataConfig):
     return train_loader, val_loader
 
 
-__all__ = ["DataConfig", "ToyRectanglesSegmentation", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticRectanglesSegmentation", "get_dataloaders"]

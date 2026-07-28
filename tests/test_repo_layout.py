@@ -12,7 +12,7 @@ def test_dlhub_data_package_is_not_gitignored() -> None:
             "dlhub/data",
             "dlhub/data/__init__.py",
             "dlhub/data/splits.py",
-            "dlhub/data/toy.py",
+            "dlhub/data/compact.py",
         ],
         cwd=repo_root,
         text=True,

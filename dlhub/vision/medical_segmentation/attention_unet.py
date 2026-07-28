@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_medical_segmenter, smoke_test_med
+from ._common import build_baseline_medical_segmenter, smoke_test_med
 
 _VARIANTS = {
     "attention_unet_tiny": {"width": 16, "depth": 1},
@@ -16,7 +16,7 @@ def build_attention_unet_medical_segmenter(
     variant: str = "attention_unet_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_medical_segmenter(
+    return build_baseline_medical_segmenter(
         family="attention_unet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

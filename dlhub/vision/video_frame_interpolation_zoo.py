@@ -8,12 +8,12 @@ import importlib
 _FAMILIES = [
     "sepconv_interp",
     "super_slomo",
-    "dain_toy",
-    "rife_toy",
-    "flavr_toy",
+    "dain_baseline",
+    "rife_baseline",
+    "flavr_baseline",
     "vfi_former",
     "amt_interp",
-    "ifrnet_toy",
+    "ifrnet_baseline",
     "ema_vfi",
     "mamba_vfi",
 ]

@@ -10,7 +10,7 @@ def check_btchw(x):
     return x
 
 
-class ToyVideoRestorer(nn.Module):
+class CompactVideoRestorer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -31,7 +31,7 @@ class ToyVideoRestorer(nn.Module):
         return {"restored": y}
 
 
-def build_toy_video_restorer(
+def build_baseline_video_restorer(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -41,7 +41,7 @@ def build_toy_video_restorer(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyVideoRestorer(
+    return CompactVideoRestorer(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

@@ -1,4 +1,4 @@
-# Lesson 12 — PointCloud 自监督：VICReg（toy-first）
+# Lesson 12 — PointCloud 自监督：VICReg（compact-first）
 
 目标：在点云上跑通 **VICReg** 的最小闭环（不需要负样本队列）：
 
@@ -25,6 +25,6 @@ python -m tracks.pointcloud.lesson_12_pointcloud_selfsupervised_vicreg.train --l
 
 ## 你应该看到
 
-- loss 能稳定下降（toy 数据不追求极致，只要能训练、能反向传播）
+- loss 能稳定下降（compact 数据不追求极致，只要能训练、能反向传播）
 - `runs/pointcloud/lesson_12_pointcloud_selfsupervised_vicreg/<run-name>/` 下有 `config.json`、`metrics.jsonl` 和 checkpoint
 

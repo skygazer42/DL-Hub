@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_prompt_tuning_batch_contract() -> None:
-    from tracks.nlp.lesson_10_toy_prompt_tuning_classifier.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_10_compact_prompt_tuning_classifier.data import DataConfig, get_dataloaders
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -35,8 +35,8 @@ def test_prompt_tuning_batch_contract() -> None:
 
 
 def test_prompt_tuning_model_freezes_backbone() -> None:
-    from tracks.nlp.lesson_10_toy_prompt_tuning_classifier.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_10_toy_prompt_tuning_classifier.model import (
+    from tracks.nlp.lesson_10_compact_prompt_tuning_classifier.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_10_compact_prompt_tuning_classifier.model import (
         ModelConfig,
         PromptTunedTextClassifier,
         trainable_parameter_count,
@@ -81,7 +81,7 @@ def test_prompt_tuning_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "nlp"
-        / "lesson_10_toy_prompt_tuning_classifier"
+        / "lesson_10_compact_prompt_tuning_classifier"
         / "pytest_prompt_tuning_smoke"
     )
     if run_dir.exists():
@@ -91,7 +91,7 @@ def test_prompt_tuning_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.nlp.lesson_10_toy_prompt_tuning_classifier.train",
+            "tracks.nlp.lesson_10_compact_prompt_tuning_classifier.train",
             "--epochs",
             "1",
             "--num-samples",

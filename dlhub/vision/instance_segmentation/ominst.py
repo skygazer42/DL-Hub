@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class OMInst(nn.Module):
-    """OMInst-style instance segmentation (toy-first).
+    """OMInst-style instance segmentation (compact-first).
 
     Uses learned queries with cross-attention over a feature map, then predicts masks via prototypes.
     """

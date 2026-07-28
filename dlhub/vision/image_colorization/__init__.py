@@ -1,4 +1,4 @@
-"""Image colorization models (toy-first, pure torch)."""
+"""Image colorization models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

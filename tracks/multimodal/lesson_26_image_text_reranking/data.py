@@ -150,7 +150,7 @@ def _caption_tokens(concept: tuple[str, str, str]) -> list[str]:
     return ["photo", "of", "a", color_name, texture_name, shape_name]
 
 
-class ToyImageTextRerankingDataset(Dataset):
+class SyntheticImageTextRerankingDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         _validate_config(cfg)
         self.cfg = cfg
@@ -198,7 +198,7 @@ class ToyImageTextRerankingDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyImageTextRerankingDataset(cfg, vocab=vocab)
+    dataset = SyntheticImageTextRerankingDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )

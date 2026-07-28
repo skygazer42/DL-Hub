@@ -1,9 +1,9 @@
-from .data import DataConfig, ToyVisionLanguageNavigationDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticVisionLanguageNavigationDataset, Vocab, get_dataloaders
 from .model import (
     TinyObservationEncoder,
     VisionLanguageNavigationConfig,
     VisionTextEncoder,
-    ToyVisionLanguageNavigationModel,
+    CompactVisionLanguageNavigationModel,
     navigation_accuracy,
     navigation_loss,
 )
@@ -11,8 +11,8 @@ from .model import (
 __all__ = [
     "DataConfig",
     "TinyObservationEncoder",
-    "ToyVisionLanguageNavigationDataset",
-    "ToyVisionLanguageNavigationModel",
+    "SyntheticVisionLanguageNavigationDataset",
+    "CompactVisionLanguageNavigationModel",
     "VisionLanguageNavigationConfig",
     "VisionTextEncoder",
     "Vocab",

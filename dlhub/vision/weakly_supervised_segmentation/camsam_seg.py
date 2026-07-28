@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_ws_segmenter, smoke_test_wss
+from ._common import build_baseline_ws_segmenter, smoke_test_wss
 
 _VARIANTS = {
     "camsam_seg_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_camsam_seg_ws_segmenter(
     variant: str = "camsam_seg_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_ws_segmenter(
+    return build_baseline_ws_segmenter(
         family="camsam_seg",
         variants=_VARIANTS,
         in_channels=int(in_channels),

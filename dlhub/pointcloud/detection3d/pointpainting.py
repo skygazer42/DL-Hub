@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointPainting(nn.Module):
-    """PointPainting (toy): paint points with semantic logits, then run a BEV detector."""
+    """PointPainting (compact): paint points with semantic logits, then run a BEV detector."""
 
     def __init__(
         self,

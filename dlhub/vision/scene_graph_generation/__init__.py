@@ -1,4 +1,4 @@
-"""Scene graph generation models (toy-first, pure torch)."""
+"""Scene graph generation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

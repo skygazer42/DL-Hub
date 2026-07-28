@@ -7,14 +7,14 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_gaussian_splatting_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_26_toy_gaussian_splatting.data import (
+    from tracks.pointcloud.lesson_26_compact_gaussian_splatting.data import (
         DataConfig,
-        ToyGaussianSplattingDataset,
+        SyntheticGaussianSplattingDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_26_toy_gaussian_splatting.model import (
+    from tracks.pointcloud.lesson_26_compact_gaussian_splatting.model import (
         ModelConfig,
-        ToyGaussianSplattingModel,
+        CompactGaussianSplattingModel,
         gaussian_splatting_loss,
     )
 
@@ -31,7 +31,7 @@ def test_pointcloud_gaussian_splatting_batch_contract_and_loss_smoke() -> None:
         splat_sigma=0.08,
     )
 
-    ds = ToyGaussianSplattingDataset(cfg)
+    ds = SyntheticGaussianSplattingDataset(cfg)
     observed, target = ds[0]
     assert tuple(observed.shape) == (48, 3)
     assert tuple(target.shape) == (1, 24, 24)
@@ -45,7 +45,7 @@ def test_pointcloud_gaussian_splatting_batch_contract_and_loss_smoke() -> None:
     assert tuple(observed_batch.shape) == (4, 48, 3)
     assert tuple(target_batch.shape) == (4, 1, 24, 24)
 
-    model = ToyGaussianSplattingModel(
+    model = CompactGaussianSplattingModel(
         ModelConfig(
             hidden_features=32,
             image_size=24,
@@ -66,9 +66,9 @@ def test_pointcloud_gaussian_splatting_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_gaussian_splatting_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_26_toy_gaussian_splatting.data import DataConfig
-    from tracks.pointcloud.lesson_26_toy_gaussian_splatting.model import ModelConfig
-    from tracks.pointcloud.lesson_26_toy_gaussian_splatting.train import (
+    from tracks.pointcloud.lesson_26_compact_gaussian_splatting.data import DataConfig
+    from tracks.pointcloud.lesson_26_compact_gaussian_splatting.model import ModelConfig
+    from tracks.pointcloud.lesson_26_compact_gaussian_splatting.train import (
         TrainConfig,
         run_training,
     )
@@ -109,7 +109,7 @@ def test_pointcloud_gaussian_splatting_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_26_toy_gaussian_splatting"
+        / "lesson_26_compact_gaussian_splatting"
         / "pytest_gaussian_splatting_smoke"
     )
     assert (run_dir / "config.json").is_file()

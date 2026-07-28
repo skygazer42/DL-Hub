@@ -1,6 +1,6 @@
 # Lesson 49: Face Gaze VLM Reasoning
 
-This lesson builds a toy multimodal regressor that combines synthetic face evidence with a short
+This lesson builds a compact multimodal regressor that combines synthetic face evidence with a short
 query/context prompt to infer a compact normalized gaze target on a shared screen plane.
 
 ## What It Teaches

@@ -110,7 +110,7 @@ class TinyDeweatherer(nn.Module):
         return {"restored": restored, "weather_residual": weather_residual}
 
 
-def build_toy_deweatherer(
+def build_baseline_deweatherer(
     *,
     family: str,
     mode: str,

@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_restoration, smoke_test_restoration
+from ._common import build_baseline_restoration, smoke_test_restoration
 
 _VARIANTS = {
     "basnet_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_basnet_saliency_detector(
     *, in_channels: int, variant: str = "basnet_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_restoration(
+    return build_baseline_restoration(
         family="basnet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class QueryGroup3D(nn.Module):
-    """QueryGroup3D (toy): initial queries, then refine by pooling point features with masks."""
+    """QueryGroup3D (compact): initial queries, then refine by pooling point features with masks."""
 
     def __init__(
         self,

@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_multiscale_2dtan_batch_shapes() -> None:
-    from tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.data import (
+    from tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -52,13 +52,13 @@ def test_multimodal_multiscale_2dtan_batch_shapes() -> None:
 
 
 def test_multimodal_multiscale_2dtan_model_outputs() -> None:
-    from tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.data import (
+    from tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.model import (
+    from tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.model import (
         MultiScaleTwoDtanModelConfig,
-        ToyMultiScaleTwoDtanTemporalGroundingModel,
+        CompactMultiScaleTwoDtanTemporalGroundingModel,
         multiscale_temporal_map_loss,
     )
 
@@ -75,7 +75,7 @@ def test_multimodal_multiscale_2dtan_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyMultiScaleTwoDtanTemporalGroundingModel(
+    model = CompactMultiScaleTwoDtanTemporalGroundingModel(
         MultiScaleTwoDtanModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -128,7 +128,7 @@ def test_multimodal_multiscale_2dtan_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_16_multiscale_2dtan_toy_temporal_grounding"
+        / "lesson_16_multiscale_2dtan_compact_temporal_grounding"
         / "pytest_multiscale_2dtan_smoke"
     )
     if run_dir.exists():
@@ -138,7 +138,7 @@ def test_multimodal_multiscale_2dtan_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.train",
+            "tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.train",
             "--epochs",
             "1",
             "--num-samples",

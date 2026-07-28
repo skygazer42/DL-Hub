@@ -17,7 +17,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class VoxelRCNN(nn.Module):
-    """Voxel R-CNN (toy): two-stage BEV proposals + voxel/point pooled refinement."""
+    """Voxel R-CNN (compact): two-stage BEV proposals + voxel/point pooled refinement."""
 
     def __init__(
         self,
@@ -51,7 +51,7 @@ class VoxelRCNN(nn.Module):
         self.box = nn.Linear(d, 7)
 
     def forward(self, points: torch.Tensor) -> dict[str, torch.Tensor]:
-        # Reuse stage1 features explicitly (toy "voxel ROI pooling").
+        # Reuse stage1 features explicitly (compact "voxel ROI pooling").
         check_points(points)
         xyz, feats = split_xyz_features(points)
         if feats is None:

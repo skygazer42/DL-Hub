@@ -28,14 +28,14 @@ def _div_backward(px: torch.Tensor, py: torch.Tensor) -> torch.Tensor:
 
 
 class TotalVariationDenoiser(nn.Module):
-    """ROF / TV denoising via Chambolle iterations (torch-only, toy-first).
+    """ROF / TV denoising via Chambolle iterations (torch-only, compact-first).
 
     Solves (approximately):
         min_u 0.5 * ||u - f||^2 + weight * TV(u)
 
     Notes:
     - This is intended as a classical baseline and is not optimized for speed.
-    - For toy images (32-128px) it's fine on CPU.
+    - For compact images (32-128px) it's fine on CPU.
     """
 
     def __init__(

@@ -1,4 +1,4 @@
-"""Local, toy-first face parsing families.
+"""Local, compact-first face parsing families.
 
 Conventions:
 - One family per file.

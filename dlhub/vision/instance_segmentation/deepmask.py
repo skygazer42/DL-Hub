@@ -11,7 +11,7 @@ from dlhub.vision.instance_segmentation._common import (
 
 
 class DeepMask(nn.Module):
-    """DeepMask-style proposal and mask seed predictor (toy-first)."""
+    """DeepMask-style proposal and mask seed predictor (compact-first)."""
 
     def __init__(
         self,

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_attr, smoke_test_attr
+from ._common import build_baseline_attr, smoke_test_attr
 
 _VARIANTS = {
     "hydraplus_ped_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_hydraplus_ped_(
     variant: str = "hydraplus_ped_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_attr(
+    return build_baseline_attr(
         family="hydraplus_ped",
         variants=_VARIANTS,
         in_channels=int(in_channels),

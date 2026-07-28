@@ -1,4 +1,4 @@
-"""Aesthetic assessment models (toy-first, pure torch)."""
+"""Aesthetic assessment models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

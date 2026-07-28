@@ -82,7 +82,7 @@ class TinyLandmarkDetector(nn.Module):
         }
 
 
-def build_toy_landmark_detector(
+def build_baseline_landmark_detector(
     *,
     family: str,
     mode: str,

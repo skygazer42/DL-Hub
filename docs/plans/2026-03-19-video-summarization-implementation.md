@@ -1,8 +1,6 @@
 # Video Summarization Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add a local toy-first video summarization zoo under `dlhub.vision` with six extractive summarization families, a CLI, and smoke tests.
+**Goal:** Add a local compact-first video summarization zoo under `dlhub.vision` with six extractive summarization families, a CLI, and smoke tests.
 
 **Architecture:** Reuse the repository's lazy zoo discovery pattern. Each family lives in its own file under `dlhub/vision/video_summarization/`, exposes `_VARIANTS` and `build_*_video_summarizer(...)`, and returns a dict with `scores` and `summary_mask` for `(B, T, C, H, W)` video input.
 

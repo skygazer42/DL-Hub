@@ -75,7 +75,7 @@ class TinyMirrorSegmentor(nn.Module):
         }
 
 
-def build_toy_mirror_segmentor(
+def build_baseline_mirror_segmentor(
     *,
     family: str,
     mode: str,

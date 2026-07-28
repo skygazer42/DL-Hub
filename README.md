@@ -15,7 +15,7 @@
 <br/>
 
 <!-- stats:hero-badges -->
-**339 Lessons** · **8626 Model Zoo Architectures** · **31 NumPy ML Algorithms** · **409 Test Files**
+**339 Lessons** · **8611 Model Zoo Registrations** · **31 NumPy ML Algorithms**
 <!-- /stats:hero-badges -->
 
 <br/>
@@ -34,12 +34,12 @@
 <td align="center" width="25%">
 <br/>
 <b>Vision</b><br/>
-<sub>从 LeNet 到 ViT，<br/>791 架构 · 图像分类 / 检测 / 分割</sub>
+<sub>从 LeNet 到 ViT，<br/>791 注册 ID · 图像分类 / 检测 / 分割</sub>
 </td>
 <td align="center" width="25%">
 <br/>
 <b>NLP</b><br/>
-<sub>从词嵌入到 Transformer，<br/>814 架构 · 分类 / NER / 阅读理解</sub>
+<sub>从词嵌入到 Transformer，<br/>814 注册 ID · 分类 / NER / 阅读理解</sub>
 </td>
 <td align="center" width="25%">
 <br/>
@@ -49,7 +49,7 @@
 <td align="center" width="25%">
 <br/>
 <b>Point Cloud</b><br/>
-<sub>从 PointNet 到 PCT，<br/>64 架构 · 分类 / 部件分割 / 重建 / 15 种自监督</sub>
+<sub>从 PointNet 到 PCT，<br/>64 注册 ID · 分类 / 部件分割 / 重建 / 15 种自监督</sub>
 </td>
 </tr>
 <tr>
@@ -87,6 +87,7 @@
 
 - [What You'll Build](#what-youll-build)
 - [Quick Start](#quick-start)
+- [One Repository, One Contract](#one-repository-one-contract)
 - [Learning Path](#learning-path)
 - [Learning Tracks](#learning-tracks)
 - [Model Zoo](#model-zoo)
@@ -101,7 +102,7 @@
 ## Quick Start
 
 > [!TIP]
-> 所有 lesson 均支持 `--dataset fake` 离线冒烟 — **无需下载任何数据集，2 分钟即可跑通**。
+> 所有 lesson 都提供离线运行路径：真实数据课程可传 `--dataset fake`，其余课程默认使用内置 synthetic 数据，无需下载数据集。
 
 ```bash
 # 克隆仓库
@@ -109,7 +110,7 @@ git clone https://github.com/skygazer42/DL-Hub.git
 cd DL-Hub
 pip install -r requirements.txt
 
-# 仓库级冒烟测试（验证环境）
+# 精选冒烟测试（覆盖 8 个 track，用于验证环境）
 python scripts/smoke_check.py
 
 # 跑通第一个 lesson
@@ -122,11 +123,15 @@ python scripts/run_lesson.py --list
 ```
 
 <details>
-<summary><b>统一 CLI 参数（所有 lesson 通用）</b></summary>
+<summary><b>常见 CLI 参数（以具体 lesson 能力为准）</b></summary>
+
+所有训练入口统一提供 `--seed`、`--device` 和 `--run-name`；训练轮数、批大小、
+快速截断等参数按任务提供。运行
+`python scripts/run_lesson.py <track> <lesson> --describe` 可查看准确参数列表。
 
 | 参数 | 说明 | 示例 |
 |------|------|------|
-| `--dataset` | 数据模式 | `fake` (离线冒烟) / `toy` / `real` |
+| `--dataset` | 可选数据模式；仅部分真实数据课程提供 | `fake` / `mnist` |
 | `--epochs` | 训练轮数 | `10` |
 | `--batch-size` | 批大小 | `32` |
 | `--learning-rate` | 学习率 | `0.001` |
@@ -138,6 +143,23 @@ python scripts/run_lesson.py --list
 </details>
 
 安装细节与各 track 先修建议见 [docs/getting-started/](docs/getting-started/index.md)。
+
+---
+
+## One Repository, One Contract
+
+DL-Hub 用一条完整链路组织每个主题：**问题定义 → 数据 → 模型机制 → 训练与评估 →
+运行产物 → 审计证据**。为了让名称和代码能力对齐，仓库把三个维度严格分开：
+
+| 维度 | 仓库语义 |
+|------|----------|
+| 实现规模与保真度 | `compact` 表示保留关键机制的缩放实现；论文名只委托公共基线时标为 `baseline-alias` |
+| 数据来源 | `synthetic` 只表示程序生成的数据或标注，不再用于给模型能力命名 |
+| 验证范围 | `contract` / `smoke` / targeted test / benchmark 分别证明不同强度的结论 |
+
+因此，目录改名不是把旧标签换个外壳：课程需要连接真实的任务输入、损失、指标和输出；
+Model Zoo 注册 ID 也不会被描述成同等数量的论文复现。完整规则、升级路径和维护命令见
+[实现契约：从课程到可验证系统](docs/implementation-contract.md)。
 
 ---
 
@@ -179,7 +201,8 @@ python scripts/run_lesson.py --list
 | **合计** | **339** | [docs/tracks/](docs/tracks/index.md) |
 <!-- /stats:track-overview -->
 
-所有 lesson 遵循同一套约定（`data.py` / `model.py` / `train.py`，统一 CLI，`outputs/<track>/<lesson>/<run>/` 输出），详见 [docs/CONVENTIONS.md](docs/CONVENTIONS.md)。
+所有训练 lesson 遵循统一的入口、seed、设备和 `outputs/<track>/<lesson>/<run>/` 输出约定；
+`model.py`、`data.py` 与任务参数按课程形态组织，详见 [docs/CONVENTIONS.md](docs/CONVENTIONS.md)。
 
 ---
 
@@ -191,24 +214,29 @@ python scripts/run_lesson.py --list
 <!-- stats:zoo-overview -->
 | Zoo | 规模 | 文档 |
 |---|---|---|
-| Vision Zoo | 791 架构 ID / 220 模块 | [docs/zoo/vision-zoo.md](docs/zoo/vision-zoo.md) |
-| NLP Zoo | 814 架构 ID | [docs/zoo/nlp-zoo.md](docs/zoo/nlp-zoo.md) |
-| Point Cloud Zoo | 64 架构 ID | [docs/zoo/pointcloud-zoo.md](docs/zoo/pointcloud-zoo.md) |
-| VLM Zoo | 210 ID / 70 架构族 | [docs/zoo/vlm-zoo.md](docs/zoo/vlm-zoo.md) |
+| Vision Zoo | 791 注册 ID / 220 模块 | [docs/zoo/vision-zoo.md](docs/zoo/vision-zoo.md) |
+| NLP Zoo | 814 注册 ID | [docs/zoo/nlp-zoo.md](docs/zoo/nlp-zoo.md) |
+| Point Cloud Zoo | 64 注册 ID | [docs/zoo/pointcloud-zoo.md](docs/zoo/pointcloud-zoo.md) |
+| VLM Zoo | 210 注册 ID / 70 架构族 | [docs/zoo/vlm-zoo.md](docs/zoo/vlm-zoo.md) |
 | GAN Zoo | 44 架构族 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
 | Diffusion Zoo | 32 架构族 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
 | Federated Zoo | 76 联邦策略族 | [docs/zoo/federated-zoo.md](docs/zoo/federated-zoo.md) |
-| **全部 123 个 zoo 模块合计** | **8626 架构 ID** | [docs/zoo/](docs/zoo/index.md) |
+| **全部 123 个 zoo 模块合计** | **8611 注册 ID** | [docs/zoo/](docs/zoo/index.md) |
 <!-- /stats:zoo-overview -->
+
+> [!IMPORTANT]
+> “注册 ID”表示可寻址的构建配置，不等于同等数量的独立论文复现，也不自动代表论文机制完整。
+> 首批源码对齐结果、分级标准与缺失机制见
+> [Model Zoo 保真度审计](docs/zoo/fidelity.md)，并可用
+> `python scripts/model_fidelity.py --check` 复核元数据。
 
 ```bash
 # 列出某个 zoo 的全部架构
 python scripts/vision_zoo.py --list
 python scripts/nlp_zoo.py --list
 
-# 在 lesson 中一行切换 backbone
-python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
-  --arch pointnet_tiny --dataset fake --epochs 1
+# 检查模型构建与前向接口
+python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 ```
 
 主题覆盖闭环（每个承诺的主题都映射到可验证的代码工件）由
@@ -236,6 +264,7 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
 | [快速开始](docs/getting-started/index.md) | 安装、环境要求、第一个 lesson | 初学者 |
 | [学习赛道](docs/tracks/index.md) | 8 个 track 的全部 lesson 明细 | 所有人 |
 | [Model Zoo](docs/zoo/index.md) | 各领域架构注册表与研究方向 | 所有人 |
+| [实现契约](docs/implementation-contract.md) | 命名语义、完整运行链路与保真度升级规则 | 所有人 |
 | [仓库结构](docs/developer/structure.md) | 目录与模块职责详解 | 想深入了解的人 |
 | [运行 & 实验约定](docs/CONVENTIONS.md) | seed / 设备 / 输出目录约定 | 贡献者 |
 | [代码规范](docs/STYLEGUIDE.md) | 风格与命名 | 贡献者 |
@@ -253,20 +282,20 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
               │ 所有 lesson   │ 共享 dlhub/  │ 种子 + 配置 + 日志      │
               │ 支持离线冒烟   │ 训练框架      │ 每次实验可追溯          │
               ├──────────────┼──────────────┼─────────────────────────┤
-              │   渐进式      │  测试覆盖     │  Model Zoo             │
-              │ 由浅入深       │ pytest 全量  │ 全领域统一接口          │
-              │ 8 track 递进  │ CI 可集成    │ 一行切换架构            │
+              │   渐进式      │  分层验证     │  Model Zoo             │
+              │ 由浅入深       │ 契约 + Smoke │ 全领域统一接口          │
+              │ 8 track 递进  │ 按改动精确测  │ 一行切换架构            │
               └──────────────┴──────────────┴─────────────────────────┘
 ```
 
 <details>
 <summary><b>详细说明</b></summary>
 
-- **Offline-first** — 所有 lesson 支持 `--dataset fake` 离线冒烟，无需下载任何数据集，10 秒内验证环境
-- **统一脚手架** — 所有 lesson 共享 `dlhub/` 框架：训练循环、设备管理、种子、检查点、JSONL 指标记录
+- **Offline-first** — 真实数据课程提供 `--dataset fake`，其余课程默认使用内置 synthetic 数据
+- **统一脚手架** — 所有训练 lesson 共享 `dlhub/` 的设备、种子、输出路径、检查点与指标工具
 - **可复现** — 种子管理 + 配置自动保存 + 指标日志，每次实验完整可追溯
 - **渐进式** — 从基础张量操作到 Vision Transformer、GraphSAGE、PointNet++、LLaVA，由浅入深，8 个 track 层层递进
-- **测试覆盖** — pytest 测试覆盖框架核心与所有 track，`make lint` / `make test` / `make smoke` 全绿可查，支持 CI 集成
+- **分层验证** — 静态契约、精选 Smoke 与针对性测试各自回答不同问题；按改动范围选择最小必要验证
 - **Model Zoo** — 全领域（Vision / NLP / Point Cloud / Multimodal / Generative / Federated）架构注册表，纯 PyTorch 本地实现，统一接口一行切换
 
 </details>
@@ -283,11 +312,11 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
 1. Fork 本仓库
 2. 创建你的分支 (`git checkout -b feature/amazing-lesson`)
 3. 遵循 [`docs/STYLEGUIDE.md`](docs/STYLEGUIDE.md) 代码规范
-4. 确保 `python scripts/smoke_check.py` 通过
+4. 先运行 `make verify`，再为本次改动选择最小必要 pytest；涉及训练链路时才运行对应 smoke
 5. 提交 PR
 
 > [!NOTE]
-> 每个新 lesson 应包含：`model.py` / `data.py` / `train.py`，并支持 `--dataset fake` 冒烟模式。详见 [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md)。
+> 每个新训练 lesson 应包含 `model.py` / `data.py` / `train.py`，并提供一种无需联网的运行方式；只有可切换真实数据集时才需要 `--dataset fake`。详见 [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md)。
 
 ---
 
@@ -295,10 +324,12 @@ python -m tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train \
 
 如果本项目对你的学习或研究有帮助，欢迎引用：
 
+项目作者与维护者：**skygazer42** &lt;207829897@qq.com&gt;
+
 ```bibtex
 @misc{dlhub2026,
-  title  = {DL-Hub: A Unified PyTorch Deep Learning Learning Project},
-  author = {DL-Hub Contributors},
+  title  = {DL-Hub: A Unified PyTorch Deep Learning Practice Hub},
+  author = {skygazer42},
   year   = {2026},
   url    = {https://github.com/skygazer42/DL-Hub}
 }

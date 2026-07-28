@@ -1,9 +1,9 @@
-"""SlowFast (dual-pathway) - toy-first video action classifier.
+"""SlowFast (dual-pathway) - compact-first video action classifier.
 
 Reference:
 - "SlowFast Networks for Video Recognition" (ICCV 2019)
 
-Toy interpretation:
+Compact interpretation:
 - Two 3D CNN pathways:
   - Slow pathway: lower frame-rate sampling, higher channel capacity.
   - Fast pathway: higher frame-rate, lower channel capacity.

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "paq2piq_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_paq2piq_iqa_model(
     *, in_channels: int, variant: str = "paq2piq_small", width_mult: float = 1.0, **kwargs
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="paq2piq",
         variants=_VARIANTS,
         in_channels=int(in_channels),

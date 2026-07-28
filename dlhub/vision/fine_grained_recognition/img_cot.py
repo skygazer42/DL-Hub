@@ -1,4 +1,4 @@
-"""ImgCoT (toy-first) for FGVC.
+"""ImgCoT (compact-first) for FGVC.
 
 Reference:
 - "ImgCoT: Compressing Long Chain of Thought into Compact Visual Tokens for Efficient Reasoning of Large Language Model"
@@ -102,7 +102,7 @@ class ImgCoTFGVC(nn.Module):
         gather_idx = key_idx.unsqueeze(-1).expand(-1, -1, patches.shape[-1])
         key_tokens = torch.gather(patches, 1, gather_idx)  # (B, k, E)
 
-        # Reconstruction loss: can be used as an auxiliary objective in toy training.
+        # Reconstruction loss: can be used as an auxiliary objective in compact training.
         recon = self.recon_attn(
             self.q_norm(patches), self.kv_norm(lat), self.kv_norm(lat), need_weights=False
         )[0]

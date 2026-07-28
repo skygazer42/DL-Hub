@@ -185,7 +185,7 @@ class ProjectionHead(nn.Module):
 
 
 class SwAV2PointNet(nn.Module):
-    """SwAV model: encoder + projector + prototypes (toy-first, 2-crop).
+    """SwAV model: encoder + projector + prototypes (compact-first, 2-crop).
 
     Forward returns:
       - h: (B, embed_dim) encoder features

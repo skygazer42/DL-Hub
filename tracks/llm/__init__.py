@@ -1,1 +1,1 @@
-"""LLM track (toy LMs + scalable patterns)."""
+"""LLM track (compact LMs + scalable patterns)."""

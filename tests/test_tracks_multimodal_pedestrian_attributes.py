@@ -49,7 +49,7 @@ def test_multimodal_pedestrian_attributes_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_33_pedestrian_attribute_recognition.model import (
         ModelConfig,
-        ToyPedestrianAttributeModel,
+        CompactPedestrianAttributeModel,
         attribute_retrieval_loss,
         retrieval_accuracy,
         recall_at_k,
@@ -67,7 +67,7 @@ def test_multimodal_pedestrian_attributes_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyPedestrianAttributeModel(
+    model = CompactPedestrianAttributeModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

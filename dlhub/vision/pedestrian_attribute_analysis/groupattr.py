@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_attr, smoke_test_attr
+from ._common import build_baseline_attr, smoke_test_attr
 
 _VARIANTS = {
     "groupattr_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_groupattr_(
     variant: str = "groupattr_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_attr(
+    return build_baseline_attr(
         family="groupattr",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -14,7 +14,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class CFGStyleDiffusionStyleTransfer(nn.Module):
-    """Classifier-Free Guidance (CFG) diffusion img2img style transfer (toy).
+    """Classifier-Free Guidance (CFG) diffusion img2img style transfer (compact).
 
     Implements the key CFG formula used in Stable Diffusion ecosystems:
       eps = eps_uncond + s * (eps_cond - eps_uncond)

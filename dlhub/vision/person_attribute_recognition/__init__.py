@@ -1,4 +1,4 @@
-"""Person attribute recognition models (toy-first, pure torch)."""
+"""Person attribute recognition models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_exposure_corrector, smoke_test_exposure_corrector
+from ._common import build_baseline_exposure_corrector, smoke_test_exposure_corrector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_contrast_exposure_exposure_corrector(
     *, in_channels: int, variant: str = "contrast_exposure_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_exposure_corrector(
+    return build_baseline_exposure_corrector(
         family="contrast_exposure",
         mode="contrast",
         variants=_VARIANTS,

@@ -49,7 +49,7 @@ def test_multimodal_person_search_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_31_person_search_attribute_retrieval.model import (
         ModelConfig,
-        ToyPersonSearchModel,
+        CompactPersonSearchModel,
         person_search_loss,
         retrieval_accuracy,
         recall_at_k,
@@ -67,7 +67,7 @@ def test_multimodal_person_search_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyPersonSearchModel(
+    model = CompactPersonSearchModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

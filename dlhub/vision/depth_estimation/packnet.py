@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_depth_estimator, smoke_test_depth
+from ._common import build_baseline_depth_estimator, smoke_test_depth
 
 _VARIANTS = {
     "packnet_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_packnet_depth_estimator(
     *, in_channels: int, variant: str = "packnet_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_depth_estimator(
+    return build_baseline_depth_estimator(
         family="packnet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -90,7 +90,7 @@ class TinyHandClassifier(nn.Module):
         }
 
 
-def build_toy_hand_classifier(
+def build_baseline_hand_classifier(
     *,
     family: str,
     mode: str,

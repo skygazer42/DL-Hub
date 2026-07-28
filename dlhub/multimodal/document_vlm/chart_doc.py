@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_document_vlm, smoke_test_document_vlm
+from ._common import build_baseline_document_vlm, smoke_test_document_vlm
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "chart_doc_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_chart_doc_document_vlm(
     *, in_channels: int, variant: str = "chart_doc_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_document_vlm(
+    return build_baseline_document_vlm(
         family="chart_doc",
         mode="chart",
         variants=_VARIANTS,

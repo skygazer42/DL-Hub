@@ -16,7 +16,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class CIASSD(nn.Module):
-    """CIA-SSD (toy): context-aware gating on keypoint features."""
+    """CIA-SSD (compact): context-aware gating on keypoint features."""
 
     def __init__(
         self,

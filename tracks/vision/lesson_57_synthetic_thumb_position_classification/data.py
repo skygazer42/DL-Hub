@@ -21,7 +21,7 @@ class DataConfig:
 
 
 class SyntheticThumbPositionDataset:
-    """Render a toy grayscale hand crop and classify thumb position.
+    """Render a synthetic grayscale hand crop and classify thumb position.
 
     Label 0: low/tucked thumb
     Label 1: middle thumb

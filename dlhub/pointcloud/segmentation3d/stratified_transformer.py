@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class StratifiedTransformerSeg(nn.Module):
-    """Stratified Transformer semantic segmentation (toy): attend on sampled tokens then propagate."""
+    """Stratified Transformer semantic segmentation (compact): attend on sampled tokens then propagate."""
 
     def __init__(
         self,

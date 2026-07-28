@@ -1,4 +1,4 @@
-"""3D semantic segmentation models (pure torch, toy-first).
+"""3D semantic segmentation models (pure torch, compact-first).
 
 Conventions:
 - One algorithm family per file (variants live in that file via `_VARIANTS`).

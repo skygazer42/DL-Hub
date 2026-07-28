@@ -1,10 +1,10 @@
-"""LDH-ViT (Local concealment + feature selection) - toy-first FGVC classifier.
+"""LDH-ViT (Local concealment + feature selection) - compact-first FGVC classifier.
 
 Reference:
 - "LDH-ViT: Local Concealment and Feature Selection for Fine-Grained Visual Classification"
   (Pattern Recognition, 2024)
 
-Toy interpretation here:
+Compact interpretation here:
 - "local concealment" = patch dropout (randomly zero a subset of patch embeddings)
 - "feature selection" = top-k token selection (TransFG-style)
 """

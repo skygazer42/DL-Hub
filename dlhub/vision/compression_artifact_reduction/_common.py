@@ -106,7 +106,7 @@ class TinyArtifactReducer(nn.Module):
         return {"restored": clean, "artifact": artifact_layer, "quality": quality}
 
 
-def build_toy_artifact_reducer(
+def build_baseline_artifact_reducer(
     *,
     family: str,
     mode: str,

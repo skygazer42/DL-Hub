@@ -10,7 +10,7 @@ def check_nchw(x):
     return x
 
 
-class ToyEditor(nn.Module):
+class CompactEditor(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -28,7 +28,7 @@ class ToyEditor(nn.Module):
         return {"edited": edited, "delta": delta}
 
 
-def build_toy_editor(
+def build_baseline_editor(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -38,7 +38,7 @@ def build_toy_editor(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyEditor(
+    return CompactEditor(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

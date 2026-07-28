@@ -1,10 +1,10 @@
-"""IIR-VLM (toy-first) for FGVC / instance-level recognition.
+"""IIR-VLM (compact-first) for FGVC / instance-level recognition.
 
 Reference:
 - "IIR-VLM: In-Context Instance-level Recognition for Large Vision-Language Models"
   (arXiv 2026): https://arxiv.org/abs/2601.14188
 
-Toy interpretation (offline, no ILR expert checkpoints):
+Compact interpretation (offline, no ILR expert checkpoints):
 - use a tiny ViT patch encoder as the "general VLM" vision encoder
 - add a lightweight CNN "expert" branch to mimic instance-level specialization
 - fuse the two embeddings with a learned gate, then classify

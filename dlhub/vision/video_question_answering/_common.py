@@ -10,7 +10,7 @@ def check_btchw(x):
     return x
 
 
-class ToyVideoQA(nn.Module):
+class CompactVideoQA(nn.Module):
     def __init__(
         self, *, family: str, in_channels: int, width: int, depth: int, answer_vocab: int = 32
     ):
@@ -30,7 +30,7 @@ class ToyVideoQA(nn.Module):
         return {"answer_logits": logits}
 
 
-def build_toy_video_qa(
+def build_baseline_video_qa(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -42,7 +42,7 @@ def build_toy_video_qa(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyVideoQA(
+    return CompactVideoQA(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

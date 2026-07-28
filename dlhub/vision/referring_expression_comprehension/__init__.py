@@ -1,4 +1,4 @@
-"""Referring expression comprehension models (toy-first, pure torch)."""
+"""Referring-expression comprehension registry and compact PyTorch baselines."""
 
 from __future__ import annotations
 from importlib import import_module

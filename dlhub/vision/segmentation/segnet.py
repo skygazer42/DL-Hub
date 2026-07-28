@@ -24,7 +24,7 @@ class _EncBlock(nn.Module):
 
 
 class SegNet(nn.Module):
-    """SegNet semantic segmentation (toy-first).
+    """SegNet semantic segmentation (compact-first).
 
     Uses an encoder-decoder with max-pooling and upsampling.
     (This compact implementation uses nearest upsampling instead of pooling indices.)

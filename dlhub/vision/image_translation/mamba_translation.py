@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_translator, smoke_test_translator
+from ._common import build_baseline_translator, smoke_test_translator
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_mamba_translation_translator(
     variant: str = "mamba_translation_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_translator(
+    return build_baseline_translator(
         family="mamba_translation",
         mode="mamba",
         variants=_VARIANTS,

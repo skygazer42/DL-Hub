@@ -7,11 +7,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_sentence_denoising_batch_contract() -> None:
-    from tracks.nlp.lesson_23_toy_sentence_denoising_autoencoder.data import (
+    from tracks.nlp.lesson_23_compact_sentence_denoising_autoencoder.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_23_toy_sentence_denoising_autoencoder.model import (
+    from tracks.nlp.lesson_23_compact_sentence_denoising_autoencoder.model import (
         DenoisingSeq2Seq,
         ModelConfig,
         reconstruction_token_accuracy,
@@ -62,8 +62,8 @@ def test_sentence_denoising_batch_contract() -> None:
 
 
 def test_sentence_denoising_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_23_toy_sentence_denoising_autoencoder.data import DataConfig
-    from tracks.nlp.lesson_23_toy_sentence_denoising_autoencoder.train import (
+    from tracks.nlp.lesson_23_compact_sentence_denoising_autoencoder.data import DataConfig
+    from tracks.nlp.lesson_23_compact_sentence_denoising_autoencoder.train import (
         TrainConfig,
         run_training,
     )
@@ -101,7 +101,7 @@ def test_sentence_denoising_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_23_toy_sentence_denoising_autoencoder"
+        / "lesson_23_compact_sentence_denoising_autoencoder"
         / "pytest_sentence_denoising_smoke"
     )
     assert (run_dir / "config.json").is_file()

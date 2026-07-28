@@ -25,7 +25,7 @@ class _AdaptiveAdjacency(nn.Module):
 
 
 class PointWebSeg(nn.Module):
-    """PointWeb semantic segmentation (toy): adjacency learned from relative xyz."""
+    """PointWeb semantic segmentation (compact): adjacency learned from relative xyz."""
 
     def __init__(
         self,

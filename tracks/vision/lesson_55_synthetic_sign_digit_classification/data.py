@@ -21,7 +21,7 @@ class DataConfig:
 
 
 class SyntheticSignDigitDataset:
-    """Render a compact synthetic hand crop and classify a toy sign-digit (0..9).
+    """Render a compact synthetic hand crop and classify a synthetic sign-digit (0..9).
 
     This is a teaching-friendly proxy for hand-sign digit classification: a palm blob plus a
     small number of finger-like blobs, combined with a digit-specific corner marker.

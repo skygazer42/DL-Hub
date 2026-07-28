@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class KPConvInst(nn.Module):
-    """KPConv instance segmentation (toy): local neighborhood encoder + query masks."""
+    """KPConv instance segmentation (compact): local neighborhood encoder + query masks."""
 
     def __init__(
         self,

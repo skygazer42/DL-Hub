@@ -20,7 +20,7 @@ def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
 
 
 class LeeFilter(nn.Module):
-    """Lee filter baseline for multiplicative (speckle-like) noise (torch-only, toy-first).
+    """Lee filter baseline for multiplicative (speckle-like) noise (torch-only, compact-first).
 
     For a speckle model:
         I = S * (1 + n),  with Var(n) = sigma^2

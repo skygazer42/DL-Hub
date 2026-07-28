@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class HRNetPanoptic(nn.Module):
-    """HRNet-style panoptic segmentation (toy-first).
+    """HRNet-style panoptic segmentation (compact-first).
 
     Maintains a high-resolution branch and a lower-resolution branch with simple fusion,
     plus a prototype+query instance head.

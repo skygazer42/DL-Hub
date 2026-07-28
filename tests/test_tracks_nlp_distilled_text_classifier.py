@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_distilled_text_classifier_batch_contract() -> None:
-    from tracks.nlp.lesson_19_toy_distilled_text_classifier.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_19_toy_distilled_text_classifier.model import (
+    from tracks.nlp.lesson_19_compact_distilled_text_classifier.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_19_compact_distilled_text_classifier.model import (
         DistilledTextClassifier,
         ModelConfig,
         classification_accuracy,
@@ -60,8 +60,8 @@ def test_distilled_text_classifier_batch_contract() -> None:
 
 
 def test_distilled_text_classifier_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_19_toy_distilled_text_classifier.data import DataConfig
-    from tracks.nlp.lesson_19_toy_distilled_text_classifier.train import TrainConfig, run_training
+    from tracks.nlp.lesson_19_compact_distilled_text_classifier.data import DataConfig
+    from tracks.nlp.lesson_19_compact_distilled_text_classifier.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -96,7 +96,7 @@ def test_distilled_text_classifier_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_19_toy_distilled_text_classifier"
+        / "lesson_19_compact_distilled_text_classifier"
         / "pytest_distilled_text_classifier_smoke"
     )
     assert (run_dir / "config.json").is_file()

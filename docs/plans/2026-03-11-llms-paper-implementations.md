@@ -1,7 +1,5 @@
 # LLM Paper Implementations Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add a new root package `Llms/` containing first-batch paper-faithful PyTorch implementations for LLaMA, BLOOM, GPT-NeoX, LoRA, and LLaMA-Adapter.
 
 **Architecture:** Implement these papers as small, importable building blocks rather than full training pipelines. Use one public module per paper with a consistent decoder-only interface where applicable, plus narrowly scoped helpers for paper-specific mechanisms such as ALiBi, partial RoPE, low-rank adapters, and zero-init prompt gating.

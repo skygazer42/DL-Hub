@@ -24,7 +24,7 @@ class DoubleConv(nn.Module):
         return self.net(x)
 
 
-class ToyMedicalSegmenter(nn.Module):
+class CompactMedicalSegmenter(nn.Module):
     def __init__(self, *, family: str, in_channels: int, num_classes: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -51,7 +51,7 @@ class ToyMedicalSegmenter(nn.Module):
         return {"logits": logits, "mask": mask}
 
 
-def build_toy_medical_segmenter(
+def build_baseline_medical_segmenter(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -62,7 +62,7 @@ def build_toy_medical_segmenter(
 ):
     spec = variants[str(variant)]
     width = max(8, int(int(spec["width"]) * float(width_mult)))
-    return ToyMedicalSegmenter(
+    return CompactMedicalSegmenter(
         family=str(family),
         in_channels=int(in_channels),
         num_classes=int(num_classes),

@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class TACSUMVideoSummarizer(nn.Module):
-    """TAC-SUM-style training-free temporal-aware clustering summarizer (toy).
+    """TAC-SUM-style training-free temporal-aware clustering summarizer (compact).
 
     The scoring logic is intentionally simple and deterministic:
     - encode frames

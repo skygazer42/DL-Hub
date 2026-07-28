@@ -95,7 +95,7 @@ class TinyRoadSceneModel(nn.Module):
         }
 
 
-def build_toy_road_scene_model(
+def build_baseline_road_scene_model(
     *,
     family: str,
     mode: str,

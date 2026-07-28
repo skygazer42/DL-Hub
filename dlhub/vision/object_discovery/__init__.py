@@ -1,4 +1,4 @@
-"""object discovery models (toy-first, pure torch)."""
+"""object discovery models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

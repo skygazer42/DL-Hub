@@ -1,4 +1,4 @@
-"""2D multi-object tracking models (pure torch, toy-first).
+"""2D multi-object tracking models (pure torch, compact-first).
 
 Conventions:
 - One tracking family per file (variants live in that file).

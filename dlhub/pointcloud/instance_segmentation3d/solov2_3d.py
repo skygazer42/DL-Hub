@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SOLOv2_3D(nn.Module):
-    """SOLOv2-3D (toy): BEV projection provides spatial inductive bias; masks via coeffs+prototypes."""
+    """SOLOv2-3D (compact): BEV projection provides spatial inductive bias; masks via coeffs+prototypes."""
 
     def __init__(
         self,

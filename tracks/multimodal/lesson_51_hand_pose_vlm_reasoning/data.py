@@ -180,7 +180,7 @@ def _sample_hand_pose(*, image_size: int, seed: int) -> tuple[np.ndarray, np.nda
     return image, keypoints
 
 
-class ToyHandPoseReasoningDataset(Dataset):
+class SyntheticHandPoseReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 48:
             raise ValueError("image_size must be >= 48")
@@ -210,7 +210,7 @@ class ToyHandPoseReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyHandPoseReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticHandPoseReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -233,7 +233,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyHandPoseReasoningDataset",
+    "SyntheticHandPoseReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

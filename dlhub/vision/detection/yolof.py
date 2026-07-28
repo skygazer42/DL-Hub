@@ -30,7 +30,7 @@ class _DilatedEncoder(nn.Module):
 
 
 class YOLOFDetector(nn.Module):
-    """YOLOF-style one-level detector (toy-first).
+    """YOLOF-style one-level detector (compact-first).
 
     Uses only the C5 feature with a dilated encoder.
     """

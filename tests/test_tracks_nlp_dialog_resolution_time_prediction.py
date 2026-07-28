@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_dialog_resolution_time_prediction_batch_contract() -> None:
-    from tracks.nlp.lesson_42_toy_dialog_resolution_time_prediction.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_42_toy_dialog_resolution_time_prediction.model import (
+    from tracks.nlp.lesson_42_compact_dialog_resolution_time_prediction.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_42_compact_dialog_resolution_time_prediction.model import (
         DialogResolutionTimeClassifier,
         ModelConfig,
         compute_accuracy,
@@ -57,8 +57,8 @@ def test_dialog_resolution_time_prediction_batch_contract() -> None:
 
 
 def test_dialog_resolution_time_prediction_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_42_toy_dialog_resolution_time_prediction.data import DataConfig
-    from tracks.nlp.lesson_42_toy_dialog_resolution_time_prediction.train import TrainConfig, run_training
+    from tracks.nlp.lesson_42_compact_dialog_resolution_time_prediction.data import DataConfig
+    from tracks.nlp.lesson_42_compact_dialog_resolution_time_prediction.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -91,7 +91,7 @@ def test_dialog_resolution_time_prediction_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_42_toy_dialog_resolution_time_prediction"
+        / "lesson_42_compact_dialog_resolution_time_prediction"
         / "pytest_dialog_resolution_time_smoke"
     )
     assert (run_dir / "config.json").is_file()

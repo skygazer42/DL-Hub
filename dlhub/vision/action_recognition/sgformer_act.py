@@ -1,9 +1,9 @@
-"""ST-GCN - toy-first skeleton action classifier.
+"""ST-GCN - compact-first skeleton action classifier.
 
 Reference:
 - "Spatial Temporal Graph Convolutional Networks for Skeleton-Based Action Recognition" (AAAI 2018)
 
-Toy interpretation:
+Compact interpretation:
 - Use a fixed adjacency (ring + self loops) and simple graph aggregation.
 - Apply temporal conv and global average pooling for classification.
 """

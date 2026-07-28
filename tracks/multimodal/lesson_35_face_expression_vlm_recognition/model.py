@@ -30,7 +30,7 @@ class FacialExpressionModelConfig:
     num_classes: int = 4
 
 
-class ToyFacialExpressionVLM(nn.Module):
+class CompactFacialExpressionVLM(nn.Module):
     def __init__(self, cfg: FacialExpressionModelConfig) -> None:
         super().__init__()
         self.face_encoder = nn.Sequential(
@@ -77,7 +77,7 @@ def classification_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float
 __all__ = [
     "FacialExpressionModelConfig",
     "PromptEncoder",
-    "ToyFacialExpressionVLM",
+    "CompactFacialExpressionVLM",
     "classification_accuracy",
     "expression_loss",
 ]

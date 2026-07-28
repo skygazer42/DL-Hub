@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_classifier, smoke_test_hand_classifier
+from ._common import build_baseline_hand_classifier, smoke_test_hand_classifier
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_transformer_finger_count_finger_count_estimator(
     variant: str = "transformer_finger_count_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_classifier(
+    return build_baseline_hand_classifier(
         family="transformer_finger_count",
         mode="transformer",
         variants=_VARIANTS,

@@ -1,4 +1,4 @@
-"""salient object detection boxes models (toy-first, pure torch)."""
+"""salient object detection boxes models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Image relighting models (toy-first, pure torch)."""
+"""Image relighting models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

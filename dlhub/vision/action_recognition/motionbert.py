@@ -1,9 +1,9 @@
-"""MotionBERT (masked motion modeling) - toy-first skeleton action classifier.
+"""MotionBERT (masked motion modeling) - compact-first skeleton action classifier.
 
 Reference (idea):
 - "MotionBERT: Unified Pretraining for Human Motion Analysis" (arXiv/CVPR-era 2022)
 
-Toy interpretation for action recognition:
+Compact interpretation for action recognition:
 - Tokenize (time, joint) into a sequence.
 - Optionally mask a random subset of tokens during training (masked motion modeling flavor).
 - TransformerEncoder + CLS token classification.

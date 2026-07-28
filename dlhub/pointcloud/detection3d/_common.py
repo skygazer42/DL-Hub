@@ -73,7 +73,7 @@ class PointNetEncoder(nn.Module):
 
 
 def knn_indices(x: torch.Tensor, k: int) -> torch.Tensor:
-    """Return kNN indices for each point (brute force; OK for toy N).
+    """Return kNN indices for each point (brute force; OK for compact N).
 
     x: (B, N, D)
     returns: (B, N, k) long
@@ -101,7 +101,7 @@ def knn_indices(x: torch.Tensor, k: int) -> torch.Tensor:
 
 
 class EdgeConv(nn.Module):
-    """DGCNN-style EdgeConv block (toy)."""
+    """DGCNN-style EdgeConv block (compact)."""
 
     def __init__(
         self, in_channels: int, out_channels: int, *, k: int = 16, dropout: float = 0.0
@@ -243,7 +243,7 @@ def scatter_mean_2d(
 
 @dataclass(frozen=True)
 class BEVBoxSpec:
-    """Simple BEV grid spec used by toy voxel/pillar detectors."""
+    """Simple BEV grid spec used by compact voxel/pillar detectors."""
 
     x_min: float = -10.0
     x_max: float = 10.0
@@ -367,7 +367,7 @@ def decode_bev_boxes(
 
 
 class QueryHead(nn.Module):
-    """DETR-like query head for 3D detection (toy).
+    """DETR-like query head for 3D detection (compact).
 
     Produces fixed K boxes from global context.
     """
@@ -401,7 +401,7 @@ class QueryHead(nn.Module):
 
 
 class BEVAnchorFreeDetector3D(nn.Module):
-    """Toy BEV detector: points -> BEV -> dense head -> top-k boxes."""
+    """Compact BEV detector: points -> BEV -> dense head -> top-k boxes."""
 
     def __init__(
         self,
@@ -452,7 +452,7 @@ class BEVAnchorFreeDetector3D(nn.Module):
 
 
 class BEVTwoStageDetector3D(nn.Module):
-    """Toy two-stage detector: dense BEV proposals + point ROI refinement."""
+    """Compact two-stage detector: dense BEV proposals + point ROI refinement."""
 
     def __init__(
         self,
@@ -515,7 +515,7 @@ class BEVTwoStageDetector3D(nn.Module):
 
 
 class PointQueryDetector3D(nn.Module):
-    """Point tokens + optional transformer + query head (toy 3DETR style)."""
+    """Point tokens + optional transformer + query head (compact 3DETR style)."""
 
     def __init__(
         self,

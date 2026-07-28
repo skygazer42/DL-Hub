@@ -1,8 +1,6 @@
 # Multimodal Lesson 08 Perceiver-Resampler-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm` as a teaching lesson for fixed-latent multi-view visual resampling.
+**Goal:** Add `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm` as a teaching lesson for fixed-latent multi-view visual resampling.
 
 **Architecture:** The lesson will generate one full-scene image plus four quadrant crops for each QA sample. A tiny CNN will emit visual tokens for every view, a Perceiver-style latent array will resample them into a small fixed number of latent tokens, and a tiny decoder LM will answer the question from those latents.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_08_perceiver_resampler_toy_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_08_perceiver_resampler_toy_vlm.train`
+- `lesson_08_perceiver_resampler_compact_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_08_perceiver_resampler_compact_vlm.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the multi-view scene QA dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/data.py`
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/README.md`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/data.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/README.md`
 - Test: `tests/test_tracks_multimodal_perceiver.py`
 
 **Step 1: Write the failing test**
@@ -80,7 +78,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the Perceiver-resampler-lite model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/model.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/model.py`
 - Test: `tests/test_tracks_multimodal_perceiver.py`
 
 **Step 1: Write the failing test**
@@ -116,7 +114,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and smoke run
 
 **Files:**
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/train.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_perceiver.py`
 
@@ -124,13 +122,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_08_perceiver_resampler_toy_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 16 --scene-size 32 --max-text-length 14 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_perceiver_smoke`
+`python -m tracks.multimodal.lesson_08_perceiver_resampler_compact_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 16 --scene-size 32 --max-text-length 14 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_perceiver_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_08_perceiver_resampler_toy_vlm/pytest_perceiver_smoke/config.json`
-- `outputs/multimodal/lesson_08_perceiver_resampler_toy_vlm/pytest_perceiver_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_08_perceiver_resampler_toy_vlm/pytest_perceiver_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_08_perceiver_resampler_compact_vlm/pytest_perceiver_smoke/config.json`
+- `outputs/multimodal/lesson_08_perceiver_resampler_compact_vlm/pytest_perceiver_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_08_perceiver_resampler_compact_vlm/pytest_perceiver_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -160,11 +158,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_perceiver.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/data.py`
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/model.py`
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/train.py`
-- Create: `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm/README.md`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/data.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/model.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/train.py`
+- Create: `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm/README.md`
 
 **Step 1: Run lint**
 
@@ -187,6 +185,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_08_perceiver_resampler_toy_vlm --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_08_perceiver_resampler_compact_vlm --dry-run`
 
 Expected: lesson 8 appears in the listing and resolves to the train module.

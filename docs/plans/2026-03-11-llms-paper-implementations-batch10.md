@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 10 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with paper-shaped implementations for OpenAssistant, the LLM Survey, and the LLM Timeline, covering alignment conversation trees, systematized LLM taxonomy/evaluation, and milestone tracking for recent LLM releases.
 
 **Architecture:** Implement `OpenAssistant` as an alignment-data abstraction with conversation trees, assistant turns, and preference ratings rather than a new backbone model. Implement `LLM Survey` as a taxonomy and benchmark registry that models the survey’s four major aspects, resource pointers, and major evaluation suites. Implement `LLM Timeline` as a compact milestone registry with date-based filtering over key model and dataset releases from the local timeline document.

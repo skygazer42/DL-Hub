@@ -1,7 +1,7 @@
-from .data import DataConfig, EventSpec, ToyAudioVisualLearningDataset, get_dataloaders, num_events, num_motions
+from .data import DataConfig, EventSpec, SyntheticAudioVisualLearningDataset, get_dataloaders, num_events, num_motions
 from .model import (
     AudioVisualLearningConfig,
-    ToyAudioVisualLearningModel,
+    CompactAudioVisualLearningModel,
     classification_accuracy,
     classification_loss,
     clip_contrastive_loss,
@@ -13,8 +13,8 @@ __all__ = [
     "AudioVisualLearningConfig",
     "DataConfig",
     "EventSpec",
-    "ToyAudioVisualLearningDataset",
-    "ToyAudioVisualLearningModel",
+    "SyntheticAudioVisualLearningDataset",
+    "CompactAudioVisualLearningModel",
     "classification_accuracy",
     "classification_loss",
     "clip_contrastive_loss",

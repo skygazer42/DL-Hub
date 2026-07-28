@@ -1,6 +1,6 @@
 # Hand segmentation
 
-Toy-first local families for `hand segmentation`.
+Compact-first local families for `hand segmentation`.
 
 ## Families
 

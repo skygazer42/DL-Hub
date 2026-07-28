@@ -1,13 +1,13 @@
-"""VideoMAE (tubelet ViT) - toy-first video action classifier.
+"""VideoMAE (tubelet ViT) - compact-first video action classifier.
 
 Reference:
 - "VideoMAE: Masked Autoencoders are Data-Efficient Learners for Self-Supervised Video Pre-Training"
   (NeurIPS 2022)
 
-Toy interpretation for classification:
+Compact interpretation for classification:
 - Tubelet embedding via Conv3d (tubelet, patch, patch) stride.
 - TransformerEncoder over flattened spatiotemporal tokens + a CLS token.
-- No masked autoencoding objective here; this is a structural toy for quick comparisons.
+- No masked autoencoding objective here; this is a structural compact for quick comparisons.
 """
 
 import torch

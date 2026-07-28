@@ -53,7 +53,7 @@ def _char_template(char_id: int) -> np.ndarray:
 
 
 class SyntheticSceneTextSpottingDataset:
-    """Generate toy images with one text region and a short recognition target."""
+    """Generate synthetic images with one text region and a short recognition target."""
 
     def __init__(self, cfg: DataConfig, vocab: SpottingVocab | None = None) -> None:
         if int(cfg.image_size) < 32:
@@ -61,7 +61,7 @@ class SyntheticSceneTextSpottingDataset:
         if int(cfg.text_length) < 3:
             raise ValueError("text_length must be >= 3")
         if int(cfg.in_channels) != 1:
-            raise ValueError("this toy lesson expects in_channels == 1")
+            raise ValueError("this synthetic lesson expects in_channels == 1")
         if not (0.0 < float(cfg.val_fraction) < 1.0):
             raise ValueError("val_fraction must be in (0, 1)")
         self.cfg = cfg

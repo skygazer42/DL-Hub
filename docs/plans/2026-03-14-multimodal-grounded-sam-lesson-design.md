@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation` as an independent teaching lesson for open-vocabulary text-conditioned segmentation with possible query absence.
+**Goal:** Add `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation` as an independent teaching lesson for open-vocabulary text-conditioned segmentation with possible query absence.
 
 ## Problem
 
@@ -161,7 +161,7 @@ Metrics:
 Follow the same conventions as earlier lessons:
 
 - CLI args for dataset size, image size, mask size, text length, and batch caps
-- `outputs/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/<run_name>/`
+- `outputs/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

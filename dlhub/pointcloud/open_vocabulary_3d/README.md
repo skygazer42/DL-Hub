@@ -1,6 +1,6 @@
 # Open vocabulary 3D
 
-Toy-first local families for `open vocabulary 3D`.
+Compact-first local families for `open vocabulary 3D`.
 
 ## Families
 

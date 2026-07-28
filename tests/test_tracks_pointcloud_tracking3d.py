@@ -7,14 +7,14 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_tracking3d_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_30_toy_3d_object_tracking.data import (
+    from tracks.pointcloud.lesson_30_compact_3d_object_tracking.data import (
         DataConfig,
-        ToyObjectTrackingDataset,
+        SyntheticObjectTrackingDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_30_toy_3d_object_tracking.model import (
+    from tracks.pointcloud.lesson_30_compact_3d_object_tracking.model import (
         ModelConfig,
-        ToyObjectTracker,
+        CompactObjectTracker,
         tracking_loss,
     )
 
@@ -29,7 +29,7 @@ def test_pointcloud_tracking3d_batch_contract_and_loss_smoke() -> None:
         clutter_ratio=0.25,
         noise_std=0.01,
     )
-    ds = ToyObjectTrackingDataset(cfg)
+    ds = SyntheticObjectTrackingDataset(cfg)
     prev_cloud, curr_cloud, target_state = ds[0]
     assert tuple(prev_cloud.shape) == (64, 3)
     assert tuple(curr_cloud.shape) == (64, 3)
@@ -44,7 +44,7 @@ def test_pointcloud_tracking3d_batch_contract_and_loss_smoke() -> None:
     assert tuple(curr_batch.shape) == (5, 64, 3)
     assert tuple(target_batch.shape) == (5, 6)
 
-    model = ToyObjectTracker(ModelConfig(hidden_features=32))
+    model = CompactObjectTracker(ModelConfig(hidden_features=32))
     pred_state = model(prev_batch, curr_batch)
     assert tuple(pred_state.shape) == (5, 6)
 
@@ -59,9 +59,9 @@ def test_pointcloud_tracking3d_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_tracking3d_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_30_toy_3d_object_tracking.data import DataConfig
-    from tracks.pointcloud.lesson_30_toy_3d_object_tracking.model import ModelConfig
-    from tracks.pointcloud.lesson_30_toy_3d_object_tracking.train import (
+    from tracks.pointcloud.lesson_30_compact_3d_object_tracking.data import DataConfig
+    from tracks.pointcloud.lesson_30_compact_3d_object_tracking.model import ModelConfig
+    from tracks.pointcloud.lesson_30_compact_3d_object_tracking.train import (
         TrainConfig,
         run_training,
     )
@@ -93,7 +93,7 @@ def test_pointcloud_tracking3d_training_smoke(
     )
     assert exit_code == 0
 
-    run_dir = tmp_path / "pointcloud" / "lesson_30_toy_3d_object_tracking" / "pytest_tracking3d_smoke"
+    run_dir = tmp_path / "pointcloud" / "lesson_30_compact_3d_object_tracking" / "pytest_tracking3d_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "logs" / "train.log").is_file()

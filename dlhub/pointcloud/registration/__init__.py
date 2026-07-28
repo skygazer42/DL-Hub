@@ -1,4 +1,4 @@
-"""Point cloud registration models (toy-first, pure torch)."""
+"""Point cloud registration models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

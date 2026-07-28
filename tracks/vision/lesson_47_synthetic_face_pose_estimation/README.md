@@ -1,6 +1,6 @@
 # Lesson 47: Synthetic Face Pose Estimation
 
-This toy lesson renders simple grayscale cartoon faces and regresses a compact three-value head
+This compact lesson renders simple grayscale cartoon faces and regresses a compact three-value head
 pose vector:
 
 - yaw

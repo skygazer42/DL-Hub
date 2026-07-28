@@ -28,7 +28,7 @@ def _make_mlp(
     return nn.Sequential(*layers)
 
 
-class ToyGAN(nn.Module):
+class CompactGAN(nn.Module):
     def __init__(
         self,
         *,

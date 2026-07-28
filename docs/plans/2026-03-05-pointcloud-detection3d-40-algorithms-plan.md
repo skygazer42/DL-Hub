@@ -1,8 +1,6 @@
 # Pointcloud 3D Detection Zoo (40 算法族) Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** 为 DL-Hub 增加一个「纯 torch、toy-first、CPU 友好」的 **3D 目标检测 (point cloud / BEV)** 本地模型 zoo，并提供可枚举/可构建的 arch id、pytest 冒烟测试和脚本工具。
+**Goal:** 为 DL-Hub 增加一个「纯 torch、compact-first、CPU 友好」的 **3D 目标检测 (point cloud / BEV)** 本地模型 zoo，并提供可枚举/可构建的 arch id、pytest 冒烟测试和脚本工具。
 
 **Architecture:** 新增 `dlhub/pointcloud/detection3d/` 作为算法族目录（**一算法族一文件**，变种写在 `_VARIANTS` 里），`dlhub/pointcloud/detection3d_zoo.py` 负责从源码提取变种并做 lazy builder，避免导入开销；`tests/` 提供 tiny 变种的 forward+backward 冒烟验证。
 
@@ -10,7 +8,7 @@
 
 ---
 
-## I/O 约定（Toy）
+## I/O 约定（Compact）
 
 - **Input**: `points` tensor, shape `(B, N, C)`，其中 `C>=3`，前 3 维为 `xyz`。
 - **Output**: `dict` 至少包含：
@@ -24,7 +22,7 @@
 ### Core package
 - Create: `dlhub/pointcloud/detection3d/__init__.py`
 - Create: `dlhub/pointcloud/detection3d/_common.py`
-  - toy blocks: PointNet/EdgeConv、BEV scatter、BEV dense head、top-k 解码、ROI kNN pooling、tiny transformer 等
+  - compact blocks: PointNet/EdgeConv、BEV scatter、BEV dense head、top-k 解码、ROI kNN pooling、tiny transformer 等
 
 ### Zoo / CLI tooling
 - Create: `dlhub/pointcloud/detection3d_zoo.py`

@@ -1,4 +1,4 @@
-# Lesson 27: Toy Scene-Text VLM Recognition
+# Lesson 27: Compact Scene-Text VLM Recognition
 
 This lesson provides a compact, CPU-friendly setup for recognizing short words from
 synthetic scene images with a tiny vision-language recognizer.

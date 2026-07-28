@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_face_attribute_recognizer, smoke_test_face_attribute_recognizer
+from ._common import build_baseline_face_attribute_recognizer, smoke_test_face_attribute_recognizer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_masked_attr_face_attribute_recognizer(
     variant: str = "masked_attr_face_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_face_attribute_recognizer(
+    return build_baseline_face_attribute_recognizer(
         family="masked_attr_face",
         mode="masked",
         variants=_VARIANTS,

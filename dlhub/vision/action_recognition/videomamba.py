@@ -1,9 +1,9 @@
-"""VideoMamba (Mamba-style sequence mixing) - toy-first video action classifier.
+"""VideoMamba (Mamba-style sequence mixing) - compact-first video action classifier.
 
 Reference:
 - "VideoMamba: State Space Model for Efficient Video Understanding" (arXiv 2024)
 
-Toy interpretation:
+Compact interpretation:
 - Tubelet embedding -> token sequence (no pretrained weights).
 - Replace attention with a light "Mamba-inspired" sequence mixer:
   depthwise Conv1d over tokens + GLU-style gating.

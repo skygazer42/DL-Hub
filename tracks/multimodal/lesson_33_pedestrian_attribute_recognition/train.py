@@ -16,7 +16,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, get_dataloaders
 from .model import (
     ModelConfig,
-    ToyPedestrianAttributeModel,
+    CompactPedestrianAttributeModel,
     attribute_retrieval_loss,
     recall_at_k,
     retrieval_accuracy,
@@ -41,7 +41,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 33 (Multimodal): toy pedestrian attribute recognition via image-text retrieval."
+        description="Lesson 33 (Multimodal): compact pedestrian attribute recognition via image-text retrieval."
     )
     parser.add_argument("--num-samples", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=16)
@@ -101,7 +101,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyPedestrianAttributeModel,
+    model: CompactPedestrianAttributeModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -164,12 +164,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         lesson="lesson_33_pedestrian_attribute_recognition",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.pedestrian_attribute_toy", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("multimodal.pedestrian_attribute_compact", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyPedestrianAttributeModel(
+    model = CompactPedestrianAttributeModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

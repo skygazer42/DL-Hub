@@ -1,4 +1,4 @@
-"""crowd localization models (toy-first, pure torch)."""
+"""crowd localization models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

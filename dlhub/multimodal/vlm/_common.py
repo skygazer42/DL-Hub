@@ -35,7 +35,7 @@ def _resolve_device(device: torch.device | str | None) -> torch.device:
     return torch.device(device)
 
 
-class ToyVLM(nn.Module):
+class CompactVLM(nn.Module):
     def __init__(
         self,
         *,
@@ -224,7 +224,7 @@ class ToyVLM(nn.Module):
         return out
 
 
-def build_toy_vlm_family(
+def build_baseline_vlm_family(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -244,7 +244,7 @@ def build_toy_vlm_family(
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
     dim = max(int(embed_dim), int(cfg["embed"]))
-    return ToyVLM(
+    return CompactVLM(
         family=str(family),
         image_size=int(image_size),
         vocab_size=int(vocab_size),
@@ -279,4 +279,4 @@ def smoke_test_vlm(builder: Callable[..., nn.Module], variant: str) -> None:
     print("ok")
 
 
-__all__ = ["ToyVLM", "build_toy_vlm_family", "smoke_test_vlm"]
+__all__ = ["CompactVLM", "build_baseline_vlm_family", "smoke_test_vlm"]

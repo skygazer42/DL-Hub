@@ -72,7 +72,7 @@ class TinyIrisSegmentor(nn.Module):
         }
 
 
-def build_toy_iris_segmentor(
+def build_baseline_iris_segmentor(
     *,
     family: str,
     mode: str,

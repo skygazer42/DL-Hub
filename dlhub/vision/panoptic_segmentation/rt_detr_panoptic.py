@@ -8,7 +8,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneC2C3C4C5, check_n
 
 
 class RTDETRPanoptic(nn.Module):
-    """RT-DETR-style panoptic segmentation (toy-first).
+    """RT-DETR-style panoptic segmentation (compact-first).
 
     Uses multi-scale conv features -> lightweight conv encoder -> transformer queries.
     Masks are produced via dot-product against a pixel embedding map.

@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_retriever, smoke_test_retriever
+from ._common import build_baseline_retriever, smoke_test_retriever
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "transformer_retrieval_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_transformer_retrieval_retriever(
     *, in_channels: int, variant: str = "transformer_retrieval_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_retriever(
+    return build_baseline_retriever(
         family="transformer_retrieval",
         mode="transformer",
         variants=_VARIANTS,

@@ -2,8 +2,8 @@
 
 from dlhub.vision._shared.retrieval import (  # noqa: F401
     TinyRetrievalEncoder,
-    ToyRetrievalModel,
-    build_toy_retrieval_model,
+    CompactRetrievalModel,
+    build_baseline_retrieval_model,
     check_nchw,
     smoke_test_retrieval,
 )

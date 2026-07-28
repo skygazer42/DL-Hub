@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_plate, smoke_test_plate
+from ._common import build_baseline_plate, smoke_test_plate
 
 _VARIANTS = {
     "lprnet_tiny": {"width": 24, "depth": 1},
@@ -16,7 +16,7 @@ def build_lprnet_plate_recognizer(
     variant: str = "lprnet_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_plate(
+    return build_baseline_plate(
         family="lprnet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

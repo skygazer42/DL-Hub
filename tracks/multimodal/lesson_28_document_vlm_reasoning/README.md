@@ -1,4 +1,4 @@
-# Lesson 28: Document VLM Reasoning (Toy)
+# Lesson 28: Document VLM Reasoning (Compact)
 
 This lesson demonstrates a tiny document VLM that answers simple binary questions from
 synthetic document text and layout-rendered image cues.

@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 7 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with paper-shaped implementations for Chain-of-Thought prompting, GPT4All-J, and Multitask Prompted Training, covering reasoning-trace prompting, GPT-J-based assistant finetuning, and T0-style zero-shot task generalization.
 
 **Architecture:** Implement `Chain-of-Thought` as a reasoning prompt and self-consistency abstraction rather than a backbone model, exposing rationale formatting, answer extraction, and majority-vote aggregation. Implement `GPT4All-J` as a GPT-J-backed assistant wrapper that captures the paper’s Apache-2 licensing, larger curated dataset, creative prompt augmentation, and CPU-friendly 4-bit deployment metadata. Implement `MTF` as a multitask prompted-training wrapper over a T5-style encoder-decoder model, modeling prompt templates, task-mixture sampling, and held-out task zero-shot evaluation without recreating the full T0 training stack.

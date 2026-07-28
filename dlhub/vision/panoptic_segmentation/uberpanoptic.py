@@ -14,7 +14,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class UberPanopticNet(nn.Module):
-    """A simple "uber" panoptic model (toy-first).
+    """A simple "uber" panoptic model (compact-first).
 
     FPN semantic head + prototype masks + query refinement with cross-attention over deep tokens.
     This is not a paper-faithful implementation; it's a compact educational architecture.

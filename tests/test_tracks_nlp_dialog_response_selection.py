@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_dialog_response_selection_batch_contract() -> None:
-    from tracks.nlp.lesson_30_toy_dialog_response_selection.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_30_toy_dialog_response_selection.model import (
+    from tracks.nlp.lesson_30_compact_dialog_response_selection.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_30_compact_dialog_response_selection.model import (
         DialogResponseSelector,
         ModelConfig,
         compute_accuracy,
@@ -65,8 +65,8 @@ def test_dialog_response_selection_batch_contract() -> None:
 
 
 def test_dialog_response_selection_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_30_toy_dialog_response_selection.data import DataConfig
-    from tracks.nlp.lesson_30_toy_dialog_response_selection.train import TrainConfig, run_training
+    from tracks.nlp.lesson_30_compact_dialog_response_selection.data import DataConfig
+    from tracks.nlp.lesson_30_compact_dialog_response_selection.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -100,7 +100,7 @@ def test_dialog_response_selection_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_30_toy_dialog_response_selection"
+        / "lesson_30_compact_dialog_response_selection"
         / "pytest_dialog_response_selection_smoke"
     )
     assert (run_dir / "config.json").is_file()

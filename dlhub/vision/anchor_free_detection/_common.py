@@ -84,7 +84,7 @@ class TinyDetector(nn.Module):
         }
 
 
-def build_toy_detector(
+def build_baseline_detector(
     *,
     family: str,
     mode: str,

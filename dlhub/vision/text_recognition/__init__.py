@@ -1,4 +1,4 @@
-"""Scene text recognition models (toy-first, pure torch)."""
+"""Scene text recognition models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

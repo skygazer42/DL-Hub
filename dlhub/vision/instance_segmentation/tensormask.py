@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class TensorMask(nn.Module):
-    """TensorMask-style instance segmentation (toy-first).
+    """TensorMask-style instance segmentation (compact-first).
 
     TensorMask uses a dense tensor representation for masks. This compact version emits:
     - cls_logits: (B, C, H/8, W/8)

@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class TensorMaskPanoptic(nn.Module):
-    """TensorMask-style panoptic segmentation (toy-first).
+    """TensorMask-style panoptic segmentation (compact-first).
 
     Dense tensor representation for masks + semantic head.
     """

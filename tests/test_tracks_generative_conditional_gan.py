@@ -4,8 +4,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_conditional_gan_batch_contract() -> None:
-    from tracks.generative.lesson_09_toy_conditional_gan.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_09_toy_conditional_gan.model import ConditionalGAN, ModelConfig
+    from tracks.generative.lesson_09_compact_conditional_gan.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_09_compact_conditional_gan.model import ConditionalGAN, ModelConfig
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -35,9 +35,9 @@ def test_conditional_gan_batch_contract() -> None:
 
 
 def test_conditional_gan_training_smoke(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_09_toy_conditional_gan.data import DataConfig
-    from tracks.generative.lesson_09_toy_conditional_gan.model import ModelConfig
-    from tracks.generative.lesson_09_toy_conditional_gan.train import TrainConfig, run_training
+    from tracks.generative.lesson_09_compact_conditional_gan.data import DataConfig
+    from tracks.generative.lesson_09_compact_conditional_gan.model import ModelConfig
+    from tracks.generative.lesson_09_compact_conditional_gan.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -64,7 +64,7 @@ def test_conditional_gan_training_smoke(tmp_path, monkeypatch: pytest.MonkeyPatc
     )
 
     assert exit_code == 0
-    run_dir = tmp_path / "generative" / "lesson_09_toy_conditional_gan" / "pytest_conditional_gan_smoke"
+    run_dir = tmp_path / "generative" / "lesson_09_compact_conditional_gan" / "pytest_conditional_gan_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()

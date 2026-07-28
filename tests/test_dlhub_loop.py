@@ -3,14 +3,14 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_fit_classifier_improves_on_toy_data() -> None:
-    from dlhub.data.toy import ToyClassificationConfig, make_toy_classification_dataloaders
+def test_fit_classifier_improves_on_compact_data() -> None:
+    from dlhub.data.synthetic import SyntheticClassificationConfig, make_synthetic_classification_dataloaders
     from dlhub.seed import set_seed
     from dlhub.training.loop import evaluate_classifier, fit_classifier
 
     set_seed(0)
-    train_loader, val_loader = make_toy_classification_dataloaders(
-        ToyClassificationConfig(
+    train_loader, val_loader = make_synthetic_classification_dataloaders(
+        SyntheticClassificationConfig(
             num_samples=256,
             num_features=2,
             noise_std=0.0,

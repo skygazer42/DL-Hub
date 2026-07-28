@@ -1,8 +1,6 @@
 # Vision Denoising (DDPM U-Net) Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add a **diffusion-style DDPM U-Net denoiser** (toy-first, pure PyTorch) under `dlhub/vision/denoising/`, wire it into the Lesson 10 synthetic denoising track, add tests, and push to `main`.
+**Goal:** Add a **diffusion-style DDPM U-Net denoiser** (compact-first, pure PyTorch) under `dlhub/vision/denoising/`, wire it into the Lesson 10 synthetic denoising track, add tests, and push to `main`.
 
 **Architecture:** Keep **one algorithm family per file** with variants declared via `_VARIANTS` and a `build_*_denoiser(...)` factory. The DDPM U-Net predicts a residual/noise estimate conditioned on a scalar `sigma`; the denoiser wrapper subtracts that residual from the noisy input (same conventions as DnCNN).
 

@@ -14,7 +14,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class BlendMaskPanoptic(nn.Module):
-    """BlendMask-style panoptic segmentation (toy-first, pure torch).
+    """BlendMask-style panoptic segmentation (compact-first, pure torch).
 
     Prototype masks are modulated by a learned blending map; dense coefficients produce instance masks.
     A lightweight semantic head runs in parallel on low-level features.

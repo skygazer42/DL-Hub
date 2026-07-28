@@ -11,7 +11,7 @@ def check_nchw(x):
     return x
 
 
-class ToyPoseEstimator(nn.Module):
+class CompactPoseEstimator(nn.Module):
     def __init__(self, *, family: str, in_channels: int, num_joints: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -28,7 +28,7 @@ class ToyPoseEstimator(nn.Module):
         return {"heatmaps": logits, "indices": keypoints}
 
 
-def build_toy_pose(
+def build_baseline_pose(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -39,7 +39,7 @@ def build_toy_pose(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyPoseEstimator(
+    return CompactPoseEstimator(
         family=str(family),
         in_channels=int(in_channels),
         num_joints=int(num_joints),

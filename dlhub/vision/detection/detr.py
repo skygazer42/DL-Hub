@@ -37,7 +37,7 @@ class _ConvBackboneStride8(nn.Module):
 
 
 class DETRDetector(nn.Module):
-    """DETR-style query-based detector (toy-first).
+    """DETR-style query-based detector (compact-first).
 
     Output:
       - class_logits: (B, Q, num_classes)
@@ -101,7 +101,7 @@ class DETRDetector(nn.Module):
         feat = self.proj(self.backbone(x))  # (B, D, H', W')
         memory = flatten_hw(feat)  # (B, N, D)
 
-        # A simple 1D positional encoding over flattened tokens (toy).
+        # A simple 1D positional encoding over flattened tokens (compact).
         pos = sine_positional_encoding_1d(memory.shape[1], memory.shape[2], device=memory.device)
         memory = memory + pos.unsqueeze(0)
 

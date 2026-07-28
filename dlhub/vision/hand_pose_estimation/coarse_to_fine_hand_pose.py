@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_pose_estimator, smoke_test_hand_pose_estimator
+from ._common import build_baseline_hand_pose_estimator, smoke_test_hand_pose_estimator
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_coarse_to_fine_hand_pose_hand_pose_estimator(
     variant: str = "coarse_to_fine_hand_pose_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_pose_estimator(
+    return build_baseline_hand_pose_estimator(
         family="coarse_to_fine_hand_pose",
         mode="coarse_to_fine",
         variants=_VARIANTS,

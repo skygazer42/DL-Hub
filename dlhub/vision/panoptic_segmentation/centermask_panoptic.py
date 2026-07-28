@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class CenterMaskPanoptic(nn.Module):
-    """CenterMask-style panoptic segmentation (toy-first).
+    """CenterMask-style panoptic segmentation (compact-first).
 
     A center-based instance branch (heatmap/wh/offset) + prototype masks, with a semantic head in parallel.
     """

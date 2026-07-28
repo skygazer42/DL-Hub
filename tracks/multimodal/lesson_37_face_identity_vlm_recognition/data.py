@@ -122,7 +122,7 @@ def _render_identity_face(*, image_size: int, seed: int, identity_id: int) -> to
     return torch.from_numpy(image).unsqueeze(0)
 
 
-class ToyFaceIdentityDataset(Dataset):
+class SyntheticFaceIdentityDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 28:
             raise ValueError("image_size must be >= 28")
@@ -158,7 +158,7 @@ class ToyFaceIdentityDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceIdentityDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceIdentityDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -185,7 +185,7 @@ __all__ = [
     "DataConfig",
     "IDENTITIES",
     "IDENTITY_TO_ID",
-    "ToyFaceIdentityDataset",
+    "SyntheticFaceIdentityDataset",
     "Vocab",
     "get_dataloaders",
 ]

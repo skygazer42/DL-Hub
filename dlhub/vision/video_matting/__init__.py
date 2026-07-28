@@ -1,4 +1,4 @@
-"""Video matting models (toy-first, pure torch)."""
+"""Video matting models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,6 +1,6 @@
 # YOLACT Instance Segmentation
 
-Toy-first local families for `yolact instance segmentation`.
+Compact-first local families for `yolact instance segmentation`.
 
 ## Families
 

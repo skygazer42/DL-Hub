@@ -1,6 +1,6 @@
-# Lesson 07：阅读理解（toy span prediction）
+# Lesson 07：阅读理解（compact span prediction）
 
-这个 lesson 用一个很小的 toy 数据集跑通「阅读理解」的核心形式：**给定 context + question，预测答案在 context 里的起止位置**。
+这个 lesson 用一个很小的 compact 数据集跑通「阅读理解」的核心形式：**给定 context + question，预测答案在 context 里的起止位置**。
 
 目标不是追求真实数据集的指标，而是把下面这些组件串起来并跑通闭环：
 

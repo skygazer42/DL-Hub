@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_object_discoverer, smoke_test_object_discoverer
+from ._common import build_baseline_object_discoverer, smoke_test_object_discoverer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_dual_objdisc_object_discoverer(
     *, in_channels: int, variant: str = "dual_objdisc_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_object_discoverer(
+    return build_baseline_object_discoverer(
         family="dual_objdisc",
         mode="dual",
         variants=_VARIANTS,

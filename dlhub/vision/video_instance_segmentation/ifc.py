@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_vis, smoke_test_vis
+from ._common import build_baseline_vis, smoke_test_vis
 
 _VARIANTS = {
     "ifc_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_ifc_video_instance_segmenter(
     *, in_channels: int, variant: str = "ifc_small", width_mult: float = 1.0, num_instances: int = 8
 ):
-    return build_toy_vis(
+    return build_baseline_vis(
         family="ifc",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -1,4 +1,4 @@
-"""Pedestrian attribute analysis models (toy-first, pure torch)."""
+"""Pedestrian attribute analysis models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

@@ -112,4 +112,5 @@ python scripts/smoke_check.py
 
 ??? question "如何在没有网络的环境下使用？"
 
-    所有课程均支持 `--dataset fake` 参数，使用随机生成数据，无需联网下载数据集。
+    所有课程都提供离线运行路径：可选真实数据的课程使用 `--dataset fake`，
+    synthetic 课程默认使用内置数据，不需要传 `--dataset`。

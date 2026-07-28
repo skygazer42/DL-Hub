@@ -118,7 +118,7 @@ def _make_synthetic_face(*, image_size: int, seed: int) -> tuple[np.ndarray, np.
     return image, target_points.astype(np.float32)
 
 
-class ToyFaceAlignmentReasoningDataset(Dataset):
+class SyntheticFaceAlignmentReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 32:
             raise ValueError("image_size must be >= 32")
@@ -148,7 +148,7 @@ class ToyFaceAlignmentReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceAlignmentReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceAlignmentReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -173,7 +173,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyFaceAlignmentReasoningDataset",
+    "SyntheticFaceAlignmentReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

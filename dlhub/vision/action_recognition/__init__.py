@@ -1,4 +1,4 @@
-"""Action recognition models (toy-first, pure torch).
+"""Action recognition models (compact-first, pure torch).
 
 This package covers two common modalities:
 - Video action recognition: input (B, C, T, H, W)

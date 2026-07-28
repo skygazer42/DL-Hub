@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class FSAFHead(nn.Module):
-    """FSAF-style head (toy): anchor-free cls + box for each FPN level."""
+    """FSAF-style head (compact): anchor-free cls + box for each FPN level."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -25,7 +25,7 @@ class FSAFHead(nn.Module):
 
 
 class FSAFDetector(nn.Module):
-    """FSAF-style feature-selective anchor-free detector (toy-first)."""
+    """FSAF-style feature-selective anchor-free detector (compact-first)."""
 
     def __init__(
         self,

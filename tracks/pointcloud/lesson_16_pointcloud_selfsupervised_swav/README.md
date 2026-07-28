@@ -1,4 +1,4 @@
-# Lesson 16 — PointCloud 自监督：SwAV（toy-first）
+# Lesson 16 — PointCloud 自监督：SwAV（compact-first）
 
 目标：在点云上跑通 **SwAV** 的最小闭环：
 
@@ -21,7 +21,7 @@ python -m tracks.pointcloud.lesson_16_pointcloud_selfsupervised_swav.train --run
 python -m tracks.pointcloud.lesson_16_pointcloud_selfsupervised_swav.train --list-arch
 ```
 
-调原型数（toy 实验可用更小的 prototypes）：
+调原型数（compact 实验可用更小的 prototypes）：
 
 ```bash
 python -m tracks.pointcloud.lesson_16_pointcloud_selfsupervised_swav.train --num-prototypes 64

@@ -1,4 +1,4 @@
-"""Visual entailment models (toy-first, pure torch)."""
+"""Visual entailment models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

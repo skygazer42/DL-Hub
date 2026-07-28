@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PartA2Net(nn.Module):
-    """Part-A2 (toy): two-stage BEV detector with part-aware refinement."""
+    """Part-A2 (compact): two-stage BEV detector with part-aware refinement."""
 
     def __init__(
         self,
@@ -36,7 +36,7 @@ class PartA2Net(nn.Module):
             with_yaw=True,
             dropout=float(dropout),
         )
-        # A tiny part-attention module operating on box parameters (toy proxy).
+        # A tiny part-attention module operating on box parameters (compact proxy).
         self.part = nn.Sequential(
             nn.Linear(7, 32),
             nn.ReLU(inplace=True),

@@ -1,7 +1,5 @@
 # More ML Algorithms Pack Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add 8 new classic ML algorithms implemented in NumPy under `ml_algorithms/python/`, with fast, deterministic pytest coverage and a low-conflict “8 branches -> 1 integration branch” workflow.
 
 **Architecture:** Each algorithm lives in its own module file (one file per branch) and follows existing repo conventions (`dataclass`, `fit(...) -> self`, `np.float64`). A single integration-branch test file validates module discoverability + basic correctness on synthetic data.

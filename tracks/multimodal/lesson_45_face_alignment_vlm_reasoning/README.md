@@ -1,6 +1,6 @@
 # Lesson 45: Face Alignment VLM Reasoning
 
-This lesson builds a toy multimodal aligner that takes a synthetic face image plus a short query
+This lesson builds a compact multimodal aligner that takes a synthetic face image plus a short query
 and predicts a canonical five-point facial landmark layout.
 
 ## What It Teaches

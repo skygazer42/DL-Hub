@@ -40,7 +40,7 @@ def test_multimodal_face_gaze_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_49_face_gaze_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_49_face_gaze_vlm_reasoning.model import (
         FaceGazeReasoningConfig,
-        ToyFaceGazeReasoningModel,
+        CompactFaceGazeReasoningModel,
         face_gaze_loss,
         gaze_l1,
     )
@@ -57,7 +57,7 @@ def test_multimodal_face_gaze_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFaceGazeReasoningModel(
+    model = CompactFaceGazeReasoningModel(
         FaceGazeReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

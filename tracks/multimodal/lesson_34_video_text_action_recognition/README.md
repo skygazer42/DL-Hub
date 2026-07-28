@@ -1,4 +1,4 @@
-# Lesson 34: Video-Text Toy Action Recognition
+# Lesson 34: Video-Text Compact Action Recognition
 
 This lesson introduces compact video-language action recognition:
 

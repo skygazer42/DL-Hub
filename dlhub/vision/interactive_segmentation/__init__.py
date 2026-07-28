@@ -1,4 +1,4 @@
-"""Interactive segmentation models (toy-first, pure torch)."""
+"""Interactive segmentation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

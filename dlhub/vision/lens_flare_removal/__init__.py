@@ -1,4 +1,4 @@
-"""lens flare removal models (toy-first, pure torch)."""
+"""lens flare removal models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,7 +1,7 @@
-from .data import DataConfig, ToyHandednessReasoningDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticHandednessReasoningDataset, Vocab, get_dataloaders
 from .model import (
     HandednessReasoningConfig,
-    ToyHandednessReasoningModel,
+    CompactHandednessReasoningModel,
     compute_accuracy,
     handedness_loss,
 )
@@ -10,8 +10,8 @@ from .train import TrainConfig, run_training
 __all__ = [
     "DataConfig",
     "HandednessReasoningConfig",
-    "ToyHandednessReasoningDataset",
-    "ToyHandednessReasoningModel",
+    "SyntheticHandednessReasoningDataset",
+    "CompactHandednessReasoningModel",
     "TrainConfig",
     "Vocab",
     "compute_accuracy",

@@ -3,7 +3,7 @@
 **Goal**
 
 Add a new "style transfer" algorithm family to DL-Hub with:
-- Local algorithm implementations (toy-first, no downloads)
+- Local algorithm implementations (compact-first, no downloads)
 - A unified local zoo + CLI for listing and smoke-running models
 - Two new Vision lessons: classic neural style transfer and translation-based style transfer
 
@@ -20,15 +20,15 @@ This should match existing repository conventions:
 Add new modules:
 - `dlhub/vision/style_transfer/`
   - `*_*.py`: one algorithm family per file
-  - `_common.py`: shared toy building blocks (enc/dec, discriminator, style ops)
+  - `_common.py`: shared compact building blocks (enc/dec, discriminator, style ops)
 - `dlhub/vision/style_transfer_zoo.py`: discovery + build wrapper
 - `scripts/style_transfer_zoo.py`: CLI for `--list` and `--smoke`
 
 Add new lessons:
 - `tracks/vision/lesson_15_neural_style_transfer_gatys/`
-  - Optimization-based NST (Gatys-style), toy-first, CPU smoke-friendly
+  - Optimization-based NST (Gatys-style), compact-first, CPU smoke-friendly
 - `tracks/vision/lesson_16_style_transfer_translation_cyclegan/`
-  - Cycle-consistency image translation (CycleGAN-style), toy-first, CPU smoke-friendly
+  - Cycle-consistency image translation (CycleGAN-style), compact-first, CPU smoke-friendly
 
 Update documentation:
 - `tracks/vision/README.md` to list the two new lessons.
@@ -61,8 +61,8 @@ Classic NST:
 Translation-based:
 - `pix2pix`: paired translation (A->B)
 - `cyclegan`: unpaired cycle-consistency (A<->B)
-- `cut`: unpaired translation with patch contrast (toy simplification)
-- `munit`: content/style disentanglement (toy simplification)
+- `cut`: unpaired translation with patch contrast (compact simplification)
+- `munit`: content/style disentanglement (compact simplification)
 
 Each family provides 3 variants: `*_tiny`, `*_small`, `*_base`.
 
@@ -71,13 +71,13 @@ Each family provides 3 variants: `*_tiny`, `*_small`, `*_base`.
 ## Algorithm Families (Second Batch, Popular 2018-2022)
 
 Arbitrary style transfer:
-- `avatar_net`: Avatar-Net-style feature decoration (toy: WCT + local attention refinement)
-- `sanet`: SANet-style attention (toy cross-attention in feature space)
-- `stytr2`: Transformer style transfer (toy cross-attention blocks)
+- `avatar_net`: Avatar-Net-style feature decoration (compact: WCT + local attention refinement)
+- `sanet`: SANet-style attention (compact cross-attention in feature space)
+- `stytr2`: Transformer style transfer (compact cross-attention blocks)
 
 Translation / reference-conditioned:
-- `ugatit`: U-GAT-IT-inspired attention + AdaLIN (toy, reference-conditioned)
-- `starganv2`: StarGAN v2-inspired reference-conditioned translation (toy)
+- `ugatit`: U-GAT-IT-inspired attention + AdaLIN (compact, reference-conditioned)
+- `starganv2`: StarGAN v2-inspired reference-conditioned translation (compact)
 
 These are implemented under the same conventions:
 - `model(content, style)` returns a dict with at least `stylized`.
@@ -94,7 +94,7 @@ models (no pretrained checkpoints required):
 - `controlnet`: ControlNet-style structural hint (edges) conditioning during denoising
 - `ip_adapter`: IP-Adapter-style image-prompt cross-attention conditioning
 - `cfg_stylediffusion`: classifier-free guidance (CFG) conditioning variant (style reference as condition)
-- `style_aligned`: self-attention + reference-attention denoising (toy "style-aligned" idea)
+- `style_aligned`: self-attention + reference-attention denoising (compact "style-aligned" idea)
 
 Additional arbitrary style transfer:
 - `adaattn`: AdaAttN-style per-position style statistics via attention

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_road_scene_model, smoke_test_road_scene_model
+from ._common import build_baseline_road_scene_model, smoke_test_road_scene_model
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_scene_fusion_road_road_scene_model(
     variant: str = "scene_fusion_road_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_road_scene_model(
+    return build_baseline_road_scene_model(
         family="scene_fusion_road",
         mode="scene_fusion",
         variants=_VARIANTS,

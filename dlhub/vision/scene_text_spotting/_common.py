@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyModel(nn.Module):
+class CompactModel(nn.Module):
     def __init__(
         self, *, family: str, in_channels: int, width: int, depth: int, vocab_size: int = 32
     ):
@@ -42,7 +42,7 @@ class ToyModel(nn.Module):
         return {"score_map": self.det(feat), "char_logits": self.rec(pooled)}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -54,7 +54,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyModel(
+    return CompactModel(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

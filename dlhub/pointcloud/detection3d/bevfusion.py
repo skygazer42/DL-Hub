@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class BEVFusion(nn.Module):
-    """BEVFusion (toy): fuse two BEV feature maps then detect."""
+    """BEVFusion (compact): fuse two BEV feature maps then detect."""
 
     def __init__(
         self,

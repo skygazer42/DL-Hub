@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyAntiSpoofer(nn.Module):
+class CompactAntiSpoofer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -42,7 +42,7 @@ class ToyAntiSpoofer(nn.Module):
         return {"logits": logits, "spoof_map": spoof_map}
 
 
-def build_toy_spoofer(
+def build_baseline_spoofer(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -52,7 +52,7 @@ def build_toy_spoofer(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyAntiSpoofer(
+    return CompactAntiSpoofer(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

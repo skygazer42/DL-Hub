@@ -106,7 +106,7 @@ class _PredictionHead(nn.Module):
 
 
 class YOLACTLite(nn.Module):
-    """YOLACT-style one-stage instance segmentation (toy-first, pure torch).
+    """YOLACT-style one-stage instance segmentation (compact-first, pure torch).
 
     This is a compact educational implementation: it outputs raw predictions:
     - proto: (B, P, H/4, W/4)

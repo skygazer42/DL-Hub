@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "social_stgcnn_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_social_stgcnn_trajectory_predictor(
     width_mult: float = 1.0,
     pred_steps: int = 12,
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="social_stgcnn",
         variants=_VARIANTS,
         coord_dim=int(coord_dim),

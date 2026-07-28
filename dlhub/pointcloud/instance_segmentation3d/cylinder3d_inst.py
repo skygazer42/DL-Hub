@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class Cylinder3DInst(nn.Module):
-    """Cylinder3D instance segmentation (toy): cylindrical projection features + prototype masks."""
+    """Cylinder3D instance segmentation (compact): cylindrical projection features + prototype masks."""
 
     def __init__(
         self,

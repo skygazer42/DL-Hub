@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_owlvit_batch_shapes() -> None:
-    from tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.data import (
+    from tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -46,14 +46,14 @@ def test_multimodal_owlvit_batch_shapes() -> None:
 
 
 def test_multimodal_owlvit_model_outputs() -> None:
-    from tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.data import (
+    from tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.model import (
+    from tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.model import (
         OwlVitLossConfig,
         OwlVitModelConfig,
-        ToyOwlVitModel,
+        CompactOwlVitModel,
         owlvit_loss,
     )
 
@@ -70,7 +70,7 @@ def test_multimodal_owlvit_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyOwlVitModel(
+    model = CompactOwlVitModel(
         OwlVitModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -107,7 +107,7 @@ def test_multimodal_owlvit_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_10_owlvit_toy_open_vocab_detection"
+        / "lesson_10_owlvit_compact_open_vocab_detection"
         / "pytest_owlvit_smoke"
     )
     if run_dir.exists():
@@ -117,7 +117,7 @@ def test_multimodal_owlvit_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_10_owlvit_toy_open_vocab_detection.train",
+            "tracks.multimodal.lesson_10_owlvit_compact_open_vocab_detection.train",
             "--epochs",
             "1",
             "--num-samples",

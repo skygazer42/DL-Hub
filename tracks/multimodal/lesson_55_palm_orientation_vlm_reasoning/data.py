@@ -128,7 +128,7 @@ def _sample_palm_orientation(*, image_size: int, seed: int) -> tuple[np.ndarray,
     return image, float(orientation)
 
 
-class ToyPalmOrientationReasoningDataset(Dataset):
+class SyntheticPalmOrientationReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 48:
             raise ValueError("image_size must be >= 48")
@@ -158,7 +158,7 @@ class ToyPalmOrientationReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyPalmOrientationReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticPalmOrientationReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -181,7 +181,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyPalmOrientationReasoningDataset",
+    "SyntheticPalmOrientationReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

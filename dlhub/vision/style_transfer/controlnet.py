@@ -31,7 +31,7 @@ def _sobel_edges(x: torch.Tensor) -> torch.Tensor:
 
 
 class ControlNetStyleTransfer(nn.Module):
-    """ControlNet-style diffusion img2img (toy).
+    """ControlNet-style diffusion img2img (compact).
 
     Approximates the ControlNet idea:
     - compute a structural "hint" (edges) from the content image

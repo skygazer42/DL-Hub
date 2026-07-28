@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_counter, smoke_test_counter
+from ._common import build_baseline_counter, smoke_test_counter
 
 _VARIANTS = {
     "bl_tiny": {"width": 24, "depth": 1},
@@ -9,7 +9,7 @@ _VARIANTS = {
 
 
 def build_bl_crowd_counter(*, in_channels: int, variant: str = "bl_small", width_mult: float = 1.0):
-    return build_toy_counter(
+    return build_baseline_counter(
         family="bl",
         variants=_VARIANTS,
         in_channels=int(in_channels),

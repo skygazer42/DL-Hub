@@ -16,7 +16,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class ThreeDSSD(nn.Module):
-    """3DSSD (toy): sample keypoints + single-stage box regression."""
+    """3DSSD (compact): sample keypoints + single-stage box regression."""
 
     def __init__(
         self,

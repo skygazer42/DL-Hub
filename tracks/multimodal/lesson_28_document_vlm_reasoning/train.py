@@ -16,7 +16,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, get_dataloaders
 from .model import (
     DocumentVlmReasoningConfig,
-    ToyDocumentVlmReasoningModel,
+    CompactDocumentVlmReasoningModel,
     reasoning_accuracy,
     reasoning_loss,
 )
@@ -40,7 +40,7 @@ class TrainConfig:
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
         description=(
-            "Lesson 28 (Multimodal): toy document VLM reasoning over text tokens and layout-rendered image cues."
+            "Lesson 28 (Multimodal): compact document VLM reasoning over text tokens and layout-rendered image cues."
         )
     )
 
@@ -101,7 +101,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyDocumentVlmReasoningModel,
+    model: CompactDocumentVlmReasoningModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -145,12 +145,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         lesson="lesson_28_document_vlm_reasoning",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.document_vlm_reasoning_toy", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("multimodal.document_vlm_reasoning_compact", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyDocumentVlmReasoningModel(
+    model = CompactDocumentVlmReasoningModel(
         DocumentVlmReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

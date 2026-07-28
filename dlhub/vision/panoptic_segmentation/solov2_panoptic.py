@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, check_nch
 
 
 class SOLOv2Panoptic(nn.Module):
-    """SOLOv2-style panoptic segmentation (toy-first).
+    """SOLOv2-style panoptic segmentation (compact-first).
 
     Per-cell category logits + dynamic mask kernels applied to a mask feature map, plus a semantic head.
     """

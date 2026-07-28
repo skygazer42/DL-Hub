@@ -58,7 +58,7 @@ class _Downsample(nn.Module):
 
 
 class ENet(nn.Module):
-    """ENet semantic segmentation (toy-first, pure torch).
+    """ENet semantic segmentation (compact-first, pure torch).
 
     Compact, downsampling-heavy network; predicts logits and upsamples to input.
     """

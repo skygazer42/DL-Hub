@@ -36,7 +36,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 20 (PointCloud): self-supervised I-JEPA (toy-first)."
+        description="Lesson 20 (PointCloud): self-supervised I-JEPA (compact-first)."
     )
 
     parser.add_argument("--num-samples", type=int, default=4096)

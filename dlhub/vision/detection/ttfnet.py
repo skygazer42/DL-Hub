@@ -28,7 +28,7 @@ class _EncoderStride4(nn.Module):
 
 
 class TTFNetDetector(nn.Module):
-    """TTFNet-style detector (toy-first).
+    """TTFNet-style detector (compact-first).
 
     Output (raw, stride=4):
     - heatmap: (B, C, H/4, W/4)

@@ -1,4 +1,4 @@
-# Lesson 15 — PointCloud 自监督：SimSiam（toy-first）
+# Lesson 15 — PointCloud 自监督：SimSiam（compact-first）
 
 目标：在点云上跑通 **SimSiam** 的最小闭环：
 

@@ -1,6 +1,6 @@
 # World Models
 
-Toy-first local families for `world_models`.
+Compact-first local families for `world_models`.
 
 ## Families
 

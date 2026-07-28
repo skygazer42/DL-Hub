@@ -1,9 +1,9 @@
-from .data import DataConfig, ToySceneTextDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticSceneTextDataset, Vocab, get_dataloaders
 from .model import (
     SceneTextRecognizerConfig,
     TextPromptEncoder,
     TinySceneEncoder,
-    ToySceneTextRecognizer,
+    CompactSceneTextRecognizer,
     recognition_accuracy,
     recognition_loss,
 )
@@ -13,8 +13,8 @@ __all__ = [
     "SceneTextRecognizerConfig",
     "TextPromptEncoder",
     "TinySceneEncoder",
-    "ToySceneTextDataset",
-    "ToySceneTextRecognizer",
+    "SyntheticSceneTextDataset",
+    "CompactSceneTextRecognizer",
     "Vocab",
     "get_dataloaders",
     "recognition_accuracy",

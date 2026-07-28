@@ -1,6 +1,6 @@
 # Lesson 79: Synthetic Transparent Object Segmentation
 
-This lesson builds a toy transparent-object segmentation pipeline with fully synthetic images:
+This lesson builds a compact transparent-object segmentation pipeline with fully synthetic images:
 
 - render a smooth RGB background
 - place one synthetic transparent object as an ellipse mask
@@ -24,8 +24,8 @@ python -m tracks.vision.lesson_79_synthetic_transparent_object_segmentation.trai
   --num-samples 48 \
   --batch-size 4 \
   --image-size 32 \
-  --arch glassseg_toy \
-  --variant glassseg_toy_tiny \
+  --arch glassseg_baseline \
+  --variant glassseg_baseline_tiny \
   --width-mult 0.75 \
   --max-train-batches 2 \
   --max-eval-batches 1 \

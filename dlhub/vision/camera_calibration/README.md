@@ -1,6 +1,6 @@
 # Camera calibration
 
-Toy-first local families for `camera calibration`.
+Compact-first local families for `camera calibration`.
 
 ## Families
 

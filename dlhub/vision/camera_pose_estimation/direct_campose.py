@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_camera_pose_estimator, smoke_test_camera_pose_estimator
+from ._common import build_baseline_camera_pose_estimator, smoke_test_camera_pose_estimator
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_direct_campose_camera_pose_estimator(
     *, in_channels: int, variant: str = "direct_campose_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_camera_pose_estimator(
+    return build_baseline_camera_pose_estimator(
         family="direct_campose",
         mode="direct",
         variants=_VARIANTS,

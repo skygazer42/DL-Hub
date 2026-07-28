@@ -24,7 +24,7 @@ class DataConfig:
 
 
 class SyntheticVideoEnhancementDataset(Dataset):
-    """Paired toy clips for low-quality to clean enhancement."""
+    """Paired synthetic clips for low-quality to clean enhancement."""
 
     def __init__(self, cfg: DataConfig) -> None:
         self.cfg = cfg
@@ -33,7 +33,7 @@ class SyntheticVideoEnhancementDataset(Dataset):
         if int(cfg.image_size) < 16:
             raise ValueError("image_size must be >= 16")
         if int(cfg.in_channels) != 1:
-            raise ValueError("in_channels must be 1 for this toy lesson")
+            raise ValueError("in_channels must be 1 for this synthetic lesson")
         if float(cfg.noise_std) < 0.0:
             raise ValueError("noise_std must be >= 0")
         if int(cfg.blur_kernel_size) < 1 or int(cfg.blur_kernel_size) % 2 == 0:

@@ -15,7 +15,7 @@ from dlhub.seed import set_seed
 
 from .data import DataConfig, get_dataloaders
 from .model import (
-    ToyVisionLanguageNavigationModel,
+    CompactVisionLanguageNavigationModel,
     VisionLanguageNavigationConfig,
     navigation_accuracy,
     navigation_loss,
@@ -40,7 +40,7 @@ class TrainConfig:
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
         description=(
-            "Lesson 25 (Multimodal): toy vision-language navigation policy "
+            "Lesson 25 (Multimodal): compact vision-language navigation policy "
             "on a compact grid-world task."
         )
     )
@@ -99,7 +99,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyVisionLanguageNavigationModel,
+    model: CompactVisionLanguageNavigationModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -144,12 +144,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         lesson="lesson_25_vision_language_navigation",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.vision_language_navigation_toy", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("multimodal.vision_language_navigation_compact", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyVisionLanguageNavigationModel(
+    model = CompactVisionLanguageNavigationModel(
         VisionLanguageNavigationConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

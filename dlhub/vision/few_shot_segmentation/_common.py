@@ -100,7 +100,7 @@ class TinyFewShotSegmentor(nn.Module):
         }
 
 
-def build_toy_few_shot_segmentor(
+def build_baseline_few_shot_segmentor(
     *,
     family: str,
     mode: str,

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointNetSeg(nn.Module):
-    """PointNet semantic segmentation (toy): point MLP + global context."""
+    """PointNet semantic segmentation (compact): point MLP + global context."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0

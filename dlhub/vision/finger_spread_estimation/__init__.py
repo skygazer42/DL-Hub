@@ -1,4 +1,4 @@
-"""finger spread estimation models (toy-first, pure torch)."""
+"""finger spread estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -39,7 +39,7 @@ def test_multimodal_face_region_grounding_model_outputs() -> None:
     from tracks.multimodal.lesson_42_face_region_grounding_vlm.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_42_face_region_grounding_vlm.model import (
         FaceRegionGroundingConfig,
-        ToyFaceRegionGroundingModel,
+        CompactFaceRegionGroundingModel,
         box_iou_xyxy,
         face_region_grounding_loss,
     )
@@ -56,7 +56,7 @@ def test_multimodal_face_region_grounding_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFaceRegionGroundingModel(
+    model = CompactFaceRegionGroundingModel(
         FaceRegionGroundingConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

@@ -47,7 +47,7 @@ class ActionLocalizationModelConfig:
     text_dim: int = 32
 
 
-class ToyActionLocalizationModel(nn.Module):
+class CompactActionLocalizationModel(nn.Module):
     def __init__(self, cfg: ActionLocalizationModelConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -137,7 +137,7 @@ __all__ = [
     "ActionLocalizationModelConfig",
     "QueryEncoder",
     "TemporalVideoEncoder",
-    "ToyActionLocalizationModel",
+    "CompactActionLocalizationModel",
     "action_localization_loss",
     "decode_segments_from_mask",
     "recall_at_iou",

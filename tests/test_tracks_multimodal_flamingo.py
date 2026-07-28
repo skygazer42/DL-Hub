@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_flamingo_batch_shapes() -> None:
-    from tracks.multimodal.lesson_06_flamingo_toy_interleaved_vlm.data import (
+    from tracks.multimodal.lesson_06_flamingo_compact_interleaved_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -44,13 +44,13 @@ def test_multimodal_flamingo_batch_shapes() -> None:
 
 
 def test_multimodal_flamingo_model_outputs() -> None:
-    from tracks.multimodal.lesson_06_flamingo_toy_interleaved_vlm.data import (
+    from tracks.multimodal.lesson_06_flamingo_compact_interleaved_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_06_flamingo_toy_interleaved_vlm.model import (
+    from tracks.multimodal.lesson_06_flamingo_compact_interleaved_vlm.model import (
         FlamingoModelConfig,
-        ToyFlamingoModel,
+        CompactFlamingoModel,
         qa_loss,
     )
 
@@ -66,7 +66,7 @@ def test_multimodal_flamingo_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFlamingoModel(
+    model = CompactFlamingoModel(
         FlamingoModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -95,7 +95,7 @@ def test_multimodal_flamingo_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_06_flamingo_toy_interleaved_vlm"
+        / "lesson_06_flamingo_compact_interleaved_vlm"
         / "pytest_flamingo_smoke"
     )
     if run_dir.exists():
@@ -105,7 +105,7 @@ def test_multimodal_flamingo_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_06_flamingo_toy_interleaved_vlm.train",
+            "tracks.multimodal.lesson_06_flamingo_compact_interleaved_vlm.train",
             "--epochs",
             "1",
             "--num-samples",

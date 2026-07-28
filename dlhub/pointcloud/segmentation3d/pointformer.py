@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointFormerSeg(nn.Module):
-    """PointFormer semantic segmentation (toy): local EdgeConv pre-encoder + transformer."""
+    """PointFormer semantic segmentation (compact): local EdgeConv pre-encoder + transformer."""
 
     def __init__(
         self,

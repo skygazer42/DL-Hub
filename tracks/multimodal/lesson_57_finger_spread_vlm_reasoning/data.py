@@ -119,7 +119,7 @@ def _sample_finger_spread(*, image_size: int, seed: int) -> tuple[np.ndarray, fl
     return image, spread
 
 
-class ToyFingerSpreadReasoningDataset(Dataset):
+class SyntheticFingerSpreadReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 48:
             raise ValueError("image_size must be >= 48")
@@ -149,7 +149,7 @@ class ToyFingerSpreadReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFingerSpreadReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticFingerSpreadReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -172,7 +172,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyFingerSpreadReasoningDataset",
+    "SyntheticFingerSpreadReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

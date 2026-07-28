@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_outpainter, smoke_test_outpainter
+from ._common import build_baseline_outpainter, smoke_test_outpainter
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_transformer_outpaint_outpainter(
     variant: str = "transformer_outpaint_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_outpainter(
+    return build_baseline_outpainter(
         family="transformer_outpaint",
         mode="transformer",
         variants=_VARIANTS,

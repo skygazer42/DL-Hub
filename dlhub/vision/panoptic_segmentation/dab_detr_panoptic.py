@@ -13,7 +13,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class DABDETRPanoptic(nn.Module):
-    """DAB-DETR-style panoptic segmentation (toy-first).
+    """DAB-DETR-style panoptic segmentation (compact-first).
 
     Adds learnable anchor boxes per query and injects them into the query embeddings.
     """

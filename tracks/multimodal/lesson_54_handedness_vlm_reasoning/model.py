@@ -47,7 +47,7 @@ class HandednessReasoningConfig:
     vision_width: int = 40
 
 
-class ToyHandednessReasoningModel(nn.Module):
+class CompactHandednessReasoningModel(nn.Module):
     def __init__(self, cfg: HandednessReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -83,7 +83,7 @@ def compute_accuracy(logits: torch.Tensor, target: torch.Tensor) -> float:
 
 __all__ = [
     "HandednessReasoningConfig",
-    "ToyHandednessReasoningModel",
+    "CompactHandednessReasoningModel",
     "compute_accuracy",
     "handedness_loss",
 ]

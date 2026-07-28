@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_vos, smoke_test_vos
+from ._common import build_baseline_vos, smoke_test_vos
 
 _VARIANTS = {
     "mambavos_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_mambavos_vos_model(
     width_mult: float = 1.0,
     num_masks: int = 2,
 ):
-    return build_toy_vos(
+    return build_baseline_vos(
         family="mambavos",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -1,6 +1,6 @@
-# Lesson 22 — PointCloud 自监督：data2vec（toy-first）
+# Lesson 22 — PointCloud 自监督：data2vec（compact-first）
 
-目标：在点云上跑通一个 **data2vec-style** 的最小闭环（toy 版本）：
+目标：在点云上跑通一个 **data2vec-style** 的最小闭环（compact 版本）：
 
 - Backbone：PointMAE-style patch tokens + Transformer（有 `[CLS]` token）
 - Student 输入 **masked patches**，Teacher 输入 **unmasked**（EMA 更新）

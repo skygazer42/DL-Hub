@@ -30,7 +30,7 @@ class ResidualBlockGN(nn.Module):
 
 
 class DRUNet(nn.Module):
-    """DRUNet-style denoiser (toy-first, pure torch).
+    """DRUNet-style denoiser (compact-first, pure torch).
 
     DRUNet conditions on a noise-level map. This implementation stores a fixed `sigma`
     and concatenates a (B, 1, H, W) map to the input.

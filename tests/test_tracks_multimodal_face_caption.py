@@ -37,7 +37,7 @@ def test_multimodal_face_caption_model_outputs() -> None:
     from tracks.multimodal.lesson_40_face_caption_vlm_grounding.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_40_face_caption_vlm_grounding.model import (
         FaceCaptionGroundingConfig,
-        ToyFaceCaptionGroundingModel,
+        CompactFaceCaptionGroundingModel,
         grounding_accuracy,
         grounding_loss,
     )
@@ -54,7 +54,7 @@ def test_multimodal_face_caption_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFaceCaptionGroundingModel(
+    model = CompactFaceCaptionGroundingModel(
         FaceCaptionGroundingConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

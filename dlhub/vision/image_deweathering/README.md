@@ -1,6 +1,6 @@
 # Image deweathering
 
-Toy-first local families for `image deweathering`.
+Compact-first local families for `image deweathering`.
 
 ## Families
 

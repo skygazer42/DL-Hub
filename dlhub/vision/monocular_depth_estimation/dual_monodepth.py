@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_depth_model, smoke_test_depth_model
+from ._common import build_baseline_depth_model, smoke_test_depth_model
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_dual_monodepth_depth_model(
     variant: str = "dual_monodepth_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_depth_model(
+    return build_baseline_depth_model(
         family="dual_monodepth",
         mode="coarse",
         variants=_VARIANTS,

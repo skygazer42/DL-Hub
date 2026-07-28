@@ -1,8 +1,6 @@
 # Vision Co-Segmentation Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Build a local, toy-first vision co-segmentation zoo with six algorithm families, AST-based discovery, CLI utilities, and smoke coverage.
+**Goal:** Build a local, compact-first vision co-segmentation zoo with six algorithm families, AST-based discovery, CLI utilities, and smoke coverage.
 
 **Architecture:** Create a dedicated `dlhub/vision/co_segmentation/` package with one file per family plus a shared `_common.py` for image-set validation, flatten/unflatten helpers, tiny encoders, group fusion, and logits heads. Add an AST-discovered `co_segmentation_zoo.py`, a matching CLI, and a focused pytest module that drives TDD for listing, building, and `(B,T,C,H,W)` forward smoke across all tiny variants.
 

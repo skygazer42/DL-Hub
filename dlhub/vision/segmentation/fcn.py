@@ -7,7 +7,7 @@ from dlhub.vision.segmentation._common import BackboneC2C3C4C5, check_nchw
 
 
 class FCNSegmenter(nn.Module):
-    """FCN (Fully Convolutional Network) semantic segmentation (toy-first).
+    """FCN (Fully Convolutional Network) semantic segmentation (compact-first).
 
     Variants:
     - fcn32s: use C5 only

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_doc_binarizer, smoke_test_doc_binarizer
+from ._common import build_baseline_doc_binarizer, smoke_test_doc_binarizer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_dual_docbin_doc_binarizer(
     *, in_channels: int, variant: str = "dual_docbin_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_doc_binarizer(
+    return build_baseline_doc_binarizer(
         family="dual_docbin",
         mode="dual",
         variants=_VARIANTS,

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class CenterPoint(nn.Module):
-    """CenterPoint (toy): BEV center heatmap + box regression."""
+    """CenterPoint (compact): BEV center heatmap + box regression."""
 
     def __init__(
         self,

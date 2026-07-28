@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class StarGANv2Generator(nn.Module):
-    """Reference-conditioned stylizer (toy StarGAN v2-like)."""
+    """Reference-conditioned stylizer (compact StarGAN v2-like)."""
 
     def __init__(
         self,
@@ -52,7 +52,7 @@ class StarGANv2Generator(nn.Module):
 
 
 class StarGANv2StyleTransfer(nn.Module):
-    """StarGAN v2-style transfer (toy).
+    """StarGAN v2-style transfer (compact).
 
     The original method supports multi-domain and uses a mapping network; this local family keeps:
     - style encoder from a reference image

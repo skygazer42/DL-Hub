@@ -54,7 +54,7 @@ class ResidualGroup(nn.Module):
 
 
 class RCAN(nn.Module):
-    """RCAN-style blind denoiser (toy-first, pure torch).
+    """RCAN-style blind denoiser (compact-first, pure torch).
 
     RCAN is typically used for super-resolution/restoration; in denoising we keep the same idea
     (deep residual groups with channel attention) and predict a residual that is subtracted.

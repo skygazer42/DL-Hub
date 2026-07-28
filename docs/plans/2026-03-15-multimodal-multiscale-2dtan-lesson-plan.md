@@ -1,8 +1,6 @@
 # Multimodal Lesson 16 Multi-Scale 2D-TAN-Lite Temporal Grounding Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding` as a teaching lesson for text-conditioned temporal localization with multi-scale dense temporal segment maps and fused fine-resolution prediction.
+**Goal:** Add `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding` as a teaching lesson for text-conditioned temporal localization with multi-scale dense temporal segment maps and fused fine-resolution prediction.
 
 **Architecture:** The lesson will reuse the single-query short-video temporal grounding setup from lessons 14 and 15, keep a compact shared video encoder and query encoder, and extend the single-scale `T x T` segment-map pipeline into a three-scale temporal pyramid. Each scale produces its own dense upper-triangular score map with masked IoU supervision, and the coarse maps are aligned back to the fine resolution for a fused final prediction.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_16_multiscale_2dtan_toy_temporal_grounding` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.train`
+- `lesson_16_multiscale_2dtan_compact_temporal_grounding` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the multi-scale temporal-grounding dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/__init__.py`
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/data.py`
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/README.md`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/__init__.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/data.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/README.md`
 - Test: `tests/test_tracks_multimodal_multiscale_2dtan.py`
 
 **Step 1: Write the failing test**
@@ -85,7 +83,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the multi-scale 2D-TAN-lite model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/model.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/model.py`
 - Test: `tests/test_tracks_multimodal_multiscale_2dtan.py`
 
 **Step 1: Write the failing test**
@@ -125,7 +123,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and track integration
 
 **Files:**
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/train.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_multiscale_2dtan.py`
 
@@ -133,13 +131,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_16_multiscale_2dtan_toy_temporal_grounding.train --epochs 1 --num-samples 64 --batch-size 8 --num-frames 8 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_multiscale_2dtan_smoke`
+`python -m tracks.multimodal.lesson_16_multiscale_2dtan_compact_temporal_grounding.train --epochs 1 --num-samples 64 --batch-size 8 --num-frames 8 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_multiscale_2dtan_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/pytest_multiscale_2dtan_smoke/config.json`
-- `outputs/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/pytest_multiscale_2dtan_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/pytest_multiscale_2dtan_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/pytest_multiscale_2dtan_smoke/config.json`
+- `outputs/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/pytest_multiscale_2dtan_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/pytest_multiscale_2dtan_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -169,11 +167,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_multiscale_2dtan.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/__init__.py`
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/data.py`
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/model.py`
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/train.py`
-- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/README.md`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/__init__.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/data.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/model.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/train.py`
+- Create: `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/README.md`
 - Create: `docs/plans/2026-03-15-multimodal-multiscale-2dtan-lesson-design.md`
 - Create: `docs/plans/2026-03-15-multimodal-multiscale-2dtan-lesson-plan.md`
 
@@ -198,6 +196,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_16_multiscale_2dtan_toy_temporal_grounding --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_16_multiscale_2dtan_compact_temporal_grounding --dry-run`
 
 Expected: lesson 16 appears in the listing and resolves to the train module.

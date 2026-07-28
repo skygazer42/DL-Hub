@@ -1,6 +1,6 @@
 # Video-text retrieval
 
-Toy-first local families for `video_text_retrieval`.
+Compact-first local families for `video_text_retrieval`.
 
 ## Families
 

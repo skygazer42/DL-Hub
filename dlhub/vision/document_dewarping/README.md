@@ -1,7 +1,7 @@
 
     # Document dewarping
 
-    Toy-first local families for `document dewarping`.
+    Compact-first local families for `document dewarping`.
 
     ## Families
 

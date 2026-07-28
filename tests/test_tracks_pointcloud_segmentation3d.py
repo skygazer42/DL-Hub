@@ -7,14 +7,14 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_segmentation3d_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_28_toy_3d_semantic_segmentation.data import (
+    from tracks.pointcloud.lesson_28_compact_3d_semantic_segmentation.data import (
         DataConfig,
-        ToySemanticSegmentation3DDataset,
+        SyntheticSemanticSegmentation3DDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_28_toy_3d_semantic_segmentation.model import (
+    from tracks.pointcloud.lesson_28_compact_3d_semantic_segmentation.model import (
         ModelConfig,
-        ToyPointNetSemanticSeg3D,
+        CompactPointNetSemanticSeg3D,
         segmentation3d_loss,
     )
 
@@ -29,7 +29,7 @@ def test_pointcloud_segmentation3d_batch_contract_and_loss_smoke() -> None:
         jitter_std=0.01,
     )
 
-    ds = ToySemanticSegmentation3DDataset(cfg)
+    ds = SyntheticSemanticSegmentation3DDataset(cfg)
     points, labels = ds[0]
     assert tuple(points.shape) == (96, 3)
     assert tuple(labels.shape) == (96,)
@@ -43,7 +43,7 @@ def test_pointcloud_segmentation3d_batch_contract_and_loss_smoke() -> None:
     assert tuple(points_batch.shape) == (4, 96, 3)
     assert tuple(labels_batch.shape) == (4, 96)
 
-    model = ToyPointNetSemanticSeg3D(
+    model = CompactPointNetSemanticSeg3D(
         ModelConfig(in_channels=3, hidden_features=32, num_classes=4, dropout=0.0)
     )
     logits = model(points_batch)
@@ -60,9 +60,9 @@ def test_pointcloud_segmentation3d_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_segmentation3d_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_28_toy_3d_semantic_segmentation.data import DataConfig
-    from tracks.pointcloud.lesson_28_toy_3d_semantic_segmentation.model import ModelConfig
-    from tracks.pointcloud.lesson_28_toy_3d_semantic_segmentation.train import (
+    from tracks.pointcloud.lesson_28_compact_3d_semantic_segmentation.data import DataConfig
+    from tracks.pointcloud.lesson_28_compact_3d_semantic_segmentation.model import ModelConfig
+    from tracks.pointcloud.lesson_28_compact_3d_semantic_segmentation.train import (
         TrainConfig,
         run_training,
     )
@@ -97,7 +97,7 @@ def test_pointcloud_segmentation3d_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_28_toy_3d_semantic_segmentation"
+        / "lesson_28_compact_3d_semantic_segmentation"
         / "pytest_pointcloud_seg3d_smoke"
     )
     assert (run_dir / "config.json").is_file()

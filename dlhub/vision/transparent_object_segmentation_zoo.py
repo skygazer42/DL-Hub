@@ -6,7 +6,7 @@ import importlib
 
 
 _FAMILIES = [
-    "glassseg_toy",
+    "glassseg_baseline",
     "translab_seg",
     "refractmask_seg",
     "camotransparent_seg",

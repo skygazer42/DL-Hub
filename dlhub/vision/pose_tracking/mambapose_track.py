@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_pose, smoke_test_pose
+from ._common import build_baseline_pose, smoke_test_pose
 
 _VARIANTS = {
     "mambapose_track_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_mambapose_track_(
     variant: str = "mambapose_track_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_pose(
+    return build_baseline_pose(
         family="mambapose_track",
         variants=_VARIANTS,
         in_channels=int(in_channels),

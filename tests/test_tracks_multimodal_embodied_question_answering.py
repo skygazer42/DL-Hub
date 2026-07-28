@@ -46,7 +46,7 @@ def test_multimodal_embodied_qa_model_outputs() -> None:
     from tracks.multimodal.lesson_23_embodied_question_answering.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_23_embodied_question_answering.model import (
         EmbodiedQaConfig,
-        ToyEmbodiedQaModel,
+        CompactEmbodiedQaModel,
         eqa_accuracy,
         eqa_loss,
     )
@@ -64,7 +64,7 @@ def test_multimodal_embodied_qa_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyEmbodiedQaModel(
+    model = CompactEmbodiedQaModel(
         EmbodiedQaConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

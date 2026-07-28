@@ -5,7 +5,7 @@
 ## Goal
 
 Add one new 100-family expansion batch built from **10 previously unimplemented directions** across
-`vision`, `pointcloud`, `multimodal`, and `generative`, with **10 toy-first families per direction**.
+`vision`, `pointcloud`, `multimodal`, and `generative`, with **10 compact-first families per direction**.
 
 This batch is intentionally scoped to:
 
@@ -27,7 +27,7 @@ The batch must follow four rules:
 
 1. Every chosen direction must be absent as a first-class package in the current repository.
 2. The batch should stay cross-domain instead of collapsing into a single-domain expansion.
-3. Every direction must fit the existing `10 families + toy-first + tiny/small/base` contract.
+3. Every direction must fit the existing `10 families + compact-first + tiny/small/base` contract.
 4. Shared integration changes must stay on a final integration branch rather than leaking into
    direction branches.
 
@@ -216,7 +216,7 @@ Each family file must follow the same contract:
 
 - define `_VARIANTS` for `tiny`, `small`, and `base`
 - expose exactly one public builder
-- remain toy-first and CPU-friendly
+- remain compact-first and CPU-friendly
 - include a `__main__` smoke path
 
 ## Builder Suffixes

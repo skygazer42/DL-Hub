@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_expr, smoke_test_expr
+from ._common import build_baseline_expr, smoke_test_expr
 
 _VARIANTS = {
     "expw_net_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_expw_net_expression_recognizer(
     *, in_channels: int, num_classes: int, variant: str = "expw_net_small", width_mult: float = 1.0
 ):
-    return build_toy_expr(
+    return build_baseline_expr(
         family="expw_net",
         variants=_VARIANTS,
         in_channels=int(in_channels),

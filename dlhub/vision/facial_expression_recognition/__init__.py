@@ -1,4 +1,4 @@
-"""Facial expression recognition models (toy-first, pure torch)."""
+"""Facial expression recognition models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

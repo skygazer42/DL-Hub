@@ -4,7 +4,7 @@ icon: material/image-text
 
 # VLM Zoo
 
-> **70 算法族 / 210 Architecture IDs** --- 覆盖 2021-2025 年视觉-语言多模态模型的核心演进路线，从对比学习、指令微调到文档理解与端侧多模态（每族 `tiny/small/base` 三档变体，纯 PyTorch 教学实现）。
+> **70 算法族 / 210 Architecture IDs** --- 覆盖 2021-2025 年视觉-语言多模态模型的核心演进路线，从对比学习、指令微调到文档理解与端侧多模态（每族 `tiny/small/base` 三档变体）；具体实现等级以保真度审计为准。
 
 ---
 

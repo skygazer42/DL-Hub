@@ -16,7 +16,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, get_dataloaders
 from .model import (
     SceneTextRecognizerConfig,
-    ToySceneTextRecognizer,
+    CompactSceneTextRecognizer,
     recognition_accuracy,
     recognition_loss,
 )
@@ -40,7 +40,7 @@ class TrainConfig:
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
         description=(
-            "Lesson 27 (Multimodal): toy scene-text recognition with a compact "
+            "Lesson 27 (Multimodal): compact scene-text recognition with a compact "
             "vision-language recognizer."
         )
     )
@@ -99,7 +99,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToySceneTextRecognizer,
+    model: CompactSceneTextRecognizer,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -143,12 +143,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         lesson="lesson_27_scene_text_vlm_recognition",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.scene_text_vlm_recognition_toy", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("multimodal.scene_text_vlm_recognition_compact", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToySceneTextRecognizer(
+    model = CompactSceneTextRecognizer(
         SceneTextRecognizerConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

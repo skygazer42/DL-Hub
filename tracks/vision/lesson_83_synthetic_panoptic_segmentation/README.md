@@ -1,4 +1,4 @@
-# Lesson 83: Synthetic Panoptic Segmentation (Toy, CPU-friendly)
+# Lesson 83: Synthetic Panoptic Segmentation (Compact, CPU-friendly)
 
 This lesson adds a minimal panoptic segmentation training loop on synthetic scenes.
 

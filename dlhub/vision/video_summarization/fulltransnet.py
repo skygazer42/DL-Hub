@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class FullTransNetVideoSummarizer(nn.Module):
-    """FullTransNet-style full transformer summarizer (toy).
+    """FullTransNet-style full transformer summarizer (compact).
 
     Uses both a transformer encoder over frame tokens and a transformer decoder with learned
     summary queries, then projects the fused per-frame representation to importance scores.

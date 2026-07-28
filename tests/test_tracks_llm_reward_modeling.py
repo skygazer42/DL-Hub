@@ -11,8 +11,8 @@ def _repo_root() -> Path:
 
 
 def test_llm_reward_modeling_pairwise_batch_and_loss() -> None:
-    from tracks.llm.lesson_07_toy_reward_modeling.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_07_toy_reward_modeling.model import ModelConfig, ToyRewardModel
+    from tracks.llm.lesson_07_compact_reward_modeling.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_07_compact_reward_modeling.model import ModelConfig, CompactRewardModel
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -38,7 +38,7 @@ def test_llm_reward_modeling_pairwise_batch_and_loss() -> None:
     assert tuple(batch["rejected_input_ids"].shape) == (8, 18)
     assert tuple(batch["rejected_attention_mask"].shape) == (8, 18)
 
-    model = ToyRewardModel(
+    model = CompactRewardModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -58,14 +58,14 @@ def test_llm_reward_modeling_pairwise_batch_and_loss() -> None:
 
 
 def test_llm_reward_modeling_training_smoke() -> None:
-    from tracks.llm.lesson_07_toy_reward_modeling.data import DataConfig
-    from tracks.llm.lesson_07_toy_reward_modeling.train import TrainConfig, run_training
+    from tracks.llm.lesson_07_compact_reward_modeling.data import DataConfig
+    from tracks.llm.lesson_07_compact_reward_modeling.train import TrainConfig, run_training
 
     run_dir = (
         _repo_root()
         / "outputs"
         / "llm"
-        / "lesson_07_toy_reward_modeling"
+        / "lesson_07_compact_reward_modeling"
         / "pytest_reward_modeling_smoke"
     )
     if run_dir.exists():

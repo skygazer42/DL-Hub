@@ -1,6 +1,6 @@
 # Vision Denoising: Classical Baselines (17 算法族)
 
-**Goal:** 在 `dlhub/vision/denoising/` 增加一批「CPU 友好、纯 torch、toy-first」的传统/非学习型去噪基线，用于快速对照与课程实验。
+**Goal:** 在 `dlhub/vision/denoising/` 增加一批「CPU 友好、纯 torch、compact-first」的传统/非学习型去噪基线，用于快速对照与课程实验。
 
 **New algorithm families (one file per family):**
 

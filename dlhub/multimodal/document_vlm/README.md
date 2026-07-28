@@ -1,6 +1,6 @@
 # Document VLM
 
-Toy-first local families for `document VLM`.
+Compact-first local families for `document VLM`.
 
 ## Families
 

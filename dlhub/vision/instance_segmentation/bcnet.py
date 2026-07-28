@@ -11,7 +11,7 @@ from dlhub.vision.instance_segmentation._common import (
 
 
 class BCNet(nn.Module):
-    """Boundary-aware collaborative network for instance masks (toy-first)."""
+    """Boundary-aware collaborative network for instance masks (compact-first)."""
 
     def __init__(
         self,

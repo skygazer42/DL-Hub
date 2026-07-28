@@ -1,6 +1,6 @@
 # Action Recognition (Video + Skeleton)
 
-本目录提供**行为识别 / 动作识别**（Action Recognition）的 toy-first / pure-torch 实现，覆盖两种常见模态：
+本目录提供**行为识别 / 动作识别**（Action Recognition）的 compact-first / pure-torch 实现，覆盖两种常见模态：
 
 - **Video**：输入视频张量 `x` 形状为 `(B, C, T, H, W)`
 - **Skeleton**：输入骨架张量 `x` 形状为 `(B, C, T, V)`，其中 `V` 为关节点数
@@ -24,7 +24,7 @@ python scripts/action_recognition_zoo.py --smoke dlacts:stgcn_tiny
 
 ## Timeline (按年份的代表性里程碑)
 
-注意：这里的实现是教学/验证友好的“结构化 toy 版本”，目的是让你能在本仓库里快速跑通 forward/backward、对比结构差异，
+注意：这里的实现是教学/验证友好的“结构化 compact 版本”，目的是让你能在本仓库里快速跑通 forward/backward、对比结构差异，
 而不是逐行复现论文的完整训练 recipe 或 SOTA 指标。
 
 | 年份 | 模态 | 代表方法 | 本仓库 family / 例子 |
@@ -59,7 +59,7 @@ python scripts/action_recognition_zoo.py --smoke dlacts:stgcn_tiny
 说明：
 
 - 年份为 best-effort（以代表性论文/最早常用版本为主），与预印本/期刊最终版本可能存在 1 年左右差异
-- 本仓库实现是“toy 结构复刻”，用于学习、对比与快速验证；不承诺复现原论文完整训练 recipe
+- 本仓库实现是“compact 结构复刻”，用于学习、对比与快速验证；不承诺复现原论文完整训练 recipe
 - 归档元数据来源：`dlhub/vision/action_recognition/_timeline.py`
 
 用 CLI 也可查看：
@@ -70,25 +70,25 @@ python scripts/action_recognition_zoo.py --timeline
 
 | 年份 | 模态 | family | 方法 (简写) | 例子 |
 |---|---|---|---|---|
-| 2014 | `video` | `two_stream` | Two-Stream CNN (RGB + motion stream, toy) | `dlactv:two_stream_tiny` |
+| 2014 | `video` | `two_stream` | Two-Stream CNN (RGB + motion stream, compact) | `dlactv:two_stream_tiny` |
 | 2015 | `video` | `c3d` | C3D (3D CNN baseline) | `dlactv:c3d_tiny` |
 | 2016 | `video` | `tsn` | TSN (segment sampling + consensus) | `dlactv:tsn_tiny` |
-| 2017 | `video` | `i3d` | I3D (inflated 3D conv, toy) | `dlactv:i3d_tiny` |
+| 2017 | `video` | `i3d` | I3D (inflated 3D conv, compact) | `dlactv:i3d_tiny` |
 | 2018 | `skeleton` | `stgcn` | ST-GCN (spatio-temporal graph conv) | `dlacts:stgcn_tiny` |
-| 2018 | `video` | `non_local` | Non-local block (space-time self-attention, toy) | `dlactv:non_local_tiny` |
-| 2018 | `video` | `r2plus1d` | R(2+1)D (factorized 3D conv, toy) | `dlactv:r2plus1d_tiny` |
-| 2019 | `skeleton` | `agcn` | 2S-AGCN (adaptive graph conv, toy) | `dlacts:agcn_tiny` |
+| 2018 | `video` | `non_local` | Non-local block (space-time self-attention, compact) | `dlactv:non_local_tiny` |
+| 2018 | `video` | `r2plus1d` | R(2+1)D (factorized 3D conv, compact) | `dlactv:r2plus1d_tiny` |
+| 2019 | `skeleton` | `agcn` | 2S-AGCN (adaptive graph conv, compact) | `dlacts:agcn_tiny` |
 | 2019 | `video` | `slowfast` | SlowFast (dual-pathway) | `dlactv:slowfast_tiny` |
 | 2019 | `video` | `tsm` | TSM (temporal shift module) | `dlactv:tsm_tiny` |
-| 2020 | `skeleton` | `ms_g3d` | MS-G3D (multi-hop graph conv, toy) | `dlacts:ms_g3d_tiny` |
-| 2020 | `skeleton` | `shift_gcn` | Shift-GCN (shift operator on joints/time, toy) | `dlacts:shift_gcn_tiny` |
-| 2020 | `video` | `x3d` | X3D (efficient 3D conv, toy) | `dlactv:x3d_tiny` |
-| 2021 | `skeleton` | `ctr_gcn` | CTR-GCN (dynamic topology refinement, toy) | `dlacts:ctr_gcn_tiny` |
-| 2021 | `skeleton` | `poseformer` | PoseFormer (transformer over joints/time, toy) | `dlacts:poseformer_tiny` |
-| 2021 | `skeleton` | `sttr` | ST-Transformer (factorized spatial+temporal attention, toy) | `dlacts:sttr_tiny` |
+| 2020 | `skeleton` | `ms_g3d` | MS-G3D (multi-hop graph conv, compact) | `dlacts:ms_g3d_tiny` |
+| 2020 | `skeleton` | `shift_gcn` | Shift-GCN (shift operator on joints/time, compact) | `dlacts:shift_gcn_tiny` |
+| 2020 | `video` | `x3d` | X3D (efficient 3D conv, compact) | `dlactv:x3d_tiny` |
+| 2021 | `skeleton` | `ctr_gcn` | CTR-GCN (dynamic topology refinement, compact) | `dlacts:ctr_gcn_tiny` |
+| 2021 | `skeleton` | `poseformer` | PoseFormer (transformer over joints/time, compact) | `dlacts:poseformer_tiny` |
+| 2021 | `skeleton` | `sttr` | ST-Transformer (factorized spatial+temporal attention, compact) | `dlacts:sttr_tiny` |
 | 2021 | `video` | `timesformer` | TimeSformer (space-time attention) | `dlactv:timesformer_tiny` |
-| 2021 | `video` | `vivit` | ViViT (factorized video transformer, toy) | `dlactv:vivit_tiny` |
-| 2022 | `skeleton` | `motionbert` | MotionBERT (masked motion modeling, toy) | `dlacts:motionbert_tiny` |
-| 2022 | `video` | `videomae` | VideoMAE (tubelet ViT, toy) | `dlactv:videomae_tiny` |
-| 2024 | `video` | `videomamba` | VideoMamba (SSM/Mamba-style mixer, toy) | `dlactv:videomamba_tiny` |
-| 2025 | `video` | `videornn` | VideoRNN (CNN+GRU, efficient temporal modeling, toy) | `dlactv:videornn_tiny` |
+| 2021 | `video` | `vivit` | ViViT (factorized video transformer, compact) | `dlactv:vivit_tiny` |
+| 2022 | `skeleton` | `motionbert` | MotionBERT (masked motion modeling, compact) | `dlacts:motionbert_tiny` |
+| 2022 | `video` | `videomae` | VideoMAE (tubelet ViT, compact) | `dlactv:videomae_tiny` |
+| 2024 | `video` | `videomamba` | VideoMamba (SSM/Mamba-style mixer, compact) | `dlactv:videomamba_tiny` |
+| 2025 | `video` | `videornn` | VideoRNN (CNN+GRU, efficient temporal modeling, compact) | `dlactv:videornn_tiny` |

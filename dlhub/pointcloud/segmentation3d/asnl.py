@@ -29,7 +29,7 @@ class _NonLocal(nn.Module):
 
 
 class ASNLSeg(nn.Module):
-    """ASNL semantic segmentation (toy): non-local blocks on point tokens."""
+    """ASNL semantic segmentation (compact): non-local blocks on point tokens."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, depth: int, dropout: float = 0.0

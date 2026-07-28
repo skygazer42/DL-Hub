@@ -317,7 +317,7 @@ def ibot_patch_loss(
 
 
 class DINOV2PointMAE(nn.Module):
-    """Toy-first DINOv2-style model for point clouds.
+    """Compact-first DINOv2-style model for point clouds.
 
     Combines:
       - DINO loss on global [CLS] token (cross-view student/teacher)

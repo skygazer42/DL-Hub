@@ -1,6 +1,6 @@
 # Image Relighting
 
-Toy-first local image relighting families for DL-Hub.
+Compact-first local image relighting families for DL-Hub.
 
 Available families:
 - `deep_relight`

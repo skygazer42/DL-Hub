@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_topology, smoke_test_topology
+from ._common import build_baseline_topology, smoke_test_topology
 
 _VARIANTS = {
     "topolane2_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_topolane2_lane_topology_estimator(
     width_mult: float = 1.0,
     num_nodes: int = 8,
 ):
-    return build_toy_topology(
+    return build_baseline_topology(
         family="topolane2",
         variants=_VARIANTS,
         in_channels=int(in_channels),

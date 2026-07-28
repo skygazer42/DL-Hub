@@ -1,6 +1,6 @@
 # Multimodal Reasoning
 
-Toy-first multimodal reasoning families for local experimentation.
+Compact-first multimodal reasoning families for local experimentation.
 
 Families in this package:
 

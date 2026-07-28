@@ -1,6 +1,6 @@
 # Vanishing point detection
 
-Toy-first local families for `vanishing point detection`.
+Compact-first local families for `vanishing point detection`.
 
 ## Families
 

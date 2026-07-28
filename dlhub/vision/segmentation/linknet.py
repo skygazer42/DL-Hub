@@ -46,7 +46,7 @@ class _DecStage(nn.Module):
 
 
 class LinkNet(nn.Module):
-    """LinkNet semantic segmentation (toy-first, pure torch).
+    """LinkNet semantic segmentation (compact-first, pure torch).
 
     Uses additive skip connections (vs U-Net concatenation).
     """

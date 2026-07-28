@@ -11,7 +11,7 @@ def check_nchw(x):
     return x
 
 
-class ToyWSDetector(nn.Module):
+class CompactWSDetector(nn.Module):
     def __init__(self, *, family: str, in_channels: int, num_classes: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -31,7 +31,7 @@ class ToyWSDetector(nn.Module):
         return {"image_logits": pooled, "cams": cams, "boxes": boxes}
 
 
-def build_toy_ws_detector(
+def build_baseline_ws_detector(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -42,7 +42,7 @@ def build_toy_ws_detector(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyWSDetector(
+    return CompactWSDetector(
         family=str(family),
         in_channels=int(in_channels),
         num_classes=int(num_classes),

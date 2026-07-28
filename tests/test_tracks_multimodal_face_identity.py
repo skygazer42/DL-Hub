@@ -37,7 +37,7 @@ def test_multimodal_face_identity_model_outputs() -> None:
     from tracks.multimodal.lesson_37_face_identity_vlm_recognition.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_37_face_identity_vlm_recognition.model import (
         FaceIdentityConfig,
-        ToyFaceIdentityVLM,
+        CompactFaceIdentityVLM,
         face_identity_accuracy,
         face_identity_loss,
     )
@@ -54,7 +54,7 @@ def test_multimodal_face_identity_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFaceIdentityVLM(
+    model = CompactFaceIdentityVLM(
         FaceIdentityConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

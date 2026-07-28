@@ -1,6 +1,6 @@
 # Lesson 88: Synthetic Person ReID
 
-This lesson introduces a toy-first person re-identification pipeline:
+This lesson introduces a compact-first person re-identification pipeline:
 
 - generate synthetic person-like images with identity-specific appearance cues
 - train a compact re-id model from `dlhub.vision.reid` (default: `osnet_tiny`)

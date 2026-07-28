@@ -98,7 +98,7 @@ class _Up(nn.Module):
 
 
 class CBAMUNet(nn.Module):
-    """CBAM U-Net denoiser (toy-first, pure torch).
+    """CBAM U-Net denoiser (compact-first, pure torch).
 
     Uses CBAM (channel + spatial attention) inside a U-Net. Predicts a residual/noise map
     and returns `x - residual`.

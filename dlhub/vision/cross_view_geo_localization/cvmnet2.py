@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_cross_view, smoke_test_cv
+from ._common import build_baseline_cross_view, smoke_test_cv
 
 _VARIANTS = {
     "cvmnet2_tiny": {"width": 24, "depth": 1, "embed": 128},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_cvmnet2_cross_view_localizer(
     *, in_channels: int, variant: str = "cvmnet2_small", width_mult: float = 1.0
 ):
-    return build_toy_cross_view(
+    return build_baseline_cross_view(
         family="cvmnet2",
         variants=_VARIANTS,
         in_channels=int(in_channels),

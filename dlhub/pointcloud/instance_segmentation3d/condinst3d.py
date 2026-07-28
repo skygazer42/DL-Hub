@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class CondInst3D(nn.Module):
-    """CondInst3D (toy): proposal features generate per-instance mask kernels."""
+    """CondInst3D (compact): proposal features generate per-instance mask kernels."""
 
     def __init__(
         self,

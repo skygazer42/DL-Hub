@@ -6,7 +6,7 @@ from ._utils import pad_to_multiple, unpad
 
 
 class HaarDWT2D(nn.Module):
-    """2D Haar DWT implemented as grouped strided conv (orthonormal, toy-first)."""
+    """2D Haar DWT implemented as grouped strided conv (orthonormal, compact-first)."""
 
     def __init__(self, channels: int) -> None:
         super().__init__()
@@ -86,7 +86,7 @@ class _ResBlock(nn.Module):
 
 
 class MWCNN(nn.Module):
-    """MWCNN (Multi-level Wavelet CNN) toy-first denoiser.
+    """MWCNN (Multi-level Wavelet CNN) compact-first denoiser.
 
     Uses a Haar wavelet down/up transform to get multi-scale features without explicit pooling.
     Predicts a residual/noise map and returns `x - residual`.

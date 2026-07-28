@@ -101,7 +101,7 @@ class TinyAnomalyDetector(nn.Module):
         }
 
 
-def build_toy_anomaly_detector(
+def build_baseline_anomaly_detector(
     *,
     family: str,
     mode: str,

@@ -1,7 +1,7 @@
 
     # Point cloud gaussian splatting
 
-    Toy-first local families for `point cloud gaussian splatting`.
+    Compact-first local families for `point cloud gaussian splatting`.
 
     ## Families
 

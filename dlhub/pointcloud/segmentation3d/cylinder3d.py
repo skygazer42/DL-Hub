@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class Cylinder3DSeg(nn.Module):
-    """Cylinder3D semantic segmentation (toy): cylindrical projection (theta, z) -> 2D UNet."""
+    """Cylinder3D semantic segmentation (compact): cylindrical projection (theta, z) -> 2D UNet."""
 
     def __init__(
         self,

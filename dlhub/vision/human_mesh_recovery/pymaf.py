@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_mesh, smoke_test_mesh
+from ._common import build_baseline_mesh, smoke_test_mesh
 
 _VARIANTS = {
     "pymaf_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_pymaf_mesh_recoverer(
     width_mult: float = 1.0,
     num_vertices: int = 32,
 ):
-    return build_toy_mesh(
+    return build_baseline_mesh(
         family="pymaf",
         variants=_VARIANTS,
         in_channels=int(in_channels),

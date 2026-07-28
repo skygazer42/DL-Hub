@@ -8,7 +8,7 @@ def _pad_replicate(x: torch.Tensor) -> torch.Tensor:
 
 
 class AnisotropicDiffusion(nn.Module):
-    """Perona–Malik anisotropic diffusion (torch-only, toy-first).
+    """Perona–Malik anisotropic diffusion (torch-only, compact-first).
 
     Iterative PDE-style denoiser:
       u_{t+1} = u_t + step * sum_dir c(|∇u|) * ∇u

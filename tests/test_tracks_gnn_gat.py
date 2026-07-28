@@ -4,8 +4,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_gnn_lesson_03_gat_shapes_smoke() -> None:
-    from tracks.gnn.lesson_03_gat_toy_graph_classification.data import DataConfig, get_dataloaders
-    from tracks.gnn.lesson_03_gat_toy_graph_classification.model import (
+    from tracks.gnn.lesson_03_gat_compact_graph_classification.data import DataConfig, get_dataloaders
+    from tracks.gnn.lesson_03_gat_compact_graph_classification.model import (
         GATGraphClassifier,
         ModelConfig,
     )

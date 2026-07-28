@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_rs_detector, smoke_test_rs
+from ._common import build_baseline_rs_detector, smoke_test_rs
 
 _VARIANTS = {
     "s2anet_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_s2anet_rs_detector(
     *, in_channels: int, num_classes: int, variant: str = "s2anet_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_rs_detector(
+    return build_baseline_rs_detector(
         family="s2anet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

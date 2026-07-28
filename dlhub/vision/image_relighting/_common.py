@@ -33,7 +33,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyRelighter(nn.Module):
+class CompactRelighter(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -53,7 +53,7 @@ class ToyRelighter(nn.Module):
         return {"relit": relit, "light_map": light_map, "residual": residual}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -61,14 +61,14 @@ def build_toy_model(
     variant: str,
     width_mult: float = 1.0,
     **kwargs,
-) -> ToyRelighter:
+) -> CompactRelighter:
     del kwargs
     name = str(variant)
     if name not in variants:
         raise ValueError(f"Unknown {family} variant: {variant!r}. Supported: {sorted(variants)}")
     spec = variants[name]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyRelighter(
+    return CompactRelighter(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

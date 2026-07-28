@@ -36,16 +36,16 @@ class _TinyBackbone(nn.Module):
 
 
 class YOLOv1Detector(nn.Module):
-    """YOLOv1-style grid detector (toy-first, single object per image).
+    """YOLOv1-style grid detector (compact-first, single object per image).
 
     Output (raw, stride=4):
     - obj_logits: (B, 1, H/4, W/4)
-    - cls_logits: (B, C, H/4, W/4)  (for toy we keep C small; can be 1)
+    - cls_logits: (B, C, H/4, W/4)  (for compact we keep C small; can be 1)
     - bbox: (B, 4, H/4, W/4)  (normalized cx, cy, w, h in [0,1] via sigmoid)
 
     Notes:
     - We intentionally keep it single-level and do not implement NMS/decoding here.
-    - Training code is in the lesson (toy-first).
+    - Training code is in the lesson (compact-first).
     """
 
     def __init__(

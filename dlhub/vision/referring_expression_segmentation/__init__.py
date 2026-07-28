@@ -1,4 +1,4 @@
-"""Referring expression segmentation models (toy-first, pure torch)."""
+"""Referring-expression segmentation registry and compact PyTorch baselines."""
 
 from __future__ import annotations
 from importlib import import_module

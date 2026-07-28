@@ -1,7 +1,5 @@
 # DL-Hub PyTorch 统一课程化重置（100 Tasks）Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** 把这个仓库重置成一个“能系统学到东西”的 PyTorch 学习项目：统一代码风格、统一训练/评估脚手架、统一目录结构，并将现有零散项目按多轨课程重写成可运行/可练习/可验收的学习路径；PDF 资料完整保留。
 
 **Architecture:** “一个引擎 + 多条轨道”。引擎放在 `dlhub/`（数据、训练、评估、日志、复现实验）；课程放在 `tracks/`（foundations/vision/nlp/gnn/pointcloud/generative/llm），每节课都使用同一套脚手架与约定。旧代码作为参考源，在新实现通过验收后再删除对应旧目录/旧脚本（保留在 Git 历史里，可追溯）。
@@ -64,13 +62,13 @@
 24. `dlhub/training/early_stop.py`：早停（简化实现）。
 25. `dlhub/training/ema.py`：EMA（可选，高阶课）。
 26. `dlhub/data/splits.py`：train/val split helper（可复现）。
-27. `dlhub/data/toy.py`：toy 数据集（用于引擎单测，不依赖下载）。
+27. `dlhub/data/compact.py`：compact 数据集（用于引擎单测，不依赖下载）。
 28. `dlhub/nn/modules.py`：常用模块（MLP/ConvBlock）可读实现。
 29. `dlhub/nn/init.py`：权重初始化工具（学习用）。
 30. `dlhub/eval/confusion.py`：混淆矩阵（小工具）。
 31. `dlhub/cli.py`：统一入口（可选）：`python -m dlhub ...`
-32. `tests/test_dlhub_seed.py`：seed 可复现性测试（toy 数据）。
-33. `tests/test_dlhub_loop.py`：训练循环在 toy 分类上 loss 下降/acc 上升。
+32. `tests/test_dlhub_seed.py`：seed 可复现性测试（compact 数据）。
+33. `tests/test_dlhub_loop.py`：训练循环在 compact 分类上 loss 下降/acc 上升。
 34. `scripts/benchmark_cpu.py`：CPU 训练速度粗测（防止写出巨慢循环）。
 
 ### M2：Foundations 轨（35–46）
@@ -107,21 +105,21 @@
 61. 更新 `docs/RUNNING.md`：增加如何运行 tracks。
 62. 增强 CI：允许不装 torch 也通过（默认只跑 numpy 单测）；增加可选 torch job（可手动触发）。
 63. 为每个 vision lesson 加 `checkpoints/` 与 `outputs/` 规范说明。
-64. Vision 轨验收：`make smoke` 能跑通 MNIST lesson（不下载则用 toy 模式）。
+64. Vision 轨验收：`make smoke` 能跑通 MNIST lesson（不下载则用 compact 模式）。
 
 ### M4：NLP 轨（65–76）
 
 65. 创建 `tracks/nlp/README.md`：明确旧 TF/Keras 内容将被 PyTorch 重写。
-66. NLP Lesson 01：文本分类（IMDb/AGNews 或 toy），统一数据管线与训练。
+66. NLP Lesson 01：文本分类（IMDb/AGNews 或 compact），统一数据管线与训练。
 67. NLP Lesson 02：词向量/Embedding 与 OOV 处理（简化实现）。
 68. NLP Lesson 03：RNN/GRU baseline（对照 transformer）。
 69. NLP Lesson 04：Attention 机制（从零写 scaled dot-product）。
-70. NLP Lesson 05：Transformer encoder（小模型、toy 任务）。
+70. NLP Lesson 05：Transformer encoder（小模型、compact 任务）。
 71. NLP Lesson 06：NER（把 `Deep_project/ner` 思路迁移到 torch）。
 72. NLP Lesson 07：阅读理解（把 BiDAF 思路做“简化实现”，不追求 SOTA）。
 73. 把 `keras_text_classification` 的内容转成“对照阅读页”。
 74. 为 nlp 轨添加 tokenizer 最小实现（不强依赖 huggingface）。
-75. 为 NLP lessons 加快速 smoke（toy 输入，10 steps）。
+75. 为 NLP lessons 加快速 smoke（compact 输入，10 steps）。
 76. 标记并准备删除 TF/Keras 旧脚本（删除前必须有新 lesson 跑通）。
 
 ### M5：GNN 轨（77–88）
@@ -146,8 +144,8 @@
 91. PointCloud Lesson 02：PointNet 分割（简化实现，可选）。
 92. PointCloud Lesson 03：DGCNN（简化实现，强调动态图构建与复杂度）。
 93. 把 `Deep_project/Pointnet_Pointnet2` 代码拆解成“参考阅读页”，然后重写核心。
-94. 为点云 lesson 增加 toy 点集数据（避免大数据下载）。
-95. 增加 pointcloud 轨 smoke：toy 数据上能训练几步不报错。
+94. 为点云 lesson 增加 compact 点集数据（避免大数据下载）。
+95. 增加 pointcloud 轨 smoke：compact 数据上能训练几步不报错。
 96. 标记并准备删除旧点云工程（删除前有新 lesson + smoke）。
 
 ### M7：Generative 轨（97–100）

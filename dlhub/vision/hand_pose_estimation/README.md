@@ -1,6 +1,6 @@
 # Hand Pose Estimation
 
-Toy-first local families for `hand pose estimation`.
+Compact-first local families for `hand pose estimation`.
 
 ## Families
 

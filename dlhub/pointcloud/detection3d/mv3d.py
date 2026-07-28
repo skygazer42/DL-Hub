@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class MV3D(nn.Module):
-    """MV3D (toy): fuse BEV (x,y) and front-view (x,z) feature maps."""
+    """MV3D (compact): fuse BEV (x,y) and front-view (x,z) feature maps."""
 
     def __init__(
         self,

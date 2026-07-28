@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class DGCNNDet(nn.Module):
-    """DGCNN baseline detector (toy): EdgeConv tokens -> global -> query head."""
+    """DGCNN baseline detector (compact): EdgeConv tokens -> global -> query head."""
 
     def __init__(
         self,

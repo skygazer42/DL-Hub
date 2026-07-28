@@ -1,4 +1,4 @@
-"""Embodied question answering models (toy-first, pure torch)."""
+"""Embodied question answering models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

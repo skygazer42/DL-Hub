@@ -116,7 +116,7 @@ class StyleAlignedDenoiser(nn.Module):
 
 
 class StyleAlignedStyleTransfer(nn.Module):
-    """Style-aligned reference diffusion (toy).
+    """Style-aligned reference diffusion (compact).
 
     A diffusion-like img2img stylizer where denoising uses both:
     - self-attention over the evolving latent

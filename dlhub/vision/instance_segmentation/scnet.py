@@ -30,7 +30,7 @@ class _BackboneStride4(nn.Module):
 
 
 class SCNet(nn.Module):
-    """SCNet-style instance segmentation (toy-first).
+    """SCNet-style instance segmentation (compact-first).
 
     Adds a simple self-calibration gate on ROI features based on global context.
     """

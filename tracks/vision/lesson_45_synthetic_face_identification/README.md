@@ -1,6 +1,6 @@
 # Lesson 45: Synthetic Face Identification
 
-This lesson builds a toy face-identification task over small synthetic grayscale face crops.
+This lesson builds a compact face-identification task over small synthetic grayscale face crops.
 Each sample is paired with one of five synthetic identities.
 
 ## What It Teaches

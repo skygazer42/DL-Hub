@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class GDANetSeg(nn.Module):
-    """GDANet semantic segmentation (toy): local geometry stream + global attention stream."""
+    """GDANet semantic segmentation (compact): local geometry stream + global attention stream."""
 
     def __init__(
         self,

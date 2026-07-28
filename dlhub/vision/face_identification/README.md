@@ -1,6 +1,6 @@
 # Face Identification
 
-Toy-first local families for `face identification`.
+Compact-first local families for `face identification`.
 
 ## Families
 

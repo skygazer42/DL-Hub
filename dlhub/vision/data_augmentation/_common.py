@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyAugmenter(nn.Module):
+class CompactAugmenter(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -23,7 +23,7 @@ class ToyAugmenter(nn.Module):
         return {"augmented": augmented}
 
 
-def build_toy_augmenter(
+def build_baseline_augmenter(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -33,7 +33,7 @@ def build_toy_augmenter(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyAugmenter(
+    return CompactAugmenter(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class KNetPanoptic(nn.Module):
-    """K-Net-style panoptic segmentation (toy-first).
+    """K-Net-style panoptic segmentation (compact-first).
 
     Maintains a set of mask kernels (queries) that are iteratively refined and applied to a mask feature map.
     """

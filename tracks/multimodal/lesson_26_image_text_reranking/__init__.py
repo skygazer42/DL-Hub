@@ -3,7 +3,7 @@ from .model import (
     CandidateTextEncoder,
     ImageTextRerankerConfig,
     TinyVisionEncoder,
-    ToyImageTextReranker,
+    CompactImageTextReranker,
     reranking_accuracy,
     reranking_loss,
 )
@@ -13,7 +13,7 @@ __all__ = [
     "DataConfig",
     "ImageTextRerankerConfig",
     "TinyVisionEncoder",
-    "ToyImageTextReranker",
+    "CompactImageTextReranker",
     "Vocab",
     "get_dataloaders",
     "reranking_accuracy",

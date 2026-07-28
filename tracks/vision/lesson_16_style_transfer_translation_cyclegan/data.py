@@ -45,7 +45,7 @@ def _make_stripes(rng: np.random.Generator, *, image_size: int, noise_std: float
     return img
 
 
-class ToyUnpairedDomains:
+class SyntheticUnpairedDomains:
     def __init__(self, cfg: DataConfig) -> None:
         if int(cfg.image_size) < 16:
             raise ValueError("image_size must be >= 16")
@@ -86,7 +86,7 @@ class ToyUnpairedDomains:
 def get_dataloaders(cfg: DataConfig):
     from torch.utils.data import DataLoader, Subset
 
-    ds = ToyUnpairedDomains(cfg)
+    ds = SyntheticUnpairedDomains(cfg)
     train_idx, val_idx = train_val_split_indices(
         n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -108,5 +108,5 @@ def get_dataloaders(cfg: DataConfig):
     return train_loader, val_loader
 
 
-__all__ = ["DataConfig", "ToyUnpairedDomains", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticUnpairedDomains", "get_dataloaders"]
 

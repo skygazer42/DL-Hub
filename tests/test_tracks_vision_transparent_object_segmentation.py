@@ -55,8 +55,8 @@ def test_vision_transparent_object_segmentation_batch_contract_and_loss_smoke() 
     model = TransparentObjectSegmentationModel(
         ModelConfig(
             in_channels=3,
-            arch="glassseg_toy",
-            variant="glassseg_toy_tiny",
+            arch="glassseg_baseline",
+            variant="glassseg_baseline_tiny",
             width_mult=0.75,
         )
     )
@@ -112,8 +112,8 @@ def test_vision_transparent_object_segmentation_training_smoke(
         ),
         ModelConfig(
             in_channels=3,
-            arch="glassseg_toy",
-            variant="glassseg_toy_tiny",
+            arch="glassseg_baseline",
+            variant="glassseg_baseline_tiny",
             width_mult=0.75,
         ),
     )

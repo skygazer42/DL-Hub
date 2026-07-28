@@ -20,7 +20,7 @@ class _DoubleConv(nn.Module):
 
 
 class UNetPlusPlus(nn.Module):
-    """U-Net++ (Nested U-Net) denoiser (toy-first, pure torch).
+    """U-Net++ (Nested U-Net) denoiser (compact-first, pure torch).
 
     This is a small, fixed-depth U-Net++ with nested skip connections:
     - 4 encoder stages

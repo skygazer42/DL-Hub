@@ -7,14 +7,14 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_detection3d_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_27_toy_3d_object_detection.data import (
+    from tracks.pointcloud.lesson_27_compact_3d_object_detection.data import (
         DataConfig,
-        ToyObjectDetection3DDataset,
+        SyntheticObjectDetection3DDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_27_toy_3d_object_detection.model import (
+    from tracks.pointcloud.lesson_27_compact_3d_object_detection.model import (
         ModelConfig,
-        ToyDetector3D,
+        CompactDetector3D,
         detection3d_loss,
     )
 
@@ -28,7 +28,7 @@ def test_pointcloud_detection3d_batch_contract_and_loss_smoke() -> None:
         noise_points=20,
     )
 
-    ds = ToyObjectDetection3DDataset(cfg)
+    ds = SyntheticObjectDetection3DDataset(cfg)
     points, box, label = ds[0]
     assert tuple(points.shape) == (64, 3)
     assert tuple(box.shape) == (7,)
@@ -47,7 +47,7 @@ def test_pointcloud_detection3d_batch_contract_and_loss_smoke() -> None:
     assert tuple(box_batch.shape) == (4, 7)
     assert tuple(label_batch.shape) == (4,)
 
-    model = ToyDetector3D(ModelConfig(hidden_features=48, num_classes=2))
+    model = CompactDetector3D(ModelConfig(hidden_features=48, num_classes=2))
     outputs = model(points_batch)
     assert set(outputs.keys()) == {"boxes", "class_logits"}
     assert tuple(outputs["boxes"].shape) == (4, 7)
@@ -65,9 +65,9 @@ def test_pointcloud_detection3d_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_detection3d_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_27_toy_3d_object_detection.data import DataConfig
-    from tracks.pointcloud.lesson_27_toy_3d_object_detection.model import ModelConfig
-    from tracks.pointcloud.lesson_27_toy_3d_object_detection.train import (
+    from tracks.pointcloud.lesson_27_compact_3d_object_detection.data import DataConfig
+    from tracks.pointcloud.lesson_27_compact_3d_object_detection.model import ModelConfig
+    from tracks.pointcloud.lesson_27_compact_3d_object_detection.train import (
         TrainConfig,
         run_training,
     )
@@ -99,7 +99,7 @@ def test_pointcloud_detection3d_training_smoke(
     assert exit_code == 0
 
     run_dir = (
-        tmp_path / "pointcloud" / "lesson_27_toy_3d_object_detection" / "pytest_detection3d_smoke"
+        tmp_path / "pointcloud" / "lesson_27_compact_3d_object_detection" / "pytest_detection3d_smoke"
     )
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

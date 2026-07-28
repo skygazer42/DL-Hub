@@ -47,7 +47,7 @@ class DeepfakeReasoningConfig:
     vision_width: int = 32
 
 
-class ToyDeepfakeReasoningModel(nn.Module):
+class CompactDeepfakeReasoningModel(nn.Module):
     def __init__(self, cfg: DeepfakeReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -86,7 +86,7 @@ def reasoning_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
 
 __all__ = [
     "DeepfakeReasoningConfig",
-    "ToyDeepfakeReasoningModel",
+    "CompactDeepfakeReasoningModel",
     "reasoning_accuracy",
     "reasoning_loss",
 ]

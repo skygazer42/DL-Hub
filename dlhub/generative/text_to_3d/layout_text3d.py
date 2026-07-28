@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_text3d_family, smoke_test_text3d
+from ._common import build_baseline_text3d_family, smoke_test_text3d
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "layout_text3d_tiny": {"width": 64, "depth": 2, "latent": 76},
@@ -16,7 +16,7 @@ def build_layout_text3d_text3d_generator(
     variant: str = "layout_text3d_tiny",
     width_mult: float = 1.0,
 ):
-    return build_toy_text3d_family(
+    return build_baseline_text3d_family(
         family="layout_text3d",
         variants=_VARIANTS,
         in_channels=int(in_channels),

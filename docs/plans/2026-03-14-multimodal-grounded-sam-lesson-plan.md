@@ -1,8 +1,6 @@
 # Multimodal Lesson 11 Grounded-SAM-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation` as a teaching lesson for open-vocabulary text-conditioned segmentation.
+**Goal:** Add `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation` as a teaching lesson for open-vocabulary text-conditioned segmentation.
 
 **Architecture:** The lesson will generate multi-object synthetic scenes with unique color-shape categories. A text query may or may not match an object in the image. A tiny CNN plus text prompt encoder will drive a lightweight mask decoder that predicts presence and a low-resolution target mask.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_11_grounded_sam_toy_open_vocab_segmentation` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_11_grounded_sam_toy_open_vocab_segmentation.train`
+- `lesson_11_grounded_sam_compact_open_vocab_segmentation` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_11_grounded_sam_compact_open_vocab_segmentation.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the open-vocabulary segmentation dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/__init__.py`
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/data.py`
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/README.md`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/__init__.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/data.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/README.md`
 - Test: `tests/test_tracks_multimodal_grounded_sam.py`
 
 **Step 1: Write the failing test**
@@ -83,7 +81,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the Grounded-SAM-lite model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/model.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/model.py`
 - Test: `tests/test_tracks_multimodal_grounded_sam.py`
 
 **Step 1: Write the failing test**
@@ -120,7 +118,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and track integration
 
 **Files:**
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/train.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_grounded_sam.py`
 
@@ -128,13 +126,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_11_grounded_sam_toy_open_vocab_segmentation.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --mask-size 8 --max-text-length 6 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_grounded_sam_smoke`
+`python -m tracks.multimodal.lesson_11_grounded_sam_compact_open_vocab_segmentation.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --mask-size 8 --max-text-length 6 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_grounded_sam_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/pytest_grounded_sam_smoke/config.json`
-- `outputs/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/pytest_grounded_sam_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/pytest_grounded_sam_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/pytest_grounded_sam_smoke/config.json`
+- `outputs/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/pytest_grounded_sam_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/pytest_grounded_sam_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -164,11 +162,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_grounded_sam.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/__init__.py`
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/data.py`
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/model.py`
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/train.py`
-- Create: `tracks/multimodal/lesson_11_grounded_sam_toy_open_vocab_segmentation/README.md`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/__init__.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/data.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/model.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/train.py`
+- Create: `tracks/multimodal/lesson_11_grounded_sam_compact_open_vocab_segmentation/README.md`
 
 **Step 1: Run lint**
 
@@ -191,6 +189,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_11_grounded_sam_toy_open_vocab_segmentation --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_11_grounded_sam_compact_open_vocab_segmentation --dry-run`
 
 Expected: lesson 11 appears in the listing and resolves to the train module.

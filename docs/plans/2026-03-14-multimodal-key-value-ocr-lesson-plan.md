@@ -1,8 +1,6 @@
 # Multimodal Lesson 12 Key-Value OCR-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm` as a teaching lesson for prompt-conditioned key-value OCR on synthetic document images.
+**Goal:** Add `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm` as a teaching lesson for prompt-conditioned key-value OCR on synthetic document images.
 
 **Architecture:** The lesson will synthesize small document images with several `key: value` rows and a prompt such as `read total`. A tiny CNN will encode the document image, visual tokens will be prefixed into a decoder-style LM, and the model will generate the requested value or `none` if the field is absent.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_12_key_value_ocr_toy_doc_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.train`
+- `lesson_12_key_value_ocr_compact_doc_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the key-value OCR dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/data.py`
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/README.md`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/data.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/README.md`
 - Test: `tests/test_tracks_multimodal_key_value_ocr.py`
 
 **Step 1: Write the failing test**
@@ -81,7 +79,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the document OCR model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/model.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/model.py`
 - Test: `tests/test_tracks_multimodal_key_value_ocr.py`
 
 **Step 1: Write the failing test**
@@ -115,7 +113,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and track integration
 
 **Files:**
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/train.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_key_value_ocr.py`
 
@@ -123,13 +121,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --max-text-length 20 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_key_value_ocr_smoke`
+`python -m tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 32 --max-text-length 20 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_key_value_ocr_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/pytest_key_value_ocr_smoke/config.json`
-- `outputs/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/pytest_key_value_ocr_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/pytest_key_value_ocr_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/pytest_key_value_ocr_smoke/config.json`
+- `outputs/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/pytest_key_value_ocr_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/pytest_key_value_ocr_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -159,11 +157,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_key_value_ocr.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/data.py`
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/model.py`
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/train.py`
-- Create: `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/README.md`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/data.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/model.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/train.py`
+- Create: `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/README.md`
 
 **Step 1: Run lint**
 
@@ -186,6 +184,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_12_key_value_ocr_toy_doc_vlm --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_12_key_value_ocr_compact_doc_vlm --dry-run`
 
 Expected: lesson 12 appears in the listing and resolves to the train module.

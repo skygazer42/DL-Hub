@@ -1,4 +1,4 @@
-"""document binarization models (toy-first, pure torch)."""
+"""document binarization models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

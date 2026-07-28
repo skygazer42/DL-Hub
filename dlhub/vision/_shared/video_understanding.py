@@ -11,7 +11,7 @@ def check_btchw(x):
     return x
 
 
-class ToyVideoUnderstander(nn.Module):
+class CompactVideoUnderstander(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, num_classes: int):
         super().__init__()
         self.family = str(family)
@@ -32,7 +32,7 @@ class ToyVideoUnderstander(nn.Module):
         return {"logits": logits}
 
 
-def build_toy_video_understander(
+def build_baseline_video_understander(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -43,7 +43,7 @@ def build_toy_video_understander(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyVideoUnderstander(
+    return CompactVideoUnderstander(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

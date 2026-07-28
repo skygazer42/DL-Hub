@@ -1,8 +1,6 @@
 # Vision Detection (40 Algorithms) Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Expand `dlhub/vision/detection/` into a **40-algorithm toy-first object detection suite** (pure PyTorch), with smoke tests and a push to `main`.
+**Goal:** Expand `dlhub/vision/detection/` into a **40-algorithm compact-first object detection suite** (pure PyTorch), with smoke tests and a push to `main`.
 
 **Architecture:** Keep **one algorithm family per file** in `dlhub/vision/detection/` (variants live inside the same file via `_VARIANTS` + `build_*` factory). Each algorithm file includes a `__main__` random forward/backward smoke. A single pytest smoke iterates all builders and validates forward/backward on CPU.
 
@@ -13,7 +11,7 @@
 ## Scope / Definition
 
 - “40 algorithms” here means **40 detector algorithm families** available under `dlhub.vision.detection` (including the already-present FCOS / CenterNet / RetinaNet / YOLOv1).
-- Implementations are **toy-first** and focus on architecture/forward pass + stability (forward/backward), not full COCO-grade training pipelines.
+- Implementations are **compact-first** and focus on architecture/forward pass + stability (forward/backward), not full COCO-grade training pipelines.
 
 ## Algorithm List (Target = 40 families)
 
@@ -62,10 +60,10 @@ Planned additions (36):
   - `rtdetr.py` (RT-DETR *style*)
   - `sparse_rcnn.py` (Sparse R-CNN *style*)
 - Two-stage:
-  - `faster_rcnn.py` (Faster R-CNN *toy*)
-  - `mask_rcnn.py` (Mask R-CNN *toy*)
-  - `cascade_rcnn.py` (Cascade R-CNN *toy*)
-  - `rfcn.py` (R-FCN *toy*)
+  - `faster_rcnn.py` (Faster R-CNN *compact*)
+  - `mask_rcnn.py` (Mask R-CNN *compact*)
+  - `cascade_rcnn.py` (Cascade R-CNN *compact*)
+  - `rfcn.py` (R-FCN *compact*)
 
 ## Task 1: Add/Update Test Harness for Detection Algorithms
 
@@ -111,7 +109,7 @@ Execute in batches (suggested commits per batch):
 ### Batch E (transformer/query-based)
 - `detr.py`, `deformable_detr.py`, `conditional_detr.py`, `dab_detr.py`, `dn_detr.py`, `rtdetr.py`, `sparse_rcnn.py`
 
-### Batch F (two-stage toy)
+### Batch F (two-stage compact)
 - `faster_rcnn.py`, `mask_rcnn.py`, `cascade_rcnn.py`, `rfcn.py`
 
 After each batch:

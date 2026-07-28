@@ -1,6 +1,6 @@
 # Lesson 46: Face Detection VLM Reasoning
 
-This lesson builds a toy multimodal detector that takes a synthetic face image plus a short
+This lesson builds a compact multimodal detector that takes a synthetic face image plus a short
 query and predicts a normalized face bounding box.
 
 ## What It Teaches

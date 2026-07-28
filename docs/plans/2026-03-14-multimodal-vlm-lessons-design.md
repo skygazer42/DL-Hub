@@ -2,11 +2,11 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add a new `tracks/multimodal` teaching track to DL-Hub, starting with an independently implemented `lesson_01_clip_toy_retrieval` that teaches the core mechanics of image-text alignment without reusing the zoo model code.
+**Goal:** Add a new `tracks/multimodal` teaching track to DL-Hub, starting with an independently implemented `lesson_01_clip_compact_retrieval` that teaches the core mechanics of image-text alignment without reusing the zoo model code.
 
 ## Problem
 
-The repository now has a local multimodal VLM zoo under `dlhub/multimodal/`, but it does not yet have a lesson-style learning path that teaches how these models work from first principles. The user explicitly wants lesson models to be independent teaching implementations, similar to `tracks/llm/lesson_01_toy_causal_lm_transformer/model.py`, rather than thin wrappers over zoo families such as `clip.py`.
+The repository now has a local multimodal VLM zoo under `dlhub/multimodal/`, but it does not yet have a lesson-style learning path that teaches how these models work from first principles. The user explicitly wants lesson models to be independent teaching implementations, similar to `tracks/llm/lesson_01_compact_causal_lm_transformer/model.py`, rather than thin wrappers over zoo families such as `clip.py`.
 
 ## Scope
 
@@ -14,7 +14,7 @@ This first lesson drop focuses on one complete lesson and one new track shell:
 
 - Create `tracks/multimodal/`
 - Create `tracks/multimodal/README.md`
-- Create `tracks/multimodal/lesson_01_clip_toy_retrieval/`
+- Create `tracks/multimodal/lesson_01_clip_compact_retrieval/`
 - Integrate the new track with `scripts/run_lesson.py` discovery
 - Add focused tests for track discovery and lesson behavior
 
@@ -26,9 +26,9 @@ This drop does not yet implement lesson 2 or lesson 3. Those remain part of the 
 
 The multimodal teaching track should progress in three stages:
 
-1. `lesson_01_clip_toy_retrieval`
-2. `lesson_02_blip_toy_captioning`
-3. `lesson_03_llava_toy_instruction_vlm`
+1. `lesson_01_clip_compact_retrieval`
+2. `lesson_02_blip_compact_captioning`
+3. `lesson_03_llava_compact_instruction_vlm`
 
 The first implementation should only ship lesson 1, because it establishes the shared design vocabulary:
 
@@ -88,7 +88,7 @@ The lesson-local `model.py` should not import or wrap `dlhub.multimodal.vlm.clip
 - `VisionEncoder`: a tiny CNN that maps `3 x H x W` to a feature vector
 - `TextEncoder`: token embedding + mean pooling over valid tokens
 - `ProjectionHead`: linear projection to a shared embedding space
-- `ToyCLIPModel`: returns normalized image and text embeddings plus similarity logits
+- `CompactCLIPModel`: returns normalized image and text embeddings plus similarity logits
 
 The forward API should stay simple and lesson-friendly:
 
@@ -109,7 +109,7 @@ Evaluation should report:
 - `image_to_text_acc`
 - `text_to_image_acc`
 
-For this toy lesson, top-1 batch retrieval accuracy is enough.
+For this compact lesson, top-1 batch retrieval accuracy is enough.
 
 ### Training script
 
@@ -121,7 +121,7 @@ The training script should follow existing lesson conventions:
 - train for a few epochs
 - write a checkpoint
 
-Unlike the zoo CLI, the lesson should optimize a real toy model end-to-end. The script should also record a small `samples.jsonl` file with a few captions and predicted retrieval indices so the run artifact is inspectable.
+Unlike the zoo CLI, the lesson should optimize a real compact model end-to-end. The script should also record a small `samples.jsonl` file with a few captions and predicted retrieval indices so the run artifact is inspectable.
 
 ## Track Layout
 
@@ -129,11 +129,11 @@ The new track should follow the same pattern as other tracks:
 
 - `tracks/multimodal/__init__.py`
 - `tracks/multimodal/README.md`
-- `tracks/multimodal/lesson_01_clip_toy_retrieval/__init__.py`
-- `tracks/multimodal/lesson_01_clip_toy_retrieval/data.py`
-- `tracks/multimodal/lesson_01_clip_toy_retrieval/model.py`
-- `tracks/multimodal/lesson_01_clip_toy_retrieval/train.py`
-- `tracks/multimodal/lesson_01_clip_toy_retrieval/README.md`
+- `tracks/multimodal/lesson_01_clip_compact_retrieval/__init__.py`
+- `tracks/multimodal/lesson_01_clip_compact_retrieval/data.py`
+- `tracks/multimodal/lesson_01_clip_compact_retrieval/model.py`
+- `tracks/multimodal/lesson_01_clip_compact_retrieval/train.py`
+- `tracks/multimodal/lesson_01_clip_compact_retrieval/README.md`
 
 This makes the lesson discoverable via:
 
@@ -145,8 +145,8 @@ The first delivery needs focused tests only:
 
 - `tests/test_scripts_run_lesson.py`
   - `multimodal` appears in track listing
-  - `lesson_01_clip_toy_retrieval` appears in lesson listing
-  - dry-run resolves `tracks.multimodal.lesson_01_clip_toy_retrieval.train`
+  - `lesson_01_clip_compact_retrieval` appears in lesson listing
+  - dry-run resolves `tracks.multimodal.lesson_01_clip_compact_retrieval.train`
 - `tests/test_tracks_multimodal_clip.py`
   - synthetic batch shapes are stable
   - the teaching model returns the expected keys and tensor shapes
@@ -169,7 +169,7 @@ The first delivery needs focused tests only:
 This first lesson drop is complete when:
 
 - `tracks/multimodal` is discoverable by `scripts/run_lesson.py`
-- `lesson_01_clip_toy_retrieval` runs as a module
+- `lesson_01_clip_compact_retrieval` runs as a module
 - the lesson contains independent `data.py`, `model.py`, and `train.py`
 - focused tests for the new track and lesson pass
 - the lesson can complete a CPU smoke training run and write normal run artifacts

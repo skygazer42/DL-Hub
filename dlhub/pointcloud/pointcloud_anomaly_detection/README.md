@@ -1,6 +1,6 @@
 # Point cloud anomaly detection
 
-Toy-first local families for `pointcloud anomaly detection`.
+Compact-first local families for `pointcloud anomaly detection`.
 
 ## Families
 

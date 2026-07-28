@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_geo, smoke_test_geo
+from ._common import build_baseline_geo, smoke_test_geo
 
 _VARIANTS = {
     "transgeo_tiny": {"width": 24, "depth": 1, "embed": 128},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_transgeo_geo_localizer(
     *, in_channels: int, variant: str = "transgeo_small", width_mult: float = 1.0
 ):
-    return build_toy_geo(
+    return build_baseline_geo(
         family="transgeo",
         variants=_VARIANTS,
         in_channels=int(in_channels),

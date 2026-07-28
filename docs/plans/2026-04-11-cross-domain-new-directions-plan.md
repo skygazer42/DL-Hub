@@ -1,12 +1,10 @@
 # Cross-Domain New Directions Batch Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add 100 new toy-first algorithm families across 10 previously unimplemented directions spanning `vision`, `pointcloud`, `multimodal`, and `generative`, without adding lessons or pytest files.
+**Goal:** Add 100 new compact-first algorithm families across 10 previously unimplemented directions spanning `vision`, `pointcloud`, `multimodal`, and `generative`, without adding lessons or pytest files.
 
 **Architecture:** Create one package per new direction, one family per file, and one direction-local zoo or registry surface per direction where that pattern is already established. Keep direction worktrees local-first and reserve shared `README.md` plus domain `__init__.py` wiring for one final integration branch.
 
-**Tech Stack:** Python 3, `torch`, repo-local toy model helpers, lazy package `__init__.py` files, direction-specific `*_zoo.py` modules, `.worktrees/` git worktrees, and minimal import/list smoke verification.
+**Tech Stack:** Python 3, `torch`, repo-local compact model helpers, lazy package `__init__.py` files, direction-specific `*_zoo.py` modules, `.worktrees/` git worktrees, and minimal import/list smoke verification.
 
 ---
 
@@ -106,7 +104,7 @@ build_<family>_relighter(...)
 **Step 3: Add the 10 family files**
 
 Each family file must define `_VARIANTS` for `tiny`, `small`, and `base`, expose one builder, stay
-toy-first and CPU-friendly, and include a `__main__` smoke path.
+compact-first and CPU-friendly, and include a `__main__` smoke path.
 
 **Step 4: Add `image_relighting_zoo.py`**
 
@@ -132,14 +130,14 @@ Run:
 
 ```powershell
 git add dlhub/vision/image_relighting dlhub/vision/image_relighting_zoo.py
-git commit -m "Add image relighting toy families"
+git commit -m "Add image relighting compact families"
 ```
 
 ### Task 3: Add the `transparent_object_segmentation` direction
 
 **Files:**
 - Create: `F:/DL-Hub/.worktrees/batch140-transparent-object-segmentation/dlhub/vision/transparent_object_segmentation/__init__.py`
-- Create: `F:/DL-Hub/.worktrees/batch140-transparent-object-segmentation/dlhub/vision/transparent_object_segmentation/glassseg_toy.py`
+- Create: `F:/DL-Hub/.worktrees/batch140-transparent-object-segmentation/dlhub/vision/transparent_object_segmentation/glassseg_baseline.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-transparent-object-segmentation/dlhub/vision/transparent_object_segmentation/translab_seg.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-transparent-object-segmentation/dlhub/vision/transparent_object_segmentation/refractmask_seg.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-transparent-object-segmentation/dlhub/vision/transparent_object_segmentation/camotransparent_seg.py`
@@ -172,7 +170,7 @@ build_<family>_transparent_segmenter(...)
 
 **Step 3: Add the 10 family files**
 
-Keep outputs toy-first and segmentation-oriented. Do not add extra shared abstractions unless at
+Keep outputs compact-first and segmentation-oriented. Do not add extra shared abstractions unless at
 least three files need the same helper.
 
 **Step 4: Add `transparent_object_segmentation_zoo.py`**
@@ -184,11 +182,11 @@ Use the same explicit registry pattern as other recent `vision` direction zoos a
 Run:
 
 ```powershell
-python -c "from dlhub.vision.transparent_object_segmentation.glassseg_toy import build_glassseg_toy_transparent_segmenter as f; print(type(f(in_channels=3, variant='glassseg_toy_tiny')).__name__)"
-python -c "from dlhub.vision.transparent_object_segmentation_zoo import list_local_arches; print(any('glassseg_toy_tiny' in x for x in list_local_arches()))"
+python -c "from dlhub.vision.transparent_object_segmentation.glassseg_baseline import build_glassseg_baseline_transparent_segmenter as f; print(type(f(in_channels=3, variant='glassseg_baseline_tiny')).__name__)"
+python -c "from dlhub.vision.transparent_object_segmentation_zoo import list_local_arches; print(any('glassseg_baseline_tiny' in x for x in list_local_arches()))"
 ```
 
-Expected: import/build succeeds and zoo listing contains `glassseg_toy_tiny`.
+Expected: import/build succeeds and zoo listing contains `glassseg_baseline_tiny`.
 
 **Step 6: Commit the worktree branch**
 
@@ -196,7 +194,7 @@ Run:
 
 ```powershell
 git add dlhub/vision/transparent_object_segmentation dlhub/vision/transparent_object_segmentation_zoo.py
-git commit -m "Add transparent object segmentation toy families"
+git commit -m "Add transparent object segmentation compact families"
 ```
 
 ### Task 4: Add the `video_matting` direction
@@ -205,7 +203,7 @@ git commit -m "Add transparent object segmentation toy families"
 - Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/__init__.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/dim_vmatte.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/fba_vmatte.py`
-- Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/rvm_toy.py`
+- Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/rvm_baseline.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/gca_vmatte.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/tcvomatting.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-video-matting/dlhub/vision/video_matting/memory_vmatte.py`
@@ -236,7 +234,7 @@ build_<family>_video_matter(...)
 
 **Step 3: Add the 10 family files**
 
-Use toy-first video matting outputs and keep temporal handling lightweight.
+Use compact-first video matting outputs and keep temporal handling lightweight.
 
 **Step 4: Add `video_matting_zoo.py`**
 
@@ -259,7 +257,7 @@ Run:
 
 ```powershell
 git add dlhub/vision/video_matting dlhub/vision/video_matting_zoo.py
-git commit -m "Add video matting toy families"
+git commit -m "Add video matting compact families"
 ```
 
 ### Task 5: Add the `event_camera_understanding` direction
@@ -322,7 +320,7 @@ Run:
 
 ```powershell
 git add dlhub/vision/event_camera_understanding dlhub/vision/event_camera_understanding_zoo.py
-git commit -m "Add event camera understanding toy families"
+git commit -m "Add event camera understanding compact families"
 ```
 
 ### Task 6: Add the `scene_flow` direction
@@ -362,7 +360,7 @@ build_<family>_scene_flow_estimator(...)
 
 **Step 3: Add the 10 family files**
 
-Stay toy-first and follow the pointcloud direction-package style already used by `gaussian_splatting`
+Stay compact-first and follow the pointcloud direction-package style already used by `gaussian_splatting`
 and `tracking3d`.
 
 **Step 4: Add `scene_flow_zoo.py`**
@@ -387,7 +385,7 @@ Run:
 
 ```powershell
 git add dlhub/pointcloud/scene_flow dlhub/pointcloud/scene_flow_zoo.py
-git commit -m "Add scene flow toy families"
+git commit -m "Add scene flow compact families"
 ```
 
 ### Task 7: Add the `pointcloud_completion` direction
@@ -427,7 +425,7 @@ build_<family>_completer(...)
 
 **Step 3: Add the 10 family files**
 
-Keep them toy-first and pointcloud-completion specific.
+Keep them compact-first and pointcloud-completion specific.
 
 **Step 4: Add `pointcloud_completion_zoo.py`**
 
@@ -450,7 +448,7 @@ Run:
 
 ```powershell
 git add dlhub/pointcloud/pointcloud_completion dlhub/pointcloud/pointcloud_completion_zoo.py
-git commit -m "Add pointcloud completion toy families"
+git commit -m "Add pointcloud completion compact families"
 ```
 
 ### Task 8: Add the `audio_visual_learning` direction
@@ -514,7 +512,7 @@ Run:
 
 ```powershell
 git add dlhub/multimodal/audio_visual_learning dlhub/multimodal/audio_visual_learning_zoo.py
-git commit -m "Add audio-visual learning toy families"
+git commit -m "Add audio-visual learning compact families"
 ```
 
 ### Task 9: Add the `multimodal_reasoning` direction
@@ -554,7 +552,7 @@ build_<family>_reasoner(...)
 
 **Step 3: Add the 10 family files**
 
-Keep the outputs toy-first and reasoning-oriented without introducing tool backends or external APIs.
+Keep the outputs compact-first and reasoning-oriented without introducing tool backends or external APIs.
 
 **Step 4: Add `multimodal_reasoning_zoo.py`**
 
@@ -577,7 +575,7 @@ Run:
 
 ```powershell
 git add dlhub/multimodal/multimodal_reasoning dlhub/multimodal/multimodal_reasoning_zoo.py
-git commit -m "Add multimodal reasoning toy families"
+git commit -m "Add multimodal reasoning compact families"
 ```
 
 ### Task 10: Add the `video_diffusion` direction
@@ -640,15 +638,15 @@ Run:
 
 ```powershell
 git add dlhub/generative/video_diffusion dlhub/generative/video_diffusion_zoo.py
-git commit -m "Add video diffusion toy families"
+git commit -m "Add video diffusion compact families"
 ```
 
 ### Task 11: Add the `text_to_3d` direction
 
 **Files:**
 - Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/__init__.py`
-- Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/dreamfusion_toy.py`
-- Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/magic3d_toy.py`
+- Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/dreamfusion_baseline.py`
+- Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/magic3d_baseline.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/score_distill_3d.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/neural_lift_3d.py`
 - Create: `F:/DL-Hub/.worktrees/batch140-text-to-3d/dlhub/generative/text_to_3d/sdf_prompt_3d.py`
@@ -680,7 +678,7 @@ build_<family>_text3d_generator(...)
 
 **Step 3: Add the 10 family files**
 
-Keep them toy-first and structural rather than photorealistic.
+Keep them compact-first and structural rather than photorealistic.
 
 **Step 4: Add `text_to_3d_zoo.py`**
 
@@ -691,11 +689,11 @@ Prefer AST-based discovery similar to the generative diffusion zoo and use prefi
 Run:
 
 ```powershell
-python -c "from dlhub.generative.text_to_3d.dreamfusion_toy import build_dreamfusion_toy_text3d_generator as f; print(type(f(in_channels=3, variant='dreamfusion_toy_tiny')).__name__)"
-python -c "from dlhub.generative.text_to_3d_zoo import list_local_arches; print(any('dreamfusion_toy_tiny' in x for x in list_local_arches()))"
+python -c "from dlhub.generative.text_to_3d.dreamfusion_baseline import build_dreamfusion_baseline_text3d_generator as f; print(type(f(in_channels=3, variant='dreamfusion_baseline_tiny')).__name__)"
+python -c "from dlhub.generative.text_to_3d_zoo import list_local_arches; print(any('dreamfusion_baseline_tiny' in x for x in list_local_arches()))"
 ```
 
-Expected: import/build succeeds and zoo listing contains `dreamfusion_toy_tiny`.
+Expected: import/build succeeds and zoo listing contains `dreamfusion_baseline_tiny`.
 
 **Step 6: Commit the worktree branch**
 
@@ -703,7 +701,7 @@ Run:
 
 ```powershell
 git add dlhub/generative/text_to_3d dlhub/generative/text_to_3d_zoo.py
-git commit -m "Add text-to-3D toy families"
+git commit -m "Add text-to-3D compact families"
 ```
 
 ### Task 12: Integrate the batch on the shared branch

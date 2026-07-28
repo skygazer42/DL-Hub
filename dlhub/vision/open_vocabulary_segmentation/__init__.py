@@ -1,4 +1,4 @@
-"""Open-vocabulary segmentation models (toy-first, pure torch)."""
+"""Open-vocabulary segmentation registry and compact PyTorch baselines."""
 
 from __future__ import annotations
 from importlib import import_module

@@ -17,7 +17,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, get_dataloaders, num_events, num_motions
 from .model import (
     AudioVisualLearningConfig,
-    ToyAudioVisualLearningModel,
+    CompactAudioVisualLearningModel,
     classification_accuracy,
     multitask_loss,
     retrieval_accuracy,
@@ -43,7 +43,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 20 (Multimodal): toy audio-visual learning with contrastive alignment and fused event prediction."
+        description="Lesson 20 (Multimodal): compact audio-visual learning with contrastive alignment and fused event prediction."
     )
 
     parser.add_argument("--num-samples", type=int, default=384)
@@ -110,7 +110,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyAudioVisualLearningModel,
+    model: CompactAudioVisualLearningModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -177,7 +177,7 @@ def _run_epoch(
 @torch.no_grad()
 def _write_samples(
     *,
-    model: ToyAudioVisualLearningModel,
+    model: CompactAudioVisualLearningModel,
     loader,
     device: torch.device,
     out_path,
@@ -219,14 +219,14 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         run_name=train_cfg.run_name,
     )
     logger = get_logger(
-        "multimodal.audio_visual_learning_toy",
+        "multimodal.audio_visual_learning_compact",
         log_file=paths.logs_dir / "train.log",
     )
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader = get_dataloaders(data_cfg)
-    model = ToyAudioVisualLearningModel(
+    model = CompactAudioVisualLearningModel(
         AudioVisualLearningConfig(
             num_frames=int(data_cfg.num_frames),
             image_size=int(data_cfg.image_size),

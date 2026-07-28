@@ -49,7 +49,7 @@ def test_multimodal_audio_grounded_retrieval_model_outputs() -> None:
     from tracks.multimodal.lesson_21_audio_grounded_retrieval.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_21_audio_grounded_retrieval.model import (
         AudioGroundedRetrievalConfig,
-        ToyAudioGroundedRetrievalModel,
+        CompactAudioGroundedRetrievalModel,
         clip_contrastive_loss,
         retrieval_accuracy,
     )
@@ -69,7 +69,7 @@ def test_multimodal_audio_grounded_retrieval_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyAudioGroundedRetrievalModel(
+    model = CompactAudioGroundedRetrievalModel(
         AudioGroundedRetrievalConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

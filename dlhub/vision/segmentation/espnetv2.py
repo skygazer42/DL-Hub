@@ -48,7 +48,7 @@ class _EESP(nn.Module):
 
 
 class ESPNetV2(nn.Module):
-    """ESPNetV2 semantic segmentation (toy-first)."""
+    """ESPNetV2 semantic segmentation (compact-first)."""
 
     def __init__(
         self,

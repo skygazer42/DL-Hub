@@ -16,7 +16,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SESSD(nn.Module):
-    """SE-SSD (toy): squeeze-excitation on keypoint features."""
+    """SE-SSD (compact): squeeze-excitation on keypoint features."""
 
     def __init__(
         self,

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_regressor, smoke_test_hand_regressor
+from ._common import build_baseline_hand_regressor, smoke_test_hand_regressor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_uncertainty_finger_spread_finger_spread_estimator(
     variant: str = "uncertainty_finger_spread_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_regressor(
+    return build_baseline_hand_regressor(
         family="uncertainty_finger_spread",
         mode="uncertainty",
         variants=_VARIANTS,

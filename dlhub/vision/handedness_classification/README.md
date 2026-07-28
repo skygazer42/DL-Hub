@@ -1,6 +1,6 @@
 # Handedness Classification
 
-Toy-first local families for `handedness classification`.
+Compact-first local families for `handedness classification`.
 
 ## Families
 

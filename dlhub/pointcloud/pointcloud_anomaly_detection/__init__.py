@@ -1,4 +1,4 @@
-"""Point cloud anomaly detection models (toy-first, pure torch)."""
+"""Point cloud anomaly detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

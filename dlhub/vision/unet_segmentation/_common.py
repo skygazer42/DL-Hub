@@ -68,7 +68,7 @@ class TinySegmentor(nn.Module):
         }
 
 
-def build_toy_segmentor(
+def build_baseline_segmentor(
     *,
     family: str,
     mode: str,

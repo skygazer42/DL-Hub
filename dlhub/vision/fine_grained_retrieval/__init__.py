@@ -1,4 +1,4 @@
-"""Fine-grained retrieval models (toy-first, pure torch)."""
+"""Fine-grained retrieval models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

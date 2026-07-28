@@ -14,7 +14,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class H3DNet(nn.Module):
-    """H3DNet (toy): multi-stage voting refinement."""
+    """H3DNet (compact): multi-stage voting refinement."""
 
     def __init__(
         self,

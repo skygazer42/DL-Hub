@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_adversarial_example_detection_batch_contract() -> None:
-    from tracks.nlp.lesson_21_toy_adversarial_example_detection.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_21_toy_adversarial_example_detection.model import (
+    from tracks.nlp.lesson_21_compact_adversarial_example_detection.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_21_compact_adversarial_example_detection.model import (
         AdversarialExampleDetector,
         ModelConfig,
         detection_accuracy,
@@ -52,8 +52,8 @@ def test_adversarial_example_detection_batch_contract() -> None:
 
 
 def test_adversarial_example_detection_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_21_toy_adversarial_example_detection.data import DataConfig
-    from tracks.nlp.lesson_21_toy_adversarial_example_detection.train import (
+    from tracks.nlp.lesson_21_compact_adversarial_example_detection.data import DataConfig
+    from tracks.nlp.lesson_21_compact_adversarial_example_detection.train import (
         TrainConfig,
         run_training,
     )
@@ -91,7 +91,7 @@ def test_adversarial_example_detection_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_21_toy_adversarial_example_detection"
+        / "lesson_21_compact_adversarial_example_detection"
         / "pytest_adversarial_example_detection_smoke"
     )
     assert (run_dir / "config.json").is_file()

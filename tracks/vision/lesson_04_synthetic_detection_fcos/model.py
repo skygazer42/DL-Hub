@@ -18,7 +18,7 @@ class TinyFCOS(nn.Module):
         super().__init__()
         self.cfg = cfg
         if int(cfg.stride) != 4:
-            raise ValueError("This toy FCOS lesson assumes output stride=4.")
+            raise ValueError("This compact FCOS lesson assumes output stride=4.")
 
         # Reuse the library implementation (pure torch) while keeping the lesson API stable.
         self.model = FCOSDetector(

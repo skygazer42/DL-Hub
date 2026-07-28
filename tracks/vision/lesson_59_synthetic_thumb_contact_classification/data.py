@@ -21,7 +21,7 @@ class DataConfig:
 
 
 class SyntheticThumbContactDataset:
-    """Render a toy grayscale hand crop and classify thumb contact state.
+    """Render a synthetic grayscale hand crop and classify thumb contact state.
 
     Label 0: thumb separated from the palm
     Label 1: thumb touching the palm

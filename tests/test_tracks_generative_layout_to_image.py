@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_layout_to_image_batch_and_model_contract() -> None:
-    from tracks.generative.lesson_12_toy_layout_to_image.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_12_toy_layout_to_image.model import ModelConfig, ToyLayoutToImageModel
+    from tracks.generative.lesson_12_compact_layout_to_image.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_12_compact_layout_to_image.model import ModelConfig, CompactLayoutToImageModel
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -28,7 +28,7 @@ def test_layout_to_image_batch_and_model_contract() -> None:
     assert torch.all(image >= 0.0)
     assert torch.all(image <= 1.0)
 
-    model = ToyLayoutToImageModel(ModelConfig(num_classes=4, hidden_channels=16))
+    model = CompactLayoutToImageModel(ModelConfig(num_classes=4, hidden_channels=16))
     logits = model(layout)
     assert tuple(logits.shape) == (6, 1, 28, 28)
 
@@ -39,9 +39,9 @@ def test_layout_to_image_batch_and_model_contract() -> None:
 
 
 def test_layout_to_image_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_12_toy_layout_to_image.data import DataConfig
-    from tracks.generative.lesson_12_toy_layout_to_image.model import ModelConfig
-    from tracks.generative.lesson_12_toy_layout_to_image.train import TrainConfig, run_training
+    from tracks.generative.lesson_12_compact_layout_to_image.data import DataConfig
+    from tracks.generative.lesson_12_compact_layout_to_image.model import ModelConfig
+    from tracks.generative.lesson_12_compact_layout_to_image.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -67,7 +67,7 @@ def test_layout_to_image_training_and_dry_run(tmp_path, monkeypatch: pytest.Monk
     )
 
     assert exit_code == 0
-    run_dir = tmp_path / "generative" / "lesson_12_toy_layout_to_image" / "pytest_layout_to_image_smoke"
+    run_dir = tmp_path / "generative" / "lesson_12_compact_layout_to_image" / "pytest_layout_to_image_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
@@ -78,7 +78,7 @@ def test_layout_to_image_training_and_dry_run(tmp_path, monkeypatch: pytest.Monk
             sys.executable,
             "scripts/run_lesson.py",
             "generative",
-            "lesson_12_toy_layout_to_image",
+            "lesson_12_compact_layout_to_image",
             "--dry-run",
         ],
         check=False,
@@ -86,4 +86,4 @@ def test_layout_to_image_training_and_dry_run(tmp_path, monkeypatch: pytest.Monk
         text=True,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.generative.lesson_12_toy_layout_to_image.train" in proc.stdout
+    assert "tracks.generative.lesson_12_compact_layout_to_image.train" in proc.stdout

@@ -48,7 +48,7 @@ class TinyUpsampler(nn.Module):
         return repeated + offsets
 
 
-def build_toy_upsampler(
+def build_baseline_upsampler(
     *,
     family: str,
     mode: str,

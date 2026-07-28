@@ -81,9 +81,7 @@ def _iter_zoo_modules(repo_root: Path):
 def compute_stats(repo_root: str | Path | None = None) -> ProjectStats:
     root = Path(repo_root) if repo_root is not None else Path(__file__).resolve().parents[1]
 
-    lessons = {
-        track: len(list((root / "tracks" / track).glob("lesson_*"))) for track in TRACKS
-    }
+    lessons = {track: len(list((root / "tracks" / track).glob("lesson_*"))) for track in TRACKS}
     test_files = len(list((root / "tests").rglob("test_*.py")))
     ml_algorithms = len(
         [p for p in (root / "ml_algorithms" / "python").glob("*.py") if p.name != "__init__.py"]
@@ -146,8 +144,7 @@ _TRACK_LABELS = {
 def render_hero_badges(stats: ProjectStats) -> str:
     return (
         f"**{stats.lessons_total} Lessons** · **{stats.total_zoo_ids} Model Zoo "
-        f"Architectures** · **{stats.ml_algorithms} NumPy ML Algorithms** · "
-        f"**{stats.test_files} Test Files**\n"
+        f"Registrations** · **{stats.ml_algorithms} NumPy ML Algorithms**\n"
     )
 
 
@@ -165,10 +162,18 @@ def render_track_overview(stats: ProjectStats) -> str:
 
 def render_zoo_overview(stats: ProjectStats) -> str:
     rows = [
-        ("Vision Zoo", f"{stats.vision_zoo_ids} 架构 ID / {stats.vision_backbone_modules} 模块", "docs/zoo/vision-zoo.md"),
-        ("NLP Zoo", f"{stats.nlp_zoo_ids} 架构 ID", "docs/zoo/nlp-zoo.md"),
-        ("Point Cloud Zoo", f"{stats.pointcloud_zoo_ids} 架构 ID", "docs/zoo/pointcloud-zoo.md"),
-        ("VLM Zoo", f"{stats.vlm_zoo_ids} ID / {stats.vlm_families} 架构族", "docs/zoo/vlm-zoo.md"),
+        (
+            "Vision Zoo",
+            f"{stats.vision_zoo_ids} 注册 ID / {stats.vision_backbone_modules} 模块",
+            "docs/zoo/vision-zoo.md",
+        ),
+        ("NLP Zoo", f"{stats.nlp_zoo_ids} 注册 ID", "docs/zoo/nlp-zoo.md"),
+        ("Point Cloud Zoo", f"{stats.pointcloud_zoo_ids} 注册 ID", "docs/zoo/pointcloud-zoo.md"),
+        (
+            "VLM Zoo",
+            f"{stats.vlm_zoo_ids} 注册 ID / {stats.vlm_families} 架构族",
+            "docs/zoo/vlm-zoo.md",
+        ),
         ("GAN Zoo", f"{stats.gan_families} 架构族", "docs/zoo/generative-zoo.md"),
         ("Diffusion Zoo", f"{stats.diffusion_families} 架构族", "docs/zoo/generative-zoo.md"),
         ("Federated Zoo", f"{stats.federated_families} 联邦策略族", "docs/zoo/federated-zoo.md"),
@@ -177,7 +182,7 @@ def render_zoo_overview(stats: ProjectStats) -> str:
     for name, size, doc in rows:
         lines.append(f"| {name} | {size} | [{doc}]({doc}) |")
     lines.append(
-        f"| **全部 {stats.zoo_modules} 个 zoo 模块合计** | **{stats.total_zoo_ids} 架构 ID** | "
+        f"| **全部 {stats.zoo_modules} 个 zoo 模块合计** | **{stats.total_zoo_ids} 注册 ID** | "
         "[docs/zoo/](docs/zoo/index.md) |"
     )
     return "\n".join(lines) + "\n"
@@ -187,9 +192,8 @@ def render_docs_index_stats(stats: ProjectStats) -> str:
     cards = (
         (str(stats.lessons_total), "Lessons"),
         (str(len(TRACKS)), "Learning Tracks"),
-        (str(stats.total_zoo_ids), "Model Zoo 架构"),
+        (str(stats.total_zoo_ids), "Model Zoo 注册 ID"),
         (str(stats.ml_algorithms), "ML 算法"),
-        (str(stats.test_files), "测试文件"),
     )
     parts = ['<div class="stats-grid" markdown>', ""]
     for number, label in cards:

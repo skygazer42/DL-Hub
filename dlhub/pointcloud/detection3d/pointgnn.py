@@ -14,7 +14,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointGNN(nn.Module):
-    """Point-GNN (toy): kNN graph message passing then query head."""
+    """Point-GNN (compact): kNN graph message passing then query head."""
 
     def __init__(
         self,

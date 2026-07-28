@@ -51,7 +51,7 @@ class _TinyBackbone(nn.Module):
 
 
 class DyheadDetDetector(nn.Module):
-    """FCOS-style anchor-free detector (toy-first, single-level).
+    """FCOS-style anchor-free detector (compact-first, single-level).
 
     Output (raw):
     - cls_logits: (B, num_classes, H/4, W/4)

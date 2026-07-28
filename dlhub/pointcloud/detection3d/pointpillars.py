@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointPillars(nn.Module):
-    """PointPillars (toy): pillarized BEV scatter + 2D conv + head."""
+    """PointPillars (compact): pillarized BEV scatter + 2D conv + head."""
 
     def __init__(
         self,

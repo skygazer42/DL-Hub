@@ -74,7 +74,7 @@ class TinyReflectionDetector(nn.Module):
         }
 
 
-def build_toy_reflection_detector(
+def build_baseline_reflection_detector(
     *,
     family: str,
     mode: str,

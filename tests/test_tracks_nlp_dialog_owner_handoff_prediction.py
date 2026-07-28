@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_dialog_owner_handoff_prediction_batch_contract() -> None:
-    from tracks.nlp.lesson_49_toy_dialog_owner_handoff_prediction.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_49_toy_dialog_owner_handoff_prediction.model import (
+    from tracks.nlp.lesson_49_compact_dialog_owner_handoff_prediction.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_49_compact_dialog_owner_handoff_prediction.model import (
         DialogOwnerHandoffClassifier,
         ModelConfig,
         compute_accuracy,
@@ -56,8 +56,8 @@ def test_dialog_owner_handoff_prediction_batch_contract() -> None:
 
 
 def test_dialog_owner_handoff_prediction_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_49_toy_dialog_owner_handoff_prediction.data import DataConfig
-    from tracks.nlp.lesson_49_toy_dialog_owner_handoff_prediction.train import TrainConfig, run_training
+    from tracks.nlp.lesson_49_compact_dialog_owner_handoff_prediction.data import DataConfig
+    from tracks.nlp.lesson_49_compact_dialog_owner_handoff_prediction.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -87,7 +87,7 @@ def test_dialog_owner_handoff_prediction_training_smoke(tmp_path) -> None:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
     run_dir = (
-        tmp_path / "outputs" / "nlp" / "lesson_49_toy_dialog_owner_handoff_prediction" / "pytest_dialog_owner_handoff_prediction_smoke"
+        tmp_path / "outputs" / "nlp" / "lesson_49_compact_dialog_owner_handoff_prediction" / "pytest_dialog_owner_handoff_prediction_smoke"
     )
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()

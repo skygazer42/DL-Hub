@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyVisionDirectionModel(nn.Module):
+class CompactVisionDirectionModel(nn.Module):
     def __init__(self, *, width: int, depth: int, in_channels: int):
         super().__init__()
         layers: list[nn.Module] = []
@@ -21,7 +21,7 @@ class ToyVisionDirectionModel(nn.Module):
         return self.net(x)
 
 
-def build_toy_vision_direction(
+def build_baseline_vision_direction(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -32,7 +32,7 @@ def build_toy_vision_direction(
     spec = dict(variants[str(variant)])
     width = max(8, int(spec["width"] * float(width_mult)))
     depth = int(spec["depth"])
-    return ToyVisionDirectionModel(width=width, depth=depth, in_channels=int(in_channels))
+    return CompactVisionDirectionModel(width=width, depth=depth, in_channels=int(in_channels))
 
 
 def smoke_test_direction(builder, variant: str) -> None:

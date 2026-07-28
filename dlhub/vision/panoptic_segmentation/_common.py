@@ -97,7 +97,7 @@ class FPN4(nn.Module):
 
 
 class ProtoNet(nn.Module):
-    """Prototype mask generator used by many panoptic models (toy-first)."""
+    """Prototype mask generator used by many panoptic models (compact-first)."""
 
     def __init__(self, in_ch: int, proto_ch: int, *, depth: int = 3, act: str = "relu") -> None:
         super().__init__()
@@ -177,7 +177,7 @@ class ConvTower(nn.Module):
 
 
 class DensePredHead(nn.Module):
-    """Dense prediction head for one-stage panoptic/instance models (toy-first)."""
+    """Dense prediction head for one-stage panoptic/instance models (compact-first)."""
 
     def __init__(
         self,
@@ -255,7 +255,7 @@ def fuse_panoptic(
     *,
     thing_offset: int,
 ) -> torch.Tensor:
-    """Toy panoptic fusion: argmax semantic + add instances by score ordering.
+    """Compact panoptic fusion: argmax semantic + add instances by score ordering.
 
     Returns a panoptic id map (B,H,W) with:
     - stuff classes: [0, thing_offset)

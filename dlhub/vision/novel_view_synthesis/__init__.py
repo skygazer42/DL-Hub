@@ -1,4 +1,4 @@
-"""Novel view synthesis models (toy-first, pure torch)."""
+"""Novel view synthesis models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

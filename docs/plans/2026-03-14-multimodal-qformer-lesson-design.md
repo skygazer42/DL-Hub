@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_07_qformer_toy_bridge_vlm` as an independent teaching lesson for query-bottleneck vision-language bridging in the style of BLIP-2 and Q-Former systems.
+**Goal:** Add `tracks/multimodal/lesson_07_qformer_compact_bridge_vlm` as an independent teaching lesson for query-bottleneck vision-language bridging in the style of BLIP-2 and Q-Former systems.
 
 ## Problem
 
@@ -161,7 +161,7 @@ Metrics:
 Follow the same conventions as lessons 1-6:
 
 - CLI args for data size, image size, text length, and query-token count
-- `outputs/multimodal/lesson_07_qformer_toy_bridge_vlm/<run_name>/`
+- `outputs/multimodal/lesson_07_qformer_compact_bridge_vlm/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

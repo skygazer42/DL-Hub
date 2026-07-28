@@ -11,8 +11,8 @@ Each family lives in its own module and exposes three local variants:
 
 Included families:
 
-- `dreamfusion_toy`
-- `magic3d_toy`
+- `dreamfusion_baseline`
+- `magic3d_baseline`
 - `score_distill_3d`
 - `neural_lift_3d`
 - `sdf_prompt_3d`

@@ -81,7 +81,7 @@ class TinyFaceRetriever(nn.Module):
         return {"embedding": embedding, "quality": torch.sigmoid(self.quality(embedding))}
 
 
-def build_toy_face_retriever(
+def build_baseline_face_retriever(
     *,
     family: str,
     mode: str,

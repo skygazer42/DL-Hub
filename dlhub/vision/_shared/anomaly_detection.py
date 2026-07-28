@@ -31,7 +31,7 @@ class TinyAnomalyDetector(nn.Module):
         return {"reconstruction": recon, "anomaly_map": anomaly_map, "score": score}
 
 
-def build_toy_anomaly_detector(
+def build_baseline_anomaly_detector(
     *,
     family: str,
     variants: dict[str, dict[str, int]],

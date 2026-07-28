@@ -54,7 +54,7 @@ class ModelConfig:
     init_temperature: float = 0.07
 
 
-class ToyPedestrianAttributeModel(nn.Module):
+class CompactPedestrianAttributeModel(nn.Module):
     def __init__(self, cfg: ModelConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -131,7 +131,7 @@ __all__ = [
     "ModelConfig",
     "TextEncoder",
     "TinyVisionEncoder",
-    "ToyPedestrianAttributeModel",
+    "CompactPedestrianAttributeModel",
     "attribute_retrieval_loss",
     "recall_at_k",
     "retrieval_accuracy",

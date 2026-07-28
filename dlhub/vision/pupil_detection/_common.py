@@ -73,7 +73,7 @@ class TinyPupilDetector(nn.Module):
         }
 
 
-def build_toy_pupil_detector(
+def build_baseline_pupil_detector(
     *,
     family: str,
     mode: str,

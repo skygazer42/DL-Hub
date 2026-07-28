@@ -85,7 +85,7 @@ class TinyExposureCorrector(nn.Module):
         }
 
 
-def build_toy_exposure_corrector(
+def build_baseline_exposure_corrector(
     *,
     family: str,
     mode: str,

@@ -7,7 +7,7 @@ from dlhub.vision.segmentation._common import check_nchw
 
 
 class SegNeXt(nn.Module):
-    """SegNeXt-style semantic segmentation (toy-first).
+    """SegNeXt-style semantic segmentation (compact-first).
 
     This compact version uses a single patch embedding stage + Transformer encoder,
     then a lightweight conv head to predict logits.

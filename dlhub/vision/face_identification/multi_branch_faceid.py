@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_face_identifier, smoke_test_face_identifier
+from ._common import build_baseline_face_identifier, smoke_test_face_identifier
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_multi_branch_faceid_face_identifier(
     variant: str = "multi_branch_faceid_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_face_identifier(
+    return build_baseline_face_identifier(
         family="multi_branch_faceid",
         mode="multi_branch",
         variants=_VARIANTS,

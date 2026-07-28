@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointNetDet(nn.Module):
-    """PointNet baseline detector (toy): PointNet encoder + query head (no transformer)."""
+    """PointNet baseline detector (compact): PointNet encoder + query head (no transformer)."""
 
     def __init__(
         self,

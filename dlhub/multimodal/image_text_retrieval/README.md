@@ -1,6 +1,6 @@
 # Image-text retrieval
 
-Toy-first local families for `image-text retrieval`.
+Compact-first local families for `image-text retrieval`.
 
 ## Families
 

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_face_detector, smoke_test_fd
+from ._common import build_baseline_face_detector, smoke_test_fd
 
 _VARIANTS = {
     "centerface_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_centerface_face_detector(
     *, in_channels: int, variant: str = "centerface_small", width_mult: float = 1.0
 ):
-    return build_toy_face_detector(
+    return build_baseline_face_detector(
         family="centerface",
         variants=_VARIANTS,
         in_channels=int(in_channels),

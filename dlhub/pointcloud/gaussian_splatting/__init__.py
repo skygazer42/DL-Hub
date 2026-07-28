@@ -1,4 +1,4 @@
-"""Point cloud gaussian splatting models (toy-first, pure torch)."""
+"""Point cloud gaussian splatting models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

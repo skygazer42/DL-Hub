@@ -14,7 +14,7 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import DataConfig, get_dataloaders
-from .model import FingerCountReasoningConfig, ToyFingerCountReasoningModel, compute_accuracy, finger_count_loss
+from .model import FingerCountReasoningConfig, CompactFingerCountReasoningModel, compute_accuracy, finger_count_loss
 
 
 @dataclass(frozen=True)
@@ -33,7 +33,7 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 53 (Multimodal): toy finger-count VLM reasoning.")
+    parser = argparse.ArgumentParser(description="Lesson 53 (Multimodal): compact finger-count VLM reasoning.")
     parser.add_argument("--num-samples", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--image-size", type=int, default=64)
@@ -89,7 +89,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyFingerCountReasoningModel,
+    model: CompactFingerCountReasoningModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -141,7 +141,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyFingerCountReasoningModel(
+    model = CompactFingerCountReasoningModel(
         FingerCountReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

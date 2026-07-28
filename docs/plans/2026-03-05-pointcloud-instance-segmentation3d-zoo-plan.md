@@ -1,6 +1,6 @@
 # Pointcloud 3D Instance Segmentation Zoo (30 算法族) Plan
 
-**Goal:** 为 DL-Hub 增加一个「纯 torch、toy-first、CPU 友好」的 **3D 实例分割 (point cloud)** 本地模型 zoo：可枚举/可构建的 arch id、pytest 冒烟测试与脚本工具。
+**Goal:** 为 DL-Hub 增加一个「纯 torch、compact-first、CPU 友好」的 **3D 实例分割 (point cloud)** 本地模型 zoo：可枚举/可构建的 arch id、pytest 冒烟测试与脚本工具。
 
 **Architecture:**
 
@@ -19,7 +19,7 @@
 
 ---
 
-## I/O 约定（Toy）
+## I/O 约定（Compact）
 
 - **Input**: `points` tensor, shape `(B, N, C)`，其中 `C>=3`，前 3 维为 `xyz`。
 - **Output**: `dict` 至少包含：

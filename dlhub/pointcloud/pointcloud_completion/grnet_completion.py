@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_completer, smoke_test_completer
+from ._common import build_baseline_completer, smoke_test_completer
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "grnet_completion_tiny": {"width": 48, "depth": 1, "points": 128},
@@ -19,7 +19,7 @@ def build_grnet_completion_completer(
     num_output_points: int | None = None,
     dropout: float = 0.0,
 ) -> nn.Module:
-    return build_toy_completer(
+    return build_baseline_completer(
         family="grnet_completion",
         variants=_VARIANTS,
         in_channels=int(in_channels),

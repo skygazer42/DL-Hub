@@ -1,6 +1,6 @@
 # Gaze following
 
-Toy-first local families for `gaze following`.
+Compact-first local families for `gaze following`.
 
 ## Families
 

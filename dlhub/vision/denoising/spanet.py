@@ -1,9 +1,9 @@
-"""SPANet (Spatial Attentive Network) - toy-first implementation.
+"""SPANet (Spatial Attentive Network) - compact-first implementation.
 
 Reference (original idea):
 - "Spatial Attentive Single-Image Deraining with a High Quality Real Rain Dataset" (CVPR 2019)
 
-Toy interpretation:
+Compact interpretation:
 - Predict a spatial rain-attention map and a rain residual map from shared features.
 - Apply attention to residual and subtract from input.
 """
@@ -29,7 +29,7 @@ class _ResBlock(nn.Module):
 
 
 class SPANet(nn.Module):
-    """Toy SPANet-style derainer with explicit spatial attention."""
+    """Compact SPANet-style derainer with explicit spatial attention."""
 
     def __init__(
         self,

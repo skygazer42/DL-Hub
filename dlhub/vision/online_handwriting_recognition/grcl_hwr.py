@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_hw, smoke_test_hw
+from ._common import build_baseline_hw, smoke_test_hw
 
 _VARIANTS = {
     "grcl_hwr_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_grcl_hwr_handwriting_recognizer(
     *, input_dim: int, vocab_size: int, variant: str = "grcl_hwr_small", width_mult: float = 1.0
 ):
-    return build_toy_hw(
+    return build_baseline_hw(
         family="grcl_hwr",
         variants=_VARIANTS,
         input_dim=int(input_dim),

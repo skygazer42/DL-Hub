@@ -13,7 +13,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class ConditionalDETRPanoptic(nn.Module):
-    """Conditional-DETR-style panoptic segmentation (toy-first).
+    """Conditional-DETR-style panoptic segmentation (compact-first).
 
     Uses reference points to condition the query embeddings before decoding.
     """

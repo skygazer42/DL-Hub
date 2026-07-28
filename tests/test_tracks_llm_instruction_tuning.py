@@ -11,8 +11,8 @@ def _repo_root() -> Path:
 
 
 def test_llm_instruction_tuning_response_mask_and_shapes() -> None:
-    from tracks.llm.lesson_04_toy_instruction_tuning.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_04_toy_instruction_tuning.model import (
+    from tracks.llm.lesson_04_compact_instruction_tuning.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_04_compact_instruction_tuning.model import (
         InstructionTransformerLM,
         ModelConfig,
     )
@@ -57,10 +57,10 @@ def test_llm_instruction_tuning_response_mask_and_shapes() -> None:
 
 
 def test_llm_instruction_tuning_training_smoke() -> None:
-    from tracks.llm.lesson_04_toy_instruction_tuning.data import DataConfig
-    from tracks.llm.lesson_04_toy_instruction_tuning.train import TrainConfig, run_training
+    from tracks.llm.lesson_04_compact_instruction_tuning.data import DataConfig
+    from tracks.llm.lesson_04_compact_instruction_tuning.train import TrainConfig, run_training
 
-    run_dir = _repo_root() / "outputs" / "llm" / "lesson_04_toy_instruction_tuning" / "pytest_instruction_tuning_smoke"
+    run_dir = _repo_root() / "outputs" / "llm" / "lesson_04_compact_instruction_tuning" / "pytest_instruction_tuning_smoke"
     if run_dir.exists():
         shutil.rmtree(run_dir)
 

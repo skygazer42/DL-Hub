@@ -46,7 +46,7 @@ class FacePoseReasoningConfig:
     vision_width: int = 32
 
 
-class ToyFacePoseReasoningModel(nn.Module):
+class CompactFacePoseReasoningModel(nn.Module):
     def __init__(self, cfg: FacePoseReasoningConfig) -> None:
         super().__init__()
         self.face_encoder = TinyVisionEncoder(vision_width=int(cfg.vision_width))
@@ -80,7 +80,7 @@ def face_pose_loss(pred_pose: torch.Tensor, target_pose: torch.Tensor) -> torch.
 
 __all__ = [
     "FacePoseReasoningConfig",
-    "ToyFacePoseReasoningModel",
+    "CompactFacePoseReasoningModel",
     "face_pose_loss",
     "pose_mae",
 ]

@@ -1,4 +1,4 @@
-"""Local, toy-first video summarization families.
+"""Local video-summarization registry with compact PyTorch implementations.
 
 Conventions:
 - One family per file.

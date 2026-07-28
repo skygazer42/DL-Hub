@@ -24,7 +24,7 @@ class _DWSeparable(nn.Module):
 
 
 class FastSCNN(nn.Module):
-    """Fast-SCNN semantic segmentation (toy-first)."""
+    """Fast-SCNN semantic segmentation (compact-first)."""
 
     def __init__(
         self,

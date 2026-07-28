@@ -90,7 +90,7 @@ class TinyCrackDetector(nn.Module):
         }
 
 
-def build_toy_crack_detector(
+def build_baseline_crack_detector(
     *,
     family: str,
     mode: str,

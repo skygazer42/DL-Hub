@@ -1,6 +1,6 @@
 # Finger Count Estimation
 
-Toy-first local families for `finger count estimation`.
+Compact-first local families for `finger count estimation`.
 
 ## Families
 

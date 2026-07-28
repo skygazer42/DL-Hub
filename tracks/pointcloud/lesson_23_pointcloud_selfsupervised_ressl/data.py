@@ -102,7 +102,7 @@ class DataConfig:
     weak_drop_p: float = 0.0
 
 
-class ToyReSSLViewsDataset(Dataset):
+class SyntheticReSSLViewsDataset(Dataset):
     """Return (strong_view, weak_view, label)."""
 
     def __init__(self, cfg: DataConfig) -> None:
@@ -151,7 +151,7 @@ class ToyReSSLViewsDataset(Dataset):
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
-    ds = ToyReSSLViewsDataset(cfg)
+    ds = SyntheticReSSLViewsDataset(cfg)
     train_idx, val_idx = train_val_split_indices(
         n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -184,4 +184,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     return train_loader, val_loader
 
 
-__all__ = ["DataConfig", "ToyReSSLViewsDataset", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticReSSLViewsDataset", "get_dataloaders"]

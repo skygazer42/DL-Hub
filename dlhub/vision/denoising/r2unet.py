@@ -67,7 +67,7 @@ class _Up(nn.Module):
 
 
 class R2UNet(nn.Module):
-    """R2U-Net (Recurrent Residual U-Net) denoiser (toy-first, pure torch).
+    """R2U-Net (Recurrent Residual U-Net) denoiser (compact-first, pure torch).
 
     Uses RRCNN blocks in a U-Net encoder-decoder. Predicts a residual/noise map and returns `x - residual`.
     """

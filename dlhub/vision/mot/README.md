@@ -1,6 +1,6 @@
 # Vision MOT Local Zoo (2D, Single-Camera)
 
-本目录提供 **80 个 MOT 算法族** 的 toy-first 本地实现（纯 PyTorch、无需下载权重），统一通过 `mot2d:<family>_<variant>` 调用：
+本目录提供 **80 个 MOT 算法族** 的 compact-first 本地实现（纯 PyTorch、无需下载权重），统一通过 `mot2d:<family>_<variant>` 调用：
 - 变体：`tiny / small / base`
 - 统一入口：`dlhub.vision.mot_zoo.build_local_model(...)`
 - CLI：`python scripts/mot_zoo.py --list|--timeline|--smoke`

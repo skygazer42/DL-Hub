@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_vis, smoke_test_vis
+from ._common import build_baseline_vis, smoke_test_vis
 
 _VARIANTS = {
     "seqformer_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_seqformer_video_instance_segmenter(
     width_mult: float = 1.0,
     num_instances: int = 8,
 ):
-    return build_toy_vis(
+    return build_baseline_vis(
         family="seqformer",
         variants=_VARIANTS,
         in_channels=int(in_channels),

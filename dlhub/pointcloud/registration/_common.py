@@ -10,7 +10,7 @@ def check_bnc(x):
     return x
 
 
-class ToyRegistrar(nn.Module):
+class CompactRegistrar(nn.Module):
     def __init__(self, *, family: str, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -27,7 +27,7 @@ class ToyRegistrar(nn.Module):
         return {"pose6d": pose}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -37,7 +37,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyRegistrar(family=str(family), width=width, depth=int(spec["depth"]))
+    return CompactRegistrar(family=str(family), width=width, depth=int(spec["depth"]))
 
 
 def smoke_test_model(builder, variant: str):

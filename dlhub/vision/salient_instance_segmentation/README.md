@@ -1,6 +1,6 @@
 # Salient instance segmentation
 
-Toy-first local families for `salient instance segmentation`.
+Compact-first local families for `salient instance segmentation`.
 
 ## Families
 

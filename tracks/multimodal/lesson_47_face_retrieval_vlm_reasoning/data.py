@@ -137,7 +137,7 @@ def _render_identity_face(*, image_size: int, identity_id: int, seed: int) -> np
     return np.clip(image, 0.0, 1.0)
 
 
-class ToyFaceRetrievalReasoningDataset(Dataset):
+class SyntheticFaceRetrievalReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 32:
             raise ValueError("image_size must be >= 32")
@@ -173,7 +173,7 @@ class ToyFaceRetrievalReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceRetrievalReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceRetrievalReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -199,7 +199,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 __all__ = [
     "DataConfig",
     "IDENTITIES",
-    "ToyFaceRetrievalReasoningDataset",
+    "SyntheticFaceRetrievalReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

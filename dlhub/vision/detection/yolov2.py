@@ -68,7 +68,7 @@ class _BackboneC2C3(nn.Module):
 
 
 class YOLOv2Detector(nn.Module):
-    """YOLOv2-style single-stage detector with passthrough fusion (toy-first)."""
+    """YOLOv2-style single-stage detector with passthrough fusion (compact-first)."""
 
     def __init__(
         self,

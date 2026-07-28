@@ -16,7 +16,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, get_dataloaders
 from .model import (
     ImageTextRerankerConfig,
-    ToyImageTextReranker,
+    CompactImageTextReranker,
     reranking_accuracy,
     reranking_loss,
 )
@@ -41,7 +41,7 @@ class TrainConfig:
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
         description=(
-            "Lesson 26 (Multimodal): toy cross-modal reranker for image and candidate text descriptions."
+            "Lesson 26 (Multimodal): compact cross-modal reranker for image and candidate text descriptions."
         )
     )
     parser.add_argument("--num-samples", type=int, default=512)
@@ -103,7 +103,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyImageTextReranker,
+    model: CompactImageTextReranker,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -146,12 +146,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         lesson="lesson_26_image_text_reranking",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.image_text_reranking_toy", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("multimodal.image_text_reranking_compact", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyImageTextReranker(
+    model = CompactImageTextReranker(
         ImageTextRerankerConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

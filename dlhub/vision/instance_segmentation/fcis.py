@@ -7,7 +7,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nch
 
 
 class FCIS(nn.Module):
-    """FCIS (Fully Convolutional Instance-aware Segmentation) style model (toy-first).
+    """FCIS (Fully Convolutional Instance-aware Segmentation) style model (compact-first).
 
     Emits position-sensitive score maps (PSRoI) and mask maps.
     """

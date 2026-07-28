@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_text_detector, smoke_test_text
+from ._common import build_baseline_text_detector, smoke_test_text
 
 _VARIANTS = {
     "fots_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_fots_text_detector(
     *, in_channels: int, variant: str = "fots_small", width_mult: float = 1.0
 ):
-    return build_toy_text_detector(
+    return build_baseline_text_detector(
         family="fots",
         variants=_VARIANTS,
         in_channels=int(in_channels),

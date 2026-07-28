@@ -11,7 +11,7 @@ def check_nchw(x):
     return x
 
 
-class ToyNormalEstimator(nn.Module):
+class CompactNormalEstimator(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -34,7 +34,7 @@ class ToyNormalEstimator(nn.Module):
         return {"normals": normals}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -45,7 +45,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyNormalEstimator(
+    return CompactNormalEstimator(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

@@ -1,4 +1,4 @@
-"""camera pose estimation models (toy-first, pure torch)."""
+"""camera pose estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

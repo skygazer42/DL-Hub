@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_mirror_segmentor, smoke_test_mirror_segmentor
+from ._common import build_baseline_mirror_segmentor, smoke_test_mirror_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_transformer_mirrorseg_mirror_segmentor(
     *, in_channels: int, variant: str = "transformer_mirrorseg_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_mirror_segmentor(
+    return build_baseline_mirror_segmentor(
         family="transformer_mirrorseg",
         mode="transformer",
         variants=_VARIANTS,

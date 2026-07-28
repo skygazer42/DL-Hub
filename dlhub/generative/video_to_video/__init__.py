@@ -1,4 +1,4 @@
-"""Video-to-video models (toy-first, pure torch)."""
+"""Video-to-video models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

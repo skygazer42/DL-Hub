@@ -16,7 +16,7 @@ def msn_loss(
 ) -> torch.Tensor:
     """Masked Siamese Networks (MSN)-style distillation loss.
 
-    Toy-first variant:
+    Compact-first variant:
     - Cross-view distillation on prototype logits (teacher -> student).
     - Prototype balance regularization (KL(mean_student || uniform)) to avoid collapse.
     """
@@ -116,7 +116,7 @@ class MSNHead(nn.Module):
 
 
 class MSNPointMAE(nn.Module):
-    """Toy-first MSN-style self-supervised learning for point clouds.
+    """Compact-first MSN-style self-supervised learning for point clouds.
 
     - Student: patch transformer with mask tokens -> prototype logits.
     - Teacher: same backbone/head without masking (EMA updated from student).

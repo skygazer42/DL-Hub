@@ -5,7 +5,7 @@
 ## Goal
 
 Add one new 100-family expansion batch built from **10 previously unimplemented directions** across
-`vision`, `pointcloud`, `multimodal`, and `generative`, with **10 toy-first families per direction**.
+`vision`, `pointcloud`, `multimodal`, and `generative`, with **10 compact-first families per direction**.
 
 This batch is intentionally scoped to:
 
@@ -75,7 +75,7 @@ conventions and deliberately mix classic baselines with modern variants.
 
 ### 2. Transparent Object Segmentation
 
-- `glassseg_toy`
+- `glassseg_baseline`
 - `translab_seg`
 - `refractmask_seg`
 - `camotransparent_seg`
@@ -90,7 +90,7 @@ conventions and deliberately mix classic baselines with modern variants.
 
 - `dim_vmatte`
 - `fba_vmatte`
-- `rvm_toy`
+- `rvm_baseline`
 - `gca_vmatte`
 - `tcvomatting`
 - `memory_vmatte`
@@ -179,8 +179,8 @@ conventions and deliberately mix classic baselines with modern variants.
 
 ### 10. Text-to-3D
 
-- `dreamfusion_toy`
-- `magic3d_toy`
+- `dreamfusion_baseline`
+- `magic3d_baseline`
 - `score_distill_3d`
 - `neural_lift_3d`
 - `sdf_prompt_3d`

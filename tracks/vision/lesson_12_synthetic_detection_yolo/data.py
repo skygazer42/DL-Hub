@@ -81,7 +81,7 @@ class SyntheticRectDetectionYOLO(Dataset):
         obj_target = np.zeros((1, g, g), dtype=np.float32)
         obj_target[0, gcy, gcx] = 1.0
 
-        # Single-class (toy): cls target equals objectness target.
+        # Single-class (synthetic): cls target equals objectness target.
         cls_target = obj_target.copy()
 
         bbox_target = np.zeros((4, g, g), dtype=np.float32)

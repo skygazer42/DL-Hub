@@ -1,6 +1,6 @@
 # Lesson 40: Face Caption VLM Grounding
 
-This lesson builds a toy multimodal grounding model that takes one synthetic face crop plus a
+This lesson builds a compact multimodal grounding model that takes one synthetic face crop plus a
 caption query and predicts whether the caption matches the face attributes.
 
 ## What It Teaches

@@ -1,4 +1,4 @@
-# Lesson 16 — Translation Style Transfer (CycleGAN-style, toy-first)
+# Lesson 16 — Translation Style Transfer (CycleGAN-style, compact-first)
 
 This lesson trains a tiny CycleGAN-style model on synthetic unpaired domains:
 - Domain A: noisy squares

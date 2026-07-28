@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_semantic_textual_similarity_batch_contract() -> None:
-    from tracks.nlp.lesson_28_toy_semantic_textual_similarity.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_28_toy_semantic_textual_similarity.model import (
+    from tracks.nlp.lesson_28_compact_semantic_textual_similarity.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_28_compact_semantic_textual_similarity.model import (
         ModelConfig,
         SemanticTextualSimilarityRegressor,
         mean_absolute_error,
@@ -54,8 +54,8 @@ def test_semantic_textual_similarity_batch_contract() -> None:
 
 
 def test_semantic_textual_similarity_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_28_toy_semantic_textual_similarity.data import DataConfig
-    from tracks.nlp.lesson_28_toy_semantic_textual_similarity.train import TrainConfig, run_training
+    from tracks.nlp.lesson_28_compact_semantic_textual_similarity.data import DataConfig
+    from tracks.nlp.lesson_28_compact_semantic_textual_similarity.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -89,7 +89,7 @@ def test_semantic_textual_similarity_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_28_toy_semantic_textual_similarity"
+        / "lesson_28_compact_semantic_textual_similarity"
         / "pytest_semantic_textual_similarity_smoke"
     )
     assert (run_dir / "config.json").is_file()

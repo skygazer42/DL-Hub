@@ -1,4 +1,4 @@
-"""Video understanding models (toy-first, pure torch)."""
+"""Video understanding models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

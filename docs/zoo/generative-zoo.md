@@ -4,7 +4,7 @@ icon: material/creation
 
 # Generative Zoo
 
-> **76 算法族** --- 覆盖 GAN（44 族 / 132 IDs）与 Diffusion（32 族 / 96 IDs）两大生成模型体系，纯 PyTorch toy 实现。
+> **76 算法族** --- 覆盖 GAN（44 族 / 132 IDs）与 Diffusion（32 族 / 96 IDs）两大生成模型体系，提供可离线运行的纯 PyTorch 实现；具体实现等级以保真度审计为准。
 
 ---
 

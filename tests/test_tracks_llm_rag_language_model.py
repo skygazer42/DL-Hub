@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_rag_language_model_batch_and_loss_smoke() -> None:
-    from tracks.llm.lesson_11_toy_rag_language_model.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_11_toy_rag_language_model.model import ModelConfig, ToyRagLanguageModel
+    from tracks.llm.lesson_11_compact_rag_language_model.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_11_compact_rag_language_model.model import ModelConfig, CompactRagLanguageModel
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -31,7 +31,7 @@ def test_llm_rag_language_model_batch_and_loss_smoke() -> None:
     assert tuple(batch["labels"].shape) == (8, 20)
     assert tuple(batch["doc_ids"].shape) == (8,)
 
-    model = ToyRagLanguageModel(
+    model = CompactRagLanguageModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -58,8 +58,8 @@ def test_llm_rag_language_model_batch_and_loss_smoke() -> None:
 
 
 def test_llm_rag_language_model_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_11_toy_rag_language_model.data import DataConfig
-    from tracks.llm.lesson_11_toy_rag_language_model.train import TrainConfig, run_training
+    from tracks.llm.lesson_11_compact_rag_language_model.data import DataConfig
+    from tracks.llm.lesson_11_compact_rag_language_model.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -93,7 +93,7 @@ def test_llm_rag_language_model_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_11_toy_rag_language_model"
+        / "lesson_11_compact_rag_language_model"
         / "pytest_rag_lm_smoke"
     )
     assert (run_dir / "config.json").is_file()

@@ -1,4 +1,4 @@
-"""gesture recognition models (toy-first, pure torch)."""
+"""gesture recognition models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

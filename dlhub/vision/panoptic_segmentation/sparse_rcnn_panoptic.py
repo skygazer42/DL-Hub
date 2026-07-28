@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class SparseRCNNPanoptic(nn.Module):
-    """Sparse R-CNN-style panoptic segmentation (toy-first).
+    """Sparse R-CNN-style panoptic segmentation (compact-first).
 
     Uses learnable proposal features + proposal boxes refined by a few MLP layers.
     Masks are produced by dot-product against a high-res pixel embedding map.

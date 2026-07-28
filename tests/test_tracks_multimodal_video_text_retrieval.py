@@ -46,7 +46,7 @@ def test_multimodal_video_text_retrieval_model_outputs() -> None:
     from tracks.multimodal.lesson_17_video_text_retrieval.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_17_video_text_retrieval.model import (
         ModelConfig,
-        ToyVideoTextRetrievalModel,
+        CompactVideoTextRetrievalModel,
         clip_contrastive_loss,
         recall_at_k,
         retrieval_accuracy,
@@ -65,7 +65,7 @@ def test_multimodal_video_text_retrieval_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyVideoTextRetrievalModel(
+    model = CompactVideoTextRetrievalModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

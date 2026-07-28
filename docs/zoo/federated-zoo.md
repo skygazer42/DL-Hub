@@ -4,7 +4,7 @@ icon: material/server-network
 
 # 联邦学习 Zoo
 
-> **76 策略族 / 228 Architecture IDs** --- 覆盖优化、个性化、公平性、隐私、压缩、安全聚合等联邦学习全链路策略（每族 `tiny/small/base` 三档变体，`dlfed:` 前缀，纯 PyTorch 教学实现）。
+> **76 策略族 / 228 Architecture IDs** --- 覆盖优化、个性化、公平性、隐私、压缩、安全聚合等联邦学习全链路策略（每族 `tiny/small/base` 三档变体，`dlfed:` 前缀）；具体实现等级以保真度审计为准。
 
 ---
 

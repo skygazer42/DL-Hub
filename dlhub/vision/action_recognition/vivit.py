@@ -1,9 +1,9 @@
-"""ViViT (factorized video transformer) - toy-first video action classifier.
+"""ViViT (factorized video transformer) - compact-first video action classifier.
 
 Reference:
 - "ViViT: A Video Vision Transformer" (ICCV 2021)
 
-Toy interpretation (factorized encoder):
+Compact interpretation (factorized encoder):
 - Patchify each frame with a Conv2d patch embed.
 - Spatial encoder: self-attention over patches within each frame (shared across frames).
 - Temporal encoder: self-attention over the sequence of per-frame embeddings.

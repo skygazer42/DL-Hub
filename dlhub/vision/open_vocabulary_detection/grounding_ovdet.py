@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_ov_detector, smoke_test_ov_detector
+from ._common import build_baseline_ov_detector, smoke_test_ov_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_grounding_ovdet_detector(
     variant: str = "grounding_ovdet_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_ov_detector(
+    return build_baseline_ov_detector(
         family="grounding_ovdet",
         mode="grounding",
         variants=_VARIANTS,

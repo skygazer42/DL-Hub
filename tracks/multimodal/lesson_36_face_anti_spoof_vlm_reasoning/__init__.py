@@ -1,12 +1,12 @@
-from .data import DataConfig, ToyDeepfakeReasoningDataset, Vocab, get_dataloaders
-from .model import DeepfakeReasoningConfig, ToyDeepfakeReasoningModel, reasoning_accuracy, reasoning_loss
+from .data import DataConfig, SyntheticDeepfakeReasoningDataset, Vocab, get_dataloaders
+from .model import DeepfakeReasoningConfig, CompactDeepfakeReasoningModel, reasoning_accuracy, reasoning_loss
 from .train import TrainConfig, run_training
 
 __all__ = [
     "DataConfig",
     "DeepfakeReasoningConfig",
-    "ToyDeepfakeReasoningDataset",
-    "ToyDeepfakeReasoningModel",
+    "SyntheticDeepfakeReasoningDataset",
+    "CompactDeepfakeReasoningModel",
     "TrainConfig",
     "Vocab",
     "get_dataloaders",

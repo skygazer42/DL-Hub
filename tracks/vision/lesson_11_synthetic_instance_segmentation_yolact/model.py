@@ -16,7 +16,7 @@ class ModelConfig:
 
 
 class TinyYOLACT(nn.Module):
-    """Toy-first YOLACT-style model specialized for 1-instance-per-image lessons.
+    """Compact-first YOLACT-style model specialized for 1-instance-per-image lessons.
 
     We set `num_anchors=1` to avoid extra anchor dimensions in the output tensors.
     """

@@ -7,7 +7,7 @@ from dlhub.vision.detection._common import BackboneC3C5, ConvTower, check_nchw
 
 
 class PAFPN(nn.Module):
-    """Toy PAFPN neck (top-down + bottom-up)."""
+    """Compact PAFPN neck (top-down + bottom-up)."""
 
     def __init__(self, in_channels: tuple[int, int, int], out_channels: int) -> None:
         super().__init__()
@@ -42,7 +42,7 @@ class PAFPN(nn.Module):
 
 
 class PPYOLOEHead(nn.Module):
-    """Toy PP-YOLOE-style decoupled head with lightweight SE attention."""
+    """Compact PP-YOLOE-style decoupled head with lightweight SE attention."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 2) -> None:
         super().__init__()
@@ -72,7 +72,7 @@ class PPYOLOEHead(nn.Module):
 
 
 class PPYOLOEDetector(nn.Module):
-    """PP-YOLOE-style detector (toy-first)."""
+    """PP-YOLOE-style detector (compact-first)."""
 
     def __init__(
         self,

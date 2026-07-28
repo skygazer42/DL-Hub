@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class PGLSUMVideoSummarizer(nn.Module):
-    """PGL-SUM-style summarizer (toy).
+    """PGL-SUM-style summarizer (compact).
 
     The model keeps two complementary paths:
     - a local temporal conv path for neighborhood cues

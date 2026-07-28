@@ -31,7 +31,7 @@ class SyntheticVideoObjectDetectionDataset(Dataset):
         if int(cfg.image_size) < 16:
             raise ValueError("image_size must be >= 16")
         if int(cfg.in_channels) != 1:
-            raise ValueError("in_channels must be 1 for this toy lesson")
+            raise ValueError("in_channels must be 1 for this synthetic lesson")
         if int(cfg.max_objects) < 1:
             raise ValueError("max_objects must be >= 1")
         if int(cfg.num_classes) < 2:

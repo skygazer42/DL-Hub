@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_rs_detector, smoke_test_rs
+from ._common import build_baseline_rs_detector, smoke_test_rs
 
 _VARIANTS = {
     "gliding_vertex_tiny": {"width": 24, "depth": 1},
@@ -16,7 +16,7 @@ def build_gliding_vertex_rs_detector(
     variant: str = "gliding_vertex_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_rs_detector(
+    return build_baseline_rs_detector(
         family="gliding_vertex",
         variants=_VARIANTS,
         in_channels=int(in_channels),

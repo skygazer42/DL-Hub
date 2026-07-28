@@ -1,4 +1,4 @@
-"""vanishing point detection models (toy-first, pure torch)."""
+"""vanishing point detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

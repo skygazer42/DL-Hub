@@ -7,11 +7,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_weak_supervision_batch_contract() -> None:
-    from tracks.nlp.lesson_22_toy_weak_supervision_text_classification.data import (
+    from tracks.nlp.lesson_22_compact_weak_supervision_text_classification.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_22_toy_weak_supervision_text_classification.model import (
+    from tracks.nlp.lesson_22_compact_weak_supervision_text_classification.model import (
         ModelConfig,
         WeakSupervisionTextClassifier,
         weak_supervision_accuracy,
@@ -64,8 +64,8 @@ def test_weak_supervision_batch_contract() -> None:
 
 
 def test_weak_supervision_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_22_toy_weak_supervision_text_classification.data import DataConfig
-    from tracks.nlp.lesson_22_toy_weak_supervision_text_classification.train import (
+    from tracks.nlp.lesson_22_compact_weak_supervision_text_classification.data import DataConfig
+    from tracks.nlp.lesson_22_compact_weak_supervision_text_classification.train import (
         TrainConfig,
         run_training,
     )
@@ -103,7 +103,7 @@ def test_weak_supervision_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_22_toy_weak_supervision_text_classification"
+        / "lesson_22_compact_weak_supervision_text_classification"
         / "pytest_weak_supervision_smoke"
     )
     assert (run_dir / "config.json").is_file()

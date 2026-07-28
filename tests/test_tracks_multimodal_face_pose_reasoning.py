@@ -39,7 +39,7 @@ def test_multimodal_face_pose_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_48_face_pose_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_48_face_pose_vlm_reasoning.model import (
         FacePoseReasoningConfig,
-        ToyFacePoseReasoningModel,
+        CompactFacePoseReasoningModel,
         face_pose_loss,
         pose_mae,
     )
@@ -56,7 +56,7 @@ def test_multimodal_face_pose_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFacePoseReasoningModel(
+    model = CompactFacePoseReasoningModel(
         FacePoseReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

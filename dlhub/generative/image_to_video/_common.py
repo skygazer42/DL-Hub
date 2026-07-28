@@ -10,7 +10,7 @@ def check_nchw(image: torch.Tensor) -> torch.Tensor:
     return image
 
 
-class ToyImageToVideo(nn.Module):
+class CompactImageToVideo(nn.Module):
     def __init__(
         self, *, family: str, mode: str, in_channels: int, width: int, depth: int, frames: int
     ) -> None:
@@ -36,7 +36,7 @@ class ToyImageToVideo(nn.Module):
         return {"video": torch.stack(frames, dim=1), "motion": motion}
 
 
-def build_toy_image_to_video(
+def build_baseline_image_to_video(
     *,
     family: str,
     mode: str,
@@ -47,7 +47,7 @@ def build_toy_image_to_video(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyImageToVideo(
+    return CompactImageToVideo(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),

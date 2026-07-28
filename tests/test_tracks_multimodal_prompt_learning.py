@@ -42,7 +42,7 @@ def test_multimodal_prompt_learning_forward_and_freezing() -> None:
     from tracks.multimodal.lesson_18_prompt_learning_vlm.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_18_prompt_learning_vlm.model import (
         PromptLearningConfig,
-        ToyPromptLearningVLM,
+        CompactPromptLearningVLM,
         clip_contrastive_loss,
         retrieval_accuracy,
     )
@@ -59,7 +59,7 @@ def test_multimodal_prompt_learning_forward_and_freezing() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyPromptLearningVLM(
+    model = CompactPromptLearningVLM(
         PromptLearningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

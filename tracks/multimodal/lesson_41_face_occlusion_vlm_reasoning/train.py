@@ -16,7 +16,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, get_dataloaders
 from .model import (
     FaceOcclusionReasoningConfig,
-    ToyFaceOcclusionReasoningModel,
+    CompactFaceOcclusionReasoningModel,
     occlusion_accuracy,
     occlusion_loss,
 )
@@ -39,7 +39,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 41 (Multimodal): toy face occlusion VLM reasoning."
+        description="Lesson 41 (Multimodal): compact face occlusion VLM reasoning."
     )
     parser.add_argument("--num-samples", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=16)
@@ -98,7 +98,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyFaceOcclusionReasoningModel,
+    model: CompactFaceOcclusionReasoningModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -147,7 +147,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyFaceOcclusionReasoningModel(
+    model = CompactFaceOcclusionReasoningModel(
         FaceOcclusionReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

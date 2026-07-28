@@ -1,9 +1,9 @@
-"""RCDNet (Rain Convolutional Dictionary Network) - toy-first implementation.
+"""RCDNet (Rain Convolutional Dictionary Network) - compact-first implementation.
 
 Reference (original idea):
 - "Recurrent Convolutional Dictionary Network for Single Image Deraining"
 
-Toy interpretation:
+Compact interpretation:
 - Alternate between rain-code estimation and clean-image update.
 - Keep updates lightweight and shape-preserving for synthetic denoising tracks.
 """
@@ -29,7 +29,7 @@ class _UpdateBlock(nn.Module):
 
 
 class RCDNet(nn.Module):
-    """Toy RCDNet-style derainer with unrolled recurrent updates."""
+    """Compact RCDNet-style derainer with unrolled recurrent updates."""
 
     def __init__(
         self,

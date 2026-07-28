@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class OccuSeg(nn.Module):
-    """OccuSeg (toy): voxelized features + prototype instance masks."""
+    """OccuSeg (compact): voxelized features + prototype instance masks."""
 
     def __init__(
         self,

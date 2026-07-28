@@ -5,7 +5,7 @@ from dlhub.vision.backbones._blocks import ConvBNAct, scale_channels
 
 
 class Fire(nn.Module):
-    """SqueezeNet fire module (toy)."""
+    """SqueezeNet fire module (compact)."""
 
     def __init__(self, in_ch: int, squeeze_ch: int, expand_ch: int) -> None:
         super().__init__()
@@ -23,7 +23,7 @@ class Fire(nn.Module):
 
 
 class SqueezeDetDetector(nn.Module):
-    """SqueezeDet-style single-shot detector (toy-first).
+    """SqueezeDet-style single-shot detector (compact-first).
 
     Forward returns:
     - cls_logits: (B, A*C, H/16, W/16)

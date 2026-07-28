@@ -1,4 +1,4 @@
-"""face occlusion estimation models (toy-first, pure torch)."""
+"""face occlusion estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

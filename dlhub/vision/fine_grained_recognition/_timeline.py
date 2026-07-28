@@ -2,7 +2,7 @@
 
 Notes:
 - Years are based on representative papers or the earliest commonly-cited version.
-- Some families in this repo are "toy interpretations" of an idea, not strict reproductions.
+- Some families in this repo are "compact interpretations" of an idea, not strict reproductions.
 - If you spot a mismatch, please open an issue/PR with the corrected reference.
 """
 

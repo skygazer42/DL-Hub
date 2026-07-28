@@ -15,7 +15,7 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import DataConfig, Vocab, get_dataloaders
-from .model import EmbodiedQaConfig, ToyEmbodiedQaModel, eqa_accuracy, eqa_loss
+from .model import EmbodiedQaConfig, CompactEmbodiedQaModel, eqa_accuracy, eqa_loss
 
 
 @dataclass(frozen=True)
@@ -37,7 +37,7 @@ class TrainConfig:
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
         description=(
-            "Lesson 23 (Multimodal): toy embodied question answering over "
+            "Lesson 23 (Multimodal): compact embodied question answering over "
             "navigation trajectories, visual observations, and a text question."
         )
     )
@@ -100,7 +100,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyEmbodiedQaModel,
+    model: CompactEmbodiedQaModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -142,7 +142,7 @@ def _run_epoch(
 @torch.no_grad()
 def _write_samples(
     *,
-    model: ToyEmbodiedQaModel,
+    model: CompactEmbodiedQaModel,
     loader,
     device: torch.device,
     vocab: Vocab,
@@ -178,14 +178,14 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         run_name=train_cfg.run_name,
     )
     logger = get_logger(
-        "multimodal.embodied_question_answering_toy",
+        "multimodal.embodied_question_answering_compact",
         log_file=paths.logs_dir / "train.log",
     )
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyEmbodiedQaModel(
+    model = CompactEmbodiedQaModel(
         EmbodiedQaConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

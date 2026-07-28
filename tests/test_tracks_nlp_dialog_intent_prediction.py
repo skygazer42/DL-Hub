@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_dialog_intent_prediction_batch_contract() -> None:
-    from tracks.nlp.lesson_33_toy_dialog_intent_prediction.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_33_toy_dialog_intent_prediction.model import (
+    from tracks.nlp.lesson_33_compact_dialog_intent_prediction.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_33_compact_dialog_intent_prediction.model import (
         DialogIntentClassifier,
         ModelConfig,
         compute_accuracy,
@@ -57,8 +57,8 @@ def test_dialog_intent_prediction_batch_contract() -> None:
 
 
 def test_dialog_intent_prediction_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_33_toy_dialog_intent_prediction.data import DataConfig
-    from tracks.nlp.lesson_33_toy_dialog_intent_prediction.train import TrainConfig, run_training
+    from tracks.nlp.lesson_33_compact_dialog_intent_prediction.data import DataConfig
+    from tracks.nlp.lesson_33_compact_dialog_intent_prediction.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -91,7 +91,7 @@ def test_dialog_intent_prediction_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_33_toy_dialog_intent_prediction"
+        / "lesson_33_compact_dialog_intent_prediction"
         / "pytest_dialog_intent_prediction_smoke"
     )
     assert (run_dir / "config.json").is_file()

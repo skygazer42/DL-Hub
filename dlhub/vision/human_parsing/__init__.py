@@ -1,4 +1,4 @@
-"""Human parsing models (toy-first, pure torch)."""
+"""Human parsing models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

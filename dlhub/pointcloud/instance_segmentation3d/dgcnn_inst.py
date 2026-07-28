@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class DGCNNInst(nn.Module):
-    """DGCNN instance segmentation (toy): EdgeConv encoder + pivot similarity masks."""
+    """DGCNN instance segmentation (compact): EdgeConv encoder + pivot similarity masks."""
 
     def __init__(
         self,

@@ -1,9 +1,9 @@
-"""Shift-GCN - toy-first skeleton action classifier.
+"""Shift-GCN - compact-first skeleton action classifier.
 
 Reference (idea):
 - "Shift-GCN: Shift Graph Convolutional Network for Skeleton-based Action Recognition" (AAAI 2020)
 
-Toy interpretation:
+Compact interpretation:
 - Replace expensive graph ops with cheap "shift" operations along time/joint dimensions.
 - Follow with pointwise (1x1) channel mixing and a temporal conv.
 """

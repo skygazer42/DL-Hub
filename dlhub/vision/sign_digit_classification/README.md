@@ -1,6 +1,6 @@
 # Sign Digit Classification
 
-Toy-first local families for `sign digit classification`.
+Compact-first local families for `sign digit classification`.
 
 ## Families
 

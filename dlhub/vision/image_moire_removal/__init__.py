@@ -1,4 +1,4 @@
-"""image moire removal models (toy-first, pure torch)."""
+"""image moire removal models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

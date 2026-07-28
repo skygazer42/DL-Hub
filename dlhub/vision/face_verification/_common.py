@@ -84,7 +84,7 @@ class TinyFaceVerifier(nn.Module):
         }
 
 
-def build_toy_face_verifier(
+def build_baseline_face_verifier(
     *,
     family: str,
     mode: str,

@@ -40,7 +40,7 @@ class _DWBlock(nn.Module):
 
 
 class BiSeNetV2(nn.Module):
-    """BiSeNetV2 semantic segmentation (toy-first).
+    """BiSeNetV2 semantic segmentation (compact-first).
 
     Detail branch (higher-res) + semantic branch (lower-res) with a lightweight fusion.
     """

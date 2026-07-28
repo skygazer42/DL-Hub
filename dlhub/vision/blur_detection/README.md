@@ -1,6 +1,6 @@
 # Blur Detection
 
-Toy-first local families for `blur detection`.
+Compact-first local families for `blur detection`.
 
 ## Families
 

@@ -36,7 +36,7 @@ class _HybridDilatedBlock(nn.Module):
 
 
 class DHDN(nn.Module):
-    """DHDN-style denoiser (toy-first, pure torch).
+    """DHDN-style denoiser (compact-first, pure torch).
 
     Inspired by "hybrid" denoising networks that mix normal and dilated convolutions to
     capture both local detail and wider context. Output is `x - residual`.

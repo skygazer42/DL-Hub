@@ -24,7 +24,7 @@ class LayerNorm2d(nn.Module):
 
 
 class ConvNeXtBlock(nn.Module):
-    """ConvNeXt block (depthwise 7x7 + LN + MLP), simplified for toy restoration."""
+    """ConvNeXt block (depthwise 7x7 + LN + MLP), simplified for compact restoration."""
 
     def __init__(self, dim: int, *, mlp_ratio: int = 4) -> None:
         super().__init__()
@@ -77,7 +77,7 @@ class _Up(nn.Module):
 
 
 class ConvNeXtUNet(nn.Module):
-    """ConvNeXt-U-Net style denoiser (toy-first, pure torch).
+    """ConvNeXt-U-Net style denoiser (compact-first, pure torch).
 
     Encoder-decoder with ConvNeXt blocks. Predicts a residual/noise map and returns `x - residual`.
     """

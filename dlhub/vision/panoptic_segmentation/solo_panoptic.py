@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class SOLOPanoptic(nn.Module):
-    """SOLO-style panoptic segmentation (toy-first).
+    """SOLO-style panoptic segmentation (compact-first).
 
     Grid-based instance masks via prototypes + per-cell coefficients, plus a semantic head.
     """

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class AFDet(nn.Module):
-    """AFDet (toy): anchor-free dense BEV detection."""
+    """AFDet (compact): anchor-free dense BEV detection."""
 
     def __init__(
         self,

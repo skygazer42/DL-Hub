@@ -1,6 +1,6 @@
 # Exposure correction
 
-Toy-first local families for `exposure correction`.
+Compact-first local families for `exposure correction`.
 
 ## Families
 

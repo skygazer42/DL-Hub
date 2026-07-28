@@ -1,6 +1,6 @@
 # Image deraining
 
-Toy-first local families for `image deraining`.
+Compact-first local families for `image deraining`.
 
 ## Families
 

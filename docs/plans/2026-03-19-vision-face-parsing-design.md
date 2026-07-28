@@ -2,7 +2,7 @@
 
 **Goal**
 
-Add a local, toy-first face parsing algorithm family to DL-Hub with:
+Add a local, compact-first face parsing algorithm family to DL-Hub with:
 - local face parsing model families
 - a unified zoo + CLI
 - fast smoke tests that run on CPU with no downloads

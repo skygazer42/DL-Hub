@@ -81,11 +81,13 @@ def _print_lessons(track: str) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Run a lesson entrypoint with a unified CLI.\n\n"
+            "Discover and run lesson entrypoints from one launcher.\n"
+            "Arguments after the lesson name are forwarded to that lesson's own CLI.\n\n"
             "Examples:\n"
             "  python scripts/run_lesson.py --list\n"
             "  python scripts/run_lesson.py vision --list\n"
-            "  python scripts/run_lesson.py vision lesson_06_swin_toy_classification -- --device cpu --epochs 1\n"
+            "  python scripts/run_lesson.py vision lesson_06_swin_compact_classification --describe\n"
+            "  python scripts/run_lesson.py vision lesson_06_swin_compact_classification -- --device cpu --epochs 1\n"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -96,6 +98,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--list", action="store_true", help="List available tracks or lessons.")
     parser.add_argument(
         "--dry-run", action="store_true", help="Print the resolved module without running it."
+    )
+    parser.add_argument(
+        "--describe",
+        action="store_true",
+        help="Show the lesson's supported CLI flags and data mode.",
     )
 
     args, unknown = parser.parse_known_args(argv)
@@ -127,6 +134,24 @@ def main(argv: list[str] | None = None) -> int:
             print("\nTip: available lessons:")
             _print_lessons(args.track)
         return 2
+
+    if args.describe:
+        from lesson_contracts import OFFLINE_EXPLICIT_FAKE, get_lesson_contract
+
+        contract = get_lesson_contract(args.track, args.lesson)
+        if contract is None:
+            print(f"Lesson contract not found: {args.track}/{args.lesson}")
+            return 2
+        print(f"Lesson: {contract.track}/{contract.lesson}")
+        print(f"Entrypoint: {contract.entrypoint_module}")
+        if contract.offline_mode == OFFLINE_EXPLICIT_FAKE:
+            print("Offline data: pass --dataset fake")
+        else:
+            print("Offline data: built in (no --dataset argument needed)")
+        print("CLI flags:")
+        for flag in contract.cli_flags:
+            print(f"- {flag}")
+        return 0
 
     if unknown and unknown[0] == "--":
         unknown = unknown[1:]

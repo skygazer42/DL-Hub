@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_vision_direction, smoke_test_direction
+from ._common import build_baseline_vision_direction, smoke_test_direction
 
 _VARIANTS = {
     "book_flatten_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_book_flatten_dewarper(
     *, in_channels: int, variant: str = "book_flatten_small", width_mult: float = 1.0
 ):
-    return build_toy_vision_direction(
+    return build_baseline_vision_direction(
         family="book_flatten",
         variants=_VARIANTS,
         in_channels=int(in_channels),

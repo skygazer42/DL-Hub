@@ -72,7 +72,7 @@ class StyleDiffusionDenoiser(nn.Module):
 
 
 class StyleDiffusionStyleTransfer(nn.Module):
-    """StyleDiffusion-style transfer (toy, latent diffusion img2img).
+    """StyleDiffusion-style transfer (compact, latent diffusion img2img).
 
     This local family keeps the high-level mechanics used in diffusion img2img pipelines:
     - encode content to a latent feature map

@@ -1,4 +1,4 @@
-"""Point cloud completion models (toy-first, pure torch).
+"""Point cloud completion models (compact-first, pure torch).
 
 This package uses lazy imports so `import dlhub.pointcloud.pointcloud_completion`
 stays lightweight.

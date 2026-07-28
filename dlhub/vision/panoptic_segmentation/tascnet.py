@@ -30,9 +30,9 @@ class _CrossTaskGate(nn.Module):
 
 
 class TASCNet(nn.Module):
-    """TASCNet (Things and Stuff Consistency) style panoptic model (toy-first).
+    """TASCNet (Things and Stuff Consistency) style panoptic model (compact-first).
 
-    Idea (toy): semantic and instance branches share a backbone and modulate each other via gates.
+    Idea (compact): semantic and instance branches share a backbone and modulate each other via gates.
     """
 
     def __init__(

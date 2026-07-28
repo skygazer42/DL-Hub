@@ -225,7 +225,7 @@ git commit -m "test(readme): add SVG & README reference validation harness"
 - `<defs>` 含 `bg-gradient`（linear `#0A0E27 → #0D1117` dark / `#FFFFFF → #F6F8FA` light）
 - 背景层：gradient rect + 12 px 点阵（`<pattern>` 定义 dot，用 `fill`）
 - 左侧 `(48, 120)` 起 "DL-Hub" 大标题：`font-size="88"` `font-weight="700"` `fill="accent-orange"`
-- 标题下方 "从零手写 · 循序渐进 — PyTorch 深度学习统一学习项目"：`font-size="20"` `fill="fg-primary"`
+- 标题下方 "从原理到实现 — 一站式 PyTorch 深度学习实践库"：`font-size="20"` `fill="fg-primary"`
 - 再下方 "Hand-written · Progressive · Offline-first"：`font-size="14"` `fill="fg-muted"`
 - 右侧 `(760, 120)` 起 4 行 stat：`339 lessons` / `8 tracks` / `8000+ architectures` / `393 tests`，每行左侧 12 px 圆点（依次 orange / blue / cyan / green）
 - 底部 `y=340` 8 个 chip（45×32 圆角矩形）横向排列：Vision / NLP / GNN / Point Cloud / Generative / Multimodal / LLM / Federated，chip 底色 `bg-elevated` + 1 px stroke，文字 `font-size="12"`，chip 边框用对应 accent 色

@@ -47,7 +47,7 @@ class FaceAlignmentReasoningConfig:
     num_points: int = 5
 
 
-class ToyFaceAlignmentReasoningModel(nn.Module):
+class CompactFaceAlignmentReasoningModel(nn.Module):
     def __init__(self, cfg: FaceAlignmentReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -85,7 +85,7 @@ def face_alignment_loss(pred_points: torch.Tensor, target_points: torch.Tensor) 
 
 __all__ = [
     "FaceAlignmentReasoningConfig",
-    "ToyFaceAlignmentReasoningModel",
+    "CompactFaceAlignmentReasoningModel",
     "face_alignment_loss",
     "mean_alignment_l2",
 ]

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_iris_segmentor, smoke_test_iris_segmentor
+from ._common import build_baseline_iris_segmentor, smoke_test_iris_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_transformer_irisseg_iris_segmentor(
     variant: str = "transformer_irisseg_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_iris_segmentor(
+    return build_baseline_iris_segmentor(
         family="transformer_irisseg",
         mode="transformer",
         variants=_VARIANTS,

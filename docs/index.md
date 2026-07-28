@@ -8,7 +8,7 @@ hide:
 
 # DL-Hub
 
-**从零手写，循序渐进 — PyTorch 深度学习统一学习项目**
+**从原理到实现 — 一站式 PyTorch 深度学习实践库**
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0%2B-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/)
@@ -32,18 +32,13 @@ hide:
 </div>
 
 <div class="stat-card" markdown>
-<span class="stat-number">8626</span>
-<span class="stat-label">Model Zoo 架构</span>
+<span class="stat-number">8611</span>
+<span class="stat-label">Model Zoo 注册 ID</span>
 </div>
 
 <div class="stat-card" markdown>
 <span class="stat-number">31</span>
 <span class="stat-label">ML 算法</span>
-</div>
-
-<div class="stat-card" markdown>
-<span class="stat-number">409</span>
-<span class="stat-label">测试文件</span>
 </div>
 
 </div>
@@ -71,7 +66,7 @@ hide:
 
 ### :material-eye: Vision
 
-CNN→ViT→检测→分割，791 架构
+CNN→ViT→检测→分割，791 注册 ID
 
 从经典 LeNet 到 Swin Transformer，覆盖分类、检测、分割全流程。
 
@@ -83,7 +78,7 @@ CNN→ViT→检测→分割，791 架构
 
 ### :material-text-box: NLP
 
-文本分类→Transformer→阅读理解，814 架构
+文本分类→Transformer→阅读理解，814 注册 ID
 
 从词向量到 Transformer，掌握文本分类、序列标注、阅读理解等核心任务。
 
@@ -107,7 +102,7 @@ GCN→GAT→GraphSAGE→PinSAGE
 
 ### :material-cube-scan: Point Cloud
 
-PointNet→PCT，64 架构
+PointNet→PCT，64 注册 ID
 
 三维点云处理：分类、分割与场景理解，从 PointNet 到 Point Cloud Transformer。
 
@@ -183,9 +178,19 @@ CLIP→LLaVA，20 VLM 架构
 
 ### :material-archive: Model Zoo
 
-8600+ 预定义架构，开箱即用。
+跨领域可寻址注册 ID；实现保真度由源码审计单独说明。
 
 [:octicons-arrow-right-24: 浏览 Zoo](zoo/index.md)
+
+</div>
+
+<div class="card" markdown>
+
+### :material-layers-triple: 实现契约
+
+分清 compact 实现、synthetic 数据、baseline 复用与不同验证强度。
+
+[:octicons-arrow-right-24: 阅读完整叙事](implementation-contract.md)
 
 </div>
 

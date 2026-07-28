@@ -1,6 +1,6 @@
 ---
 title: LLM 赛道
-description: 从 toy causal LM 到 SFT、偏好优化与结构化约束生成 — 43 个 Lesson 理解大语言模型的基石
+description: 从 compact causal LM 到 SFT、偏好优化与结构化约束生成 — 43 个 Lesson 理解大语言模型的基石
 ---
 
 # LLM 赛道
@@ -8,7 +8,7 @@ description: 从 toy causal LM 到 SFT、偏好优化与结构化约束生成 �
 !!! abstract "赛道概览"
     **43 个 Lesson + 50+ 论文资源** · 预计 3-4 周 · 从 Causal LM 到对齐、Prompting 与结构化约束生成
 
-    LLM 赛道从零搭建 **Toy Causal Language Model** 出发，覆盖 chat SFT、instruction tuning、prefix tuning，再到偏好优化（DPO 风格）、奖励建模、RLHF PPO、GRPO、RAG 与工具调用代理，最后以 Prompting 工程（self-refine、ReAct、tree-of-thought 等）和 citation / schema / JSON 等结构化约束生成收尾。配套 `resources/pdfs/llms/` 下的 50+ 篇论文笔记可作为延伸阅读。
+    LLM 赛道从零搭建 **Compact Causal Language Model** 出发，覆盖 chat SFT、instruction tuning、prefix tuning，再到偏好优化（DPO 风格）、奖励建模、RLHF PPO、GRPO、RAG 与工具调用代理，最后以 Prompting 工程（self-refine、ReAct、tree-of-thought 等）和 citation / schema / JSON 等结构化约束生成收尾。配套 `resources/pdfs/llms/` 下的 50+ 篇论文笔记可作为延伸阅读。
 
 ---
 
@@ -46,75 +46,75 @@ flowchart LR
 
 ## 课程列表
 
-全部 **43 个 Lesson** 按主题分组如下，从 toy causal LM 与 chat SFT，到偏好优化 / 奖励建模 / RLHF，再到 prompting 工程与结构化约束生成。
+全部 **43 个 Lesson** 按主题分组如下，从 compact causal LM 与 chat SFT，到偏好优化 / 奖励建模 / RLHF，再到 prompting 工程与结构化约束生成。
 
 ### 语言建模与微调基础（01-08）
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 01 | **Transformer 文本生成** | [`toy_causal_lm_transformer`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_01_toy_causal_lm_transformer/) | Causal Mask, 自回归解码 |
-| 02 | **Chat 格式监督微调** | [`toy_chat_sft`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_02_toy_chat_sft/) | Role Token, Assistant-only Loss |
-| 03 | **Mamba 风格语言模型** | [`toy_mamba_language_model`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_03_toy_mamba_language_model/) | 状态空间混合, 线性时序递推 |
-| 04 | **指令微调** | [`toy_instruction_tuning`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_04_toy_instruction_tuning/) | 单轮指令模板, Response-only Loss |
-| 05 | **Prefix Tuning** | [`toy_prefix_tuning`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_05_toy_prefix_tuning/) | 冻结主干, 可训练前缀向量 |
-| 06 | **偏好优化** | [`toy_preference_optimization`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_06_toy_preference_optimization/) | Chosen/Rejected 对比, DPO 风格目标 |
-| 07 | **奖励建模** | [`toy_reward_modeling`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_07_toy_reward_modeling/) | Pairwise Ranking, 标量奖励头 |
-| 08 | **Span Corruption** | [`toy_span_corruption`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_08_toy_span_corruption/) | 连续片段掩码, 去噪解码, 目标 token 监督 |
+| 01 | **Transformer 文本生成** | [`compact_causal_lm_transformer`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_01_compact_causal_lm_transformer/) | Causal Mask, 自回归解码 |
+| 02 | **Chat 格式监督微调** | [`compact_chat_sft`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_02_compact_chat_sft/) | Role Token, Assistant-only Loss |
+| 03 | **Mamba 风格语言模型** | [`compact_mamba_language_model`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_03_compact_mamba_language_model/) | 状态空间混合, 线性时序递推 |
+| 04 | **指令微调** | [`compact_instruction_tuning`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_04_compact_instruction_tuning/) | 单轮指令模板, Response-only Loss |
+| 05 | **Prefix Tuning** | [`compact_prefix_tuning`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_05_compact_prefix_tuning/) | 冻结主干, 可训练前缀向量 |
+| 06 | **偏好优化** | [`compact_preference_optimization`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_06_compact_preference_optimization/) | Chosen/Rejected 对比, DPO 风格目标 |
+| 07 | **奖励建模** | [`compact_reward_modeling`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_07_compact_reward_modeling/) | Pairwise Ranking, 标量奖励头 |
+| 08 | **Span Corruption** | [`compact_span_corruption`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_08_compact_span_corruption/) | 连续片段掩码, 去噪解码, 目标 token 监督 |
 
 ### 对齐与增强（09-15）
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 09 | **RLHF PPO** | [`toy_rlhf_ppo`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_09_toy_rlhf_ppo/) | 策略比率裁剪, token 奖励, 参考策略约束 |
-| 10 | **GRPO Alignment** | [`toy_grpo_alignment`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_10_toy_grpo_alignment/) | 分组相对偏好, 参考基线, 响应级奖励优化 |
-| 11 | **RAG Language Model** | [`toy_rag_language_model`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_11_toy_rag_language_model/) | 文档检索, 条件解码, 检索增强生成 |
-| 12 | **Transformer Interpretability** | [`toy_transformer_interpretability`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_12_toy_transformer_interpretability/) | 注意力可视化, token saliency, 解释性分析 |
-| 13 | **Tool-Calling Agent** | [`toy_tool_calling_agent`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_13_toy_tool_calling_agent/) | 工具选择, 参数生成, 代理式调用闭环 |
-| 14 | **Replaced-Token Detection Transformer** | [`toy_replaced_token_detection_transformer`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_14_toy_replaced_token_detection_transformer/) | 替换 token 判别, 编码式自监督, token 级二分类 |
-| 15 | **LLM Judge** | [`toy_llm_judge`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_15_toy_llm_judge/) | Prompt-Answer 打分, 候选比较, 标量质量评估 |
+| 09 | **RLHF PPO** | [`compact_rlhf_ppo`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_09_compact_rlhf_ppo/) | 策略比率裁剪, token 奖励, 参考策略约束 |
+| 10 | **GRPO Alignment** | [`compact_grpo_alignment`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_10_compact_grpo_alignment/) | 分组相对偏好, 参考基线, 响应级奖励优化 |
+| 11 | **RAG Language Model** | [`compact_rag_language_model`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_11_compact_rag_language_model/) | 文档检索, 条件解码, 检索增强生成 |
+| 12 | **Transformer Interpretability** | [`compact_transformer_interpretability`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_12_compact_transformer_interpretability/) | 注意力可视化, token saliency, 解释性分析 |
+| 13 | **Tool-Calling Agent** | [`compact_tool_calling_agent`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_13_compact_tool_calling_agent/) | 工具选择, 参数生成, 代理式调用闭环 |
+| 14 | **Replaced-Token Detection Transformer** | [`compact_replaced_token_detection_transformer`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_14_compact_replaced_token_detection_transformer/) | 替换 token 判别, 编码式自监督, token 级二分类 |
+| 15 | **LLM Judge** | [`compact_llm_judge`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_15_compact_llm_judge/) | Prompt-Answer 打分, 候选比较, 标量质量评估 |
 
 ### Prompting 与代理（16-29）
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 16 | **Multi-Turn Memory Chat SFT** | [`toy_multi_turn_memory_sft`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_16_toy_multi_turn_memory_sft/) | 多轮对话记忆, 历史拼接监督, assistant-only loss |
-| 17 | **Self-Refine Prompting** | [`toy_self_refine_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_17_toy_self_refine_prompting/) | 草稿-批评-修订链路, 提示式自改写, 响应重写监督 |
-| 18 | **Reflection Memory Agent** | [`toy_reflection_memory_agent`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_18_toy_reflection_memory_agent/) | 反思写入记忆, 检索式修订, 记忆增强回答 |
-| 19 | **Plan-Execute Prompting** | [`toy_plan_execute_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_19_toy_plan_execute_prompting/) | 两阶段计划与执行, 提示分解, execute-only 监督 |
-| 20 | **ReAct Tool Prompting** | [`toy_react_tool_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_20_toy_react_tool_prompting/) | 思考-行动交替, 工具决策轨迹, 响应级监督 |
-| 21 | **Tree-of-Thought Prompting** | [`toy_tree_of_thought_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_21_toy_tree_of_thought_prompting/) | 多分支推理候选, 路径选择, 终态答案监督 |
-| 22 | **Self-Consistency Prompting** | [`toy_self_consistency_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_22_toy_self_consistency_prompting/) | 多样候选采样, 投票一致性, 最终答案监督 |
-| 23 | **Critic-Rerank Prompting** | [`toy_critic_rerank_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_23_toy_critic_rerank_prompting/) | 候选打分重排, critique 标记上下文, 最优响应选择 |
-| 24 | **Debate Prompting** | [`toy_debate_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_24_toy_debate_prompting/) | 正反论点提示, judge 标记监督, verdict 生成 |
-| 25 | **Verifier-Guided Prompting** | [`toy_verifier_guided_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_25_toy_verifier_guided_prompting/) | 草稿-验证-修正链路, guide token 监督, 响应纠错 |
-| 26 | **Process Supervision Prompting** | [`toy_process_supervision_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_26_toy_process_supervision_prompting/) | 草稿-检查-流程监督链路, process token 监督, 响应生成 |
-| 27 | **Self-Correction Prompting** | [`toy_self_correction_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_27_toy_self_correction_prompting/) | 草稿-批评-自修正链路, corrected span 监督, 自纠错生成 |
-| 28 | **Reference-Grounded Prompting** | [`toy_reference_grounded_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_28_toy_reference_grounded_prompting/) | 引用证据 span, grounded token 监督, 参考约束生成 |
-| 29 | **Constraint-Repair Prompting** | [`toy_constraint_repair_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_29_toy_constraint_repair_prompting/) | 约束检查与修复链路, repair token 监督, 受限生成 |
+| 16 | **Multi-Turn Memory Chat SFT** | [`compact_multi_turn_memory_sft`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_16_compact_multi_turn_memory_sft/) | 多轮对话记忆, 历史拼接监督, assistant-only loss |
+| 17 | **Self-Refine Prompting** | [`compact_self_refine_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_17_compact_self_refine_prompting/) | 草稿-批评-修订链路, 提示式自改写, 响应重写监督 |
+| 18 | **Reflection Memory Agent** | [`compact_reflection_memory_agent`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_18_compact_reflection_memory_agent/) | 反思写入记忆, 检索式修订, 记忆增强回答 |
+| 19 | **Plan-Execute Prompting** | [`compact_plan_execute_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_19_compact_plan_execute_prompting/) | 两阶段计划与执行, 提示分解, execute-only 监督 |
+| 20 | **ReAct Tool Prompting** | [`compact_react_tool_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_20_compact_react_tool_prompting/) | 思考-行动交替, 工具决策轨迹, 响应级监督 |
+| 21 | **Tree-of-Thought Prompting** | [`compact_tree_of_thought_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_21_compact_tree_of_thought_prompting/) | 多分支推理候选, 路径选择, 终态答案监督 |
+| 22 | **Self-Consistency Prompting** | [`compact_self_consistency_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_22_compact_self_consistency_prompting/) | 多样候选采样, 投票一致性, 最终答案监督 |
+| 23 | **Critic-Rerank Prompting** | [`compact_critic_rerank_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_23_compact_critic_rerank_prompting/) | 候选打分重排, critique 标记上下文, 最优响应选择 |
+| 24 | **Debate Prompting** | [`compact_debate_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_24_compact_debate_prompting/) | 正反论点提示, judge 标记监督, verdict 生成 |
+| 25 | **Verifier-Guided Prompting** | [`compact_verifier_guided_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_25_compact_verifier_guided_prompting/) | 草稿-验证-修正链路, guide token 监督, 响应纠错 |
+| 26 | **Process Supervision Prompting** | [`compact_process_supervision_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_26_compact_process_supervision_prompting/) | 草稿-检查-流程监督链路, process token 监督, 响应生成 |
+| 27 | **Self-Correction Prompting** | [`compact_self_correction_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_27_compact_self_correction_prompting/) | 草稿-批评-自修正链路, corrected span 监督, 自纠错生成 |
+| 28 | **Reference-Grounded Prompting** | [`compact_reference_grounded_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_28_compact_reference_grounded_prompting/) | 引用证据 span, grounded token 监督, 参考约束生成 |
+| 29 | **Constraint-Repair Prompting** | [`compact_constraint_repair_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_29_compact_constraint_repair_prompting/) | 约束检查与修复链路, repair token 监督, 受限生成 |
 
 ### 结构化约束生成（30-43）
 
 | 序号 | 项目 | 代码文档 | 核心概念 |
 |:----:|:-----|:---------|:---------|
-| 30 | **Citation-Grounded Prompting** | [`toy_citation_grounded_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_30_toy_citation_grounded_prompting/) | 引用 span 拷贝监督, cite token 约束, 证据归因生成 |
-| 31 | **Schema-Constrained Prompting** | [`toy_schema_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_31_toy_schema_constrained_prompting/) | schema marker 监督, 结构化字段续写, 约束输出生成 |
-| 32 | **JSON-Constrained Prompting** | [`toy_json_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_32_toy_json_constrained_prompting/) | json marker 监督, JSON 字段续写, 约束输出生成 |
-| 33 | **Function-Signature Prompting** | [`toy_function_signature_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_33_toy_function_signature_prompting/) | call marker 监督, 函数签名续写, 参数槽位约束 |
-| 34 | **XML-Constrained Prompting** | [`toy_xml_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_34_toy_xml_constrained_prompting/) | xml marker 监督, XML 片段续写, 结构化输出约束 |
-| 35 | **Regex-Constrained Prompting** | [`toy_regex_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_35_toy_regex_constrained_prompting/) | regex marker 监督, 模式匹配字段续写, 约束生成 |
-| 36 | **EBNF-Constrained Prompting** | [`toy_ebnf_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_36_toy_ebnf_constrained_prompting/) | ebnf marker 监督, 规则续写, 语法约束生成 |
-| 37 | **SQL-Constrained Prompting** | [`toy_sql_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_37_toy_sql_constrained_prompting/) | sql marker 监督, 查询骨架续写, 结构化约束生成 |
-| 38 | **YAML-Constrained Prompting** | [`toy_yaml_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_38_toy_yaml_constrained_prompting/) | yaml marker 监督, key-value 行续写, 结构化约束生成 |
-| 39 | **CSV-Constrained Prompting** | [`toy_csv_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_39_toy_csv_constrained_prompting/) | csv marker 监督, 表头/行续写, 结构化约束生成 |
-| 40 | **TOML-Constrained Prompting** | [`toy_toml_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_40_toy_toml_constrained_prompting/) | toml marker 监督, key=value 续写, 结构化约束生成 |
-| 41 | **Markdown-Table Constrained Prompting** | [`toy_markdown_table_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_41_toy_markdown_table_constrained_prompting/) | table marker 监督, header/row 续写, 表格结构约束生成 |
-| 42 | **INI-Constrained Prompting** | [`toy_ini_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_42_toy_ini_constrained_prompting/) | ini marker 监督, section/key=value 续写, 配置结构约束生成 |
-| 43 | **TSV-Constrained Prompting** | [`toy_tsv_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_43_toy_tsv_constrained_prompting/) | tsv marker 监督, column/value 行续写, 表格结构约束生成 |
+| 30 | **Citation-Grounded Prompting** | [`compact_citation_grounded_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_30_compact_citation_grounded_prompting/) | 引用 span 拷贝监督, cite token 约束, 证据归因生成 |
+| 31 | **Schema-Constrained Prompting** | [`compact_schema_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_31_compact_schema_constrained_prompting/) | schema marker 监督, 结构化字段续写, 约束输出生成 |
+| 32 | **JSON-Constrained Prompting** | [`compact_json_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_32_compact_json_constrained_prompting/) | json marker 监督, JSON 字段续写, 约束输出生成 |
+| 33 | **Function-Signature Prompting** | [`compact_function_signature_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_33_compact_function_signature_prompting/) | call marker 监督, 函数签名续写, 参数槽位约束 |
+| 34 | **XML-Constrained Prompting** | [`compact_xml_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_34_compact_xml_constrained_prompting/) | xml marker 监督, XML 片段续写, 结构化输出约束 |
+| 35 | **Regex-Constrained Prompting** | [`compact_regex_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_35_compact_regex_constrained_prompting/) | regex marker 监督, 模式匹配字段续写, 约束生成 |
+| 36 | **EBNF-Constrained Prompting** | [`compact_ebnf_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_36_compact_ebnf_constrained_prompting/) | ebnf marker 监督, 规则续写, 语法约束生成 |
+| 37 | **SQL-Constrained Prompting** | [`compact_sql_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_37_compact_sql_constrained_prompting/) | sql marker 监督, 查询骨架续写, 结构化约束生成 |
+| 38 | **YAML-Constrained Prompting** | [`compact_yaml_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_38_compact_yaml_constrained_prompting/) | yaml marker 监督, key-value 行续写, 结构化约束生成 |
+| 39 | **CSV-Constrained Prompting** | [`compact_csv_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_39_compact_csv_constrained_prompting/) | csv marker 监督, 表头/行续写, 结构化约束生成 |
+| 40 | **TOML-Constrained Prompting** | [`compact_toml_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_40_compact_toml_constrained_prompting/) | toml marker 监督, key=value 续写, 结构化约束生成 |
+| 41 | **Markdown-Table Constrained Prompting** | [`compact_markdown_table_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_41_compact_markdown_table_constrained_prompting/) | table marker 监督, header/row 续写, 表格结构约束生成 |
+| 42 | **INI-Constrained Prompting** | [`compact_ini_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_42_compact_ini_constrained_prompting/) | ini marker 监督, section/key=value 续写, 配置结构约束生成 |
+| 43 | **TSV-Constrained Prompting** | [`compact_tsv_constrained_prompting`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/llm/lesson_43_compact_tsv_constrained_prompting/) | tsv marker 监督, column/value 行续写, 表格结构约束生成 |
 
 ```bash
 # 冒烟测试 Chat SFT（Lesson 02）
-python -m tracks.llm.lesson_02_toy_chat_sft.train \
-  --dataset fake --epochs 1 \
+python -m tracks.llm.lesson_02_compact_chat_sft.train \
+  --epochs 1 \
   --max-train-batches 2 --max-eval-batches 2
 ```
 
@@ -162,8 +162,8 @@ flowchart TB
 **运行命令：**
 
 ```bash
-python -m tracks.llm.lesson_01_toy_causal_lm_transformer.train \
-  --dataset fake --epochs 1 \
+python -m tracks.llm.lesson_01_compact_causal_lm_transformer.train \
+  --epochs 1 \
   --max-train-batches 2 --max-eval-batches 2
 ```
 

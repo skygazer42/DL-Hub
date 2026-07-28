@@ -1,6 +1,6 @@
 # Neural Style Transfer
 
-Toy-first local families for `neural style transfer`.
+Compact-first local families for `neural style transfer`.
 
 ## Families
 

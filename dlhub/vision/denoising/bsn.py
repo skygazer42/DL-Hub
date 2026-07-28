@@ -12,7 +12,7 @@ class DirectionalMaskedConv2d(nn.Module):
     - "left":  uses only cols strictly left of the center col
     - "right": uses only cols strictly right of the center col
 
-    This is a toy-first building block for blind-spot networks. The mask is applied
+    This is a compact-first building block for blind-spot networks. The mask is applied
     in forward (weight * mask) so masked weights never contribute.
     """
 
@@ -89,7 +89,7 @@ class DirectionalStack(nn.Module):
 
 
 class BlindSpotNet(nn.Module):
-    """Blind-Spot Network (BSN) style denoiser (toy-first, pure torch).
+    """Blind-Spot Network (BSN) style denoiser (compact-first, pure torch).
 
     This is a simplified directional blind-spot network:
     - Four directional stacks (up/down/left/right) with masked convs that exclude the center pixel.
@@ -97,7 +97,7 @@ class BlindSpotNet(nn.Module):
     - Output is `x - residual`.
 
     It is designed to pair well with blind-spot self-supervised training, but can also be trained
-    supervised or noise2noise on toy data.
+    supervised or noise2noise on synthetic data.
     """
 
     def __init__(

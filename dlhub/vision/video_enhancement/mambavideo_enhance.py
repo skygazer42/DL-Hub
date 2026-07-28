@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_video_enhancer, smoke_test_ve
+from ._common import build_baseline_video_enhancer, smoke_test_ve
 
 _VARIANTS = {
     "mambavideo_enhance_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_mambavideo_enhance_video_enhancer(
     *, in_channels: int, variant: str = "mambavideo_enhance_small", width_mult: float = 1.0
 ):
-    return build_toy_video_enhancer(
+    return build_baseline_video_enhancer(
         family="mambavideo_enhance",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm` as an independent teaching lesson for prompt-native multitask text generation with a SigLIP-style vision tower and decoder-only language model.
+**Goal:** Add `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm` as an independent teaching lesson for prompt-native multitask text generation with a SigLIP-style vision tower and decoder-only language model.
 
 ## Problem
 
@@ -157,7 +157,7 @@ It is acceptable for the first version to log token accuracy, exact match, and y
 Follow the same conventions as lessons 1-8:
 
 - CLI args for sample count, image size, and text length
-- `outputs/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/<run_name>/`
+- `outputs/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

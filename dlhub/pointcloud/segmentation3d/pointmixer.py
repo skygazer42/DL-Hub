@@ -25,7 +25,7 @@ class _MixerBlock(nn.Module):
 
 
 class PointMixerSeg(nn.Module):
-    """PointMixer semantic segmentation (toy): token mix via kNN mean + channel mix MLP."""
+    """PointMixer semantic segmentation (compact): token mix via kNN mean + channel mix MLP."""
 
     def __init__(
         self,

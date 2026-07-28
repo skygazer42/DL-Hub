@@ -1,9 +1,9 @@
-"""I3D (Inflated 3D ConvNet) - toy-first video action classifier.
+"""I3D (Inflated 3D ConvNet) - compact-first video action classifier.
 
 Reference:
 - "Quo Vadis, Action Recognition? A New Model and the Kinetics Dataset" (CVPR 2017)
 
-Toy interpretation:
+Compact interpretation:
 - Use a tiny 3D CNN with Inception-style multi-branch blocks.
 - Keep the goal educational: show "inflate to 3D" + multi-branch mixing.
 """

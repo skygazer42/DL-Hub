@@ -92,8 +92,8 @@ _STREAMS: tuple[ResearchStream, ...] = (
         stream_id="datasets",
         title="Dataset stream",
         topics=("数据集", "新数据集"),
-        artifact_path="dlhub/data/toy.py",
-        module="dlhub.data.toy",
+        artifact_path="dlhub/data/compact.py",
+        module="dlhub.data.synthetic",
         primary_action="Route dataset topics to reproducible local dataset generators.",
     ),
     ResearchStream(

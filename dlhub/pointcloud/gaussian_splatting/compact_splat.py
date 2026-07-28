@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_splatter, smoke_test_splatter
+from ._common import build_baseline_splatter, smoke_test_splatter
 
 _VARIANTS = {
     "compact_splat_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_compact_splat_splatter(
     *, in_channels: int, variant: str = "compact_splat_small", width_mult: float = 1.0
 ):
-    return build_toy_splatter(
+    return build_baseline_splatter(
         family="compact_splat",
         variants=_VARIANTS,
         in_channels=int(in_channels),

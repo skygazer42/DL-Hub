@@ -28,7 +28,7 @@ def _hog_cell_histograms(
     Returns: (B, num_bins, Gh, Gw) where Gh=H/cell_size and Gw=W/cell_size.
 
     Notes:
-    - This is a toy-first HOG variant (no block normalization).
+    - This is a compact-first HOG variant (no block normalization).
     - We use hard binning (non-differentiable w.r.t. angles), which is fine for repo-local smokes.
     """
 
@@ -42,7 +42,7 @@ def _hog_cell_histograms(
     if h < cell or w < cell:
         raise ValueError("Input smaller than one HOG cell.")
     if h % cell != 0 or w % cell != 0:
-        raise ValueError("Input H and W must be divisible by cell_size for this toy HOG.")
+        raise ValueError("Input H and W must be divisible by cell_size for this compact HOG.")
 
     bins = int(num_bins)
     if bins <= 1:
@@ -65,13 +65,13 @@ def _hog_cell_histograms(
     # Aggregate per cell via pooling.
     hist = F.avg_pool2d(weighted, kernel_size=cell, stride=cell)
 
-    # Per-cell L2 normalization (toy-first).
+    # Per-cell L2 normalization (compact-first).
     denom = torch.sqrt(hist.square().sum(dim=1, keepdim=True) + float(eps))
     return hist / denom
 
 
 class HOGSVMDetector(nn.Module):
-    """HOG + linear SVM sliding-window detector (toy-first).
+    """HOG + linear SVM sliding-window detector (compact-first).
 
     This is a classic pedestrian-detection style pipeline implemented in torch:
     - compute a per-cell HOG feature map

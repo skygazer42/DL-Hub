@@ -1,1 +1,1 @@
-"""Lesson 23: PointCloud self-supervised learning with ReSSL (toy-first)."""
+"""Lesson 23: PointCloud self-supervised learning with ReSSL (compact-first)."""

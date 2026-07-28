@@ -14,7 +14,7 @@ from dlhub.paths import build_run_paths
 from dlhub.seed import set_seed
 
 from .data import DataConfig, get_dataloaders
-from .model import FaceCaptionGroundingConfig, ToyFaceCaptionGroundingModel, grounding_accuracy, grounding_loss
+from .model import FaceCaptionGroundingConfig, CompactFaceCaptionGroundingModel, grounding_accuracy, grounding_loss
 
 
 @dataclass(frozen=True)
@@ -34,7 +34,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 40 (Multimodal): toy face-caption grounding with vision-language fusion."
+        description="Lesson 40 (Multimodal): compact face-caption grounding with vision-language fusion."
     )
     parser.add_argument("--num-samples", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=16)
@@ -91,7 +91,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyFaceCaptionGroundingModel,
+    model: CompactFaceCaptionGroundingModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -140,7 +140,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyFaceCaptionGroundingModel(
+    model = CompactFaceCaptionGroundingModel(
         FaceCaptionGroundingConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

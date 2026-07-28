@@ -8,7 +8,7 @@ class TokenNAF(nn.Module):
     Notes:
     - The core TokenNAF predicts the noise/residual. A wrapper `TokenNAFDenoiser` converts it
       to a denoised image by subtracting the predicted residual from the input.
-    - This implementation is small and training-friendly for toy datasets.
+    - This implementation is small and training-friendly for synthetic datasets.
     """
 
     def __init__(
@@ -62,7 +62,7 @@ class TokenNAFDenoiser(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    # Canonical-ish depths (toy-friendly: keep features modest).
+    # Canonical-ish depths (compact-friendly: keep features modest).
     "tokennaf_9": {"features": 48, "depth": 9, "use_bn": True},
     "tokennaf_17": {"features": 64, "depth": 17, "use_bn": True},
     "tokennaf_20": {"features": 64, "depth": 20, "use_bn": True},

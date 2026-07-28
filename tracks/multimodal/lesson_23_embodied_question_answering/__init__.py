@@ -1,9 +1,9 @@
-from .data import DataConfig, ToyEmbodiedQaDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticEmbodiedQaDataset, Vocab, get_dataloaders
 from .model import (
     EmbodiedQaConfig,
     TextQuestionEncoder,
     TinyObservationEncoder,
-    ToyEmbodiedQaModel,
+    CompactEmbodiedQaModel,
     TrajectoryEncoder,
     eqa_accuracy,
     eqa_loss,
@@ -14,8 +14,8 @@ __all__ = [
     "EmbodiedQaConfig",
     "TextQuestionEncoder",
     "TinyObservationEncoder",
-    "ToyEmbodiedQaDataset",
-    "ToyEmbodiedQaModel",
+    "SyntheticEmbodiedQaDataset",
+    "CompactEmbodiedQaModel",
     "TrajectoryEncoder",
     "Vocab",
     "eqa_accuracy",

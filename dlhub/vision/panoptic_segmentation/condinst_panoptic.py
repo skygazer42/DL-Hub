@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, check_nch
 
 
 class CondInstPanoptic(nn.Module):
-    """CondInst-style panoptic segmentation (toy-first).
+    """CondInst-style panoptic segmentation (compact-first).
 
     Generates dynamic mask kernels from detection features and applies them to a mask feature map.
     A semantic head runs on low-level features in parallel.

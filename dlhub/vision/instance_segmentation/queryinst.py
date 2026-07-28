@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class QueryInst(nn.Module):
-    """QueryInst-style instance segmentation (toy-first).
+    """QueryInst-style instance segmentation (compact-first).
 
     Uses learned queries with cross-attention over a feature map, then predicts masks via prototypes.
     """

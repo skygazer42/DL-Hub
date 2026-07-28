@@ -1,4 +1,4 @@
-"""Audio-text understanding models (toy-first, pure torch)."""
+"""Audio-text understanding models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

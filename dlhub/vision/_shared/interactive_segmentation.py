@@ -11,7 +11,7 @@ def check_nchw(x):
     return x
 
 
-class ToyInteractiveSeg(nn.Module):
+class CompactInteractiveSeg(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -40,7 +40,7 @@ class ToyInteractiveSeg(nn.Module):
         return {"logits": logits, "mask": torch.sigmoid(logits)}
 
 
-def build_toy_inter(
+def build_baseline_inter(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -50,7 +50,7 @@ def build_toy_inter(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyInteractiveSeg(
+    return CompactInteractiveSeg(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

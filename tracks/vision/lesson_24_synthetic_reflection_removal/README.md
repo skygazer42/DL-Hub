@@ -1,6 +1,6 @@
 # Lesson 24: Synthetic Reflection Removal
 
-This lesson introduces a toy paired reflection-removal setup:
+This lesson introduces a compact paired reflection-removal setup:
 
 - render a clean transmission image with simple geometric content
 - render a secondary reflection layer and blur it to mimic glass reflections

@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyImageMatcher(nn.Module):
+class CompactImageMatcher(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, embed_dim: int):
         super().__init__()
         self.family = str(family)
@@ -40,7 +40,7 @@ class ToyImageMatcher(nn.Module):
         return {"similarity": (e1 * e2).sum(dim=1), "embedding1": e1, "embedding2": e2}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -52,7 +52,7 @@ def build_toy_model(
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     embed = max(64, int(int(spec["embed"]) * float(width_mult)))
-    return ToyImageMatcher(
+    return CompactImageMatcher(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

@@ -43,7 +43,7 @@ def unflatten_group(x: torch.Tensor, *, batch: int, set_size: int) -> torch.Tens
 
 
 class TinyCoSegEncoder(nn.Module):
-    """Small multi-scale encoder for co-segmentation toy models."""
+    """Compact multi-scale encoder shared by co-segmentation baselines."""
 
     def __init__(self, *, in_channels: int, width: int, depth: int, dropout: float = 0.0) -> None:
         super().__init__()

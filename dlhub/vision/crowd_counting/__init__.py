@@ -1,4 +1,4 @@
-"""Crowd counting models (toy-first, pure torch)."""
+"""Crowd counting models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

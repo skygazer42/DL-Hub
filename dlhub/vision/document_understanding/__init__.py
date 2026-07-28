@@ -1,4 +1,4 @@
-"""Document understanding models (toy-first, pure torch)."""
+"""Document understanding models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

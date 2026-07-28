@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class ImVoteNet(nn.Module):
-    """ImVoteNet (toy): query-based detector (image fusion omitted in toy interface)."""
+    """ImVoteNet (compact): query-based detector (image fusion omitted in compact interface)."""
 
     def __init__(
         self,

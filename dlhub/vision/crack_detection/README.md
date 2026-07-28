@@ -1,6 +1,6 @@
 # Crack detection
 
-Toy-first local families for `crack detection`.
+Compact-first local families for `crack detection`.
 
 ## Families
 

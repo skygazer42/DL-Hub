@@ -30,7 +30,7 @@ class _BackboneStride4(nn.Module):
 
 
 class PointRendLite(nn.Module):
-    """PointRend-style instance segmentation (toy-first).
+    """PointRend-style instance segmentation (compact-first).
 
     Produces coarse ROI masks and a lightweight refinement signal derived from backbone features.
     """
@@ -77,7 +77,7 @@ class PointRendLite(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(c, ms * ms),
         )
-        # Refinement signal from backbone features (shared across ROIs in this toy version).
+        # Refinement signal from backbone features (shared across ROIs in this compact version).
         self.refine = nn.Sequential(
             ConvBNAct(c, c, kernel_size=3, stride=1, act="relu"),
             nn.Conv2d(c, 1, kernel_size=1, bias=True),

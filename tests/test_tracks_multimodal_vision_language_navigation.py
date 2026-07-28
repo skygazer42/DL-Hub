@@ -51,7 +51,7 @@ def test_multimodal_vln_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_25_vision_language_navigation.model import (
         VisionLanguageNavigationConfig,
-        ToyVisionLanguageNavigationModel,
+        CompactVisionLanguageNavigationModel,
         navigation_accuracy,
         navigation_loss,
     )
@@ -68,7 +68,7 @@ def test_multimodal_vln_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyVisionLanguageNavigationModel(
+    model = CompactVisionLanguageNavigationModel(
         VisionLanguageNavigationConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

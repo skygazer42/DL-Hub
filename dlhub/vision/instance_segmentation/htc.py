@@ -59,7 +59,7 @@ class _HTCStage(nn.Module):
 
 
 class HTC(nn.Module):
-    """HTC (Hybrid Task Cascade) style instance segmenter (toy-first)."""
+    """HTC (Hybrid Task Cascade) style instance segmenter (compact-first)."""
 
     def __init__(
         self,

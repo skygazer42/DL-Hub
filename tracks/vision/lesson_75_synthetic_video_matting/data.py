@@ -33,7 +33,7 @@ def _validate_config(cfg: DataConfig) -> None:
     if not (0.0 < float(cfg.val_fraction) < 1.0):
         raise ValueError("val_fraction must be in (0, 1)")
     if int(cfg.in_channels) != 1:
-        raise ValueError("in_channels must be 1 for this toy lesson")
+        raise ValueError("in_channels must be 1 for this synthetic lesson")
     if float(cfg.noise_std) < 0.0:
         raise ValueError("noise_std must be >= 0")
 

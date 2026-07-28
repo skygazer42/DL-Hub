@@ -1,12 +1,12 @@
-from .data import DataConfig, ToyFaceRetrievalReasoningDataset, Vocab, get_dataloaders
-from .model import FaceRetrievalReasoningConfig, ToyFaceRetrievalReasoningModel, face_retrieval_loss, retrieval_top1_accuracy
+from .data import DataConfig, SyntheticFaceRetrievalReasoningDataset, Vocab, get_dataloaders
+from .model import FaceRetrievalReasoningConfig, CompactFaceRetrievalReasoningModel, face_retrieval_loss, retrieval_top1_accuracy
 from .train import TrainConfig, run_training
 
 __all__ = [
     "DataConfig",
     "FaceRetrievalReasoningConfig",
-    "ToyFaceRetrievalReasoningDataset",
-    "ToyFaceRetrievalReasoningModel",
+    "SyntheticFaceRetrievalReasoningDataset",
+    "CompactFaceRetrievalReasoningModel",
     "TrainConfig",
     "Vocab",
     "face_retrieval_loss",

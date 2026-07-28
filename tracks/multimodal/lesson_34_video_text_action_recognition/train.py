@@ -17,7 +17,7 @@ from dlhub.seed import set_seed
 from .data import ACTION_TYPES, DataConfig, Vocab, get_dataloaders
 from .model import (
     ActionRecognitionModelConfig,
-    ToyActionRecognitionModel,
+    CompactActionRecognitionModel,
     action_recognition_loss,
     classification_accuracy,
 )
@@ -45,7 +45,7 @@ class Stats:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 34 (Multimodal): toy video-text action recognition."
+        description="Lesson 34 (Multimodal): compact video-text action recognition."
     )
 
     parser.add_argument("--num-samples", type=int, default=512)
@@ -108,7 +108,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyActionRecognitionModel,
+    model: CompactActionRecognitionModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -157,7 +157,7 @@ def _run_epoch(
 @torch.no_grad()
 def _write_samples(
     *,
-    model: ToyActionRecognitionModel,
+    model: CompactActionRecognitionModel,
     loader,
     vocab: Vocab,
     device: torch.device,
@@ -205,7 +205,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         lesson="lesson_34_video_text_action_recognition",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.action_recognition_toy", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("multimodal.action_recognition_compact", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
@@ -213,7 +213,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     logger.info("Outputs: %s", paths.run_dir)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyActionRecognitionModel(
+    model = CompactActionRecognitionModel(
         ActionRecognitionModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

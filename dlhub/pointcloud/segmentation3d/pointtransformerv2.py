@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointTransformerV2Seg(nn.Module):
-    """Point Transformer v2 semantic segmentation (toy)."""
+    """Point Transformer v2 semantic segmentation (compact)."""
 
     def __init__(
         self,

@@ -1,7 +1,5 @@
 # Deraining Regression Tests Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Exercise the missing deraining model families in unit tests so their absence surfaces during regression.
 
 **Architecture:** Add a regression-only smoke test that builds each deraining-family model from the synthetic denoising lesson, then assert backward compatibility with the rain-noise dataloader. Extend the listing/arch-family discovery tests so the CLI mentions the new families without touching production wiring.

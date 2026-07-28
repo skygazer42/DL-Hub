@@ -49,7 +49,7 @@ class DocumentVlmReasoningConfig:
     vision_width: int = 32
 
 
-class ToyDocumentVlmReasoningModel(nn.Module):
+class CompactDocumentVlmReasoningModel(nn.Module):
     def __init__(self, cfg: DocumentVlmReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -96,7 +96,7 @@ __all__ = [
     "DocumentVlmReasoningConfig",
     "MaskedTextEncoder",
     "TinyVisionEncoder",
-    "ToyDocumentVlmReasoningModel",
+    "CompactDocumentVlmReasoningModel",
     "reasoning_accuracy",
     "reasoning_loss",
 ]

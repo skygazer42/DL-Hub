@@ -8,12 +8,12 @@ torch = pytest.importorskip("torch")
 
 def test_pointcloud_upsampling_batch_contract_and_loss_smoke() -> None:
     from dlhub.pointcloud.ops import chamfer_distance
-    from tracks.pointcloud.lesson_34_toy_pointcloud_upsampling.data import (
+    from tracks.pointcloud.lesson_34_compact_pointcloud_upsampling.data import (
         DataConfig,
-        ToyPointCloudUpsamplingDataset,
+        SyntheticPointCloudUpsamplingDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_34_toy_pointcloud_upsampling.model import (
+    from tracks.pointcloud.lesson_34_compact_pointcloud_upsampling.model import (
         ModelConfig,
         build_model,
     )
@@ -28,7 +28,7 @@ def test_pointcloud_upsampling_batch_contract_and_loss_smoke() -> None:
         num_workers=0,
         p_sphere=0.5,
     )
-    dataset = ToyPointCloudUpsamplingDataset(cfg)
+    dataset = SyntheticPointCloudUpsamplingDataset(cfg)
     sparse, dense = dataset[0]
     assert sparse.shape == (32, 3)
     assert dense.shape == (64, 3)
@@ -56,8 +56,8 @@ def test_pointcloud_upsampling_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_upsampling_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_34_toy_pointcloud_upsampling.data import DataConfig
-    from tracks.pointcloud.lesson_34_toy_pointcloud_upsampling.train import (
+    from tracks.pointcloud.lesson_34_compact_pointcloud_upsampling.data import DataConfig
+    from tracks.pointcloud.lesson_34_compact_pointcloud_upsampling.train import (
         TrainConfig,
         run_training,
     )
@@ -93,7 +93,7 @@ def test_pointcloud_upsampling_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_34_toy_pointcloud_upsampling"
+        / "lesson_34_compact_pointcloud_upsampling"
         / "pytest_pointcloud_upsampling_smoke"
     )
     assert (run_dir / "config.json").is_file()

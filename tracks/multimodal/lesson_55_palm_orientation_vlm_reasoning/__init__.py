@@ -1,7 +1,7 @@
-from .data import DataConfig, ToyPalmOrientationReasoningDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticPalmOrientationReasoningDataset, Vocab, get_dataloaders
 from .model import (
     PalmOrientationReasoningConfig,
-    ToyPalmOrientationReasoningModel,
+    CompactPalmOrientationReasoningModel,
     compute_mae,
     palm_orientation_loss,
 )
@@ -10,8 +10,8 @@ from .train import TrainConfig, run_training
 __all__ = [
     "DataConfig",
     "PalmOrientationReasoningConfig",
-    "ToyPalmOrientationReasoningDataset",
-    "ToyPalmOrientationReasoningModel",
+    "SyntheticPalmOrientationReasoningDataset",
+    "CompactPalmOrientationReasoningModel",
     "TrainConfig",
     "Vocab",
     "compute_mae",

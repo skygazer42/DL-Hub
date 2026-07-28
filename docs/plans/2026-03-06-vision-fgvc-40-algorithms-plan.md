@@ -1,12 +1,10 @@
 # Vision FGVC 40-Family Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add a new image-level fine-grained visual recognition task to DL-Hub with 40 distinct algorithm families, a discoverable local zoo, and pure-torch toy-first classifiers.
+**Goal:** Add a new image-level fine-grained visual recognition task to DL-Hub with 40 distinct algorithm families, a discoverable local zoo, and pure-torch compact-first classifiers.
 
 **Architecture:** Create a dedicated `dlhub/vision/fine_grained_recognition/` task directory instead of mixing FGVC models into generic backbones. Keep the existing zoo conventions: one family per file, `_VARIANTS` for `tiny/small/base`, a `build_*_fgvc_classifier(...)` factory, and a `__main__` smoke block. Add a lazy `fine_grained_recognition_zoo` plus a CLI script so all 120 variants are enumerable and buildable by id.
 
-**Tech Stack:** Python, PyTorch, pytest, AST-based lazy model discovery, repo-local toy-first CNN/part-attention/transformer utilities.
+**Tech Stack:** Python, PyTorch, pytest, AST-based lazy model discovery, repo-local compact-first CNN/part-attention/transformer utilities.
 
 ---
 
@@ -83,7 +81,7 @@ Expected:
 
 **Step 3: Write minimal implementation**
 
-Add shared toy-first primitives:
+Add shared compact-first primitives:
 - NCHW validation
 - compact CNN feature extractor
 - part-attention pooling

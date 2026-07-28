@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointIns3D(nn.Module):
-    """PointIns3D (toy): graph features + center-based grouping masks."""
+    """PointIns3D (compact): graph features + center-based grouping masks."""
 
     def __init__(
         self,

@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 8 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with paper-shaped implementations for Segment Anything, BLIP, and InstructBLIP, covering promptable segmentation, unified vision-language pretraining, and instruction-tuned multimodal prompting.
 
 **Architecture:** Implement `Segment Anything` as a promptable segmentation abstraction with an image encoder, prompt encoder, lightweight mask decoder, and SA-1B-style automatic mask generation metadata. Implement `BLIP` as a unified image-language wrapper with separate image/text encoders, a cross-attentive multimodal encoder, a decoder-style language head, and a compact CapFilt data curation helper. Implement `InstructBLIP` as a BLIP-2-style multimodal wrapper where instructions condition the query transformer and visual prefix prompts supplied to a frozen language model.

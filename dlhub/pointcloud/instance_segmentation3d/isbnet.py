@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class ISBNet(nn.Module):
-    """ISBNet (toy): initial queries, then refine by pooling point features with masks."""
+    """ISBNet (compact): initial queries, then refine by pooling point features with masks."""
 
     def __init__(
         self,

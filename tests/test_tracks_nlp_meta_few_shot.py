@@ -7,7 +7,7 @@ torch = pytest.importorskip("torch")
 
 
 def test_meta_few_shot_text_episode_shapes() -> None:
-    from tracks.nlp.lesson_24_toy_meta_few_shot_text_classification.data import (
+    from tracks.nlp.lesson_24_compact_meta_few_shot_text_classification.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -38,11 +38,11 @@ def test_meta_few_shot_text_episode_shapes() -> None:
 
 
 def test_meta_few_shot_text_model_forward_and_metrics() -> None:
-    from tracks.nlp.lesson_24_toy_meta_few_shot_text_classification.data import (
+    from tracks.nlp.lesson_24_compact_meta_few_shot_text_classification.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_24_toy_meta_few_shot_text_classification.model import (
+    from tracks.nlp.lesson_24_compact_meta_few_shot_text_classification.model import (
         MetaFewShotTextClassifier,
         ModelConfig,
         episode_accuracy,
@@ -88,8 +88,8 @@ def test_meta_few_shot_text_model_forward_and_metrics() -> None:
 
 
 def test_meta_few_shot_text_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_24_toy_meta_few_shot_text_classification.data import DataConfig
-    from tracks.nlp.lesson_24_toy_meta_few_shot_text_classification.train import (
+    from tracks.nlp.lesson_24_compact_meta_few_shot_text_classification.data import DataConfig
+    from tracks.nlp.lesson_24_compact_meta_few_shot_text_classification.train import (
         TrainConfig,
         run_training,
     )
@@ -125,7 +125,7 @@ def test_meta_few_shot_text_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_24_toy_meta_few_shot_text_classification" / "pytest_meta_few_shot_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_24_compact_meta_few_shot_text_classification" / "pytest_meta_few_shot_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

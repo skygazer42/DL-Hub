@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SparseInst3D(nn.Module):
-    """SparseInst3D (toy): BEV projection + sparse prototypes."""
+    """SparseInst3D (compact): BEV projection + sparse prototypes."""
 
     def __init__(
         self,

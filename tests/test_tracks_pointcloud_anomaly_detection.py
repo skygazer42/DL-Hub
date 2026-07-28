@@ -7,12 +7,12 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_anomaly_detection_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_33_toy_pointcloud_anomaly_detection.data import (
+    from tracks.pointcloud.lesson_33_compact_pointcloud_anomaly_detection.data import (
         DataConfig,
         SyntheticPointCloudAnomalyDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_33_toy_pointcloud_anomaly_detection.model import (
+    from tracks.pointcloud.lesson_33_compact_pointcloud_anomaly_detection.model import (
         ModelConfig,
         anomaly_accuracy,
         anomaly_loss,
@@ -77,9 +77,9 @@ def test_pointcloud_anomaly_detection_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_anomaly_detection_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_33_toy_pointcloud_anomaly_detection.data import DataConfig
-    from tracks.pointcloud.lesson_33_toy_pointcloud_anomaly_detection.model import ModelConfig
-    from tracks.pointcloud.lesson_33_toy_pointcloud_anomaly_detection.train import (
+    from tracks.pointcloud.lesson_33_compact_pointcloud_anomaly_detection.data import DataConfig
+    from tracks.pointcloud.lesson_33_compact_pointcloud_anomaly_detection.model import ModelConfig
+    from tracks.pointcloud.lesson_33_compact_pointcloud_anomaly_detection.train import (
         TrainConfig,
         run_training,
     )
@@ -122,7 +122,7 @@ def test_pointcloud_anomaly_detection_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_33_toy_pointcloud_anomaly_detection"
+        / "lesson_33_compact_pointcloud_anomaly_detection"
         / "pytest_pointcloud_anomaly_smoke"
     )
     assert (run_dir / "config.json").is_file()

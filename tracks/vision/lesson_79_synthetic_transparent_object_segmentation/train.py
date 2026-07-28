@@ -59,8 +59,8 @@ def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
     parser.add_argument("--max-eval-batches", type=int, default=None)
     parser.add_argument("--run-name", type=str, default="dev")
 
-    parser.add_argument("--arch", type=str, default="glassseg_toy")
-    parser.add_argument("--variant", type=str, default="glassseg_toy_small")
+    parser.add_argument("--arch", type=str, default="glassseg_baseline")
+    parser.add_argument("--variant", type=str, default="glassseg_baseline_small")
     parser.add_argument("--width-mult", type=float, default=1.0)
     args = parser.parse_args()
 

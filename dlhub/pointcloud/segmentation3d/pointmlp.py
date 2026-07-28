@@ -32,7 +32,7 @@ class _LocalMix(nn.Module):
 
 
 class PointMLPSeg(nn.Module):
-    """PointMLP semantic segmentation (toy): local mixing by neighbor mean."""
+    """PointMLP semantic segmentation (compact): local mixing by neighbor mean."""
 
     def __init__(
         self,

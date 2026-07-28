@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_change, smoke_test_change
+from ._common import build_baseline_change, smoke_test_change
 
 _VARIANTS = {
     "ifn_cd_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_ifn_cd_change_detector(
     *, in_channels: int, variant: str = "ifn_cd_small", width_mult: float = 1.0
 ):
-    return build_toy_change(
+    return build_baseline_change(
         family="ifn_cd",
         variants=_VARIANTS,
         in_channels=int(in_channels),

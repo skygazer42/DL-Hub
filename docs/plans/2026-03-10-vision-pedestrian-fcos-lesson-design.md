@@ -7,7 +7,7 @@ synthetic “pedestrian” dataset (tall, slender rectangles). The lesson uses t
 local detection zoo preset `dldet:pedestrian_fcos` so users can directly reuse the newly added
 pedestrian presets.
 
-This is intentionally **toy-first** and focuses on the full training loop (data → model → loss →
+This is intentionally **compact-first** and focuses on the full training loop (data → model → loss →
 metrics → checkpoint), not production-grade decoding/NMS.
 
 ## Goals

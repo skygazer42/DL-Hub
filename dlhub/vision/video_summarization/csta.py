@@ -15,9 +15,9 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class CSTAVideoSummarizer(nn.Module):
-    """CSTA-style spatiotemporal attention summarizer (toy).
+    """CSTA-style spatiotemporal attention summarizer (compact).
 
-    The toy version keeps two pieces:
+    The compact version keeps two pieces:
     - local temporal mixing with 1D conv
     - global temporal self-attention over frame features
     """

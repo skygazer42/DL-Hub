@@ -135,7 +135,7 @@ def _region_features(
     return regions
 
 
-class ToyHoiReasoningDataset(Dataset):
+class SyntheticHoiReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         self.cfg = cfg
         self.vocab = vocab
@@ -182,7 +182,7 @@ class ToyHoiReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyHoiReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticHoiReasoningDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -215,4 +215,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyHoiReasoningDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticHoiReasoningDataset", "Vocab", "get_dataloaders"]

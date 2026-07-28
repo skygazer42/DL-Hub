@@ -7,7 +7,7 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_lesson_16_multi_turn_memory_data_masks_non_assistant_tokens() -> None:
-    from tracks.llm.lesson_16_toy_multi_turn_memory_sft.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_16_compact_multi_turn_memory_sft.data import DataConfig, get_dataloaders
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -48,12 +48,12 @@ def test_llm_lesson_16_multi_turn_memory_data_masks_non_assistant_tokens() -> No
 
 
 def test_llm_lesson_16_multi_turn_memory_model_and_generation_smoke() -> None:
-    from tracks.llm.lesson_16_toy_multi_turn_memory_sft.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_16_toy_multi_turn_memory_sft.model import (
+    from tracks.llm.lesson_16_compact_multi_turn_memory_sft.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_16_compact_multi_turn_memory_sft.model import (
         ModelConfig,
         MultiTurnMemoryTransformerLM,
     )
-    from tracks.llm.lesson_16_toy_multi_turn_memory_sft.train import generate_reply
+    from tracks.llm.lesson_16_compact_multi_turn_memory_sft.train import generate_reply
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -108,8 +108,8 @@ def test_llm_lesson_16_multi_turn_memory_model_and_generation_smoke() -> None:
 
 
 def test_llm_lesson_16_multi_turn_memory_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_16_toy_multi_turn_memory_sft.data import DataConfig
-    from tracks.llm.lesson_16_toy_multi_turn_memory_sft.train import TrainConfig, run_training
+    from tracks.llm.lesson_16_compact_multi_turn_memory_sft.data import DataConfig
+    from tracks.llm.lesson_16_compact_multi_turn_memory_sft.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -147,7 +147,7 @@ def test_llm_lesson_16_multi_turn_memory_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_16_toy_multi_turn_memory_sft"
+        / "lesson_16_compact_multi_turn_memory_sft"
         / "smoke"
     )
     assert (run_dir / "config.json").is_file()

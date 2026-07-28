@@ -1,4 +1,4 @@
-"""Video object detection models (toy-first, pure torch)."""
+"""Video object detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

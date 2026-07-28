@@ -4,10 +4,10 @@
 def run() -> None:
     from dlhub.paths import build_run_paths
 
-    # 4.11) NLP lesson (toy, torch-only).
-    from tracks.nlp.lesson_01_toy_text_classification.data import DataConfig as NlpData
-    from tracks.nlp.lesson_01_toy_text_classification.train import TrainConfig as NlpTrain
-    from tracks.nlp.lesson_01_toy_text_classification.train import run_training as run_nlp
+    # 4.11) NLP lesson (compact, torch-only).
+    from tracks.nlp.lesson_01_compact_text_classification.data import DataConfig as NlpData
+    from tracks.nlp.lesson_01_compact_text_classification.train import TrainConfig as NlpTrain
+    from tracks.nlp.lesson_01_compact_text_classification.train import run_training as run_nlp
 
     run_nlp(
         NlpTrain(
@@ -32,19 +32,19 @@ def run() -> None:
     )
 
     nlp_paths = build_run_paths(
-        track="nlp", lesson="lesson_01_toy_text_classification", run_name="smoke"
+        track="nlp", lesson="lesson_01_compact_text_classification", run_name="smoke"
     )
     assert (nlp_paths.run_dir / "config.json").is_file()
     assert (nlp_paths.run_dir / "metrics.jsonl").is_file()
     assert (nlp_paths.run_dir / "vocab.json").is_file()
     assert (nlp_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.12) NLP lesson: TextCNN (toy, torch-only).
-    from tracks.nlp.lesson_05_toy_text_classification_textcnn.data import DataConfig as CnnData
-    from tracks.nlp.lesson_05_toy_text_classification_textcnn.train import (
+    # 4.12) NLP lesson: TextCNN (compact, torch-only).
+    from tracks.nlp.lesson_05_compact_text_classification_textcnn.data import DataConfig as CnnData
+    from tracks.nlp.lesson_05_compact_text_classification_textcnn.train import (
         TrainConfig as CnnTrain,
     )
-    from tracks.nlp.lesson_05_toy_text_classification_textcnn.train import (
+    from tracks.nlp.lesson_05_compact_text_classification_textcnn.train import (
         run_training as run_cnn,
     )
 
@@ -72,19 +72,19 @@ def run() -> None:
     )
 
     cnn_paths = build_run_paths(
-        track="nlp", lesson="lesson_05_toy_text_classification_textcnn", run_name="smoke"
+        track="nlp", lesson="lesson_05_compact_text_classification_textcnn", run_name="smoke"
     )
     assert (cnn_paths.run_dir / "config.json").is_file()
     assert (cnn_paths.run_dir / "metrics.jsonl").is_file()
     assert (cnn_paths.run_dir / "vocab.json").is_file()
     assert (cnn_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.13) NLP lesson: BiLSTM classifier (toy, torch-only).
-    from tracks.nlp.lesson_06_toy_text_classification_bilstm.data import DataConfig as RnnData
-    from tracks.nlp.lesson_06_toy_text_classification_bilstm.train import (
+    # 4.13) NLP lesson: BiLSTM classifier (compact, torch-only).
+    from tracks.nlp.lesson_06_compact_text_classification_bilstm.data import DataConfig as RnnData
+    from tracks.nlp.lesson_06_compact_text_classification_bilstm.train import (
         TrainConfig as RnnTrain,
     )
-    from tracks.nlp.lesson_06_toy_text_classification_bilstm.train import (
+    from tracks.nlp.lesson_06_compact_text_classification_bilstm.train import (
         run_training as run_rnn,
     )
 
@@ -112,21 +112,21 @@ def run() -> None:
     )
 
     rnn_paths = build_run_paths(
-        track="nlp", lesson="lesson_06_toy_text_classification_bilstm", run_name="smoke"
+        track="nlp", lesson="lesson_06_compact_text_classification_bilstm", run_name="smoke"
     )
     assert (rnn_paths.run_dir / "config.json").is_file()
     assert (rnn_paths.run_dir / "metrics.jsonl").is_file()
     assert (rnn_paths.run_dir / "vocab.json").is_file()
     assert (rnn_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.10) NLP lesson: transformer encoder (toy, torch-only).
-    from tracks.nlp.lesson_02_toy_text_classification_transformer.data import (
+    # 4.10) NLP lesson: transformer encoder (compact, torch-only).
+    from tracks.nlp.lesson_02_compact_text_classification_transformer.data import (
         DataConfig as NlpTrData,
     )
-    from tracks.nlp.lesson_02_toy_text_classification_transformer.train import (
+    from tracks.nlp.lesson_02_compact_text_classification_transformer.train import (
         TrainConfig as NlpTrTrain,
     )
-    from tracks.nlp.lesson_02_toy_text_classification_transformer.train import (
+    from tracks.nlp.lesson_02_compact_text_classification_transformer.train import (
         run_training as run_nlp_tr,
     )
 
@@ -156,19 +156,19 @@ def run() -> None:
     )
 
     nlp_tr_paths = build_run_paths(
-        track="nlp", lesson="lesson_02_toy_text_classification_transformer", run_name="smoke"
+        track="nlp", lesson="lesson_02_compact_text_classification_transformer", run_name="smoke"
     )
     assert (nlp_tr_paths.run_dir / "config.json").is_file()
     assert (nlp_tr_paths.run_dir / "metrics.jsonl").is_file()
     assert (nlp_tr_paths.run_dir / "vocab.json").is_file()
     assert (nlp_tr_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.11) NLP lesson: seq2seq + attention (toy, torch-only).
-    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.data import DataConfig as S2SData
-    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.train import (
+    # 4.11) NLP lesson: seq2seq + attention (compact, torch-only).
+    from tracks.nlp.lesson_04_compact_seq2seq_attention_generation.data import DataConfig as S2SData
+    from tracks.nlp.lesson_04_compact_seq2seq_attention_generation.train import (
         TrainConfig as S2STrain,
     )
-    from tracks.nlp.lesson_04_toy_seq2seq_attention_generation.train import (
+    from tracks.nlp.lesson_04_compact_seq2seq_attention_generation.train import (
         run_training as run_s2s,
     )
 
@@ -198,7 +198,7 @@ def run() -> None:
     )
 
     s2s_paths = build_run_paths(
-        track="nlp", lesson="lesson_04_toy_seq2seq_attention_generation", run_name="smoke"
+        track="nlp", lesson="lesson_04_compact_seq2seq_attention_generation", run_name="smoke"
     )
     assert (s2s_paths.run_dir / "config.json").is_file()
     assert (s2s_paths.run_dir / "metrics.jsonl").is_file()
@@ -206,10 +206,10 @@ def run() -> None:
     assert (s2s_paths.run_dir / "samples.jsonl").is_file()
     assert (s2s_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.11) NLP lesson: toy NER (BiLSTM, torch-only).
-    from tracks.nlp.lesson_03_toy_ner_bilstm.data import DataConfig as NerData
-    from tracks.nlp.lesson_03_toy_ner_bilstm.train import TrainConfig as NerTrain
-    from tracks.nlp.lesson_03_toy_ner_bilstm.train import run_training as run_ner
+    # 4.11) NLP lesson: compact NER (BiLSTM, torch-only).
+    from tracks.nlp.lesson_03_compact_ner_bilstm.data import DataConfig as NerData
+    from tracks.nlp.lesson_03_compact_ner_bilstm.train import TrainConfig as NerTrain
+    from tracks.nlp.lesson_03_compact_ner_bilstm.train import run_training as run_ner
 
     run_ner(
         NerTrain(
@@ -235,7 +235,7 @@ def run() -> None:
     )
 
     ner_paths = build_run_paths(
-        track="nlp", lesson="lesson_03_toy_ner_bilstm", run_name="smoke"
+        track="nlp", lesson="lesson_03_compact_ner_bilstm", run_name="smoke"
     )
     assert (ner_paths.run_dir / "config.json").is_file()
     assert (ner_paths.run_dir / "metrics.jsonl").is_file()
@@ -243,7 +243,7 @@ def run() -> None:
     assert (ner_paths.run_dir / "tags.json").is_file()
     assert (ner_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.12) NLP lesson: toy reading comprehension (span prediction).
+    # 4.12) NLP lesson: compact reading comprehension (span prediction).
     from tracks.nlp.lesson_07_reading_comprehension.data import DataConfig as RcData
     from tracks.nlp.lesson_07_reading_comprehension.train import TrainConfig as RcTrain
     from tracks.nlp.lesson_07_reading_comprehension.train import run_training as run_rc

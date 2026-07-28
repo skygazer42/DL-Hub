@@ -81,7 +81,7 @@ class TinyMotionSegmentor(nn.Module):
         }
 
 
-def build_toy_motion_segmentor(
+def build_baseline_motion_segmentor(
     *,
     family: str,
     mode: str,

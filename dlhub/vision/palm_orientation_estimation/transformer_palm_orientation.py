@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_regressor, smoke_test_hand_regressor
+from ._common import build_baseline_hand_regressor, smoke_test_hand_regressor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_transformer_palm_orientation_palm_orientation_estimator(
     variant: str = "transformer_palm_orientation_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_regressor(
+    return build_baseline_hand_regressor(
         family="transformer_palm_orientation",
         mode="transformer",
         variants=_VARIANTS,

@@ -39,7 +39,7 @@ class PPM(nn.Module):
 
 
 class UPerNet(nn.Module):
-    """UPerNet semantic segmentation (toy-first).
+    """UPerNet semantic segmentation (compact-first).
 
     PPM on top feature + FPN fusion for multi-scale decoding.
     """

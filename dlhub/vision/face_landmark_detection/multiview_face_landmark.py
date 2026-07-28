@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_landmark_detector, smoke_test_landmark_detector
+from ._common import build_baseline_landmark_detector, smoke_test_landmark_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_multiview_face_landmark_landmark_detector(
     variant: str = "multiview_face_landmark_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_landmark_detector(
+    return build_baseline_landmark_detector(
         family="multiview_face_landmark",
         mode="multiview",
         variants=_VARIANTS,

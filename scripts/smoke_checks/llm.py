@@ -1,12 +1,12 @@
 """LLM track smoke checks (torch-only)."""
 
 
-def check_toy_causal_lm() -> None:
-    # 4.3) LLM lesson: toy causal LM (torch-only).
+def check_compact_causal_lm() -> None:
+    # 4.3) LLM lesson: compact causal LM (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.llm.lesson_01_toy_causal_lm_transformer.data import DataConfig as LmData
-    from tracks.llm.lesson_01_toy_causal_lm_transformer.train import TrainConfig as LmTrain
-    from tracks.llm.lesson_01_toy_causal_lm_transformer.train import run_training as run_lm
+    from tracks.llm.lesson_01_compact_causal_lm_transformer.data import DataConfig as LmData
+    from tracks.llm.lesson_01_compact_causal_lm_transformer.train import TrainConfig as LmTrain
+    from tracks.llm.lesson_01_compact_causal_lm_transformer.train import run_training as run_lm
 
     run_lm(
         LmTrain(
@@ -35,7 +35,7 @@ def check_toy_causal_lm() -> None:
     )
 
     lm_paths = build_run_paths(
-        track="llm", lesson="lesson_01_toy_causal_lm_transformer", run_name="smoke"
+        track="llm", lesson="lesson_01_compact_causal_lm_transformer", run_name="smoke"
     )
     assert (lm_paths.run_dir / "config.json").is_file()
     assert (lm_paths.run_dir / "metrics.jsonl").is_file()

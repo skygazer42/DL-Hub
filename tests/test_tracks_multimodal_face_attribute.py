@@ -36,7 +36,7 @@ def test_multimodal_face_attribute_model_outputs() -> None:
     from tracks.multimodal.lesson_39_face_attribute_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_39_face_attribute_vlm_reasoning.model import (
         FaceAttributeConfig,
-        ToyFaceAttributeReasoner,
+        CompactFaceAttributeReasoner,
         attribute_accuracy,
         attribute_loss,
     )
@@ -53,7 +53,7 @@ def test_multimodal_face_attribute_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFaceAttributeReasoner(
+    model = CompactFaceAttributeReasoner(
         FaceAttributeConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

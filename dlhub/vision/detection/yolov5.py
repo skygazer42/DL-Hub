@@ -7,7 +7,7 @@ from dlhub.vision.detection._common import check_nchw
 
 
 class CSPBlock(nn.Module):
-    """A tiny CSP-style block (toy)."""
+    """A tiny CSP-style block (compact)."""
 
     def __init__(self, channels: int, *, depth: int = 2) -> None:
         super().__init__()
@@ -31,7 +31,7 @@ class CSPBlock(nn.Module):
 
 
 class CSPBackboneC3C5(nn.Module):
-    """Toy CSPDarknet-ish backbone returning (C3,C4,C5)."""
+    """Compact CSPDarknet-ish backbone returning (C3,C4,C5)."""
 
     def __init__(
         self,
@@ -127,7 +127,7 @@ class YOLOv5Head(nn.Module):
 
 
 class YOLOv5Detector(nn.Module):
-    """YOLOv5-style CSP+PAN detector (toy-first)."""
+    """YOLOv5-style CSP+PAN detector (compact-first)."""
 
     def __init__(
         self,

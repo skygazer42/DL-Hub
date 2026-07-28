@@ -4,11 +4,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_lesson_01_dataloaders_and_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_01_pointnet_toy_classification.data import (
+    from tracks.pointcloud.lesson_01_pointnet_compact_classification.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_01_pointnet_toy_classification.model import (
+    from tracks.pointcloud.lesson_01_pointnet_compact_classification.model import (
         ModelConfig,
         PointNetClassifier,
     )
@@ -28,11 +28,11 @@ def test_pointcloud_lesson_01_dataloaders_and_forward_smoke() -> None:
 
 
 def test_pointcloud_lesson_02_dgcnn_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.data import (
+    from tracks.pointcloud.lesson_02_dgcnn_compact_classification.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.model import (
+    from tracks.pointcloud.lesson_02_dgcnn_compact_classification.model import (
         DGCNNClassifier,
         ModelConfig,
     )
@@ -54,11 +54,11 @@ def test_pointcloud_lesson_02_dgcnn_forward_smoke() -> None:
 
 
 def test_pointcloud_lesson_03_pointnet2_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.data import (
+    from tracks.pointcloud.lesson_03_pointnet2_compact_classification.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.model import (
+    from tracks.pointcloud.lesson_03_pointnet2_compact_classification.model import (
         ModelConfig,
         PointNet2Classifier,
     )
@@ -88,8 +88,8 @@ def test_pointcloud_lesson_03_pointnet2_forward_smoke() -> None:
 
 
 def test_pointcloud_lesson_05_pointnet_partseg_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_05_pointnet_toy_partseg.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_05_pointnet_toy_partseg.model import ModelConfig, PointNetPartSeg
+    from tracks.pointcloud.lesson_05_pointnet_compact_partseg.data import DataConfig, get_dataloaders
+    from tracks.pointcloud.lesson_05_pointnet_compact_partseg.model import ModelConfig, PointNetPartSeg
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -108,8 +108,8 @@ def test_pointcloud_lesson_05_pointnet_partseg_forward_smoke() -> None:
 
 
 def test_pointcloud_lesson_06_dgcnn_partseg_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_06_dgcnn_toy_partseg.data import DataConfig, get_dataloaders
-    from tracks.pointcloud.lesson_06_dgcnn_toy_partseg.model import DGCNNPartSeg, ModelConfig
+    from tracks.pointcloud.lesson_06_dgcnn_compact_partseg.data import DataConfig, get_dataloaders
+    from tracks.pointcloud.lesson_06_dgcnn_compact_partseg.model import DGCNNPartSeg, ModelConfig
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -129,11 +129,11 @@ def test_pointcloud_lesson_06_dgcnn_partseg_forward_smoke() -> None:
 
 def test_pointcloud_lesson_07_pointnet_reconstruction_forward_loss_backward_smoke() -> None:
     from dlhub.pointcloud.ops import chamfer_distance
-    from tracks.pointcloud.lesson_07_pointnet_toy_reconstruction.data import (
+    from tracks.pointcloud.lesson_07_pointnet_compact_reconstruction.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_07_pointnet_toy_reconstruction.model import (
+    from tracks.pointcloud.lesson_07_pointnet_compact_reconstruction.model import (
         ModelConfig,
         build_model,
     )
@@ -171,11 +171,11 @@ def test_pointcloud_lesson_07_pointnet_reconstruction_forward_loss_backward_smok
 
 
 def test_pointcloud_lesson_08_partseg_zoo_build_forward_smoke() -> None:
-    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_toy.data import (
+    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_compact.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_toy.model import (
+    from tracks.pointcloud.lesson_08_pointcloud_partseg_zoo_compact.model import (
         ModelConfig,
         build_model,
     )

@@ -1,4 +1,4 @@
-"""VPT (Visual Prompt Tuning) - toy-first FGVC classifier.
+"""VPT (Visual Prompt Tuning) - compact-first FGVC classifier.
 
 Reference:
 - "Visual Prompt Tuning" (ECCV 2022): https://arxiv.org/abs/2203.12119

@@ -1,6 +1,6 @@
 # Lesson 51: Synthetic Gesture Recognition
 
-This toy lesson renders simple grayscale stick figures and classifies four deterministic gesture
+This compact lesson renders simple grayscale stick figures and classifies four deterministic gesture
 states from arm and hand geometry:
 
 - `rest`

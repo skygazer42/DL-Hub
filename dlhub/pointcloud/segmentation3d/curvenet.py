@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class CurveNetSeg(nn.Module):
-    """CurveNet semantic segmentation (toy): ordered neighbor conv along distance."""
+    """CurveNet semantic segmentation (compact): ordered neighbor conv along distance."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, k: int, dropout: float = 0.0

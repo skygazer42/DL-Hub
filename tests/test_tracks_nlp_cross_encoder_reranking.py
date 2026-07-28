@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_cross_encoder_reranking_batch_contract() -> None:
-    from tracks.nlp.lesson_15_toy_cross_encoder_reranking.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_15_toy_cross_encoder_reranking.model import (
+    from tracks.nlp.lesson_15_compact_cross_encoder_reranking.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_15_compact_cross_encoder_reranking.model import (
         CrossEncoderReranker,
         ModelConfig,
         reranking_accuracy,
@@ -60,8 +60,8 @@ def test_cross_encoder_reranking_batch_contract() -> None:
 
 
 def test_cross_encoder_reranking_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_15_toy_cross_encoder_reranking.data import DataConfig
-    from tracks.nlp.lesson_15_toy_cross_encoder_reranking.train import TrainConfig, run_training
+    from tracks.nlp.lesson_15_compact_cross_encoder_reranking.data import DataConfig
+    from tracks.nlp.lesson_15_compact_cross_encoder_reranking.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -94,7 +94,7 @@ def test_cross_encoder_reranking_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_15_toy_cross_encoder_reranking" / "pytest_cross_encoder_reranking_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_15_compact_cross_encoder_reranking" / "pytest_cross_encoder_reranking_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

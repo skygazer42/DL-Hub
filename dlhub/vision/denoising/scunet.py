@@ -130,7 +130,7 @@ def _lcm(a: int, b: int) -> int:
 
 
 class SCUNet(nn.Module):
-    """SCUNet-style hybrid Conv+Swin U-Net denoiser (toy-first, pure torch).
+    """SCUNet-style hybrid Conv+Swin U-Net denoiser (compact-first, pure torch).
 
     This is a simplified SCUNet-inspired model:
     - Conv encoder/decoder with residual blocks
@@ -233,7 +233,7 @@ class SCUNet(nn.Module):
         y = y_nhwc.permute(0, 3, 1, 2).contiguous()
         y = F.relu(self.bottleneck_conv(y), inplace=True)
 
-        # Decode with additive skips (cheap and stable for toy use).
+        # Decode with additive skips (cheap and stable for compact use).
         for up, dec, skip in zip(self.ups, self.decs, reversed(skips[:-1]), strict=True):
             y = up(y)
             if y.shape[-2:] != skip.shape[-2:]:

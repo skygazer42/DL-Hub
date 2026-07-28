@@ -70,7 +70,7 @@ class TinyGazeFollower(nn.Module):
         }
 
 
-def build_toy_gaze_follower(
+def build_baseline_gaze_follower(
     *,
     family: str,
     mode: str,

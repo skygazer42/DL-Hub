@@ -2,7 +2,7 @@
 
 **Goal**
 
-Add a local, toy-first super-resolution algorithm family to DL-Hub with:
+Add a local, compact-first super-resolution algorithm family to DL-Hub with:
 - local super-resolution model families
 - a unified zoo + CLI
 - fast smoke tests that run on CPU with no downloads
@@ -123,7 +123,7 @@ Smoke mode should:
 Add:
 - `tracks/vision/lesson_17_synthetic_super_resolution/`
 
-The lesson should be toy-first, CPU-friendly, and self-contained.
+The lesson should be compact-first, CPU-friendly, and self-contained.
 
 Training formulation:
 - create synthetic HR images online

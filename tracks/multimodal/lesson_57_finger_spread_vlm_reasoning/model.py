@@ -46,7 +46,7 @@ class FingerSpreadReasoningConfig:
     vision_width: int = 40
 
 
-class ToyFingerSpreadReasoningModel(nn.Module):
+class CompactFingerSpreadReasoningModel(nn.Module):
     def __init__(self, cfg: FingerSpreadReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -82,7 +82,7 @@ def compute_mae(prediction: torch.Tensor, target: torch.Tensor) -> float:
 
 __all__ = [
     "FingerSpreadReasoningConfig",
-    "ToyFingerSpreadReasoningModel",
+    "CompactFingerSpreadReasoningModel",
     "compute_mae",
     "finger_spread_loss",
 ]

@@ -82,7 +82,7 @@ class TinyKeypointModel(nn.Module):
         }
 
 
-def build_toy_keypoint_model(
+def build_baseline_keypoint_model(
     *,
     family: str,
     mode: str,

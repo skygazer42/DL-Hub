@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_diffusion_transformer_fake_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_08_toy_diffusion_transformer.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_08_compact_diffusion_transformer.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
@@ -29,7 +29,7 @@ def test_diffusion_transformer_fake_dataloaders_smoke() -> None:
 
 
 def test_diffusion_transformer_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_08_toy_diffusion_transformer.model import (
+    from tracks.generative.lesson_08_compact_diffusion_transformer.model import (
         DiffusionSchedule,
         DiTTiny,
         ModelConfig,
@@ -60,7 +60,7 @@ def test_diffusion_transformer_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_08_toy_diffusion_transformer"
+        / "lesson_08_compact_diffusion_transformer"
         / "pytest_diffusion_transformer_smoke"
     )
     if run_dir.exists():
@@ -70,7 +70,7 @@ def test_diffusion_transformer_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_08_toy_diffusion_transformer.train",
+            "tracks.generative.lesson_08_compact_diffusion_transformer.train",
             "--epochs",
             "1",
             "--num-samples",

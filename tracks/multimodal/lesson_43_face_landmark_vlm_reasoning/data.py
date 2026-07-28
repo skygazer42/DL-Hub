@@ -138,7 +138,7 @@ def _sample_face_landmarks(*, image_size: int, seed: int) -> tuple[np.ndarray, d
     return image, landmarks
 
 
-class ToyFaceLandmarkReasoningDataset(Dataset):
+class SyntheticFaceLandmarkReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 32:
             raise ValueError("image_size must be >= 32")
@@ -171,7 +171,7 @@ class ToyFaceLandmarkReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceLandmarkReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceLandmarkReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -198,7 +198,7 @@ __all__ = [
     "LANDMARK_TO_ID",
     "LANDMARKS",
     "DataConfig",
-    "ToyFaceLandmarkReasoningDataset",
+    "SyntheticFaceLandmarkReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

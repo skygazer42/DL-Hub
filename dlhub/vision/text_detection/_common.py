@@ -24,7 +24,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyTextDetector(nn.Module):
+class CompactTextDetector(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -43,7 +43,7 @@ class ToyTextDetector(nn.Module):
         }
 
 
-def build_toy_text_detector(
+def build_baseline_text_detector(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -53,7 +53,7 @@ def build_toy_text_detector(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyTextDetector(
+    return CompactTextDetector(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

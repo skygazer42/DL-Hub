@@ -24,7 +24,7 @@ class _SpatialAttention(nn.Module):
 
 
 class AUNet(nn.Module):
-    """AUNet (Attention-guided Unified Network) for panoptic segmentation (toy-first).
+    """AUNet (Attention-guided Unified Network) for panoptic segmentation (compact-first).
 
     Adds lightweight attention gates to share features between instance and semantic branches.
     """
@@ -72,7 +72,7 @@ class AUNet(nn.Module):
             act="relu",
         )
 
-        # Attention gates (toy): use instance features to guide semantic and vice versa.
+        # Attention gates (compact): use instance features to guide semantic and vice versa.
         self.inst_gate = _SpatialAttention(fpn)
         self.sem_gate = _SpatialAttention(fpn)
 

@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "dlhub"
 version = "0.1.0"
 description = "Reusable deep-learning utilities behind the DL-Hub lesson tracks"
+authors = [{ name = "skygazer42", email = "207829897@qq.com" }]
 requires-python = ">=3.10"
 dependencies = [
   "numpy>=1.24",

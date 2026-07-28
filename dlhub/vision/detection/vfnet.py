@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class VFNetHead(nn.Module):
-    """VFNet-style head (toy): cls, box and IoU prediction."""
+    """VFNet-style head (compact): cls, box and IoU prediction."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -32,7 +32,7 @@ class VFNetHead(nn.Module):
 
 
 class VFNetDetector(nn.Module):
-    """VFNet-style detector (toy-first)."""
+    """VFNet-style detector (compact-first)."""
 
     def __init__(
         self,

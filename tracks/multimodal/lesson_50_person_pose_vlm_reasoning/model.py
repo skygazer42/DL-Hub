@@ -46,7 +46,7 @@ class PersonPoseReasoningConfig:
     vision_width: int = 40
 
 
-class ToyPersonPoseReasoningModel(nn.Module):
+class CompactPersonPoseReasoningModel(nn.Module):
     def __init__(self, cfg: PersonPoseReasoningConfig) -> None:
         super().__init__()
         self.person_encoder = TinyVisionEncoder(vision_width=int(cfg.vision_width))
@@ -80,7 +80,7 @@ def person_pose_loss(pred_pose: torch.Tensor, target_pose: torch.Tensor) -> torc
 
 __all__ = [
     "PersonPoseReasoningConfig",
-    "ToyPersonPoseReasoningModel",
+    "CompactPersonPoseReasoningModel",
     "person_pose_loss",
     "pose_mae",
 ]

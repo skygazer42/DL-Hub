@@ -72,7 +72,7 @@ class RRDB(nn.Module):
 
 
 class RRDBNet(nn.Module):
-    """RRDBNet-style denoiser (toy-first, pure torch).
+    """RRDBNet-style denoiser (compact-first, pure torch).
 
     RRDBNet is a strong CNN backbone originally popularized for SR (ESRGAN).
     Here we keep resolution and predict a residual/noise map, returning `x - residual`.

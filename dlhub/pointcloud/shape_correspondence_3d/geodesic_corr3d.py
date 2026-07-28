@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_shape_correspondence_model, smoke_test_shape_correspondence_model
+from ._common import build_baseline_shape_correspondence_model, smoke_test_shape_correspondence_model
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "geodesic_corr3d_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_geodesic_corr3d_shape_correspondence_model(
     *, in_channels: int, variant: str = "geodesic_corr3d_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_shape_correspondence_model(
+    return build_baseline_shape_correspondence_model(
         family="geodesic_corr3d",
         mode="geodesic",
         variants=_VARIANTS,

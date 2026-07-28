@@ -6,7 +6,7 @@ from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_h
 
 
 class DABDETRDetector(nn.Module):
-    """DAB-DETR *style* (toy).
+    """DAB-DETR *style* (compact).
 
     We use learnable reference boxes as anchors, refined from decoder features.
     """

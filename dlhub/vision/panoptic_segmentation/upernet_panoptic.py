@@ -45,7 +45,7 @@ class PPM(nn.Module):
 
 
 class UPerNetPanoptic(nn.Module):
-    """UPerNet-style panoptic segmentation (toy-first).
+    """UPerNet-style panoptic segmentation (compact-first).
 
     PPM on top feature + FPN fusion for semantic logits, plus a lightweight instance-query+prototype branch.
     """

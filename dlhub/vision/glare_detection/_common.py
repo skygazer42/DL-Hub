@@ -91,7 +91,7 @@ class TinyGlareDetector(nn.Module):
         }
 
 
-def build_toy_glare_detector(
+def build_baseline_glare_detector(
     *,
     family: str,
     mode: str,

@@ -1,9 +1,9 @@
-"""DID-MDN (Density-aware Image Deraining with Multi-stream Dense Network) - toy-first.
+"""DID-MDN (Density-aware Image Deraining with Multi-stream Dense Network) - compact-first.
 
 Reference (original idea):
 - "DID-MDN: Dense-Dense Multi-stream Dense Network for Single Image Rain Removal"
 
-Toy interpretation:
+Compact interpretation:
 - Multi-dilation feature extractor predicts rain-density attention and rain residual.
 - Output is shape-preserving: `x - attention * residual`.
 """
@@ -62,7 +62,7 @@ class _DenseBlock(nn.Module):
 
 
 class DIDMDN(nn.Module):
-    """Toy DID-MDN-style derainer with rain-density attention."""
+    """Compact DID-MDN-style derainer with rain-density attention."""
 
     def __init__(
         self,

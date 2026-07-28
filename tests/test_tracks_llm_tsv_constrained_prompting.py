@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_tsv_constrained_prompting_batch_mask_and_loss_smoke() -> None:
-    from tracks.llm.lesson_43_toy_tsv_constrained_prompting.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_43_toy_tsv_constrained_prompting.model import (
+    from tracks.llm.lesson_43_compact_tsv_constrained_prompting.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_43_compact_tsv_constrained_prompting.model import (
         ModelConfig,
         TsvConstrainedPromptingTransformerLM,
     )
@@ -57,8 +57,8 @@ def test_llm_tsv_constrained_prompting_batch_mask_and_loss_smoke() -> None:
 
 
 def test_llm_tsv_constrained_prompting_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_43_toy_tsv_constrained_prompting.data import DataConfig
-    from tracks.llm.lesson_43_toy_tsv_constrained_prompting.train import TrainConfig, run_training
+    from tracks.llm.lesson_43_compact_tsv_constrained_prompting.data import DataConfig
+    from tracks.llm.lesson_43_compact_tsv_constrained_prompting.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -96,7 +96,7 @@ def test_llm_tsv_constrained_prompting_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_43_toy_tsv_constrained_prompting"
+        / "lesson_43_compact_tsv_constrained_prompting"
         / "pytest_tsv_constrained_prompting_smoke"
     )
     assert (run_dir / "config.json").is_file()

@@ -7,7 +7,7 @@ from dlhub.vision.segmentation._common import check_nchw
 
 
 class PIDNet(nn.Module):
-    """PIDNet-style semantic segmentation (toy-first).
+    """PIDNet-style semantic segmentation (compact-first).
 
     This compact version uses a single patch embedding stage + Transformer encoder,
     then a lightweight conv head to predict logits.

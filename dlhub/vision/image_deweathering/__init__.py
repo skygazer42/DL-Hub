@@ -1,4 +1,4 @@
-"""Image deweathering models (toy-first, pure torch)."""
+"""Image deweathering models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

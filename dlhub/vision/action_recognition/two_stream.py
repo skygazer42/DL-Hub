@@ -1,9 +1,9 @@
-"""Two-Stream CNN (RGB + motion) - toy-first video action classifier.
+"""Two-Stream CNN (RGB + motion) - compact-first video action classifier.
 
 Reference (classic idea):
 - "Two-Stream Convolutional Networks for Action Recognition in Videos" (NIPS 2014)
 
-Toy interpretation:
+Compact interpretation:
 - Keep a single NCTHW input tensor (no optical flow downloads).
 - RGB stream: per-frame 2D CNN + temporal mean pooling.
 - Motion stream: simple frame-difference "pseudo-flow" + per-frame 2D CNN + temporal mean pooling.

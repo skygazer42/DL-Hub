@@ -17,7 +17,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, Vocab, get_dataloaders
 from .model import (
     AudioVisualEventLocalizationConfig,
-    ToyAudioVisualEventLocalizationModel,
+    CompactAudioVisualEventLocalizationModel,
     frame_accuracy,
     localization_loss,
 )
@@ -42,7 +42,7 @@ class TrainConfig:
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
         description=(
-            "Lesson 22 (Multimodal): toy audio-visual event localization with text-conditioned frame prediction."
+            "Lesson 22 (Multimodal): compact audio-visual event localization with text-conditioned frame prediction."
         )
     )
 
@@ -108,7 +108,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyAudioVisualEventLocalizationModel,
+    model: CompactAudioVisualEventLocalizationModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -149,7 +149,7 @@ def _run_epoch(
 @torch.no_grad()
 def _write_samples(
     *,
-    model: ToyAudioVisualEventLocalizationModel,
+    model: CompactAudioVisualEventLocalizationModel,
     loader,
     vocab: Vocab,
     device: torch.device,
@@ -191,14 +191,14 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         run_name=train_cfg.run_name,
     )
     logger = get_logger(
-        "multimodal.audio_visual_event_localization_toy",
+        "multimodal.audio_visual_event_localization_compact",
         log_file=paths.logs_dir / "train.log",
     )
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyAudioVisualEventLocalizationModel(
+    model = CompactAudioVisualEventLocalizationModel(
         AudioVisualEventLocalizationConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

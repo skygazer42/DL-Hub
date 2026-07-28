@@ -11,12 +11,12 @@ def _repo_root() -> Path:
 
 
 def test_llm_preference_optimization_shapes_and_loss_smoke() -> None:
-    from tracks.llm.lesson_06_toy_preference_optimization.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_06_toy_preference_optimization.model import (
+    from tracks.llm.lesson_06_compact_preference_optimization.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_06_compact_preference_optimization.model import (
         ModelConfig,
         PreferenceTransformerLM,
     )
-    from tracks.llm.lesson_06_toy_preference_optimization.train import preference_dpo_loss
+    from tracks.llm.lesson_06_compact_preference_optimization.train import preference_dpo_loss
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -94,14 +94,14 @@ def test_llm_preference_optimization_shapes_and_loss_smoke() -> None:
 
 
 def test_llm_preference_optimization_training_smoke() -> None:
-    from tracks.llm.lesson_06_toy_preference_optimization.data import DataConfig
-    from tracks.llm.lesson_06_toy_preference_optimization.train import TrainConfig, run_training
+    from tracks.llm.lesson_06_compact_preference_optimization.data import DataConfig
+    from tracks.llm.lesson_06_compact_preference_optimization.train import TrainConfig, run_training
 
     run_dir = (
         _repo_root()
         / "outputs"
         / "llm"
-        / "lesson_06_toy_preference_optimization"
+        / "lesson_06_compact_preference_optimization"
         / "pytest_preference_optimization_smoke"
     )
     if run_dir.exists():

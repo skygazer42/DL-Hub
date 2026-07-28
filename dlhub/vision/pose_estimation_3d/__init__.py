@@ -1,4 +1,4 @@
-"""3D human pose estimation models (toy-first, pure torch)."""
+"""3D human pose estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

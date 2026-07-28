@@ -83,7 +83,7 @@ class TinyCrowdLocalizer(nn.Module):
         return {"heatmap": heatmap, "points": points, "confidence": confidence, "count": count}
 
 
-def build_toy_crowd_localizer(
+def build_baseline_crowd_localizer(
     *,
     family: str,
     mode: str,

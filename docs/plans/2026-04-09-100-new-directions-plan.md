@@ -1,12 +1,10 @@
 # 100 New Directions Batch Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add 100 new toy-first algorithm families across 10 previously unimplemented directions without adding lessons or new test files.
+**Goal:** Add 100 new compact-first algorithm families across 10 previously unimplemented directions without adding lessons or new test files.
 
 **Architecture:** Create 8 new `vision` direction packages, 1 new `multimodal` direction package, and 1 new `pointcloud` direction package. Reuse the repository's lazy-import package structure and existing direction-specific zoo conventions so each new direction gets its own discovery/build surface with minimal shared-file contention.
 
-**Tech Stack:** Python 3, `torch`, repo-local toy model helpers, direction-specific `*_zoo.py` files, `README.md`, lazy packages under `dlhub/vision`, `dlhub/multimodal`, and `dlhub/pointcloud`.
+**Tech Stack:** Python 3, `torch`, repo-local compact model helpers, direction-specific `*_zoo.py` files, `README.md`, lazy packages under `dlhub/vision`, `dlhub/multimodal`, and `dlhub/pointcloud`.
 
 ---
 
@@ -16,12 +14,12 @@
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/__init__.py`
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/sepconv_interp.py`
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/super_slomo.py`
-- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/dain_toy.py`
-- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/rife_toy.py`
-- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/flavr_toy.py`
+- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/dain_baseline.py`
+- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/rife_baseline.py`
+- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/flavr_baseline.py`
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/vfi_former.py`
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/amt_interp.py`
-- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/ifrnet_toy.py`
+- Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/ifrnet_baseline.py`
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/ema_vfi.py`
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/mamba_vfi.py`
 - Create: `F:/DL-Hub/dlhub/vision/video_frame_interpolation/README.md`
@@ -38,7 +36,7 @@ Each file must:
 
 - define `_VARIANTS` with `tiny/small/base`
 - expose one `build_<family>_...` function
-- follow toy-first output contracts appropriate for interpolation
+- follow compact-first output contracts appropriate for interpolation
 - include a `__main__` smoke path
 
 **Step 3: Wire the new families into `dlhub/vision/local_zoo.py`**
@@ -84,7 +82,7 @@ Reuse the existing `vision` lazy package pattern.
 
 **Step 2: Add 10 family files**
 
-Keep outputs toy-first and stabilization-oriented. Do not add extra shared abstractions unless at least 3 files need the same helper.
+Keep outputs compact-first and stabilization-oriented. Do not add extra shared abstractions unless at least 3 files need the same helper.
 
 **Step 3: Wire into `dlhub/vision/local_zoo.py`**
 
@@ -129,7 +127,7 @@ Use the same lazy importer shape as other `vision` direction packages.
 
 **Step 2: Add 10 detector family files**
 
-Each family should return a stable toy detection-style output without introducing external datasets or heavy dependencies.
+Each family should return a stable compact detection-style output without introducing external datasets or heavy dependencies.
 
 **Step 3: Wire into `vision` local zoo**
 
@@ -174,7 +172,7 @@ Add the lazy package entrypoint.
 
 **Step 2: Add 10 dewarping family files**
 
-Model outputs should remain toy-first and OCR/document friendly.
+Model outputs should remain compact-first and OCR/document friendly.
 
 **Step 3: Integrate with `vision` local zoo**
 
@@ -199,8 +197,8 @@ Expected: import succeeds and zoo listing exposes a document dewarping variant.
 
 **Files:**
 - Create: `F:/DL-Hub/dlhub/vision/layout_generation/__init__.py`
-- Create: `F:/DL-Hub/dlhub/vision/layout_generation/layoutgan_toy.py`
-- Create: `F:/DL-Hub/dlhub/vision/layout_generation/layoutvae_toy.py`
+- Create: `F:/DL-Hub/dlhub/vision/layout_generation/layoutgan_baseline.py`
+- Create: `F:/DL-Hub/dlhub/vision/layout_generation/layoutvae_baseline.py`
 - Create: `F:/DL-Hub/dlhub/vision/layout_generation/layouttransformer.py`
 - Create: `F:/DL-Hub/dlhub/vision/layout_generation/bbox_generator.py`
 - Create: `F:/DL-Hub/dlhub/vision/layout_generation/poster_layout_net.py`
@@ -219,7 +217,7 @@ Use lazy import conventions.
 
 **Step 2: Add 10 layout generation families**
 
-Keep toy outputs stable and document / AIGC oriented.
+Keep compact outputs stable and document / AIGC oriented.
 
 **Step 3: Add registry wiring**
 
@@ -234,8 +232,8 @@ Add the direction row and count.
 Run:
 
 ```bash
-python -c "from dlhub.vision.layout_generation.layoutgan_toy import build_layoutgan_toy_layout_generator as f; print(type(f(in_channels=3, variant='layoutgan_toy_tiny')).__name__)"
-python -c "from dlhub.vision.local_zoo import list_local_arches; print(any('layoutgan_toy_tiny' in x for x in list_local_arches()))"
+python -c "from dlhub.vision.layout_generation.layoutgan_baseline import build_layoutgan_baseline_layout_generator as f; print(type(f(in_channels=3, variant='layoutgan_baseline_tiny')).__name__)"
+python -c "from dlhub.vision.local_zoo import list_local_arches; print(any('layoutgan_baseline_tiny' in x for x in list_local_arches()))"
 ```
 
 Expected: import succeeds and zoo listing exposes at least one layout generation variant.
@@ -264,7 +262,7 @@ Use the normal lazy import style.
 
 **Step 2: Add 10 robustness families**
 
-These may wrap or adapt toy classifiers, but must not add external libraries or actual attack pipelines beyond toy-first abstractions.
+These may wrap or adapt compact classifiers, but must not add external libraries or actual attack pipelines beyond compact-first abstractions.
 
 **Step 3: Wire into `vision` local zoo**
 
@@ -309,7 +307,7 @@ Use the same lazy package approach.
 
 **Step 2: Add 10 augmentation family files**
 
-Treat each family as a toy-first transform model / augmentation policy builder consistent with repo conventions.
+Treat each family as a compact-first transform model / augmentation policy builder consistent with repo conventions.
 
 **Step 3: Wire the direction into `vision` local zoo**
 
@@ -354,7 +352,7 @@ Use lazy imports.
 
 **Step 2: Add 10 synthesis family files**
 
-Keep them toy-first and AIGC-oriented without trying to reproduce heavy generation stacks.
+Keep them compact-first and AIGC-oriented without trying to reproduce heavy generation stacks.
 
 **Step 3: Wire into `vision` local zoo**
 
@@ -399,7 +397,7 @@ Match the lazy `multimodal` package conventions already used by `vlm`.
 
 **Step 2: Add 10 prompt learning family files**
 
-Each file should expose one builder with toy-first multimodal prompt outputs.
+Each file should expose one builder with compact-first multimodal prompt outputs.
 
 **Step 3: Add multimodal package export wiring**
 
@@ -445,7 +443,7 @@ Match the lazy package style already used by `dlhub/pointcloud/registration`.
 
 **Step 2: Add 10 gaussian splatting family files**
 
-Keep the files toy-first and stable. Do not attempt full renderer fidelity.
+Keep the files compact-first and stable. Do not attempt full renderer fidelity.
 
 **Step 3: Create a small `gaussian_splatting_zoo.py`**
 
@@ -481,7 +479,7 @@ Confirm each worktree only touched its owned direction plus the minimal central 
 Run:
 
 ```bash
-python -c "from dlhub.vision.local_zoo import list_local_arches; xs=list_local_arches(); print(sum(int(any(k in x for k in ['sepconv_interp_tiny','deshake_net_tiny','fgfa_det_tiny','docunet_warp_tiny','layoutgan_toy_tiny','fgsm_guard_tiny','mixup_aug_tiny','pix2pix_synth_tiny'])) for x in xs))"
+python -c "from dlhub.vision.local_zoo import list_local_arches; xs=list_local_arches(); print(sum(int(any(k in x for k in ['sepconv_interp_tiny','deshake_net_tiny','fgfa_det_tiny','docunet_warp_tiny','layoutgan_baseline_tiny','fgsm_guard_tiny','mixup_aug_tiny','pix2pix_synth_tiny'])) for x in xs))"
 python -c "from dlhub.multimodal.prompt_learning.coop_prompt import build_coop_prompt_prompt_learner; print('ok')"
 python -c "from dlhub.pointcloud.gaussian_splatting_zoo import list_local_arches; print(any('gaussian_splat_tiny' in x for x in list_local_arches()))"
 git diff --check

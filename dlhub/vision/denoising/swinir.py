@@ -125,7 +125,7 @@ class SwinIRBlock(nn.Module):
 
 
 class SwinIR(nn.Module):
-    """SwinIR-style denoiser (toy-first, pure torch).
+    """SwinIR-style denoiser (compact-first, pure torch).
 
     This is a compact window-attention model suitable for small images.
     """

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_outpainter, smoke_test_outpainter
+from ._common import build_baseline_outpainter, smoke_test_outpainter
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_dual_outpaint_outpainter(
     *, in_channels: int, variant: str = "dual_outpaint_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_outpainter(
+    return build_baseline_outpainter(
         family="dual_outpaint",
         mode="dual",
         variants=_VARIANTS,

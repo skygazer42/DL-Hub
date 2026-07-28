@@ -49,7 +49,7 @@ class HoiReasoningConfig:
     hidden_dim: int = 48
 
 
-class ToyHoiReasoningModel(nn.Module):
+class CompactHoiReasoningModel(nn.Module):
     def __init__(self, cfg: HoiReasoningConfig) -> None:
         super().__init__()
         self.region_encoder = RegionInteractionEncoder(
@@ -91,7 +91,7 @@ __all__ = [
     "HoiReasoningConfig",
     "MaskedTextEncoder",
     "RegionInteractionEncoder",
-    "ToyHoiReasoningModel",
+    "CompactHoiReasoningModel",
     "hoi_accuracy",
     "hoi_loss",
 ]

@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 5 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with paper-shaped implementations for HELM, The Pile, and The Stack, covering holistic multi-metric evaluation, corpus mixture construction, and permissive-license code data curation.
 
 **Architecture:** Implement `HELM` as a benchmark/runtime abstraction rather than a model backbone, exposing scenarios, metrics, reports, and prompt/completion logging. Implement `Pile` as a dataset-mixture abstraction with the paper’s 22 constituent sources and normalized sampling logic. Implement `The Stack` as a code-corpus pipeline with permissive-license filtering, near-deduplication, language accounting, and opt-out removal.

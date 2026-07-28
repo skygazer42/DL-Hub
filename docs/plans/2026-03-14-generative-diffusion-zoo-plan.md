@@ -1,10 +1,8 @@
 # Diffusion Zoo Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add a local diffusion zoo with 12 families / 36 arches, timeline metadata, recommendation profiles, and a CLI smoke script.
 
-**Architecture:** Mirror the existing `gan_zoo` pattern so each diffusion family lives in its own module with `_VARIANTS`, `build_<family>_diffusion(...)`, and a `__main__` smoke guard. Use a shared toy diffusion backbone in `dlhub/generative/diffusion/_common.py`, then layer registry, timeline, recommendation, and script utilities on top.
+**Architecture:** Mirror the existing `gan_zoo` pattern so each diffusion family lives in its own module with `_VARIANTS`, `build_<family>_diffusion(...)`, and a `__main__` smoke guard. Use a shared compact diffusion backbone in `dlhub/generative/diffusion/_common.py`, then layer registry, timeline, recommendation, and script utilities on top.
 
 **Tech Stack:** Python, PyTorch, pytest, ruff
 
@@ -64,7 +62,7 @@ Expected: FAIL because builders and family files do not exist yet.
 
 **Step 3: Write minimal implementation**
 
-Implement one shared `ToyDiffusion` model and keep each family module thin.
+Implement one shared `CompactDiffusion` model and keep each family module thin.
 
 **Step 4: Run test to verify it passes**
 

@@ -1,4 +1,4 @@
-"""Human mesh recovery models (toy-first, pure torch)."""
+"""Human mesh recovery models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

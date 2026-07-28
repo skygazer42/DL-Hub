@@ -23,13 +23,18 @@
 ```bash
 make lint
 make format
-make test
+make verify
+# 只对本次改动选择对应的 pytest 文件或测试函数
 ```
 
 ## 目录命名约定
 
 - 统一用小写 + 下划线：`lesson_01_mnist_lenet`
 - 避免空格与大小写混用（历史目录会逐步被新结构替代）
+- 缩放课程/模型使用 `compact`，程序生成数据使用 `synthetic`，共享实现工厂使用 `baseline`
+
+三类命名的边界与保真度升级规则见
+[实现契约：从课程到可验证系统](implementation-contract.md)。
 
 ## 训练脚手架约定（高一致性）
 
@@ -51,4 +56,3 @@ make test
 - `requirements.txt`：最小运行依赖
 - `requirements-dev.txt`：开发工具
 - `requirements-vision.txt` / `requirements-nlp.txt` 等：按轨道可选依赖
-

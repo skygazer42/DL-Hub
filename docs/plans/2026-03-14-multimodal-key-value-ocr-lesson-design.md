@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_12_key_value_ocr_toy_doc_vlm` as an independent teaching lesson for prompt-conditioned key-value OCR on toy document images.
+**Goal:** Add `tracks/multimodal/lesson_12_key_value_ocr_compact_doc_vlm` as an independent teaching lesson for prompt-conditioned key-value OCR on compact document images.
 
 ## Problem
 
@@ -26,7 +26,7 @@ What is still missing is a document-style OCR and field extraction lesson. The t
 
 ### Option A: Key-value OCR
 
-- synthesize toy document images with rows like `total: 37`
+- synthesize compact document images with rows like `total: 37`
 - ask a query like `read total`
 - generate the field value as text
 
@@ -42,7 +42,7 @@ Cons:
 
 ### Option B: Free-form DocVQA
 
-- synthesize toy receipts or forms
+- synthesize compact receipts or forms
 - ask open questions like `what is the total`
 - generate the answer
 
@@ -149,7 +149,7 @@ The lesson should render text locally without external OCR dependencies. A tiny 
 
 This keeps the lesson structurally close to lesson 9 while changing the domain and task:
 
-- lesson 9: general prompt-native toy VLM over object images
+- lesson 9: general prompt-native compact VLM over object images
 - lesson 12: document OCR and field extraction as prompt-conditioned text generation
 
 ## Losses and Metrics
@@ -169,7 +169,7 @@ Metrics:
 Follow the same conventions as earlier lessons:
 
 - CLI args for dataset size, image size, and text length
-- `outputs/multimodal/lesson_12_key_value_ocr_toy_doc_vlm/<run_name>/`
+- `outputs/multimodal/lesson_12_key_value_ocr_compact_doc_vlm/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

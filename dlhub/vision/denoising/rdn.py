@@ -51,7 +51,7 @@ class ResidualDenseBlock(nn.Module):
 
 
 class RDN(nn.Module):
-    """RDN (Residual Dense Network), adapted for image denoising (toy-first, pure torch).
+    """RDN (Residual Dense Network), adapted for image denoising (compact-first, pure torch).
 
     Original RDN is often used for super-resolution; here we keep resolution and predict a residual/noise map.
     Output is `x - residual`.

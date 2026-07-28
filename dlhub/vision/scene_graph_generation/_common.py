@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToySceneGraph(nn.Module):
+class CompactSceneGraph(nn.Module):
     def __init__(
         self,
         *,
@@ -49,7 +49,7 @@ class ToySceneGraph(nn.Module):
         return {"object_logits": self.obj(pooled), "relation_logits": self.rel(pooled)}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -62,7 +62,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToySceneGraph(
+    return CompactSceneGraph(
         family=str(family),
         in_channels=int(in_channels),
         num_objects=int(num_objects),

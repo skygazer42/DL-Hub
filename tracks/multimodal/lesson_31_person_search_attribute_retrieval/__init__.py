@@ -1,7 +1,7 @@
 from .data import DataConfig, Vocab, get_dataloaders
 from .model import (
     ModelConfig,
-    ToyPersonSearchModel,
+    CompactPersonSearchModel,
     person_search_loss,
     recall_at_k,
     retrieval_accuracy,
@@ -10,7 +10,7 @@ from .model import (
 __all__ = [
     "DataConfig",
     "ModelConfig",
-    "ToyPersonSearchModel",
+    "CompactPersonSearchModel",
     "Vocab",
     "get_dataloaders",
     "person_search_loss",

@@ -1,4 +1,4 @@
-"""Re-identification models (toy-first, pure torch)."""
+"""Re-identification models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

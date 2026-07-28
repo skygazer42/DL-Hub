@@ -1,8 +1,8 @@
-# Lesson 22: Toy Audio-Visual Event Localization
+# Lesson 22: Compact Audio-Visual Event Localization
 
 This lesson builds a compact multimodal localizer that answers when a queried event happens:
 
-- render short toy video clips with a single salient event frame
+- render short compact video clips with a single salient event frame
 - render aligned per-frame audio clips where the event frame is strongest
 - encode video, audio, and text query
 - fuse all three modalities per frame

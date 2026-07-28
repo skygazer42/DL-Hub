@@ -85,7 +85,7 @@ class PromptLearningConfig:
     init_temperature: float = 0.07
 
 
-class ToyPromptLearningVLM(nn.Module):
+class CompactPromptLearningVLM(nn.Module):
     def __init__(self, cfg: PromptLearningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -165,7 +165,7 @@ __all__ = [
     "FrozenTextEncoder",
     "PromptLearningConfig",
     "ProjectionHead",
-    "ToyPromptLearningVLM",
+    "CompactPromptLearningVLM",
     "VisionEncoder",
     "clip_contrastive_loss",
     "retrieval_accuracy",

@@ -1,8 +1,8 @@
-# Lesson 21: Toy Audio-Grounded Retrieval
+# Lesson 21: Compact Audio-Grounded Retrieval
 
 This lesson builds a compact multimodal retrieval setup where language queries are grounded in paired audio and video evidence.
 
-- synthesize short clips with moving shapes and aligned toy spectrograms
+- synthesize short clips with moving shapes and aligned compact spectrograms
 - generate segment-aware text queries (intro/middle/outro)
 - encode video and audio with tiny towers, then fuse them into clip embeddings
 - encode text queries and align clips/queries with a symmetric contrastive loss

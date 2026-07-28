@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointGroup(nn.Module):
-    """PointGroup (toy): graph features + center-based grouping masks."""
+    """PointGroup (compact): graph features + center-based grouping masks."""
 
     def __init__(
         self,

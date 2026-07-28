@@ -47,7 +47,7 @@ class FaceRetrievalReasoningConfig:
     num_identities: int = 5
 
 
-class ToyFaceRetrievalReasoningModel(nn.Module):
+class CompactFaceRetrievalReasoningModel(nn.Module):
     def __init__(self, cfg: FaceRetrievalReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -84,7 +84,7 @@ def retrieval_top1_accuracy(logits: torch.Tensor, target_identity: torch.Tensor)
 
 __all__ = [
     "FaceRetrievalReasoningConfig",
-    "ToyFaceRetrievalReasoningModel",
+    "CompactFaceRetrievalReasoningModel",
     "face_retrieval_loss",
     "retrieval_top1_accuracy",
 ]

@@ -6,11 +6,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_markdown_table_constrained_prompting_batch_mask_and_loss_smoke() -> None:
-    from tracks.llm.lesson_41_toy_markdown_table_constrained_prompting.data import (
+    from tracks.llm.lesson_41_compact_markdown_table_constrained_prompting.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.llm.lesson_41_toy_markdown_table_constrained_prompting.model import (
+    from tracks.llm.lesson_41_compact_markdown_table_constrained_prompting.model import (
         MarkdownTableConstrainedPromptingTransformerLM,
         ModelConfig,
     )
@@ -60,8 +60,8 @@ def test_llm_markdown_table_constrained_prompting_batch_mask_and_loss_smoke() ->
 
 
 def test_llm_markdown_table_constrained_prompting_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_41_toy_markdown_table_constrained_prompting.data import DataConfig
-    from tracks.llm.lesson_41_toy_markdown_table_constrained_prompting.train import (
+    from tracks.llm.lesson_41_compact_markdown_table_constrained_prompting.data import DataConfig
+    from tracks.llm.lesson_41_compact_markdown_table_constrained_prompting.train import (
         TrainConfig,
         run_training,
     )
@@ -102,7 +102,7 @@ def test_llm_markdown_table_constrained_prompting_training_smoke(tmp_path) -> No
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_41_toy_markdown_table_constrained_prompting"
+        / "lesson_41_compact_markdown_table_constrained_prompting"
         / "pytest_markdown_table_constrained_prompting_smoke"
     )
     assert (run_dir / "config.json").is_file()

@@ -1,4 +1,4 @@
-"""sign digit classification models (toy-first, pure torch)."""
+"""sign digit classification models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Lane detection models (pure torch, toy-first).
+"""Lane detection models (pure torch, compact-first).
 
 Conventions:
 - One algorithm family per file (variants live in that file).

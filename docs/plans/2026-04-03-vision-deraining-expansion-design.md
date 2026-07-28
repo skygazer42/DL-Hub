@@ -3,7 +3,7 @@
 **Goal**
 
 Expand the existing synthetic denoising lesson with a stronger, more coherent
-single-image deraining cluster by adding six toy-first deraining families:
+single-image deraining cluster by adding six compact-first deraining families:
 
 - `ddn`
 - `spanet`
@@ -29,7 +29,7 @@ Input:
 Output:
 - restored image tensor with shape `(B, C, H, W)`
 
-The implementation is educational and toy-first:
+The implementation is educational and compact-first:
 - no pretrained weights
 - no external datasets
 - no paper-exact reproduction requirements
@@ -101,7 +101,7 @@ Add six deraining families that cover distinct ideas.
 Paper family:
 - Deep Detail Network style deraining
 
-Toy interpretation:
+Compact interpretation:
 - shallow residual CNN
 - derive a high-frequency detail branch from the rainy input
 - predict rain residual and subtract it from the input
@@ -114,7 +114,7 @@ Teaching value:
 Paper family:
 - Spatial Attentive Network style deraining
 
-Toy interpretation:
+Compact interpretation:
 - residual CNN with spatial attention map
 - attention map highlights rain-dominant regions before residual removal
 
@@ -126,7 +126,7 @@ Teaching value:
 Paper family:
 - Density-aware Image Deraining using a multi-stream dense network
 
-Toy interpretation:
+Compact interpretation:
 - multi-branch dense CNN
 - branch mixing acts as an implicit rain-density conditioner
 - optionally expose an internal rain-density logits tensor, but final public
@@ -140,7 +140,7 @@ Teaching value:
 Paper family:
 - rain/background decomposition with iterative refinement
 
-Toy interpretation:
+Compact interpretation:
 - unrolled iterative block
 - alternate between rain estimate and clean estimate refinement
 - small fixed number of stages for CPU stability
@@ -154,7 +154,7 @@ Teaching value:
 Paper family:
 - Transformer weather restoration
 
-Toy interpretation:
+Compact interpretation:
 - lightweight patch embedding + transformer blocks + convolutional head
 - reuse existing padding helpers where spatial divisibility matters
 
@@ -167,7 +167,7 @@ Teaching value:
 Paper family:
 - deraining-focused transformer family
 
-Toy interpretation:
+Compact interpretation:
 - hybrid conv + token mixer / attention blocks
 - emphasize local streak structure plus moderate global context
 
@@ -302,7 +302,7 @@ Do not include in this iteration:
 - paired real rain datasets
 - adversarial / perceptual / SSIM-heavy training changes
 - video deraining
-- rain accumulation / haze coupling beyond the current toy rain generator
+- rain accumulation / haze coupling beyond the current compact rain generator
 
 This iteration optimizes for:
 - stronger algorithm coverage inside the existing lesson

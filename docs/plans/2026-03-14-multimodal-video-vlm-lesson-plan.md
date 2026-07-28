@@ -1,10 +1,8 @@
 # Multimodal Lesson 13 Video-VLM-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+**Goal:** Add `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa` as a teaching lesson for short-video temporal QA.
 
-**Goal:** Add `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa` as a teaching lesson for short-video temporal QA.
-
-**Architecture:** The lesson will synthesize short toy videos with one moving colored shape. A shared frame encoder will process every frame, a lightweight temporal aggregator will combine frame features into video tokens, and a decoder-style LM will answer prompt-conditioned questions about color, shape, and motion direction.
+**Architecture:** The lesson will synthesize short compact videos with one moving colored shape. A shared frame encoder will process every frame, a lightweight temporal aggregator will combine frame features into video tokens, and a decoder-style LM will answer prompt-conditioned questions about color, shape, and motion direction.
 
 **Tech Stack:** Python, PyTorch, pytest, ruff
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_13_video_vlm_toy_temporal_qa` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_13_video_vlm_toy_temporal_qa.train`
+- `lesson_13_video_vlm_compact_temporal_qa` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_13_video_vlm_compact_temporal_qa.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the temporal QA dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/__init__.py`
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/data.py`
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/README.md`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/__init__.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/data.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/README.md`
 - Test: `tests/test_tracks_multimodal_video_vlm.py`
 
 **Step 1: Write the failing test**
@@ -81,7 +79,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the temporal video VLM model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/model.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/model.py`
 - Test: `tests/test_tracks_multimodal_video_vlm.py`
 
 **Step 1: Write the failing test**
@@ -117,7 +115,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and track integration
 
 **Files:**
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/train.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_video_vlm.py`
 
@@ -125,13 +123,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_13_video_vlm_toy_temporal_qa.train --epochs 1 --num-samples 64 --batch-size 8 --seq-len 4 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_video_vlm_smoke`
+`python -m tracks.multimodal.lesson_13_video_vlm_compact_temporal_qa.train --epochs 1 --num-samples 64 --batch-size 8 --seq-len 4 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_video_vlm_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_13_video_vlm_toy_temporal_qa/pytest_video_vlm_smoke/config.json`
-- `outputs/multimodal/lesson_13_video_vlm_toy_temporal_qa/pytest_video_vlm_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_13_video_vlm_toy_temporal_qa/pytest_video_vlm_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_13_video_vlm_compact_temporal_qa/pytest_video_vlm_smoke/config.json`
+- `outputs/multimodal/lesson_13_video_vlm_compact_temporal_qa/pytest_video_vlm_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_13_video_vlm_compact_temporal_qa/pytest_video_vlm_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -161,11 +159,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_video_vlm.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/__init__.py`
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/data.py`
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/model.py`
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/train.py`
-- Create: `tracks/multimodal/lesson_13_video_vlm_toy_temporal_qa/README.md`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/__init__.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/data.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/model.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/train.py`
+- Create: `tracks/multimodal/lesson_13_video_vlm_compact_temporal_qa/README.md`
 
 **Step 1: Run lint**
 
@@ -188,6 +186,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_13_video_vlm_toy_temporal_qa --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_13_video_vlm_compact_temporal_qa --dry-run`
 
 Expected: lesson 13 appears in the listing and resolves to the train module.

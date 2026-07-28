@@ -1,16 +1,16 @@
 """PointCloud track smoke checks (torch-only)."""
 
 
-def check_zoo_toy_classification() -> None:
+def check_zoo_compact_classification() -> None:
     # 4.3) PointCloud lesson: local zoo (torch-only, synthetic data).
     from dlhub.paths import build_run_paths
-    from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.data import (
+    from tracks.pointcloud.lesson_04_pointcloud_zoo_compact_classification.data import (
         DataConfig as PCData,
     )
-    from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train import (
+    from tracks.pointcloud.lesson_04_pointcloud_zoo_compact_classification.train import (
         TrainConfig as PCTrain,
     )
-    from tracks.pointcloud.lesson_04_pointcloud_zoo_toy_classification.train import (
+    from tracks.pointcloud.lesson_04_pointcloud_zoo_compact_classification.train import (
         run_training as run_pc,
     )
 
@@ -39,7 +39,7 @@ def check_zoo_toy_classification() -> None:
 
     pc_paths = build_run_paths(
         track="pointcloud",
-        lesson="lesson_04_pointcloud_zoo_toy_classification",
+        lesson="lesson_04_pointcloud_zoo_compact_classification",
         run_name="smoke",
     )
     assert (pc_paths.run_dir / "config.json").is_file()
@@ -47,16 +47,16 @@ def check_zoo_toy_classification() -> None:
     assert (pc_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
 
-def check_pointnet_toy_classification() -> None:
-    # 4.13) PointCloud lesson: toy PointNet classification (torch-only).
+def check_pointnet_compact_classification() -> None:
+    # 4.13) PointCloud lesson: compact PointNet classification (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.pointcloud.lesson_01_pointnet_toy_classification.data import (
+    from tracks.pointcloud.lesson_01_pointnet_compact_classification.data import (
         DataConfig as PcData,
     )
-    from tracks.pointcloud.lesson_01_pointnet_toy_classification.train import (
+    from tracks.pointcloud.lesson_01_pointnet_compact_classification.train import (
         TrainConfig as PcTrain,
     )
-    from tracks.pointcloud.lesson_01_pointnet_toy_classification.train import (
+    from tracks.pointcloud.lesson_01_pointnet_compact_classification.train import (
         run_training as run_pc,
     )
 
@@ -83,21 +83,21 @@ def check_pointnet_toy_classification() -> None:
     )
 
     pc_paths = build_run_paths(
-        track="pointcloud", lesson="lesson_01_pointnet_toy_classification", run_name="smoke"
+        track="pointcloud", lesson="lesson_01_pointnet_compact_classification", run_name="smoke"
     )
     assert (pc_paths.run_dir / "config.json").is_file()
     assert (pc_paths.run_dir / "metrics.jsonl").is_file()
     assert (pc_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
 
-def check_dgcnn_toy_classification() -> None:
-    # 4.14) PointCloud lesson: toy DGCNN classification (torch-only).
+def check_dgcnn_compact_classification() -> None:
+    # 4.14) PointCloud lesson: compact DGCNN classification (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.data import DataConfig as DgData
-    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.train import (
+    from tracks.pointcloud.lesson_02_dgcnn_compact_classification.data import DataConfig as DgData
+    from tracks.pointcloud.lesson_02_dgcnn_compact_classification.train import (
         TrainConfig as DgTrain,
     )
-    from tracks.pointcloud.lesson_02_dgcnn_toy_classification.train import (
+    from tracks.pointcloud.lesson_02_dgcnn_compact_classification.train import (
         run_training as run_dg,
     )
 
@@ -126,23 +126,23 @@ def check_dgcnn_toy_classification() -> None:
     )
 
     dg_paths = build_run_paths(
-        track="pointcloud", lesson="lesson_02_dgcnn_toy_classification", run_name="smoke"
+        track="pointcloud", lesson="lesson_02_dgcnn_compact_classification", run_name="smoke"
     )
     assert (dg_paths.run_dir / "config.json").is_file()
     assert (dg_paths.run_dir / "metrics.jsonl").is_file()
     assert (dg_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
 
-def check_pointnet2_toy_classification() -> None:
-    # 4.15) PointCloud lesson: toy PointNet2 classification (torch-only).
+def check_pointnet2_compact_classification() -> None:
+    # 4.15) PointCloud lesson: compact PointNet2 classification (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.data import (
+    from tracks.pointcloud.lesson_03_pointnet2_compact_classification.data import (
         DataConfig as P2Data,
     )
-    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.train import (
+    from tracks.pointcloud.lesson_03_pointnet2_compact_classification.train import (
         TrainConfig as P2Train,
     )
-    from tracks.pointcloud.lesson_03_pointnet2_toy_classification.train import (
+    from tracks.pointcloud.lesson_03_pointnet2_compact_classification.train import (
         run_training as run_p2,
     )
 
@@ -173,7 +173,7 @@ def check_pointnet2_toy_classification() -> None:
     )
 
     p2_paths = build_run_paths(
-        track="pointcloud", lesson="lesson_03_pointnet2_toy_classification", run_name="smoke"
+        track="pointcloud", lesson="lesson_03_pointnet2_compact_classification", run_name="smoke"
     )
     assert (p2_paths.run_dir / "config.json").is_file()
     assert (p2_paths.run_dir / "metrics.jsonl").is_file()

@@ -1,4 +1,4 @@
-"""face verification models (toy-first, pure torch)."""
+"""face verification models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

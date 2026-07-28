@@ -1,4 +1,4 @@
-"""anchor free detection models (toy-first, pure torch)."""
+"""anchor free detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

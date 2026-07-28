@@ -11,9 +11,9 @@ def _repo_root() -> Path:
 
 
 def test_llm_rlhf_ppo_batch_and_loss_smoke() -> None:
-    from tracks.llm.lesson_09_toy_rlhf_ppo.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_09_toy_rlhf_ppo.model import ModelConfig, ToyPolicyLM, ToyTokenRewardModel
-    from tracks.llm.lesson_09_toy_rlhf_ppo.train import ppo_policy_loss
+    from tracks.llm.lesson_09_compact_rlhf_ppo.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_09_compact_rlhf_ppo.model import ModelConfig, CompactPolicyLM, CompactTokenRewardModel
+    from tracks.llm.lesson_09_compact_rlhf_ppo.train import ppo_policy_loss
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -38,7 +38,7 @@ def test_llm_rlhf_ppo_batch_and_loss_smoke() -> None:
     assert tuple(batch["response_mask"].shape) == (8, 20)
     assert (batch["response_mask"].sum(dim=1) > 0).all()
 
-    policy = ToyPolicyLM(
+    policy = CompactPolicyLM(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -50,7 +50,7 @@ def test_llm_rlhf_ppo_batch_and_loss_smoke() -> None:
             dropout=0.0,
         )
     )
-    reference = ToyPolicyLM(
+    reference = CompactPolicyLM(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -62,7 +62,7 @@ def test_llm_rlhf_ppo_batch_and_loss_smoke() -> None:
             dropout=0.0,
         )
     )
-    reward_model = ToyTokenRewardModel(
+    reward_model = CompactTokenRewardModel(
         pad_id=vocab.pad_id,
         good_token_id=vocab.good_token_id,
         bad_token_id=vocab.bad_token_id,
@@ -93,10 +93,10 @@ def test_llm_rlhf_ppo_batch_and_loss_smoke() -> None:
 
 
 def test_llm_rlhf_ppo_training_smoke() -> None:
-    from tracks.llm.lesson_09_toy_rlhf_ppo.data import DataConfig
-    from tracks.llm.lesson_09_toy_rlhf_ppo.train import TrainConfig, run_training
+    from tracks.llm.lesson_09_compact_rlhf_ppo.data import DataConfig
+    from tracks.llm.lesson_09_compact_rlhf_ppo.train import TrainConfig, run_training
 
-    run_dir = _repo_root() / "outputs" / "llm" / "lesson_09_toy_rlhf_ppo" / "pytest_rlhf_ppo_smoke"
+    run_dir = _repo_root() / "outputs" / "llm" / "lesson_09_compact_rlhf_ppo" / "pytest_rlhf_ppo_smoke"
     if run_dir.exists():
         shutil.rmtree(run_dir)
 

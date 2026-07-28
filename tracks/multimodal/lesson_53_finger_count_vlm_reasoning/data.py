@@ -144,7 +144,7 @@ def _sample_finger_count(*, image_size: int, seed: int) -> tuple[np.ndarray, int
     return image, target
 
 
-class ToyFingerCountReasoningDataset(Dataset):
+class SyntheticFingerCountReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 48:
             raise ValueError("image_size must be >= 48")
@@ -172,7 +172,7 @@ class ToyFingerCountReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFingerCountReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticFingerCountReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -195,7 +195,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyFingerCountReasoningDataset",
+    "SyntheticFingerCountReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

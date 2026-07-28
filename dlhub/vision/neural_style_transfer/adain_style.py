@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_stylizer, smoke_test_stylizer
+from ._common import build_baseline_stylizer, smoke_test_stylizer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_adain_style_stylizer(
     variant: str = "adain_style_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_stylizer(
+    return build_baseline_stylizer(
         family="adain_style",
         mode="adain",
         variants=_VARIANTS,

@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class MHSCNetVideoSummarizer(nn.Module):
-    """MHSCNet-style shot-aware summarizer (toy, unimodal adaptation).
+    """MHSCNet-style shot-aware summarizer (compact, unimodal adaptation).
 
     This keeps the key inductive bias:
     - multi-scale temporal convolutions
@@ -49,7 +49,7 @@ class MHSCNetVideoSummarizer(nn.Module):
         ms = torch.cat([self.ms3(x), self.ms5(x), self.ms7(x)], dim=1)
         fused = self.fuse(ms).transpose(1, 2)
 
-        # Toy shot cues from temporal feature differences.
+        # Compact shot cues from temporal feature differences.
         delta = (feat[:, 1:] - feat[:, :-1]).pow(2).mean(dim=-1, keepdim=True).sqrt()
         boundary = torch.cat([torch.zeros_like(delta[:, :1]), delta], dim=1)
         boundary = torch.tanh(boundary)

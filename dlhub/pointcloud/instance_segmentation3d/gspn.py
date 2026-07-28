@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class GSPN(nn.Module):
-    """GSPN (toy): sample proposals and pool neighborhood features as 'shape proposals'."""
+    """GSPN (compact): sample proposals and pool neighborhood features as 'shape proposals'."""
 
     def __init__(
         self,

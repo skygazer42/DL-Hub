@@ -1,11 +1,11 @@
-"""FG-CLIP (fine-grained CLIP-style) - toy-first FGVC classifier.
+"""FG-CLIP (fine-grained CLIP-style) - compact-first FGVC classifier.
 
 Reference:
 - "FG-CLIP: Fine-grained Visual and Textual Alignment" (arXiv 2025)
 
 This implementation is a small, offline-friendly CLIP-shaped model:
 - image encoder: tiny ViT-like patch encoder + token selection
-- text encoder: toy prompt+class-token transformer (no real text, no downloads)
+- text encoder: compact prompt+class-token transformer (no real text, no downloads)
 - logits: scaled cosine similarity between image embeddings and per-class "text" embeddings
 """
 
@@ -26,7 +26,7 @@ from ._common import (
 )
 
 
-class ToyTextPromptEncoder(nn.Module):
+class CompactTextPromptEncoder(nn.Module):
     def __init__(
         self,
         *,
@@ -110,7 +110,7 @@ class ClippartFgvc(nn.Module):
         text_depth = max(1, int(spec["depth"]) // 2)
         text_heads = max(1, min(int(spec["heads"]), 8))
         prompt_len = 6 if int(embed) >= 128 else 4
-        self.text_encoder = ToyTextPromptEncoder(
+        self.text_encoder = CompactTextPromptEncoder(
             num_classes=int(num_classes),
             embed_dim=int(embed),
             prompt_len=int(prompt_len),

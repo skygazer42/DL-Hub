@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PCTSeg(nn.Module):
-    """PCT semantic segmentation (toy): transformer with lighter positional encoding."""
+    """PCT semantic segmentation (compact): transformer with lighter positional encoding."""
 
     def __init__(
         self,

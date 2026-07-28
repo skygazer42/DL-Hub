@@ -1,5 +1,5 @@
-from .data import ATTRIBUTE_TO_ID, ATTRIBUTES, DataConfig, ToyFaceCaptionDataset, Vocab, get_dataloaders
-from .model import FaceCaptionGroundingConfig, ToyFaceCaptionGroundingModel, grounding_accuracy, grounding_loss
+from .data import ATTRIBUTE_TO_ID, ATTRIBUTES, DataConfig, SyntheticFaceCaptionDataset, Vocab, get_dataloaders
+from .model import FaceCaptionGroundingConfig, CompactFaceCaptionGroundingModel, grounding_accuracy, grounding_loss
 from .train import TrainConfig, run_training
 
 __all__ = [
@@ -7,8 +7,8 @@ __all__ = [
     "ATTRIBUTES",
     "DataConfig",
     "FaceCaptionGroundingConfig",
-    "ToyFaceCaptionDataset",
-    "ToyFaceCaptionGroundingModel",
+    "SyntheticFaceCaptionDataset",
+    "CompactFaceCaptionGroundingModel",
     "TrainConfig",
     "Vocab",
     "get_dataloaders",

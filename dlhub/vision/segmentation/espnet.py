@@ -48,7 +48,7 @@ class _ESPBlock(nn.Module):
 
 
 class ESPNet(nn.Module):
-    """ESPNet semantic segmentation (toy-first)."""
+    """ESPNet semantic segmentation (compact-first)."""
 
     def __init__(
         self,

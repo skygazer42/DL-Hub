@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class BevformerDetDetector3D(nn.Module):
-    """Toy query-based 3D detector for the bevformer_det family."""
+    """Compact query-based 3D detector for the bevformer_det family."""
 
     def __init__(
         self,

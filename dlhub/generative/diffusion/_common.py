@@ -37,7 +37,7 @@ def _resolve_device(device: torch.device | str | None) -> torch.device:
     return torch.device(device)
 
 
-class ToyDiffusion(nn.Module):
+class CompactDiffusion(nn.Module):
     def __init__(
         self,
         *,
@@ -225,7 +225,7 @@ class ToyDiffusion(nn.Module):
         return out
 
 
-def build_toy_diffusion_family(
+def build_baseline_diffusion_family(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -244,7 +244,7 @@ def build_toy_diffusion_family(
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
     latent = max(int(latent_dim), int(cfg["latent"]))
-    return ToyDiffusion(
+    return CompactDiffusion(
         family=str(family),
         in_channels=int(in_channels),
         image_size=int(image_size),
@@ -277,4 +277,4 @@ def smoke_test_diffusion(builder: Callable[..., nn.Module], variant: str) -> Non
     print("ok")
 
 
-__all__ = ["ToyDiffusion", "build_toy_diffusion_family", "smoke_test_diffusion"]
+__all__ = ["CompactDiffusion", "build_baseline_diffusion_family", "smoke_test_diffusion"]

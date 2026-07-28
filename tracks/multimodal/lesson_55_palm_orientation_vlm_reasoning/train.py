@@ -16,7 +16,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, get_dataloaders
 from .model import (
     PalmOrientationReasoningConfig,
-    ToyPalmOrientationReasoningModel,
+    CompactPalmOrientationReasoningModel,
     compute_mae,
     palm_orientation_loss,
 )
@@ -38,7 +38,7 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 55 (Multimodal): toy palm-orientation VLM reasoning.")
+    parser = argparse.ArgumentParser(description="Lesson 55 (Multimodal): compact palm-orientation VLM reasoning.")
     parser.add_argument("--num-samples", type=int, default=512)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--image-size", type=int, default=64)
@@ -94,7 +94,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyPalmOrientationReasoningModel,
+    model: CompactPalmOrientationReasoningModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -146,7 +146,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyPalmOrientationReasoningModel(
+    model = CompactPalmOrientationReasoningModel(
         PalmOrientationReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

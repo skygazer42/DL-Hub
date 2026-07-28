@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class TOODHead(nn.Module):
-    """TOOD-style task aligned head (toy)."""
+    """TOOD-style task aligned head (compact)."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -34,7 +34,7 @@ class TOODHead(nn.Module):
 
 
 class TOODDetector(nn.Module):
-    """TOOD-style detector (toy-first)."""
+    """TOOD-style detector (compact-first)."""
 
     def __init__(
         self,

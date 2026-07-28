@@ -1,6 +1,6 @@
 # Pupil detection
 
-Toy-first local families for `pupil detection`.
+Compact-first local families for `pupil detection`.
 
 ## Families
 

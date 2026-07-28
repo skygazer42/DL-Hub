@@ -7,7 +7,7 @@ from dlhub.vision.segmentation._common import check_nchw
 
 
 class TopFormerSeg(nn.Module):
-    """TopFormerSeg-style semantic segmentation (toy-first).
+    """TopFormerSeg-style semantic segmentation (compact-first).
 
     This compact version uses a single patch embedding stage + Transformer encoder,
     then a lightweight conv head to predict logits.

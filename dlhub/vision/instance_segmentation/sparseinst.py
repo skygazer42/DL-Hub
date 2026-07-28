@@ -7,7 +7,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class SparseInst(nn.Module):
-    """SparseInst-style instance segmentation (toy-first).
+    """SparseInst-style instance segmentation (compact-first).
 
     Learnable instance queries predict class/box and mask coefficients over prototypes.
     """

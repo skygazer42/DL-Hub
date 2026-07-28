@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class VarifocalHead(nn.Module):
-    """VarifocalNet-style head (toy): cls + box + iou branch."""
+    """VarifocalNet-style head (compact): cls + box + iou branch."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -32,7 +32,7 @@ class VarifocalHead(nn.Module):
 
 
 class VarifocalNetDetector(nn.Module):
-    """VarifocalNet-style single-stage detector (toy-first)."""
+    """VarifocalNet-style single-stage detector (compact-first)."""
 
     def __init__(
         self,

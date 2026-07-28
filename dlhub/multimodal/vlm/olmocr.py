@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_vlm_family, smoke_test_vlm
+from ._common import build_baseline_vlm_family, smoke_test_vlm
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "olmocr_tiny": {"width": 88, "depth": 2, "embed": 64},
@@ -22,7 +22,7 @@ def build_olmocr_vlm(
     width_mult: float = 1.0,
     dropout: float = 0.0,
 ) -> nn.Module:
-    return build_toy_vlm_family(
+    return build_baseline_vlm_family(
         family="olmocr",
         variants=_VARIANTS,
         image_size=int(image_size),

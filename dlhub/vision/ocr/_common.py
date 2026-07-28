@@ -37,7 +37,7 @@ class TinyOCREncoder(nn.Module):
         return feat.squeeze(2).transpose(1, 2)
 
 
-class ToyOCRModel(nn.Module):
+class CompactOCRModel(nn.Module):
     def __init__(
         self,
         *,
@@ -81,7 +81,7 @@ class ToyOCRModel(nn.Module):
         return {"logits": logits, "tokens": tokens}
 
 
-def build_toy_ocr_model(
+def build_baseline_ocr_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -94,7 +94,7 @@ def build_toy_ocr_model(
 ) -> nn.Module:
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyOCRModel(
+    return CompactOCRModel(
         family=str(family),
         in_channels=int(in_channels),
         vocab_size=int(vocab_size),

@@ -1,6 +1,6 @@
 # Homography estimation
 
-Toy-first local families for `homography estimation`.
+Compact-first local families for `homography estimation`.
 
 ## Families
 

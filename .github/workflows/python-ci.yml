@@ -29,6 +29,18 @@ jobs:
         run: |
           make lint
 
+      - name: Lesson contracts
+        run: |
+          make contract
+
+      - name: Model fidelity metadata
+        run: |
+          make fidelity
+
+      - name: Repository narrative contract
+        run: |
+          make narrative
+
       - name: Tests (pytest)
         run: |
           pytest

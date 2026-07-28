@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "humanmask2former_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_humanmask2former_human_parser(
     *, in_channels: int, variant: str = "humanmask2former_small", width_mult: float = 1.0, **kwargs
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="humanmask2former",
         variants=_VARIANTS,
         in_channels=int(in_channels),

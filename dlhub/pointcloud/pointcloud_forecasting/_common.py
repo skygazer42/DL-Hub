@@ -111,7 +111,7 @@ class TinyForecastingModel(nn.Module):
         return {"forecast": torch.stack(forecasts, dim=1)}
 
 
-def build_toy_forecasting_model(
+def build_baseline_forecasting_model(
     *,
     family: str,
     mode: str,

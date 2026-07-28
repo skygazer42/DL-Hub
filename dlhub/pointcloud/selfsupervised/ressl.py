@@ -108,7 +108,7 @@ class ProjectionHead(nn.Module):
 class ReSSLPointNet(nn.Module):
     """ReSSL-style relational distillation with a momentum teacher + queue.
 
-    Toy-first design:
+    Compact-first design:
     - student sees "strong" augmentation
     - teacher sees "weak" augmentation (EMA updated from student)
     - loss matches student distribution over (batch teacher keys + queue) to teacher distribution
@@ -198,7 +198,7 @@ class ReSSLPointNet(nn.Module):
         if bsz == 0:
             return
 
-        # If batch is larger than queue, keep the last K keys (still deterministic for toy).
+        # If batch is larger than queue, keep the last K keys (still deterministic for compact).
         if bsz >= k:
             keys = keys[-k:]
             bsz = int(keys.shape[0])

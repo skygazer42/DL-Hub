@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_ws_detector, smoke_test_ws
+from ._common import build_baseline_ws_detector, smoke_test_ws
 
 _VARIANTS = {
     "tokendet_ws_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_tokendet_ws_ws_detector(
     variant: str = "tokendet_ws_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_ws_detector(
+    return build_baseline_ws_detector(
         family="tokendet_ws",
         variants=_VARIANTS,
         in_channels=int(in_channels),

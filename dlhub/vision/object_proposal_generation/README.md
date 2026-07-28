@@ -1,6 +1,6 @@
 # Object Proposal Generation
 
-Toy-first local families for `object proposal generation`.
+Compact-first local families for `object proposal generation`.
 
 ## Families
 

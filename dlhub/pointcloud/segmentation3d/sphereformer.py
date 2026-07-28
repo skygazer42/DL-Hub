@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SphereFormerSeg(nn.Module):
-    """SphereFormer semantic segmentation (toy spherical projection encoder)."""
+    """SphereFormer semantic segmentation (compact spherical projection encoder)."""
 
     def __init__(
         self,

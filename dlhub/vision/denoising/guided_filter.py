@@ -20,7 +20,7 @@ def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
 
 
 class GuidedFilter(nn.Module):
-    """Guided filter baseline (torch-only, toy-first).
+    """Guided filter baseline (torch-only, compact-first).
 
     This implements a simple per-channel guided filter using the input image as guidance:
       q = mean_a * I + mean_b

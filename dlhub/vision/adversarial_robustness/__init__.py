@@ -1,4 +1,4 @@
-"""Adversarial robustness models (toy-first, pure torch)."""
+"""Adversarial robustness models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

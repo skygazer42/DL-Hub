@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_llava_batch_shapes() -> None:
-    from tracks.multimodal.lesson_03_llava_toy_instruction_vlm.data import (
+    from tracks.multimodal.lesson_03_llava_compact_instruction_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -45,13 +45,13 @@ def test_multimodal_llava_batch_shapes() -> None:
 
 
 def test_multimodal_llava_model_outputs() -> None:
-    from tracks.multimodal.lesson_03_llava_toy_instruction_vlm.data import (
+    from tracks.multimodal.lesson_03_llava_compact_instruction_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_03_llava_toy_instruction_vlm.model import (
+    from tracks.multimodal.lesson_03_llava_compact_instruction_vlm.model import (
         ModelConfig,
-        ToyLLaVAModel,
+        CompactLLaVAModel,
         qa_loss,
     )
 
@@ -67,7 +67,7 @@ def test_multimodal_llava_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyLLaVAModel(
+    model = CompactLLaVAModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -97,7 +97,7 @@ def test_multimodal_llava_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_03_llava_toy_instruction_vlm"
+        / "lesson_03_llava_compact_instruction_vlm"
         / "pytest_llava_smoke"
     )
     if run_dir.exists():
@@ -107,7 +107,7 @@ def test_multimodal_llava_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_03_llava_toy_instruction_vlm.train",
+            "tracks.multimodal.lesson_03_llava_compact_instruction_vlm.train",
             "--epochs",
             "1",
             "--num-samples",

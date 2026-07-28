@@ -1,6 +1,6 @@
 # Lesson 17 - Synthetic Super-Resolution
 
-This lesson trains a toy-first paired super-resolution model on synthetic images.
+This lesson trains a compact-first paired super-resolution model on synthetic images.
 
 It is designed to be CPU-friendly and self-contained. No external dataset download is required.
 

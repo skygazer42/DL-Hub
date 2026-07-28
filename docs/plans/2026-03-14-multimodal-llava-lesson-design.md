@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_03_llava_toy_instruction_vlm` as an independent LLaVA-inspired teaching lesson for single-turn visual instruction following with short generated answers.
+**Goal:** Add `tracks/multimodal/lesson_03_llava_compact_instruction_vlm` as an independent LLaVA-inspired teaching lesson for single-turn visual instruction following with short generated answers.
 
 ## Problem
 
@@ -17,7 +17,7 @@ It still lacks the next step in the progression: a decoder-style instruction VLM
 
 This lesson adds one full runnable module:
 
-- `tracks/multimodal/lesson_03_llava_toy_instruction_vlm/`
+- `tracks/multimodal/lesson_03_llava_compact_instruction_vlm/`
 - focused tests for discovery, batch contract, model outputs, and smoke training
 - track README updates so the new lesson appears in the roadmap
 
@@ -141,7 +141,7 @@ Metrics:
 The training script should follow the same lesson conventions already used in the track:
 
 - CLI args for data size, widths, epoch count, and batch caps
-- `outputs/multimodal/lesson_03_llava_toy_instruction_vlm/<run_name>/`
+- `outputs/multimodal/lesson_03_llava_compact_instruction_vlm/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample rows should contain:
@@ -176,7 +176,7 @@ Focused tests should cover:
 
 Lesson 3 is complete when:
 
-- `lesson_03_llava_toy_instruction_vlm` is discoverable through `scripts/run_lesson.py`
+- `lesson_03_llava_compact_instruction_vlm` is discoverable through `scripts/run_lesson.py`
 - it runs as a module on CPU
 - it contains an independent teaching implementation
 - focused tests for discovery, batch contract, model outputs, and smoke training pass

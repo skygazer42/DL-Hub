@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_anomaly_detector, smoke_test_anomaly
+from ._common import build_baseline_anomaly_detector, smoke_test_anomaly
 
 _VARIANTS = {
     "manipulationformer_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_manipulationformer_(
     *, in_channels: int, variant: str = "manipulationformer_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_anomaly_detector(
+    return build_baseline_anomaly_detector(
         family="manipulationformer",
         variants=_VARIANTS,
         in_channels=int(in_channels),

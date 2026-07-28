@@ -73,7 +73,7 @@ class TinyDocBinarizer(nn.Module):
         }
 
 
-def build_toy_doc_binarizer(
+def build_baseline_doc_binarizer(
     *,
     family: str,
     mode: str,

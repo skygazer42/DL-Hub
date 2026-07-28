@@ -46,7 +46,7 @@ class _FFDNetBackbone(nn.Module):
 
 
 class FFDNetDenoiser(nn.Module):
-    """FFDNet (Fast and Flexible Denoising CNN), torch-only toy implementation.
+    """FFDNet (Fast and Flexible Denoising CNN), torch-only compact implementation.
 
     FFDNet conditions on a (global) noise level by concatenating a noise map.
     This wrapper:

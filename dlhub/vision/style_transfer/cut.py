@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class CUTStyleTransfer(nn.Module):
-    """CUT-style unpaired translation (toy).
+    """CUT-style unpaired translation (compact).
 
     This keeps only the high-level idea:
     - generator A->B

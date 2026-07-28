@@ -1,9 +1,9 @@
-"""VideoRNN (CNN + GRU) - toy-first video action classifier.
+"""VideoRNN (CNN + GRU) - compact-first video action classifier.
 
 Reference (trend):
 - "Bringing RNNs Back to Efficient Open-Ended Video Understanding" (ICCV 2025)
 
-Toy interpretation:
+Compact interpretation:
 - Per-frame 2D CNN -> sequence of frame embeddings -> GRU -> classify.
 - This is intentionally tiny and dependency-free (no flow, no pretrained weights).
 """

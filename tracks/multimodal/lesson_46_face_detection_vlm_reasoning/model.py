@@ -70,7 +70,7 @@ def face_detection_loss(pred_box: torch.Tensor, target_box: torch.Tensor) -> tor
     return reg + 0.5 * iou_term
 
 
-class ToyFaceDetectionReasoningModel(nn.Module):
+class CompactFaceDetectionReasoningModel(nn.Module):
     def __init__(self, cfg: FaceDetectionReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -101,7 +101,7 @@ class ToyFaceDetectionReasoningModel(nn.Module):
 
 __all__ = [
     "FaceDetectionReasoningConfig",
-    "ToyFaceDetectionReasoningModel",
+    "CompactFaceDetectionReasoningModel",
     "box_iou_xyxy",
     "face_detection_loss",
 ]

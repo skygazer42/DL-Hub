@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class RepPointsHead(nn.Module):
-    """RepPoints-style point set head (toy)."""
+    """RepPoints-style point set head (compact)."""
 
     def __init__(
         self, *, channels: int, num_classes: int, num_points: int = 9, num_convs: int = 3
@@ -37,7 +37,7 @@ class RepPointsHead(nn.Module):
 
 
 class RepPointsDetector(nn.Module):
-    """RepPoints-style detector (toy-first)."""
+    """RepPoints-style detector (compact-first)."""
 
     def __init__(
         self,

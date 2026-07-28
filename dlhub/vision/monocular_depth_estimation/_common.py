@@ -61,7 +61,7 @@ class TinyDepthModel(nn.Module):
         return {"depth": F.softplus(self.depth(feat)), "confidence": torch.sigmoid(self.conf(feat))}
 
 
-def build_toy_depth_model(
+def build_baseline_depth_model(
     *,
     family: str,
     mode: str,

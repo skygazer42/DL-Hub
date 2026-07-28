@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_navigator, smoke_test_navigator
+from ._common import build_baseline_navigator, smoke_test_navigator
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "panoramic_nav_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_panoramic_nav_navigator(
     *, in_channels: int, variant: str = "panoramic_nav_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_navigator(
+    return build_baseline_navigator(
         family="panoramic_nav",
         mode="panoramic",
         variants=_VARIANTS,

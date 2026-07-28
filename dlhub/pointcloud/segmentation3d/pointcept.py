@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointceptSeg(nn.Module):
-    """Pointcept semantic segmentation (toy point-voxel fusion baseline)."""
+    """Pointcept semantic segmentation (compact point-voxel fusion baseline)."""
 
     def __init__(
         self,

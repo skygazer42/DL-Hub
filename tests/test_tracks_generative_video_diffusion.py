@@ -3,12 +3,12 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_video_diffusion_data_and_model_contract() -> None:
-    from tracks.generative.lesson_45_toy_video_diffusion.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_45_toy_video_diffusion.model import (
+def test_compact_video_diffusion_data_and_model_contract() -> None:
+    from tracks.generative.lesson_45_compact_video_diffusion.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_45_compact_video_diffusion.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyVideoDiffusionModel,
+        CompactVideoDiffusionModel,
         q_sample,
     )
 
@@ -42,7 +42,7 @@ def test_toy_video_diffusion_data_and_model_contract() -> None:
         time_embed_dim=12,
     )
     schedule = DiffusionSchedule(num_steps=10)
-    model = ToyVideoDiffusionModel(cfg)
+    model = CompactVideoDiffusionModel(cfg)
 
     noise = torch.randn_like(target_video)
     timesteps = torch.randint(low=0, high=schedule.num_steps, size=(4,), dtype=torch.long)
@@ -62,13 +62,13 @@ def test_toy_video_diffusion_data_and_model_contract() -> None:
     assert torch.all(sampled <= 1.0)
 
 
-def test_toy_video_diffusion_training_smoke(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_45_toy_video_diffusion.data import DataConfig
-    from tracks.generative.lesson_45_toy_video_diffusion.model import (
+def test_compact_video_diffusion_training_smoke(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from tracks.generative.lesson_45_compact_video_diffusion.data import DataConfig
+    from tracks.generative.lesson_45_compact_video_diffusion.model import (
         DiffusionSchedule,
         ModelConfig,
     )
-    from tracks.generative.lesson_45_toy_video_diffusion.train import TrainConfig, run_training
+    from tracks.generative.lesson_45_compact_video_diffusion.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -105,7 +105,7 @@ def test_toy_video_diffusion_training_smoke(tmp_path, monkeypatch: pytest.Monkey
     run_dir = (
         tmp_path
         / "generative"
-        / "lesson_45_toy_video_diffusion"
+        / "lesson_45_compact_video_diffusion"
         / "pytest_video_diffusion_smoke"
     )
     assert (run_dir / "config.json").is_file()

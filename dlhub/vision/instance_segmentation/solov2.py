@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, check_nch
 
 
 class SOLOv2(nn.Module):
-    """SOLOv2-style instance segmentation (toy-first).
+    """SOLOv2-style instance segmentation (compact-first).
 
     Produces per-cell category logits and dynamic mask kernels applied to a mask feature map.
     """

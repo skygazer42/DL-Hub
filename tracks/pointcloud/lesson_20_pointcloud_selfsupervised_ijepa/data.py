@@ -105,7 +105,7 @@ class DataConfig:
     shuffle_points: bool = True
 
 
-class ToyIJEPADataset(Dataset):
+class SyntheticIJEPADataset(Dataset):
     """Single-view SSL dataset: returns (points, label). Label is optional for probing only."""
 
     def __init__(self, cfg: DataConfig) -> None:
@@ -143,7 +143,7 @@ class ToyIJEPADataset(Dataset):
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
-    ds = ToyIJEPADataset(cfg)
+    ds = SyntheticIJEPADataset(cfg)
     train_idx, val_idx = train_val_split_indices(
         n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -175,4 +175,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     return train_loader, val_loader
 
 
-__all__ = ["DataConfig", "ToyIJEPADataset", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticIJEPADataset", "get_dataloaders"]

@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 4 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with paper-shaped implementations for ZeRO, Parameter Server, and FED, covering optimizer-state partitioning, distributed parameter serving, and fast multi-query decoding.
 
 **Architecture:** Represent `ZeRO` as a training-state partitioning abstraction rather than another language backbone. Represent `Parameter Server` as a distributed coordination/runtime module with consistency controls, sparse pulls, and worker push/pull APIs. Represent `FED` as a decoder-side multi-query attention module focused on incremental inference and KV-cache efficiency, not as a full duplicate decoder stack.

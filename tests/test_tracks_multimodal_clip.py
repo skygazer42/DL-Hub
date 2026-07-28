@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_clip_batch_shapes() -> None:
-    from tracks.multimodal.lesson_01_clip_toy_retrieval.data import DataConfig, get_dataloaders
+    from tracks.multimodal.lesson_01_clip_compact_retrieval.data import DataConfig, get_dataloaders
 
     cfg = DataConfig(
         num_samples=48,
@@ -38,10 +38,10 @@ def test_multimodal_clip_batch_shapes() -> None:
 
 
 def test_multimodal_clip_model_outputs() -> None:
-    from tracks.multimodal.lesson_01_clip_toy_retrieval.data import DataConfig, get_dataloaders
-    from tracks.multimodal.lesson_01_clip_toy_retrieval.model import (
+    from tracks.multimodal.lesson_01_clip_compact_retrieval.data import DataConfig, get_dataloaders
+    from tracks.multimodal.lesson_01_clip_compact_retrieval.model import (
         ModelConfig,
-        ToyCLIPModel,
+        CompactCLIPModel,
         clip_contrastive_loss,
     )
 
@@ -57,7 +57,7 @@ def test_multimodal_clip_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyCLIPModel(
+    model = CompactCLIPModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -91,7 +91,7 @@ def test_multimodal_clip_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_01_clip_toy_retrieval"
+        / "lesson_01_clip_compact_retrieval"
         / "pytest_clip_smoke"
     )
     if run_dir.exists():
@@ -101,7 +101,7 @@ def test_multimodal_clip_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_01_clip_toy_retrieval.train",
+            "tracks.multimodal.lesson_01_clip_compact_retrieval.train",
             "--epochs",
             "1",
             "--num-samples",

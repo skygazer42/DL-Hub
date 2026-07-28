@@ -1,7 +1,7 @@
 """Point cloud utilities and models (no downloads, CPU-friendly).
 
 This module provides a local point-cloud architecture zoo similar to `dlhub.vision.local_zoo`,
-focused on simple, readable implementations that can be exercised on synthetic toy datasets.
+focused on simple, readable implementations that can be exercised on synthetic synthetic datasets.
 """
 
 from .gaussian_splatting_zoo import (

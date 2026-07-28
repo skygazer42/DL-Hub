@@ -1,4 +1,4 @@
-# Lesson 23: Toy Embodied Question Answering
+# Lesson 23: Compact Embodied Question Answering
 
 This lesson introduces a compact embodied QA setup over short navigation trajectories.
 
@@ -7,7 +7,7 @@ This lesson introduces a compact embodied QA setup over short navigation traject
 - fuse observation, trajectory, and text features
 - classify one of four answers: `left`, `right`, `up`, `down`
 
-The task is intentionally toy-first, deterministic, and CPU-friendly.
+The task is intentionally compact-first, deterministic, and CPU-friendly.
 
 ## Run
 

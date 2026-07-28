@@ -1,4 +1,4 @@
-"""Compression artifact reduction models (toy-first, pure torch)."""
+"""Compression artifact reduction models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

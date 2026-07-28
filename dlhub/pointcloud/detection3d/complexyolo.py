@@ -33,7 +33,7 @@ class _ComplexYawHead(nn.Module):
 
 
 class ComplexYOLO(nn.Module):
-    """Complex-YOLO (toy): yaw via complex angle (sin/cos) on BEV grid."""
+    """Complex-YOLO (compact): yaw via complex angle (sin/cos) on BEV grid."""
 
     def __init__(
         self,

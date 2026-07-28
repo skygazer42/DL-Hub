@@ -1,6 +1,6 @@
 # Vision-language navigation
 
-Toy-first local families for `vision-language navigation`.
+Compact-first local families for `vision-language navigation`.
 
 ## Families
 

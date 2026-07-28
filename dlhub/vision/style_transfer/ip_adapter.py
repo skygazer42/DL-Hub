@@ -114,7 +114,7 @@ class IPAdapterDenoiser(nn.Module):
 
 
 class IPAdapterStyleTransfer(nn.Module):
-    """IP-Adapter-style diffusion img2img (toy).
+    """IP-Adapter-style diffusion img2img (compact).
 
     Encodes a style reference image to feature tokens and uses cross-attention in latent-space
     denoising to inject the "image prompt" style signal.

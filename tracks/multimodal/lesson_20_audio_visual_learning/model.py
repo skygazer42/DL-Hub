@@ -75,7 +75,7 @@ class AudioVisualLearningConfig:
     init_temperature: float = 0.07
 
 
-class ToyAudioVisualLearningModel(nn.Module):
+class CompactAudioVisualLearningModel(nn.Module):
     def __init__(self, cfg: AudioVisualLearningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -193,7 +193,7 @@ __all__ = [
     "AudioVisualLearningConfig",
     "TinyAudioEncoder",
     "TinyFrameEncoder",
-    "ToyAudioVisualLearningModel",
+    "CompactAudioVisualLearningModel",
     "classification_accuracy",
     "classification_loss",
     "clip_contrastive_loss",

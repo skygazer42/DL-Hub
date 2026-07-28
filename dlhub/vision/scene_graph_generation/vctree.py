@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "vctree_tiny": {"width": 24, "depth": 1},
@@ -16,7 +16,7 @@ def build_vctree_scene_graph_model(
     variant: str = "vctree_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="vctree",
         variants=_VARIANTS,
         in_channels=int(in_channels),

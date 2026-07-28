@@ -1,4 +1,4 @@
-"""finger count estimation models (toy-first, pure torch)."""
+"""finger count estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

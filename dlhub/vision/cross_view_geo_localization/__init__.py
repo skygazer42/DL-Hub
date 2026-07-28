@@ -1,4 +1,4 @@
-"""Cross-view geo-localization models (toy-first, pure torch)."""
+"""Cross-view geo-localization models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

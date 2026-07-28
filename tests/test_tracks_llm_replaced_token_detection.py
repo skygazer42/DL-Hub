@@ -11,15 +11,15 @@ def _repo_root() -> Path:
 
 
 def test_llm_replaced_token_detection_batch_model_and_loss_smoke() -> None:
-    from tracks.llm.lesson_14_toy_replaced_token_detection_transformer.data import (
+    from tracks.llm.lesson_14_compact_replaced_token_detection_transformer.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.llm.lesson_14_toy_replaced_token_detection_transformer.model import (
+    from tracks.llm.lesson_14_compact_replaced_token_detection_transformer.model import (
         ModelConfig,
-        ToyReplacedTokenDetectionTransformer,
+        CompactReplacedTokenDetectionTransformer,
     )
-    from tracks.llm.lesson_14_toy_replaced_token_detection_transformer.train import (
+    from tracks.llm.lesson_14_compact_replaced_token_detection_transformer.train import (
         replaced_token_detection_loss,
     )
 
@@ -43,7 +43,7 @@ def test_llm_replaced_token_detection_batch_model_and_loss_smoke() -> None:
     assert (batch["labels"] != vocab.ignore_index).any()
     assert batch["replaced_labels"].sum().item() > 0
 
-    model = ToyReplacedTokenDetectionTransformer(
+    model = CompactReplacedTokenDetectionTransformer(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -79,8 +79,8 @@ def test_llm_replaced_token_detection_batch_model_and_loss_smoke() -> None:
 
 
 def test_llm_replaced_token_detection_training_smoke() -> None:
-    from tracks.llm.lesson_14_toy_replaced_token_detection_transformer.data import DataConfig
-    from tracks.llm.lesson_14_toy_replaced_token_detection_transformer.train import (
+    from tracks.llm.lesson_14_compact_replaced_token_detection_transformer.data import DataConfig
+    from tracks.llm.lesson_14_compact_replaced_token_detection_transformer.train import (
         TrainConfig,
         run_training,
     )
@@ -89,7 +89,7 @@ def test_llm_replaced_token_detection_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "llm"
-        / "lesson_14_toy_replaced_token_detection_transformer"
+        / "lesson_14_compact_replaced_token_detection_transformer"
         / "pytest_replaced_token_detection_smoke"
     )
     if run_dir.exists():

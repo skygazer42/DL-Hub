@@ -1,4 +1,4 @@
-"""Self-supervised learning for point clouds (pure torch, toy-first)."""
+"""Self-supervised learning for point clouds (pure torch, compact-first)."""
 
 from .barlowtwins import BarlowTwinsPointNet, barlow_twins_loss, build_barlowtwins_pointnet
 from .barlow2 import Barlow2PointNet, barlow_twins_loss as barlow2_loss, build_barlow2_pointnet

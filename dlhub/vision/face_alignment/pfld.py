@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_aligner, smoke_test_align
+from ._common import build_baseline_aligner, smoke_test_align
 
 _VARIANTS = {
     "pfld_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_pfld_face_aligner(
     *, in_channels: int, variant: str = "pfld_small", width_mult: float = 1.0, num_points: int = 68
 ):
-    return build_toy_aligner(
+    return build_baseline_aligner(
         family="pfld",
         variants=_VARIANTS,
         in_channels=int(in_channels),

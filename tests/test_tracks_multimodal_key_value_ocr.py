@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_key_value_ocr_batch_shapes() -> None:
-    from tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.data import (
+    from tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -44,7 +44,7 @@ def test_multimodal_key_value_ocr_batch_shapes() -> None:
 
 
 def test_multimodal_key_value_ocr_renders_five_rows() -> None:
-    from tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.data import (
+    from tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -68,13 +68,13 @@ def test_multimodal_key_value_ocr_renders_five_rows() -> None:
 
 
 def test_multimodal_key_value_ocr_model_outputs() -> None:
-    from tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.data import (
+    from tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.model import (
+    from tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.model import (
         DocOcrModelConfig,
-        ToyDocOcrModel,
+        CompactDocOcrModel,
         ocr_loss,
     )
 
@@ -90,7 +90,7 @@ def test_multimodal_key_value_ocr_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyDocOcrModel(
+    model = CompactDocOcrModel(
         DocOcrModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -120,7 +120,7 @@ def test_multimodal_key_value_ocr_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_12_key_value_ocr_toy_doc_vlm"
+        / "lesson_12_key_value_ocr_compact_doc_vlm"
         / "pytest_key_value_ocr_smoke"
     )
     if run_dir.exists():
@@ -130,7 +130,7 @@ def test_multimodal_key_value_ocr_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_12_key_value_ocr_toy_doc_vlm.train",
+            "tracks.multimodal.lesson_12_key_value_ocr_compact_doc_vlm.train",
             "--epochs",
             "1",
             "--num-samples",

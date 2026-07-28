@@ -1,4 +1,4 @@
-"""Local, toy-first co-segmentation families.
+"""Local co-segmentation registry with compact PyTorch implementations.
 
 Conventions:
 - One family per file.

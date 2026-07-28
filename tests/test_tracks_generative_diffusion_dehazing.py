@@ -6,12 +6,12 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_diffusion_dehazing_data_and_model_contract() -> None:
-    from tracks.generative.lesson_19_toy_diffusion_dehazing.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_19_toy_diffusion_dehazing.model import (
+def test_compact_diffusion_dehazing_data_and_model_contract() -> None:
+    from tracks.generative.lesson_19_compact_diffusion_dehazing.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_19_compact_diffusion_dehazing.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyDehazingDiffusionModel,
+        CompactDehazingDiffusionModel,
         q_sample,
     )
 
@@ -29,7 +29,7 @@ def test_toy_diffusion_dehazing_data_and_model_contract() -> None:
 
     cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=16)
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToyDehazingDiffusionModel(cfg)
+    model = CompactDehazingDiffusionModel(cfg)
 
     noise = torch.randn_like(clean)
     timesteps = torch.randint(low=0, high=schedule.num_steps, size=(6,), dtype=torch.long)
@@ -48,10 +48,10 @@ def test_toy_diffusion_dehazing_data_and_model_contract() -> None:
     assert torch.all(sampled <= 1.0)
 
 
-def test_toy_diffusion_dehazing_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_19_toy_diffusion_dehazing.data import DataConfig
-    from tracks.generative.lesson_19_toy_diffusion_dehazing.model import DiffusionSchedule, ModelConfig
-    from tracks.generative.lesson_19_toy_diffusion_dehazing.train import TrainConfig, run_training
+def test_compact_diffusion_dehazing_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from tracks.generative.lesson_19_compact_diffusion_dehazing.data import DataConfig
+    from tracks.generative.lesson_19_compact_diffusion_dehazing.model import DiffusionSchedule, ModelConfig
+    from tracks.generative.lesson_19_compact_diffusion_dehazing.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -71,7 +71,7 @@ def test_toy_diffusion_dehazing_training_and_dry_run(tmp_path, monkeypatch: pyte
     )
 
     assert exit_code == 0
-    run_dir = tmp_path / "generative" / "lesson_19_toy_diffusion_dehazing" / "pytest_dehazing_smoke"
+    run_dir = tmp_path / "generative" / "lesson_19_compact_diffusion_dehazing" / "pytest_dehazing_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
@@ -83,7 +83,7 @@ def test_toy_diffusion_dehazing_training_and_dry_run(tmp_path, monkeypatch: pyte
             sys.executable,
             "scripts/run_lesson.py",
             "generative",
-            "lesson_19_toy_diffusion_dehazing",
+            "lesson_19_compact_diffusion_dehazing",
             "--dry-run",
         ],
         check=False,
@@ -91,4 +91,4 @@ def test_toy_diffusion_dehazing_training_and_dry_run(tmp_path, monkeypatch: pyte
         text=True,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.generative.lesson_19_toy_diffusion_dehazing.train" in proc.stdout
+    assert "tracks.generative.lesson_19_compact_diffusion_dehazing.train" in proc.stdout

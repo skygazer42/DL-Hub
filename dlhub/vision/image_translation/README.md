@@ -1,6 +1,6 @@
 # Image Translation
 
-Toy-first local families for `image translation`.
+Compact-first local families for `image translation`.
 
 ## Families
 

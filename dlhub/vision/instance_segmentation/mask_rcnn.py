@@ -30,7 +30,7 @@ class _BackboneStride4(nn.Module):
 
 
 class MaskRCNNInstanceSegmenter(nn.Module):
-    """Mask R-CNN-style instance segmenter (toy-first).
+    """Mask R-CNN-style instance segmenter (compact-first).
 
     Returns RPN outputs + ROI cls/box + ROI masks.
     """

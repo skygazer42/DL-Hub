@@ -48,7 +48,7 @@ class ActionRecognitionModelConfig:
     num_classes: int = 3
 
 
-class ToyActionRecognitionModel(nn.Module):
+class CompactActionRecognitionModel(nn.Module):
     def __init__(self, cfg: ActionRecognitionModelConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -100,7 +100,7 @@ __all__ = [
     "ActionRecognitionModelConfig",
     "QueryEncoder",
     "TemporalVideoEncoder",
-    "ToyActionRecognitionModel",
+    "CompactActionRecognitionModel",
     "action_recognition_loss",
     "classification_accuracy",
 ]

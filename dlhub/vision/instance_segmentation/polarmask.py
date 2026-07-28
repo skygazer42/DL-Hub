@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class PolarMask(nn.Module):
-    """PolarMask-style instance segmentation (toy-first).
+    """PolarMask-style instance segmentation (compact-first).
 
     Predicts per-location class logits + radial distances (rays) and also emits prototype masks.
     """

@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_grounded_sam_batch_shapes() -> None:
-    from tracks.multimodal.lesson_11_grounded_sam_toy_open_vocab_segmentation.data import (
+    from tracks.multimodal.lesson_11_grounded_sam_compact_open_vocab_segmentation.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -44,14 +44,14 @@ def test_multimodal_grounded_sam_batch_shapes() -> None:
 
 
 def test_multimodal_grounded_sam_model_outputs() -> None:
-    from tracks.multimodal.lesson_11_grounded_sam_toy_open_vocab_segmentation.data import (
+    from tracks.multimodal.lesson_11_grounded_sam_compact_open_vocab_segmentation.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_11_grounded_sam_toy_open_vocab_segmentation.model import (
+    from tracks.multimodal.lesson_11_grounded_sam_compact_open_vocab_segmentation.model import (
         GroundedSamLossConfig,
         GroundedSamModelConfig,
-        ToyGroundedSamModel,
+        CompactGroundedSamModel,
         grounded_sam_loss,
     )
 
@@ -68,7 +68,7 @@ def test_multimodal_grounded_sam_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyGroundedSamModel(
+    model = CompactGroundedSamModel(
         GroundedSamModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -103,7 +103,7 @@ def test_multimodal_grounded_sam_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_11_grounded_sam_toy_open_vocab_segmentation"
+        / "lesson_11_grounded_sam_compact_open_vocab_segmentation"
         / "pytest_grounded_sam_smoke"
     )
     if run_dir.exists():
@@ -113,7 +113,7 @@ def test_multimodal_grounded_sam_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_11_grounded_sam_toy_open_vocab_segmentation.train",
+            "tracks.multimodal.lesson_11_grounded_sam_compact_open_vocab_segmentation.train",
             "--epochs",
             "1",
             "--num-samples",

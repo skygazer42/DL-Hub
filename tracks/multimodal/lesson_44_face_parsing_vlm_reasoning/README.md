@@ -1,6 +1,6 @@
 # Lesson 44: Face Parsing VLM Reasoning
 
-This lesson builds a toy multimodal parser that takes a synthetic face image plus a short
+This lesson builds a compact multimodal parser that takes a synthetic face image plus a short
 query and predicts a binary mask for the queried face part (eyes, mouth, hair, or skin).
 
 ## What It Teaches

@@ -41,7 +41,7 @@ def total_variation(x: torch.Tensor) -> torch.Tensor:
 
 
 def wct(content: torch.Tensor, style: torch.Tensor, *, eps: float = 1e-5) -> torch.Tensor:
-    """Whitening-color transform (toy implementation, per-sample)."""
+    """Whitening-color transform (compact implementation, per-sample)."""
 
     if content.shape != style.shape:
         raise ValueError(

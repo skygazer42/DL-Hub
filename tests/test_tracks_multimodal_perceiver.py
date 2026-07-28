@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_perceiver_batch_shapes() -> None:
-    from tracks.multimodal.lesson_08_perceiver_resampler_toy_vlm.data import (
+    from tracks.multimodal.lesson_08_perceiver_resampler_compact_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -46,13 +46,13 @@ def test_multimodal_perceiver_batch_shapes() -> None:
 
 
 def test_multimodal_perceiver_model_outputs() -> None:
-    from tracks.multimodal.lesson_08_perceiver_resampler_toy_vlm.data import (
+    from tracks.multimodal.lesson_08_perceiver_resampler_compact_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_08_perceiver_resampler_toy_vlm.model import (
+    from tracks.multimodal.lesson_08_perceiver_resampler_compact_vlm.model import (
         PerceiverModelConfig,
-        ToyPerceiverResamplerModel,
+        CompactPerceiverResamplerModel,
         qa_loss,
     )
 
@@ -69,7 +69,7 @@ def test_multimodal_perceiver_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyPerceiverResamplerModel(
+    model = CompactPerceiverResamplerModel(
         PerceiverModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -99,7 +99,7 @@ def test_multimodal_perceiver_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_08_perceiver_resampler_toy_vlm"
+        / "lesson_08_perceiver_resampler_compact_vlm"
         / "pytest_perceiver_smoke"
     )
     if run_dir.exists():
@@ -109,7 +109,7 @@ def test_multimodal_perceiver_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_08_perceiver_resampler_toy_vlm.train",
+            "tracks.multimodal.lesson_08_perceiver_resampler_compact_vlm.train",
             "--epochs",
             "1",
             "--num-samples",

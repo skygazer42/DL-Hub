@@ -24,7 +24,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyVISModel(nn.Module):
+class CompactVISModel(nn.Module):
     def __init__(
         self, *, family: str, in_channels: int, width: int, depth: int, num_instances: int
     ):
@@ -45,7 +45,7 @@ class ToyVISModel(nn.Module):
         return {"logits": logits, "masks": masks}
 
 
-def build_toy_vis(
+def build_baseline_vis(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -56,7 +56,7 @@ def build_toy_vis(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyVISModel(
+    return CompactVISModel(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

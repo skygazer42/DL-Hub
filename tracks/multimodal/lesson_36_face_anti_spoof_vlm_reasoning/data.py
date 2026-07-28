@@ -126,7 +126,7 @@ def _render_face(*, image_size: int, seed: int, spoof: bool) -> torch.Tensor:
     return torch.from_numpy(image).unsqueeze(0)
 
 
-class ToyDeepfakeReasoningDataset(Dataset):
+class SyntheticDeepfakeReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 32:
             raise ValueError("image_size must be >= 32")
@@ -165,7 +165,7 @@ class ToyDeepfakeReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyDeepfakeReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticDeepfakeReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -188,4 +188,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyDeepfakeReasoningDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticDeepfakeReasoningDataset", "Vocab", "get_dataloaders"]

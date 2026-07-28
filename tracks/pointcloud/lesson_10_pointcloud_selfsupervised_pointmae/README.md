@@ -1,4 +1,4 @@
-# Lesson 10：点云自监督（PointMAE-style, toy-first）
+# Lesson 10：点云自监督（PointMAE-style, compact-first）
 
 目标：用 **Masked AutoEncoder** 思路做点云自监督预训练：
 

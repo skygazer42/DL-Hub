@@ -1,6 +1,6 @@
 # Lesson 33: Synthetic Face Liveness Detection
 
-This toy lesson renders grayscale cartoon faces and classifies whether each sample looks like a
+This compact lesson renders grayscale cartoon faces and classifies whether each sample looks like a
 live capture or a spoofed presentation attack.
 
 Spoof examples inject cues such as:

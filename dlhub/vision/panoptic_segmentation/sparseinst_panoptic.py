@@ -13,7 +13,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class SparseInstPanoptic(nn.Module):
-    """SparseInst-style panoptic segmentation (toy-first).
+    """SparseInst-style panoptic segmentation (compact-first).
 
     Learnable instance queries predict class/box and mask coefficients over prototypes, plus a semantic head.
     """

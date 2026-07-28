@@ -1,9 +1,9 @@
 # Transparent Object Segmentation
 
-Toy-first local transparent object segmentation families for DL-Hub.
+Compact-first local transparent object segmentation families for DL-Hub.
 
 Available families:
-- `glassseg_toy`
+- `glassseg_baseline`
 - `translab_seg`
 - `refractmask_seg`
 - `camotransparent_seg`

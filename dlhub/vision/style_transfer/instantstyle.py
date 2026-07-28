@@ -119,7 +119,7 @@ class InstantStyleDenoiser(nn.Module):
 
 
 class InstantStyleStyleTransfer(nn.Module):
-    """InstantStyle-style diffusion img2img (toy).
+    """InstantStyle-style diffusion img2img (compact).
 
     The focus here is decoupled style injection:
     - style reference tokens provide local texture/layout style cues

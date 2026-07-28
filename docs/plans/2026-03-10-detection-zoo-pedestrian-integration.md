@@ -1,7 +1,5 @@
 # Detection Zoo Pedestrian Presets Integration Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `scripts/detection_zoo.py` so contributors can smoke all `dldet:pedestrian_*` presets (optionally with backward) via a single CLI command, and cover it with a small subprocess-based pytest.
 
 **Architecture:** Add `--smoke-all` and `--backward` flags to `scripts/detection_zoo.py`. Implement a small recursive loss helper for backward checks. Add a pytest that runs the script with `--search pedestrian` to validate listing and smoke-all.

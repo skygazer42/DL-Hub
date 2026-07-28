@@ -16,7 +16,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class IASSD(nn.Module):
-    """IA-SSD (toy): instance-aware tokens via self-attention + regression."""
+    """IA-SSD (compact): instance-aware tokens via self-attention + regression."""
 
     def __init__(
         self,

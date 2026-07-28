@@ -23,7 +23,7 @@ class DataConfig:
 
 
 class SyntheticVideoSummarizationDataset(Dataset):
-    """Score which frames best summarize a compact toy clip."""
+    """Score which frames best summarize a compact synthetic clip."""
 
     def __init__(self, cfg: DataConfig) -> None:
         self.cfg = cfg
@@ -32,7 +32,7 @@ class SyntheticVideoSummarizationDataset(Dataset):
         if int(cfg.image_size) < 16:
             raise ValueError("image_size must be >= 16")
         if int(cfg.in_channels) != 1:
-            raise ValueError("in_channels must be 1 for this toy lesson")
+            raise ValueError("in_channels must be 1 for this synthetic lesson")
         if not (1 <= int(cfg.num_key_frames) < int(cfg.seq_len)):
             raise ValueError("num_key_frames must be in [1, seq_len)")
         if float(cfg.noise_std) < 0.0:

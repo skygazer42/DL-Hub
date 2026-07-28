@@ -31,3 +31,57 @@ def test_save_and_load_checkpoint_round_trip(tmp_path) -> None:
     ):
         assert k1 == k2
         torch.testing.assert_close(v1, v2)
+
+
+def test_load_checkpoint_never_implicitly_falls_back_to_unsafe_pickle(
+    monkeypatch, tmp_path
+) -> None:
+    from dlhub.checkpoint import load_checkpoint
+
+    calls: list[dict[str, object]] = []
+
+    def reject_weights_only(path, **kwargs):
+        del path
+        calls.append(dict(kwargs))
+        raise TypeError("weights_only is unavailable")
+
+    monkeypatch.setattr(torch, "load", reject_weights_only)
+
+    with pytest.raises(RuntimeError, match="Safe checkpoint loading"):
+        load_checkpoint(tmp_path / "legacy.pt", model=torch.nn.Linear(3, 2))
+
+    assert calls == [{"map_location": "cpu", "weights_only": True}]
+
+
+def test_load_checkpoint_allows_explicit_trusted_legacy_fallback(monkeypatch, tmp_path) -> None:
+    from dlhub.checkpoint import load_checkpoint
+
+    source = torch.nn.Linear(3, 2)
+    payload = {"model_state": source.state_dict(), "epoch": 7, "extra": {"trusted": True}}
+    calls: list[dict[str, object]] = []
+
+    def load_legacy(path, **kwargs):
+        del path
+        calls.append(dict(kwargs))
+        if kwargs.get("weights_only") is True:
+            raise TypeError("weights_only is unavailable")
+        return payload
+
+    monkeypatch.setattr(torch, "load", load_legacy)
+
+    target = torch.nn.Linear(3, 2)
+    with pytest.warns(RuntimeWarning, match="arbitrary code"):
+        meta = load_checkpoint(
+            tmp_path / "legacy.pt",
+            model=target,
+            allow_unsafe_legacy=True,
+        )
+
+    assert calls == [
+        {"map_location": "cpu", "weights_only": True},
+        {"map_location": "cpu"},
+    ]
+    assert meta == {"epoch": 7, "extra": {"trusted": True}}
+
+    for expected, actual in zip(source.parameters(), target.parameters(), strict=True):
+        torch.testing.assert_close(expected, actual)

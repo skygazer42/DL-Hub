@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import BackboneLowDet, check_nch
 
 
 class BoxInstPanoptic(nn.Module):
-    """BoxInst-style panoptic segmentation (toy-first).
+    """BoxInst-style panoptic segmentation (compact-first).
 
     BoxInst learns instance masks from box supervision; here we implement the model skeleton:
     dense classification/box heads + dynamic masks + a semantic head.

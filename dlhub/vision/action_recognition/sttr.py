@@ -1,9 +1,9 @@
-"""ST-Transformer (factorized attention) - toy-first skeleton action classifier.
+"""ST-Transformer (factorized attention) - compact-first skeleton action classifier.
 
 Reference (representative idea):
 - Spatio-temporal transformer variants for skeleton action recognition (around 2021).
 
-Toy interpretation:
+Compact interpretation:
 - Project joint coordinates into tokens (T * V tokens).
 - Factorize attention:
   1) spatial attention over joints for each time step

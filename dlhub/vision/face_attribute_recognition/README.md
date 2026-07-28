@@ -1,6 +1,6 @@
 # Face Attribute Recognition
 
-Toy-first local families for `face attribute recognition`.
+Compact-first local families for `face attribute recognition`.
 
 ## Families
 

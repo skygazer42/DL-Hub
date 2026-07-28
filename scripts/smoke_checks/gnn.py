@@ -5,9 +5,9 @@ def run() -> None:
     from dlhub.paths import build_run_paths
 
     # 4.3) GNN lesson (torch-only, fully synthetic).
-    from tracks.gnn.lesson_01_toy_graph_classification.data import DataConfig as GnnData
-    from tracks.gnn.lesson_01_toy_graph_classification.train import TrainConfig as GnnTrain
-    from tracks.gnn.lesson_01_toy_graph_classification.train import run_training as run_gnn
+    from tracks.gnn.lesson_01_compact_graph_classification.data import DataConfig as GnnData
+    from tracks.gnn.lesson_01_compact_graph_classification.train import TrainConfig as GnnTrain
+    from tracks.gnn.lesson_01_compact_graph_classification.train import run_training as run_gnn
 
     run_gnn(
         GnnTrain(
@@ -26,16 +26,16 @@ def run() -> None:
     )
 
     gnn_paths = build_run_paths(
-        track="gnn", lesson="lesson_01_toy_graph_classification", run_name="smoke"
+        track="gnn", lesson="lesson_01_compact_graph_classification", run_name="smoke"
     )
     assert (gnn_paths.run_dir / "config.json").is_file()
     assert (gnn_paths.run_dir / "metrics.jsonl").is_file()
     assert (gnn_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.4) GNN lesson: GIN (toy, torch-only).
-    from tracks.gnn.lesson_02_gin_toy_graph_classification.data import DataConfig as GinData
-    from tracks.gnn.lesson_02_gin_toy_graph_classification.train import TrainConfig as GinTrain
-    from tracks.gnn.lesson_02_gin_toy_graph_classification.train import run_training as run_gin
+    # 4.4) GNN lesson: GIN (compact, torch-only).
+    from tracks.gnn.lesson_02_gin_compact_graph_classification.data import DataConfig as GinData
+    from tracks.gnn.lesson_02_gin_compact_graph_classification.train import TrainConfig as GinTrain
+    from tracks.gnn.lesson_02_gin_compact_graph_classification.train import run_training as run_gin
 
     run_gin(
         GinTrain(
@@ -60,16 +60,16 @@ def run() -> None:
     )
 
     gin_paths = build_run_paths(
-        track="gnn", lesson="lesson_02_gin_toy_graph_classification", run_name="smoke"
+        track="gnn", lesson="lesson_02_gin_compact_graph_classification", run_name="smoke"
     )
     assert (gin_paths.run_dir / "config.json").is_file()
     assert (gin_paths.run_dir / "metrics.jsonl").is_file()
     assert (gin_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
-    # 4.5) GNN lesson: GAT (toy, torch-only).
-    from tracks.gnn.lesson_03_gat_toy_graph_classification.data import DataConfig as GatData
-    from tracks.gnn.lesson_03_gat_toy_graph_classification.train import TrainConfig as GatTrain
-    from tracks.gnn.lesson_03_gat_toy_graph_classification.train import run_training as run_gat
+    # 4.5) GNN lesson: GAT (compact, torch-only).
+    from tracks.gnn.lesson_03_gat_compact_graph_classification.data import DataConfig as GatData
+    from tracks.gnn.lesson_03_gat_compact_graph_classification.train import TrainConfig as GatTrain
+    from tracks.gnn.lesson_03_gat_compact_graph_classification.train import run_training as run_gat
 
     run_gat(
         GatTrain(
@@ -91,7 +91,7 @@ def run() -> None:
     )
 
     gat_paths = build_run_paths(
-        track="gnn", lesson="lesson_03_gat_toy_graph_classification", run_name="smoke"
+        track="gnn", lesson="lesson_03_gat_compact_graph_classification", run_name="smoke"
     )
     assert (gat_paths.run_dir / "config.json").is_file()
     assert (gat_paths.run_dir / "metrics.jsonl").is_file()

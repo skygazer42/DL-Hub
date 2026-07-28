@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_box_detector, smoke_test_box_detector
+from ._common import build_baseline_box_detector, smoke_test_box_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_dual_salbox_box_detector(
     variant: str = "dual_salbox_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_box_detector(
+    return build_baseline_box_detector(
         family="dual_salbox",
         mode="cascade",
         variants=_VARIANTS,

@@ -1,4 +1,4 @@
-"""face liveness detection models (toy-first, pure torch)."""
+"""face liveness detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_classifier, smoke_test_hand_classifier
+from ._common import build_baseline_hand_classifier, smoke_test_hand_classifier
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_skeleton_thumb_contact_thumb_contact_classifier(
     variant: str = "skeleton_thumb_contact_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_classifier(
+    return build_baseline_hand_classifier(
         family="skeleton_thumb_contact",
         mode="skeleton",
         variants=_VARIANTS,

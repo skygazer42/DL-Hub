@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class MaskFormer3D(nn.Module):
-    """MaskFormer3D (toy): transformer encoder + prototype mask head."""
+    """MaskFormer3D (compact): transformer encoder + prototype mask head."""
 
     def __init__(
         self,

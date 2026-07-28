@@ -50,7 +50,7 @@ class ScoreDiffusion(nn.Module):
 
 
 class SummDiffVideoSummarizer(nn.Module):
-    """SummDiff-style diffusion summarizer (toy).
+    """SummDiff-style diffusion summarizer (compact).
 
     Generates frame importance scores by iterative denoising conditioned on frame features.
     """

@@ -1,12 +1,10 @@
 # Cross-Domain New Directions Batch 15 Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add 100 new toy-first algorithm families across 10 previously unimplemented directions spanning `vision`, `pointcloud`, `multimodal`, and `generative`, without adding lessons, dependencies, or pytest files.
+**Goal:** Add 100 new compact-first algorithm families across 10 previously unimplemented directions spanning `vision`, `pointcloud`, `multimodal`, and `generative`, without adding lessons, dependencies, or pytest files.
 
 **Architecture:** Create one package per new direction, one family per file, and one direction-local zoo or registry surface per direction. Keep each direction branch local-only, then land shared README and domain export wiring on one integration branch after all direction-level smoke checks pass.
 
-**Tech Stack:** Python 3, `torch`, repo-local toy model helpers, lazy package `__init__.py` files, explicit registries for `vision` and `multimodal`, AST-discovery zoos for `pointcloud` and `generative`, `.worktrees/` git worktrees, and minimal import/list smoke verification.
+**Tech Stack:** Python 3, `torch`, repo-local compact model helpers, lazy package `__init__.py` files, explicit registries for `vision` and `multimodal`, AST-discovery zoos for `pointcloud` and `generative`, `.worktrees/` git worktrees, and minimal import/list smoke verification.
 
 ---
 
@@ -106,7 +104,7 @@ build_<family>_derainer(...)
 **Step 3: Add the 10 family files**
 
 Each family file must define `_VARIANTS` for `tiny`, `small`, and `base`, expose one builder, stay
-toy-first and CPU-friendly, and include a `__main__` smoke path.
+compact-first and CPU-friendly, and include a `__main__` smoke path.
 
 **Step 4: Add `image_deraining_zoo.py`**
 
@@ -133,7 +131,7 @@ Run:
 ```powershell
 git add dlhub/vision/image_deraining dlhub/vision/image_deraining_zoo.py
 @'
-Add toy-first image deraining families as a standalone direction
+Add compact-first image deraining families as a standalone direction
 
 This branch lands the local direction package and its explicit zoo without
 touching shared exports or the global README.
@@ -184,7 +182,7 @@ build_<family>_shadow_detector(...)
 
 **Step 3: Add the 10 family files**
 
-Keep outputs toy-first and shadow-focused. Do not add extra shared abstractions unless at least
+Keep outputs compact-first and shadow-focused. Do not add extra shared abstractions unless at least
 three files need the same helper.
 
 **Step 4: Add `shadow_detection_zoo.py`**
@@ -209,7 +207,7 @@ Run:
 ```powershell
 git add dlhub/vision/shadow_detection dlhub/vision/shadow_detection_zoo.py
 @'
-Add toy-first shadow detection families as a standalone direction
+Add compact-first shadow detection families as a standalone direction
 
 This branch lands the local direction package and its explicit zoo without
 touching shared exports or the global README.
@@ -260,7 +258,7 @@ build_<family>_upsampler(...)
 
 **Step 3: Add the 10 family files**
 
-Stay toy-first and follow the pointcloud direction-package style already used by `gaussian_splatting`
+Stay compact-first and follow the pointcloud direction-package style already used by `gaussian_splatting`
 and `scene_flow`.
 
 **Step 4: Add `pointcloud_upsampling_zoo.py`**
@@ -287,7 +285,7 @@ Run:
 ```powershell
 git add dlhub/pointcloud/pointcloud_upsampling dlhub/pointcloud/pointcloud_upsampling_zoo.py
 @'
-Add toy-first point cloud upsampling families as a standalone direction
+Add compact-first point cloud upsampling families as a standalone direction
 
 This branch lands the local pointcloud package and discovery zoo without
 touching shared exports or the global README.
@@ -338,7 +336,7 @@ build_<family>_shape_correspondence_model(...)
 
 **Step 3: Add the 10 family files**
 
-Stay toy-first and follow the pointcloud direction-package style already used by `gaussian_splatting`
+Stay compact-first and follow the pointcloud direction-package style already used by `gaussian_splatting`
 and `scene_flow`.
 
 **Step 4: Add `shape_correspondence_3d_zoo.py`**
@@ -365,7 +363,7 @@ Run:
 ```powershell
 git add dlhub/pointcloud/shape_correspondence_3d dlhub/pointcloud/shape_correspondence_3d_zoo.py
 @'
-Add toy-first 3D shape correspondence families as a standalone direction
+Add compact-first 3D shape correspondence families as a standalone direction
 
 This branch lands the local pointcloud package and discovery zoo without
 touching shared exports or the global README.
@@ -416,7 +414,7 @@ build_<family>_open_vocabulary_3d_model(...)
 
 **Step 3: Add the 10 family files**
 
-Keep the outputs toy-first and open-vocabulary oriented without introducing external APIs or remote
+Keep the outputs compact-first and open-vocabulary oriented without introducing external APIs or remote
 text backends.
 
 **Step 4: Add `open_vocabulary_3d_zoo.py`**
@@ -441,7 +439,7 @@ Run:
 ```powershell
 git add dlhub/pointcloud/open_vocabulary_3d dlhub/pointcloud/open_vocabulary_3d_zoo.py
 @'
-Add toy-first open-vocabulary 3D families as a standalone direction
+Add compact-first open-vocabulary 3D families as a standalone direction
 
 This branch lands the local pointcloud package and discovery zoo without
 touching shared exports or the global README.
@@ -517,7 +515,7 @@ Run:
 ```powershell
 git add dlhub/multimodal/image_text_retrieval dlhub/multimodal/image_text_retrieval_zoo.py
 @'
-Add toy-first image-text retrieval families as a standalone direction
+Add compact-first image-text retrieval families as a standalone direction
 
 This branch lands the local multimodal package and explicit zoo without
 touching shared exports or the global README.
@@ -568,7 +566,7 @@ build_<family>_navigator(...)
 
 **Step 3: Add the 10 family files**
 
-Keep the outputs toy-first and navigation-oriented without introducing simulator bindings or
+Keep the outputs compact-first and navigation-oriented without introducing simulator bindings or
 external environments.
 
 **Step 4: Add `vision_language_navigation_zoo.py`**
@@ -593,7 +591,7 @@ Run:
 ```powershell
 git add dlhub/multimodal/vision_language_navigation dlhub/multimodal/vision_language_navigation_zoo.py
 @'
-Add toy-first vision-language navigation families as a standalone direction
+Add compact-first vision-language navigation families as a standalone direction
 
 This branch lands the local multimodal package and explicit zoo without
 touching shared exports or the global README.
@@ -644,7 +642,7 @@ build_<family>_document_vlm(...)
 
 **Step 3: Add the 10 family files**
 
-Keep the outputs toy-first and document-oriented without introducing OCR services or remote APIs.
+Keep the outputs compact-first and document-oriented without introducing OCR services or remote APIs.
 
 **Step 4: Add `document_vlm_zoo.py`**
 
@@ -668,7 +666,7 @@ Run:
 ```powershell
 git add dlhub/multimodal/document_vlm dlhub/multimodal/document_vlm_zoo.py
 @'
-Add toy-first document VLM families as a standalone direction
+Add compact-first document VLM families as a standalone direction
 
 This branch lands the local multimodal package and explicit zoo without
 touching shared exports or the global README.
@@ -686,9 +684,9 @@ Not-tested: Cross-domain integration
 
 **Files:**
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/__init__.py`
-- Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/i2vgen_toy.py`
-- Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/lavie_toy.py`
-- Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/dynami_toy.py`
+- Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/i2vgen_baseline.py`
+- Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/lavie_baseline.py`
+- Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/dynami_baseline.py`
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/motion_adapter_i2v.py`
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/temporal_unet_i2v.py`
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-video/dlhub/generative/image_to_video/cascade_i2v.py`
@@ -732,11 +730,11 @@ Use prefix `i2v:`.
 Run:
 
 ```powershell
-python -c "from dlhub.generative.image_to_video.i2vgen_toy import build_i2vgen_toy_image_to_video as f; print(type(f(in_channels=3, variant='i2vgen_toy_tiny')).__name__)"
-python -c "from dlhub.generative.image_to_video_zoo import list_local_arches; print(any('i2vgen_toy_tiny' in x for x in list_local_arches()))"
+python -c "from dlhub.generative.image_to_video.i2vgen_baseline import build_i2vgen_baseline_image_to_video as f; print(type(f(in_channels=3, variant='i2vgen_baseline_tiny')).__name__)"
+python -c "from dlhub.generative.image_to_video_zoo import list_local_arches; print(any('i2vgen_baseline_tiny' in x for x in list_local_arches()))"
 ```
 
-Expected: import/build succeeds and zoo listing contains `i2vgen_toy_tiny`.
+Expected: import/build succeeds and zoo listing contains `i2vgen_baseline_tiny`.
 
 **Step 6: Commit the worktree branch with a Lore message**
 
@@ -745,7 +743,7 @@ Run:
 ```powershell
 git add dlhub/generative/image_to_video dlhub/generative/image_to_video_zoo.py
 @'
-Add toy-first image-to-video families as a standalone direction
+Add compact-first image-to-video families as a standalone direction
 
 This branch lands the local generative package and discovery zoo without
 touching shared exports or the global README.
@@ -763,7 +761,7 @@ Not-tested: Cross-domain integration
 
 **Files:**
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-3d/dlhub/generative/image_to_3d/__init__.py`
-- Create: `F:/DL-Hub/.worktrees/batch150-image-to-3d/dlhub/generative/image_to_3d/zero123_toy.py`
+- Create: `F:/DL-Hub/.worktrees/batch150-image-to-3d/dlhub/generative/image_to_3d/zero123_baseline.py`
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-3d/dlhub/generative/image_to_3d/triplane_i23d.py`
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-3d/dlhub/generative/image_to_3d/lift3d_i23d.py`
 - Create: `F:/DL-Hub/.worktrees/batch150-image-to-3d/dlhub/generative/image_to_3d/mesh_i23d.py`
@@ -796,7 +794,7 @@ build_<family>_image_to_3d_generator(...)
 
 **Step 3: Add the 10 family files**
 
-Keep them toy-first and structural rather than photorealistic.
+Keep them compact-first and structural rather than photorealistic.
 
 **Step 4: Add `image_to_3d_zoo.py`**
 
@@ -807,11 +805,11 @@ Prefer AST-based discovery similar to the generative diffusion zoo and use prefi
 Run:
 
 ```powershell
-python -c "from dlhub.generative.image_to_3d.zero123_toy import build_zero123_toy_image_to_3d_generator as f; print(type(f(in_channels=3, variant='zero123_toy_tiny')).__name__)"
-python -c "from dlhub.generative.image_to_3d_zoo import list_local_arches; print(any('zero123_toy_tiny' in x for x in list_local_arches()))"
+python -c "from dlhub.generative.image_to_3d.zero123_baseline import build_zero123_baseline_image_to_3d_generator as f; print(type(f(in_channels=3, variant='zero123_baseline_tiny')).__name__)"
+python -c "from dlhub.generative.image_to_3d_zoo import list_local_arches; print(any('zero123_baseline_tiny' in x for x in list_local_arches()))"
 ```
 
-Expected: import/build succeeds and zoo listing contains `zero123_toy_tiny`.
+Expected: import/build succeeds and zoo listing contains `zero123_baseline_tiny`.
 
 **Step 6: Commit the worktree branch with a Lore message**
 
@@ -820,7 +818,7 @@ Run:
 ```powershell
 git add dlhub/generative/image_to_3d dlhub/generative/image_to_3d_zoo.py
 @'
-Add toy-first image-to-3D families as a standalone direction
+Add compact-first image-to-3D families as a standalone direction
 
 This branch lands the local generative package and discovery zoo without
 touching shared exports or the global README.
@@ -876,7 +874,7 @@ Run:
 python -c "from dlhub.vision.image_deraining_zoo import list_local_arches; print(any('jorder_derain_tiny' in x for x in list_local_arches()))"
 python -c "from dlhub.pointcloud.pointcloud_upsampling_zoo import list_local_arches; print(any('punet_upsample_tiny' in x for x in list_local_arches()))"
 python -c "from dlhub.multimodal.image_text_retrieval_zoo import list_local_arches; print(any('clip_retrieval_tiny' in x for x in list_local_arches()))"
-python -c "from dlhub.generative.image_to_video_zoo import list_local_arches; print(any('i2vgen_toy_tiny' in x for x in list_local_arches()))"
+python -c "from dlhub.generative.image_to_video_zoo import list_local_arches; print(any('i2vgen_baseline_tiny' in x for x in list_local_arches()))"
 git diff --check
 ```
 

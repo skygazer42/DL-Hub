@@ -26,7 +26,6 @@ Thumbs.db
 
 # Git worktrees (local only)
 .worktrees/
-.claude/
 .cursor/
 .codex/
 .omx/

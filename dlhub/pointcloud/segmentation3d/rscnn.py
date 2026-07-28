@@ -29,7 +29,7 @@ class _RelationConv(nn.Module):
 
 
 class RSCNNSeg(nn.Module):
-    """RS-CNN semantic segmentation (toy): relation-shape convolution via rel-xyz gates."""
+    """RS-CNN semantic segmentation (compact): relation-shape convolution via rel-xyz gates."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int

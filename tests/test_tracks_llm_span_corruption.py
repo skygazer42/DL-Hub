@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_span_corruption_batch_contract() -> None:
-    from tracks.llm.lesson_08_toy_span_corruption.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_08_toy_span_corruption.model import ModelConfig, ToySpanCorruptionLM
+    from tracks.llm.lesson_08_compact_span_corruption.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_08_compact_span_corruption.model import ModelConfig, CompactSpanCorruptionLM
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -30,7 +30,7 @@ def test_llm_span_corruption_batch_contract() -> None:
     assert torch.any(batch["input_ids"] == vocab.mask_id)
     assert torch.any(batch["labels"] != -100)
 
-    model = ToySpanCorruptionLM(
+    model = CompactSpanCorruptionLM(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -54,8 +54,8 @@ def test_llm_span_corruption_batch_contract() -> None:
 
 
 def test_llm_span_corruption_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_08_toy_span_corruption.data import DataConfig
-    from tracks.llm.lesson_08_toy_span_corruption.train import TrainConfig, run_training
+    from tracks.llm.lesson_08_compact_span_corruption.data import DataConfig
+    from tracks.llm.lesson_08_compact_span_corruption.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -89,7 +89,7 @@ def test_llm_span_corruption_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "llm" / "lesson_08_toy_span_corruption" / "pytest_span_corruption_smoke"
+    run_dir = tmp_path / "outputs" / "llm" / "lesson_08_compact_span_corruption" / "pytest_span_corruption_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

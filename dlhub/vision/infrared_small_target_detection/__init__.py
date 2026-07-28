@@ -1,4 +1,4 @@
-"""infrared small target detection models (toy-first, pure torch)."""
+"""infrared small target detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_splatter, smoke_test_splatter
+from ._common import build_baseline_splatter, smoke_test_splatter
 
 _VARIANTS = {
     "gs_anchor_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_gs_anchor_splatter(
     *, in_channels: int, variant: str = "gs_anchor_small", width_mult: float = 1.0
 ):
-    return build_toy_splatter(
+    return build_baseline_splatter(
         family="gs_anchor",
         variants=_VARIANTS,
         in_channels=int(in_channels),

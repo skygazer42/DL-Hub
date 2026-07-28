@@ -1,4 +1,4 @@
-"""JORDER (Joint Rain Detection and Removal) - toy-first implementation.
+"""JORDER (Joint Rain Detection and Removal) - compact-first implementation.
 
 Reference (original idea):
 - "Joint Rain Detection and Removal from a Single Image" (CVPR 2017)
@@ -34,7 +34,7 @@ class _ConvBlock(nn.Module):
 
 
 class JORDER(nn.Module):
-    """Toy JORDER-style derainer.
+    """Compact JORDER-style derainer.
 
     Outputs a denoised/derained image tensor with the same shape as input.
     """

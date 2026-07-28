@@ -1,9 +1,9 @@
-"""PoseFormer - toy-first skeleton action classifier.
+"""PoseFormer - compact-first skeleton action classifier.
 
 Reference (idea):
 - "PoseFormer: 3D Human Pose Estimation with Transformer" (ICCV 2021)
 
-Toy interpretation for action recognition:
+Compact interpretation for action recognition:
 - Flatten (time, joints) into a token sequence.
 - Run a TransformerEncoder.
 - Use a CLS token for classification.

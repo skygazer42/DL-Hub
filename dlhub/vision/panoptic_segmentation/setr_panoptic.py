@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import check_nchw, fuse_panoptic
 
 
 class SETRPanoptic(nn.Module):
-    """SETR-style panoptic segmentation (toy-first).
+    """SETR-style panoptic segmentation (compact-first).
 
     Pure Transformer encoder over patch tokens + lightweight decoder to semantic logits and query masks.
     """

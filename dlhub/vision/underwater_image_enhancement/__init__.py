@@ -1,4 +1,4 @@
-"""underwater image enhancement models (toy-first, pure torch)."""
+"""underwater image enhancement models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

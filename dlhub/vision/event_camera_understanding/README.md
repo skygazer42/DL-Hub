@@ -1,6 +1,6 @@
 # Event Camera Understanding
 
-Toy-first event camera understanding families for local experimentation.
+Compact-first event camera understanding families for local experimentation.
 
 Families in this package:
 

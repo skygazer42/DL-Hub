@@ -12,7 +12,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class MaXDeepLabPanoptic(nn.Module):
-    """MaX-DeepLab-style panoptic segmentation (toy-first).
+    """MaX-DeepLab-style panoptic segmentation (compact-first).
 
     Uses a global memory token set concatenated with pixel tokens for a Transformer encoder.
     Memory tokens serve as instance queries; pixel tokens serve as the segmentation embedding map.

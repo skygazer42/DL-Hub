@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class GFLHead(nn.Module):
-    """GFL-style head (toy): classification + quality + distribution regression."""
+    """GFL-style head (compact): classification + quality + distribution regression."""
 
     def __init__(
         self, *, channels: int, num_classes: int, reg_max: int = 7, num_convs: int = 4
@@ -41,7 +41,7 @@ class GFLHead(nn.Module):
 
 
 class GFLDetector(nn.Module):
-    """GFL-style detector (toy-first)."""
+    """GFL-style detector (compact-first)."""
 
     def __init__(
         self,

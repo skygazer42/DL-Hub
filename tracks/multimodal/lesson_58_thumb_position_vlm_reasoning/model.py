@@ -47,7 +47,7 @@ class ThumbPositionReasoningConfig:
     vision_width: int = 40
 
 
-class ToyThumbPositionReasoningModel(nn.Module):
+class CompactThumbPositionReasoningModel(nn.Module):
     def __init__(self, cfg: ThumbPositionReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -83,7 +83,7 @@ def compute_accuracy(logits: torch.Tensor, target: torch.Tensor) -> float:
 
 __all__ = [
     "ThumbPositionReasoningConfig",
-    "ToyThumbPositionReasoningModel",
+    "CompactThumbPositionReasoningModel",
     "compute_accuracy",
     "thumb_position_loss",
 ]

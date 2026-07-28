@@ -7,11 +7,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_contrastive_sentence_embedding_batch_contract() -> None:
-    from tracks.nlp.lesson_14_toy_contrastive_sentence_embedding.data import (
+    from tracks.nlp.lesson_14_compact_contrastive_sentence_embedding.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_14_toy_contrastive_sentence_embedding.model import (
+    from tracks.nlp.lesson_14_compact_contrastive_sentence_embedding.model import (
         ContrastiveSentenceEncoder,
         ModelConfig,
         contrastive_accuracy,
@@ -62,8 +62,8 @@ def test_contrastive_sentence_embedding_batch_contract() -> None:
 
 
 def test_contrastive_sentence_embedding_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_14_toy_contrastive_sentence_embedding.data import DataConfig
-    from tracks.nlp.lesson_14_toy_contrastive_sentence_embedding.train import TrainConfig, run_training
+    from tracks.nlp.lesson_14_compact_contrastive_sentence_embedding.data import DataConfig
+    from tracks.nlp.lesson_14_compact_contrastive_sentence_embedding.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -94,7 +94,7 @@ def test_contrastive_sentence_embedding_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_14_toy_contrastive_sentence_embedding" / "pytest_contrastive_sentence_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_14_compact_contrastive_sentence_embedding" / "pytest_contrastive_sentence_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

@@ -91,7 +91,7 @@ class PixelCNNBlindSpotBackbone(nn.Module):
 
 
 class PixelCNNBSN(nn.Module):
-    """PixelCNN masked-conv + rotation fusion blind-spot denoiser (toy-first, pure torch).
+    """PixelCNN masked-conv + rotation fusion blind-spot denoiser (compact-first, pure torch).
 
     Strategy:
     - Use an autoregressive (masked) conv net that never uses the current pixel (mask 'A' then 'B').

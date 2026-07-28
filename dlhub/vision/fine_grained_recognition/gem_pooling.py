@@ -17,7 +17,7 @@ class GeMPool2d(nn.Module):
     """Generalized mean pooling (GeM).
 
     This is a simple but strong pooling head for fine-grained recognition / retrieval.
-    We keep it toy-first: 1 learnable scalar p shared across channels.
+    We keep it compact-first: 1 learnable scalar p shared across channels.
     """
 
     def __init__(self, *, p: float = 3.0, eps: float = 1e-6) -> None:

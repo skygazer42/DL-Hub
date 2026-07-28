@@ -33,9 +33,9 @@ class SyntheticRoadSceneDataset(Dataset):
         if not (0.0 < float(cfg.val_fraction) < 1.0):
             raise ValueError("val_fraction must be in (0, 1)")
         if int(cfg.num_lane_slots) != 3:
-            raise ValueError("num_lane_slots must be 3 for this toy lesson")
+            raise ValueError("num_lane_slots must be 3 for this synthetic lesson")
         if int(cfg.num_object_types) != 3:
-            raise ValueError("num_object_types must be 3 for this toy lesson")
+            raise ValueError("num_object_types must be 3 for this synthetic lesson")
         if float(cfg.noise_std) < 0.0:
             raise ValueError("noise_std must be >= 0")
 

@@ -30,7 +30,7 @@ class _BackboneStride4(nn.Module):
 
 
 class PointRendPanoptic(nn.Module):
-    """PointRend-style panoptic segmentation (toy-first).
+    """PointRend-style panoptic segmentation (compact-first).
 
     Produces coarse ROI masks and a lightweight refinement signal derived from backbone features,
     plus a semantic head for stuff classes.

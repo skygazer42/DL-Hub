@@ -1,6 +1,6 @@
 # Mirror segmentation
 
-Toy-first local families for `mirror segmentation`.
+Compact-first local families for `mirror segmentation`.
 
 ## Families
 

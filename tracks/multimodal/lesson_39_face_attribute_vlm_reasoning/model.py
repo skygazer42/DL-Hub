@@ -47,7 +47,7 @@ class FaceAttributeConfig:
     vision_width: int = 32
 
 
-class ToyFaceAttributeReasoner(nn.Module):
+class CompactFaceAttributeReasoner(nn.Module):
     def __init__(self, cfg: FaceAttributeConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -86,7 +86,7 @@ def attribute_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
 
 __all__ = [
     "FaceAttributeConfig",
-    "ToyFaceAttributeReasoner",
+    "CompactFaceAttributeReasoner",
     "attribute_accuracy",
     "attribute_loss",
 ]

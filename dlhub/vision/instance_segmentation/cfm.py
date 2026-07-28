@@ -11,7 +11,7 @@ from dlhub.vision.instance_segmentation._common import (
 
 
 class CFM(nn.Module):
-    """Convolutional Feature Masking style instance segmenter (toy-first)."""
+    """Convolutional Feature Masking style instance segmenter (compact-first)."""
 
     def __init__(
         self,

@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_low_shot_intent_batch_contract() -> None:
-    from tracks.nlp.lesson_25_toy_low_shot_intent_detection.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_25_toy_low_shot_intent_detection.model import (
+    from tracks.nlp.lesson_25_compact_low_shot_intent_detection.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_25_compact_low_shot_intent_detection.model import (
         LowShotIntentClassifier,
         ModelConfig,
         classification_accuracy,
@@ -52,8 +52,8 @@ def test_low_shot_intent_batch_contract() -> None:
 
 
 def test_low_shot_intent_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_25_toy_low_shot_intent_detection.data import DataConfig
-    from tracks.nlp.lesson_25_toy_low_shot_intent_detection.train import TrainConfig, run_training
+    from tracks.nlp.lesson_25_compact_low_shot_intent_detection.data import DataConfig
+    from tracks.nlp.lesson_25_compact_low_shot_intent_detection.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -84,7 +84,7 @@ def test_low_shot_intent_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_25_toy_low_shot_intent_detection" / "pytest_low_shot_intent_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_25_compact_low_shot_intent_detection" / "pytest_low_shot_intent_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

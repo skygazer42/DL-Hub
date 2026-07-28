@@ -38,7 +38,7 @@ def test_multimodal_sign_digit_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_56_sign_digit_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_56_sign_digit_vlm_reasoning.model import (
         SignDigitReasoningConfig,
-        ToySignDigitReasoningModel,
+        CompactSignDigitReasoningModel,
         compute_accuracy,
         sign_digit_loss,
     )
@@ -55,7 +55,7 @@ def test_multimodal_sign_digit_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToySignDigitReasoningModel(
+    model = CompactSignDigitReasoningModel(
         SignDigitReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

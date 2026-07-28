@@ -178,7 +178,7 @@ class PCTConfig:
 class PCTClassifier(nn.Module):
     """A small Point Cloud Transformer (PCT-style), simplified.
 
-    Uses full self-attention over points (O(N^2)), intended for small N (toy datasets).
+    Uses full self-attention over points (O(N^2)), intended for small N (synthetic datasets).
     """
 
     def __init__(self, cfg: PCTConfig) -> None:

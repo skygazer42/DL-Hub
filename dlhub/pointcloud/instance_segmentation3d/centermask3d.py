@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class CenterMask3D(nn.Module):
-    """CenterMask3D (toy): graph encoder + center proposals."""
+    """CenterMask3D (compact): graph encoder + center proposals."""
 
     def __init__(
         self,

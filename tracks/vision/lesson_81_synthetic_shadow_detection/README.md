@@ -1,6 +1,6 @@
 # Lesson 81: Synthetic Shadow Detection
 
-This lesson introduces a toy paired setup for shadow detection and relighting:
+This lesson introduces a compact paired setup for shadow detection and relighting:
 
 - render clean RGB scenes with simple geometric content
 - synthesize soft shadow masks and boundary cues

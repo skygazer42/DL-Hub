@@ -1,4 +1,4 @@
-"""Lesson 10 (Vision): Synthetic image denoising (toy-first)."""
+"""Lesson 10 (Vision): Synthetic image denoising (compact-first)."""
 
 from __future__ import annotations
 

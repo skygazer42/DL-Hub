@@ -7,12 +7,12 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_forecasting_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_32_toy_pointcloud_forecasting.data import (
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.data import (
         DataConfig,
         SyntheticPointCloudForecastingDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_32_toy_pointcloud_forecasting.model import (
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.model import (
         ModelConfig,
         build_model,
         forecasting_loss,
@@ -67,9 +67,9 @@ def test_pointcloud_forecasting_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_forecasting_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_32_toy_pointcloud_forecasting.data import DataConfig
-    from tracks.pointcloud.lesson_32_toy_pointcloud_forecasting.model import ModelConfig
-    from tracks.pointcloud.lesson_32_toy_pointcloud_forecasting.train import (
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.data import DataConfig
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.model import ModelConfig
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.train import (
         TrainConfig,
         run_training,
     )
@@ -113,7 +113,7 @@ def test_pointcloud_forecasting_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_32_toy_pointcloud_forecasting"
+        / "lesson_32_compact_pointcloud_forecasting"
         / "pytest_pointcloud_forecasting_smoke"
     )
     assert (run_dir / "config.json").is_file()

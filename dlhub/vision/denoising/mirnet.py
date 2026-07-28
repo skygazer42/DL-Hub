@@ -41,7 +41,7 @@ class ChannelAttention(nn.Module):
 
 
 class DualAttentionUnit(nn.Module):
-    """A small residual block with channel attention (toy DU/DAU)."""
+    """A small residual block with channel attention (compact DU/DAU)."""
 
     def __init__(self, channels: int) -> None:
         super().__init__()
@@ -57,7 +57,7 @@ class DualAttentionUnit(nn.Module):
 
 
 class SKFF(nn.Module):
-    """Selective kernel feature fusion (toy, channel-wise softmax)."""
+    """Selective kernel feature fusion (compact, channel-wise softmax)."""
 
     def __init__(self, channels: int, num_branches: int, *, reduction: int = 8) -> None:
         super().__init__()
@@ -92,7 +92,7 @@ class SKFF(nn.Module):
 
 
 class MultiScaleResidualBlock(nn.Module):
-    """Toy MIRNet multi-scale residual block: 3-scale processing + SKFF + residual."""
+    """Compact MIRNet multi-scale residual block: 3-scale processing + SKFF + residual."""
 
     def __init__(self, channels: int) -> None:
         super().__init__()
@@ -122,7 +122,7 @@ class MultiScaleResidualBlock(nn.Module):
 
 
 class MIRNet(nn.Module):
-    """MIRNet-style denoiser (toy-first, pure torch).
+    """MIRNet-style denoiser (compact-first, pure torch).
 
     Notes:
     - This is a simplified MIRNet-inspired architecture with multi-scale residual blocks and SKFF-like fusion.

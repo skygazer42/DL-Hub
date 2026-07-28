@@ -10,9 +10,9 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def test_llm_lesson_03_toy_mamba_shapes_smoke() -> None:
-    from tracks.llm.lesson_03_toy_mamba_language_model.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_03_toy_mamba_language_model.model import ModelConfig, ToyMambaLM
+def test_llm_lesson_03_compact_mamba_shapes_smoke() -> None:
+    from tracks.llm.lesson_03_compact_mamba_language_model.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_03_compact_mamba_language_model.model import ModelConfig, CompactMambaLM
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -31,7 +31,7 @@ def test_llm_lesson_03_toy_mamba_shapes_smoke() -> None:
     assert tuple(inputs["attention_mask"].shape) == (8, 16)
     assert tuple(labels.shape) == (8, 16)
 
-    model = ToyMambaLM(
+    model = CompactMambaLM(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -53,15 +53,15 @@ def test_llm_lesson_03_toy_mamba_shapes_smoke() -> None:
     loss.backward()
 
 
-def test_llm_lesson_03_toy_mamba_training_smoke() -> None:
-    from tracks.llm.lesson_03_toy_mamba_language_model.data import DataConfig
-    from tracks.llm.lesson_03_toy_mamba_language_model.train import TrainConfig, run_training
+def test_llm_lesson_03_compact_mamba_training_smoke() -> None:
+    from tracks.llm.lesson_03_compact_mamba_language_model.data import DataConfig
+    from tracks.llm.lesson_03_compact_mamba_language_model.train import TrainConfig, run_training
 
     run_dir = (
         _repo_root()
         / "outputs"
         / "llm"
-        / "lesson_03_toy_mamba_language_model"
+        / "lesson_03_compact_mamba_language_model"
         / "pytest_mamba_smoke"
     )
     if run_dir.exists():

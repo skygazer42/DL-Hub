@@ -16,7 +16,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class VoteNet(nn.Module):
-    """VoteNet (toy): seed points vote for object centers -> proposal head."""
+    """VoteNet (compact): seed points vote for object centers -> proposal head."""
 
     def __init__(
         self,

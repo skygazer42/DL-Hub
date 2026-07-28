@@ -6,7 +6,7 @@ from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_h
 
 
 class ConditionalDETRDetector(nn.Module):
-    """Conditional DETR *style* (toy).
+    """Conditional DETR *style* (compact).
 
     We approximate conditional queries by predicting a query positional embedding.
     """

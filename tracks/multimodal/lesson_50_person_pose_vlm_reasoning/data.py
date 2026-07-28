@@ -179,7 +179,7 @@ def _sample_person_pose(*, image_size: int, seed: int) -> tuple[np.ndarray, np.n
     return image, pose
 
 
-class ToyPersonPoseReasoningDataset(Dataset):
+class SyntheticPersonPoseReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 48:
             raise ValueError("image_size must be >= 48")
@@ -209,7 +209,7 @@ class ToyPersonPoseReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyPersonPoseReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticPersonPoseReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -232,7 +232,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 
 __all__ = [
     "DataConfig",
-    "ToyPersonPoseReasoningDataset",
+    "SyntheticPersonPoseReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

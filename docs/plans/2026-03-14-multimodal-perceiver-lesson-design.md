@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_08_perceiver_resampler_toy_vlm` as an independent teaching lesson for fixed-latent visual resampling in the style of Perceiver Resampler systems.
+**Goal:** Add `tracks/multimodal/lesson_08_perceiver_resampler_compact_vlm` as an independent teaching lesson for fixed-latent visual resampling in the style of Perceiver Resampler systems.
 
 ## Problem
 
@@ -155,7 +155,7 @@ Metrics:
 Follow the same conventions as lessons 1-7:
 
 - CLI args for sample count, image size, scene size, text length, and latent count
-- `outputs/multimodal/lesson_08_perceiver_resampler_toy_vlm/<run_name>/`
+- `outputs/multimodal/lesson_08_perceiver_resampler_compact_vlm/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

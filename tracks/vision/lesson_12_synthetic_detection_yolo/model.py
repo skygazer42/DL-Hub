@@ -18,7 +18,7 @@ class TinyYOLOv1(nn.Module):
         super().__init__()
         self.cfg = cfg
         if int(cfg.stride) != 4:
-            raise ValueError("This toy YOLO lesson assumes output stride=4.")
+            raise ValueError("This compact YOLO lesson assumes output stride=4.")
 
         self.model = YOLOv1Detector(
             in_channels=int(cfg.in_channels),

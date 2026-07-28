@@ -111,7 +111,7 @@ def _render_scene_text_image(*, word: str, image_size: int, generator: torch.Gen
     return image.clamp(0.0, 1.0)
 
 
-class ToySceneTextDataset(Dataset):
+class SyntheticSceneTextDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         _validate_config(cfg)
         self.cfg = cfg
@@ -147,7 +147,7 @@ class ToySceneTextDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToySceneTextDataset(cfg, vocab=vocab)
+    dataset = SyntheticSceneTextDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -179,4 +179,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToySceneTextDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticSceneTextDataset", "Vocab", "get_dataloaders"]

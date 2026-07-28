@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class ContentAttentionSummarizer(nn.Module):
-    """CA-SUM-style content-attention summarizer (toy)."""
+    """CA-SUM-style content-attention summarizer (compact)."""
 
     def __init__(self, *, in_channels: int, width: int, depth: int, dropout: float = 0.0) -> None:
         super().__init__()

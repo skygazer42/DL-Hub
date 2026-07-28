@@ -1,7 +1,7 @@
 from .data import DataConfig, Vocab, get_dataloaders
 from .model import (
     PromptLearningConfig,
-    ToyPromptLearningVLM,
+    CompactPromptLearningVLM,
     clip_contrastive_loss,
     retrieval_accuracy,
 )
@@ -9,7 +9,7 @@ from .model import (
 __all__ = [
     "DataConfig",
     "PromptLearningConfig",
-    "ToyPromptLearningVLM",
+    "CompactPromptLearningVLM",
     "Vocab",
     "clip_contrastive_loss",
     "get_dataloaders",

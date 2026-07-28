@@ -42,7 +42,7 @@ class _NonBottleneck1D(nn.Module):
 
 
 class ERFNet(nn.Module):
-    """ERFNet semantic segmentation (toy-first)."""
+    """ERFNet semantic segmentation (compact-first)."""
 
     def __init__(
         self,

@@ -1,10 +1,8 @@
 # Vision Instance Segmentation 40-Family Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+**Goal:** Expand the local vision instance segmentation module to 40 distinct algorithm families with a discoverable local zoo, smoke coverage, and pure-torch compact-first builders.
 
-**Goal:** Expand the local vision instance segmentation module to 40 distinct algorithm families with a discoverable local zoo, smoke coverage, and pure-torch toy-first builders.
-
-**Architecture:** Keep the existing one-file-per-family convention under `dlhub/vision/instance_segmentation/`, add only the missing 19 families needed to reach 40 total, and introduce a lazy `instance_segmentation_zoo` that discovers `_VARIANTS` and `build_*_instance_segmenter(...)` factories from source. Reuse shared toy-first blocks in `_common.py` so the new families stay lightweight, distinct, and CPU-friendly while matching the repo's existing output patterns.
+**Architecture:** Keep the existing one-file-per-family convention under `dlhub/vision/instance_segmentation/`, add only the missing 19 families needed to reach 40 total, and introduce a lazy `instance_segmentation_zoo` that discovers `_VARIANTS` and `build_*_instance_segmenter(...)` factories from source. Reuse shared compact-first blocks in `_common.py` so the new families stay lightweight, distinct, and CPU-friendly while matching the repo's existing output patterns.
 
 **Tech Stack:** Python, PyTorch, pytest, AST-based local zoo discovery, existing `dlhub.vision.instance_segmentation` module conventions.
 
@@ -110,7 +108,7 @@ git add dlhub/vision/instance_segmentation_zoo.py scripts/instance_segmentation_
 git commit -m "feat: add instance segmentation local zoo"
 ```
 
-### Task 3: Extend shared toy-first instance segmentation primitives
+### Task 3: Extend shared compact-first instance segmentation primitives
 
 **Files:**
 - Modify: `dlhub/vision/instance_segmentation/_common.py`
@@ -184,7 +182,7 @@ For each family:
 - `build_*_instance_segmenter(...)`
 - `__main__` smoke
 
-Keep the toy semantics distinct:
+Keep the compact semantics distinct:
 - `deepmask/sharpmask`: proposal + mask seed/refine
 - `cfm/mnc/instancefcn`: proposal/region assembly outputs
 - `panet/shapemask/bcnet/refinemask`: ROI mask refinement, bottom-up paths, boundary cues, or coarse-to-fine masks

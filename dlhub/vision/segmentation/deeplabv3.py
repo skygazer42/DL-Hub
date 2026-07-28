@@ -54,7 +54,7 @@ class ASPP(nn.Module):
 
 
 class DeepLabV3(nn.Module):
-    """DeepLabV3 semantic segmentation (toy-first, pure torch)."""
+    """DeepLabV3 semantic segmentation (compact-first, pure torch)."""
 
     def __init__(
         self,

@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import check_nchw, fuse_panoptic
 
 
 class BiSeNetPanoptic(nn.Module):
-    """BiSeNet-style panoptic segmentation (toy-first).
+    """BiSeNet-style panoptic segmentation (compact-first).
 
     Spatial path (detail) + context path (semantics) fused for semantic logits and query masks.
     """

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SPVCNNSeg(nn.Module):
-    """SPVCNN semantic segmentation (toy): point-voxel fusion backbone."""
+    """SPVCNN semantic segmentation (compact): point-voxel fusion backbone."""
 
     def __init__(
         self,

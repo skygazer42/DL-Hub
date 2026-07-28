@@ -1,4 +1,4 @@
-# Lesson 29: Toy Human-Object Interaction Reasoning
+# Lesson 29: Compact Human-Object Interaction Reasoning
 
 This lesson introduces a compact multimodal reasoning setup over synthetic
 region features and a text query describing a human-object relation.
@@ -8,7 +8,7 @@ region features and a text query describing a human-object relation.
 - fuse pooled region interaction state with text state
 - classify binary answer: relation true (`yes`) or false (`no`)
 
-The task is intentionally toy-first and CPU-friendly.
+The task is intentionally compact-first and CPU-friendly.
 
 ## Run
 

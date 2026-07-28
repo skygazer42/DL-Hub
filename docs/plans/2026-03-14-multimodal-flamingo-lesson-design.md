@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_06_flamingo_toy_interleaved_vlm` as an independent teaching lesson for interleaved image-text prompting and few-shot multimodal in-context learning.
+**Goal:** Add `tracks/multimodal/lesson_06_flamingo_compact_interleaved_vlm` as an independent teaching lesson for interleaved image-text prompting and few-shot multimodal in-context learning.
 
 ## Problem
 
@@ -163,7 +163,7 @@ The third metric can be approximated by filtering to ordinary evaluation samples
 Follow the same conventions as lessons 1-5:
 
 - CLI args for dataset size and text length
-- `outputs/multimodal/lesson_06_flamingo_toy_interleaved_vlm/<run_name>/`
+- `outputs/multimodal/lesson_06_flamingo_compact_interleaved_vlm/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 Sample logging should include:

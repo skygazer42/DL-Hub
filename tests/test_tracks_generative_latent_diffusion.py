@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_latent_diffusion_fake_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_04_toy_latent_diffusion.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_04_compact_latent_diffusion.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
@@ -29,7 +29,7 @@ def test_latent_diffusion_fake_dataloaders_smoke() -> None:
 
 
 def test_latent_diffusion_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_04_toy_latent_diffusion.model import (
+    from tracks.generative.lesson_04_compact_latent_diffusion.model import (
         LatentDiffusionModel,
         ModelConfig,
         diffusion_loss,
@@ -62,7 +62,7 @@ def test_latent_diffusion_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_04_toy_latent_diffusion"
+        / "lesson_04_compact_latent_diffusion"
         / "pytest_latent_diffusion_smoke"
     )
     if run_dir.exists():
@@ -72,7 +72,7 @@ def test_latent_diffusion_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_04_toy_latent_diffusion.train",
+            "tracks.generative.lesson_04_compact_latent_diffusion.train",
             "--epochs",
             "1",
             "--num-samples",

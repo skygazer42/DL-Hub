@@ -24,7 +24,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyEnhancer(nn.Module):
+class CompactEnhancer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -38,7 +38,7 @@ class ToyEnhancer(nn.Module):
         return {"enhanced": enhanced, "illumination": illum}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -49,7 +49,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyEnhancer(
+    return CompactEnhancer(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

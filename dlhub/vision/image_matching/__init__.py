@@ -1,4 +1,4 @@
-"""Image matching models (toy-first, pure torch)."""
+"""Image matching models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

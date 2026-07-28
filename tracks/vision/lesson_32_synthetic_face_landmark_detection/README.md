@@ -1,6 +1,6 @@
 # Lesson 32: Synthetic Face Landmark Detection
 
-This toy lesson renders simple grayscale cartoon faces and regresses five normalized landmarks:
+This compact lesson renders simple grayscale cartoon faces and regresses five normalized landmarks:
 
 - left eye
 - right eye

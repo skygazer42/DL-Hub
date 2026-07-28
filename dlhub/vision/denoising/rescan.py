@@ -1,10 +1,10 @@
-"""RESCAN (Recurrent SE Context Aggregation Net) - toy-first implementation.
+"""RESCAN (Recurrent SE Context Aggregation Net) - compact-first implementation.
 
 Reference (original idea):
 - "Recurrent Squeeze-and-Excitation Context Aggregation Net for Single Image Deraining"
   (ECCV 2018)
 
-Toy interpretation:
+Compact interpretation:
 - A recurrent residual predictor with SE-gated feature blocks.
 - Iteratively subtract predicted rain residual from the current estimate.
 """
@@ -55,7 +55,7 @@ class ResSEBlock(nn.Module):
 
 
 class RESCAN(nn.Module):
-    """Toy RESCAN-style derainer.
+    """Compact RESCAN-style derainer.
 
     Iteratively updates `y` by subtracting predicted residuals. We keep weights shared
     to mimic the "recurrent" spirit while remaining small and training-friendly.

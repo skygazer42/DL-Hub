@@ -6,9 +6,9 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_tool_calling_batch_and_loss_smoke() -> None:
-    from tracks.llm.lesson_13_toy_tool_calling_agent.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_13_toy_tool_calling_agent.model import ModelConfig, ToyToolCallingAgent
-    from tracks.llm.lesson_13_toy_tool_calling_agent.train import tool_calling_loss
+    from tracks.llm.lesson_13_compact_tool_calling_agent.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_13_compact_tool_calling_agent.model import ModelConfig, CompactToolCallingAgent
+    from tracks.llm.lesson_13_compact_tool_calling_agent.train import tool_calling_loss
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -32,7 +32,7 @@ def test_llm_tool_calling_batch_and_loss_smoke() -> None:
     assert tuple(batch["labels"].shape) == (8, 20)
     assert tuple(batch["tool_targets"].shape) == (8,)
 
-    model = ToyToolCallingAgent(
+    model = CompactToolCallingAgent(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -65,8 +65,8 @@ def test_llm_tool_calling_batch_and_loss_smoke() -> None:
 
 
 def test_llm_tool_calling_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_13_toy_tool_calling_agent.data import DataConfig
-    from tracks.llm.lesson_13_toy_tool_calling_agent.train import TrainConfig, run_training
+    from tracks.llm.lesson_13_compact_tool_calling_agent.data import DataConfig
+    from tracks.llm.lesson_13_compact_tool_calling_agent.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -99,7 +99,7 @@ def test_llm_tool_calling_training_smoke(tmp_path) -> None:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
     run_dir = (
-        tmp_path / "outputs" / "llm" / "lesson_13_toy_tool_calling_agent" / "pytest_tool_calling_smoke"
+        tmp_path / "outputs" / "llm" / "lesson_13_compact_tool_calling_agent" / "pytest_tool_calling_smoke"
     )
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()

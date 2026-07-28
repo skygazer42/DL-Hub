@@ -51,7 +51,7 @@ class _Up(nn.Module):
 
 
 class ResUNet(nn.Module):
-    """Residual U-Net denoiser (toy-first, pure torch).
+    """Residual U-Net denoiser (compact-first, pure torch).
 
     Encoder-decoder with residual blocks and skip connections. Predicts a residual/noise
     map and returns `x - residual`.

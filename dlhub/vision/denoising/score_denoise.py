@@ -8,7 +8,7 @@ class ScoreDenoise(nn.Module):
     Notes:
     - The core ScoreDenoise predicts the noise/residual. A wrapper `ScoreDenoiseDenoiser` converts it
       to a denoised image by subtracting the predicted residual from the input.
-    - This implementation is small and training-friendly for toy datasets.
+    - This implementation is small and training-friendly for synthetic datasets.
     """
 
     def __init__(
@@ -62,7 +62,7 @@ class ScoreDenoiseDenoiser(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    # Canonical-ish depths (toy-friendly: keep features modest).
+    # Canonical-ish depths (compact-friendly: keep features modest).
     "score_denoise_9": {"features": 48, "depth": 9, "use_bn": True},
     "score_denoise_17": {"features": 64, "depth": 17, "use_bn": True},
     "score_denoise_20": {"features": 64, "depth": 20, "use_bn": True},

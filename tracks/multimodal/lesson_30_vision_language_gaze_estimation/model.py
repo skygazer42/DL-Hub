@@ -51,7 +51,7 @@ class GazeEstimationConfig:
     vision_width: int = 32
 
 
-class ToyVisionLanguageGazeEstimator(nn.Module):
+class CompactVisionLanguageGazeEstimator(nn.Module):
     def __init__(self, cfg: GazeEstimationConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -101,7 +101,7 @@ __all__ = [
     "GazeEstimationConfig",
     "MaskedTextEncoder",
     "TinyVisionEncoder",
-    "ToyVisionLanguageGazeEstimator",
+    "CompactVisionLanguageGazeEstimator",
     "gaze_heatmap_loss",
     "gaze_point_l1",
     "gaze_point_loss",

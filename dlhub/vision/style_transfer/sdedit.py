@@ -14,7 +14,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class SDEditStyleTransfer(nn.Module):
-    """SDEdit-style stylization (toy).
+    """SDEdit-style stylization (compact).
 
     Keeps the central SDEdit idea:
     - start from the encoded content image

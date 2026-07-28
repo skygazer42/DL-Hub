@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class VoTR(nn.Module):
-    """VoTR (toy): voxel/BEV tokens processed by a transformer encoder."""
+    """VoTR (compact): voxel/BEV tokens processed by a transformer encoder."""
 
     def __init__(
         self,

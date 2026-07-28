@@ -43,7 +43,7 @@ class _ContextGuidedBlock(nn.Module):
 
 
 class CGNet(nn.Module):
-    """CGNet semantic segmentation (toy-first)."""
+    """CGNet semantic segmentation (compact-first)."""
 
     def __init__(
         self,

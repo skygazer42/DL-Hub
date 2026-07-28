@@ -1,7 +1,5 @@
 # Vision Panoptic Zoo Conventions Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Bring the existing `dlhub/vision/panoptic_segmentation/` 40-family package up to the same discoverable local-zoo standard as detection, instance segmentation, and FGVC.
 
 **Architecture:** Keep the existing per-family panoptic implementations unchanged. Add a lazy AST-discovered `panoptic_segmentation_zoo` registry that enumerates `_VARIANTS`, builds models by `dlpan:*` arch id, and filters kwargs against each builder signature. Add a small CLI script and pytest smoke coverage for list/build/backward flows across all tiny variants plus representative non-tiny variants.

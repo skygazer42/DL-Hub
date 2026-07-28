@@ -1,6 +1,6 @@
 # Compression artifact reduction
 
-Toy-first local families for `compression artifact reduction`.
+Compact-first local families for `compression artifact reduction`.
 
 ## Families
 

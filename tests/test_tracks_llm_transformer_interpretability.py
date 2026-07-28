@@ -11,12 +11,12 @@ def _repo_root() -> Path:
 
 
 def test_llm_transformer_interpretability_batch_attention_and_saliency_smoke() -> None:
-    from tracks.llm.lesson_12_toy_transformer_interpretability.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_12_toy_transformer_interpretability.model import (
+    from tracks.llm.lesson_12_compact_transformer_interpretability.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_12_compact_transformer_interpretability.model import (
         ModelConfig,
-        ToyInterpretabilityTransformerLM,
+        CompactInterpretabilityTransformerLM,
     )
-    from tracks.llm.lesson_12_toy_transformer_interpretability.train import (
+    from tracks.llm.lesson_12_compact_transformer_interpretability.train import (
         compute_attention_map,
         compute_token_saliency,
     )
@@ -38,7 +38,7 @@ def test_llm_transformer_interpretability_batch_attention_and_saliency_smoke() -
     assert tuple(batch["attention_mask"].shape) == (8, 16)
     assert (batch["labels"] != vocab.ignore_index).any()
 
-    model = ToyInterpretabilityTransformerLM(
+    model = CompactInterpretabilityTransformerLM(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -75,14 +75,14 @@ def test_llm_transformer_interpretability_batch_attention_and_saliency_smoke() -
 
 
 def test_llm_transformer_interpretability_training_smoke() -> None:
-    from tracks.llm.lesson_12_toy_transformer_interpretability.data import DataConfig
-    from tracks.llm.lesson_12_toy_transformer_interpretability.train import TrainConfig, run_training
+    from tracks.llm.lesson_12_compact_transformer_interpretability.data import DataConfig
+    from tracks.llm.lesson_12_compact_transformer_interpretability.train import TrainConfig, run_training
 
     run_dir = (
         _repo_root()
         / "outputs"
         / "llm"
-        / "lesson_12_toy_transformer_interpretability"
+        / "lesson_12_compact_transformer_interpretability"
         / "pytest_transformer_interpretability_smoke"
     )
     if run_dir.exists():

@@ -7,7 +7,7 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_reflection_memory_agent_batch_mask_and_memory_tokens() -> None:
-    from tracks.llm.lesson_18_toy_reflection_memory_agent.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_18_compact_reflection_memory_agent.data import DataConfig, get_dataloaders
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -45,12 +45,12 @@ def test_llm_reflection_memory_agent_batch_mask_and_memory_tokens() -> None:
 
 
 def test_llm_reflection_memory_agent_model_and_generation_smoke() -> None:
-    from tracks.llm.lesson_18_toy_reflection_memory_agent.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_18_toy_reflection_memory_agent.model import (
+    from tracks.llm.lesson_18_compact_reflection_memory_agent.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_18_compact_reflection_memory_agent.model import (
         ModelConfig,
         ReflectionMemoryTransformerLM,
     )
-    from tracks.llm.lesson_18_toy_reflection_memory_agent.train import generate_response
+    from tracks.llm.lesson_18_compact_reflection_memory_agent.train import generate_response
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -110,8 +110,8 @@ def test_llm_reflection_memory_agent_model_and_generation_smoke() -> None:
 
 
 def test_llm_reflection_memory_agent_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_18_toy_reflection_memory_agent.data import DataConfig
-    from tracks.llm.lesson_18_toy_reflection_memory_agent.train import TrainConfig, run_training
+    from tracks.llm.lesson_18_compact_reflection_memory_agent.data import DataConfig
+    from tracks.llm.lesson_18_compact_reflection_memory_agent.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -149,7 +149,7 @@ def test_llm_reflection_memory_agent_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_18_toy_reflection_memory_agent"
+        / "lesson_18_compact_reflection_memory_agent"
         / "pytest_reflection_memory_agent_smoke"
     )
     assert (run_dir / "config.json").is_file()

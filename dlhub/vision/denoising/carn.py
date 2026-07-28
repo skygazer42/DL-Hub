@@ -40,7 +40,7 @@ class _CascadingBlock(nn.Module):
 
 
 class CARN(nn.Module):
-    """CARN (Cascading Residual Network) adapted for denoising (toy-first, pure torch).
+    """CARN (Cascading Residual Network) adapted for denoising (compact-first, pure torch).
 
     Uses multiple cascading blocks and global feature fusion via concatenation + 1x1 conv.
     Predicts a residual/noise map and returns `x - residual`.

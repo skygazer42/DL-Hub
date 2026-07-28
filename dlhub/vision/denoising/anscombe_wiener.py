@@ -22,7 +22,7 @@ def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
 
 
 class AnscombeWiener(nn.Module):
-    """Poisson-ish denoiser: Anscombe VST + local Wiener in VST domain (toy-first).
+    """Poisson-ish denoiser: Anscombe VST + local Wiener in VST domain (compact-first).
 
     This is a simple variance-stabilizing approach for Poisson-like noise:
     - Assume normalized image x in [0,1] represents counts / peak.
@@ -32,7 +32,7 @@ class AnscombeWiener(nn.Module):
     - Invert transform approximately and rescale back to [0,1].
 
     Notes:
-    - This is a baseline meant for toy datasets; the inverse is a common approximation.
+    - This is a baseline meant for synthetic datasets; the inverse is a common approximation.
     - When sigma is small, peak becomes large and this approaches an identity transform.
     """
 

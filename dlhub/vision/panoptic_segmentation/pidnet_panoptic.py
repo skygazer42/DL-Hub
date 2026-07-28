@@ -13,12 +13,12 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class PIDNetPanoptic(nn.Module):
-    """PIDNetPanoptic (Unified Panoptic Segmentation Network) (toy-first).
+    """PIDNetPanoptic (Unified Panoptic Segmentation Network) (compact-first).
 
     Two-branch network:
     - Semantic segmentation head (stuff + thing)
     - Instance mask head (prototype masks + per-instance coefficients)
-    - A small "panoptic head" that can learn to resolve overlaps (toy: 1x1 conv on concatenated maps)
+    - A small "panoptic head" that can learn to resolve overlaps (compact: 1x1 conv on concatenated maps)
     """
 
     def __init__(
@@ -77,7 +77,7 @@ class PIDNetPanoptic(nn.Module):
         self.cls = nn.Linear(fpn, nt)
         self.coeff = nn.Linear(fpn, np)
 
-        # Panoptic head (toy): learns to mix semantic logits with an aggregated instance map.
+        # Panoptic head (compact): learns to mix semantic logits with an aggregated instance map.
         self.panoptic_head = nn.Conv2d((nt + ns) + 1, nt + ns, kernel_size=1, bias=True)
 
         self.num_thing_classes = nt

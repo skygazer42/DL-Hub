@@ -60,7 +60,7 @@ class _Up(nn.Module):
 
 
 class HINet(nn.Module):
-    """HINet-style denoiser (toy-first, pure torch).
+    """HINet-style denoiser (compact-first, pure torch).
 
     Simplified encoder-decoder using Half Instance Normalization residual blocks.
     Predicts a residual/noise map and returns `x - residual`.

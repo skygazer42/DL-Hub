@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-15
 
-**Goal:** Add `tracks/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding` as the next teaching lesson after lesson 15, extending dense temporal grounding from a single-scale `T x T` segment map to a multi-scale temporal-map formulation.
+**Goal:** Add `tracks/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding` as the next teaching lesson after lesson 15, extending dense temporal grounding from a single-scale `T x T` segment map to a multi-scale temporal-map formulation.
 
 ## Problem
 
@@ -246,7 +246,7 @@ The main new teaching ideas should be:
 Follow the existing track conventions:
 
 - CLI args for dataset size, frame count, image size, and query length
-- output directory under `outputs/multimodal/lesson_16_multiscale_2dtan_toy_temporal_grounding/<run_name>/`
+- output directory under `outputs/multimodal/lesson_16_multiscale_2dtan_compact_temporal_grounding/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 The lesson should remain runnable on CPU with a short smoke command.

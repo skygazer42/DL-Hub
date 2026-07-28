@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_diffusion_image_editing_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_10_toy_diffusion_image_editing.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_10_compact_diffusion_image_editing.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
@@ -35,16 +35,16 @@ def test_diffusion_image_editing_dataloaders_smoke() -> None:
 
 
 def test_diffusion_image_editing_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_10_toy_diffusion_image_editing.model import (
+    from tracks.generative.lesson_10_compact_diffusion_image_editing.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyDiffusionImageEditor,
+        CompactDiffusionImageEditor,
         q_sample,
     )
 
     cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=24, control_vocab_size=2)
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToyDiffusionImageEditor(cfg)
+    model = CompactDiffusionImageEditor(cfg)
 
     source = torch.rand((4, 1, 28, 28), dtype=torch.float32)
     target = torch.rand((4, 1, 28, 28), dtype=torch.float32)
@@ -78,7 +78,7 @@ def test_diffusion_image_editing_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_10_toy_diffusion_image_editing"
+        / "lesson_10_compact_diffusion_image_editing"
         / "pytest_diffusion_image_editing_smoke"
     )
     if run_dir.exists():
@@ -88,7 +88,7 @@ def test_diffusion_image_editing_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_10_toy_diffusion_image_editing.train",
+            "tracks.generative.lesson_10_compact_diffusion_image_editing.train",
             "--epochs",
             "1",
             "--num-samples",

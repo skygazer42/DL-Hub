@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import pickle
+import warnings
+from collections.abc import Mapping
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -33,6 +36,8 @@ def save_checkpoint(
     if optimizer is not None:
         payload["optimizer_state"] = optimizer.state_dict()
 
+    # State-dict serialization is intentional; every library read uses the restricted loader below.
+    # nosemgrep: trailofbits.python.pickles-in-pytorch.pickles-in-pytorch
     torch.save(payload, out_path)
     return out_path
 
@@ -43,16 +48,44 @@ def load_checkpoint(
     model: torch.nn.Module,
     optimizer: torch.optim.Optimizer | None = None,
     map_location: str | torch.device | None = "cpu",
+    allow_unsafe_legacy: bool = False,
 ) -> dict[str, Any]:
-    """Load a checkpoint saved by :func:`save_checkpoint` and restore state."""
+    """Load a checkpoint saved by :func:`save_checkpoint` and restore state.
+
+    Checkpoints are loaded with PyTorch's restricted ``weights_only`` loader by
+    default. ``allow_unsafe_legacy`` exists only for trusted legacy checkpoints:
+    unrestricted pickle loading can execute arbitrary code embedded in a file.
+    """
 
     import torch
 
     ckpt_path = Path(path)
     try:
+        # This is the restricted PyTorch loader, which the generic rule does not distinguish.
+        # nosemgrep: trailofbits.python.pickles-in-pytorch.pickles-in-pytorch
         payload = torch.load(ckpt_path, map_location=map_location, weights_only=True)
-    except TypeError:
+    except (TypeError, pickle.UnpicklingError) as exc:
+        if not allow_unsafe_legacy:
+            raise RuntimeError(
+                "Safe checkpoint loading failed; refusing to retry with unrestricted pickle. "
+                "Upgrade PyTorch or, only for a checkpoint from a trusted source, pass "
+                "allow_unsafe_legacy=True."
+            ) from exc
+
+        warnings.warn(
+            "Unsafe legacy checkpoint loading uses unrestricted pickle and can execute "
+            "arbitrary code. Continue only with a checkpoint you trust.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        # Intentional trusted-only escape hatch, gated by allow_unsafe_legacy and the warning above.
+        # nosemgrep: trailofbits.python.pickles-in-pytorch.pickles-in-pytorch
         payload = torch.load(ckpt_path, map_location=map_location)
+
+    if not isinstance(payload, Mapping):
+        raise TypeError(f"Checkpoint payload must be a mapping, got {type(payload).__name__}")
+    if "model_state" not in payload:
+        raise KeyError("Checkpoint payload is missing required key 'model_state'")
 
     model.load_state_dict(payload["model_state"])
     if optimizer is not None and "optimizer_state" in payload:

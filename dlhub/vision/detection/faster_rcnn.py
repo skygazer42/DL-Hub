@@ -77,7 +77,7 @@ class RoIHead(nn.Module):
 
 
 class FasterRCNNDetector(nn.Module):
-    """Faster R-CNN-style two-stage detector (toy-first).
+    """Faster R-CNN-style two-stage detector (compact-first).
 
     Forward returns raw RPN and ROI head outputs.
     """

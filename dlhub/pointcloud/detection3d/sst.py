@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SST(nn.Module):
-    """SST (toy): sparse-ish spatial transformer on BEV tokens.
+    """SST (compact): sparse-ish spatial transformer on BEV tokens.
 
     We approximate sparsity by selecting top occupied cells (based on BEV magnitude),
     running transformer on them, then writing back.

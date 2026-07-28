@@ -1,4 +1,4 @@
-# Lesson 17 — PointCloud 自监督：Barlow Twins（toy-first）
+# Lesson 17 — PointCloud 自监督：Barlow Twins（compact-first）
 
 目标：在点云上跑通 **Barlow Twins** 的最小闭环（冗余约束 / 去相关）：
 
@@ -22,7 +22,7 @@ python -m tracks.pointcloud.lesson_17_pointcloud_selfsupervised_barlowtwins.trai
 python -m tracks.pointcloud.lesson_17_pointcloud_selfsupervised_barlowtwins.train --list-arch
 ```
 
-调 off-diagonal 权重（toy 实验可用更小/更大）：
+调 off-diagonal 权重（compact 实验可用更小/更大）：
 
 ```bash
 python -m tracks.pointcloud.lesson_17_pointcloud_selfsupervised_barlowtwins.train --lambda-offdiag 0.005

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_sketch, smoke_test_sketch
+from ._common import build_baseline_sketch, smoke_test_sketch
 
 _VARIANTS = {
     "mambasketch_tiny": {"width": 24, "depth": 1, "embed": 128},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_mambasketch_sketch_retriever(
     *, in_channels: int, variant: str = "mambasketch_small", width_mult: float = 1.0
 ):
-    return build_toy_sketch(
+    return build_baseline_sketch(
         family="mambasketch",
         variants=_VARIANTS,
         in_channels=int(in_channels),

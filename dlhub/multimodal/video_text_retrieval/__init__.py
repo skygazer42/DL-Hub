@@ -1,4 +1,4 @@
-"""Video-text retrieval models (toy-first, pure torch)."""
+"""Video-text retrieval models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

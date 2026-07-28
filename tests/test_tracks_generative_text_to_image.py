@@ -12,8 +12,8 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def test_toy_text_to_image_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_13_toy_text_to_image_diffusion.data import DataConfig, get_dataloaders
+def test_compact_text_to_image_dataloaders_smoke() -> None:
+    from tracks.generative.lesson_13_compact_text_to_image_diffusion.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
@@ -31,17 +31,17 @@ def test_toy_text_to_image_dataloaders_smoke() -> None:
     assert torch.all(images <= 1.0)
 
 
-def test_toy_text_to_image_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_13_toy_text_to_image_diffusion.model import (
+def test_compact_text_to_image_model_pipeline_smoke() -> None:
+    from tracks.generative.lesson_13_compact_text_to_image_diffusion.model import (
         DiffusionSchedule,
         ModelConfig,
-        ToyTextConditionedDenoiser,
+        CompactTextConditionedDenoiser,
         q_sample,
     )
 
     cfg = ModelConfig(image_size=28, in_channels=1, hidden_channels=24, text_vocab_size=4)
     schedule = DiffusionSchedule(num_steps=12)
-    model = ToyTextConditionedDenoiser(cfg)
+    model = CompactTextConditionedDenoiser(cfg)
 
     images = torch.rand((4, 1, 28, 28), dtype=torch.float32)
     token_ids = torch.randint(low=0, high=4, size=(4,), dtype=torch.long)
@@ -59,9 +59,9 @@ def test_toy_text_to_image_model_pipeline_smoke() -> None:
     assert torch.all(samples <= 1.0)
 
 
-def test_toy_text_to_image_training_smoke() -> None:
+def test_compact_text_to_image_training_smoke() -> None:
     run_dir = (
-        _repo_root() / "outputs" / "generative" / "lesson_13_toy_text_to_image_diffusion" / "pytest_text_to_image_smoke"
+        _repo_root() / "outputs" / "generative" / "lesson_13_compact_text_to_image_diffusion" / "pytest_text_to_image_smoke"
     )
     if run_dir.exists():
         shutil.rmtree(run_dir)
@@ -70,7 +70,7 @@ def test_toy_text_to_image_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_13_toy_text_to_image_diffusion.train",
+            "tracks.generative.lesson_13_compact_text_to_image_diffusion.train",
             "--epochs",
             "1",
             "--num-samples",
@@ -100,9 +100,9 @@ def test_toy_text_to_image_training_smoke() -> None:
     assert (run_dir / "checkpoints" / "checkpoint.pt").is_file()
 
 
-def test_run_lesson_dry_run_supports_toy_text_to_image() -> None:
+def test_run_lesson_dry_run_supports_compact_text_to_image() -> None:
     proc = subprocess.run(
-        [sys.executable, "scripts/run_lesson.py", "generative", "lesson_13_toy_text_to_image_diffusion", "--dry-run"],
+        [sys.executable, "scripts/run_lesson.py", "generative", "lesson_13_compact_text_to_image_diffusion", "--dry-run"],
         cwd=str(_repo_root()),
         check=False,
         capture_output=True,
@@ -110,4 +110,4 @@ def test_run_lesson_dry_run_supports_toy_text_to_image() -> None:
     )
 
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.generative.lesson_13_toy_text_to_image_diffusion.train" in proc.stdout
+    assert "tracks.generative.lesson_13_compact_text_to_image_diffusion.train" in proc.stdout

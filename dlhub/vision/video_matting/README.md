@@ -1,12 +1,12 @@
 # Video Matting
 
-Toy-first video matting families for local experimentation.
+Compact-first video matting families for local experimentation.
 
 Families in this package:
 
 - `dim_vmatte`
 - `fba_vmatte`
-- `rvm_toy`
+- `rvm_baseline`
 - `gca_vmatte`
 - `tcvomatting`
 - `memory_vmatte`

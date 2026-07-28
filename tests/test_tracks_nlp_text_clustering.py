@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_text_clustering_batch_contract() -> None:
-    from tracks.nlp.lesson_16_toy_text_clustering.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_16_toy_text_clustering.model import (
+    from tracks.nlp.lesson_16_compact_text_clustering.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_16_compact_text_clustering.model import (
         ModelConfig,
         TextClusteringModel,
         cluster_accuracy,
@@ -55,8 +55,8 @@ def test_text_clustering_batch_contract() -> None:
 
 
 def test_text_clustering_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_16_toy_text_clustering.data import DataConfig
-    from tracks.nlp.lesson_16_toy_text_clustering.train import TrainConfig, run_training
+    from tracks.nlp.lesson_16_compact_text_clustering.data import DataConfig
+    from tracks.nlp.lesson_16_compact_text_clustering.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -87,7 +87,7 @@ def test_text_clustering_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_16_toy_text_clustering" / "pytest_text_clustering_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_16_compact_text_clustering" / "pytest_text_clustering_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

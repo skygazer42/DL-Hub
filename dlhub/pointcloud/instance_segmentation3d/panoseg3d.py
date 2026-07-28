@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PanoSeg3D(nn.Module):
-    """PanoSeg3D (toy): initial queries, then refine by pooling point features with masks."""
+    """PanoSeg3D (compact): initial queries, then refine by pooling point features with masks."""
 
     def __init__(
         self,

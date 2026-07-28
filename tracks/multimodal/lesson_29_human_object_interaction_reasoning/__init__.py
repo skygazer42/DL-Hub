@@ -1,9 +1,9 @@
-from .data import DataConfig, ToyHoiReasoningDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticHoiReasoningDataset, Vocab, get_dataloaders
 from .model import (
     HoiReasoningConfig,
     MaskedTextEncoder,
     RegionInteractionEncoder,
-    ToyHoiReasoningModel,
+    CompactHoiReasoningModel,
     hoi_accuracy,
     hoi_loss,
 )
@@ -13,8 +13,8 @@ __all__ = [
     "HoiReasoningConfig",
     "MaskedTextEncoder",
     "RegionInteractionEncoder",
-    "ToyHoiReasoningDataset",
-    "ToyHoiReasoningModel",
+    "SyntheticHoiReasoningDataset",
+    "CompactHoiReasoningModel",
     "Vocab",
     "get_dataloaders",
     "hoi_accuracy",

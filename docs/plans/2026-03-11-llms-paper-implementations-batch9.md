@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 9 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with paper-shaped implementations for RedPajama, StarCoder, and the Prompt Engineering Guide, covering open-data reproduction, code-specialized long-context decoding, and structured prompting strategies.
 
 **Architecture:** Implement `RedPajama` as a reproducible corpus-mixture abstraction with seven canonical slices, token allocation, and quality-filter metadata rather than a backbone network. Implement `StarCoder` as a code-LLM wrapper with permissively licensed GitHub-centric data metadata, fill-in-the-middle prompting, long-context settings, and assistant-style usage. Implement `Prompt Engineering Guide` as a prompt-construction toolkit exposing instruction/context/input/output formatting, few-shot prompt assembly, and sampling profiles for factual vs creative tasks.

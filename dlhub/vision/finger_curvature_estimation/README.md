@@ -1,6 +1,6 @@
 # Finger Curvature Estimation
 
-Toy-first local families for `finger curvature estimation`.
+Compact-first local families for `finger curvature estimation`.
 
 ## Families
 

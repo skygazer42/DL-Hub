@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_constraint_repair_prompting_batch_mask_and_loss_smoke() -> None:
-    from tracks.llm.lesson_29_toy_constraint_repair_prompting.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_29_toy_constraint_repair_prompting.model import (
+    from tracks.llm.lesson_29_compact_constraint_repair_prompting.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_29_compact_constraint_repair_prompting.model import (
         ConstraintRepairPromptingTransformerLM,
         ModelConfig,
     )
@@ -57,8 +57,8 @@ def test_llm_constraint_repair_prompting_batch_mask_and_loss_smoke() -> None:
 
 
 def test_llm_constraint_repair_prompting_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_29_toy_constraint_repair_prompting.data import DataConfig
-    from tracks.llm.lesson_29_toy_constraint_repair_prompting.train import TrainConfig, run_training
+    from tracks.llm.lesson_29_compact_constraint_repair_prompting.data import DataConfig
+    from tracks.llm.lesson_29_compact_constraint_repair_prompting.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -96,7 +96,7 @@ def test_llm_constraint_repair_prompting_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_29_toy_constraint_repair_prompting"
+        / "lesson_29_compact_constraint_repair_prompting"
         / "pytest_constraint_repair_prompting_smoke"
     )
     assert (run_dir / "config.json").is_file()

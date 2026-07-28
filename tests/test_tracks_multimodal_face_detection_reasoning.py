@@ -36,7 +36,7 @@ def test_multimodal_face_detection_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_46_face_detection_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_46_face_detection_vlm_reasoning.model import (
         FaceDetectionReasoningConfig,
-        ToyFaceDetectionReasoningModel,
+        CompactFaceDetectionReasoningModel,
         box_iou_xyxy,
         face_detection_loss,
     )
@@ -53,7 +53,7 @@ def test_multimodal_face_detection_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyFaceDetectionReasoningModel(
+    model = CompactFaceDetectionReasoningModel(
         FaceDetectionReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

@@ -22,7 +22,7 @@ def _box_filter(x: torch.Tensor, *, k: int, padding: str) -> torch.Tensor:
 
 
 class WienerFilter(nn.Module):
-    """Local Wiener filter baseline (torch-only, toy-first).
+    """Local Wiener filter baseline (torch-only, compact-first).
 
     A simple local-statistics denoiser:
       y = mean + (max(0, var - noise_var) / (var + eps)) * (x - mean)

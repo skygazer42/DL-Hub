@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class AdaAttNModule(nn.Module):
-    """Adaptive Attention Normalization (toy).
+    """Adaptive Attention Normalization (compact).
 
     Computes per-position style mean/std from attention(content->style) and applies it to normalized
     content features. This keeps the core idea of AdaAttN while staying lightweight.

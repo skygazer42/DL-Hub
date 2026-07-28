@@ -7,11 +7,11 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_toy_text_to_3d_data_and_model_contract() -> None:
-    from tracks.generative.lesson_47_toy_text_to_3d.data import DataConfig, get_dataloaders
-    from tracks.generative.lesson_47_toy_text_to_3d.model import (
+def test_compact_text_to_3d_data_and_model_contract() -> None:
+    from tracks.generative.lesson_47_compact_text_to_3d.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_47_compact_text_to_3d.model import (
         ModelConfig,
-        ToyTextTo3DModel,
+        CompactTextTo3DModel,
         text_to_3d_loss,
     )
 
@@ -31,12 +31,12 @@ def test_toy_text_to_3d_data_and_model_contract() -> None:
     assert tuple(targets["density"].shape) == (5, 1, 12, 12, 12)
     assert tuple(targets["mesh_tokens"].shape) == (5, 12, 3)
 
-    model = ToyTextTo3DModel(
+    model = CompactTextTo3DModel(
         ModelConfig(
             in_channels=3,
             latent_dim=64,
-            family="dreamfusion_toy",
-            variant="dreamfusion_toy_tiny",
+            family="dreamfusion_baseline",
+            variant="dreamfusion_baseline_tiny",
             width_mult=0.5,
         )
     )
@@ -55,10 +55,10 @@ def test_toy_text_to_3d_data_and_model_contract() -> None:
     loss.backward()
 
 
-def test_toy_text_to_3d_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tracks.generative.lesson_47_toy_text_to_3d.data import DataConfig
-    from tracks.generative.lesson_47_toy_text_to_3d.model import ModelConfig
-    from tracks.generative.lesson_47_toy_text_to_3d.train import TrainConfig, run_training
+def test_compact_text_to_3d_training_and_dry_run(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from tracks.generative.lesson_47_compact_text_to_3d.data import DataConfig
+    from tracks.generative.lesson_47_compact_text_to_3d.model import ModelConfig
+    from tracks.generative.lesson_47_compact_text_to_3d.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -81,14 +81,14 @@ def test_toy_text_to_3d_training_and_dry_run(tmp_path, monkeypatch: pytest.Monke
         ModelConfig(
             in_channels=3,
             latent_dim=64,
-            family="dreamfusion_toy",
-            variant="dreamfusion_toy_tiny",
+            family="dreamfusion_baseline",
+            variant="dreamfusion_baseline_tiny",
             width_mult=0.5,
         ),
     )
 
     assert exit_code == 0
-    run_dir = tmp_path / "generative" / "lesson_47_toy_text_to_3d" / "pytest_text_to_3d_smoke"
+    run_dir = tmp_path / "generative" / "lesson_47_compact_text_to_3d" / "pytest_text_to_3d_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()
     assert (run_dir / "samples.pt").is_file()
@@ -110,7 +110,7 @@ def test_toy_text_to_3d_training_and_dry_run(tmp_path, monkeypatch: pytest.Monke
             sys.executable,
             "scripts/run_lesson.py",
             "generative",
-            "lesson_47_toy_text_to_3d",
+            "lesson_47_compact_text_to_3d",
             "--dry-run",
         ],
         check=False,
@@ -118,4 +118,4 @@ def test_toy_text_to_3d_training_and_dry_run(tmp_path, monkeypatch: pytest.Monke
         text=True,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.generative.lesson_47_toy_text_to_3d.train" in proc.stdout
+    assert "tracks.generative.lesson_47_compact_text_to_3d.train" in proc.stdout

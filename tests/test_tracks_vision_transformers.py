@@ -3,9 +3,9 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_vision_vit_toy_quadrant_forward_and_loss_smoke() -> None:
-    from tracks.vision.lesson_05_vit_toy_classification.model import ModelConfig, ViTClassifier
-    from tracks.vision.toy_shapes import DataConfig, get_dataloaders
+def test_vision_vit_compact_quadrant_forward_and_loss_smoke() -> None:
+    from tracks.vision.lesson_05_vit_compact_classification.model import ModelConfig, ViTClassifier
+    from tracks.vision.synthetic_shapes import DataConfig, get_dataloaders
 
     train_loader, _ = get_dataloaders(
         DataConfig(
@@ -34,12 +34,12 @@ def test_vision_vit_toy_quadrant_forward_and_loss_smoke() -> None:
     loss.backward()
 
 
-def test_vision_swin_toy_quadrant_forward_and_loss_smoke() -> None:
-    from tracks.vision.lesson_06_swin_toy_classification.model import (
+def test_vision_swin_compact_quadrant_forward_and_loss_smoke() -> None:
+    from tracks.vision.lesson_06_swin_compact_classification.model import (
         ModelConfig,
         SwinTinyClassifier,
     )
-    from tracks.vision.toy_shapes import DataConfig, get_dataloaders
+    from tracks.vision.synthetic_shapes import DataConfig, get_dataloaders
 
     train_loader, _ = get_dataloaders(
         DataConfig(

@@ -7,11 +7,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_adversarial_text_classification_batch_contract() -> None:
-    from tracks.nlp.lesson_20_toy_adversarial_text_classification.data import (
+    from tracks.nlp.lesson_20_compact_adversarial_text_classification.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.nlp.lesson_20_toy_adversarial_text_classification.model import (
+    from tracks.nlp.lesson_20_compact_adversarial_text_classification.model import (
         AdversarialTextClassifier,
         ModelConfig,
         classification_accuracy,
@@ -72,8 +72,8 @@ def test_adversarial_text_classification_batch_contract() -> None:
 
 
 def test_adversarial_text_classification_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_20_toy_adversarial_text_classification.data import DataConfig
-    from tracks.nlp.lesson_20_toy_adversarial_text_classification.train import (
+    from tracks.nlp.lesson_20_compact_adversarial_text_classification.data import DataConfig
+    from tracks.nlp.lesson_20_compact_adversarial_text_classification.train import (
         TrainConfig,
         run_training,
     )
@@ -111,7 +111,7 @@ def test_adversarial_text_classification_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_20_toy_adversarial_text_classification"
+        / "lesson_20_compact_adversarial_text_classification"
         / "pytest_adversarial_text_classification_smoke"
     )
     assert (run_dir / "config.json").is_file()

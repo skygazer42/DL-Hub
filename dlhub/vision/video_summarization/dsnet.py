@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class DSNetVideoSummarizer(nn.Module):
-    """DSNet-style detect-to-summarize scorer (toy)."""
+    """DSNet-style detect-to-summarize scorer (compact)."""
 
     def __init__(self, *, in_channels: int, width: int, depth: int, dropout: float = 0.0) -> None:
         super().__init__()

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_reflection_detector, smoke_test_reflection_detector
+from ._common import build_baseline_reflection_detector, smoke_test_reflection_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_water_refdet_reflection_detector(
     *, in_channels: int, variant: str = "water_refdet_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_reflection_detector(
+    return build_baseline_reflection_detector(
         family="water_refdet",
         mode="water",
         variants=_VARIANTS,

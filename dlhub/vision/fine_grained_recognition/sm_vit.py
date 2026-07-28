@@ -1,9 +1,9 @@
-"""SM-ViT (Salient Mask-Guided Vision Transformer) - toy-first FGVC classifier.
+"""SM-ViT (Salient Mask-Guided Vision Transformer) - compact-first FGVC classifier.
 
 Reference (one example of the idea):
 - "Salient Mask-Guided Vision Transformer for Fine-Grained Classification" (arXiv 2023)
 
-This repo keeps things toy-first and offline:
+This repo keeps things compact-first and offline:
 - no external saliency generator
 - the salient mask is predicted by a tiny conv head and used to reweight patch embeddings
 """

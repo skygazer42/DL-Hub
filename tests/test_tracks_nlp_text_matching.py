@@ -4,8 +4,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_nlp_text_matching_shapes_smoke() -> None:
-    from tracks.nlp.lesson_08_toy_text_matching_biencoder.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_08_toy_text_matching_biencoder.model import (
+    from tracks.nlp.lesson_08_compact_text_matching_biencoder.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_08_compact_text_matching_biencoder.model import (
         BiEncoderTextMatcher,
         ModelConfig,
         retrieval_accuracy,

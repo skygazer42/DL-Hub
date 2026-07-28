@@ -132,7 +132,7 @@ class Upsample(nn.Module):
 class Restormer(nn.Module):
     """Restormer-style encoder/decoder denoiser (pure torch).
 
-    This is a compact, educational implementation aimed at small toy images.
+    This is a compact, educational implementation aimed at small compact images.
     """
 
     def __init__(
@@ -217,7 +217,7 @@ class Restormer(nn.Module):
 
 
 _VARIANTS: dict[str, dict] = {
-    # Keep variants CPU-friendly; toy-first.
+    # Keep variants CPU-friendly; compact-first.
     "restormer_tiny": {"dim": 24, "depths": (1, 1, 2, 2), "heads": (1, 2, 4, 8), "ffn": 2.0},
     "restormer_small": {"dim": 32, "depths": (2, 2, 3, 4), "heads": (1, 2, 4, 8), "ffn": 2.0},
     "restormer_base": {"dim": 48, "depths": (2, 3, 4, 6), "heads": (1, 2, 4, 8), "ffn": 2.66},

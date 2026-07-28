@@ -111,7 +111,7 @@ def mocov3_point_logits(
 
 
 class MoCoV3PointNet(nn.Module):
-    """MoCo v2-style model for point clouds (toy-first).
+    """MoCo v2-style model for point clouds (compact-first).
 
     - Query encoder (online) is trained by gradient.
     - Key encoder is updated by EMA (momentum) from query encoder.
@@ -199,7 +199,7 @@ class MoCoV3PointNet(nn.Module):
         if bsz == 0:
             return
 
-        # If batch is larger than queue, keep the last K keys (still deterministic for toy).
+        # If batch is larger than queue, keep the last K keys (still deterministic for compact).
         if bsz >= k:
             keys = keys[-k:]
             bsz = int(keys.shape[0])

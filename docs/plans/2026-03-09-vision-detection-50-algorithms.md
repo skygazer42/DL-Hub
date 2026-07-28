@@ -1,10 +1,8 @@
 # Vision Detection 50 Algorithms Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add 50 new real object detection families to `dlhub/vision/detection/`, grouped by timeline and detector class, with smokeable builders, timeline CLI support, and test coverage.
 
-**Architecture:** Keep the existing file-per-family detection layout and AST-discovered builders. Add a timeline metadata layer for `2014-2026`, extend the detection CLI with `--timeline`, and implement new detector family modules in category batches using shared toy-first building blocks from `dlhub/vision/detection/_common.py`.
+**Architecture:** Keep the existing file-per-family detection layout and AST-discovered builders. Add a timeline metadata layer for `2014-2026`, extend the detection CLI with `--timeline`, and implement new detector family modules in category batches using shared compact-first building blocks from `dlhub/vision/detection/_common.py`.
 
 **Tech Stack:** Python 3.10+, PyTorch, pytest, existing `dlhub` detection helpers and lazy import conventions.
 

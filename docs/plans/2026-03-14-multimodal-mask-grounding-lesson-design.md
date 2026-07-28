@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-14
 
-**Goal:** Add `tracks/multimodal/lesson_05_mask_grounding_toy_refexp` as an independent teaching lesson for text-conditioned region grounding with low-resolution target masks.
+**Goal:** Add `tracks/multimodal/lesson_05_mask_grounding_compact_refexp` as an independent teaching lesson for text-conditioned region grounding with low-resolution target masks.
 
 ## Problem
 
@@ -19,7 +19,7 @@ What is still missing is the natural next step after bbox grounding: region grou
 
 This lesson adds one full runnable module:
 
-- `tracks/multimodal/lesson_05_mask_grounding_toy_refexp/`
+- `tracks/multimodal/lesson_05_mask_grounding_compact_refexp/`
 - focused tests for discovery, batch contract, model outputs, and smoke training
 - an update to `tracks/multimodal/README.md` so lesson 5 appears in the progression
 
@@ -132,7 +132,7 @@ An optional `center_hit` metric can be derived later, but it is not required for
 The training script should follow the same conventions as the other multimodal lessons:
 
 - CLI args for dataset size, image size, mask size, and batch caps
-- output directory under `outputs/multimodal/lesson_05_mask_grounding_toy_refexp/<run_name>/`
+- output directory under `outputs/multimodal/lesson_05_mask_grounding_compact_refexp/<run_name>/`
 - `config.json`, `vocab.json`, `metrics.jsonl`, `samples.jsonl`, logs, checkpoint
 
 The sample logger should write:
@@ -166,7 +166,7 @@ Focused tests should cover:
 
 Lesson 5 is complete when:
 
-- `lesson_05_mask_grounding_toy_refexp` is discoverable through `scripts/run_lesson.py`
+- `lesson_05_mask_grounding_compact_refexp` is discoverable through `scripts/run_lesson.py`
 - it runs as a module on CPU
 - it contains an independent teaching implementation
 - focused tests for discovery, batch contract, model outputs, and smoke training pass

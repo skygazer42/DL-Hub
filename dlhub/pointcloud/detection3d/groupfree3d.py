@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class GroupFree3D(nn.Module):
-    """Group-Free 3D (toy): group points then run query detector on grouped tokens."""
+    """Group-Free 3D (compact): group points then run query detector on grouped tokens."""
 
     def __init__(
         self,

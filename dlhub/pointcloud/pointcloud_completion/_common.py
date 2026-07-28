@@ -85,7 +85,7 @@ def _compatible_heads(width: int) -> int:
     return 1
 
 
-class ToyPointCloudCompleter(nn.Module):
+class CompactPointCloudCompleter(nn.Module):
     def __init__(
         self,
         *,
@@ -280,7 +280,7 @@ class ToyPointCloudCompleter(nn.Module):
         return self.complete(points, prompt=prompt)
 
 
-def build_toy_completer(
+def build_baseline_completer(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -298,7 +298,7 @@ def build_toy_completer(
     spec = variants[name]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
     out_points = int(spec["points"]) if num_output_points is None else int(num_output_points)
-    return ToyPointCloudCompleter(
+    return CompactPointCloudCompleter(
         family=str(family),
         in_channels=int(in_channels),
         width=width,
@@ -319,4 +319,4 @@ def smoke_test_completer(builder, variant: str) -> None:
     print("ok")
 
 
-__all__ = ["ToyPointCloudCompleter", "build_toy_completer", "check_points", "smoke_test_completer"]
+__all__ = ["CompactPointCloudCompleter", "build_baseline_completer", "check_points", "smoke_test_completer"]

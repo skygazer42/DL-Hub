@@ -1,9 +1,9 @@
-# Lesson 20: Toy Audio-Visual Learning
+# Lesson 20: Compact Audio-Visual Learning
 
 This lesson teaches a compact audio-visual learning loop on synthetic clips:
 
 - render a short moving-shape video sequence
-- render a paired toy spectrogram with an aligned temporal pattern
+- render a paired compact spectrogram with an aligned temporal pattern
 - encode video and audio with separate tiny towers
 - align the two modalities with a symmetric contrastive objective
 - fuse both streams to predict the underlying event and motion labels

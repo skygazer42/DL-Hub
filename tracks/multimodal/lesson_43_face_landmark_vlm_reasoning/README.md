@@ -1,6 +1,6 @@
 # Lesson 43: Face Landmark VLM Reasoning
 
-This lesson builds a toy multimodal reasoner that takes a synthetic face image plus a
+This lesson builds a compact multimodal reasoner that takes a synthetic face image plus a
 landmark query and predicts the normalized `(x, y)` location for the queried face landmark.
 
 ## What It Teaches

@@ -13,7 +13,7 @@ class SimpleGate(nn.Module):
 
 
 class NAFBlock(nn.Module):
-    """GRDN block (Nonlinear Activation Free), toy-first implementation."""
+    """GRDN block (Nonlinear Activation Free), compact-first implementation."""
 
     def __init__(
         self,
@@ -67,7 +67,7 @@ class NAFBlock(nn.Module):
 
 
 class GRDN(nn.Module):
-    """GRDN-style encoder/decoder denoiser (pure torch, toy-first)."""
+    """GRDN-style encoder/decoder denoiser (pure torch, compact-first)."""
 
     def __init__(
         self,

@@ -1,7 +1,7 @@
 # README SVG 重构与完善设计
 
 **日期**：2026-04-18
-**作者**：jhlu + Claude
+**作者**：skygazer42 <207829897@qq.com>
 **状态**：Draft — 等待 spec reviewer + 用户审阅
 
 ---

@@ -1,6 +1,6 @@
 # Face Pose Estimation
 
-Toy-first local families for `face pose estimation`.
+Compact-first local families for `face pose estimation`.
 
 ## Families
 

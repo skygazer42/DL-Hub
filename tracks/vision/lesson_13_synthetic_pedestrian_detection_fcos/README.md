@@ -7,7 +7,7 @@
 - 训练：cls + ltrb 回归 + centerness（可选）
 - 指标：center-acc（中心点网格是否命中）+ mean IoU（解码 1 个 bbox）
 
-> 说明：这是 toy-first 教学实现，不包含 NMS / 多框解码 / COCO AP 等工程化指标。
+> 说明：这是 compact-first 教学实现，不包含 NMS / 多框解码 / COCO AP 等工程化指标。
 
 ## 运行方式
 

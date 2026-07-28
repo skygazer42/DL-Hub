@@ -2,7 +2,7 @@
 
 from dlhub.vision._shared.restoration import (  # noqa: F401
     TinyRestorationNet,
-    build_toy_restoration,
+    build_baseline_restoration,
     check_nchw,
     smoke_test_restoration,
 )

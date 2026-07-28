@@ -87,7 +87,7 @@ class TinyCameraPoseEstimator(nn.Module):
         }
 
 
-def build_toy_camera_pose_estimator(
+def build_baseline_camera_pose_estimator(
     *,
     family: str,
     mode: str,

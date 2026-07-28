@@ -76,7 +76,7 @@ class TinyFlareRemover(nn.Module):
         return {"restored": restored, "flare_map": flare_map, "residual": restored - image}
 
 
-def build_toy_flare_remover(
+def build_baseline_flare_remover(
     *,
     family: str,
     mode: str,

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class HAIS(nn.Module):
-    """HAIS (toy): hierarchical gating applied to center-proposal instance masks."""
+    """HAIS (compact): hierarchical gating applied to center-proposal instance masks."""
 
     def __init__(
         self,

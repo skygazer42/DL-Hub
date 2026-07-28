@@ -1,6 +1,6 @@
 # Salient Object Detection
 
-Toy-first local families for `salient object detection`.
+Compact-first local families for `salient object detection`.
 
 ## Families
 

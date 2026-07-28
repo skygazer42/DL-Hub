@@ -1,6 +1,6 @@
 # Video-to-video
 
-Toy-first local families for `video-to-video`.
+Compact-first local families for `video-to-video`.
 
 ## Families
 

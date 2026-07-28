@@ -49,7 +49,7 @@ class VisionLanguageNavigationConfig:
     vision_width: int = 32
 
 
-class ToyVisionLanguageNavigationModel(nn.Module):
+class CompactVisionLanguageNavigationModel(nn.Module):
     def __init__(self, cfg: VisionLanguageNavigationConfig) -> None:
         super().__init__()
         self.obs_encoder = TinyObservationEncoder(vision_width=int(cfg.vision_width))
@@ -86,7 +86,7 @@ def navigation_accuracy(logits: torch.Tensor, actions: torch.Tensor) -> float:
 
 __all__ = [
     "TinyObservationEncoder",
-    "ToyVisionLanguageNavigationModel",
+    "CompactVisionLanguageNavigationModel",
     "VisionLanguageNavigationConfig",
     "VisionTextEncoder",
     "navigation_accuracy",

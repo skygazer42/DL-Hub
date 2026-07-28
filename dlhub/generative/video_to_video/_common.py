@@ -11,7 +11,7 @@ def check_ncthw(video: torch.Tensor) -> torch.Tensor:
     return video
 
 
-class ToyVideoToVideo(nn.Module):
+class CompactVideoToVideo(nn.Module):
     def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int) -> None:
         super().__init__()
         self.family = str(family)
@@ -38,7 +38,7 @@ class ToyVideoToVideo(nn.Module):
         return {"video": out, "residual": residual, "mix": mix}
 
 
-def build_toy_video_to_video(
+def build_baseline_video_to_video(
     *,
     family: str,
     mode: str,
@@ -49,7 +49,7 @@ def build_toy_video_to_video(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyVideoToVideo(
+    return CompactVideoToVideo(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),

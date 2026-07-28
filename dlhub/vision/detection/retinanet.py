@@ -130,7 +130,7 @@ class RetinaHead(nn.Module):
 
 
 class RetinaNetDetector(nn.Module):
-    """RetinaNet-style single-stage detector (toy-first).
+    """RetinaNet-style single-stage detector (compact-first).
 
     Forward returns raw outputs (no NMS / decoding):
     - cls_logits: list[Tensor] with shapes (B, A*C, Hi, Wi)

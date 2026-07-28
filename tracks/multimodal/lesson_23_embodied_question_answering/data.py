@@ -119,7 +119,7 @@ def _render_frame(
     return image.clamp(0.0, 1.0)
 
 
-class ToyEmbodiedQaDataset(Dataset):
+class SyntheticEmbodiedQaDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         _validate_config(cfg)
         self.cfg = cfg
@@ -189,7 +189,7 @@ class ToyEmbodiedQaDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyEmbodiedQaDataset(cfg, vocab=vocab)
+    dataset = SyntheticEmbodiedQaDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -225,4 +225,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyEmbodiedQaDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticEmbodiedQaDataset", "Vocab", "get_dataloaders"]

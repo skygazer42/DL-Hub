@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_upsampler, smoke_test_upsampler
+from ._common import build_baseline_upsampler, smoke_test_upsampler
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "patch_upsample_tiny": {"width": 24, "depth": 1, "up_factor": 2},
@@ -12,7 +12,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_patch_upsample_upsampler(
     *, in_channels: int, variant: str = "patch_upsample_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_upsampler(
+    return build_baseline_upsampler(
         family="patch_upsample",
         mode="patch",
         variants=_VARIANTS,

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "cleargrasp_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_cleargrasp_depth_completer(
     *, in_channels: int, variant: str = "cleargrasp_small", width_mult: float = 1.0
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="cleargrasp",
         variants=_VARIANTS,
         in_channels=int(in_channels),

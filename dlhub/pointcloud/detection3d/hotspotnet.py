@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class HotSpotNet(nn.Module):
-    """HotSpotNet (toy): BEV keypoints (top-k) + box regression."""
+    """HotSpotNet (compact): BEV keypoints (top-k) + box regression."""
 
     def __init__(
         self,

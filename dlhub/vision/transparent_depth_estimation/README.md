@@ -1,6 +1,6 @@
 # Transparent depth estimation
 
-Toy-first local families for `transparent depth estimation`.
+Compact-first local families for `transparent depth estimation`.
 
 ## Families
 

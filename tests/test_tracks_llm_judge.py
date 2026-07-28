@@ -6,9 +6,9 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_judge_batch_and_loss_smoke() -> None:
-    from tracks.llm.lesson_15_toy_llm_judge.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_15_toy_llm_judge.model import ModelConfig, ToyLlmJudge
-    from tracks.llm.lesson_15_toy_llm_judge.train import llm_judge_loss
+    from tracks.llm.lesson_15_compact_llm_judge.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_15_compact_llm_judge.model import ModelConfig, CompactLlmJudge
+    from tracks.llm.lesson_15_compact_llm_judge.train import llm_judge_loss
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -32,7 +32,7 @@ def test_llm_judge_batch_and_loss_smoke() -> None:
     assert tuple(batch["labels"].shape) == (8, 20)
     assert tuple(batch["judge_targets"].shape) == (8,)
 
-    model = ToyLlmJudge(
+    model = CompactLlmJudge(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -64,8 +64,8 @@ def test_llm_judge_batch_and_loss_smoke() -> None:
 
 
 def test_llm_judge_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_15_toy_llm_judge.data import DataConfig
-    from tracks.llm.lesson_15_toy_llm_judge.train import TrainConfig, run_training
+    from tracks.llm.lesson_15_compact_llm_judge.data import DataConfig
+    from tracks.llm.lesson_15_compact_llm_judge.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -97,7 +97,7 @@ def test_llm_judge_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "llm" / "lesson_15_toy_llm_judge" / "pytest_llm_judge_smoke"
+    run_dir = tmp_path / "outputs" / "llm" / "lesson_15_compact_llm_judge" / "pytest_llm_judge_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

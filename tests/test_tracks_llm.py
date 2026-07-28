@@ -4,8 +4,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_lesson_01_shapes_smoke() -> None:
-    from tracks.llm.lesson_01_toy_causal_lm_transformer.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_01_toy_causal_lm_transformer.model import (
+    from tracks.llm.lesson_01_compact_causal_lm_transformer.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_01_compact_causal_lm_transformer.model import (
         CausalTransformerLM,
         ModelConfig,
     )

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_text_to_video, smoke_test_text_to_video
+from ._common import build_baseline_text_to_video, smoke_test_text_to_video
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "control_t2v_tiny": {"width": 24, "depth": 1, "frames": 4},
@@ -14,7 +14,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_control_t2v_text_to_video(
     *, in_channels: int = 3, variant: str = "control_t2v_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_text_to_video(
+    return build_baseline_text_to_video(
         family="control_t2v",
         mode="control",
         variants=_VARIANTS,

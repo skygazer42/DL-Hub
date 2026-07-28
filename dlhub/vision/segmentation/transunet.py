@@ -49,7 +49,7 @@ class _Up(nn.Module):
 
 
 class TransUNet(nn.Module):
-    """TransUNet semantic segmentation (toy-first).
+    """TransUNet semantic segmentation (compact-first).
 
     U-Net encoder-decoder with a Transformer encoder at the bottleneck.
     """

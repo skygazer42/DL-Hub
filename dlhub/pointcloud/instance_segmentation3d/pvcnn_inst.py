@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PVCNNInst(nn.Module):
-    """PVCNN instance segmentation (toy): point-voxel fusion + prototype head."""
+    """PVCNN instance segmentation (compact): point-voxel fusion + prototype head."""
 
     def __init__(
         self,

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_augmenter, smoke_test_augmenter
+from ._common import build_baseline_augmenter, smoke_test_augmenter
 
 _VARIANTS = {
     "autoaugment_aug_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_autoaugment_aug_augmenter(
     *, in_channels: int, variant: str = "autoaugment_aug_small", width_mult: float = 1.0
 ):
-    return build_toy_augmenter(
+    return build_baseline_augmenter(
         family="autoaugment_aug",
         variants=_VARIANTS,
         in_channels=int(in_channels),

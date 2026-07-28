@@ -45,7 +45,7 @@ class DenseBlock(nn.Module):
 
 
 class DIDN(nn.Module):
-    """DIDN-style denoiser (toy-first, pure torch).
+    """DIDN-style denoiser (compact-first, pure torch).
 
     DIDN (Densely connected Iterative Down-Up Network) is commonly used as a blind denoiser.
     This is a simplified two-level down/up version with dense blocks.

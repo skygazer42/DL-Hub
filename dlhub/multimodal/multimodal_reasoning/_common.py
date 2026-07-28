@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyReasoner(nn.Module):
+class CompactReasoner(nn.Module):
     def __init__(
         self, *, family: str, in_channels: int, width: int, depth: int, reasoning_steps: int
     ):
@@ -37,7 +37,7 @@ class ToyReasoner(nn.Module):
         }
 
 
-def build_toy_reasoner(
+def build_baseline_reasoner(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -47,7 +47,7 @@ def build_toy_reasoner(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyReasoner(
+    return CompactReasoner(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

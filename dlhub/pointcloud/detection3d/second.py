@@ -21,7 +21,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SECOND(nn.Module):
-    """SECOND (toy): sparse-ish BEV conv backbone + dense head.
+    """SECOND (compact): sparse-ish BEV conv backbone + dense head.
 
     We keep it CPU-friendly by using a small BEV grid and regular Conv2d.
     """

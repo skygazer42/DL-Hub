@@ -13,7 +13,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class DSNVideoSummarizer(nn.Module):
-    """DSN-style frame importance scorer (toy)."""
+    """DSN-style frame importance scorer (compact)."""
 
     def __init__(self, *, in_channels: int, width: int, depth: int, dropout: float = 0.0) -> None:
         super().__init__()

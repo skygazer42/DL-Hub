@@ -10,7 +10,7 @@ def check_nchw(image: torch.Tensor) -> torch.Tensor:
     return image
 
 
-class ToyRetriever(nn.Module):
+class CompactRetriever(nn.Module):
     def __init__(self, *, family: str, mode: str, in_channels: int, width: int, depth: int) -> None:
         super().__init__()
         self.family = str(family)
@@ -42,7 +42,7 @@ class ToyRetriever(nn.Module):
         }
 
 
-def build_toy_retriever(
+def build_baseline_retriever(
     *,
     family: str,
     mode: str,
@@ -53,7 +53,7 @@ def build_toy_retriever(
 ) -> nn.Module:
     cfg = variants[str(variant)]
     width = max(16, int(int(cfg["width"]) * float(width_mult)))
-    return ToyRetriever(
+    return CompactRetriever(
         family=str(family),
         mode=str(mode),
         in_channels=int(in_channels),

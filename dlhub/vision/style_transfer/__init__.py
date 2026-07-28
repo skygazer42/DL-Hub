@@ -1,4 +1,4 @@
-"""Local, toy-first style transfer families.
+"""Local, compact-first style transfer families.
 
 Conventions:
 - One family per file.

@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_slot_carryover_batch_contract() -> None:
-    from tracks.nlp.lesson_31_toy_slot_carryover_prediction.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_31_toy_slot_carryover_prediction.model import (
+    from tracks.nlp.lesson_31_compact_slot_carryover_prediction.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_31_compact_slot_carryover_prediction.model import (
         ModelConfig,
         SlotCarryoverPredictor,
         compute_slot_carryover_metrics,
@@ -80,8 +80,8 @@ def test_slot_carryover_batch_contract() -> None:
 
 
 def test_slot_carryover_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_31_toy_slot_carryover_prediction.data import DataConfig
-    from tracks.nlp.lesson_31_toy_slot_carryover_prediction.train import TrainConfig, run_training
+    from tracks.nlp.lesson_31_compact_slot_carryover_prediction.data import DataConfig
+    from tracks.nlp.lesson_31_compact_slot_carryover_prediction.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -114,7 +114,7 @@ def test_slot_carryover_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "nlp"
-        / "lesson_31_toy_slot_carryover_prediction"
+        / "lesson_31_compact_slot_carryover_prediction"
         / "pytest_slot_carryover_smoke"
     )
     assert (run_dir / "config.json").is_file()

@@ -17,7 +17,7 @@ from dlhub.seed import set_seed
 from .data import DataConfig, Vocab, get_dataloaders
 from .model import (
     ModelConfig,
-    ToyVideoTextRetrievalModel,
+    CompactVideoTextRetrievalModel,
     clip_contrastive_loss,
     recall_at_k,
     retrieval_accuracy,
@@ -43,7 +43,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 17 (Multimodal): CLIP-style toy video-text retrieval."
+        description="Lesson 17 (Multimodal): CLIP-style compact video-text retrieval."
     )
 
     parser.add_argument("--num-samples", type=int, default=512)
@@ -112,7 +112,7 @@ def _move_batch(batch: dict[str, object], device: torch.device) -> dict[str, obj
 
 def _run_epoch(
     *,
-    model: ToyVideoTextRetrievalModel,
+    model: CompactVideoTextRetrievalModel,
     loader,
     device: torch.device,
     optimizer: torch.optim.Optimizer | None,
@@ -186,7 +186,7 @@ def _run_epoch(
 @torch.no_grad()
 def _write_samples(
     *,
-    model: ToyVideoTextRetrievalModel,
+    model: CompactVideoTextRetrievalModel,
     loader,
     device: torch.device,
     vocab: Vocab,
@@ -222,7 +222,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         lesson="lesson_17_video_text_retrieval",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.video_text_retrieval_toy", log_file=paths.logs_dir / "train.log")
+    logger = get_logger("multimodal.video_text_retrieval_compact", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
@@ -230,7 +230,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     logger.info("Outputs: %s", paths.run_dir)
 
     train_loader, val_loader, vocab = get_dataloaders(data_cfg)
-    model = ToyVideoTextRetrievalModel(
+    model = CompactVideoTextRetrievalModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

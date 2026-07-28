@@ -67,7 +67,7 @@ class PointMLP(nn.Module):
 
 
 class EdgeConv(nn.Module):
-    """DGCNN-style EdgeConv (toy)."""
+    """DGCNN-style EdgeConv (compact)."""
 
     def __init__(
         self, in_channels: int, out_channels: int, *, k: int = 16, dropout: float = 0.0
@@ -583,7 +583,7 @@ class Voxel3DSegBase(nn.Module):
 
 
 class PointVoxelFusionSegBase(nn.Module):
-    """Point-voxel fusion backbone (toy SPVCNN/PVCNN style)."""
+    """Point-voxel fusion backbone (compact SPVCNN/PVCNN style)."""
 
     def __init__(
         self,

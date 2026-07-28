@@ -29,7 +29,7 @@ class _BackboneStride4(nn.Module):
 
 
 class MaskRCNNDetector(nn.Module):
-    """Mask R-CNN-style detector (toy-first).
+    """Mask R-CNN-style detector (compact-first).
 
     Returns RPN outputs + ROI cls/box + ROI masks.
     """

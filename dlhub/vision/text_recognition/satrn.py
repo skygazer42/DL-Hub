@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_text_recognizer, smoke_test_rec
+from ._common import build_baseline_text_recognizer, smoke_test_rec
 
 _VARIANTS = {
     "satrn_tiny": {"width": 32, "depth": 1},
@@ -16,7 +16,7 @@ def build_satrn_text_recognizer(
     variant: str = "satrn_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_text_recognizer(
+    return build_baseline_text_recognizer(
         family="satrn",
         variants=_VARIANTS,
         in_channels=int(in_channels),

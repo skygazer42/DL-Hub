@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "ynet_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_ynet_trajectory_predictor(
     *, coord_dim: int, variant: str = "ynet_small", width_mult: float = 1.0, pred_steps: int = 12
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="ynet",
         variants=_VARIANTS,
         coord_dim=int(coord_dim),

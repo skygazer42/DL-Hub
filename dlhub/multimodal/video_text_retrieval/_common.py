@@ -86,7 +86,7 @@ class TinyVideoTextRetriever(nn.Module):
         }
 
 
-def build_toy_vtr(
+def build_baseline_vtr(
     *,
     family: str,
     mode: str,

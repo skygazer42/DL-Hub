@@ -75,7 +75,7 @@ class TinyVPDetector(nn.Module):
         }
 
 
-def build_toy_vp_detector(
+def build_baseline_vp_detector(
     *,
     family: str,
     mode: str,

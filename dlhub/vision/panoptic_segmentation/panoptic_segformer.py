@@ -7,7 +7,7 @@ from dlhub.vision.panoptic_segmentation._common import check_nchw, fuse_panoptic
 
 
 class PanopticSegFormer(nn.Module):
-    """SegFormer-style panoptic segmentation (toy-first).
+    """SegFormer-style panoptic segmentation (compact-first).
 
     Single patch embedding + Transformer encoder to produce a /4 feature map.
     Semantic logits come from a conv head; instance masks come from query cross-attn + dot-product masks.

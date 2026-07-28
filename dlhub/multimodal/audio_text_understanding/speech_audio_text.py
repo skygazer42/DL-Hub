@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_atu, smoke_test_atu
+from ._common import build_baseline_atu, smoke_test_atu
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "speech_audio_text_tiny": {"width": 24, "depth": 1},
@@ -14,7 +14,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_speech_audio_text_audio_text_model(
     *, in_channels: int = 1, variant: str = "speech_audio_text_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_atu(
+    return build_baseline_atu(
         family="speech_audio_text",
         mode="speech",
         variants=_VARIANTS,

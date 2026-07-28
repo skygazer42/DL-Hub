@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_keypoint_model, smoke_test_keypoint_model
+from ._common import build_baseline_keypoint_model, smoke_test_keypoint_model
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_coarse_keypoint_keypoint_model(
     variant: str = "coarse_keypoint_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_keypoint_model(
+    return build_baseline_keypoint_model(
         family="coarse_keypoint",
         mode="coarse",
         variants=_VARIANTS,

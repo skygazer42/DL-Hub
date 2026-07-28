@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_segmentor, smoke_test_segmentor
+from ._common import build_baseline_segmentor, smoke_test_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_nested_unet_seg_segmentor(
     variant: str = "nested_unet_seg_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_segmentor(
+    return build_baseline_segmentor(
         family="nested_unet_seg",
         mode="nested",
         variants=_VARIANTS,

@@ -1,4 +1,4 @@
-# Lesson 09：点云自监督（SimCLR, toy-first）
+# Lesson 09：点云自监督（SimCLR, compact-first）
 
 目标：用最小闭环跑通 **对比学习（SimCLR）** 的核心流程：
 
@@ -6,7 +6,7 @@
 - 编码器 + projection head
 - loss：NT-Xent（InfoNCE）
 
-这节课使用 toy 数据（Cube/Sphere 混合），训练时 **不使用标签**；标签仅用于你后续扩展做 linear probe。
+这节课使用 compact 数据（Cube/Sphere 混合），训练时 **不使用标签**；标签仅用于你后续扩展做 linear probe。
 
 ## 运行
 

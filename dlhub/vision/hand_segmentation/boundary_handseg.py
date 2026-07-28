@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_hand_segmentor, smoke_test_hand_segmentor
+from ._common import build_baseline_hand_segmentor, smoke_test_hand_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_boundary_handseg_hand_segmentor(
     variant: str = "boundary_handseg_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_hand_segmentor(
+    return build_baseline_hand_segmentor(
         family="boundary_handseg",
         mode="boundary",
         variants=_VARIANTS,

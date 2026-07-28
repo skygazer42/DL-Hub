@@ -1,4 +1,4 @@
-"""Federated learning strategies (toy-first, no networking).
+"""Federated learning strategies (compact-first, no networking).
 
 Conventions:
 - One federated algorithm family per file via `_VARIANTS`.

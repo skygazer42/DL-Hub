@@ -1,4 +1,4 @@
-"""Fine-R1 (MLLM reasoning for fine-grained recognition) - toy-first FGVC classifier.
+"""Fine-R1 (MLLM reasoning for fine-grained recognition) - compact-first FGVC classifier.
 
 References:
 - "Fine-R1: Make Multi-modal LLMs Excel in Fine-Grained Visual Recognition by Chain-of-Thought Reasoning"
@@ -108,7 +108,7 @@ class FineR1(nn.Module):
         self.dropout = nn.Dropout(float(dropout))
         self.classifier = nn.Linear(int(embed), int(num_classes))
 
-        # A small scale makes logits stable for toy training loops.
+        # A small scale makes logits stable for compact training loops.
         self.logit_scale = nn.Parameter(torch.tensor(math.log(1.0 / 0.07)))
 
     def forward(self, x: torch.Tensor) -> dict[str, torch.Tensor]:

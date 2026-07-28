@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "prompt_transparent_tiny": {"width": 24, "depth": 1},
@@ -16,7 +16,7 @@ def build_prompt_transparent_transparent_segmenter(
     width_mult: float = 1.0,
     **kwargs,
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="prompt_transparent",
         variants=_VARIANTS,
         in_channels=int(in_channels),

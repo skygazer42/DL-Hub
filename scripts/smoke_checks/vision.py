@@ -75,12 +75,12 @@ def check_synthetic_detection() -> None:
     assert (det_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
 
-def check_vit_toy_classification() -> None:
-    # 4.2c) Vision lesson: ViT toy classification (torch-only).
+def check_vit_compact_classification() -> None:
+    # 4.2c) Vision lesson: ViT compact classification (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.vision.lesson_05_vit_toy_classification.data import DataConfig as VitData
-    from tracks.vision.lesson_05_vit_toy_classification.train import TrainConfig as VitTrain
-    from tracks.vision.lesson_05_vit_toy_classification.train import run_training as run_vit
+    from tracks.vision.lesson_05_vit_compact_classification.data import DataConfig as VitData
+    from tracks.vision.lesson_05_vit_compact_classification.train import TrainConfig as VitTrain
+    from tracks.vision.lesson_05_vit_compact_classification.train import run_training as run_vit
 
     run_vit(
         VitTrain(
@@ -113,19 +113,19 @@ def check_vit_toy_classification() -> None:
     )
 
     vit_paths = build_run_paths(
-        track="vision", lesson="lesson_05_vit_toy_classification", run_name="smoke"
+        track="vision", lesson="lesson_05_vit_compact_classification", run_name="smoke"
     )
     assert (vit_paths.run_dir / "config.json").is_file()
     assert (vit_paths.run_dir / "metrics.jsonl").is_file()
     assert (vit_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
 
-def check_swin_toy_classification() -> None:
-    # 4.2d) Vision lesson: Swin-style toy classification (torch-only).
+def check_swin_compact_classification() -> None:
+    # 4.2d) Vision lesson: Swin-style compact classification (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.vision.lesson_06_swin_toy_classification.data import DataConfig as SwinData
-    from tracks.vision.lesson_06_swin_toy_classification.train import TrainConfig as SwinTrain
-    from tracks.vision.lesson_06_swin_toy_classification.train import run_training as run_swin
+    from tracks.vision.lesson_06_swin_compact_classification.data import DataConfig as SwinData
+    from tracks.vision.lesson_06_swin_compact_classification.train import TrainConfig as SwinTrain
+    from tracks.vision.lesson_06_swin_compact_classification.train import run_training as run_swin
 
     run_swin(
         SwinTrain(
@@ -159,19 +159,19 @@ def check_swin_toy_classification() -> None:
     )
 
     swin_paths = build_run_paths(
-        track="vision", lesson="lesson_06_swin_toy_classification", run_name="smoke"
+        track="vision", lesson="lesson_06_swin_compact_classification", run_name="smoke"
     )
     assert (swin_paths.run_dir / "config.json").is_file()
     assert (swin_paths.run_dir / "metrics.jsonl").is_file()
     assert (swin_paths.checkpoints_dir / "checkpoint.pt").is_file()
 
 
-def check_toy_keypoint_regression() -> None:
-    # 4.2e) Vision lesson: toy keypoint regression (torch-only).
+def check_compact_keypoint_regression() -> None:
+    # 4.2e) Vision lesson: compact keypoint regression (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.vision.lesson_07_toy_keypoint_regression.data import DataConfig as KptData
-    from tracks.vision.lesson_07_toy_keypoint_regression.train import TrainConfig as KptTrain
-    from tracks.vision.lesson_07_toy_keypoint_regression.train import run_training as run_kpt
+    from tracks.vision.lesson_07_compact_keypoint_regression.data import DataConfig as KptData
+    from tracks.vision.lesson_07_compact_keypoint_regression.train import TrainConfig as KptTrain
+    from tracks.vision.lesson_07_compact_keypoint_regression.train import run_training as run_kpt
 
     run_kpt(
         KptTrain(
@@ -199,7 +199,7 @@ def check_toy_keypoint_regression() -> None:
     )
 
     kpt_paths = build_run_paths(
-        track="vision", lesson="lesson_07_toy_keypoint_regression", run_name="smoke"
+        track="vision", lesson="lesson_07_compact_keypoint_regression", run_name="smoke"
     )
     assert (kpt_paths.run_dir / "config.json").is_file()
     assert (kpt_paths.run_dir / "metrics.jsonl").is_file()
@@ -254,13 +254,13 @@ def check_synthetic_segmentation() -> None:
 def check_cnn_backbones() -> None:
     # 4.2g) Vision lesson: classic CNN backbones (torch-only).
     from dlhub.paths import build_run_paths
-    from tracks.vision.lesson_09_cnn_backbones_toy_classification.data import (
+    from tracks.vision.lesson_09_cnn_backbones_compact_classification.data import (
         DataConfig as CnnData,
     )
-    from tracks.vision.lesson_09_cnn_backbones_toy_classification.train import (
+    from tracks.vision.lesson_09_cnn_backbones_compact_classification.train import (
         TrainConfig as CnnTrain,
     )
-    from tracks.vision.lesson_09_cnn_backbones_toy_classification.train import (
+    from tracks.vision.lesson_09_cnn_backbones_compact_classification.train import (
         run_training as run_cnn,
     )
 
@@ -292,7 +292,7 @@ def check_cnn_backbones() -> None:
     )
 
     cnn_paths = build_run_paths(
-        track="vision", lesson="lesson_09_cnn_backbones_toy_classification", run_name="smoke"
+        track="vision", lesson="lesson_09_cnn_backbones_compact_classification", run_name="smoke"
     )
     assert (cnn_paths.run_dir / "config.json").is_file()
     assert (cnn_paths.run_dir / "metrics.jsonl").is_file()

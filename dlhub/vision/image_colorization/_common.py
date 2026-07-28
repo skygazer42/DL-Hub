@@ -24,7 +24,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyColorizer(nn.Module):
+class CompactColorizer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -37,7 +37,7 @@ class ToyColorizer(nn.Module):
         return {"ab": ab}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -48,7 +48,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyColorizer(family=str(family), in_channels=1, width=width, depth=int(spec["depth"]))
+    return CompactColorizer(family=str(family), in_channels=1, width=width, depth=int(spec["depth"]))
 
 
 def smoke_test_model(builder, variant: str):

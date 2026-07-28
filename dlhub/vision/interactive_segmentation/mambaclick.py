@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_inter, smoke_test_inter
+from ._common import build_baseline_inter, smoke_test_inter
 
 _VARIANTS = {
     "mambaclick_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_mambaclick_interactive_segmenter(
     *, in_channels: int, variant: str = "mambaclick_small", width_mult: float = 1.0
 ):
-    return build_toy_inter(
+    return build_baseline_inter(
         family="mambaclick",
         variants=_VARIANTS,
         in_channels=int(in_channels),

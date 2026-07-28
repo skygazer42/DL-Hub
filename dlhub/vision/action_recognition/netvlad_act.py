@@ -1,9 +1,9 @@
-"""TimeSformer (space-time attention) - toy-first video action classifier.
+"""TimeSformer (space-time attention) - compact-first video action classifier.
 
 Reference:
 - "Is Space-Time Attention All You Need for Video Understanding?" (ICML 2021)
 
-Toy interpretation:
+Compact interpretation:
 - Patchify each frame with a Conv2d patch embed.
 - Flatten all frame patches into a token sequence and run a TransformerEncoder.
 - Use a CLS token for classification.
@@ -70,7 +70,7 @@ class NetvladActVideoClassifier(nn.Module):
         self.dropout = nn.Dropout(float(dropout))
         self.head = nn.Linear(e, int(num_classes))
 
-        # A tiny init helps stable toy training loops.
+        # A tiny init helps stable compact training loops.
         nn.init.trunc_normal_(self.pos_embed, std=0.02)
         nn.init.trunc_normal_(self.cls_token, std=0.02)
 

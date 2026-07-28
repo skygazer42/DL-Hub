@@ -4,7 +4,7 @@ torch = pytest.importorskip("torch")
 
 
 def test_transformer_summarization_batch_contract_and_teacher_forcing() -> None:
-    from tracks.nlp.lesson_09_toy_transformer_summarization.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_09_compact_transformer_summarization.data import DataConfig, get_dataloaders
 
     train_loader, _, vocab = get_dataloaders(
         DataConfig(
@@ -38,10 +38,10 @@ def test_transformer_summarization_batch_contract_and_teacher_forcing() -> None:
 
 
 def test_transformer_summarization_model_is_causal_and_decodes() -> None:
-    from tracks.nlp.lesson_09_toy_transformer_summarization.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_09_toy_transformer_summarization.model import (
+    from tracks.nlp.lesson_09_compact_transformer_summarization.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_09_compact_transformer_summarization.model import (
         ModelConfig,
-        ToyTransformerSummarizer,
+        CompactTransformerSummarizer,
     )
 
     train_loader, _, vocab = get_dataloaders(
@@ -57,7 +57,7 @@ def test_transformer_summarization_model_is_causal_and_decodes() -> None:
         )
     )
     inputs, targets = next(iter(train_loader))
-    model = ToyTransformerSummarizer(
+    model = CompactTransformerSummarizer(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -112,12 +112,12 @@ def test_transformer_summarization_model_is_causal_and_decodes() -> None:
 
 
 def test_transformer_summarization_epoch_metrics_are_token_level() -> None:
-    from tracks.nlp.lesson_09_toy_transformer_summarization.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_09_toy_transformer_summarization.model import (
+    from tracks.nlp.lesson_09_compact_transformer_summarization.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_09_compact_transformer_summarization.model import (
         ModelConfig,
-        ToyTransformerSummarizer,
+        CompactTransformerSummarizer,
     )
-    from tracks.nlp.lesson_09_toy_transformer_summarization.train import _run_epoch
+    from tracks.nlp.lesson_09_compact_transformer_summarization.train import _run_epoch
 
     train_loader, val_loader, vocab = get_dataloaders(
         DataConfig(
@@ -131,7 +131,7 @@ def test_transformer_summarization_epoch_metrics_are_token_level() -> None:
             num_workers=0,
         )
     )
-    model = ToyTransformerSummarizer(
+    model = CompactTransformerSummarizer(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

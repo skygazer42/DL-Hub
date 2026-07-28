@@ -152,7 +152,7 @@ def _render_person(
     return image.clamp(0.0, 1.0)
 
 
-class ToyPersonSearchDataset(Dataset):
+class SyntheticPersonSearchDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         _validate_config(cfg)
         self.cfg = cfg
@@ -184,7 +184,7 @@ class ToyPersonSearchDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyPersonSearchDataset(cfg, vocab=vocab)
+    dataset = SyntheticPersonSearchDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -216,4 +216,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyPersonSearchDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticPersonSearchDataset", "Vocab", "get_dataloaders"]

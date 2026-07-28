@@ -19,7 +19,7 @@ DL-Hub/
 ├── scripts/            # 辅助脚本（冒烟验证、Zoo CLI）
 ├── docs/               # MkDocs 文档源文件
 ├── resources/          # 保留资料（PDF 论文笔记）
-├── tests/              # 400+ 测试文件（2026-07 实测 409）
+├── tests/              # 400+ 测试文件
 ├── mkdocs.yml          # 文档配置
 ├── Makefile            # 常用命令入口
 └── requirements*.txt   # 依赖清单
@@ -29,12 +29,12 @@ DL-Hub/
 
 ## 课程目录结构
 
-每个 lesson 遵循统一的四文件结构：
+训练型 lesson 通常采用下面的四文件结构；基础演示或特殊任务可以精简，但必须保留可发现的入口：
 
 ```text
 tracks/<track>/lesson_XX_<name>/
 ├── model.py        # 模型定义
-├── data.py         # 数据加载（必须支持 --dataset fake）
+├── data.py         # 数据加载（显式 fake 或内置 synthetic 数据）
 ├── train.py        # 训练脚本（入口）
 └── README.md       # 课程说明文档
 ```
@@ -54,7 +54,7 @@ tracks/<track>/lesson_XX_<name>/
 | 文件 | 职责 | 要求 |
 |------|------|------|
 | `model.py` | 模型架构定义 | 纯 PyTorch `nn.Module` |
-| `data.py` | 数据集和 DataLoader | 必须支持 `--dataset fake` |
+| `data.py` | 数据集和 DataLoader | 必须提供不联网的数据路径；`--dataset fake` 仅用于可选真实数据集 |
 | `train.py` | 训练入口脚本 | 使用 `dlhub/` 脚手架 |
 | `README.md` | 课程文档 | 包含原理说明和运行方式 |
 
@@ -85,8 +85,11 @@ outputs/
 
 | 脚本 | 功能 |
 |------|------|
-| `smoke_check.py` | 全局冒烟测试，验证所有 lesson 的 `--dataset fake` 模式 |
-| `run_lesson.py` | 统一运行单个 lesson |
+| `smoke_check.py` | 覆盖 8 个 track 的精选离线冒烟测试；`--list` 查看覆盖范围 |
+| `lesson_contracts.py` | 静态检查课程入口、核心 CLI、文档命令与 Smoke 覆盖 |
+| `narrative_check.py` | 检查命名边界与文档/导入中的 lesson 路径 |
+| `model_fidelity.py` | 查询并校验 Model Zoo 源码保真度台账 |
+| `run_lesson.py` | 统一发现和运行 lesson；实际参数由各 lesson 定义 |
 | `new_lesson.py` | 脚手架生成新 lesson 模板 |
 | `doctor.py` | 环境诊断工具 |
 | `benchmark_cpu.py` | CPU 基准测试 |

@@ -1,4 +1,4 @@
-# Lesson 15 — Neural Style Transfer (Gatys-style, toy-first)
+# Lesson 15 — Neural Style Transfer (Gatys-style, compact-first)
 
 This lesson runs a tiny optimization-based neural style transfer loop.
 

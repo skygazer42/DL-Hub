@@ -1,10 +1,10 @@
-from .data import DataConfig, EventSpec, ToyAudioVisualEventLocalizationDataset, Vocab, get_dataloaders
+from .data import DataConfig, EventSpec, SyntheticAudioVisualEventLocalizationDataset, Vocab, get_dataloaders
 from .model import (
     AudioVisualEventLocalizationConfig,
     QueryEncoder,
     TinyAudioEncoder,
     TinyFrameEncoder,
-    ToyAudioVisualEventLocalizationModel,
+    CompactAudioVisualEventLocalizationModel,
     frame_accuracy,
     localization_loss,
 )
@@ -16,8 +16,8 @@ __all__ = [
     "QueryEncoder",
     "TinyAudioEncoder",
     "TinyFrameEncoder",
-    "ToyAudioVisualEventLocalizationModel",
-    "ToyAudioVisualEventLocalizationDataset",
+    "CompactAudioVisualEventLocalizationModel",
+    "SyntheticAudioVisualEventLocalizationDataset",
     "Vocab",
     "frame_accuracy",
     "get_dataloaders",

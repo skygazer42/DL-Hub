@@ -1,6 +1,6 @@
 # Face Verification
 
-Toy-first local families for `face verification`.
+Compact-first local families for `face verification`.
 
 ## Families
 

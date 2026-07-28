@@ -1,6 +1,6 @@
-# Lesson 32: Video-Text Toy Temporal Action Localization (时序动作定位)
+# Lesson 32: Video-Text Compact Temporal Action Localization (时序动作定位)
 
-This lesson introduces toy video-text temporal action localization:
+This lesson introduces compact video-text temporal action localization:
 
 - synthesize short per-frame video features and a text query
 - localize the query action over time with a temporal mask

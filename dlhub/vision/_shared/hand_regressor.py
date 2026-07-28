@@ -88,7 +88,7 @@ class TinyHandRegressor(nn.Module):
         }
 
 
-def build_toy_hand_regressor(
+def build_baseline_hand_regressor(
     *,
     family: str,
     mode: str,

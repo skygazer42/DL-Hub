@@ -1,7 +1,5 @@
 # DL-Hub Zoo Conventions Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** 把 DL-Hub 的各类 Zoo（NLP / Vision / PointCloud / Restoration 等）统一到同一套“**一算法族一文件**”的工程规范，并在后续扩展算法时严格遵守该规范。
 
 **Architecture:** 每个 Zoo 目录以“算法族文件”为最小单元：一个 `.py` 文件实现一个完整网络/算法族（`torch.nn.Module`），同族的不同规模/深度/宽度等作为 **variants** 写在同一个文件里，通过 `_VARIANTS` + `build_*` 工厂函数选择；上层通过 `family:variant` 字符串构建模型。

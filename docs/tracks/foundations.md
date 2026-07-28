@@ -66,10 +66,8 @@ flowchart LR
 - **计算图**：动态图 vs 静态图，叶子节点与中间节点
 
 ```bash
-# 运行 Lesson 01（离线冒烟模式）
-python -m tracks.foundations.lesson_01_tensors.train \
-  --dataset fake --epochs 1 \
-  --max-train-batches 2 --max-eval-batches 2
+# 运行 Lesson 01（内置张量演示，无需数据集）
+python -m tracks.foundations.lesson_01_tensors.run
 ```
 
 ---
@@ -91,7 +89,7 @@ python -m tracks.foundations.lesson_01_tensors.train \
 ```bash
 # 运行 Lesson 02（离线冒烟模式）
 python -m tracks.foundations.lesson_02_linear_regression_autograd.train \
-  --dataset fake --epochs 1 \
+  --epochs 1 \
   --max-train-batches 2 --max-eval-batches 2
 ```
 

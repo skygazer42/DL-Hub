@@ -29,7 +29,7 @@ def _soft_threshold(x: torch.Tensor, t: float) -> torch.Tensor:
 
 
 class WaveletShrinkage(nn.Module):
-    """Haar wavelet shrinkage denoiser (torch-only, toy-first).
+    """Haar wavelet shrinkage denoiser (torch-only, compact-first).
 
     Procedure:
     - Haar decomposition for `levels`

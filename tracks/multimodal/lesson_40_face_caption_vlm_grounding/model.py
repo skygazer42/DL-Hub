@@ -47,7 +47,7 @@ class FaceCaptionGroundingConfig:
     vision_width: int = 32
 
 
-class ToyFaceCaptionGroundingModel(nn.Module):
+class CompactFaceCaptionGroundingModel(nn.Module):
     def __init__(self, cfg: FaceCaptionGroundingConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -91,7 +91,7 @@ def grounding_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
 
 __all__ = [
     "FaceCaptionGroundingConfig",
-    "ToyFaceCaptionGroundingModel",
+    "CompactFaceCaptionGroundingModel",
     "grounding_accuracy",
     "grounding_loss",
 ]

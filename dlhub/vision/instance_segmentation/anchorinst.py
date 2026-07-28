@@ -6,7 +6,7 @@ from dlhub.vision.instance_segmentation._common import BackboneLowDet, ProtoNet,
 
 
 class AnchorInst(nn.Module):
-    """AnchorInst-style instance segmentation (toy-first).
+    """AnchorInst-style instance segmentation (compact-first).
 
     Uses learned queries with cross-attention over a feature map, then predicts masks via prototypes.
     """

@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class VoxelNet(nn.Module):
-    """VoxelNet (toy): points -> BEV pseudo-voxels -> dense head."""
+    """VoxelNet (compact): points -> BEV pseudo-voxels -> dense head."""
 
     def __init__(
         self,

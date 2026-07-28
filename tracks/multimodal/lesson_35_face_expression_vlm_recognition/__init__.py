@@ -2,7 +2,7 @@ from .data import EMOTION_TO_ID, EMOTIONS, DataConfig, Vocab, get_dataloaders
 from .model import (
     FacialExpressionModelConfig,
     PromptEncoder,
-    ToyFacialExpressionVLM,
+    CompactFacialExpressionVLM,
     classification_accuracy,
     expression_loss,
 )
@@ -15,7 +15,7 @@ __all__ = [
     "FacialExpressionModelConfig",
     "PromptEncoder",
     "TrainConfig",
-    "ToyFacialExpressionVLM",
+    "CompactFacialExpressionVLM",
     "Vocab",
     "classification_accuracy",
     "expression_loss",

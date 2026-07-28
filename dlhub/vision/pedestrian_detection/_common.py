@@ -94,7 +94,7 @@ class TinyPedestrianDetector(nn.Module):
         return {"pred_logits": logits, "pred_boxes": boxes, "quality": quality}
 
 
-def build_toy_pedestrian_detector(
+def build_baseline_pedestrian_detector(
     *,
     family: str,
     mode: str,

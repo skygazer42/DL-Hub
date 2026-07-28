@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_toy_reidentifier, smoke_test_reid
+from ._common import build_baseline_reidentifier, smoke_test_reid
 
 _VARIANTS = {
     "metareid_tiny": {"width": 24, "depth": 1, "embed": 96},
@@ -17,7 +17,7 @@ def build_metareid_reidentifier(
     width_mult: float = 1.0,
     dropout: float = 0.0,
 ) -> nn.Module:
-    return build_toy_reidentifier(
+    return build_baseline_reidentifier(
         family="metareid",
         variants=_VARIANTS,
         in_channels=int(in_channels),

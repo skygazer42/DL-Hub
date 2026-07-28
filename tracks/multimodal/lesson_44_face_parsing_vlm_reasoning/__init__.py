@@ -1,5 +1,5 @@
-from .data import PART_TO_ID, PARTS, DataConfig, ToyFaceParsingDataset, Vocab, get_dataloaders
-from .model import FaceParsingReasoningConfig, ToyFaceParsingReasoningModel, face_parsing_loss, mask_iou
+from .data import PART_TO_ID, PARTS, DataConfig, SyntheticFaceParsingDataset, Vocab, get_dataloaders
+from .model import FaceParsingReasoningConfig, CompactFaceParsingReasoningModel, face_parsing_loss, mask_iou
 from .train import TrainConfig, run_training
 
 __all__ = [
@@ -7,8 +7,8 @@ __all__ = [
     "FaceParsingReasoningConfig",
     "PART_TO_ID",
     "PARTS",
-    "ToyFaceParsingDataset",
-    "ToyFaceParsingReasoningModel",
+    "SyntheticFaceParsingDataset",
+    "CompactFaceParsingReasoningModel",
     "TrainConfig",
     "Vocab",
     "face_parsing_loss",

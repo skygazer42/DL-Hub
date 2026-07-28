@@ -1,4 +1,4 @@
-# Lesson 10：图像去噪（Synthetic, toy-first）
+# Lesson 10：图像去噪（Synthetic, compact-first）
 
 目标：把"输入带噪图 → 输出干净图"的回归式训练闭环跑通，并对比多类经典/深度学习去噪方法，覆盖 supervised、noise2noise、blind-spot 三种训练范式和 20 种噪声模型。
 
@@ -44,7 +44,7 @@ python -m pytest tests/test_tracks_vision_denoising.py -x -q
 
 ## 数据说明
 
-本课使用**合成数据**（`ToyDenoisingSquares`），无需下载任何真实数据集：
+本课使用**合成数据**（`SyntheticDenoisingSquares`），无需下载任何真实数据集：
 
 - **干净图**：64×64 灰度图，黑色背景上一个随机位置/大小的白色矩形（像素值 0 或 1）
 - **噪声图**：在干净图上叠加噪声，`clamp` 到 `[0, 1]`
@@ -65,7 +65,7 @@ python -m pytest tests/test_tracks_vision_denoising.py -x -q
 
 **噪声条件化**：FFDNet / DRUNet 等把 sigma map 显式输入网络，让一个模型处理不同噪声强度。相比为每个 sigma 训练一个模型，更灵活更省空间。
 
-**PSNR**：`10 * log10(1 / MSE)`，单位 dB，越高越好。toy 数据上通常 20–40 dB。注意 PSNR 只衡量像素级误差，不直接反映人眼感知质量。
+**PSNR**：`10 * log10(1 / MSE)`，单位 dB，越高越好。compact 数据上通常 20–40 dB。注意 PSNR 只衡量像素级误差，不直接反映人眼感知质量。
 
 ## 方法选择指南
 

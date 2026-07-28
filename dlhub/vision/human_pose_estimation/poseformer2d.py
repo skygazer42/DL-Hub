@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_pose, smoke_test_pose
+from ._common import build_baseline_pose, smoke_test_pose
 
 _VARIANTS = {
     "poseformer2d_tiny": {"width": 24, "depth": 1},
@@ -15,7 +15,7 @@ def build_poseformer2d_pose_estimator(
     variant: str = "poseformer2d_small",
     width_mult: float = 1.0,
 ):
-    return build_toy_pose(
+    return build_baseline_pose(
         family="poseformer2d",
         variants=_VARIANTS,
         in_channels=int(in_channels),

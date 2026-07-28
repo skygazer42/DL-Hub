@@ -1,6 +1,6 @@
 # Glare detection
 
-Toy-first local families for `glare detection`.
+Compact-first local families for `glare detection`.
 
 ## Families
 

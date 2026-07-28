@@ -1,4 +1,4 @@
-"""motion segmentation models (toy-first, pure torch)."""
+"""motion segmentation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

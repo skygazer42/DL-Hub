@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 2 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with first-class implementations for T5, Flan-T5, and UL2, covering both architecture details and paper-specific training/inference interfaces.
 
 **Architecture:** Implement `T5` as the shared encoder-decoder backbone with relative position bias and shared embeddings. Build `Flan-T5` as an instruction-tuned wrapper over `T5Model` rather than inventing a new architecture. Build `UL2` on top of a T5-compatible backbone, but add Mixture-of-Denoisers mode tags and objective helpers so the paper’s core idea is represented in code and tests.

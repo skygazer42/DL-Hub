@@ -1,9 +1,9 @@
-"""DDN (Deep Detail Network) - toy-first implementation.
+"""DDN (Deep Detail Network) - compact-first implementation.
 
 Reference (original idea):
 - "Removing Rain from Single Images via a Deep Detail Network" (CVPR 2017)
 
-Toy interpretation:
+Compact interpretation:
 - Use a shallow dilated-convolution stack to estimate rain residual details.
 - Return derained output as `x - residual`.
 """
@@ -32,7 +32,7 @@ class _DilatedResBlock(nn.Module):
 
 
 class DDN(nn.Module):
-    """Toy DDN-style derainer with shape-preserving residual prediction."""
+    """Compact DDN-style derainer with shape-preserving residual prediction."""
 
     def __init__(
         self,

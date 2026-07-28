@@ -1,6 +1,6 @@
 # Reflection detection
 
-Toy-first local families for `reflection detection`.
+Compact-first local families for `reflection detection`.
 
 ## Families
 

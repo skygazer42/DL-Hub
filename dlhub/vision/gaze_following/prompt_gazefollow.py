@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_gaze_follower, smoke_test_gaze_follower
+from ._common import build_baseline_gaze_follower, smoke_test_gaze_follower
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_prompt_gazefollow_gaze_follower(
     *, in_channels: int, variant: str = "prompt_gazefollow_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_gaze_follower(
+    return build_baseline_gaze_follower(
         family="prompt_gazefollow",
         mode="prompt",
         variants=_VARIANTS,

@@ -37,7 +37,7 @@ class _SE2D(nn.Module):
 
 
 class SqueezeSeg(nn.Module):
-    """SqueezeSeg semantic segmentation (toy): range-view UNet + squeeze-excitation."""
+    """SqueezeSeg semantic segmentation (compact): range-view UNet + squeeze-excitation."""
 
     def __init__(
         self,

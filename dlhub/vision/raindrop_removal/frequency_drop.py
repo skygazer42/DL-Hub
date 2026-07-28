@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_drop_remover, smoke_test_drop_remover
+from ._common import build_baseline_drop_remover, smoke_test_drop_remover
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_frequency_drop_drop_remover(
     variant: str = "frequency_drop_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_drop_remover(
+    return build_baseline_drop_remover(
         family="frequency_drop",
         mode="frequency",
         variants=_VARIANTS,

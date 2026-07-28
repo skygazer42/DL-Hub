@@ -6,8 +6,8 @@ import importlib
 
 
 _FAMILIES = [
-    "layoutgan_toy",
-    "layoutvae_toy",
+    "layoutgan_baseline",
+    "layoutvae_baseline",
     "layouttransformer",
     "bbox_generator",
     "poster_layout_net",

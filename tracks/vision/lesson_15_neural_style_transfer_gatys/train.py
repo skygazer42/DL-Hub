@@ -41,7 +41,7 @@ def _maybe_save_image(image: torch.Tensor, path: str | Path) -> None:
 
 
 def parse_args() -> tuple[RunConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 15 (Vision): Gatys-style neural style transfer (toy-first).")
+    parser = argparse.ArgumentParser(description="Lesson 15 (Vision): Gatys-style neural style transfer (compact-first).")
 
     parser.add_argument("--arch", type=str, default="dlst:gatys_tiny")
     parser.add_argument("--steps", type=int, default=8)

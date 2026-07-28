@@ -85,7 +85,7 @@ class TinyAudioTextUnderstandingModel(nn.Module):
         }
 
 
-def build_toy_atu(
+def build_baseline_atu(
     *,
     family: str,
     mode: str,

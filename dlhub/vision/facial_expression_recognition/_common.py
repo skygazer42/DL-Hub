@@ -25,7 +25,7 @@ class TinyEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyExpressionRecognizer(nn.Module):
+class CompactExpressionRecognizer(nn.Module):
     def __init__(self, *, family: str, in_channels: int, num_classes: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -39,7 +39,7 @@ class ToyExpressionRecognizer(nn.Module):
         return {"logits": logits}
 
 
-def build_toy_expr(
+def build_baseline_expr(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -50,7 +50,7 @@ def build_toy_expr(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyExpressionRecognizer(
+    return CompactExpressionRecognizer(
         family=str(family),
         in_channels=int(in_channels),
         num_classes=int(num_classes),

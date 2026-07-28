@@ -1,9 +1,9 @@
-from .data import DataConfig, ToyMultimodalReasoningDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticMultimodalReasoningDataset, Vocab, get_dataloaders
 from .model import (
     MaskedTextEncoder,
     MultimodalReasoningConfig,
     TinyVisionEncoder,
-    ToyMultimodalReasoningModel,
+    CompactMultimodalReasoningModel,
     classification_accuracy,
     reasoning_loss,
 )
@@ -14,8 +14,8 @@ __all__ = [
     "MaskedTextEncoder",
     "MultimodalReasoningConfig",
     "TinyVisionEncoder",
-    "ToyMultimodalReasoningDataset",
-    "ToyMultimodalReasoningModel",
+    "SyntheticMultimodalReasoningDataset",
+    "CompactMultimodalReasoningModel",
     "TrainConfig",
     "Vocab",
     "classification_accuracy",

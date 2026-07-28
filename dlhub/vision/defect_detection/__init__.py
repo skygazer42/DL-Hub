@@ -1,4 +1,4 @@
-"""Industrial defect detection models (toy-first, pure torch)."""
+"""Industrial defect detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

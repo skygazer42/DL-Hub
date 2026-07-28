@@ -65,7 +65,8 @@ flowchart TD
 
 ## 课程列表
 
-全部 **89 个 Lesson** 按主题分组如下，每个 lesson 目录均含独立 README 与可运行的 `train.py`，支持 `--dataset fake` 离线冒烟测试。
+全部 **89 个 Lesson** 按主题分组如下，均提供可运行的 `train.py` 和离线数据路径；
+MNIST 课程支持 `--dataset fake`，其余 synthetic 课程默认使用内置数据。
 
 ### 核心基础（01-14）：分类 / 检测 / 分割 / 跟踪
 
@@ -75,11 +76,11 @@ flowchart TD
 | 02 | **MLP 图像分类** | [`mnist_mlp`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_02_mnist_mlp/) | 多层感知机, Flatten |
 | 03 | **AlexNet 图像分类** | [`mnist_alexnet`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_03_mnist_alexnet/) | 深层卷积网络, Dropout |
 | 04 | **FCOS 目标检测** | [`synthetic_detection_fcos`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_04_synthetic_detection_fcos/) | Anchor-free, FPN, 回归头 |
-| 05 | **ViT 图像分类** | [`vit_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_05_vit_toy_classification/) | Patch Embedding, Self-Attention |
-| 06 | **Swin Transformer 图像分类** | [`swin_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_06_swin_toy_classification/) | Window Attention, Shifted Window |
-| 07 | **关键点回归** | [`toy_keypoint_regression`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_07_toy_keypoint_regression/) | 坐标回归, Heatmap |
+| 05 | **ViT 图像分类** | [`vit_compact_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_05_vit_compact_classification/) | Patch Embedding, Self-Attention |
+| 06 | **Swin Transformer 图像分类** | [`swin_compact_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_06_swin_compact_classification/) | Window Attention, Shifted Window |
+| 07 | **关键点回归** | [`compact_keypoint_regression`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_07_compact_keypoint_regression/) | 坐标回归, Heatmap |
 | 08 | **UNet 语义分割** | [`synthetic_segmentation_unet`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_08_synthetic_segmentation_unet/) | Encoder-Decoder, Skip Connection |
-| 09 | **多 Backbone 对比** | [`cnn_backbones_toy_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_09_cnn_backbones_toy_classification/) | 统一接口, 特征提取 |
+| 09 | **多 Backbone 对比** | [`cnn_backbones_compact_classification`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_09_cnn_backbones_compact_classification/) | 统一接口, 特征提取 |
 | 10 | **图像去噪（多模型）** | [`synthetic_denoising`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_10_synthetic_denoising/) | 合成噪声建模, 去噪回归 |
 | 11 | **YOLACT 实例分割** | [`synthetic_instance_segmentation_yolact`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_11_synthetic_instance_segmentation_yolact/) | Prototype + Coefficients |
 | 12 | **YOLO 风格目标检测** | [`synthetic_detection_yolo`](https://github.com/skygazer42/DL-Hub/tree/main/tracks/vision/lesson_12_synthetic_detection_yolo/) | Grid/Objectness + BBox |
@@ -201,16 +202,16 @@ flowchart TD
 === "Lesson 05 — ViT"
 
     ```bash
-    python -m tracks.vision.lesson_05_vit_toy_classification.train \
-      --dataset fake --epochs 1 \
+    python -m tracks.vision.lesson_05_vit_compact_classification.train \
+      --epochs 1 \
       --max-train-batches 2 --max-eval-batches 2
     ```
 
 === "Lesson 09 — Backbone Zoo"
 
     ```bash
-    python -m tracks.vision.lesson_09_cnn_backbones_toy_classification.train \
-      --arch resnet18 --dataset fake --epochs 1 \
+    python -m tracks.vision.lesson_09_cnn_backbones_compact_classification.train \
+      --arch resnet18 --epochs 1 \
       --max-train-batches 2 --max-eval-batches 2
     ```
 
@@ -218,7 +219,7 @@ flowchart TD
 
     ```bash
     python -m tracks.vision.lesson_14_video_mot_basics.train \
-      --dataset fake --epochs 1 \
+      --epochs 1 \
       --max-train-batches 2 --max-eval-batches 2
     ```
 
@@ -226,8 +227,8 @@ flowchart TD
 
 ## Vision Backbone Zoo
 
-!!! note "791 架构可供切换"
-    Vision Zoo 包含 **220 个模块 / 791 个架构 ID**，所有 backbone 均为纯 PyTorch 本地实现，支持通过 `--arch` 参数一行切换。
+!!! note "791 注册 ID 可供切换"
+    Vision Zoo 包含 **220 个模块 / 791 个注册 ID**，所有 backbone 均为纯 PyTorch 本地实现，支持通过 `--arch` 参数一行切换。
 
 ```bash
 # 列出所有可用架构

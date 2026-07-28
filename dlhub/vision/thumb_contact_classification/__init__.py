@@ -1,4 +1,4 @@
-"""thumb contact classification models (toy-first, pure torch)."""
+"""thumb contact classification models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

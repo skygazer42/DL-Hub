@@ -22,7 +22,7 @@
 - `tracks/generative/`
 - `tracks/llm/`
 
-> 进度提示：截至 2026-02-28，`tracks/generative/`（VAE/GAN）与 `tracks/pointcloud/`（PointNet toy 分类）已可运行并纳入 `scripts/smoke_check.py` 冒烟。
+> 进度提示：截至 2026-02-28，`tracks/generative/`（VAE/GAN）与 `tracks/pointcloud/`（PointNet compact 分类）已可运行并纳入 `scripts/smoke_check.py` 冒烟。
 
 ## 每节课（lesson）统一长相
 
@@ -30,7 +30,7 @@
 
 - `README.md`：目标、先修、概念、练习、验收方式（最重要）
 - `model.py`：模型（尽量短、可读）
-- `data.py`：数据（支持 toy/fake 模式用于快速自检）
+- `data.py`：数据（支持 compact/fake 模式用于快速自检）
 - `train.py`：训练入口（统一命令行参数风格）
 - `eval.py`：评估入口（统一输出指标）
 

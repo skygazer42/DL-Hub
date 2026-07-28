@@ -1,4 +1,4 @@
-# Lesson 18 — PointCloud 自监督：DINO（toy-first）
+# Lesson 18 — PointCloud 自监督：DINO（compact-first）
 
 目标：在点云上跑通 **DINO** 的最小闭环：
 
@@ -21,7 +21,7 @@ python -m tracks.pointcloud.lesson_18_pointcloud_selfsupervised_dino.train --run
 python -m tracks.pointcloud.lesson_18_pointcloud_selfsupervised_dino.train --list-arch
 ```
 
-可选：调整温度/EMA（toy 实验建议先用默认）：
+可选：调整温度/EMA（compact 实验建议先用默认）：
 
 ```bash
 python -m tracks.pointcloud.lesson_18_pointcloud_selfsupervised_dino.train --teacher-temperature 0.04 --ema-decay 0.996

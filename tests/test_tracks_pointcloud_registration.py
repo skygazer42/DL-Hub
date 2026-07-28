@@ -7,12 +7,12 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_registration_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_36_toy_pointcloud_registration.data import (
+    from tracks.pointcloud.lesson_36_compact_pointcloud_registration.data import (
         DataConfig,
-        ToyPointCloudRegistrationDataset,
+        SyntheticPointCloudRegistrationDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_36_toy_pointcloud_registration.model import (
+    from tracks.pointcloud.lesson_36_compact_pointcloud_registration.model import (
         ModelConfig,
         build_model,
         pose_l1_error,
@@ -31,7 +31,7 @@ def test_pointcloud_registration_batch_contract_and_loss_smoke() -> None:
         noise_std=0.01,
     )
 
-    ds = ToyPointCloudRegistrationDataset(cfg)
+    ds = SyntheticPointCloudRegistrationDataset(cfg)
     source, target, pose6d = ds[0]
     assert tuple(source.shape) == (48, 3)
     assert tuple(target.shape) == (48, 3)
@@ -71,9 +71,9 @@ def test_pointcloud_registration_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_registration_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_36_toy_pointcloud_registration.data import DataConfig
-    from tracks.pointcloud.lesson_36_toy_pointcloud_registration.model import ModelConfig
-    from tracks.pointcloud.lesson_36_toy_pointcloud_registration.train import (
+    from tracks.pointcloud.lesson_36_compact_pointcloud_registration.data import DataConfig
+    from tracks.pointcloud.lesson_36_compact_pointcloud_registration.model import ModelConfig
+    from tracks.pointcloud.lesson_36_compact_pointcloud_registration.train import (
         TrainConfig,
         run_training,
     )
@@ -116,7 +116,7 @@ def test_pointcloud_registration_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_36_toy_pointcloud_registration"
+        / "lesson_36_compact_pointcloud_registration"
         / "pytest_pointcloud_registration_smoke"
     )
     assert (run_dir / "config.json").is_file()

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_deweatherer, smoke_test_deweatherer
+from ._common import build_baseline_deweatherer, smoke_test_deweatherer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_mamba_deweather_deweatherer(
     variant: str = "mamba_deweather_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_deweatherer(
+    return build_baseline_deweatherer(
         family="mamba_deweather",
         mode="mamba",
         variants=_VARIANTS,

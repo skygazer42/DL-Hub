@@ -1,6 +1,6 @@
 # Lesson 55: Palm Orientation VLM Reasoning
 
-This toy lesson regresses a normalized **palm orientation** target from a grayscale hand crop plus a
+This compact lesson regresses a normalized **palm orientation** target from a grayscale hand crop plus a
 short text query. Each sample renders a palm-like blob with a thumb offset and finger ridge aligned
 to a continuous orientation value in `[0, 1]`.
 

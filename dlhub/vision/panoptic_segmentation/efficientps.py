@@ -44,7 +44,7 @@ class _PPM(nn.Module):
 
 
 class EfficientPS(nn.Module):
-    """EfficientPS panoptic segmentation (toy-first).
+    """EfficientPS panoptic segmentation (compact-first).
 
     Uses an FPN and lightweight context module for semantic head, plus prototype-based instance masks.
     """

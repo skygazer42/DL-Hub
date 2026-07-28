@@ -17,7 +17,7 @@ The first version focuses on a local VLM zoo rather than a full lesson track. It
 - A CLI utility: `scripts/vlm_zoo.py`
 - Timeline metadata sorted by year
 - Recommendation profiles for common usage modes
-- A toy-first shared VLM core with family wrappers
+- A compact-first shared VLM core with family wrappers
 - 12 VLM families and 36 local architecture ids
 
 This first version does not include dataset pipelines, real checkpoint loading, or full task-specific lessons.
@@ -54,16 +54,16 @@ These cover four practical VLM paradigms:
 - `fusion_encoder_decoder`: encoder-decoder or multimodal fusion models
 - `multimodal_llm`: bridge-based and instruction-tuned multimodal language models
 
-## Toy Core
+## Compact Core
 
-The shared `ToyVLM` module will provide lightweight offline behavior for smoke tests. It will not try to replicate full paper fidelity. Instead, it will expose stable multimodal-shaped outputs:
+The shared `CompactVLM` module will provide lightweight offline behavior for smoke tests. It will not try to replicate full paper fidelity. Instead, it will expose stable multimodal-shaped outputs:
 
 - `image_embed`
 - `text_embed`
 - `logits`
 - `generated_tokens` for generation-style families
 
-The toy core will support four switches:
+The compact core will support four switches:
 
 - `architecture_mode`: `single_stream`, `dual_encoder`, `fusion`, `bridge`
 - `use_instruction`: whether prompt tokens condition the text side
@@ -113,7 +113,7 @@ Additionally, `tests/test_zoo_conventions_smoke.py` will include `dlhub/multimod
 - Risk: VLM family taxonomy drifts into an unmaintainable mix of retrieval and generation terms.
   Mitigation: keep code grouped by family, timeline grouped by year, and recommendation grouped by paradigm.
 
-- Risk: Tests become tightly coupled to one toy output shape.
+- Risk: Tests become tightly coupled to one compact output shape.
   Mitigation: standardize only a small common contract and allow optional extra keys for generation families.
 
 - Risk: The zoo grows faster than the timeline remains readable.

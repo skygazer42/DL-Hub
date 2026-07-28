@@ -3,9 +3,9 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
-def test_vision_toy_keypoint_regression_shapes_and_loss_smoke() -> None:
-    from tracks.vision.lesson_07_toy_keypoint_regression.data import DataConfig, get_dataloaders
-    from tracks.vision.lesson_07_toy_keypoint_regression.model import KeypointRegressor, ModelConfig
+def test_vision_compact_keypoint_regression_shapes_and_loss_smoke() -> None:
+    from tracks.vision.lesson_07_compact_keypoint_regression.data import DataConfig, get_dataloaders
+    from tracks.vision.lesson_07_compact_keypoint_regression.model import KeypointRegressor, ModelConfig
 
     train_loader, _ = get_dataloaders(
         DataConfig(

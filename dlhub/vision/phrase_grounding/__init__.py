@@ -1,4 +1,4 @@
-"""Phrase grounding models (toy-first, pure torch)."""
+"""Phrase grounding models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

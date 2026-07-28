@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_glare_detector, smoke_test_glare_detector
+from ._common import build_baseline_glare_detector, smoke_test_glare_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_coarse_glare_glare_detector(
     variant: str = "coarse_glare_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_glare_detector(
+    return build_baseline_glare_detector(
         family="coarse_glare",
         mode="coarse",
         variants=_VARIANTS,

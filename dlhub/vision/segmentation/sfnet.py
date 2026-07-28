@@ -7,7 +7,7 @@ from dlhub.vision.segmentation._common import check_nchw
 
 
 class SFNet(nn.Module):
-    """SFNet-style semantic segmentation (toy-first).
+    """SFNet-style semantic segmentation (compact-first).
 
     This compact version uses a single patch embedding stage + Transformer encoder,
     then a lightweight conv head to predict logits.

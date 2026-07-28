@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_irstd_detector, smoke_test_irstd_detector
+from ._common import build_baseline_irstd_detector, smoke_test_irstd_detector
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_context_irstd_irstd_detector(
     variant: str = "context_irstd_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_irstd_detector(
+    return build_baseline_irstd_detector(
         family="context_irstd",
         mode="context",
         variants=_VARIANTS,

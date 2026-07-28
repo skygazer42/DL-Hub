@@ -1,4 +1,4 @@
-"""Fashion compatibility models (toy-first, pure torch)."""
+"""Fashion compatibility models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

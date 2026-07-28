@@ -51,7 +51,8 @@ flowchart LR
 | :material-school: **Full Curriculum** | 6-8 周 | 339 lessons | 按顺序完成全部 8 个赛道的所有 lesson — 系统掌握从经典 ML 到前沿深度学习的完整技能树 |
 
 !!! note "离线冒烟模式"
-    所有 lesson 均支持 `--dataset fake` 离线冒烟测试，**无需下载任何数据集，2 分钟即可跑通**。
+    所有 lesson 都提供离线运行路径：可选真实数据的课程使用 `--dataset fake`，
+    其余 synthetic 课程默认使用内置数据。
 
 ---
 
@@ -63,7 +64,7 @@ flowchart LR
 | [**Vision** 视觉](vision.md) | 89 | CNN, ViT, Swin, FCOS, UNet, YOLO, MOT | Foundations + 卷积直觉 |
 | [**NLP** 自然语言处理](nlp.md) | 49 | Embedding, Transformer, BiLSTM, NER, Seq2Seq, 阅读理解 | Foundations + 文本处理基础 |
 | [**GNN** 图神经网络](gnn.md) | 11 | GCN, GIN, GAT, GraphSAGE, PinSAGE, R-GCN | Foundations + 图论基本概念 |
-| [**Point Cloud** 点云](pointcloud.md) | 36 | PointNet, DGCNN, PointNet++, 64 架构 Zoo | Vision + 3D 几何直觉 |
+| [**Point Cloud** 点云](pointcloud.md) | 36 | PointNet, DGCNN, PointNet++, 64 注册 ID Zoo | Vision + 3D 几何直觉 |
 | [**Generative** 生成模型](generative.md) | 51 | VAE, GAN, 重参数化, 对抗训练 | Vision + 概率论基础 |
 | [**LLM** 大语言模型](llm.md) | 43 | Causal Mask, 自回归解码, Transformer 生成 | NLP + Transformer 机制 |
 | [**Multimodal** 多模态](multimodal.md) | 58 | CLIP, BLIP, LLaVA, Grounding, VLM, 时序定位 | Vision + NLP + 注意力机制 |
@@ -77,12 +78,10 @@ flowchart LR
 python scripts/run_lesson.py --list
 
 # 从 Foundations 第一课开始
-python -m tracks.foundations.lesson_01_tensors.train \
-  --dataset fake --epochs 1 \
-  --max-train-batches 2 --max-eval-batches 2
+python -m tracks.foundations.lesson_01_tensors.run
 ```
 
 !!! success "推荐顺序"
     **Foundations :arrow_right: Vision :arrow_right: NLP :arrow_right: GNN :arrow_right: Point Cloud :arrow_right: Generative :arrow_right: LLM :arrow_right: Multimodal**
 
-    每个 lesson 都有独立的 README，说明学习目标、先修要求和验收标准。
+    每条赛道页都提供学习目标与运行示例，多数训练课程还包含目录内 README。

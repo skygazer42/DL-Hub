@@ -1,4 +1,4 @@
-"""Multi-focus image fusion models (toy-first, pure torch)."""
+"""Multi-focus image fusion models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

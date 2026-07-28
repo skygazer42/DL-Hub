@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_enhancer, smoke_test_enhancer
+from ._common import build_baseline_enhancer, smoke_test_enhancer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_frequency_uwie_enhancer(
     variant: str = "frequency_uwie_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_enhancer(
+    return build_baseline_enhancer(
         family="frequency_uwie",
         mode="frequency",
         variants=_VARIANTS,

@@ -83,7 +83,7 @@ class DataConfig:
     shuffle_points: bool = True
 
 
-class ToySSLViewsDataset(Dataset):
+class SyntheticSSLViewsDataset(Dataset):
     """Return two augmented views + label (label only for optional probing)."""
 
     def __init__(self, cfg: DataConfig) -> None:
@@ -119,7 +119,7 @@ class ToySSLViewsDataset(Dataset):
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
-    ds = ToySSLViewsDataset(cfg)
+    ds = SyntheticSSLViewsDataset(cfg)
     train_idx, val_idx = train_val_split_indices(
         n=len(ds), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -152,4 +152,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     return train_loader, val_loader
 
 
-__all__ = ["DataConfig", "ToySSLViewsDataset", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticSSLViewsDataset", "get_dataloaders"]

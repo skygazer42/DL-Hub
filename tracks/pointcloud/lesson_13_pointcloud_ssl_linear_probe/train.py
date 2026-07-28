@@ -36,7 +36,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 13 (PointCloud): linear probe on SSL encoders (toy-first)."
+        description="Lesson 13 (PointCloud): linear probe on SSL encoders (compact-first)."
     )
 
     parser.add_argument("--num-samples", type=int, default=2048)

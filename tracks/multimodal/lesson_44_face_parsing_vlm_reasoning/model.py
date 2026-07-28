@@ -44,7 +44,7 @@ class FaceParsingReasoningConfig:
     vision_width: int = 32
 
 
-class ToyFaceParsingReasoningModel(nn.Module):
+class CompactFaceParsingReasoningModel(nn.Module):
     def __init__(self, cfg: FaceParsingReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -97,7 +97,7 @@ def mask_iou(pred_mask: torch.Tensor, target_mask: torch.Tensor, threshold: floa
 
 __all__ = [
     "FaceParsingReasoningConfig",
-    "ToyFaceParsingReasoningModel",
+    "CompactFaceParsingReasoningModel",
     "face_parsing_loss",
     "mask_iou",
 ]

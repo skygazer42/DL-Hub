@@ -1,7 +1,5 @@
 # LLM Paper Implementations Batch 11 Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend `Llms/` with final implementation-friendly abstractions for Bard, AI Bubbles, and OASST1, covering an early collaborative generative-AI product interface, a model-size registry, and an alignment-dataset alias for OpenAssistant.
 
 **Architecture:** Implement `Bard` as a product-facing collaboration wrapper that models the early experiment framing, user collaboration modes, and principle-aware responses rather than a new neural backbone. Implement `AI Bubbles` as a registry of model-scale entries with open/closed filtering and Chinchilla-scale flags derived from the local bubble chart. Implement `OASST1` as a dataset alias around `OpenAssistant` that exposes the naming and alignment-data identity of the OpenAssistant Conversations Dataset.

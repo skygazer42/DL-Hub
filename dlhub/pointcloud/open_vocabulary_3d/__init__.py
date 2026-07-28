@@ -1,4 +1,4 @@
-"""Open vocabulary 3D models (toy-first, pure torch)."""
+"""Open vocabulary 3D models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

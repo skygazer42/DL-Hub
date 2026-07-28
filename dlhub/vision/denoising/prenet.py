@@ -1,9 +1,9 @@
-"""PReNet (Progressive Recurrent Network) - toy-first implementation.
+"""PReNet (Progressive Recurrent Network) - compact-first implementation.
 
 Reference (original idea):
 - "Progressive Image Deraining Networks: A Better and Simpler Baseline" (CVPR 2019)
 
-Toy interpretation:
+Compact interpretation:
 - Use a ConvGRU-style hidden state updated over multiple stages.
 - Each stage predicts a rain residual to subtract from the current estimate.
 """
@@ -52,7 +52,7 @@ class ResBlock(nn.Module):
 
 
 class PReNet(nn.Module):
-    """Toy PReNet-style derainer (progressive recurrent refinement)."""
+    """Compact PReNet-style derainer (progressive recurrent refinement)."""
 
     def __init__(
         self,

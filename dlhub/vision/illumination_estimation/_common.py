@@ -71,7 +71,7 @@ class TinyIllumEstimator(nn.Module):
         }
 
 
-def build_toy_illumination_estimator(
+def build_baseline_illumination_estimator(
     *,
     family: str,
     mode: str,

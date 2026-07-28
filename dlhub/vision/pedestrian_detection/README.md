@@ -1,6 +1,6 @@
 # Pedestrian Detection
 
-Toy-first local families for `pedestrian detection`.
+Compact-first local families for `pedestrian detection`.
 
 ## Families
 

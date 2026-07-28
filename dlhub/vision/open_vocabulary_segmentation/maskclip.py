@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_text_guided_segmentation_baseline, smoke_test_model
 
 _VARIANTS = {
     "maskclip_tiny": {"width": 24, "depth": 1},
@@ -11,8 +11,8 @@ _VARIANTS = {
 def build_maskclip_open_vocab_segmenter(
     *, in_channels: int, variant: str = "maskclip_small", width_mult: float = 1.0, **kwargs
 ):
-    return build_toy_model(
-        family="maskclip",
+    return build_text_guided_segmentation_baseline(
+        registered_alias="maskclip",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),

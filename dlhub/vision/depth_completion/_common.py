@@ -11,7 +11,7 @@ def check_nchw(x):
     return x
 
 
-class ToyDepthCompleter(nn.Module):
+class CompactDepthCompleter(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int):
         super().__init__()
         self.family = str(family)
@@ -34,7 +34,7 @@ class ToyDepthCompleter(nn.Module):
         return {"depth": depth}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -45,7 +45,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyDepthCompleter(
+    return CompactDepthCompleter(
         family=str(family), in_channels=int(in_channels), width=width, depth=int(spec["depth"])
     )
 

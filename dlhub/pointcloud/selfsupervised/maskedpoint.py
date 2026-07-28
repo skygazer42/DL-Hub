@@ -113,7 +113,7 @@ def _scatter_batch(x: torch.Tensor, idx: torch.Tensor, updates: torch.Tensor) ->
 
 
 class MaskedpointPretrainer(nn.Module):
-    """A compact PointMAE-style masked autoencoder (toy-first).
+    """A compact PointMAE-style masked autoencoder (compact-first).
 
     This implementation:
     - groups points into S patches via FPS + kNN

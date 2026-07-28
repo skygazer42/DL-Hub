@@ -1,4 +1,4 @@
-"""ReFine-RFT / Cost of Thinking (toy-first) for FGVC.
+"""ReFine-RFT / Cost of Thinking (compact-first) for FGVC.
 
 Reference:
 - "Can Textual Reasoning Improve the Performance of MLLMs on Fine-grained Visual Classification?"
@@ -7,7 +7,7 @@ Reference:
 The paper studies how long Chain-of-Thought can *hurt* fine-grained perception ("Cost of Thinking"),
 and proposes training strategies to constrain reasoning length.
 
-Toy interpretation here (offline, no LLM):
+Compact interpretation here (offline, no LLM):
 - maintain a set of latent reasoning tokens
 - learn a per-token gate to regulate effective reasoning length
 - cross-attend reasoning tokens to visual tokens, then classify from the regulated tokens

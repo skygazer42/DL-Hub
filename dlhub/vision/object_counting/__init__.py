@@ -1,4 +1,4 @@
-"""Object counting models (toy-first, pure torch)."""
+"""Object counting models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

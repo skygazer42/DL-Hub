@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_text_guided_segmentation_baseline, smoke_test_model
 
 _VARIANTS = {
     "lisa_seg_tiny": {"width": 24, "depth": 1},
@@ -11,8 +11,8 @@ _VARIANTS = {
 def build_lisa_seg_refexp_segmenter(
     *, in_channels: int, variant: str = "lisa_seg_small", width_mult: float = 1.0, **kwargs
 ):
-    return build_toy_model(
-        family="lisa_seg",
+    return build_text_guided_segmentation_baseline(
+        registered_alias="lisa_seg",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),

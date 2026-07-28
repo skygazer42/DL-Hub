@@ -1,6 +1,6 @@
 # Lesson 89: Synthetic Vision Anomaly Detection
 
-This lesson adds a toy-first, CPU-friendly anomaly detection pipeline on synthetic images.
+This lesson adds a compact-first, CPU-friendly anomaly detection pipeline on synthetic images.
 
 ## What it covers
 

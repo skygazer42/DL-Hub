@@ -92,7 +92,7 @@ class AudioGroundedRetrievalConfig:
     init_temperature: float = 0.07
 
 
-class ToyAudioGroundedRetrievalModel(nn.Module):
+class CompactAudioGroundedRetrievalModel(nn.Module):
     def __init__(self, cfg: AudioGroundedRetrievalConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -185,7 +185,7 @@ __all__ = [
     "TextEncoder",
     "TinyAudioEncoder",
     "TinyFrameEncoder",
-    "ToyAudioGroundedRetrievalModel",
+    "CompactAudioGroundedRetrievalModel",
     "clip_contrastive_loss",
     "retrieval_accuracy",
 ]

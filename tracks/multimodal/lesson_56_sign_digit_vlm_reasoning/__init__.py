@@ -1,7 +1,7 @@
-from .data import DataConfig, ToySignDigitReasoningDataset, Vocab, get_dataloaders
+from .data import DataConfig, SyntheticSignDigitReasoningDataset, Vocab, get_dataloaders
 from .model import (
     SignDigitReasoningConfig,
-    ToySignDigitReasoningModel,
+    CompactSignDigitReasoningModel,
     compute_accuracy,
     sign_digit_loss,
 )
@@ -10,8 +10,8 @@ from .train import TrainConfig, run_training
 __all__ = [
     "DataConfig",
     "SignDigitReasoningConfig",
-    "ToySignDigitReasoningDataset",
-    "ToySignDigitReasoningModel",
+    "SyntheticSignDigitReasoningDataset",
+    "CompactSignDigitReasoningModel",
     "TrainConfig",
     "Vocab",
     "compute_accuracy",

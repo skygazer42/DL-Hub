@@ -47,7 +47,7 @@ class FingerCountReasoningConfig:
     vision_width: int = 40
 
 
-class ToyFingerCountReasoningModel(nn.Module):
+class CompactFingerCountReasoningModel(nn.Module):
     def __init__(self, cfg: FingerCountReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -83,7 +83,7 @@ def compute_accuracy(logits: torch.Tensor, target: torch.Tensor) -> float:
 
 __all__ = [
     "FingerCountReasoningConfig",
-    "ToyFingerCountReasoningModel",
+    "CompactFingerCountReasoningModel",
     "compute_accuracy",
     "finger_count_loss",
 ]

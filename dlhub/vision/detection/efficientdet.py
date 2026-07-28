@@ -50,7 +50,7 @@ class _BackboneC3C5(nn.Module):
 
 
 class BiFPNLayer(nn.Module):
-    """Toy BiFPN layer: top-down + bottom-up fusion with conv smoothing."""
+    """Compact BiFPN layer: top-down + bottom-up fusion with conv smoothing."""
 
     def __init__(self, channels: int) -> None:
         super().__init__()
@@ -109,7 +109,7 @@ class EfficientDetHead(nn.Module):
 
 
 class EfficientDetDetector(nn.Module):
-    """EfficientDet-style detector with toy BiFPN (pure torch, toy-first)."""
+    """EfficientDet-style detector with compact BiFPN (pure torch, compact-first)."""
 
     def __init__(
         self,

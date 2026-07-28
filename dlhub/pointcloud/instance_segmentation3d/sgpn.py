@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SGPN(nn.Module):
-    """SGPN (toy): point embeddings; masks by similarity to pivots."""
+    """SGPN (compact): point embeddings; masks by similarity to pivots."""
 
     def __init__(
         self,

@@ -47,7 +47,7 @@ class FaceOcclusionReasoningConfig:
     vision_width: int = 32
 
 
-class ToyFaceOcclusionReasoningModel(nn.Module):
+class CompactFaceOcclusionReasoningModel(nn.Module):
     def __init__(self, cfg: FaceOcclusionReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -91,7 +91,7 @@ def occlusion_accuracy(logits: torch.Tensor, labels: torch.Tensor) -> float:
 
 __all__ = [
     "FaceOcclusionReasoningConfig",
-    "ToyFaceOcclusionReasoningModel",
+    "CompactFaceOcclusionReasoningModel",
     "occlusion_accuracy",
     "occlusion_loss",
 ]

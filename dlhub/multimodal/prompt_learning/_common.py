@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyPromptLearner(nn.Module):
+class CompactPromptLearner(nn.Module):
     def __init__(self, *, family: str, in_channels: int, width: int, depth: int, prompt_len: int):
         super().__init__()
         self.family = str(family)
@@ -27,7 +27,7 @@ class ToyPromptLearner(nn.Module):
         return {"prompts": prompts, "pooled": pooled}
 
 
-def build_toy_prompt_learner(
+def build_baseline_prompt_learner(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -38,7 +38,7 @@ def build_toy_prompt_learner(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyPromptLearner(
+    return CompactPromptLearner(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

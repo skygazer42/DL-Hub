@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_baseline_model, smoke_test_model
 
 _VARIANTS = {
     "viewformer_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_viewformer_view_synthesizer(
     *, in_channels: int, variant: str = "viewformer_small", width_mult: float = 1.0, **kwargs
 ):
-    return build_toy_model(
+    return build_baseline_model(
         family="viewformer",
         variants=_VARIANTS,
         in_channels=int(in_channels),

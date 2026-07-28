@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 
-class ToyAudioVisualModel(nn.Module):
+class CompactAudioVisualModel(nn.Module):
     def __init__(
         self,
         *,
@@ -56,7 +56,7 @@ class ToyAudioVisualModel(nn.Module):
         }
 
 
-def build_toy_audio_visual_model(
+def build_baseline_audio_visual_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -71,7 +71,7 @@ def build_toy_audio_visual_model(
         raise KeyError(f"Unknown {family} variant {variant!r}. Available variants: {available}")
     spec = variants[variant]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyAudioVisualModel(
+    return CompactAudioVisualModel(
         family=str(family),
         in_channels=int(in_channels),
         width=width,

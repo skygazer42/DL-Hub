@@ -1,4 +1,4 @@
-"""Image-to-video models (toy-first, pure torch)."""
+"""Image-to-video models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

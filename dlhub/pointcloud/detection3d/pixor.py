@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PIXOR(nn.Module):
-    """PIXOR (toy): BEV-only detector with tight 2D boxes + yaw."""
+    """PIXOR (compact): BEV-only detector with tight 2D boxes + yaw."""
 
     def __init__(
         self,

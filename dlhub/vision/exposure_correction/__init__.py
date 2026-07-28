@@ -1,4 +1,4 @@
-"""exposure correction models (toy-first, pure torch)."""
+"""exposure correction models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

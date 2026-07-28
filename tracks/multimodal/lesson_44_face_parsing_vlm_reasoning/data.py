@@ -134,7 +134,7 @@ def _sample_face_parts(*, image_size: int, seed: int) -> tuple[np.ndarray, dict[
     return image, masks
 
 
-class ToyFaceParsingDataset(Dataset):
+class SyntheticFaceParsingDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 32:
             raise ValueError("image_size must be >= 32")
@@ -167,7 +167,7 @@ class ToyFaceParsingDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyFaceParsingDataset(cfg, vocab=vocab)
+    dataset = SyntheticFaceParsingDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -194,7 +194,7 @@ __all__ = [
     "PART_TO_ID",
     "PARTS",
     "DataConfig",
-    "ToyFaceParsingDataset",
+    "SyntheticFaceParsingDataset",
     "Vocab",
     "get_dataloaders",
 ]

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_generator, smoke_test_generator
+from ._common import build_baseline_generator, smoke_test_generator
 
 _VARIANTS = {
     "layout2img_synth_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_layout2img_synth_generator(
     *, in_channels: int, variant: str = "layout2img_synth_small", width_mult: float = 1.0
 ):
-    return build_toy_generator(
+    return build_baseline_generator(
         family="layout2img_synth",
         variants=_VARIANTS,
         in_channels=int(in_channels),

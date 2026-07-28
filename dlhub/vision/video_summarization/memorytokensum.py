@@ -17,6 +17,8 @@ _VARIANTS: dict[str, dict[str, int]] = {
 
 
 class MemorytokensumVideoSummarizer(nn.Module):
+    """Temporal summarizer with learned memory tokens and bidirectional memory reads."""
+
     def __init__(self, *, in_channels: int, width: int, depth: int, dropout: float = 0.0) -> None:
         super().__init__()
         self.encoder = TinyFrameEncoder(
@@ -31,10 +33,31 @@ class MemorytokensumVideoSummarizer(nn.Module):
             depth=max(1, int(depth) - 1),
             dropout=float(dropout),
         )
+        dim = int(self.encoder.out_dim)
+        self.memory_tokens = nn.Parameter(torch.randn(max(2, int(depth)), dim) * 0.02)
+        self.memory_read = nn.MultiheadAttention(
+            embed_dim=dim,
+            num_heads=4,
+            dropout=float(dropout),
+            batch_first=True,
+        )
+        self.frame_read = nn.MultiheadAttention(
+            embed_dim=dim,
+            num_heads=4,
+            dropout=float(dropout),
+            batch_first=True,
+        )
+        self.memory_norm = nn.LayerNorm(dim)
+        self.frame_norm = nn.LayerNorm(dim)
 
     def forward(self, video: torch.Tensor) -> dict[str, torch.Tensor]:
         feat = self.encoder(video)
-        scores = torch.sigmoid(self.scorer(feat))
+        memory = self.memory_tokens.unsqueeze(0).expand(int(feat.shape[0]), -1, -1)
+        memory_update, _ = self.memory_read(memory, feat, feat, need_weights=False)
+        memory = self.memory_norm(memory + memory_update)
+        frame_context, _ = self.frame_read(feat, memory, memory, need_weights=False)
+        conditioned = self.frame_norm(feat + frame_context)
+        scores = torch.sigmoid(self.scorer(conditioned))
         return {"scores": scores, "summary_mask": scores_to_mask(scores)}
 
 

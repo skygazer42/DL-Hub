@@ -29,7 +29,7 @@ class _PolyConv(nn.Module):
 
 
 class SpiderCNNSeg(nn.Module):
-    """SpiderCNN semantic segmentation (toy): polynomial basis on local coordinates."""
+    """SpiderCNN semantic segmentation (compact): polynomial basis on local coordinates."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int

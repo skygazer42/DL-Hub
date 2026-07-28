@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_flow_matching_fake_dataloaders_smoke() -> None:
-    from tracks.generative.lesson_06_toy_flow_matching.data import DataConfig, get_dataloaders
+    from tracks.generative.lesson_06_compact_flow_matching.data import DataConfig, get_dataloaders
 
     train_loader, val_loader = get_dataloaders(
         DataConfig(num_samples=48, batch_size=8, image_size=28, seed=0, num_workers=0, val_fraction=0.25)
@@ -29,7 +29,7 @@ def test_flow_matching_fake_dataloaders_smoke() -> None:
 
 
 def test_flow_matching_model_pipeline_smoke() -> None:
-    from tracks.generative.lesson_06_toy_flow_matching.model import (
+    from tracks.generative.lesson_06_compact_flow_matching.model import (
         FlowMatchingModel,
         ModelConfig,
         build_flow_targets,
@@ -71,7 +71,7 @@ def test_flow_matching_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "generative"
-        / "lesson_06_toy_flow_matching"
+        / "lesson_06_compact_flow_matching"
         / "pytest_flow_matching_smoke"
     )
     if run_dir.exists():
@@ -81,7 +81,7 @@ def test_flow_matching_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.generative.lesson_06_toy_flow_matching.train",
+            "tracks.generative.lesson_06_compact_flow_matching.train",
             "--epochs",
             "1",
             "--num-samples",

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_pose3d, smoke_test_pose3d
+from ._common import build_baseline_pose3d, smoke_test_pose3d
 
 _VARIANTS = {
     "videopose3d_tiny": {"width": 32, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_videopose3d_pose3d_estimator(
     *, num_joints: int, variant: str = "videopose3d_small", width_mult: float = 1.0
 ):
-    return build_toy_pose3d(
+    return build_baseline_pose3d(
         family="videopose3d",
         variants=_VARIANTS,
         num_joints=int(num_joints),

@@ -1,4 +1,4 @@
-# Lesson 18: Prompt Learning for a Toy VLM
+# Lesson 18: Prompt Learning for a Compact VLM
 
 This lesson demonstrates a tiny CoOp-style adaptation setup for multimodal retrieval.
 

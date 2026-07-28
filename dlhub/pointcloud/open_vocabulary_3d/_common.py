@@ -54,7 +54,7 @@ class TinyOpenVocabulary3DModel(nn.Module):
         }
 
 
-def build_toy_open_vocabulary_3d_model(
+def build_baseline_open_vocabulary_3d_model(
     *,
     family: str,
     mode: str,

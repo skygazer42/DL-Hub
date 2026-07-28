@@ -83,7 +83,7 @@ class UNetStage(nn.Module):
 
 
 class MPRNet(nn.Module):
-    """MPRNet-style progressive multi-stage denoiser (toy-first, pure torch).
+    """MPRNet-style progressive multi-stage denoiser (compact-first, pure torch).
 
     This simplified version keeps the key idea: iterative refinement over multiple stages.
     Each stage predicts a residual; stages 2/3 are conditioned on (noisy, previous_output).

@@ -1,7 +1,7 @@
-from .data import CLASS_NAMES, DataConfig, ToyThumbPositionReasoningDataset, Vocab, get_dataloaders
+from .data import CLASS_NAMES, DataConfig, SyntheticThumbPositionReasoningDataset, Vocab, get_dataloaders
 from .model import (
     ThumbPositionReasoningConfig,
-    ToyThumbPositionReasoningModel,
+    CompactThumbPositionReasoningModel,
     compute_accuracy,
     thumb_position_loss,
 )
@@ -11,8 +11,8 @@ __all__ = [
     "CLASS_NAMES",
     "DataConfig",
     "ThumbPositionReasoningConfig",
-    "ToyThumbPositionReasoningDataset",
-    "ToyThumbPositionReasoningModel",
+    "SyntheticThumbPositionReasoningDataset",
+    "CompactThumbPositionReasoningModel",
     "TrainConfig",
     "Vocab",
     "compute_accuracy",

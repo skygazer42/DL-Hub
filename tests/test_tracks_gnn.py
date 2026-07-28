@@ -4,8 +4,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_gnn_lesson_01_shapes_smoke() -> None:
-    from tracks.gnn.lesson_01_toy_graph_classification.data import DataConfig, get_dataloaders
-    from tracks.gnn.lesson_01_toy_graph_classification.model import GCNGraphClassifier, ModelConfig
+    from tracks.gnn.lesson_01_compact_graph_classification.data import DataConfig, get_dataloaders
+    from tracks.gnn.lesson_01_compact_graph_classification.model import GCNGraphClassifier, ModelConfig
 
     train_loader, _ = get_dataloaders(
         DataConfig(

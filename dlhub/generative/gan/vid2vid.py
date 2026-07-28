@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import ToyGAN, smoke_test_gan
+from ._common import CompactGAN, smoke_test_gan
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "vid2vid_tiny": {"width": 80, "depth": 3, "latent": 96},
@@ -24,7 +24,7 @@ def build_vid2vid_gan(
     cfg = _VARIANTS[str(variant)]
     width = int(int(cfg["width"]) * float(width_mult))
     latent = max(int(latent_dim), int(cfg["latent"]))
-    return ToyGAN(
+    return CompactGAN(
         family="vid2vid",
         in_channels=int(in_channels),
         image_size=int(image_size),

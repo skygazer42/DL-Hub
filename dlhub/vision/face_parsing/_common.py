@@ -57,7 +57,7 @@ def make_tanh_warp_grid(
 
 
 class TinyFaceEncoder(nn.Module):
-    """Small multi-scale encoder for face parsing toy models."""
+    """Small multi-scale encoder for face parsing compact models."""
 
     def __init__(self, *, in_channels: int, width: int, depth: int, dropout: float = 0.0) -> None:
         super().__init__()

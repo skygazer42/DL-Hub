@@ -31,7 +31,7 @@ python -m pip install -r requirements-dev.txt
 python scripts/smoke_check.py
 ```
 
-> 说明：`smoke_check.py` 会优先跑 NumPy 模块的自检；如果检测到已安装 `torch`（以及 `torchvision`），还会额外跑一两个 PyTorch lesson 的离线冒烟（`fake/toy` 模式不下载数据）。如果你还没装 PyTorch，则会跳过 lesson 检查并给出提示。
+> 说明：`smoke_check.py` 会优先跑 NumPy 模块的自检；如果检测到已安装 `torch`（以及 `torchvision`），还会额外跑一两个 PyTorch lesson 的离线冒烟（`fake/compact` 模式不下载数据）。如果你还没装 PyTorch，则会跳过 lesson 检查并给出提示。
 
 或者运行测试（如果你已安装 dev 依赖）：
 
@@ -55,7 +55,7 @@ python -m tracks.vision.lesson_01_mnist_lenet.train \
 ```bash
 python scripts/run_lesson.py --list
 python scripts/run_lesson.py vision --list
-python scripts/run_lesson.py vision lesson_06_swin_toy_classification -- --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 2
+python scripts/run_lesson.py vision lesson_06_swin_compact_classification -- --device cpu --epochs 1 --max-train-batches 2 --max-eval-batches 2
 ```
 
 如果你希望跑真实 MNIST（会下载数据到 `.data/`）：
@@ -82,26 +82,26 @@ python scripts/vision_zoo.py --smoke dl:resnet18 --num-classes 10
 python scripts/vision_zoo.py --smoke dl:vit_tiny --num-classes 10 --image-size 64
 ```
 
-### 3) 第一个 GNN lesson：toy 图级分类（无需下载）
+### 3) 第一个 GNN lesson：compact 图级分类（无需下载）
 
 这个 lesson 完全使用合成数据集（Cycle vs Star），适合先理解图卷积/图池化的最小闭环：
 
 ```bash
-python -m tracks.gnn.lesson_01_toy_graph_classification.train \
+python -m tracks.gnn.lesson_01_compact_graph_classification.train \
   --epochs 1 --max-train-batches 2 --max-eval-batches 2 --device cpu --run-name smoke
 ```
 
 如果你想进一步对照 GIN（Graph Isomorphism Network），可以跑：
 
 ```bash
-python -m tracks.gnn.lesson_02_gin_toy_graph_classification.train \
+python -m tracks.gnn.lesson_02_gin_compact_graph_classification.train \
   --epochs 1 --max-train-batches 2 --max-eval-batches 2 --device cpu --run-name smoke
 ```
 
 如果你想进一步对照 GAT（Graph Attention Network），可以跑：
 
 ```bash
-python -m tracks.gnn.lesson_03_gat_toy_graph_classification.train \
+python -m tracks.gnn.lesson_03_gat_compact_graph_classification.train \
   --epochs 1 --max-train-batches 2 --max-eval-batches 2 --device cpu --run-name smoke
 ```
 
@@ -112,12 +112,12 @@ python -m tracks.gnn.lesson_04_cora_node_classification_gcn.train \
   --epochs 1 --device cpu --run-name smoke
 ```
 
-### 4) 第一个 NLP lesson：toy 文本分类（无需下载）
+### 4) 第一个 NLP lesson：compact 文本分类（无需下载）
 
 这个 lesson 使用合成文本数据集，包含最小 tokenizer/vocab、padding/mask、embedding mean pooling 的完整闭环：
 
 ```bash
-python -m tracks.nlp.lesson_01_toy_text_classification.train \
+python -m tracks.nlp.lesson_01_compact_text_classification.train \
   --epochs 1 --max-train-batches 2 --max-eval-batches 2 --device cpu --run-name smoke
 ```
 

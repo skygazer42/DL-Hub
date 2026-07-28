@@ -1,7 +1,7 @@
 from .data import DataConfig, Vocab, get_dataloaders
 from .model import (
     ModelConfig,
-    ToyPedestrianAttributeModel,
+    CompactPedestrianAttributeModel,
     attribute_retrieval_loss,
     recall_at_k,
     retrieval_accuracy,
@@ -10,7 +10,7 @@ from .model import (
 __all__ = [
     "DataConfig",
     "ModelConfig",
-    "ToyPedestrianAttributeModel",
+    "CompactPedestrianAttributeModel",
     "Vocab",
     "get_dataloaders",
     "attribute_retrieval_loss",

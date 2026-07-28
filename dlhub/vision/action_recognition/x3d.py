@@ -1,9 +1,9 @@
-"""X3D - toy-first video action classifier (efficient 3D conv).
+"""X3D - compact-first video action classifier (efficient 3D conv).
 
 Reference:
 - "X3D: Expanding Architectures for Efficient Video Recognition" (CVPR 2020)
 
-Toy interpretation:
+Compact interpretation:
 - A small stack of inverted-residual style 3D blocks with depthwise 3D conv.
 - Optional 3D squeeze-excite for channel gating.
 """
@@ -163,7 +163,7 @@ class X3DVideoClassifier(nn.Module):
                 if i == 0
                 else (2 if i == 1 else 1, 2 if i == 1 else 1, 2 if i == 1 else 1)
             )
-            # Only downsample on i==1 to keep the toy fast.
+            # Only downsample on i==1 to keep the compact fast.
             if i != 1:
                 stride = (1, 1, 1)
             blocks.append(

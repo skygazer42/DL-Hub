@@ -68,7 +68,7 @@ class TransformerStage2D(nn.Module):
 
 
 class UFormer(nn.Module):
-    """UFormer-style U-shaped Transformer denoiser (toy-first, pure torch).
+    """UFormer-style U-shaped Transformer denoiser (compact-first, pure torch).
 
     Notes:
     - This is a simplified "U-shaped transformer" for small images.

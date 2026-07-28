@@ -1,4 +1,4 @@
-"""object proposal generation models (toy-first, pure torch)."""
+"""object proposal generation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

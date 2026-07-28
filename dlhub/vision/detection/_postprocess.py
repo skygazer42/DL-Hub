@@ -81,7 +81,7 @@ def soft_nms(
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Soft-NMS for xyxy boxes.
 
-    This is a toy-first implementation intended for small-N post-processing and educational use.
+    This is a compact-first implementation intended for small-N post-processing and educational use.
 
     Args:
         boxes: (N, 4) in xyxy.
@@ -238,7 +238,7 @@ def weighted_box_fusion(
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Weighted Box Fusion (WBF) for a single set of xyxy boxes.
 
-    This is a toy-first implementation that clusters boxes by IoU and fuses each cluster by
+    This is a compact-first implementation that clusters boxes by IoU and fuses each cluster by
     score-weighted averaging of coordinates.
 
     Args:

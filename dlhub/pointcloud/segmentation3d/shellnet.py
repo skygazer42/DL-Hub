@@ -34,7 +34,7 @@ class _ShellAgg(nn.Module):
 
 
 class ShellNetSeg(nn.Module):
-    """ShellNet semantic segmentation (toy): distance shells around each point."""
+    """ShellNet semantic segmentation (compact): distance shells around each point."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, depth: int, k: int, shells: int

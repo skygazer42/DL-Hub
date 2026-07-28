@@ -1,4 +1,4 @@
-"""Person search models (toy-first, pure torch)."""
+"""Person search models (compact-first, pure torch)."""
 
 from __future__ import annotations
 from importlib import import_module

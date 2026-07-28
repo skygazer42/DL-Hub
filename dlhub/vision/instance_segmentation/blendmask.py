@@ -11,7 +11,7 @@ from dlhub.vision.instance_segmentation._common import (
 
 
 class BlendMask(nn.Module):
-    """BlendMask-style one-stage instance segmentation (toy-first).
+    """BlendMask-style one-stage instance segmentation (compact-first).
 
     Prototype masks are modulated by a learned blending map, then combined using per-location coefficients.
     """

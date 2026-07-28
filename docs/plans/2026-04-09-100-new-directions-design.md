@@ -5,7 +5,7 @@
 ## Goal
 
 Add one new 100-family expansion batch built from **10 previously unimplemented directions**, with
-**10 toy-first families per direction**, while avoiding new lesson work and avoiding new test files.
+**10 compact-first families per direction**, while avoiding new lesson work and avoiding new test files.
 
 This batch is intentionally scoped to:
 
@@ -38,7 +38,7 @@ already exist as first-class packages in the current repository:
 
 ## Architecture
 
-The batch will reuse the repository's existing toy-first family pattern:
+The batch will reuse the repository's existing compact-first family pattern:
 
 - one direction package per domain
 - one family per file
@@ -60,12 +60,12 @@ Each direction gets 10 families with names that match the repo's style:
 
 - `sepconv_interp`
 - `super_slomo`
-- `dain_toy`
-- `rife_toy`
-- `flavr_toy`
+- `dain_baseline`
+- `rife_baseline`
+- `flavr_baseline`
 - `vfi_former`
 - `amt_interp`
-- `ifrnet_toy`
+- `ifrnet_baseline`
 - `ema_vfi`
 - `mamba_vfi`
 
@@ -110,8 +110,8 @@ Each direction gets 10 families with names that match the repo's style:
 
 ### 5. Layout Generation
 
-- `layoutgan_toy`
-- `layoutvae_toy`
+- `layoutgan_baseline`
+- `layoutvae_baseline`
 - `layouttransformer`
 - `bbox_generator`
 - `poster_layout_net`

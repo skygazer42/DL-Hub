@@ -13,7 +13,7 @@ from dlhub.vision.panoptic_segmentation._common import (
 
 
 class PanopticFPN(nn.Module):
-    """Panoptic FPN (toy-first, pure torch).
+    """Panoptic FPN (compact-first, pure torch).
 
     A Mask R-CNN / FPN style instance branch + a semantic segmentation head.
     This is an educational, lightweight skeleton.
@@ -110,7 +110,7 @@ class PanopticFPN(nn.Module):
         mask_logits = masks_from_prototypes(proto, coeff)
         mask_logits = torch.nn.functional.interpolate(mask_logits, size=(h, w), mode="nearest")
 
-        # A toy panoptic map for convenience (not used in losses by default).
+        # A compact panoptic map for convenience (not used in losses by default).
         scores = query_cls_logits.softmax(dim=-1).max(dim=-1).values
         panoptic_map = fuse_panoptic(
             semantic_logits, mask_logits, scores, thing_offset=int(self.num_stuff_classes)

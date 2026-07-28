@@ -1,8 +1,6 @@
 # Multimodal Lesson 15 2D-TAN-Lite Temporal Grounding Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding` as a teaching lesson for text-conditioned temporal localization with a dense 2D segment map.
+**Goal:** Add `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding` as a teaching lesson for text-conditioned temporal localization with a dense 2D segment map.
 
 **Architecture:** The lesson will reuse the short-video single-query temporal grounding setting from lesson 14, but replace boundary and proposal matching heads with a dense `T x T` temporal map. A small frame encoder and temporal encoder will produce per-frame features, a small text encoder will condition them on the query, and a compact 2D convolutional head will score every valid segment cell directly.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_15_2dtan_toy_temporal_grounding` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_15_2dtan_toy_temporal_grounding.train`
+- `lesson_15_2dtan_compact_temporal_grounding` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_15_2dtan_compact_temporal_grounding.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the dense temporal-map dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/__init__.py`
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/data.py`
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/README.md`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/__init__.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/data.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/README.md`
 - Test: `tests/test_tracks_multimodal_2dtan.py`
 
 **Step 1: Write the failing test**
@@ -83,7 +81,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the 2D-TAN-lite model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/model.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/model.py`
 - Test: `tests/test_tracks_multimodal_2dtan.py`
 
 **Step 1: Write the failing test**
@@ -120,7 +118,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and track integration
 
 **Files:**
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/train.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_2dtan.py`
 
@@ -128,13 +126,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_15_2dtan_toy_temporal_grounding.train --epochs 1 --num-samples 64 --batch-size 8 --num-frames 8 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_2dtan_smoke`
+`python -m tracks.multimodal.lesson_15_2dtan_compact_temporal_grounding.train --epochs 1 --num-samples 64 --batch-size 8 --num-frames 8 --image-size 20 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_2dtan_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_15_2dtan_toy_temporal_grounding/pytest_2dtan_smoke/config.json`
-- `outputs/multimodal/lesson_15_2dtan_toy_temporal_grounding/pytest_2dtan_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_15_2dtan_toy_temporal_grounding/pytest_2dtan_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_15_2dtan_compact_temporal_grounding/pytest_2dtan_smoke/config.json`
+- `outputs/multimodal/lesson_15_2dtan_compact_temporal_grounding/pytest_2dtan_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_15_2dtan_compact_temporal_grounding/pytest_2dtan_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -164,11 +162,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_2dtan.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/__init__.py`
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/data.py`
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/model.py`
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/train.py`
-- Create: `tracks/multimodal/lesson_15_2dtan_toy_temporal_grounding/README.md`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/__init__.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/data.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/model.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/train.py`
+- Create: `tracks/multimodal/lesson_15_2dtan_compact_temporal_grounding/README.md`
 
 **Step 1: Run lint**
 
@@ -191,6 +189,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_15_2dtan_toy_temporal_grounding --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_15_2dtan_compact_temporal_grounding --dry-run`
 
 Expected: lesson 15 appears in the listing and resolves to the train module.

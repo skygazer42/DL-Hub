@@ -6,8 +6,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_llm_critic_rerank_prompting_batch_mask_and_loss_smoke() -> None:
-    from tracks.llm.lesson_23_toy_critic_rerank_prompting.data import DataConfig, get_dataloaders
-    from tracks.llm.lesson_23_toy_critic_rerank_prompting.model import (
+    from tracks.llm.lesson_23_compact_critic_rerank_prompting.data import DataConfig, get_dataloaders
+    from tracks.llm.lesson_23_compact_critic_rerank_prompting.model import (
         CriticRerankTransformerLM,
         ModelConfig,
     )
@@ -57,8 +57,8 @@ def test_llm_critic_rerank_prompting_batch_mask_and_loss_smoke() -> None:
 
 
 def test_llm_critic_rerank_prompting_training_smoke(tmp_path) -> None:
-    from tracks.llm.lesson_23_toy_critic_rerank_prompting.data import DataConfig
-    from tracks.llm.lesson_23_toy_critic_rerank_prompting.train import TrainConfig, run_training
+    from tracks.llm.lesson_23_compact_critic_rerank_prompting.data import DataConfig
+    from tracks.llm.lesson_23_compact_critic_rerank_prompting.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -96,7 +96,7 @@ def test_llm_critic_rerank_prompting_training_smoke(tmp_path) -> None:
         tmp_path
         / "outputs"
         / "llm"
-        / "lesson_23_toy_critic_rerank_prompting"
+        / "lesson_23_compact_critic_rerank_prompting"
         / "pytest_critic_rerank_prompting_smoke"
     )
     assert (run_dir / "config.json").is_file()

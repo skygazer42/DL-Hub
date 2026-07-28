@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class Mask2Former3D(nn.Module):
-    """Mask2Former3D (toy): PointNet++ hierarchy + query mask head (multi-scale proxy)."""
+    """Mask2Former3D (compact): PointNet++ hierarchy + query mask head (multi-scale proxy)."""
 
     def __init__(
         self,

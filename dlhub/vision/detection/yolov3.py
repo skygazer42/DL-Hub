@@ -34,7 +34,7 @@ class _YOLOv3Head(nn.Module):
 
 
 class YOLOv3Detector(nn.Module):
-    """YOLOv3-style multi-scale detector (toy-first).
+    """YOLOv3-style multi-scale detector (compact-first).
 
     Output:
       - obj_logits: list[(B, A, Hi, Wi)]

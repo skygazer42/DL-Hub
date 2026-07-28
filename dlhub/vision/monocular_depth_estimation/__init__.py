@@ -1,4 +1,4 @@
-"""monocular depth estimation models (toy-first, pure torch)."""
+"""monocular depth estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

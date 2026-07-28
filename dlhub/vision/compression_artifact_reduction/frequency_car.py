@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_artifact_reducer, smoke_test_artifact_reducer
+from ._common import build_baseline_artifact_reducer, smoke_test_artifact_reducer
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_frequency_car_artifact_reducer(
     variant: str = "frequency_car_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_artifact_reducer(
+    return build_baseline_artifact_reducer(
         family="frequency_car",
         mode="frequency",
         variants=_VARIANTS,

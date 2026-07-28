@@ -52,7 +52,7 @@ def test_multimodal_human_object_interaction_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_29_human_object_interaction_reasoning.model import (
         HoiReasoningConfig,
-        ToyHoiReasoningModel,
+        CompactHoiReasoningModel,
         hoi_accuracy,
         hoi_loss,
     )
@@ -70,7 +70,7 @@ def test_multimodal_human_object_interaction_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyHoiReasoningModel(
+    model = CompactHoiReasoningModel(
         HoiReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

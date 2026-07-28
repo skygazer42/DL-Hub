@@ -7,7 +7,7 @@ from dlhub.vision.segmentation._common import BackboneC2C3C4C5, check_nchw
 
 
 class OCRNet(nn.Module):
-    """OCRNet-style semantic segmentation (toy-first).
+    """OCRNet-style semantic segmentation (compact-first).
 
     Uses a coarse classifier to compute soft object regions, then aggregates object context
     and refines per-pixel predictions.

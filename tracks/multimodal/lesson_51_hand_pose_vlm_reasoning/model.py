@@ -47,7 +47,7 @@ class HandPoseReasoningConfig:
     num_keypoints: int = 10
 
 
-class ToyHandPoseReasoningModel(nn.Module):
+class CompactHandPoseReasoningModel(nn.Module):
     def __init__(self, cfg: HandPoseReasoningConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -85,7 +85,7 @@ def hand_pose_loss(pred_keypoints: torch.Tensor, target_keypoints: torch.Tensor)
 
 __all__ = [
     "HandPoseReasoningConfig",
-    "ToyHandPoseReasoningModel",
+    "CompactHandPoseReasoningModel",
     "hand_pose_loss",
     "keypoint_l2",
 ]

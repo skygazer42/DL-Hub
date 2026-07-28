@@ -4,11 +4,11 @@ torch = pytest.importorskip("torch")
 
 
 def test_gnn_metapath2vec_loss_smoke() -> None:
-    from tracks.gnn.lesson_09_metapath2vec_toy_hetero_embedding.data import (
+    from tracks.gnn.lesson_09_metapath2vec_compact_hetero_embedding.data import (
         DataConfig,
         build_training_pairs,
     )
-    from tracks.gnn.lesson_09_metapath2vec_toy_hetero_embedding.model import (
+    from tracks.gnn.lesson_09_metapath2vec_compact_hetero_embedding.model import (
         MetaPath2Vec,
         ModelConfig,
     )

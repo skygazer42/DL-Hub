@@ -36,7 +36,7 @@ class _ConvStack(nn.Module):
 
 
 class BRDNet(nn.Module):
-    """BRDNet-style denoiser (toy-first, pure torch).
+    """BRDNet-style denoiser (compact-first, pure torch).
 
     BRDNet is commonly described as a dual-branch residual denoiser:
     - A normal-conv branch (local details)

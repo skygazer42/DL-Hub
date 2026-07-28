@@ -11,7 +11,7 @@ from dlhub.vision.instance_segmentation._common import (
 
 
 class E2EC(nn.Module):
-    """End-to-end contour-based instance segmentation (toy-first)."""
+    """End-to-end contour-based instance segmentation (compact-first)."""
 
     def __init__(
         self,

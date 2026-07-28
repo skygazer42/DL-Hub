@@ -53,7 +53,7 @@ def test_multimodal_audio_visual_event_localization_model_outputs() -> None:
     )
     from tracks.multimodal.lesson_22_audio_visual_event_localization.model import (
         AudioVisualEventLocalizationConfig,
-        ToyAudioVisualEventLocalizationModel,
+        CompactAudioVisualEventLocalizationModel,
         localization_loss,
     )
 
@@ -71,7 +71,7 @@ def test_multimodal_audio_visual_event_localization_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyAudioVisualEventLocalizationModel(
+    model = CompactAudioVisualEventLocalizationModel(
         AudioVisualEventLocalizationConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

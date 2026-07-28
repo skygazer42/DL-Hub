@@ -19,7 +19,7 @@ class DataConfig:
     num_workers: int = 0
 
     in_channels: int = 1
-    # Noise models (toy-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
+    # Noise models (synthetic-first). `noise_std` is used by Gaussian and as the base scale for some hybrids.
     noise_type: str = (
         "gaussian"  # gaussian | gaussian_var | gaussian_impulse | poisson | poisson_gaussian | impulse | clustered_impulse | shot_read | speckle | speckle_read | stripe | rain | block_bias | correlated_gaussian | colored_gaussian | quantization | dead_hot | line_defect | rowcol_bias | mixed
     )
@@ -69,8 +69,8 @@ class DataConfig:
     blindspot_prob: float = 0.1  # fraction of pixels to mask for blind-spot training
 
 
-class ToyDenoisingSquares(Dataset):
-    """Toy denoising dataset (clean squares + additive Gaussian noise)."""
+class SyntheticDenoisingSquares(Dataset):
+    """Synthetic denoising dataset (clean squares + additive Gaussian noise)."""
 
     def __init__(self, cfg: DataConfig, *, mode: str) -> None:
         self.cfg = cfg
@@ -661,11 +661,11 @@ class ToyDenoisingSquares(Dataset):
 
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
-    """Return `(train_loader, val_loader)` for the toy denoising task."""
+    """Return `(train_loader, val_loader)` for the synthetic denoising task."""
 
     train_mode = str(cfg.train_mode).lower().strip()
-    train_ds_full = ToyDenoisingSquares(cfg, mode=train_mode)
-    val_ds_full = ToyDenoisingSquares(cfg, mode="supervised")
+    train_ds_full = SyntheticDenoisingSquares(cfg, mode=train_mode)
+    val_ds_full = SyntheticDenoisingSquares(cfg, mode="supervised")
 
     train_idx, val_idx = train_val_split_indices(
         n=len(train_ds_full), val_fraction=cfg.val_fraction, seed=cfg.seed
@@ -690,4 +690,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader]:
     return train_loader, val_loader
 
 
-__all__ = ["DataConfig", "ToyDenoisingSquares", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticDenoisingSquares", "get_dataloaders"]

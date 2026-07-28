@@ -1,4 +1,4 @@
-"""iris segmentation models (toy-first, pure torch)."""
+"""iris segmentation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

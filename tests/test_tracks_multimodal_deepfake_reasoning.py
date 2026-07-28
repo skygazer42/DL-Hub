@@ -35,7 +35,7 @@ def test_multimodal_deepfake_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_36_face_anti_spoof_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_36_face_anti_spoof_vlm_reasoning.model import (
         DeepfakeReasoningConfig,
-        ToyDeepfakeReasoningModel,
+        CompactDeepfakeReasoningModel,
         reasoning_accuracy,
         reasoning_loss,
     )
@@ -52,7 +52,7 @@ def test_multimodal_deepfake_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyDeepfakeReasoningModel(
+    model = CompactDeepfakeReasoningModel(
         DeepfakeReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

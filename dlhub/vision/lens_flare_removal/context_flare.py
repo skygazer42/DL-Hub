@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_flare_remover, smoke_test_flare_remover
+from ._common import build_baseline_flare_remover, smoke_test_flare_remover
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -15,7 +15,7 @@ _VARIANTS: dict[str, dict[str, int]] = {
 def build_context_flare_flare_remover(
     *, in_channels: int, variant: str = "context_flare_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_toy_flare_remover(
+    return build_baseline_flare_remover(
         family="context_flare",
         mode="context",
         variants=_VARIANTS,

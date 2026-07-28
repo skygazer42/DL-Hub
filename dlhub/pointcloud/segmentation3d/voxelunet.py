@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class VoxelUNetSeg(nn.Module):
-    """Voxel UNet semantic segmentation (toy): dense 3D UNet on a coarse voxel grid."""
+    """Voxel UNet semantic segmentation (compact): dense 3D UNet on a coarse voxel grid."""
 
     def __init__(
         self,

@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class FreeAnchorHead(nn.Module):
-    """FreeAnchor-style head (toy): cls + box + objectness branch."""
+    """FreeAnchor-style head (compact): cls + box + objectness branch."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -32,7 +32,7 @@ class FreeAnchorHead(nn.Module):
 
 
 class FreeAnchorDetector(nn.Module):
-    """FreeAnchor-style detector (toy-first)."""
+    """FreeAnchor-style detector (compact-first)."""
 
     def __init__(
         self,

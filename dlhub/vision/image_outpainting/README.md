@@ -1,6 +1,6 @@
 # Image outpainting
 
-Toy-first local families for `image outpainting`.
+Compact-first local families for `image outpainting`.
 
 ## Families
 

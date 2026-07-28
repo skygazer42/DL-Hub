@@ -1,7 +1,5 @@
 # DL-Hub Optimization Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Make this repo easier to navigate, run, and maintain by adding a lightweight engineering baseline (docs + tooling + tests) without breaking existing learning materials.
 
 **Architecture:** Treat `DL-Hub` as a "multi-project learning hub" instead of a single app. Keep existing folders intact (no renames), add repo-level documentation and developer tooling, and focus code-quality investment on the most reusable Python modules (`ml_algorithms/python` and `optimization/python`).

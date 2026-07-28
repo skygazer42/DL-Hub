@@ -1,8 +1,6 @@
 # Multimodal Lesson 09 PaliGemma-Lite Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
-**Goal:** Add `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm` as a teaching lesson for prompt-native multitask text generation over images.
+**Goal:** Add `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm` as a teaching lesson for prompt-native multitask text generation over images.
 
 **Architecture:** The lesson will render one synthetic object per image and alternate between caption, attribute QA, location, and yes/no prompts. A small SigLIP-style vision tower will emit patch tokens, a linear projector will map them into decoder hidden space, and a tiny decoder LM will generate the textual answer.
 
@@ -20,8 +18,8 @@
 
 Add tests that require:
 
-- `lesson_09_paligemma_toy_siglip_decoder_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
-- dry-run resolution to `tracks.multimodal.lesson_09_paligemma_toy_siglip_decoder_vlm.train`
+- `lesson_09_paligemma_compact_siglip_decoder_vlm` to appear in `python scripts/run_lesson.py multimodal --list`
+- dry-run resolution to `tracks.multimodal.lesson_09_paligemma_compact_siglip_decoder_vlm.train`
 - a focused lesson test module for data, model, and training smoke
 
 **Step 2: Run test to verify it fails**
@@ -43,9 +41,9 @@ Re-run the same command and use the next failure as the next target.
 ### Task 2: Build the prompt-native multitask dataset
 
 **Files:**
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/data.py`
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/README.md`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/data.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/README.md`
 - Test: `tests/test_tracks_multimodal_paligemma.py`
 
 **Step 1: Write the failing test**
@@ -80,7 +78,7 @@ Run the same test and expect PASS.
 ### Task 3: Implement the PaliGemma-lite model
 
 **Files:**
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/model.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/model.py`
 - Test: `tests/test_tracks_multimodal_paligemma.py`
 
 **Step 1: Write the failing test**
@@ -116,7 +114,7 @@ Run the same test and expect PASS.
 ### Task 4: Add the training entrypoint and smoke run
 
 **Files:**
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/train.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/train.py`
 - Modify: `tracks/multimodal/README.md`
 - Test: `tests/test_tracks_multimodal_paligemma.py`
 
@@ -124,13 +122,13 @@ Run the same test and expect PASS.
 
 Add a subprocess smoke test that runs:
 
-`python -m tracks.multimodal.lesson_09_paligemma_toy_siglip_decoder_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 16 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_paligemma_smoke`
+`python -m tracks.multimodal.lesson_09_paligemma_compact_siglip_decoder_vlm.train --epochs 1 --num-samples 64 --batch-size 8 --image-size 16 --max-text-length 16 --max-train-batches 2 --max-eval-batches 1 --device cpu --run-name pytest_paligemma_smoke`
 
 Assert that it exits successfully and writes:
 
-- `outputs/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/pytest_paligemma_smoke/config.json`
-- `outputs/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/pytest_paligemma_smoke/metrics.jsonl`
-- `outputs/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/pytest_paligemma_smoke/checkpoints/checkpoint.pt`
+- `outputs/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/pytest_paligemma_smoke/config.json`
+- `outputs/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/pytest_paligemma_smoke/metrics.jsonl`
+- `outputs/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/pytest_paligemma_smoke/checkpoints/checkpoint.pt`
 
 **Step 2: Run test to verify it fails**
 
@@ -160,11 +158,11 @@ Run the same test and expect PASS.
 - Modify: `tests/test_scripts_run_lesson.py`
 - Create: `tests/test_tracks_multimodal_paligemma.py`
 - Modify: `tracks/multimodal/README.md`
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/__init__.py`
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/data.py`
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/model.py`
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/train.py`
-- Create: `tracks/multimodal/lesson_09_paligemma_toy_siglip_decoder_vlm/README.md`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/__init__.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/data.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/model.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/train.py`
+- Create: `tracks/multimodal/lesson_09_paligemma_compact_siglip_decoder_vlm/README.md`
 
 **Step 1: Run lint**
 
@@ -187,6 +185,6 @@ Expected: PASS.
 Run:
 
 - `python scripts/run_lesson.py multimodal --list`
-- `python scripts/run_lesson.py multimodal lesson_09_paligemma_toy_siglip_decoder_vlm --dry-run`
+- `python scripts/run_lesson.py multimodal lesson_09_paligemma_compact_siglip_decoder_vlm --dry-run`
 
 Expected: lesson 9 appears in the listing and resolves to the train module.

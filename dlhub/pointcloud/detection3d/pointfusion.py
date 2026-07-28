@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointFusion(nn.Module):
-    """PointFusion (toy): fuse two point feature streams before query head."""
+    """PointFusion (compact): fuse two point feature streams before query head."""
 
     def __init__(
         self,

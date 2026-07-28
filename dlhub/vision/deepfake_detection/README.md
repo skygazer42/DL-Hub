@@ -1,6 +1,6 @@
 # Deepfake Detection
 
-Toy-first local families for `deepfake detection`.
+Compact-first local families for `deepfake detection`.
 
 ## Families
 

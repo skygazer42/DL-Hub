@@ -1,4 +1,4 @@
-"""blur detection models (toy-first, pure torch)."""
+"""blur detection models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

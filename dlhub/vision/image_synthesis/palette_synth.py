@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_generator, smoke_test_generator
+from ._common import build_baseline_generator, smoke_test_generator
 
 _VARIANTS = {
     "palette_synth_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_palette_synth_generator(
     *, in_channels: int, variant: str = "palette_synth_small", width_mult: float = 1.0
 ):
-    return build_toy_generator(
+    return build_baseline_generator(
         family="palette_synth",
         variants=_VARIANTS,
         in_channels=int(in_channels),

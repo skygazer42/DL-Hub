@@ -37,7 +37,7 @@ class _DenseBlock(nn.Module):
 
 
 class DenseUNet(nn.Module):
-    """Dense U-Net style denoiser (toy-first, pure torch).
+    """Dense U-Net style denoiser (compact-first, pure torch).
 
     Uses DenseNet-style blocks inside a U-Net encoder-decoder.
     Predicts a residual/noise map and returns `x - residual`.

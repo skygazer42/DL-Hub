@@ -25,7 +25,8 @@ pip install -r requirements.txt
 python scripts/smoke_check.py
 ```
 
-确认 Python、PyTorch 等核心依赖均已就绪。
+该命令运行覆盖 8 个 track 的精选离线案例，用于确认 Python、PyTorch 等核心依赖已就绪；
+它不是 339 个课程的全量训练。使用 `python scripts/smoke_check.py --list` 可查看覆盖清单。
 
 ---
 
@@ -62,20 +63,26 @@ python scripts/run_lesson.py gnn --list
 
 ---
 
-## 统一 CLI 参数
+## 统一入口与课程参数
 
-所有课程共享以下标准命令行参数：
+所有训练课程共享 `--seed`、`--device`、`--run-name` 三个核心参数；其他参数根据任务提供：
 
-| 参数 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `--dataset` | `str` | 赛道默认 | 数据集名称，所有课程均支持 `fake` |
-| `--epochs` | `int` | `1` | 训练轮数 |
-| `--batch-size` | `int` | `64` | 每批样本数 |
-| `--learning-rate` | `float` | `1e-3` | 学习率 |
-| `--seed` | `int` | `42` | 随机种子，确保可复现 |
-| `--device` | `str` | `auto` | 设备选择：`auto` / `cpu` / `cuda` / `mps` |
-| `--max-train-batches` | `int` | `None` | 限制训练批次数（用于快速测试） |
-| `--max-eval-batches` | `int` | `None` | 限制评估批次数（用于快速测试） |
+| 参数 | 适用范围 | 说明 |
+|------|----------|------|
+| `--seed` | 所有训练课程 | 随机种子，确保可复现 |
+| `--device` | 所有训练课程 | `auto` / `cpu` / `cuda` / `mps` |
+| `--run-name` | 所有训练课程 | 输出目录中的运行名称 |
+| `--dataset` | 部分真实数据课程 | 这些课程支持 `fake` 离线模式 |
+| `--epochs` / `--steps` | 按任务提供 | 训练轮数或优化步数 |
+| `--batch-size` | 按任务提供 | 每批样本数 |
+| `--learning-rate` / `--lr` | 按任务提供 | 学习率 |
+| `--max-train-batches` / `--max-eval-batches` | 按任务提供 | 限制批次数，便于快速验证 |
+
+查询任意课程的准确参数：
+
+```bash
+python scripts/run_lesson.py gnn lesson_01_compact_graph_classification --describe
+```
 
 !!! example "组合使用示例"
 
@@ -95,13 +102,13 @@ python scripts/run_lesson.py gnn --list
 ### GNN 赛道
 
 ```bash
-python -m tracks.gnn.lesson_01_toy_graph_classification.train --dataset fake --epochs 1
+python -m tracks.gnn.lesson_01_compact_graph_classification.train --epochs 1
 ```
 
 ### NLP 赛道
 
 ```bash
-python -m tracks.nlp.lesson_01_toy_text_classification.train --dataset fake --epochs 1
+python -m tracks.nlp.lesson_01_compact_text_classification.train --epochs 1
 ```
 
 ### Foundations 赛道
@@ -112,18 +119,18 @@ python -m tracks.foundations.lesson_01_tensors.run
 
 ---
 
-!!! tip "离线测试利器：`--dataset fake`"
+!!! tip "两种离线数据方式"
 
-    `--dataset fake` 是 DL-Hub 的核心设计之一。它会生成与真实数据格式相同的随机数据，
-    让你在 **无网络、无 GPU** 的环境下也能验证代码逻辑。CI 测试中也大量使用此参数。
+    MNIST 等可选真实数据课程使用 `--dataset fake` 生成同形状的测试数据；
+    GNN、NLP、LLM 等 synthetic 课程本身就生成内置数据，因此不接受也不需要该参数。
 
-    配合 `--max-train-batches 2 --max-eval-batches 2`，可以在几秒内完成一次完整的
-    训练-评估循环，非常适合快速迭代和调试。
+    如果课程提供 `--max-train-batches` / `--max-eval-batches`，可用它们缩短训练与评估；
+    具体能力以 `run_lesson.py ... --describe` 输出为准。
 
 ---
 
 ## 下一步
 
 - :material-map-marker-path: 选择一条 [学习赛道](../tracks/index.md) 开始系统学习
-- :material-archive: 浏览 [Model Zoo](../zoo/index.md)，了解 8600+ 可用架构
+- :material-archive: 浏览 [Model Zoo](../zoo/index.md)，了解 8600+ 注册 ID
 - :material-cog: 阅读 [项目结构](../developer/structure.md)，理解代码组织方式

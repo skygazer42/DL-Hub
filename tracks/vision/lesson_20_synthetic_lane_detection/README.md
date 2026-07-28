@@ -1,6 +1,6 @@
 # Lesson 20: Synthetic Lane Detection
 
-This lesson introduces a toy-first lane detection loop with dense supervision:
+This lesson introduces a compact-first lane detection loop with dense supervision:
 
 - render a simple road image with several curved lane centerlines
 - predict a lane heatmap that highlights likely lane pixels

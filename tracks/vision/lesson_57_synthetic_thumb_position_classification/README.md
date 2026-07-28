@@ -1,6 +1,6 @@
 # Lesson 57: Synthetic Thumb Position Classification
 
-This toy vision lesson renders compact grayscale hand crops and classifies a coarse thumb
+This compact vision lesson renders compact grayscale hand crops and classifies a coarse thumb
 position state. The synthetic renderer keeps the hand structure simple: a palm blob, four
 finger-like blobs, and a thumb blob that moves across three discrete vertical positions.
 

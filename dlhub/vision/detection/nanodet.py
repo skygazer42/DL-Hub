@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, check_nchw
 
 
 class NanoDetHead(nn.Module):
-    """NanoDet / GFL-style head (toy).
+    """NanoDet / GFL-style head (compact).
 
     Outputs per feature level:
     - cls_logits: (B, C, H, W)
@@ -43,7 +43,7 @@ class NanoDetHead(nn.Module):
 
 
 class NanoDetDetector(nn.Module):
-    """NanoDet-style lightweight detector (toy-first)."""
+    """NanoDet-style lightweight detector (compact-first)."""
 
     def __init__(
         self,

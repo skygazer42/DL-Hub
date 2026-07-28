@@ -268,7 +268,7 @@ def _render_audio(spec: EventSpec, cfg: DataConfig, segment_id: int, variation_i
     return spectrogram.unsqueeze(0).clamp(0.0, 1.0)
 
 
-class ToyAudioGroundedRetrievalDataset(Dataset):
+class SyntheticAudioGroundedRetrievalDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         self.cfg = cfg
         self.vocab = vocab
@@ -319,7 +319,7 @@ class ToyAudioGroundedRetrievalDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyAudioGroundedRetrievalDataset(cfg, vocab=vocab)
+    dataset = SyntheticAudioGroundedRetrievalDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -358,7 +358,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
 __all__ = [
     "DataConfig",
     "EventSpec",
-    "ToyAudioGroundedRetrievalDataset",
+    "SyntheticAudioGroundedRetrievalDataset",
     "Vocab",
     "get_dataloaders",
 ]

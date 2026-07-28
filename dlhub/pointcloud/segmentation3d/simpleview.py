@@ -19,7 +19,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class SimpleViewSeg(nn.Module):
-    """SimpleView semantic segmentation (toy): fuse two orthographic projections (XY + XZ)."""
+    """SimpleView semantic segmentation (compact): fuse two orthographic projections (XY + XZ)."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, hw: int, dropout: float = 0.0

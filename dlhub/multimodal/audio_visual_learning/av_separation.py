@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_toy_audio_visual_model, smoke_test_audio_visual_model
+from ._common import build_baseline_audio_visual_model, smoke_test_audio_visual_model
 
 _VARIANTS = {
     "av_separation_tiny": {"width": 24, "depth": 1},
@@ -16,7 +16,7 @@ def build_av_separation_audio_visual_model(
     width_mult: float = 1.0,
     audio_bins: int = 32,
 ):
-    return build_toy_audio_visual_model(
+    return build_baseline_audio_visual_model(
         family="av_separation",
         variants=_VARIANTS,
         in_channels=int(in_channels),

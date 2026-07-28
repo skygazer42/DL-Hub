@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_ws_segmenter, smoke_test_wss
+from ._common import build_baseline_ws_segmenter, smoke_test_wss
 
 _VARIANTS = {
     "wsunet_tiny": {"width": 24, "depth": 1},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_wsunet_ws_segmenter(
     *, in_channels: int, num_classes: int, variant: str = "wsunet_small", width_mult: float = 1.0
 ):
-    return build_toy_ws_segmenter(
+    return build_baseline_ws_segmenter(
         family="wsunet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

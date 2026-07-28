@@ -29,7 +29,7 @@ class _BackboneStride4(nn.Module):
 
 
 class RFCNDetector(nn.Module):
-    """R-FCN-style detector (toy-first).
+    """R-FCN-style detector (compact-first).
 
     Uses position-sensitive score maps; we approximate ROI pooling by global averaging.
     """

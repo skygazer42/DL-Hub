@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_fewshot, smoke_test_few
+from ._common import build_baseline_fewshot, smoke_test_few
 
 _VARIANTS = {
     "matchingnet_tiny": {"width": 24, "depth": 1, "embed": 128},
@@ -11,7 +11,7 @@ _VARIANTS = {
 def build_matchingnet_few_shot_classifier(
     *, in_channels: int, variant: str = "matchingnet_small", width_mult: float = 1.0
 ):
-    return build_toy_fewshot(
+    return build_baseline_fewshot(
         family="matchingnet",
         variants=_VARIANTS,
         in_channels=int(in_channels),

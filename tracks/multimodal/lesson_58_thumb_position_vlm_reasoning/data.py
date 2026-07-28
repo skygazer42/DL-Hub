@@ -127,7 +127,7 @@ def _sample_hand_crop(*, image_size: int, seed: int) -> tuple[np.ndarray, int]:
     return image, label
 
 
-class ToyThumbPositionReasoningDataset(Dataset):
+class SyntheticThumbPositionReasoningDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         if int(cfg.image_size) < 48:
             raise ValueError("image_size must be >= 48")
@@ -157,7 +157,7 @@ class ToyThumbPositionReasoningDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], DataLoader[dict[str, object]], Vocab]:
     vocab = _build_vocab()
-    dataset = ToyThumbPositionReasoningDataset(cfg, vocab=vocab)
+    dataset = SyntheticThumbPositionReasoningDataset(cfg, vocab=vocab)
     train_indices, val_indices = train_val_split_indices(
         n=len(dataset),
         val_fraction=float(cfg.val_fraction),
@@ -181,7 +181,7 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader[dict[str, object]], Dat
 __all__ = [
     "CLASS_NAMES",
     "DataConfig",
-    "ToyThumbPositionReasoningDataset",
+    "SyntheticThumbPositionReasoningDataset",
     "Vocab",
     "get_dataloaders",
 ]

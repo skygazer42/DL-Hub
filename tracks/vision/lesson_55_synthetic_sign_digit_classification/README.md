@@ -1,6 +1,6 @@
 # Lesson 55: Synthetic Sign Digit Classification
 
-This toy vision lesson renders compact grayscale hand crops and classifies a synthetic sign-digit
+This compact vision lesson renders compact grayscale hand crops and classifies a synthetic sign-digit
 label (`0` through `9`). The renderer intentionally stays simple: a palm blob plus a few
 finger-like blobs, and a digit-specific corner marker so the 10-way task remains CPU friendly and
 stable for smoke tests.

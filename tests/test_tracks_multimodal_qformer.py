@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_qformer_batch_shapes() -> None:
-    from tracks.multimodal.lesson_07_qformer_toy_bridge_vlm.data import (
+    from tracks.multimodal.lesson_07_qformer_compact_bridge_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
@@ -45,13 +45,13 @@ def test_multimodal_qformer_batch_shapes() -> None:
 
 
 def test_multimodal_qformer_model_outputs() -> None:
-    from tracks.multimodal.lesson_07_qformer_toy_bridge_vlm.data import (
+    from tracks.multimodal.lesson_07_qformer_compact_bridge_vlm.data import (
         DataConfig,
         get_dataloaders,
     )
-    from tracks.multimodal.lesson_07_qformer_toy_bridge_vlm.model import (
+    from tracks.multimodal.lesson_07_qformer_compact_bridge_vlm.model import (
         QFormerModelConfig,
-        ToyQFormerModel,
+        CompactQFormerModel,
         qa_loss,
     )
 
@@ -67,7 +67,7 @@ def test_multimodal_qformer_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyQFormerModel(
+    model = CompactQFormerModel(
         QFormerModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -97,7 +97,7 @@ def test_multimodal_qformer_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_07_qformer_toy_bridge_vlm"
+        / "lesson_07_qformer_compact_bridge_vlm"
         / "pytest_qformer_smoke"
     )
     if run_dir.exists():
@@ -107,7 +107,7 @@ def test_multimodal_qformer_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_07_qformer_toy_bridge_vlm.train",
+            "tracks.multimodal.lesson_07_qformer_compact_bridge_vlm.train",
             "--epochs",
             "1",
             "--num-samples",

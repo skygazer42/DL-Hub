@@ -1,6 +1,6 @@
 # Palm Orientation Estimation
 
-Toy-first local families for `palm orientation estimation`.
+Compact-first local families for `palm orientation estimation`.
 
 ## Families
 

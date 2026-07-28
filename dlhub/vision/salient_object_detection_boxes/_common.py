@@ -84,7 +84,7 @@ class TinyBoxDetector(nn.Module):
         }
 
 
-def build_toy_box_detector(
+def build_baseline_box_detector(
     *,
     family: str,
     mode: str,

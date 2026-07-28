@@ -84,7 +84,7 @@ class TinyHandPoseEstimator(nn.Module):
         return {"keypoints": keypoints, "confidence": confidence, "heatmaps": heatmaps}
 
 
-def build_toy_hand_pose_estimator(
+def build_baseline_hand_pose_estimator(
     *,
     family: str,
     mode: str,

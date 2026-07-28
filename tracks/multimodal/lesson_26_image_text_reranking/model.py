@@ -55,7 +55,7 @@ class ImageTextRerankerConfig:
     hidden_dim: int = 48
 
 
-class ToyImageTextReranker(nn.Module):
+class CompactImageTextReranker(nn.Module):
     def __init__(self, cfg: ImageTextRerankerConfig) -> None:
         super().__init__()
         self.cfg = cfg
@@ -122,7 +122,7 @@ __all__ = [
     "CandidateTextEncoder",
     "ImageTextRerankerConfig",
     "TinyVisionEncoder",
-    "ToyImageTextReranker",
+    "CompactImageTextReranker",
     "reranking_accuracy",
     "reranking_loss",
 ]

@@ -44,7 +44,7 @@ def _gaussian_blur(x: torch.Tensor, *, k: int, sigma: float, padding: str) -> to
 
 
 class DebandingFilter(nn.Module):
-    """Debanding / dequantization baseline (torch-only, toy-first).
+    """Debanding / dequantization baseline (torch-only, compact-first).
 
     Strategy:
     - Estimate edges via simple gradients.

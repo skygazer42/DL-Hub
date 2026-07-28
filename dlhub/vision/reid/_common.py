@@ -38,7 +38,7 @@ class TinyReIDEncoder(nn.Module):
         return self.net(check_nchw(x))
 
 
-class ToyReIdentifier(nn.Module):
+class CompactReIdentifier(nn.Module):
     def __init__(
         self,
         *,
@@ -91,7 +91,7 @@ class ToyReIdentifier(nn.Module):
         return {"embedding": embedding, "logits": logits}
 
 
-def build_toy_reidentifier(
+def build_baseline_reidentifier(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -106,7 +106,7 @@ def build_toy_reidentifier(
     spec = variants[str(variant)]
     width = max(8, int(int(spec["width"]) * float(width_mult)))
     embed = max(32, int(int(spec["embed"]) * float(width_mult)))
-    return ToyReIdentifier(
+    return CompactReIdentifier(
         family=str(family),
         in_channels=int(in_channels),
         num_classes=int(num_classes),

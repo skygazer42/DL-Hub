@@ -1,4 +1,4 @@
-"""illumination estimation models (toy-first, pure torch)."""
+"""illumination estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

@@ -1,10 +1,8 @@
 # Multimodal VLM Batch 2 Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Extend the local VLM zoo with 8 additional core families, growing it to 20 families / 60 arches while preserving the year-first timeline and existing CLI.
 
-**Architecture:** Reuse the current `dlhub.multimodal.vlm` structure, add one wrapper module per new family, extend `_timeline.py` and `_recommend.py`, and keep the shared `ToyVLM` core unchanged except where small compatibility tweaks are necessary. The registry and CLI should discover new families automatically through the existing per-file `_VARIANTS` + `build_<family>_vlm(...)` pattern.
+**Architecture:** Reuse the current `dlhub.multimodal.vlm` structure, add one wrapper module per new family, extend `_timeline.py` and `_recommend.py`, and keep the shared `CompactVLM` core unchanged except where small compatibility tweaks are necessary. The registry and CLI should discover new families automatically through the existing per-file `_VARIANTS` + `build_<family>_vlm(...)` pattern.
 
 **Tech Stack:** Python, PyTorch, pytest, ruff
 
@@ -66,7 +64,7 @@ Expected: FAIL with missing builder/module errors for the new families.
 
 **Step 3: Write minimal implementation**
 
-Use the existing `ToyVLM` family-builder helper and only vary:
+Use the existing `CompactVLM` family-builder helper and only vary:
 
 - `_VARIANTS`
 - `architecture_mode`

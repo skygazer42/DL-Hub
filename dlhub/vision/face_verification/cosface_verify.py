@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_face_verifier, smoke_test_face_verifier
+from ._common import build_baseline_face_verifier, smoke_test_face_verifier
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_cosface_verify_face_verifier(
     variant: str = "cosface_verify_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_face_verifier(
+    return build_baseline_face_verifier(
         family="cosface_verify",
         mode="cosface",
         variants=_VARIANTS,

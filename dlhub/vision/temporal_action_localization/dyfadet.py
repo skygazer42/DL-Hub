@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_toy_model, smoke_test_model
+from ._common import build_temporal_action_localization_baseline, smoke_test_model
 
 _VARIANTS = {
     "dyfadet_tiny": {"width": 24, "depth": 1},
@@ -11,8 +11,8 @@ _VARIANTS = {
 def build_dyfadet_tal_model(
     *, in_channels: int, variant: str = "dyfadet_small", width_mult: float = 1.0, **kwargs
 ):
-    return build_toy_model(
-        family="dyfadet",
+    return build_temporal_action_localization_baseline(
+        registered_alias="dyfadet",
         variants=_VARIANTS,
         in_channels=int(in_channels),
         variant=str(variant),

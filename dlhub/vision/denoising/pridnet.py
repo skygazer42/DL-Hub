@@ -52,7 +52,7 @@ class _PyramidBlock(nn.Module):
 
 
 class PRIDNet(nn.Module):
-    """PRIDNet-style progressive residual denoiser (toy-first, pure torch).
+    """PRIDNet-style progressive residual denoiser (compact-first, pure torch).
 
     This is a simplified PRIDNet-inspired model:
     - Pyramid feature extraction per block (multi-receptive-field branches)

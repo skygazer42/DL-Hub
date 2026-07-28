@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class PointNeXtSeg(nn.Module):
-    """PointNeXt semantic segmentation (toy): PointNet++ hierarchy with residual MLPs."""
+    """PointNeXt semantic segmentation (compact): PointNet++ hierarchy with residual MLPs."""
 
     def __init__(
         self, *, in_channels: int, num_classes: int, width: int, dropout: float = 0.0

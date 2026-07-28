@@ -7,8 +7,8 @@ torch = pytest.importorskip("torch")
 
 
 def test_text_anomaly_detection_batch_contract() -> None:
-    from tracks.nlp.lesson_17_toy_text_anomaly_detection.data import DataConfig, get_dataloaders
-    from tracks.nlp.lesson_17_toy_text_anomaly_detection.model import (
+    from tracks.nlp.lesson_17_compact_text_anomaly_detection.data import DataConfig, get_dataloaders
+    from tracks.nlp.lesson_17_compact_text_anomaly_detection.model import (
         ModelConfig,
         TextAnomalyDetector,
         anomaly_accuracy,
@@ -52,8 +52,8 @@ def test_text_anomaly_detection_batch_contract() -> None:
 
 
 def test_text_anomaly_detection_training_smoke(tmp_path) -> None:
-    from tracks.nlp.lesson_17_toy_text_anomaly_detection.data import DataConfig
-    from tracks.nlp.lesson_17_toy_text_anomaly_detection.train import TrainConfig, run_training
+    from tracks.nlp.lesson_17_compact_text_anomaly_detection.data import DataConfig
+    from tracks.nlp.lesson_17_compact_text_anomaly_detection.train import TrainConfig, run_training
 
     os.environ["DLHUB_OUTPUTS_DIR"] = str(tmp_path / "outputs")
     try:
@@ -84,7 +84,7 @@ def test_text_anomaly_detection_training_smoke(tmp_path) -> None:
     finally:
         os.environ.pop("DLHUB_OUTPUTS_DIR", None)
 
-    run_dir = tmp_path / "outputs" / "nlp" / "lesson_17_toy_text_anomaly_detection" / "pytest_text_anomaly_smoke"
+    run_dir = tmp_path / "outputs" / "nlp" / "lesson_17_compact_text_anomaly_detection" / "pytest_text_anomaly_smoke"
     assert (run_dir / "config.json").is_file()
     assert (run_dir / "vocab.json").is_file()
     assert (run_dir / "metrics.jsonl").is_file()

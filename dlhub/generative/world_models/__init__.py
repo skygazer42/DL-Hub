@@ -1,4 +1,4 @@
-"""World-model families (toy-first, pure torch)."""
+"""World-model families (compact-first, pure torch)."""
 
 from __future__ import annotations
 

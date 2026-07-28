@@ -1,12 +1,12 @@
-from .data import DataConfig, ToyFaceVerificationDataset, Vocab, get_dataloaders
-from .model import FaceVerificationConfig, ToyFaceVerificationModel, verification_accuracy, verification_loss
+from .data import DataConfig, SyntheticFaceVerificationDataset, Vocab, get_dataloaders
+from .model import FaceVerificationConfig, CompactFaceVerificationModel, verification_accuracy, verification_loss
 from .train import TrainConfig, run_training
 
 __all__ = [
     "DataConfig",
     "FaceVerificationConfig",
-    "ToyFaceVerificationDataset",
-    "ToyFaceVerificationModel",
+    "SyntheticFaceVerificationDataset",
+    "CompactFaceVerificationModel",
     "TrainConfig",
     "Vocab",
     "get_dataloaders",

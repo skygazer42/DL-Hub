@@ -1,4 +1,4 @@
-"""Transparent depth estimation models (toy-first, pure torch)."""
+"""Transparent depth estimation models (compact-first, pure torch)."""
 
 from __future__ import annotations
 

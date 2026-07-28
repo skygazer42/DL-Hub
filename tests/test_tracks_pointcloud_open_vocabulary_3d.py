@@ -9,14 +9,14 @@ torch = pytest.importorskip("torch")
 
 
 def test_pointcloud_open_vocabulary_3d_batch_contract_and_loss_smoke() -> None:
-    from tracks.pointcloud.lesson_31_toy_open_vocabulary_3d.data import (
+    from tracks.pointcloud.lesson_31_compact_open_vocabulary_3d.data import (
         DataConfig,
-        ToyOpenVocabulary3DDataset,
+        SyntheticOpenVocabulary3DDataset,
         get_dataloaders,
     )
-    from tracks.pointcloud.lesson_31_toy_open_vocabulary_3d.model import (
+    from tracks.pointcloud.lesson_31_compact_open_vocabulary_3d.model import (
         ModelConfig,
-        ToyOpenVocabulary3DModel,
+        CompactOpenVocabulary3DModel,
         mask_iou,
         open_vocabulary_3d_loss,
     )
@@ -31,7 +31,7 @@ def test_pointcloud_open_vocabulary_3d_batch_contract_and_loss_smoke() -> None:
         max_text_length=8,
     )
 
-    ds = ToyOpenVocabulary3DDataset(cfg)
+    ds = SyntheticOpenVocabulary3DDataset(cfg)
     points, query_ids, query_mask, class_label, point_mask = ds[0]
     assert tuple(points.shape) == (48, 3)
     assert tuple(query_ids.shape) == (8,)
@@ -52,7 +52,7 @@ def test_pointcloud_open_vocabulary_3d_batch_contract_and_loss_smoke() -> None:
     assert tuple(class_b.shape) == (4,)
     assert tuple(point_mask_b.shape) == (4, 48)
 
-    model = ToyOpenVocabulary3DModel(
+    model = CompactOpenVocabulary3DModel(
         ModelConfig(
             vocab_size=ds.vocab_size,
             pad_id=ds.pad_id,
@@ -86,8 +86,8 @@ def test_pointcloud_open_vocabulary_3d_batch_contract_and_loss_smoke() -> None:
 def test_pointcloud_open_vocabulary_3d_training_smoke(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from tracks.pointcloud.lesson_31_toy_open_vocabulary_3d.data import DataConfig
-    from tracks.pointcloud.lesson_31_toy_open_vocabulary_3d.train import TrainConfig, run_training
+    from tracks.pointcloud.lesson_31_compact_open_vocabulary_3d.data import DataConfig
+    from tracks.pointcloud.lesson_31_compact_open_vocabulary_3d.train import TrainConfig, run_training
 
     monkeypatch.setenv("DLHUB_OUTPUTS_DIR", str(tmp_path))
     exit_code = run_training(
@@ -118,7 +118,7 @@ def test_pointcloud_open_vocabulary_3d_training_smoke(
     run_dir = (
         tmp_path
         / "pointcloud"
-        / "lesson_31_toy_open_vocabulary_3d"
+        / "lesson_31_compact_open_vocabulary_3d"
         / "pytest_open_vocabulary_3d_smoke"
     )
     assert (run_dir / "config.json").is_file()
@@ -156,7 +156,7 @@ def test_pointcloud_open_vocabulary_3d_dry_run() -> None:
             sys.executable,
             "scripts/run_lesson.py",
             "pointcloud",
-            "lesson_31_toy_open_vocabulary_3d",
+            "lesson_31_compact_open_vocabulary_3d",
             "--dry-run",
         ],
         check=False,
@@ -164,4 +164,4 @@ def test_pointcloud_open_vocabulary_3d_dry_run() -> None:
         text=True,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "tracks.pointcloud.lesson_31_toy_open_vocabulary_3d.train" in proc.stdout
+    assert "tracks.pointcloud.lesson_31_compact_open_vocabulary_3d.train" in proc.stdout

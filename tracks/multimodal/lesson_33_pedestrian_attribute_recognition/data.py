@@ -175,7 +175,7 @@ def _render_pedestrian(
     return image.clamp(0.0, 1.0)
 
 
-class ToyPedestrianAttributeDataset(Dataset):
+class SyntheticPedestrianAttributeDataset(Dataset):
     def __init__(self, cfg: DataConfig, *, vocab: Vocab) -> None:
         _validate_config(cfg)
         self.cfg = cfg
@@ -207,7 +207,7 @@ class ToyPedestrianAttributeDataset(Dataset):
 
 def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     vocab = _build_vocab()
-    dataset = ToyPedestrianAttributeDataset(cfg, vocab=vocab)
+    dataset = SyntheticPedestrianAttributeDataset(cfg, vocab=vocab)
     train_idx, val_idx = train_val_split_indices(
         n=len(dataset), val_fraction=float(cfg.val_fraction), seed=int(cfg.seed)
     )
@@ -239,4 +239,4 @@ def get_dataloaders(cfg: DataConfig) -> tuple[DataLoader, DataLoader, Vocab]:
     return train_loader, val_loader, vocab
 
 
-__all__ = ["DataConfig", "ToyPedestrianAttributeDataset", "Vocab", "get_dataloaders"]
+__all__ = ["DataConfig", "SyntheticPedestrianAttributeDataset", "Vocab", "get_dataloaders"]

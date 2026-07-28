@@ -1,10 +1,8 @@
 # Vision Pedestrian Detection (Synthetic FCOS) Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Add a new Vision lesson that trains `dldet:pedestrian_fcos` on an offline synthetic pedestrian dataset and logs stable metrics (loss / center-acc / IoU).
 
-**Architecture:** Reuse the local detection zoo preset `dldet:pedestrian_fcos` (FCOS-style) and implement a stride-4 synthetic dataset that produces FCOS-like targets (cls + ltrb + centerness). Keep the lesson toy-first and CPU-friendly.
+**Architecture:** Reuse the local detection zoo preset `dldet:pedestrian_fcos` (FCOS-style) and implement a stride-4 synthetic dataset that produces FCOS-like targets (cls + ltrb + centerness). Keep the lesson compact-first and CPU-friendly.
 
 **Tech Stack:** Python 3.10+, PyTorch (`torch`), pytest, existing `dlhub.paths/build_run_paths` and local detection zoo (`dlhub.vision.detection_zoo`).
 

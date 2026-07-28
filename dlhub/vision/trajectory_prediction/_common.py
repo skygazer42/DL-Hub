@@ -10,7 +10,7 @@ def check_btnc(x):
     return x
 
 
-class ToyTrajectoryPredictor(nn.Module):
+class CompactTrajectoryPredictor(nn.Module):
     def __init__(self, *, family: str, coord_dim: int, width: int, depth: int, pred_steps: int):
         super().__init__()
         self.family = str(family)
@@ -28,7 +28,7 @@ class ToyTrajectoryPredictor(nn.Module):
         return {"trajectory": pred}
 
 
-def build_toy_model(
+def build_baseline_model(
     *,
     family: str,
     variants: dict[str, dict[str, int]],
@@ -40,7 +40,7 @@ def build_toy_model(
 ):
     spec = variants[str(variant)]
     width = max(16, int(int(spec["width"]) * float(width_mult)))
-    return ToyTrajectoryPredictor(
+    return CompactTrajectoryPredictor(
         family=str(family),
         coord_dim=int(coord_dim),
         width=width,

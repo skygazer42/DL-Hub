@@ -11,7 +11,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class DGCNNSeg(nn.Module):
-    """DGCNN semantic segmentation (toy): EdgeConv stack -> per-point logits."""
+    """DGCNN semantic segmentation (compact): EdgeConv stack -> per-point logits."""
 
     def __init__(
         self,

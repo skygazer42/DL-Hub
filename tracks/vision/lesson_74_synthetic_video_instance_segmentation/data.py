@@ -23,7 +23,7 @@ class DataConfig:
 
 
 class SyntheticVideoInstanceSegmentationDataset(Dataset):
-    """Render fixed-slot toy instances with per-frame masks."""
+    """Render fixed-slot synthetic instances with per-frame masks."""
 
     def __init__(self, cfg: DataConfig) -> None:
         self.cfg = cfg
@@ -32,7 +32,7 @@ class SyntheticVideoInstanceSegmentationDataset(Dataset):
         if int(cfg.image_size) < 16:
             raise ValueError("image_size must be >= 16")
         if int(cfg.in_channels) != 1:
-            raise ValueError("in_channels must be 1 for this toy lesson")
+            raise ValueError("in_channels must be 1 for this synthetic lesson")
         if int(cfg.num_instances) < 1:
             raise ValueError("num_instances must be >= 1")
         if float(cfg.noise_std) < 0.0:

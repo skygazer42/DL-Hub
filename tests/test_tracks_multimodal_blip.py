@@ -13,7 +13,7 @@ def _repo_root() -> Path:
 
 
 def test_multimodal_blip_batch_shapes() -> None:
-    from tracks.multimodal.lesson_02_blip_toy_captioning.data import DataConfig, get_dataloaders
+    from tracks.multimodal.lesson_02_blip_compact_captioning.data import DataConfig, get_dataloaders
 
     cfg = DataConfig(
         num_samples=48,
@@ -42,10 +42,10 @@ def test_multimodal_blip_batch_shapes() -> None:
 
 
 def test_multimodal_blip_model_outputs() -> None:
-    from tracks.multimodal.lesson_02_blip_toy_captioning.data import DataConfig, get_dataloaders
-    from tracks.multimodal.lesson_02_blip_toy_captioning.model import (
+    from tracks.multimodal.lesson_02_blip_compact_captioning.data import DataConfig, get_dataloaders
+    from tracks.multimodal.lesson_02_blip_compact_captioning.model import (
         ModelConfig,
-        ToyBLIPModel,
+        CompactBLIPModel,
         blip_lite_loss,
     )
 
@@ -62,7 +62,7 @@ def test_multimodal_blip_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyBLIPModel(
+    model = CompactBLIPModel(
         ModelConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,
@@ -100,7 +100,7 @@ def test_multimodal_blip_training_smoke() -> None:
         _repo_root()
         / "outputs"
         / "multimodal"
-        / "lesson_02_blip_toy_captioning"
+        / "lesson_02_blip_compact_captioning"
         / "pytest_blip_smoke"
     )
     if run_dir.exists():
@@ -110,7 +110,7 @@ def test_multimodal_blip_training_smoke() -> None:
         [
             sys.executable,
             "-m",
-            "tracks.multimodal.lesson_02_blip_toy_captioning.train",
+            "tracks.multimodal.lesson_02_blip_compact_captioning.train",
             "--epochs",
             "1",
             "--num-samples",

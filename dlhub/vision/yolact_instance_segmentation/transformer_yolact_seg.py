@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_toy_instance_segmentor, smoke_test_instance_segmentor
+from ._common import build_baseline_instance_segmentor, smoke_test_instance_segmentor
 
 
 _VARIANTS: dict[str, dict[str, int]] = {
@@ -18,7 +18,7 @@ def build_transformer_yolact_seg_instance_segmentor(
     variant: str = "transformer_yolact_seg_small",
     width_mult: float = 1.0,
 ) -> nn.Module:
-    return build_toy_instance_segmentor(
+    return build_baseline_instance_segmentor(
         family="transformer_yolact_seg",
         mode="transformer",
         variants=_VARIANTS,

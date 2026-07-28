@@ -22,7 +22,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class TransFusion(nn.Module):
-    """TransFusion (toy): fuse a query head with dense BEV candidates."""
+    """TransFusion (compact): fuse a query head with dense BEV candidates."""
 
     def __init__(
         self,
@@ -83,7 +83,7 @@ class TransFusion(nn.Module):
 
         q = self.query_det(points)
 
-        # Fuse by concatenating query predictions with the best dense candidate (toy).
+        # Fuse by concatenating query predictions with the best dense candidate (compact).
         fused_boxes = q["boxes"].clone()
         fused_logits = q["cls_logits"].clone()
         best_idx = dense_logits.max(dim=-1).values.argmax(dim=1)  # (B,)

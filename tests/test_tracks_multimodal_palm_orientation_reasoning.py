@@ -40,7 +40,7 @@ def test_multimodal_palm_orientation_reasoning_model_outputs() -> None:
     from tracks.multimodal.lesson_55_palm_orientation_vlm_reasoning.data import DataConfig, get_dataloaders
     from tracks.multimodal.lesson_55_palm_orientation_vlm_reasoning.model import (
         PalmOrientationReasoningConfig,
-        ToyPalmOrientationReasoningModel,
+        CompactPalmOrientationReasoningModel,
         compute_mae,
         palm_orientation_loss,
     )
@@ -57,7 +57,7 @@ def test_multimodal_palm_orientation_reasoning_model_outputs() -> None:
     train_loader, _val_loader, vocab = get_dataloaders(data_cfg)
     batch = next(iter(train_loader))
 
-    model = ToyPalmOrientationReasoningModel(
+    model = CompactPalmOrientationReasoningModel(
         PalmOrientationReasoningConfig(
             vocab_size=vocab.size,
             pad_id=vocab.pad_id,

@@ -23,7 +23,7 @@ _VARIANTS: dict[str, dict[str, object]] = {
 
 
 class LaserNet(nn.Module):
-    """LaserNet (toy): range-view style projection + 2D conv head."""
+    """LaserNet (compact): range-view style projection + 2D conv head."""
 
     def __init__(
         self,

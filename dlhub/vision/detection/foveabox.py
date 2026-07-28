@@ -6,7 +6,7 @@ from dlhub.vision.detection._common import FPN, BackboneC3C5, ConvTower, check_n
 
 
 class FoveaBoxHead(nn.Module):
-    """FoveaBox-style head (toy): cls + bbox distances + center-ness."""
+    """FoveaBox-style head (compact): cls + bbox distances + center-ness."""
 
     def __init__(self, *, channels: int, num_classes: int, num_convs: int = 4) -> None:
         super().__init__()
@@ -32,7 +32,7 @@ class FoveaBoxHead(nn.Module):
 
 
 class FoveaBoxDetector(nn.Module):
-    """FoveaBox-style detector (toy-first)."""
+    """FoveaBox-style detector (compact-first)."""
 
     def __init__(
         self,

@@ -7,7 +7,7 @@ from dlhub.vision.detection._detr_utils import MLP, SimpleTransformer, flatten_h
 
 
 class DNDETRDetector(nn.Module):
-    """DN-DETR *style* (toy).
+    """DN-DETR *style* (compact).
 
     Denoising is a training strategy; we expose a tiny auxiliary tensor so that the
     forward signature is distinctive while remaining differentiable.
