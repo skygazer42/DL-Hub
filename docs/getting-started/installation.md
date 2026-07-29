@@ -53,31 +53,39 @@ PyTorch 安装命令因平台和 CUDA 版本而异，请前往
 
 ---
 
-## 4. 安装项目依赖
+## 4. 安装项目与赛道依赖
 
 ```bash
-pip install -r requirements.txt
-```
+# 只使用 NumPy 公共工具
+pip install -e .
 
----
-
-## 5. 赛道专属依赖（可选）
-
-部分赛道有额外依赖，按需安装：
-
-```bash
-# Vision 赛道额外依赖
-pip install -r requirements-vision.txt
+# 或安装某条学习赛道（推荐）
+pip install -e ".[vision]"
 ```
 
 !!! info "按需安装"
 
-    如果你只学习 Foundations 赛道，只需安装 `requirements.txt` 即可。
-    赛道专属依赖文件命名格式为 `requirements-<track>.txt`，在仓库根目录查找。
+    `pyproject.toml` 是依赖契约的唯一来源。`requirements.txt`、
+    `requirements-dev.txt`、`requirements-docs.txt` 和 `requirements-vision.txt`
+    仅保留为兼容入口，分别转发到项目本体或对应 extra，不再单独维护另一份版本列表。
+
+| Extra | 安装命令 | 用途 |
+|---|---|---|
+| `torch` | `pip install -e ".[torch]"` | 共享 PyTorch 能力 |
+| `foundations` | `pip install -e ".[foundations]"` | 基础课程 |
+| `vision` | `pip install -e ".[vision]"` | PyTorch + torchvision + timm |
+| `nlp` / `gnn` / `pointcloud` | `pip install -e ".[nlp]"` 等 | 对应赛道 |
+| `generative` | `pip install -e ".[generative]"` | PyTorch + torchvision 图片/数据能力 |
+| `llm` / `multimodal` | `pip install -e ".[llm]"` 等 | 对应赛道 |
+| `all` | `pip install -e ".[all]"` | 全部运行时依赖 |
+| `dev` | `pip install -e ".[dev]"` | 测试、lint 与格式化工具 |
+
+PyTorch 的 wheel 与 CUDA/CPU 平台有关。建议先执行第 3 步的官方平台命令，再安装 extra；
+pip 会复用已经安装的兼容 PyTorch。
 
 ---
 
-## 6. 验证安装
+## 5. 验证安装
 
 运行 Smoke Check 脚本，确认环境配置正确：
 

@@ -136,21 +136,23 @@ python scripts/vision_zoo.py --smoke
 
 ## 8. 如何按赛道安装依赖？
 
-目前仓库里的赛道专属依赖文件放在**仓库根目录**，不是放在 `tracks/` 子目录里。
+依赖统一由根目录 `pyproject.toml` 的 extras 管理：
 
 ```bash
-# 安装基础依赖
-pip install -r requirements.txt
+# 安装基础工具
+pip install -e .
 
-# 安装视觉赛道额外依赖
-pip install -r requirements-vision.txt
+# 按赛道安装
+pip install -e ".[vision]"
+pip install -e ".[nlp]"
+pip install -e ".[gnn]"
+
+# 安装全部运行时依赖
+pip install -e ".[all]"
 ```
 
 !!! note "当前约定"
 
-    如果某个赛道还没有单独的 `requirements-<track>.txt`，
-    直接使用根目录的 `requirements.txt` 或 `requirements-dev.txt` 即可。
-
-    例如目前仓库中存在 `requirements-vision.txt`，其他赛道的专属依赖文件会按需补充。
-
-    ML 算法部分 (`ml_algorithms/`) 只依赖 NumPy，无需额外安装。
+    `requirements-vision.txt` 只为旧命令兼容而保留，内部转向 `.[vision]`。
+    PyTorch 的 CPU/CUDA wheel 请先按[安装指南](getting-started/installation.md)选择；
+    ML 算法部分 (`ml_algorithms/`) 只依赖 NumPy。

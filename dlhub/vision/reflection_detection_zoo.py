@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-import importlib
 
 
 _FAMILIES = [
@@ -34,41 +33,34 @@ Builder = Callable[[BuildConfig], object]
 
 
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
-    arch_id = str(arch_id).strip()
-    if ":" not in arch_id:
-        return "refdet", arch_id
-    prefix, name = arch_id.split(":", 1)
-    prefix = prefix.strip().lower()
-    name = name.strip()
-    if not prefix or not name:
-        raise ValueError(f"Invalid arch id: {arch_id!r}")
-    return prefix, name
+    from dlhub.zoo_registry import split_arch_id
+
+    return split_arch_id(arch_id, default_prefix="refdet")
 
 
 def _registry() -> dict[str, Builder]:
-    registry: dict[str, Builder] = {}
-    for family in _FAMILIES:
-        for size in _SIZES:
-            variant = f"{family}_{size}"
+    from dlhub.zoo_registry import make_lazy_family_registry
 
-            def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(f"dlhub.vision.reflection_detection.{family}")
-                fn = getattr(module, f"build_{family}_reflection_detector")
-                return fn(
-                    in_channels=int(cfg.in_channels),
-                    variant=str(variant),
-                    width_mult=float(cfg.width_mult),
-                )
-
-            registry[variant] = _builder
-    return registry
+    return make_lazy_family_registry(
+        _FAMILIES,
+        _SIZES,
+        module_template="dlhub.vision.reflection_detection.{family}",
+        builder_template="build_{family}_reflection_detector",
+        kwargs_factory=lambda cfg, variant: dict(
+            in_channels=int(cfg.in_channels),
+            variant=str(variant),
+            width_mult=float(cfg.width_mult),
+        ),
+    )
 
 
 _REGISTRY = _registry()
 
 
 def list_local_arches() -> list[str]:
-    return [f"refdet:{name}" for name in sorted(_REGISTRY)]
+    from dlhub.zoo_registry import list_arch_ids
+
+    return list_arch_ids(_REGISTRY, prefix="refdet")
 
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):

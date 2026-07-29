@@ -37,11 +37,9 @@ class TrainConfig:
 
 
 def _maybe_save_image(image: torch.Tensor, path: str | Path) -> None:
-    try:
-        from torchvision.utils import save_image
-    except Exception:
-        return
-    save_image(image, path)
+    from dlhub.artifacts import save_image_if_available
+
+    save_image_if_available(image, path)
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:

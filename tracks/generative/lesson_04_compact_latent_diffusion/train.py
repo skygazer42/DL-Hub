@@ -28,11 +28,9 @@ class TrainConfig:
 
 
 def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
-    try:
-        from torchvision.utils import save_image
-    except Exception:
-        return
-    save_image(images, path, nrow=8)
+    from dlhub.artifacts import save_image_if_available
+
+    save_image_if_available(images, path, nrow=8)
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
@@ -96,7 +94,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
     paths = build_run_paths(
         track="generative", lesson="lesson_04_compact_latent_diffusion", run_name=train_cfg.run_name
     )
-    logger = get_logger("generative.compact_latent_diffusion", log_file=paths.logs_dir / "train.log")
+    logger = get_logger(
+        "generative.compact_latent_diffusion", log_file=paths.logs_dir / "train.log"
+    )
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
@@ -163,7 +163,10 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
         val_count = 0
         with torch.no_grad():
             for batch_idx, images in enumerate(val_loader):
-                if train_cfg.max_eval_batches is not None and batch_idx >= train_cfg.max_eval_batches:
+                if (
+                    train_cfg.max_eval_batches is not None
+                    and batch_idx >= train_cfg.max_eval_batches
+                ):
                     break
 
                 images = images.to(device_info.torch_device)
@@ -214,7 +217,9 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
         recons = model.decode(latents).cpu()
         images = images.cpu()
     torch.save({"inputs": images, "reconstructions": recons}, paths.run_dir / "recons.pt")
-    _maybe_save_image_grid(torch.cat([images[:16], recons[:16]], dim=0), paths.run_dir / "recons.png")
+    _maybe_save_image_grid(
+        torch.cat([images[:16], recons[:16]], dim=0), paths.run_dir / "recons.png"
+    )
 
     ckpt_path = save_checkpoint(
         paths.checkpoints_dir / "checkpoint.pt",

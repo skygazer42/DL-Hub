@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-import importlib
 
 
 _FAMILIES = [
@@ -34,43 +33,34 @@ Builder = Callable[[BuildConfig], object]
 
 
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
-    arch_id = str(arch_id).strip()
-    if ":" not in arch_id:
-        return "event", arch_id
-    prefix, name = arch_id.split(":", 1)
-    prefix = prefix.strip().lower()
-    name = name.strip()
-    if not prefix or not name:
-        raise ValueError(f"Invalid arch id: {arch_id!r}")
-    return prefix, name
+    from dlhub.zoo_registry import split_arch_id
+
+    return split_arch_id(arch_id, default_prefix="event")
 
 
 def _registry() -> dict[str, Builder]:
-    registry: dict[str, Builder] = {}
-    for family in _FAMILIES:
-        for size in _SIZES:
-            variant = f"{family}_{size}"
+    from dlhub.zoo_registry import make_lazy_family_registry
 
-            def _builder(cfg: BuildConfig, family: str = family, variant: str = variant):
-                module = importlib.import_module(
-                    f"dlhub.vision.event_camera_understanding.{family}"
-                )
-                fn = getattr(module, f"build_{family}_event_model")
-                return fn(
-                    in_channels=int(cfg.in_channels),
-                    variant=str(variant),
-                    width_mult=float(cfg.width_mult),
-                )
-
-            registry[variant] = _builder
-    return registry
+    return make_lazy_family_registry(
+        _FAMILIES,
+        _SIZES,
+        module_template="dlhub.vision.event_camera_understanding.{family}",
+        builder_template="build_{family}_event_model",
+        kwargs_factory=lambda cfg, variant: dict(
+            in_channels=int(cfg.in_channels),
+            variant=str(variant),
+            width_mult=float(cfg.width_mult),
+        ),
+    )
 
 
 _REGISTRY = _registry()
 
 
 def list_local_arches() -> list[str]:
-    return [f"event:{name}" for name in sorted(_REGISTRY)]
+    from dlhub.zoo_registry import list_arch_ids
+
+    return list_arch_ids(_REGISTRY, prefix="event")
 
 
 def build_local_model(

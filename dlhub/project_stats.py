@@ -51,6 +51,8 @@ class ProjectStats:
     federated_families: int = 0
     total_zoo_ids: int = 0
     zoo_modules: int = 0
+    zoo_audited_groups: int = 0
+    zoo_audited_artifacts: int = 0
 
     @property
     def lessons_total(self) -> int:
@@ -100,6 +102,7 @@ def compute_stats(repo_root: str | Path | None = None) -> ProjectStats:
     federated_ids = arches("dlhub.federated_zoo")
 
     from dlhub.vision.backbones.catalog import list_backbone_modules
+    from dlhub.zoo_fidelity import summarize_fidelity
 
     total = 0
     zoo_modules = 0
@@ -111,6 +114,7 @@ def compute_stats(repo_root: str | Path | None = None) -> ProjectStats:
         zoo_modules += 1
         total += len(list(lister()))
 
+    fidelity = summarize_fidelity()
     return ProjectStats(
         lessons_by_track=lessons,
         test_files=test_files,
@@ -126,6 +130,8 @@ def compute_stats(repo_root: str | Path | None = None) -> ProjectStats:
         federated_families=_count_families(federated_ids),
         total_zoo_ids=total,
         zoo_modules=zoo_modules,
+        zoo_audited_groups=fidelity["audited_groups"],
+        zoo_audited_artifacts=fidelity["audited_artifacts"],
     )
 
 
@@ -144,7 +150,8 @@ _TRACK_LABELS = {
 def render_hero_badges(stats: ProjectStats) -> str:
     return (
         f"**{stats.lessons_total} Lessons** · **{stats.total_zoo_ids} Model Zoo "
-        f"Registrations** · **{stats.ml_algorithms} NumPy ML Algorithms**\n"
+        f"Registrations** · **{stats.zoo_audited_artifacts} Audited Zoo Sources** · "
+        f"**{stats.ml_algorithms} NumPy ML Algorithms**\n"
     )
 
 
@@ -182,7 +189,8 @@ def render_zoo_overview(stats: ProjectStats) -> str:
     for name, size, doc in rows:
         lines.append(f"| {name} | {size} | [{doc}]({doc}) |")
     lines.append(
-        f"| **全部 {stats.zoo_modules} 个 zoo 模块合计** | **{stats.total_zoo_ids} 注册 ID** | "
+        f"| **全部 {stats.zoo_modules} 个 zoo 模块合计** | **{stats.total_zoo_ids} 注册 ID / "
+        f"{stats.zoo_audited_artifacts} 已审计源码入口** | "
         "[docs/zoo/](docs/zoo/index.md) |"
     )
     return "\n".join(lines) + "\n"
@@ -193,6 +201,7 @@ def render_docs_index_stats(stats: ProjectStats) -> str:
         (str(stats.lessons_total), "Lessons"),
         (str(len(TRACKS)), "Learning Tracks"),
         (str(stats.total_zoo_ids), "Model Zoo 注册 ID"),
+        (str(stats.zoo_audited_artifacts), "已审计 Zoo 源码"),
         (str(stats.ml_algorithms), "ML 算法"),
     )
     parts = ['<div class="stats-grid" markdown>', ""]

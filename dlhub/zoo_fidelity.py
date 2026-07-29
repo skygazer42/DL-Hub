@@ -40,6 +40,12 @@ class FidelityRecord:
 
 AUDIT_BACKLOG = "docs/plans/2026-07-26-nn-audit-backlog.md"
 AUDIT_DATE = "2026-07-28"
+FOLLOW_UP_AUDIT_DATE = "2026-07-29"
+AUDIT_PRESSURE_BASELINE_REGISTRATIONS = 8611
+AUDIT_PRESSURE_BASELINE_ARTIFACTS = 80
+MAX_REGISTRATIONS_PER_AUDITED_ARTIFACT = (
+    AUDIT_PRESSURE_BASELINE_REGISTRATIONS / AUDIT_PRESSURE_BASELINE_ARTIFACTS
+)
 # Keep the retired design label out of audited sources without spelling it in
 # this source file; the repository-wide narrative contract enforces the same
 # rule for every maintained text file.
@@ -306,6 +312,64 @@ ZOO_FIDELITY: tuple[FidelityRecord, ...] = (
         evidence=(AUDIT_BACKLOG, "dlhub/vision/co_segmentation/token_affinity_coseg.py"),
         next_action="Move affinity computation before spatial pooling and expose correspondence maps.",
     ),
+    FidelityRecord(
+        key="vision.blur-detection.shared-compact-baseline",
+        area="vision/blur_detection",
+        level=FidelityLevel.BASELINE_ALIAS,
+        artifacts=_family_paths(
+            "blur_detection",
+            "coarse_blurdet",
+            "dual_blurdet",
+            "edge_blurdet",
+            "fft_blurdet",
+            "laplacian_blurdet",
+            "mamba_blurdet",
+            "prompt_blurdet",
+            "sobel_blurdet",
+            "transformer_blurdet",
+            "variance_blurdet",
+        ),
+        summary=(
+            "Ten method-labelled entrypoints delegate to TinyBlurDetector. Several labels share "
+            "the same depthwise-convolution branch; the others select only a small local mode branch."
+        ),
+        missing_mechanisms=(
+            "actual Laplacian, Sobel, FFT, or variance operators for their named detector families",
+            "token attention or state-space blocks for Transformer and Mamba labels",
+        ),
+        reviewed_on=FOLLOW_UP_AUDIT_DATE,
+        evidence=("dlhub/vision/blur_detection/_common.py",),
+        next_action="Rename the shared implementation as a baseline and add measurable family mechanisms.",
+    ),
+    FidelityRecord(
+        key="vision.crack-detection.shared-compact-baseline",
+        area="vision/crack_detection",
+        level=FidelityLevel.BASELINE_ALIAS,
+        artifacts=_family_paths(
+            "crack_detection",
+            "coarse_crack",
+            "contour_crack",
+            "dual_crack",
+            "fpn_crack",
+            "hed_crack",
+            "mamba_crack",
+            "prompt_crack",
+            "skeleton_crack",
+            "transformer_crack",
+            "unet_crack",
+        ),
+        summary=(
+            "Ten method-labelled entrypoints delegate to TinyCrackDetector. Five labels share one "
+            "depthwise-convolution branch and the remaining labels only select a small local mode branch."
+        ),
+        missing_mechanisms=(
+            "encoder-decoder, feature-pyramid, contour, skeleton, and HED-specific computation",
+            "token attention or state-space blocks for Transformer and Mamba labels",
+        ),
+        reviewed_on=FOLLOW_UP_AUDIT_DATE,
+        evidence=("dlhub/vision/crack_detection/_common.py",),
+        next_action="Expose one honest shared baseline until each named family has its defining mechanism.",
+    ),
 )
 
 
@@ -390,6 +454,47 @@ def summarize_fidelity(
     return summary
 
 
+def summarize_audit_pressure(
+    total_registration_ids: int,
+    records: Iterable[FidelityRecord] = ZOO_FIDELITY,
+) -> dict[str, int | float]:
+    """Relate catalog growth to the amount of source that has received a fidelity audit."""
+
+    total = int(total_registration_ids)
+    audited_artifacts = sum(len(record.artifacts) for record in records)
+    ratio = total / audited_artifacts if audited_artifacts else float("inf")
+    return {
+        "total_registration_ids": total,
+        "audited_artifacts": audited_artifacts,
+        "registrations_per_audited_artifact": ratio,
+        "max_registrations_per_audited_artifact": MAX_REGISTRATIONS_PER_AUDITED_ARTIFACT,
+    }
+
+
+def validate_audit_pressure(
+    total_registration_ids: int,
+    records: Iterable[FidelityRecord] = ZOO_FIDELITY,
+) -> list[str]:
+    """Block registration growth that is not accompanied by additional source audits."""
+
+    pressure = summarize_audit_pressure(total_registration_ids, records)
+    total = int(pressure["total_registration_ids"])
+    audited = int(pressure["audited_artifacts"])
+    ratio = float(pressure["registrations_per_audited_artifact"])
+    maximum = float(pressure["max_registrations_per_audited_artifact"])
+    if total < 0:
+        return ["total registration ids must not be negative"]
+    if audited == 0:
+        return ["fidelity ledger has no audited source artifacts"]
+    if ratio > maximum:
+        return [
+            "registration growth exceeds the fidelity-audit budget: "
+            f"{total} ids / {audited} audited artifacts = {ratio:.2f}, maximum {maximum:.2f}; "
+            "audit more source artifacts or reduce unsupported registrations"
+        ]
+    return []
+
+
 def validate_fidelity_records(repo_root: str | Path | None = None) -> list[str]:
     """Return actionable metadata errors; an empty list means the ledger is valid."""
 
@@ -466,15 +571,21 @@ def validate_fidelity_records(repo_root: str | Path | None = None) -> list[str]:
 
 __all__ = [
     "AUDIT_DATE",
+    "AUDIT_PRESSURE_BASELINE_ARTIFACTS",
+    "AUDIT_PRESSURE_BASELINE_REGISTRATIONS",
     "DISALLOWED_AUDITED_SOURCE_TERMS",
+    "FOLLOW_UP_AUDIT_DATE",
     "FidelityLevel",
     "FidelityRecord",
     "ZOO_FIDELITY",
+    "MAX_REGISTRATIONS_PER_AUDITED_ARTIFACT",
     "fidelity_for_artifact",
     "find_fidelity_records",
     "get_fidelity_record",
     "iter_fidelity_records",
     "record_for_artifact",
     "summarize_fidelity",
+    "summarize_audit_pressure",
+    "validate_audit_pressure",
     "validate_fidelity_records",
 ]

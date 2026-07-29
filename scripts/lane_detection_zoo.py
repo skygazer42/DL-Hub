@@ -11,46 +11,15 @@ def _ensure_repo_root_on_path() -> None:
 
 
 def _summarize(obj) -> str:
-    try:
-        import torch
-    except Exception:
-        return f"{type(obj).__name__}"
+    from dlhub.cli_utils import summarize_output
 
-    if isinstance(obj, torch.Tensor):
-        return f"Tensor(shape={tuple(obj.shape)}, dtype={obj.dtype}, device={obj.device})"
-    if isinstance(obj, dict):
-        keys = ", ".join(sorted(map(str, obj.keys())))
-        return f"dict(keys=[{keys}])"
-    if isinstance(obj, list | tuple):
-        head = ", ".join(_summarize(x) for x in obj[:2])
-        tail = "" if len(obj) <= 2 else f", ... (+{len(obj) - 2})"
-        return f"{type(obj).__name__}([{head}{tail}])"
-    return f"{type(obj).__name__}"
+    return summarize_output(obj)
 
 
 def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
-    lines = list(lines)
-    limit = int(limit)
-    if limit <= 0:
-        return
+    from dlhub.cli_utils import print_limited
 
-    if len(lines) <= limit:
-        for line in lines:
-            print(line)
-        return
-
-    if limit <= 20:
-        for line in lines[:limit]:
-            print(line)
-        print(f"... ({len(lines) - limit} more) ...")
-        return
-
-    head = limit - 10
-    for line in lines[:head]:
-        print(line)
-    print(f"... ({len(lines) - limit} more) ...")
-    for line in lines[-10:]:
-        print(line)
+    print_limited(lines, limit=limit)
 
 
 def parse_args() -> argparse.Namespace:

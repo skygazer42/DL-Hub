@@ -40,12 +40,12 @@ def main() -> int:
 
     if not torch_ok:
         print("\nNext step:")
-        print("- Install PyTorch (platform-specific). See docs/INSTALL.md.")
+        print("- Install PyTorch (platform-specific). See docs/getting-started/installation.md.")
         return 1
 
     if not tv_ok:
         print("\nNext step:")
-        print("- Install torchvision for the vision track. See docs/INSTALL.md.")
+        print("- Install the vision extra. See docs/getting-started/installation.md.")
         return 1
 
     print("\nLooks good.")

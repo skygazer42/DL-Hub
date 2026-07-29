@@ -10,7 +10,9 @@
 git clone https://github.com/skygazer42/DL-Hub.git
 cd DL-Hub
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+# CPU 示例；CUDA/macOS 命令请按安装指南选择
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install -e ".[vision]"
 ```
 
 !!! note "详细安装步骤"
@@ -132,5 +134,5 @@ python -m tracks.foundations.lesson_01_tensors.run
 ## 下一步
 
 - :material-map-marker-path: 选择一条 [学习赛道](../tracks/index.md) 开始系统学习
-- :material-archive: 浏览 [Model Zoo](../zoo/index.md)，了解 8600+ 注册 ID
+- :material-archive: 浏览 [Model Zoo](../zoo/index.md) 的注册目录与保真度审计
 - :material-cog: 阅读 [项目结构](../developer/structure.md)，理解代码组织方式

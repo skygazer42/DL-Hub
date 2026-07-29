@@ -38,11 +38,9 @@ class TrainConfig:
 
 
 def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
-    try:
-        from torchvision.utils import save_image
-    except Exception:
-        return
-    save_image(images, path, nrow=8)
+    from dlhub.artifacts import save_image_if_available
+
+    save_image_if_available(images, path, nrow=8)
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig, ConsistencySchedule]:
@@ -155,7 +153,9 @@ def run_training(
         lesson="lesson_05_compact_consistency_model",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("generative.compact_consistency_model", log_file=paths.logs_dir / "train.log")
+    logger = get_logger(
+        "generative.compact_consistency_model", log_file=paths.logs_dir / "train.log"
+    )
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 

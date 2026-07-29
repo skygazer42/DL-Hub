@@ -31,11 +31,9 @@ class TrainConfig:
 
 
 def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
-    try:
-        from torchvision.utils import save_image
-    except Exception:
-        return
-    save_image(images, path, nrow=8)
+    from dlhub.artifacts import save_image_if_available
+
+    save_image_if_available(images, path, nrow=8)
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:

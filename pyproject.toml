@@ -13,22 +13,53 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Mirrors requirements-dev.txt / requirements-docs.txt / requirements-vision.txt.
+# Legacy requirements files forward to these extras; versions live here only.
 dev = [
   "pytest>=7.0",
   "ruff>=0.9",
   "black>=24.0",
   "isort>=5.12",
   "pre-commit>=3.0",
+  "tomli>=2.0; python_version < '3.11'",
 ]
 docs = [
   "mkdocs-material>=9.5",
   "mkdocs-minify-plugin>=0.8",
 ]
+torch = [
+  "torch>=2.0",
+]
+foundations = [
+  "torch>=2.0",
+]
 vision = [
-  "torch",
-  "torchvision",
-  "timm",
+  "torch>=2.0",
+  "torchvision>=0.15",
+  "timm>=0.9",
+]
+nlp = [
+  "torch>=2.0",
+]
+gnn = [
+  "torch>=2.0",
+]
+pointcloud = [
+  "torch>=2.0",
+]
+generative = [
+  "torch>=2.0",
+  "torchvision>=0.15",
+]
+llm = [
+  "torch>=2.0",
+]
+multimodal = [
+  "torch>=2.0",
+]
+all = [
+  "torch>=2.0",
+  "torchvision>=0.15",
+  "timm>=0.9",
 ]
 
 [tool.setuptools.packages.find]

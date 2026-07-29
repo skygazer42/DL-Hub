@@ -17,35 +17,15 @@ def _ensure_repo_root_on_path() -> None:
 
 
 def _summarize(obj) -> str:
-    try:
-        import torch
-    except Exception:
-        return f"{type(obj).__name__}"
+    from dlhub.cli_utils import summarize_output
 
-    if isinstance(obj, torch.Tensor):
-        return f"Tensor(shape={tuple(obj.shape)}, dtype={obj.dtype}, device={obj.device})"
-    if isinstance(obj, dict):
-        keys = ", ".join(sorted(map(str, obj.keys())))
-        return f"dict(keys=[{keys}])"
-    if isinstance(obj, list | tuple):
-        head = ", ".join(_summarize(x) for x in obj[:2])
-        tail = "" if len(obj) <= 2 else f", ... (+{len(obj) - 2})"
-        return f"{type(obj).__name__}([{head}{tail}])"
-    return f"{type(obj).__name__}"
+    return summarize_output(obj)
 
 
 def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
-    lines = list(lines)
-    if len(lines) <= limit:
-        for line in lines:
-            print(line)
-        return
-    head = max(10, limit - 10)
-    for line in lines[:head]:
-        print(line)
-    print(f"... ({len(lines) - limit} more) ...")
-    for line in lines[-10:]:
-        print(line)
+    from dlhub.cli_utils import print_limited
+
+    print_limited(lines, limit=limit)
 
 
 def _read_last_jsonl_record(path: Path) -> dict[str, object] | None:
@@ -96,7 +76,9 @@ def _save_leaderboard(
 
     if suffix == ".csv":
         rank_by_run: dict[str, int] = {
-            str(row["run_name"]): int(row["rank"]) for row in leaderboard if "run_name" in row and "rank" in row
+            str(row["run_name"]): int(row["rank"])
+            for row in leaderboard
+            if "run_name" in row and "rank" in row
         }
         fieldnames = [
             "rank",
@@ -124,9 +106,7 @@ def _save_leaderboard(
                 writer.writerow(out)
         return
 
-    raise ValueError(
-        f"Unsupported leaderboard file extension: {path.suffix!r}. Use .json or .csv"
-    )
+    raise ValueError(f"Unsupported leaderboard file extension: {path.suffix!r}. Use .json or .csv")
 
 
 def _rank_successful_runs(
@@ -300,9 +280,7 @@ def _save_artifacts(
                 "family": str(getattr(rec, "family", "")),
                 "group": str(getattr(rec, "group", "")),
                 "year": (
-                    int(getattr(rec, "year"))
-                    if getattr(rec, "year", None) is not None
-                    else None
+                    int(getattr(rec, "year")) if getattr(rec, "year", None) is not None else None
                 ),
                 "score": float(getattr(rec, "score", 0.0)),
                 "reason": str(getattr(rec, "reason", "")),
@@ -375,7 +353,9 @@ def _save_artifacts(
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Vision MOT local model zoo utilities (no downloads).")
+    parser = argparse.ArgumentParser(
+        description="Vision MOT local model zoo utilities (no downloads)."
+    )
     parser.add_argument("--list", action="store_true", help="List available architecture ids.")
     parser.add_argument("--search", type=str, default=None, help="Filter list by substring.")
     parser.add_argument("--limit", type=int, default=80, help="Max lines to print when listing.")
@@ -535,7 +515,9 @@ def main() -> int:
         return 2
     if args.skip_existing and not args.run_train_cmds:
         print("--skip-existing is only valid with --run-train-cmds.")
-        print("Tip: python scripts/mot_zoo.py --recommend realtime --run-train-cmds --skip-existing")
+        print(
+            "Tip: python scripts/mot_zoo.py --recommend realtime --run-train-cmds --skip-existing"
+        )
         return 2
     if args.summary_only and not args.run_train_cmds:
         print("--summary-only is only valid with --run-train-cmds.")
@@ -543,13 +525,23 @@ def main() -> int:
         return 2
     if args.save_leaderboard is not None and not args.run_train_cmds:
         print("--save-leaderboard is only valid with --run-train-cmds.")
-        print("Tip: python scripts/mot_zoo.py --recommend realtime --run-train-cmds --save-leaderboard outputs/vision/mot_leaderboard.json")
+        print(
+            "Tip: python scripts/mot_zoo.py --recommend realtime --run-train-cmds --save-leaderboard outputs/vision/mot_leaderboard.json"
+        )
         return 2
     if args.save_artifacts_dir is not None and not args.run_train_cmds:
         print("--save-artifacts-dir is only valid with --run-train-cmds.")
-        print("Tip: python scripts/mot_zoo.py --recommend realtime --run-train-cmds --save-artifacts-dir outputs/vision/mot_artifacts")
+        print(
+            "Tip: python scripts/mot_zoo.py --recommend realtime --run-train-cmds --save-artifacts-dir outputs/vision/mot_artifacts"
+        )
         return 2
-    if not args.list and not args.timeline and args.recommend is None and not args.list_profiles and args.smoke is None:
+    if (
+        not args.list
+        and not args.timeline
+        and args.recommend is None
+        and not args.list_profiles
+        and args.smoke is None
+    ):
         print("Nothing to do. Try one of:")
         print("- python scripts/mot_zoo.py --list")
         print("- python scripts/mot_zoo.py --timeline")
@@ -557,7 +549,9 @@ def main() -> int:
         print("- python scripts/mot_zoo.py --recommend realtime --top-k 8")
         print("- python scripts/mot_zoo.py --recommend realtime --top-k 8 --emit-train-cmds")
         print("- python scripts/mot_zoo.py --recommend realtime --top-k 3 --run-train-cmds")
-        print("- python scripts/mot_zoo.py --recommend realtime --top-k 3 --run-train-cmds --save-artifacts-dir outputs/vision/mot_artifacts")
+        print(
+            "- python scripts/mot_zoo.py --recommend realtime --top-k 3 --run-train-cmds --save-artifacts-dir outputs/vision/mot_artifacts"
+        )
         print("- python scripts/mot_zoo.py --smoke mot2d:sort_tiny")
         return 2
 
@@ -632,9 +626,7 @@ def main() -> int:
         for idx, r in enumerate(recs, start=1):
             y = "unknown" if r.year is None else str(r.year)
             if not quiet_run:
-                print(
-                    f"{idx:02d}. {r.arch_id} | group={r.group} | year={y} | score={r.score:.3f}"
-                )
+                print(f"{idx:02d}. {r.arch_id} | group={r.group} | year={y} | score={r.score:.3f}")
                 print(f"    reason: {r.reason}")
             run_name = f"{run_prefix}_{idx:02d}_{r.family}"
             train_cmd = [
@@ -674,13 +666,7 @@ def main() -> int:
             run_results: list[dict[str, object]] = []
             run_logs: dict[str, dict[str, str]] = {}
             for idx, r, run_name, train_cmd in planned:
-                run_dir = (
-                    repo_root
-                    / "outputs"
-                    / "vision"
-                    / "lesson_14_video_mot_basics"
-                    / run_name
-                )
+                run_dir = repo_root / "outputs" / "vision" / "lesson_14_video_mot_basics" / run_name
                 used_existing = False
                 metrics = {}
                 stdout_text = ""
@@ -727,8 +713,12 @@ def main() -> int:
                     "eval_loss": eval_loss,
                     "eval_presence_acc": eval_acc,
                     "eval_mean_iou": eval_iou,
-                    "stdout_tail": stdout_text.strip().splitlines()[-1] if stdout_text.strip() else "",
-                    "stderr_tail": stderr_text.strip().splitlines()[-1] if stderr_text.strip() else "",
+                    "stdout_tail": stdout_text.strip().splitlines()[-1]
+                    if stdout_text.strip()
+                    else "",
+                    "stderr_tail": stderr_text.strip().splitlines()[-1]
+                    if stderr_text.strip()
+                    else "",
                 }
                 run_results.append(result)
                 status = "existing" if used_existing else ("ok" if ok else f"fail(rc={returncode})")

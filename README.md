@@ -15,7 +15,7 @@
 <br/>
 
 <!-- stats:hero-badges -->
-**339 Lessons** · **8611 Model Zoo Registrations** · **31 NumPy ML Algorithms**
+**339 Lessons** · **8611 Model Zoo Registrations** · **80 Audited Zoo Sources** · **31 NumPy ML Algorithms**
 <!-- /stats:hero-badges -->
 
 <br/>
@@ -108,7 +108,8 @@
 # 克隆仓库
 git clone https://github.com/skygazer42/DL-Hub.git
 cd DL-Hub
-pip install -r requirements.txt
+# PyTorch 的 CPU/CUDA 安装命令见下方安装指南；随后安装 Vision 赛道依赖
+pip install -e ".[vision]"
 
 # 精选冒烟测试（覆盖 8 个 track，用于验证环境）
 python scripts/smoke_check.py
@@ -142,7 +143,8 @@ python scripts/run_lesson.py --list
 
 </details>
 
-安装细节与各 track 先修建议见 [docs/getting-started/](docs/getting-started/index.md)。
+PyTorch 平台选择、最小安装和各赛道 extras 见
+[安装指南](docs/getting-started/installation.md)。
 
 ---
 
@@ -221,7 +223,7 @@ Model Zoo 注册 ID 也不会被描述成同等数量的论文复现。完整规
 | GAN Zoo | 44 架构族 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
 | Diffusion Zoo | 32 架构族 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
 | Federated Zoo | 76 联邦策略族 | [docs/zoo/federated-zoo.md](docs/zoo/federated-zoo.md) |
-| **全部 123 个 zoo 模块合计** | **8611 注册 ID** | [docs/zoo/](docs/zoo/index.md) |
+| **全部 123 个 zoo 模块合计** | **8611 注册 ID / 80 已审计源码入口** | [docs/zoo/](docs/zoo/index.md) |
 <!-- /stats:zoo-overview -->
 
 > [!IMPORTANT]

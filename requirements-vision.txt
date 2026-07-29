@@ -1,4 +1,2 @@
-# Vision track dependencies.
-torch
-torchvision
-timm
+# Compatibility entrypoint. pyproject.toml is the dependency source of truth.
+-e .[vision]

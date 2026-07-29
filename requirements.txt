@@ -1,6 +1,3 @@
-# Minimal runtime dependencies for the shared utilities.
-#
-# Note: PyTorch/torchvision installation is platform-dependent.
-# See docs/INSTALL.md for guidance.
-numpy>=1.24
-
+# Compatibility entrypoint. pyproject.toml is the dependency source of truth.
+# See docs/getting-started/installation.md for track extras and PyTorch wheels.
+-e .

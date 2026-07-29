@@ -29,11 +29,9 @@ class TrainConfig:
 
 
 def _maybe_save_image_grid(images: torch.Tensor, path: str | Path) -> None:
-    try:
-        from torchvision.utils import save_image
-    except Exception:
-        return
-    save_image(images, path, nrow=8)
+    from dlhub.artifacts import save_image_if_available
+
+    save_image_if_available(images, path, nrow=8)
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
@@ -130,8 +128,8 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
     )
 
     fixed_z = torch.randn(64, model_cfg.z_dim, device=device_info.torch_device)
-    fixed_labels = (
-        torch.arange(64, device=device_info.torch_device, dtype=torch.long) % int(model_cfg.num_classes)
+    fixed_labels = torch.arange(64, device=device_info.torch_device, dtype=torch.long) % int(
+        model_cfg.num_classes
     )
     metrics_path = paths.run_dir / "metrics.jsonl"
 

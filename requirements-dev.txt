@@ -1,6 +1,2 @@
--r requirements.txt
-pytest>=7.0
-ruff>=0.9
-black>=24.0
-isort>=5.12
-pre-commit>=3.0
+# Compatibility entrypoint. pyproject.toml is the dependency source of truth.
+-e .[dev]

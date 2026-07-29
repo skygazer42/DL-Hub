@@ -22,16 +22,9 @@ Builder = Callable[[BuildConfig], nn.Module]
 
 
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
-    arch_id = str(arch_id).strip()
-    if ":" not in arch_id:
-        return "pcsf3d", arch_id
+    from dlhub.zoo_registry import split_arch_id
 
-    prefix, name = arch_id.split(":", 1)
-    prefix = prefix.strip().lower()
-    name = name.strip()
-    if not prefix or not name:
-        raise ValueError(f"Invalid arch id: {arch_id!r}")
-    return prefix, name
+    return split_arch_id(arch_id, default_prefix="pcsf3d")
 
 
 def _extract_variants_from_source(src: str) -> list[str] | None:

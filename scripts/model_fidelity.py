@@ -39,18 +39,34 @@ def _format_summary(summary: dict[str, int]) -> str:
     )
 
 
+def _format_audit_pressure(pressure: dict[str, int | float]) -> str:
+    return (
+        "audit pressure: "
+        f"{pressure['total_registration_ids']} registration IDs / "
+        f"{pressure['audited_artifacts']} audited source artifacts = "
+        f"{pressure['registrations_per_audited_artifact']:.2f} "
+        f"(maximum {pressure['max_registrations_per_audited_artifact']:.2f})"
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     root = _repo_root()
     from dlhub.zoo_fidelity import (
         FidelityLevel,
         get_fidelity_record,
         iter_fidelity_records,
+        summarize_audit_pressure,
         summarize_fidelity,
+        validate_audit_pressure,
         validate_fidelity_records,
     )
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="Validate records and source paths.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Validate records, source paths, and the registration-to-audit growth budget.",
+    )
     parser.add_argument("--json", action="store_true", help="Print the selected inventory as JSON.")
     parser.add_argument("--list", action="store_true", help="List selected audit groups.")
     parser.add_argument("--show", metavar="KEY", help="Show one audit group by stable key.")
@@ -70,6 +86,13 @@ def main(argv: list[str] | None = None) -> int:
 
     summary = summarize_fidelity(records)
     errors = validate_fidelity_records(root) if args.check else []
+    audit_pressure = None
+    if args.check:
+        from dlhub.project_stats import compute_stats
+
+        total_registration_ids = compute_stats(root).total_zoo_ids
+        audit_pressure = summarize_audit_pressure(total_registration_ids)
+        errors.extend(validate_audit_pressure(total_registration_ids))
 
     if args.json:
         print(
@@ -78,6 +101,7 @@ def main(argv: list[str] | None = None) -> int:
                     "scope": "audited-groups-only",
                     "scope_note": SCOPE_NOTE,
                     "summary": summary,
+                    "audit_pressure": audit_pressure,
                     "records": [_record_payload(record) for record in records],
                     "errors": errors,
                 },
@@ -87,6 +111,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     else:
         print(_format_summary(summary))
+        if audit_pressure is not None:
+            print(_format_audit_pressure(audit_pressure))
         if args.list or args.show or args.level:
             for record in records:
                 print(f"{record.key}\t{record.level.value}\t{len(record.artifacts)} artifacts")

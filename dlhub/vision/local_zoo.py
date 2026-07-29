@@ -56,15 +56,9 @@ class UnknownLocalArch(ValueError):
 
 
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
-    arch_id = str(arch_id).strip()
-    if ":" not in arch_id:
-        return "dl", arch_id
-    prefix, name = arch_id.split(":", 1)
-    prefix = prefix.strip().lower()
-    name = name.strip()
-    if not prefix or not name:
-        raise ValueError(f"Invalid arch id: {arch_id!r}")
-    return prefix, name
+    from dlhub.zoo_registry import split_arch_id
+
+    return split_arch_id(arch_id, default_prefix="dl")
 
 
 Builder = Callable[[BuildConfig], nn.Module]
@@ -871,7 +865,11 @@ def _registry() -> dict[str, Builder]:
         for patch_size in [4, 8, 16]:
             name = base_name if patch_size == 8 else f"{base_name}_p{patch_size}"
             r[name] = (
-                lambda cfg, embed_dim=embed_dim, num_heads=num_heads, num_layers=num_layers, patch_size=patch_size: build_vit_classifier(
+                lambda cfg,
+                embed_dim=embed_dim,
+                num_heads=num_heads,
+                num_layers=num_layers,
+                patch_size=patch_size: build_vit_classifier(
                     in_channels=cfg.in_channels,
                     num_classes=cfg.num_classes,
                     image_size=cfg.image_size,
@@ -895,7 +893,11 @@ def _registry() -> dict[str, Builder]:
             for tdim_mul in [2, 4]:
                 name = f"{base_name}_p{patch_size}_t{tdim_mul}"
                 r[name] = (
-                    lambda cfg, embed_dim=embed_dim, num_layers=num_layers, patch_size=patch_size, tdim_mul=tdim_mul: build_mlp_mixer_classifier(
+                    lambda cfg,
+                    embed_dim=embed_dim,
+                    num_layers=num_layers,
+                    patch_size=patch_size,
+                    tdim_mul=tdim_mul: build_mlp_mixer_classifier(
                         in_channels=cfg.in_channels,
                         num_classes=cfg.num_classes,
                         image_size=cfg.image_size,
@@ -914,7 +916,10 @@ def _registry() -> dict[str, Builder]:
             for patch_size in [4, 8, 16]:
                 name = f"convmixer_d{depth}_c{embed_dim}_p{patch_size}"
                 r[name] = (
-                    lambda cfg, embed_dim=embed_dim, depth=depth, patch_size=patch_size: build_convmixer_classifier(
+                    lambda cfg,
+                    embed_dim=embed_dim,
+                    depth=depth,
+                    patch_size=patch_size: build_convmixer_classifier(
                         in_channels=cfg.in_channels,
                         num_classes=cfg.num_classes,
                         image_size=cfg.image_size,

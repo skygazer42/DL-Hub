@@ -33,15 +33,15 @@ class RunConfig:
 
 
 def _maybe_save_image(image: torch.Tensor, path: str | Path) -> None:
-    try:
-        from torchvision.utils import save_image
-    except Exception:
-        return
-    save_image(image, path)
+    from dlhub.artifacts import save_image_if_available
+
+    save_image_if_available(image, path)
 
 
 def parse_args() -> tuple[RunConfig, DataConfig]:
-    parser = argparse.ArgumentParser(description="Lesson 15 (Vision): Gatys-style neural style transfer (compact-first).")
+    parser = argparse.ArgumentParser(
+        description="Lesson 15 (Vision): Gatys-style neural style transfer (compact-first)."
+    )
 
     parser.add_argument("--arch", type=str, default="dlst:gatys_tiny")
     parser.add_argument("--steps", type=int, default=8)
@@ -134,7 +134,10 @@ def run_style_transfer(run_cfg: RunConfig, data_cfg: DataConfig) -> int:
     append_jsonl(metrics_path, {"loss": float(loss.item())})
     logger.info("Final loss: %.6f", float(loss.item()))
 
-    torch.save({"content": content.detach().cpu(), "style": style.detach().cpu(), "stylized": stylized}, paths.run_dir / "stylized.pt")
+    torch.save(
+        {"content": content.detach().cpu(), "style": style.detach().cpu(), "stylized": stylized},
+        paths.run_dir / "stylized.pt",
+    )
     _maybe_save_image(stylized[:1], paths.run_dir / "stylized.png")
     return 0
 
@@ -151,4 +154,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

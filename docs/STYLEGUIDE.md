@@ -44,8 +44,11 @@ make verify
 - `dlhub.device`：设备选择
 - `dlhub.training.loop`：训练/评估循环
 - `dlhub.paths`：输出目录结构
+- `dlhub.cli_utils`：模型输出摘要与受限列表输出
+- `dlhub.artifacts`：可选实验图片写入
+- `dlhub.zoo_registry`：Zoo ID 解析、列表生成与懒加载注册器
 
-不要在每个 lesson 自己“再发明一次”训练循环。
+不要在每个 lesson 或 Zoo 脚本里重新实现这些公共能力。
 
 ## 输出目录
 
@@ -53,6 +56,6 @@ make verify
 
 ## 依赖管理
 
-- `requirements.txt`：最小运行依赖
-- `requirements-dev.txt`：开发工具
-- `requirements-vision.txt` / `requirements-nlp.txt` 等：按轨道可选依赖
+- `pyproject.toml` 的 `dependencies` / `optional-dependencies` 是唯一依赖契约。
+- 赛道使用 `pip install -e ".[vision]"`、`.[nlp]` 等 extra。
+- `requirements*.txt` 只作为旧命令的转发入口，不再维护重复版本。

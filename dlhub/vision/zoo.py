@@ -136,15 +136,9 @@ def list_vision_arches() -> list[str]:
 
 
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
-    arch_id = str(arch_id).strip()
-    if ":" not in arch_id:
-        raise ValueError(f"Expected a namespaced arch id like 'tv:resnet18', got: {arch_id!r}")
-    prefix, name = arch_id.split(":", 1)
-    prefix = prefix.strip().lower()
-    name = name.strip()
-    if not prefix or not name:
-        raise ValueError(f"Invalid arch id: {arch_id!r}")
-    return prefix, name
+    from dlhub.zoo_registry import split_arch_id
+
+    return split_arch_id(arch_id, example="tv:resnet18")
 
 
 def build_torchvision_model(

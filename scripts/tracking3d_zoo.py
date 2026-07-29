@@ -17,35 +17,15 @@ def _ensure_repo_root_on_path() -> None:
 
 
 def _summarize(obj) -> str:
-    try:
-        import torch
-    except Exception:
-        return f"{type(obj).__name__}"
+    from dlhub.cli_utils import summarize_output
 
-    if isinstance(obj, torch.Tensor):
-        return f"Tensor(shape={tuple(obj.shape)}, dtype={obj.dtype}, device={obj.device})"
-    if isinstance(obj, dict):
-        keys = ", ".join(sorted(map(str, obj.keys())))
-        return f"dict(keys=[{keys}])"
-    if isinstance(obj, list | tuple):
-        head = ", ".join(_summarize(x) for x in obj[:2])
-        tail = "" if len(obj) <= 2 else f", ... (+{len(obj) - 2})"
-        return f"{type(obj).__name__}([{head}{tail}])"
-    return f"{type(obj).__name__}"
+    return summarize_output(obj)
 
 
 def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
-    lines = list(lines)
-    if len(lines) <= limit:
-        for line in lines:
-            print(line)
-        return
-    head = max(10, limit - 10)
-    for line in lines[:head]:
-        print(line)
-    print(f"... ({len(lines) - limit} more) ...")
-    for line in lines[-10:]:
-        print(line)
+    from dlhub.cli_utils import print_limited
+
+    print_limited(lines, limit=limit)
 
 
 def _save_leaderboard(
@@ -76,7 +56,9 @@ def _save_leaderboard(
 
     if suffix == ".csv":
         rank_by_run: dict[str, int] = {
-            str(row["run_name"]): int(row["rank"]) for row in leaderboard if "run_name" in row and "rank" in row
+            str(row["run_name"]): int(row["rank"])
+            for row in leaderboard
+            if "run_name" in row and "rank" in row
         }
         fieldnames = [
             "rank",
@@ -101,9 +83,7 @@ def _save_leaderboard(
                 writer.writerow(out)
         return
 
-    raise ValueError(
-        f"Unsupported leaderboard file extension: {path.suffix!r}. Use .json or .csv"
-    )
+    raise ValueError(f"Unsupported leaderboard file extension: {path.suffix!r}. Use .json or .csv")
 
 
 def _rank_successful_runs(
@@ -259,9 +239,7 @@ def _save_artifacts(
                 "family": str(getattr(rec, "family", "")),
                 "group": str(getattr(rec, "group", "")),
                 "year": (
-                    int(getattr(rec, "year"))
-                    if getattr(rec, "year", None) is not None
-                    else None
+                    int(getattr(rec, "year")) if getattr(rec, "year", None) is not None else None
                 ),
                 "score": float(getattr(rec, "score", 0.0)),
                 "reason": str(getattr(rec, "reason", "")),
@@ -445,25 +423,43 @@ def main() -> int:
         return 2
     if args.summary_only and not args.run_smoke_cmds:
         print("--summary-only is only valid with --run-smoke-cmds.")
-        print("Tip: python scripts/tracking3d_zoo.py --recommend bev_priority --run-smoke-cmds --summary-only")
+        print(
+            "Tip: python scripts/tracking3d_zoo.py --recommend bev_priority --run-smoke-cmds --summary-only"
+        )
         return 2
     if args.save_leaderboard is not None and not args.run_smoke_cmds:
         print("--save-leaderboard is only valid with --run-smoke-cmds.")
-        print("Tip: python scripts/tracking3d_zoo.py --recommend bev_priority --run-smoke-cmds --save-leaderboard outputs/pointcloud/tracking3d_leaderboard.json")
+        print(
+            "Tip: python scripts/tracking3d_zoo.py --recommend bev_priority --run-smoke-cmds --save-leaderboard outputs/pointcloud/tracking3d_leaderboard.json"
+        )
         return 2
     if args.save_artifacts_dir is not None and not args.run_smoke_cmds:
         print("--save-artifacts-dir is only valid with --run-smoke-cmds.")
-        print("Tip: python scripts/tracking3d_zoo.py --recommend bev_priority --run-smoke-cmds --save-artifacts-dir outputs/pointcloud/tracking3d_artifacts")
+        print(
+            "Tip: python scripts/tracking3d_zoo.py --recommend bev_priority --run-smoke-cmds --save-artifacts-dir outputs/pointcloud/tracking3d_artifacts"
+        )
         return 2
-    if not args.list and not args.timeline and args.recommend is None and not args.list_profiles and args.smoke is None:
+    if (
+        not args.list
+        and not args.timeline
+        and args.recommend is None
+        and not args.list_profiles
+        and args.smoke is None
+    ):
         print("Nothing to do. Try one of:")
         print("- python scripts/tracking3d_zoo.py --list")
         print("- python scripts/tracking3d_zoo.py --timeline")
         print("- python scripts/tracking3d_zoo.py --list-profiles")
         print("- python scripts/tracking3d_zoo.py --recommend bev_priority --top-k 8")
-        print("- python scripts/tracking3d_zoo.py --recommend bev_priority --top-k 5 --emit-smoke-cmds")
-        print("- python scripts/tracking3d_zoo.py --recommend bev_priority --top-k 3 --run-smoke-cmds")
-        print("- python scripts/tracking3d_zoo.py --recommend bev_priority --top-k 3 --run-smoke-cmds --save-artifacts-dir outputs/pointcloud/tracking3d_artifacts")
+        print(
+            "- python scripts/tracking3d_zoo.py --recommend bev_priority --top-k 5 --emit-smoke-cmds"
+        )
+        print(
+            "- python scripts/tracking3d_zoo.py --recommend bev_priority --top-k 3 --run-smoke-cmds"
+        )
+        print(
+            "- python scripts/tracking3d_zoo.py --recommend bev_priority --top-k 3 --run-smoke-cmds --save-artifacts-dir outputs/pointcloud/tracking3d_artifacts"
+        )
         print("- python scripts/tracking3d_zoo.py --smoke pctrk3d:ab3dmot_tiny")
         return 2
 
@@ -533,9 +529,7 @@ def main() -> int:
         for idx, r in enumerate(recs, start=1):
             y = "unknown" if r.year is None else str(r.year)
             if not quiet_run:
-                print(
-                    f"{idx:02d}. {r.arch_id} | group={r.group} | year={y} | score={r.score:.3f}"
-                )
+                print(f"{idx:02d}. {r.arch_id} | group={r.group} | year={y} | score={r.score:.3f}")
                 print(f"    reason: {r.reason}")
             run_name = f"reco_{idx:02d}_{r.family}"
             smoke_cmd = [
@@ -601,16 +595,19 @@ def main() -> int:
                     "ok": ok,
                     "returncode": int(returncode),
                     "elapsed_sec": float(elapsed),
-                    "stdout_tail": stdout_text.strip().splitlines()[-1] if stdout_text.strip() else "",
-                    "stderr_tail": stderr_text.strip().splitlines()[-1] if stderr_text.strip() else "",
+                    "stdout_tail": stdout_text.strip().splitlines()[-1]
+                    if stdout_text.strip()
+                    else "",
+                    "stderr_tail": stderr_text.strip().splitlines()[-1]
+                    if stderr_text.strip()
+                    else "",
                 }
                 run_results.append(result)
 
                 status = "ok" if ok else f"fail(rc={returncode})"
                 if not quiet_run:
                     print(
-                        f"- {idx:02d} {r.arch_id} -> {run_name} | {status} | "
-                        f"elapsed={elapsed:.2f}s"
+                        f"- {idx:02d} {r.arch_id} -> {run_name} | {status} | elapsed={elapsed:.2f}s"
                     )
                 if not ok and args.fail_fast:
                     if not quiet_run:
@@ -623,7 +620,9 @@ def main() -> int:
             print("Leaderboard (successful runs)")
             if ok_runs:
                 try:
-                    ok_runs = _rank_successful_runs(ok_runs, rank_by=str(args.rank_by).strip().lower())
+                    ok_runs = _rank_successful_runs(
+                        ok_runs, rank_by=str(args.rank_by).strip().lower()
+                    )
                 except ValueError as exc:
                     print(str(exc))
                     return 2

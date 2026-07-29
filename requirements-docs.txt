@@ -1,2 +1,2 @@
-mkdocs-material>=9.5
-mkdocs-minify-plugin>=0.8
+# Compatibility entrypoint. pyproject.toml is the dependency source of truth.
+-e .[docs]

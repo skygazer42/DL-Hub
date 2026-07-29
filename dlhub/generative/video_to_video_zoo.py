@@ -19,15 +19,9 @@ Builder = Callable[[BuildConfig], object]
 
 
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
-    arch_id = str(arch_id).strip()
-    if ":" not in arch_id:
-        return "v2v", arch_id
-    prefix_name, name = arch_id.split(":", 1)
-    prefix_name = prefix_name.strip().lower()
-    name = name.strip()
-    if not prefix_name or not name:
-        raise ValueError(f"Invalid arch id: {arch_id!r}")
-    return prefix_name, name
+    from dlhub.zoo_registry import split_arch_id
+
+    return split_arch_id(arch_id, default_prefix="v2v")
 
 
 def _extract_variants_from_source(src: str) -> list[str] | None:
@@ -133,7 +127,9 @@ _REGISTRY = _registry()
 
 
 def list_local_arches() -> list[str]:
-    return [f"v2v:{name}" for name in sorted(_REGISTRY)]
+    from dlhub.zoo_registry import list_arch_ids
+
+    return list_arch_ids(_REGISTRY, prefix="v2v")
 
 
 def build_local_model(arch_id: str, *, in_channels: int, width_mult: float = 1.0):

@@ -22,7 +22,7 @@ DL-Hub 的注册数量回答“统一接口能构建多少个 ID”，保真度�
 
 ## 首批结果
 
-本轮优先检查先前数值审核暴露出的高风险区域，共 **11 个审计组、60 个源码入口**：
+本轮优先检查先前数值审核暴露出的高风险区域，共 **13 个审计组、80 个源码入口**：
 
 | 审计组 | 等级 | 入口数 | 当前源码结论 |
 |:-------|:-----|------:|:-------------|
@@ -37,12 +37,14 @@ DL-Hub 的注册数量回答“统一接口能构建多少个 ID”，保真度�
 | SegmentFormer-Sum | `compact` | 1 | 已有多窗口 segment pooling，但没有 Transformer 交互 |
 | CLIP-CoSeg | `compact` | 1 | 已支持文本特征与归一化图文相似度调制；尚无预训练 CLIP 编码器、tokenizer 与对比预训练 |
 | Token-Affinity CoSeg | `compact` | 1 | 有图像级描述子注意力，但没有空间 token-to-token affinity |
+| Blur Detection | `baseline-alias` | 10 | 全部委托给 `TinyBlurDetector`；多个论文/算子标签走相同分支，其余只切换局部模式 |
+| Crack Detection | `baseline-alias` | 10 | 全部委托给 `TinyCrackDetector`；缺少 U-Net、FPN、HED、轮廓与骨架等命名机制 |
 
 `reference` 当前为 0 个已审计组。这不表示仓库中不存在参考级实现，只表示本轮没有在缺少完整核对时提前授予该等级。
 
 ## 可复核接口
 
-台账源位于 `dlhub/zoo_fidelity.py`，包含稳定 key、等级、源码路径、缺失机制、证据和下一步。CLI 不导入或运行模型：
+台账源位于 `dlhub/zoo_fidelity.py`，包含稳定 key、等级、源码路径、缺失机制、证据和下一步。普通查询不导入模型；`--check` 只导入注册表统计 ID，不实例化或运行模型：
 
 ```bash
 # 校验 key、等级、证据和源码路径
@@ -58,6 +60,8 @@ python scripts/model_fidelity.py --json
 ```
 
 CI 通过 `make fidelity` 执行同一校验。新增注册族时不会自动获得任何等级；完成源码核对后，才把记录加入台账。
+
+校验同时计算“审计压力”：`全部注册 ID / 已审计源码入口`。上限锁定在本轮债务基线 **8611 / 80 = 107.64**，因此即使只增加一个注册 ID，只要没有同步增加已审计源码入口，CI 就会失败。这个上限是只降不升的债务棘轮，不是质量目标；修复方式只能是补充有证据的源码审计，或减少没有足够支撑的注册项。
 
 ## 后续优化顺序
 

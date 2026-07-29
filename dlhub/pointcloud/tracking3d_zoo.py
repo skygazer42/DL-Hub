@@ -19,16 +19,9 @@ class UnknownLocalArch(KeyError):
 
 
 def _split_arch_id(arch_id: str) -> tuple[str, str]:
-    arch_id = str(arch_id).strip()
-    if ":" not in arch_id:
-        return "pctrk3d", arch_id
+    from dlhub.zoo_registry import split_arch_id
 
-    prefix, name = arch_id.split(":", 1)
-    prefix = prefix.strip().lower()
-    name = name.strip()
-    if not prefix or not name:
-        raise ValueError(f"Invalid arch id: {arch_id!r}")
-    return prefix, name
+    return split_arch_id(arch_id, default_prefix="pctrk3d")
 
 
 Builder = Callable[[BuildConfig], object]
@@ -146,7 +139,9 @@ _REGISTRY = _registry()
 
 
 def list_local_arches() -> list[str]:
-    return [f"pctrk3d:{name}" for name in sorted(_REGISTRY)]
+    from dlhub.zoo_registry import list_arch_ids
+
+    return list_arch_ids(_REGISTRY, prefix="pctrk3d")
 
 
 def build_local_model(

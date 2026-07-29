@@ -37,6 +37,11 @@ hide:
 </div>
 
 <div class="stat-card" markdown>
+<span class="stat-number">80</span>
+<span class="stat-label">已审计 Zoo 源码</span>
+</div>
+
+<div class="stat-card" markdown>
 <span class="stat-number">31</span>
 <span class="stat-label">ML 算法</span>
 </div>

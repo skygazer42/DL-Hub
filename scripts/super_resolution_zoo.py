@@ -10,43 +10,15 @@ def _ensure_repo_root_on_path() -> None:
 
 
 def _summarize(obj) -> str:
-    try:
-        import torch
-    except Exception:
-        return f"{type(obj).__name__}"
+    from dlhub.cli_utils import summarize_output
 
-    if isinstance(obj, torch.Tensor):
-        return f"Tensor(shape={tuple(obj.shape)}, dtype={obj.dtype}, device={obj.device})"
-    if isinstance(obj, dict):
-        keys = ", ".join(sorted(map(str, obj.keys())))
-        return f"dict(keys=[{keys}])"
-    if isinstance(obj, list | tuple):
-        head = ", ".join(_summarize(x) for x in obj[:2])
-        tail = "" if len(obj) <= 2 else f", ... (+{len(obj) - 2})"
-        return f"{type(obj).__name__}([{head}{tail}])"
-    return f"{type(obj).__name__}"
+    return summarize_output(obj)
 
 
 def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
-    rows = list(lines)
-    limit = int(limit)
-    if limit <= 0:
-        return
-    if len(rows) <= limit:
-        for row in rows:
-            print(row)
-        return
-    if limit <= 20:
-        for row in rows[:limit]:
-            print(row)
-        print(f"... ({len(rows) - limit} more) ...")
-        return
-    head = limit - 10
-    for row in rows[:head]:
-        print(row)
-    print(f"... ({len(rows) - limit} more) ...")
-    for row in rows[-10:]:
-        print(row)
+    from dlhub.cli_utils import print_limited
+
+    print_limited(lines, limit=limit)
 
 
 def parse_args() -> argparse.Namespace:
@@ -59,7 +31,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--limit", type=int, default=80, help="Max lines to print when listing.")
     parser.add_argument(
-        "--smoke", type=str, default=None, metavar="ARCH_ID", help="Run a forward smoke on an arch id."
+        "--smoke",
+        type=str,
+        default=None,
+        metavar="ARCH_ID",
+        help="Run a forward smoke on an arch id.",
     )
     parser.add_argument("--batch-size", type=int, default=2, help="Batch size for smoke inputs.")
     parser.add_argument("--image-size", type=int, default=16, help="Low-resolution image size.")

@@ -4,8 +4,8 @@ Three layers:
 1. Stats blocks in managed files must match freshly computed values.
 2. Known-stale numbers that used to contradict each other must not
    reappear anywhere in the core pages.
-3. Computed stats must not silently shrink below the audited baseline
-   (2026-07-26: 339 lessons, 791/814/64 zoo IDs, ...).
+3. Stable learning-content stats must not silently shrink. Zoo registration
+   growth is governed by the fidelity-audit budget instead of count targets.
 """
 
 import re
@@ -83,20 +83,12 @@ def test_no_stale_numbers_in_core_pages() -> None:
     assert not offenders, "Stale hand-written stats found:\n" + "\n".join(offenders)
 
 
-# Audited 2026-07-26. These are >= so the catalog can grow; a drop means
-# something was deleted or a registry broke.
-_BASELINE = {
+# Audited 2026-07-26. Registration and family counts intentionally do not
+# appear here: a larger catalog is not, by itself, a quality improvement.
+_NON_REGISTRATION_BASELINE = {
     "test_files": 400,
     "ml_algorithms": 31,
-    "vision_zoo_ids": 791,
     "vision_backbone_modules": 220,
-    "nlp_zoo_ids": 814,
-    "pointcloud_zoo_ids": 64,
-    "vlm_families": 70,
-    "gan_families": 44,
-    "diffusion_families": 32,
-    "federated_families": 76,
-    "total_zoo_ids": 8600,
 }
 
 _LESSON_BASELINE = {
@@ -115,8 +107,10 @@ def test_stats_lower_bounds(stats) -> None:
     assert stats.lessons_total >= 339
     for track, minimum in _LESSON_BASELINE.items():
         assert stats.lessons_by_track[track] >= minimum, track
-    for name, minimum in _BASELINE.items():
+    for name, minimum in _NON_REGISTRATION_BASELINE.items():
         assert getattr(stats, name) >= minimum, name
+    assert stats.zoo_modules > 0
+    assert stats.total_zoo_ids > 0
 
 
 def test_family_counting_matches_variant_structure(stats) -> None:
