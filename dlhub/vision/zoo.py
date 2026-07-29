@@ -44,10 +44,13 @@ def _import_timm():
         raise DependencyNotAvailable(f"timm import failed: {exc}") from exc
 
 
-def _call_with_supported_kwargs(fn, /, **kwargs):
-    params = set(inspect.signature(fn).parameters)
-    filtered = {k: v for k, v in kwargs.items() if k in params}
-    return fn(**filtered)
+def _call_with_supported_kwargs(fn, /, *args, **kwargs):
+    params = inspect.signature(fn).parameters
+    accepts_extra_kwargs = any(
+        param.kind is inspect.Parameter.VAR_KEYWORD for param in params.values()
+    )
+    filtered = kwargs if accepts_extra_kwargs else {k: v for k, v in kwargs.items() if k in params}
+    return fn(*args, **filtered)
 
 
 def list_torchvision_arches() -> TorchvisionArches:

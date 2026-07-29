@@ -37,6 +37,32 @@ def test_vision_zoo_can_build_classifier_model_smoke() -> None:
     assert tuple(y.shape) == (2, 4)
 
 
+def test_timm_builder_filters_unsupported_kwargs(monkeypatch: pytest.MonkeyPatch) -> None:
+    from dlhub.vision import zoo
+
+    received: dict[str, object] = {}
+    sentinel = object()
+
+    class FakeTimm:
+        @staticmethod
+        def create_model(name: str, *, pretrained: bool, num_classes: int):
+            received.update(
+                name=name,
+                pretrained=pretrained,
+                num_classes=num_classes,
+            )
+            return sentinel
+
+    monkeypatch.setattr(zoo, "_import_timm", lambda: FakeTimm)
+
+    assert zoo.build_timm_model("timm:example", num_classes=4) is sentinel
+    assert received == {
+        "name": "example",
+        "pretrained": False,
+        "num_classes": 4,
+    }
+
+
 def test_vision_zoo_can_build_quantized_classifier_model_smoke() -> None:
     import torchvision
     from torchvision.models import list_models
