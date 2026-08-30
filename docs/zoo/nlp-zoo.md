@@ -4,7 +4,12 @@ icon: material/text
 
 # NLP Zoo
 
-> **49 算法族 / 814 Architecture IDs** --- 覆盖 Transformer、RNN、CNN、MLP 等全部主流文本编码器架构。
+> **49 个注册组 / 814 个注册 ID** --- 索引 Transformer、RNN、CNN、MLP 等文本编码方法和
+> 参数化构建配置；注册数量不等于独立论文实现数量。
+
+!!! warning "方法时间线与实现等级分开"
+
+    下表“标签所指创新”描述原方法；当前源码是否保留该机制，以[保真度审计](fidelity.md)为准。
 
 ---
 
@@ -23,7 +28,7 @@ python scripts/nlp_zoo.py --smoke nl:bert_base
 
 ---
 
-## 架构分类总览
+## 方法注册分类总览
 
 | 类别 | 代表算法 | 说明 |
 |:-----|:---------|:----|
@@ -40,7 +45,7 @@ python scripts/nlp_zoo.py --smoke nl:bert_base
 
 Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | BERT | bert_tiny/mini/small/base/large | Masked Language Model + Next Sentence Prediction |
 | GPT | gpt_small/medium/large/xl | 自回归语言模型，单向 Attention |
@@ -67,7 +72,7 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 
 针对标准 Transformer 的 $O(n^2)$ Attention 复杂度进行优化。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | Performer | performer_small/base/large | FAVOR+ 随机特征近似 Softmax Attention |
 | Nystromformer | nystromformer_base | Nystrom 方法近似 Attention 矩阵 |
@@ -90,7 +95,7 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 
 循环神经网络在序列建模中仍有广泛应用，尤其在资源受限场景下。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | LSTM | lstm_1L/2L/3L_128/256/512 | 门控机制解决梯度消失 |
 | GRU | gru_1L/2L/3L_128/256/512 | 简化门控，参数更少 |
@@ -106,7 +111,7 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 
 卷积编码器以固定感受野捕获局部 n-gram 特征，推理速度快。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | TextCNN | textcnn_k3/k4/k5/multi | 多尺度 1D 卷积 + Max Pooling |
 | InceptionCNN | inceptioncnn_small/base | Inception-style 多尺度并行卷积 |
@@ -120,7 +125,7 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 
 纯 MLP 架构在 NLP 中的探索。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | gMLP | gmlp_tiny/small/base | Spatial Gating Unit 替代 Attention |
 | ResMLP | resmlp_12/24/36 | 残差 MLP + Cross-patch Sublayer |
@@ -132,7 +137,7 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
 
 面向高吞吐、低延迟场景的轻量文本模型。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | FastText | fasttext_base | 浅层模型 + n-gram 特征，极速训练 |
 | WaveNet | wavenet_nlp_small/base | 因果扩张卷积 (Dilated Causal Conv) |
@@ -154,7 +159,7 @@ Transformer 架构自 2017 年提出以来已成为 NLP 领域的绝对主流。
     # model(input_ids) -> logits [B, 4]
     ```
 
-=== "列出全部架构"
+=== "列出全部注册 ID"
 
     ```python
     from dlhub.nlp.local_zoo import list_local_arches

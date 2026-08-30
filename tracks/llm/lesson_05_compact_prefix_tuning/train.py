@@ -36,9 +36,7 @@ class TrainConfig:
 
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
-    parser = argparse.ArgumentParser(
-        description="Lesson 02 (LLM): compact chat-format supervised fine-tuning."
-    )
+    parser = argparse.ArgumentParser(description="Lesson 05 (LLM): compact prefix tuning.")
 
     parser.add_argument("--num-samples", type=int, default=4096)
     parser.add_argument("--batch-size", type=int, default=64)
@@ -162,8 +160,10 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
     set_seed(train_cfg.seed)
     device_info = resolve_device(train_cfg.device)
 
-    paths = build_run_paths(track="llm", lesson="lesson_02_compact_chat_sft", run_name=train_cfg.run_name)
-    logger = get_logger("llm.compact_chat_sft", log_file=paths.logs_dir / "train.log")
+    paths = build_run_paths(
+        track="llm", lesson="lesson_05_compact_prefix_tuning", run_name=train_cfg.run_name
+    )
+    logger = get_logger("llm.compact_prefix_tuning", log_file=paths.logs_dir / "train.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
@@ -253,7 +253,11 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         model=model,
         optimizer=optimizer,
         epoch=int(train_cfg.epochs),
-        extra={"track": "llm", "lesson": "lesson_02_compact_chat_sft", "vocab_size": vocab.size},
+        extra={
+            "track": "llm",
+            "lesson": "lesson_05_compact_prefix_tuning",
+            "vocab_size": vocab.size,
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0
@@ -263,7 +267,7 @@ def main() -> int:
     if __package__ is None:
         raise RuntimeError(
             "Please run this lesson from the repo root as a module:\n"
-            "  python -m tracks.llm.lesson_02_compact_chat_sft.train"
+            "  python -m tracks.llm.lesson_05_compact_prefix_tuning.train"
         )
     train_cfg, data_cfg = parse_args()
     return run_training(train_cfg, data_cfg)

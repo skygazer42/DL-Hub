@@ -195,7 +195,7 @@ def list_local_arches() -> list[str]:
     out: list[str] = []
     out.extend([f"dlactv:{name}" for name in sorted(_VIDEO_REGISTRY)])
     out.extend([f"dlacts:{name}" for name in sorted(_SKELETON_REGISTRY)])
-    return out
+    return sorted(out)
 
 
 def build_local_model(

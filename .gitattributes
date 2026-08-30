@@ -1,0 +1,61 @@
+# Keep repository text deterministic across Linux, macOS, and Windows.
+* text=auto eol=lf
+
+# Explicit text formats avoid relying on Git's content heuristics.
+*.py text eol=lf
+*.pyi text eol=lf
+*.md text eol=lf
+*.rst text eol=lf
+*.txt text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.sh text eol=lf
+*.m text eol=lf
+*.tex text eol=lf
+*.svg text eol=lf
+Makefile text eol=lf
+*.mk text eol=lf
+
+# Preserve the original GBK bytes of these historical MATLAB sources.
+optimization/ACO/ACO_TSO/DrawRoute.m -text -eol
+optimization/ACO/ACO_TSO/main.m -text -eol
+optimization/AHP/ahp_common.m -text -eol
+optimization/GA/Variation.m -text -eol
+optimization/GA/crossover.m -text -eol
+optimization/GA/m_Coding.m -text -eol
+optimization/GA/m_Fitness.m -text -eol
+optimization/GA/m_Fun.m -text -eol
+optimization/GA/m_Incoding.m -text -eol
+optimization/GA/m_Select.m -text -eol
+optimization/GA/main.m -text -eol
+
+# Images, documents, archives, checkpoints, and serialized arrays are binary.
+*.png binary -eol
+*.jpg binary -eol
+*.jpeg binary -eol
+*.gif binary -eol
+*.webp binary -eol
+*.ico binary -eol
+*.pdf binary -eol
+*.eps binary -eol
+*.gz binary -eol
+*.tgz binary -eol
+*.tar binary -eol
+*.zip binary -eol
+*.7z binary -eol
+*.pt binary -eol
+*.pth binary -eol
+*.ckpt binary -eol
+*.onnx binary -eol
+*.safetensors binary -eol
+*.npy binary -eol
+*.npz binary -eol
+*.pkl binary -eol
+*.pickle binary -eol

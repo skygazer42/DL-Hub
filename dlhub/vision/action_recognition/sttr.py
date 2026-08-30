@@ -70,8 +70,12 @@ class STTRSkeletonClassifier(nn.Module):
             norm_first=True,
         )
 
-        self.spatial = nn.TransformerEncoder(spatial_layer, num_layers=d)
-        self.temporal = nn.TransformerEncoder(temporal_layer, num_layers=d)
+        self.spatial = nn.TransformerEncoder(
+            spatial_layer, num_layers=d, enable_nested_tensor=False
+        )
+        self.temporal = nn.TransformerEncoder(
+            temporal_layer, num_layers=d, enable_nested_tensor=False
+        )
 
         self.norm = nn.LayerNorm(e)
         self.dropout = nn.Dropout(float(dropout))

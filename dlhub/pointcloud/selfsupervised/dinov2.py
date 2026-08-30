@@ -139,7 +139,9 @@ class PatchTransformer(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(enc_layer, num_layers=int(depth))
+        self.encoder = nn.TransformerEncoder(
+            enc_layer, num_layers=int(depth), enable_nested_tensor=False
+        )
         self.norm = nn.LayerNorm(int(d))
 
         nn.init.trunc_normal_(self.cls_token, std=0.02)

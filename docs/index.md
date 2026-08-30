@@ -37,7 +37,7 @@ hide:
 </div>
 
 <div class="stat-card" markdown>
-<span class="stat-number">80</span>
+<span class="stat-number">232</span>
 <span class="stat-label">已审计 Zoo 源码</span>
 </div>
 
@@ -143,7 +143,7 @@ Causal LM + 50+ 论文笔记
 
 ### :material-image-text: Multimodal
 
-CLIP→LLaVA，20 VLM 架构
+CLIP→LLaVA，210 注册 ID / 70 注册组
 
 视觉-语言多模态学习，从 CLIP 对比学习到 LLaVA 视觉问答。
 

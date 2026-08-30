@@ -25,6 +25,7 @@ class TrainConfig:
     seed: int = 42
     device: str = "auto"
     max_train_batches: int | None = None
+    max_eval_batches: int | None = None
     run_name: str = "dev"
 
 
@@ -47,6 +48,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--run-name", type=str, default="dev")
     parser.add_argument("--max-train-batches", type=int, default=None)
+    parser.add_argument("--max-eval-batches", type=int, default=None)
 
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--num-workers", type=int, default=0)
@@ -68,6 +70,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
         seed=args.seed,
         device=args.device,
         max_train_batches=args.max_train_batches,
+        max_eval_batches=args.max_eval_batches,
         run_name=args.run_name,
     )
     data_cfg = DataConfig(
@@ -114,7 +117,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
         },
     )
 
-    train_loader, _ = get_dataloaders(data_cfg)
+    train_loader, val_loader = get_dataloaders(data_cfg)
     bundle = ConditionalGAN(model_cfg).to(device_info.torch_device)
     gen = bundle.generator
     disc = bundle.discriminator
@@ -174,14 +177,57 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig, model_cfg: ModelC
 
         d_loss_avg = d_loss_total / max(1, seen)
         g_loss_avg = g_loss_total / max(1, seen)
+
+        gen.eval()
+        disc.eval()
+        val_d_loss_total = 0.0
+        val_g_loss_total = 0.0
+        val_seen = 0
+        with torch.no_grad():
+            for batch_idx, (real_images, labels) in enumerate(val_loader):
+                if (
+                    train_cfg.max_eval_batches is not None
+                    and batch_idx >= train_cfg.max_eval_batches
+                ):
+                    break
+
+                real_images = real_images.to(device_info.torch_device)
+                labels = labels.to(device_info.torch_device).long()
+                bsz = int(real_images.size(0))
+                val_seen += bsz
+
+                real_targets = torch.ones(bsz, device=device_info.torch_device)
+                fake_targets = torch.zeros(bsz, device=device_info.torch_device)
+                z = torch.randn(bsz, model_cfg.z_dim, device=device_info.torch_device)
+                fake_images = gen(z, labels)
+                val_d_loss = bce(disc(real_images, labels), real_targets) + bce(
+                    disc(fake_images, labels), fake_targets
+                )
+                val_g_loss = bce(disc(fake_images, labels), real_targets)
+                val_d_loss_total += float(val_d_loss.item()) * bsz
+                val_g_loss_total += float(val_g_loss.item()) * bsz
+
+        val_d_loss_avg = val_d_loss_total / max(1, val_seen)
+        val_g_loss_avg = val_g_loss_total / max(1, val_seen)
         logger.info(
-            "Epoch %d/%d | d_loss %.4f | g_loss %.4f",
+            "Epoch %d/%d | d_loss %.4f | g_loss %.4f | val_d_loss %.4f | val_g_loss %.4f",
             epoch,
             train_cfg.epochs,
             d_loss_avg,
             g_loss_avg,
+            val_d_loss_avg,
+            val_g_loss_avg,
         )
-        append_jsonl(metrics_path, {"epoch": epoch, "d_loss": d_loss_avg, "g_loss": g_loss_avg})
+        append_jsonl(
+            metrics_path,
+            {
+                "epoch": epoch,
+                "d_loss": d_loss_avg,
+                "g_loss": g_loss_avg,
+                "val_d_loss": val_d_loss_avg,
+                "val_g_loss": val_g_loss_avg,
+            },
+        )
 
         with torch.no_grad():
             samples = gen(fixed_z, fixed_labels).cpu()

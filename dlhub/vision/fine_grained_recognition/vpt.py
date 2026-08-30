@@ -60,7 +60,9 @@ class PromptedPatchEncoder(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(layer, num_layers=int(depth))
+        self.encoder = nn.TransformerEncoder(
+            layer, num_layers=int(depth), enable_nested_tensor=False
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # Returns token sequence: [CLS] + [PROMPTS...] + [PATCHES...]

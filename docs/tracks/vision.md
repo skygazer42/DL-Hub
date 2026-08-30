@@ -227,8 +227,10 @@ MNIST 课程支持 `--dataset fake`，其余 synthetic 课程默认使用内置�
 
 ## Vision Backbone Zoo
 
-!!! note "791 注册 ID 可供切换"
-    Vision Zoo 包含 **220 个模块 / 791 个注册 ID**，所有 backbone 均为纯 PyTorch 本地实现，支持通过 `--arch` 参数一行切换。
+!!! note "791 个本地构建配置"
+    Vision Zoo 提供 **220 个源码模块 / 791 个注册 ID**，支持通过 `--arch` 参数切换构建入口；
+    模块名和注册名不自动证明论文机制完整，具体等级以
+    [Model Zoo 保真度审计](../zoo/fidelity.md)为准。
 
 ```bash
 # 列出所有可用架构

@@ -4,24 +4,32 @@ icon: material/creation
 
 # Generative Zoo
 
-> **76 算法族** --- 覆盖 GAN（44 族 / 132 IDs）与 Diffusion（32 族 / 96 IDs）两大生成模型体系，提供可离线运行的纯 PyTorch 实现；具体实现等级以保真度审计为准。
+> **76 个方法注册组** --- GAN（44 组 / 132 IDs）与 Diffusion（32 组 / 96 IDs）的本地构建
+> 入口；注册标签不等于对应论文的独立实现。
+
+!!! warning "时间线标签与当前计算机制分开"
+
+    下表“标签所指创新”描述原方法。Diffusion 公共核心已支持显式 noisy state、timestep、条件、
+    三类 denoiser 与多步 schedule；10 个代表入口为 `compact`，其余 22 个仍是
+    `baseline-alias`。逐源码等级以[保真度审计](fidelity.md)和
+    [baseline 清单](baseline-inventory.json)为准。
 
 ---
 
 ## GAN Zoo
 
-> 44 算法族 / 132 Architecture IDs，每族 `tiny/small/base` 三档变体（`gan:` 前缀）。
+> 44 个注册组 / 132 个注册 ID，每组 `tiny/small/base` 三档配置（`gan:` 前缀）。
 
 ### CLI 快速上手
 
 ```bash
-# 列出全部 132 个 GAN 架构 ID
+# 列出全部 132 个 GAN 注册 ID
 python scripts/gan_zoo.py --list
 
 # 模糊搜索
 python scripts/gan_zoo.py --search stylegan
 
-# Smoke Test（前向推理验证）
+# 前向契约检查（`--smoke` 为兼容选项名）
 python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 ```
 
@@ -39,7 +47,7 @@ python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 
 !!! note "变体命名说明"
 
-    下文表格中的「关键变体」（如 `dcgan_64`）为该家族在原论文中的代表分辨率 / 配置，
+    下文表格中的「关键变体」（如 `dcgan_64`）为该方法在原论文中的代表分辨率 / 配置，
     仓库内实际架构 ID 统一为 `gan:<family>_{tiny,small,base}` 三档（如 `gan:dcgan_tiny`）。
 
 ---
@@ -48,7 +56,7 @@ python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 
 基础对抗生成网络，侧重训练稳定性与生成质量。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | DCGAN | dcgan_32, dcgan_64, dcgan_128 | 全卷积 GAN + BatchNorm 训练稳定化 |
 | WGAN | wgan_32, wgan_64 | Wasserstein 距离替代 JS 散度，缓解模式崩溃 |
@@ -60,7 +68,7 @@ python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 
 引入条件信息控制生成过程。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | cGAN | cgan_mlp, cgan_conv | 条件标签 Concatenation 控制生成 |
 | ACGAN | acgan_32, acgan_64 | 辅助分类器监督 + 条件生成 |
@@ -71,7 +79,7 @@ python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 
 跨域图像转换与风格迁移。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | CycleGAN | cyclegan_256, cyclegan_512 | 无配对图像翻译 + Cycle Consistency Loss |
 | StarGAN | stargan_128, stargan_256 | 单一生成器多域翻译 |
@@ -82,7 +90,7 @@ python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 
 渐进式训练与风格控制的高保真生成。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | ProGAN | progan_256, progan_512, progan_1024 | 渐进式分辨率增长训练 |
 | StyleGAN | stylegan_256, stylegan_512, stylegan_1024 | Mapping Network + Adaptive Instance Norm |
@@ -93,7 +101,7 @@ python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 
 面向数据稀缺或低算力场景的高效 GAN。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | LightGAN | lightgan_256 | 轻量化生成器 + Skip-Layer Excitation |
 | FastGAN | fastgan_256, fastgan_512 | 少样本 (~100 张) 高效训练 |
@@ -108,18 +116,18 @@ python scripts/gan_zoo.py --smoke gan:dcgan_tiny
 
 ## Diffusion Zoo
 
-> 32 算法族 / 96 Architecture IDs，每族 `tiny/small/base` 三档变体（`diff:` 前缀）。
+> 32 个注册组 / 96 个注册 ID，每组 `tiny/small/base` 三档配置（`diff:` 前缀）。
 
 ### CLI 快速上手
 
 ```bash
-# 列出全部 96 个 Diffusion 架构 ID
+# 列出全部 96 个 Diffusion 注册 ID
 python scripts/diffusion_zoo.py --list
 
 # 模糊搜索
 python scripts/diffusion_zoo.py --search ddpm
 
-# Smoke Test（前向推理验证）
+# 前向契约检查（`--smoke` 为兼容选项名）
 python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 ```
 
@@ -136,7 +144,7 @@ python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 
 !!! note "变体命名说明"
 
-    下文表格中的「关键变体」（如 `ddpm_cifar10`）为该家族在原论文中的代表配置，
+    下文表格中的「关键变体」（如 `ddpm_cifar10`）为该方法在原论文中的代表配置，
     仓库内实际架构 ID 统一为 `diff:<family>_{tiny,small,base}` 三档（如 `diff:ddpm_tiny`）。
 
 ---
@@ -145,7 +153,7 @@ python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 
 扩散概率模型的理论基石。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | DDPM | ddpm_cifar10, ddpm_celeba, ddpm_lsun | 去噪扩散概率模型，$T$ 步加噪 + 逆向去噪 |
 | DDIM | ddim_cifar10, ddim_celeba | 非马尔可夫采样，确定性生成 + 加速采样 |
@@ -165,7 +173,7 @@ python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 
 通过引导信号控制生成方向。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | Classifier-Guided | cg_diffusion_base | 外部分类器梯度引导采样 |
 | Classifier-Free | cfg_diffusion_base | 无需分类器，条件/无条件联合训练 + 引导比例 $w$ |
@@ -180,7 +188,7 @@ python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 
 在低维隐空间执行扩散过程，大幅提升效率。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | Latent Diffusion | ldm_kl_4, ldm_kl_8, ldm_vq_4 | Autoencoder 压缩 + 隐空间 DDPM |
 | Stable Diffusion | sd_v1_4, sd_v1_5, sd_v2_1 | LDM + CLIP 文本条件，开源文生图里程碑 |
@@ -189,7 +197,7 @@ python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 
 将采样步数从数百/千步压缩至极少步。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | DPM-Solver | dpm_solver_1, dpm_solver_2, dpm_solver_3, dpm_solver_pp | 高阶 ODE Solver，10~20 步高质量生成 |
 | Consistency Models | cm_ct, cm_cd | 一致性映射，单步生成 + 可选多步细化 |
@@ -198,13 +206,13 @@ python scripts/diffusion_zoo.py --smoke diff:ddpm_tiny
 
 ## 用法示例
 
-=== "GAN Smoke Test"
+=== "GAN 前向契约检查"
 
     ```bash
     python scripts/gan_zoo.py --smoke gan:wgangp_tiny
     ```
 
-=== "Diffusion Smoke Test"
+=== "Diffusion 前向契约检查"
 
     ```bash
     python scripts/diffusion_zoo.py --smoke diff:ddim_tiny

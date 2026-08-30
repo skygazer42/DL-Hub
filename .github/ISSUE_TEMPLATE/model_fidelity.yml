@@ -1,0 +1,108 @@
+name: Model Zoo 保真度审计
+description: 报告保真度分类、源码证据或关键机制缺口
+title: "[Fidelity]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        注册 ID 表示可寻址配置，不等于独立论文复现数量。`baseline-alias` 明确表示论文/方法名委托给通用基线，不能作为论文机制复现或 benchmark 复现宣传。
+        安全问题不要在这里公开，请按仓库的 [安全政策](https://github.com/skygazer42/DL-Hub/security/policy) 私下报告。
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已阅读实现契约与 Model Zoo 保真度审计页，并搜索现有 Issue。
+          required: true
+        - label: 这不是安全漏洞；如有疑问，我会先私下报告。
+          required: true
+
+  - type: dropdown
+    id: report_type
+    attributes:
+      label: 报告类型
+      options:
+        - 当前等级可能不准确
+        - 关键机制或证据缺失
+        - 审计路径或注册映射错误
+        - 提议升级实现等级
+        - 其他保真度问题
+    validations:
+      required: true
+
+  - type: input
+    id: audit_target
+    attributes:
+      label: 审计 key、注册 ID 或源码路径
+      placeholder: vision.detection.detr-paper-labels
+    validations:
+      required: true
+
+  - type: dropdown
+    id: current_level
+    attributes:
+      label: 当前或推测等级
+      options:
+        - reference
+        - compact
+        - baseline-alias
+        - unreviewed
+        - 不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: 当前实现路径
+      description: 从注册入口追踪到实际构建函数和计算路径，指出共享 baseline 或 family 分支。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_mechanism
+    attributes:
+      label: 所指方法的关键机制
+      description: 给出论文、官方实现或稳定技术资料的公开链接，并准确概括需要核对的机制。
+    validations:
+      required: true
+
+  - type: textarea
+    id: source_evidence
+    attributes:
+      label: 源码证据与缺口
+      description: 列出文件、符号和可观察行为，并区分已实现机制与仍缺失机制。
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior_test
+    attributes:
+      label: 最小行为验证
+      description: 说明什么针对性测试能证明机制真实参与计算；仅检查输出形状或前向成功不够。
+    validations:
+      required: true
+
+  - type: textarea
+    id: commands
+    attributes:
+      label: 已运行命令与结果
+      placeholder: |
+        python scripts/model_fidelity.py --show <key>
+        make fidelity
+        pytest -q <targeted-test>
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: claims
+    attributes:
+      label: 保真度声明确认
+      options:
+        - label: 我不会用改名、复制文件、增加注册 ID、随机输入前向或 smoke 通过来证明等级升级。
+          required: true
+        - label: 我不会把 baseline-alias 描述成对应论文机制复现。
+          required: true
+        - label: 如主张 benchmark 复现，我会另行提供数据版本、训练预算、评估协议、权重和结果。
+          required: true

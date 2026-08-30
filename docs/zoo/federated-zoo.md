@@ -4,7 +4,8 @@ icon: material/server-network
 
 # 联邦学习 Zoo
 
-> **76 策略族 / 228 Architecture IDs** --- 覆盖优化、个性化、公平性、隐私、压缩、安全聚合等联邦学习全链路策略（每族 `tiny/small/base` 三档变体，`dlfed:` 前缀）；具体实现等级以保真度审计为准。
+> **76 个策略注册组 / 228 个注册 ID** --- 索引优化、个性化、公平性、隐私、压缩和安全聚合
+> 方法，每组 `tiny/small/base` 三档配置；是否包含方法关键公式以源码审计为准。
 
 ---
 
@@ -44,8 +45,8 @@ python scripts/federated_zoo.py --smoke dlfed:fedavg_tiny
 | Compression | FedPAQ, STC | 通信压缩 |
 | Secure Aggregation | SecureAgg, LightSecAgg | 安全聚合协议 |
 
-上表列出 13 个分组中的 36 个代表策略；其余 40 个策略族（FedProx2、DP 系列扩展等）
-用 `python scripts/federated_zoo.py --list` 查看全部 76 族 / 228 个 ID。
+上表列出 13 个分组中的 36 个代表策略标签；其余 40 个策略注册组（FedProx2、DP 系列扩展等）
+用 `python scripts/federated_zoo.py --list` 查看全部 76 个注册组 / 228 个 ID。
 
 ---
 

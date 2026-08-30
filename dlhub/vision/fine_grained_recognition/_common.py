@@ -182,7 +182,9 @@ class TinyPatchEncoder(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(layer, num_layers=int(depth))
+        self.encoder = nn.TransformerEncoder(
+            layer, num_layers=int(depth), enable_nested_tensor=False
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.patch_embed(x).flatten(2).transpose(1, 2)

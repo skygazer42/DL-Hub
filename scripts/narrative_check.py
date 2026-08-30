@@ -15,6 +15,16 @@ LESSON_REFERENCE = re.compile(
     r"(?P=separator)(?P<lesson>lesson_[a-z0-9_]+)",
     re.IGNORECASE,
 )
+ZOO_OVERCLAIM_PATTERNS = (
+    (re.compile(r"\bArchitecture IDs?\b", re.IGNORECASE), "use registration ID"),
+    (re.compile(r"算法族"), "use 方法标签 or 注册组"),
+    (re.compile(r"架构族"), "use 方法标签 or 注册组"),
+    (re.compile(r"完整的生成模型架构库"), "describe the registration timeline"),
+    (
+        re.compile(r"所有(?:实现|\s*backbone)均为纯 PyTorch", re.IGNORECASE),
+        "separate local source format from implementation fidelity",
+    ),
+)
 
 
 def iter_maintained_files() -> Iterable[Path]:
@@ -69,10 +79,44 @@ def check_lesson_references(paths: Iterable[Path]) -> list[str]:
     return failures
 
 
+def _is_core_zoo_page(relative: Path) -> bool:
+    if relative.as_posix() in {"README.md", "docs/index.md"}:
+        return True
+    return (
+        len(relative.parts) >= 3
+        and relative.parts[0] == "docs"
+        and relative.parts[1] in {"tracks", "zoo"}
+        and relative.suffix == ".md"
+    )
+
+
+def check_zoo_claims(paths: Iterable[Path], *, root: Path = ROOT) -> list[str]:
+    """Keep registration counts distinct from implementation/fidelity claims."""
+
+    failures: list[str] = []
+    for path in paths:
+        try:
+            relative = path.relative_to(root)
+        except ValueError:
+            continue
+        if not _is_core_zoo_page(relative):
+            continue
+        text = read_text(path)
+        for pattern, replacement in ZOO_OVERCLAIM_PATTERNS:
+            for match in pattern.finditer(text):
+                line = text.count("\n", 0, match.start()) + 1
+                failures.append(
+                    f"ambiguous Zoo claim in {relative.as_posix()}:{line}: "
+                    f"{match.group(0)!r}; {replacement}"
+                )
+    return failures
+
+
 def main() -> int:
     paths = sorted(set(iter_maintained_files()))
     failures = check_retired_label(paths)
     failures.extend(check_lesson_references(paths))
+    failures.extend(check_zoo_claims(paths))
 
     if failures:
         print("Narrative contract failed:")

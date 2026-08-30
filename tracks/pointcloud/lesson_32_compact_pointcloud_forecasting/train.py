@@ -99,6 +99,7 @@ def parse_args() -> tuple[TrainConfig, DataConfig, ModelConfig]:
     )
     model_cfg = ModelConfig(
         in_channels=3,
+        forecast_horizon=args.forecast_horizon,
         arch=args.arch,
         variant="",
         width_mult=args.width_mult,

@@ -4,14 +4,23 @@ icon: material/image-text
 
 # VLM Zoo
 
-> **70 算法族 / 210 Architecture IDs** --- 覆盖 2021-2025 年视觉-语言多模态模型的核心演进路线，从对比学习、指令微调到文档理解与端侧多模态（每族 `tiny/small/base` 三档变体）；具体实现等级以保真度审计为准。
+> **70 个方法注册组 / 210 个注册 ID** --- 索引 2021-2025 年视觉语言方法时间线，每个标签有
+> `tiny/small/base` 三档构建配置；不代表 70 个独立论文架构。
+
+!!! warning "12 个代表路径为 compact；58 个标签仍是 baseline-alias"
+
+    公共核心现已接收真实图像与 Token，并实现 dual encoder、single stream、cross-attention
+    fusion 和 query-token bridge 四条计算路径；12 个直接对应这些机制的代表入口列为 `compact`。
+    其余 58 个标签仍只映射到共享 mode/flag，不能视作命名论文模型复现。下表“标签所指创新”
+    描述原方法，不表示共享实现已经包含全部机制；具体状态以
+    [保真度审计](fidelity.md)和[baseline 清单](baseline-inventory.json)为准。
 
 ---
 
 ## CLI 快速上手
 
 ```bash
-# 列出全部 210 个 VLM 架构 ID（`vlm:` 前缀）
+# 列出全部 210 个 VLM 注册 ID（`vlm:` 前缀）
 python scripts/vlm_zoo.py --list
 
 # 模糊搜索
@@ -20,15 +29,15 @@ python scripts/vlm_zoo.py --search llava
 # 按年份查看演进时间线
 python scripts/vlm_zoo.py --timeline
 
-# Smoke Test（前向推理验证）
+# 前向契约检查（`--smoke` 为兼容选项名）
 python scripts/vlm_zoo.py --smoke vlm:clip_tiny
 ```
 
 ---
 
-## 核心 20 算法族（2021-2023 演进主线）
+## 核心 20 个方法标签（2021-2023 演进主线）
 
-| # | 算法族 | 年份 | 核心创新 |
+| # | 方法标签 | 年份 | 标签所指创新 |
 |:--|:------|:-----|:---------|
 | 1 | CLIP | 2021 | 对比学习对齐 Image-Text，零样本迁移能力开创性突破 |
 | 2 | ALIGN | 2021 | 大规模噪声 Image-Text 对训练，Dual Encoder 简洁架构 |
@@ -53,9 +62,10 @@ python scripts/vlm_zoo.py --smoke vlm:clip_tiny
 
 ---
 
-## 2024-2025 扩展算法族
+## 2024-2025 扩展方法标签
 
-在上述 20 个核心家族之外，Zoo 还收录了 50 个 2024-2025 年方向的家族，覆盖文档理解 / OCR（Kosmos-2.5, DocOwl2, OCRVLM）、图表与科学图像（ChartVLM, Science-VLM）、网页与界面理解（WebVLM）、视频（Video-Qwen-VL）、多模态代理（Agent-VL, Rabbit-VLM）、端侧轻量推理（EdgeVLM, Bunny）以及 InternVL2、XGen-MM、Aria、LLaMA-Vision、SigLIP-VLM、MixVLM 等通用升级路线。
+在上述 20 个核心标签之外，Zoo 还收录 50 个 2024-2025 年方法标签，覆盖文档理解 / OCR、
+图表与科学图像、网页与界面理解、视频、多模态代理和端侧推理等时间线方向。
 
 > 完整列表与变体见 `python scripts/vlm_zoo.py --list`，按年份浏览用 `--timeline`。
 
@@ -77,13 +87,13 @@ graph LR
 
 ---
 
-## 架构分类
+## 方法标签分类
 
 ### 对比学习 (Contrastive Learning)
 
 以 Image-Text 对比损失为核心的双塔模型。
 
-| 算法族 | 视觉编码器 | 文本编码器 | 特点 |
+| 方法标签 | 论文视觉编码器 | 论文文本编码器 | 标签所指特点 |
 |:------|:----------|:----------|:-----|
 | CLIP | ViT / ResNet | Transformer | 零样本迁移基线 |
 | ALIGN | EfficientNet | BERT | 18 亿噪声数据训练 |
@@ -93,7 +103,7 @@ graph LR
 
 先对齐表示空间，再通过 Cross-Attention 深度融合。
 
-| 算法族 | 核心机制 | 特点 |
+| 方法标签 | 论文核心机制 | 标签所指特点 |
 |:------|:---------|:-----|
 | ALBEF | Momentum Distillation | 动量蒸馏 + ITC/ITM/MLM |
 | BLIP | CapFilt | 噪声 Caption 自动过滤 |
@@ -103,7 +113,7 @@ graph LR
 
 将预训练视觉编码器与冻结 LLM 高效连接。
 
-| 算法族 | 桥接方式 | LLM |
+| 方法标签 | 论文桥接方式 | 论文 LLM |
 |:------|:---------|:----|
 | BLIP-2 | Q-Former | OPT / FlanT5 |
 | Flamingo | Perceiver Resampler | Chinchilla |
@@ -114,7 +124,7 @@ graph LR
 
 通过多任务指令数据增强模型的跟随能力。
 
-| 算法族 | 基座 | 关键数据 |
+| 方法标签 | 论文基座 | 论文关键数据 |
 |:------|:-----|:---------|
 | InstructBLIP | BLIP-2 | 多任务指令数据集 |
 | LLaVA | LLaMA | GPT-4 生成的视觉指令数据 |
@@ -125,7 +135,7 @@ graph LR
 ## 用法示例
 
 ```bash
-# 构建并前向验证任意家族的任意变体
+# 构建并前向验证任意注册标签的任意配置
 python scripts/vlm_zoo.py --smoke vlm:clip_tiny
 python scripts/vlm_zoo.py --smoke vlm:agent_vl_tiny
 ```

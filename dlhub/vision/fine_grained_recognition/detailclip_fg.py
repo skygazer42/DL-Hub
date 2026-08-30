@@ -61,7 +61,9 @@ class CompactTextPromptEncoder(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(layer, num_layers=int(depth))
+        self.encoder = nn.TransformerEncoder(
+            layer, num_layers=int(depth), enable_nested_tensor=False
+        )
 
     def forward(self) -> torch.Tensor:
         # Return normalized per-class embedding: (K, E)

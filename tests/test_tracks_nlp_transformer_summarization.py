@@ -73,6 +73,8 @@ def test_transformer_summarization_model_is_causal_and_decodes() -> None:
             dropout=0.0,
         )
     )
+    assert model.encoder.enable_nested_tensor is False
+    assert model.encoder.use_nested_tensor is False
     model.eval()
 
     out = model(

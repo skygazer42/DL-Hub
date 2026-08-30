@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/dl_hub_logo.png" width="64%" alt="DL-Hub logo" />
+<img src="https://raw.githubusercontent.com/skygazer42/DL-Hub/main/assets/dl_hub_logo.png" width="64%" alt="DL-Hub logo" />
 
 **从原理到实现 — 一站式 PyTorch 深度学习实践库**
 
@@ -9,13 +9,15 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
 [![NumPy](https://img.shields.io/badge/NumPy-1.24+-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org)
+[![Python CI](https://img.shields.io/github/actions/workflow/status/skygazer42/DL-Hub/python-ci.yml?branch=main&style=for-the-badge&label=Python%20CI)](https://github.com/skygazer42/DL-Hub/actions/workflows/python-ci.yml)
+[![Docs](https://img.shields.io/github/actions/workflow/status/skygazer42/DL-Hub/docs.yml?branch=main&style=for-the-badge&label=Docs)](https://github.com/skygazer42/DL-Hub/actions/workflows/docs.yml)
 [![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=for-the-badge&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/skygazer42/DL-Hub)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 <br/>
 
 <!-- stats:hero-badges -->
-**339 Lessons** · **8611 Model Zoo Registrations** · **80 Audited Zoo Sources** · **31 NumPy ML Algorithms**
+**339 Lessons** · **8611 Model Zoo Registrations** · **232 Audited Zoo Sources** · **31 NumPy ML Algorithms**
 <!-- /stats:hero-badges -->
 
 <br/>
@@ -77,7 +79,7 @@
 </table>
 
 <p align="center">
-  <img src="assets/2.png" width="80%" alt="DL-Hub 八大领域：Vision · NLP · GNN · Point Cloud · Generative · Multimodal · LLM · Federated" />
+  <img src="https://raw.githubusercontent.com/skygazer42/DL-Hub/main/assets/2.png" width="80%" alt="DL-Hub 八大领域：Vision · NLP · GNN · Point Cloud · Generative · Multimodal · LLM · Federated" />
 </p>
 <p align="center"><sub>① Vision — CNN / ViT 图像分类 · ② NLP — 文本分类 / NER · ③ GNN — 图神经网络 · ④ Point Cloud — 3D 点云 · ⑤ Generative — VAE / GAN · ⑥ Multimodal — VLM 视觉语言 · ⑦ LLM — 大语言模型 · ⑧ Federated — 联邦学习</sub></p>
 
@@ -109,7 +111,7 @@
 git clone https://github.com/skygazer42/DL-Hub.git
 cd DL-Hub
 # PyTorch 的 CPU/CUDA 安装命令见下方安装指南；随后安装 Vision 赛道依赖
-pip install -e ".[vision]"
+python -m pip install -e ".[vision]"
 
 # 精选冒烟测试（覆盖 8 个 track，用于验证环境）
 python scripts/smoke_check.py
@@ -161,7 +163,9 @@ DL-Hub 用一条完整链路组织每个主题：**问题定义 → 数据 → �
 
 因此，目录改名不是把旧标签换个外壳：课程需要连接真实的任务输入、损失、指标和输出；
 Model Zoo 注册 ID 也不会被描述成同等数量的论文复现。完整规则、升级路径和维护命令见
-[实现契约：从课程到可验证系统](docs/implementation-contract.md)。
+[实现契约：从课程到可验证系统](docs/implementation-contract.md)。339 门课程的数据/benchmark
+分级、历史全量运行证明和 7 门 MNIST 课程的真实数据执行方案见
+[数据与 Benchmark 证据](docs/benchmarks/index.md)；该方案当前明确标为“已定义、未执行”。
 
 ---
 
@@ -170,7 +174,7 @@ Model Zoo 注册 ID 也不会被描述成同等数量的论文复现。完整规
 不知道从哪开始？根据你的时间选择一条学习路线：
 
 <p align="center">
-  <img src="assets/3.png" width="85%" alt="8 Learning Tracks: Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal" />
+  <img src="https://raw.githubusercontent.com/skygazer42/DL-Hub/main/assets/3.png" width="85%" alt="8 Learning Tracks: Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal" />
 </p>
 <p align="center"><sub>Step 1–8 对应：Foundations → Vision → NLP → GNN → Point Cloud → Generative → LLM → Multimodal</sub></p>
 
@@ -210,7 +214,7 @@ Model Zoo 注册 ID 也不会被描述成同等数量的论文复现。完整规
 
 ## Model Zoo
 
-纯 PyTorch 本地实现的模型注册表，统一接口一行切换架构。完整的子系统总览、
+纯 PyTorch 本地构建入口注册表，统一接口一行切换配置。完整的子系统总览、
 研究方向清单和逐架构明细见 [docs/zoo/](docs/zoo/index.md)：
 
 <!-- stats:zoo-overview -->
@@ -219,26 +223,37 @@ Model Zoo 注册 ID 也不会被描述成同等数量的论文复现。完整规
 | Vision Zoo | 791 注册 ID / 220 模块 | [docs/zoo/vision-zoo.md](docs/zoo/vision-zoo.md) |
 | NLP Zoo | 814 注册 ID | [docs/zoo/nlp-zoo.md](docs/zoo/nlp-zoo.md) |
 | Point Cloud Zoo | 64 注册 ID | [docs/zoo/pointcloud-zoo.md](docs/zoo/pointcloud-zoo.md) |
-| VLM Zoo | 210 注册 ID / 70 架构族 | [docs/zoo/vlm-zoo.md](docs/zoo/vlm-zoo.md) |
-| GAN Zoo | 44 架构族 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
-| Diffusion Zoo | 32 架构族 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
-| Federated Zoo | 76 联邦策略族 | [docs/zoo/federated-zoo.md](docs/zoo/federated-zoo.md) |
-| **全部 123 个 zoo 模块合计** | **8611 注册 ID / 80 已审计源码入口** | [docs/zoo/](docs/zoo/index.md) |
+| VLM Zoo | 210 注册 ID / 70 注册组 | [docs/zoo/vlm-zoo.md](docs/zoo/vlm-zoo.md) |
+| GAN Zoo | 44 注册组 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
+| Diffusion Zoo | 32 注册组 | [docs/zoo/generative-zoo.md](docs/zoo/generative-zoo.md) |
+| Federated Zoo | 76 策略注册组 | [docs/zoo/federated-zoo.md](docs/zoo/federated-zoo.md) |
+| **全部 123 个 zoo 模块合计** | **8611 注册 ID / 232 已审计源码入口 / 1870 源码推断 baseline-alias / 0 未分类 wrapper** | [docs/zoo/](docs/zoo/index.md) |
 <!-- /stats:zoo-overview -->
 
 > [!IMPORTANT]
 > “注册 ID”表示可寻址的构建配置，不等于同等数量的独立论文复现，也不自动代表论文机制完整。
-> 首批源码对齐结果、分级标准与缺失机制见
+> 当前源码有 1,970 个 direct baseline wrapper：100 个属于逐组人工审计，1,870 个依据
+> `return build_baseline_*` 源码事实保守标为 `baseline-alias`，0 个未分类。逐项清单、
+> 源码对齐结果、分级标准与缺失机制见
 > [Model Zoo 保真度审计](docs/zoo/fidelity.md)，并可用
 > `python scripts/model_fidelity.py --check` 复核元数据。
 
 ```bash
-# 列出某个 zoo 的全部架构
+# 列出某个 zoo 的全部注册 ID
 python scripts/vision_zoo.py --list
 python scripts/nlp_zoo.py --list
 
 # 检查模型构建与前向接口
 python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
+
+# 校验 README / docs 生成统计块（make verify 已包含）
+make stats
+
+# 确定性、离线复核全部本地 Zoo 注册表（make verify 已包含）
+python scripts/zoo_integrity.py --check
+
+# 更强的手工检查：额外构建六个领域代表并运行前向/模拟
+python scripts/zoo_integrity.py --check --smoke
 ```
 
 主题覆盖闭环（每个承诺的主题都映射到可验证的代码工件）由
@@ -267,9 +282,11 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 | [学习赛道](docs/tracks/index.md) | 8 个 track 的全部 lesson 明细 | 所有人 |
 | [Model Zoo](docs/zoo/index.md) | 各领域架构注册表与研究方向 | 所有人 |
 | [实现契约](docs/implementation-contract.md) | 命名语义、完整运行链路与保真度升级规则 | 所有人 |
+| [数据与 Benchmark 证据](docs/benchmarks/index.md) | 数据路由、真实数据 profile、运行证明与声明边界 | 所有人 |
 | [仓库结构](docs/developer/structure.md) | 目录与模块职责详解 | 想深入了解的人 |
 | [运行 & 实验约定](docs/CONVENTIONS.md) | seed / 设备 / 输出目录约定 | 贡献者 |
 | [代码规范](docs/STYLEGUIDE.md) | 风格与命名 | 贡献者 |
+| [发布检查](docs/developer/release.md) | CI 版本矩阵、打包边界与发布前门禁 | 维护者 |
 | [FAQ](docs/faq.md) | 常见问题 | 遇到问题时 |
 
 ---
@@ -298,12 +315,12 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 - **可复现** — 种子管理 + 配置自动保存 + 指标日志，每次实验完整可追溯
 - **渐进式** — 从基础张量操作到 Vision Transformer、GraphSAGE、PointNet++、LLaVA，由浅入深，8 个 track 层层递进
 - **分层验证** — 静态契约、精选 Smoke 与针对性测试各自回答不同问题；按改动范围选择最小必要验证
-- **Model Zoo** — 全领域（Vision / NLP / Point Cloud / Multimodal / Generative / Federated）架构注册表，纯 PyTorch 本地实现，统一接口一行切换
+- **Model Zoo** — 全领域（Vision / NLP / Point Cloud / Multimodal / Generative / Federated）构建配置注册表；实现等级由逐源码 fidelity 审计单独给出
 
 </details>
 
-> 页首与本页各处的统计数字由 `python scripts/project_stats.py --write` 自动生成，
-> `tests/test_project_stats.py` 保证其与仓库实际内容一致。
+> 页首与本页各处的统计数字由 `python scripts/project_stats.py --write` 自动生成；日常检查用
+> `make stats`，且 `make verify` 已包含该门禁。
 
 ---
 
@@ -314,11 +331,18 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 1. Fork 本仓库
 2. 创建你的分支 (`git checkout -b feature/amazing-lesson`)
 3. 遵循 [`docs/STYLEGUIDE.md`](docs/STYLEGUIDE.md) 代码规范
-4. 先运行 `make verify`，再为本次改动选择最小必要 pytest；涉及训练链路时才运行对应 smoke
+4. 先运行 `make verify`，再为本次改动选择最小必要 pytest；文档改动运行 `make docs`，涉及训练链路时运行对应 smoke
 5. 提交 PR
+
+修改 lesson 入口或 CLI 时，可运行 `make lesson-entrypoints`，逐一验证 339 个
+`python -m ... --help` 入口；该显式门禁通常约需 4–7 分钟，不属于 `make verify`。它使用 CPU、
+离线环境变量及临时 cwd/缓存/输出隔离，但不做 socket 级网络阻断，也不替代训练 smoke。
 
 > [!NOTE]
 > 每个新训练 lesson 应包含 `model.py` / `data.py` / `train.py`，并提供一种无需联网的运行方式；只有可切换真实数据集时才需要 `--dataset fake`。详见 [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md)。
+
+发布前可用 `make release-check` 一次执行完整测试、严格文档构建、wheel/sdist 元数据校验、
+wheel 隔离安装及 sdist 隔离重建/安装；工程边界见[发布检查](docs/developer/release.md)。
 
 ---
 

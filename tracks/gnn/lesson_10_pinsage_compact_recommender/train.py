@@ -41,7 +41,9 @@ class TrainConfig:
 
 
 def parse_args() -> TrainConfig:
-    parser = argparse.ArgumentParser(description="Lesson 10 (GNN): PinSAGE-style compact recommender.")
+    parser = argparse.ArgumentParser(
+        description="Lesson 10 (GNN): PinSAGE-style compact recommender."
+    )
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--steps-per-epoch", type=int, default=200)
     parser.add_argument("--batch-size", type=int, default=256)
@@ -119,6 +121,18 @@ def _sample_pos_items(
         else:
             pos[i] = item_ids[i].item()
     return pos
+
+
+def _sample_item_ids(
+    *,
+    high: int,
+    size: tuple[int, ...],
+    gen: torch.Generator,
+    device: torch.device,
+) -> torch.Tensor:
+    """Sample deterministically with the CPU generator, then transfer."""
+
+    return torch.randint(low=0, high=int(high), size=size, generator=gen).to(device)
 
 
 @torch.no_grad()
@@ -201,21 +215,19 @@ def run_training(cfg: TrainConfig) -> int:
         total_loss = 0.0
 
         for _ in range(int(cfg.steps_per_epoch)):
-            item_ids = torch.randint(
-                low=0,
+            item_ids = _sample_item_ids(
                 high=data.num_items,
                 size=(int(cfg.batch_size),),
-                generator=gen,
+                gen=gen,
                 device=device,
             )
             pos_ids = _sample_pos_items(
                 item_ids=item_ids.cpu(), item_neighbors=data.item_neighbors, gen=gen
             ).to(device)
-            neg_ids = torch.randint(
-                low=0,
+            neg_ids = _sample_item_ids(
                 high=data.num_items,
                 size=(int(cfg.batch_size), int(cfg.negative_samples)),
-                generator=gen,
+                gen=gen,
                 device=device,
             )
 

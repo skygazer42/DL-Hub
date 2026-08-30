@@ -189,8 +189,10 @@ flowchart LR
 
 ## NLP Architecture Zoo
 
-!!! note "814 注册 ID 可供探索"
-    NLP Zoo 包含 **49 个算法族 / 814 个注册 ID**，涵盖 Transformer、RNN、CNN、MLP 等多种文本编码器，所有实现均为纯 PyTorch 本地代码。
+!!! note "814 个本地构建配置"
+    NLP Zoo 提供 **49 个方法注册组 / 814 个注册 ID**，用于定位 Transformer、RNN、CNN、MLP
+    等教学入口；注册组不自动等于独立论文实现，具体机制等级以
+    [Model Zoo 保真度审计](../zoo/fidelity.md)为准。
 
 ```bash
 # 列出所有可用架构

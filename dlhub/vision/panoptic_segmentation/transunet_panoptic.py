@@ -110,7 +110,9 @@ class TransUNetPanoptic(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.transformer = nn.TransformerEncoder(enc_layer, num_layers=d)
+        self.transformer = nn.TransformerEncoder(
+            enc_layer, num_layers=d, enable_nested_tensor=False
+        )
 
         ups: list[nn.Module] = []
         for _ in range(lv - 1):

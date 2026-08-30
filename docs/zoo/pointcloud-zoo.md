@@ -4,7 +4,12 @@ icon: material/cube-outline
 
 # Point Cloud Zoo
 
-> **30 算法族 / 64 Architecture IDs** --- 覆盖点集、图、MLP、Transformer、卷积等全部主流点云主干网络，外加 4 个 3D 下游任务子系统。
+> **30 个注册组 / 64 个注册 ID** --- 索引点集、图、MLP、Transformer、卷积等点云方法，
+> 外加 3D 下游任务入口；注册数量不等于独立论文实现数量。
+
+!!! warning "方法标签不自动获得保真等级"
+
+    下表“标签所指创新”描述原方法；当前源码是否保留该机制，以[保真度审计](fidelity.md)为准。
 
 ---
 
@@ -23,7 +28,7 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 
 ---
 
-## Backbone 架构分类
+## Backbone 注册标签分类
 
 | 类别 | 代表算法 | 说明 |
 |:-----|:---------|:----|
@@ -40,7 +45,7 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 
 基于对称函数直接处理无序点集。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | PointNet | pointnet_cls, pointnet_seg | Shared MLP + Max Pooling 全局特征提取 |
 | PointNet++ | pointnet2_ssg, pointnet2_msg | 分层 Set Abstraction + 多尺度分组 |
@@ -63,7 +68,7 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 
 将点云构造为图结构，利用图神经网络提取局部几何关系。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | DGCNN | dgcnn_cls, dgcnn_seg | Dynamic Graph CNN，EdgeConv 动态图卷积 |
 | PointGAT | pointgat_base | Graph Attention 用于点云 |
@@ -76,7 +81,7 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 
 纯 MLP 架构在点云上的高效实现。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | PointMLP | pointmlp_base, pointmlp_elite | 纯残差 MLP + Geometric Affine Module |
 | PointMixer | pointmixer_base | MLP-Mixer 风格的点云编码 |
@@ -88,7 +93,7 @@ python scripts/pointcloud_zoo.py --smoke pc:pointnet2_ssg
 
 Self-Attention 机制应用于点云理解。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | PCT | pct_base | 全局 Offset-Attention |
 | Point Transformer | point_transformer_v1, point_transformer_v2 | Vector Attention 向量注意力 |
@@ -101,7 +106,7 @@ Self-Attention 机制应用于点云理解。
 
 在点云上定义卷积操作，类比 2D 卷积。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | KPConv | kpconv_rigid, kpconv_deform | Kernel Point Convolution 核点卷积 |
 | PointCNN | pointcnn_base | X-Conv 点云卷积算子 |
@@ -114,7 +119,7 @@ Self-Attention 机制应用于点云理解。
 
 其他创新性点云架构。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | CurveNet | curvenet_base | 曲线分组 (Curve Grouping) 捕获结构信息 |
 | GDANet | gdanet_base | 几何解耦注意力 (Geometry-Disentangled Attention) |
@@ -130,7 +135,7 @@ Self-Attention 机制应用于点云理解。
 
 ### 3D Detection Zoo
 
-> 60 个算法族 --- 3D 目标检测，Point-based / Voxel-based / Pillar-based / Multi-modal。
+> 60 个注册标签 --- 索引 Point-based / Voxel-based / Pillar-based / Multi-modal 3D 检测方法。
 
 ```bash
 python scripts/detection3d_zoo.py --list
@@ -146,7 +151,7 @@ python scripts/detection3d_zoo.py --smoke pcdet3d:pointpillars_tiny
 
 ### 3D Segmentation Zoo
 
-> 60 个算法族 --- 3D 语义分割与场景理解，Point / Voxel / Range-view / Fusion。
+> 60 个注册标签 --- 索引 Point / Voxel / Range-view / Fusion 3D 分割方法。
 
 ```bash
 python scripts/segmentation3d_zoo.py --list
@@ -162,7 +167,7 @@ python scripts/segmentation3d_zoo.py --smoke pcseg3d:randlanet_tiny
 
 ### 3D Instance Segmentation Zoo
 
-> 50 个算法族 --- 3D 实例分割，Proposal-based / Grouping-based / Panoptic。
+> 50 个注册标签 --- 索引 Proposal-based / Grouping-based / Panoptic 3D 实例分割方法。
 
 ```bash
 python scripts/instance_segmentation3d_zoo.py --list
@@ -178,7 +183,7 @@ python scripts/instance_segmentation3d_zoo.py --smoke pcinst3d:pointgroup_tiny
 
 ### 3D Tracking Zoo
 
-> 140 个算法族 --- 3D 多目标跟踪，LiDAR / Camera-LiDAR / Radar-LiDAR。
+> 140 个注册标签 --- 索引 LiDAR / Camera-LiDAR / Radar-LiDAR 3D 跟踪方法。
 
 ```bash
 python scripts/tracking3d_zoo.py --list

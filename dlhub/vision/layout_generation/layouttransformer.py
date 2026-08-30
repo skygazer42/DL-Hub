@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_baseline_vision_direction, smoke_test_direction
+from ._common import build_compact_layout_generator, validate_layout_generator
 
 _VARIANTS = {
     "layouttransformer_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_layouttransformer_layout_generator(
     *, in_channels: int, variant: str = "layouttransformer_small", width_mult: float = 1.0
 ):
-    return build_baseline_vision_direction(
+    return build_compact_layout_generator(
         family="layouttransformer",
         variants=_VARIANTS,
         in_channels=int(in_channels),
@@ -22,4 +22,6 @@ def build_layouttransformer_layout_generator(
 
 
 if __name__ == "__main__":
-    smoke_test_direction(build_layouttransformer_layout_generator, "layouttransformer_tiny")
+    validate_layout_generator(
+        build_layouttransformer_layout_generator, "layouttransformer_tiny"
+    )

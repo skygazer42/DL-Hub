@@ -77,7 +77,9 @@ class XRVLMFGVC(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.class_rel = nn.TransformerEncoder(layer, num_layers=int(rel_depth))
+        self.class_rel = nn.TransformerEncoder(
+            layer, num_layers=int(rel_depth), enable_nested_tensor=False
+        )
 
         # CLIP-style class prototypes.
         self.class_proto = nn.Embedding(int(self.num_classes), int(embed))

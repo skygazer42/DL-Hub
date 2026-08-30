@@ -3,8 +3,11 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import keyword
 import re
 import shlex
+import tokenize
+from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -12,6 +15,37 @@ REQUIRED_TRAIN_FLAGS = frozenset({"--device", "--run-name", "--seed"})
 OFFLINE_BUILT_IN = "built-in"
 OFFLINE_EXPLICIT_FAKE = "explicit-fake"
 OFFLINE_EXTERNAL_ONLY = "external-only"
+SOURCE_LOCAL = "local"
+SOURCE_INLINE = "inline"
+SOURCE_NOT_APPLICABLE = "not-applicable"
+SOURCE_MISSING = "missing"
+
+# A lesson normally owns model.py and data.py. These narrow exceptions document
+# the few lessons whose structure is intentionally different; shared sources are
+# also verified against the entrypoint's imports so this inventory cannot drift
+# into a silent allowlist.
+_MODEL_SOURCE_EXCEPTIONS = {
+    ("foundations", "lesson_01_tensors"): SOURCE_NOT_APPLICABLE,
+    (
+        "vision",
+        "lesson_15_neural_style_transfer_gatys",
+    ): "dlhub.vision.style_transfer_zoo",
+    (
+        "vision",
+        "lesson_16_style_transfer_translation_cyclegan",
+    ): "dlhub.vision.style_transfer_zoo",
+}
+_DATA_SOURCE_EXCEPTIONS = {
+    ("foundations", "lesson_01_tensors"): SOURCE_INLINE,
+    ("gnn", "lesson_05_label_propagation_cora"): "tracks.gnn.datasets.cora",
+    ("gnn", "lesson_06_graphsage_cora"): "tracks.gnn.datasets.cora",
+}
+_BUILT_IN_SOURCE_KINDS = {
+    SOURCE_LOCAL,
+    SOURCE_INLINE,
+    SOURCE_NOT_APPLICABLE,
+    SOURCE_MISSING,
+}
 
 
 @dataclass(frozen=True)
@@ -24,10 +58,15 @@ class LessonContract:
     cli_flags: tuple[str, ...]
     offline_mode: str
     uses_output_layout: bool
+    has_main_guard: bool
+    has_track_init: bool
     has_init: bool
     has_model: bool
     has_data: bool
     has_readme: bool
+    model_source: str
+    data_source: str
+    imported_modules: tuple[str, ...]
     parse_error: str | None = None
 
     @property
@@ -75,6 +114,39 @@ def _literal_strings(node: ast.AST) -> set[str]:
     }
 
 
+def _read_python(path: Path) -> str:
+    """Read Python source using its declared PEP 263 encoding."""
+
+    with tokenize.open(path) as source_file:
+        return source_file.read()
+
+
+def _has_main_guard(tree: ast.Module) -> bool:
+    for node in tree.body:
+        if not isinstance(node, ast.If) or not any(
+            not isinstance(statement, ast.Pass) for statement in node.body
+        ):
+            continue
+        test = node.test
+        if not isinstance(test, ast.Compare):
+            continue
+        if len(test.ops) != 1 or not isinstance(test.ops[0], ast.Eq):
+            continue
+        if len(test.comparators) != 1:
+            continue
+        left, right = test.left, test.comparators[0]
+        pairs = ((left, right), (right, left))
+        if any(
+            isinstance(name, ast.Name)
+            and name.id == "__name__"
+            and isinstance(value, ast.Constant)
+            and value.value == "__main__"
+            for name, value in pairs
+        ):
+            return True
+    return False
+
+
 def _inspect_lesson(lesson_dir: Path, root: Path) -> LessonContract:
     candidates = [
         path for path in (lesson_dir / "train.py", lesson_dir / "run.py") if path.is_file()
@@ -90,17 +162,22 @@ def _inspect_lesson(lesson_dir: Path, root: Path) -> LessonContract:
 
     flags: set[str] = set()
     dataset_literals: set[str] = set()
+    imported_modules: set[str] = set()
     uses_output_layout = False
+    has_main_guard = False
     parse_error = None
     if entrypoint_path is not None:
         try:
-            tree = ast.parse(
-                entrypoint_path.read_text(encoding="utf-8"), filename=str(entrypoint_path)
-            )
-        except (OSError, SyntaxError, UnicodeError) as exc:
+            tree = ast.parse(_read_python(entrypoint_path), filename=str(entrypoint_path))
+        except (LookupError, OSError, SyntaxError, UnicodeError) as exc:
             parse_error = str(exc)
         else:
+            has_main_guard = _has_main_guard(tree)
             for node in ast.walk(tree):
+                if isinstance(node, ast.ImportFrom) and node.module:
+                    imported_modules.add(node.module)
+                elif isinstance(node, ast.Import):
+                    imported_modules.update(alias.name for alias in node.names)
                 if not isinstance(node, ast.Call):
                     continue
                 uses_output_layout |= _call_name(node) == "build_run_paths"
@@ -116,6 +193,12 @@ def _inspect_lesson(lesson_dir: Path, root: Path) -> LessonContract:
     else:
         offline_mode = OFFLINE_EXTERNAL_ONLY
 
+    key = (lesson_dir.parent.name, lesson_dir.name)
+    has_model = (lesson_dir / "model.py").is_file()
+    has_data = (lesson_dir / "data.py").is_file()
+    model_source = SOURCE_LOCAL if has_model else _MODEL_SOURCE_EXCEPTIONS.get(key, SOURCE_MISSING)
+    data_source = SOURCE_LOCAL if has_data else _DATA_SOURCE_EXCEPTIONS.get(key, SOURCE_MISSING)
+
     return LessonContract(
         track=lesson_dir.parent.name,
         lesson=lesson_dir.name,
@@ -125,10 +208,15 @@ def _inspect_lesson(lesson_dir: Path, root: Path) -> LessonContract:
         cli_flags=tuple(sorted(flags)),
         offline_mode=offline_mode,
         uses_output_layout=uses_output_layout,
+        has_main_guard=has_main_guard,
+        has_track_init=(lesson_dir.parent / "__init__.py").is_file(),
         has_init=(lesson_dir / "__init__.py").is_file(),
-        has_model=(lesson_dir / "model.py").is_file(),
-        has_data=(lesson_dir / "data.py").is_file(),
+        has_model=has_model,
+        has_data=has_data,
         has_readme=(lesson_dir / "README.md").is_file(),
+        model_source=model_source,
+        data_source=data_source,
+        imported_modules=tuple(sorted(imported_modules)),
         parse_error=parse_error,
     )
 
@@ -136,11 +224,13 @@ def _inspect_lesson(lesson_dir: Path, root: Path) -> LessonContract:
 def discover_lesson_contracts(root: Path | None = None) -> list[LessonContract]:
     root = root or repo_root()
     tracks_dir = root / "tracks"
+    if not tracks_dir.is_dir():
+        return []
     contracts: list[LessonContract] = []
-    for track_dir in sorted(tracks_dir.iterdir()):
+    for track_dir in sorted(tracks_dir.iterdir(), key=lambda path: path.name):
         if not track_dir.is_dir() or track_dir.name.startswith("__"):
             continue
-        for lesson_dir in sorted(track_dir.glob("lesson_*")):
+        for lesson_dir in sorted(track_dir.glob("lesson_*"), key=lambda path: path.name):
             if lesson_dir.is_dir():
                 contracts.append(_inspect_lesson(lesson_dir, root))
     return contracts
@@ -148,19 +238,37 @@ def discover_lesson_contracts(root: Path | None = None) -> list[LessonContract]:
 
 def get_lesson_contract(track: str, lesson: str, root: Path | None = None) -> LessonContract | None:
     root = root or repo_root()
+    if not track.isidentifier() or keyword.iskeyword(track):
+        return None
+    if not lesson.startswith("lesson_") or not lesson.isidentifier() or keyword.iskeyword(lesson):
+        return None
     lesson_dir = root / "tracks" / track / lesson
     if not lesson_dir.is_dir():
         return None
     return _inspect_lesson(lesson_dir, root)
 
 
-def discover_curated_smoke_lessons(root: Path | None = None) -> set[tuple[str, str]]:
-    root = root or repo_root()
+def _is_shared_source(source: str) -> bool:
+    return source not in _BUILT_IN_SOURCE_KINDS
+
+
+def _source_kind(source: str) -> str:
+    return "shared" if _is_shared_source(source) else source
+
+
+def _inspect_curated_smoke_lessons(
+    root: Path,
+) -> tuple[set[tuple[str, str]], list[str]]:
+    smoke_dir = root / "scripts" / "smoke_checks"
     lessons: set[tuple[str, str]] = set()
-    for path in sorted((root / "scripts" / "smoke_checks").glob("*.py")):
+    errors: list[str] = []
+    if not smoke_dir.is_dir():
+        return lessons, ["curated smoke suite directory is missing: scripts/smoke_checks"]
+    for path in sorted(smoke_dir.glob("*.py"), key=lambda item: item.name):
         try:
-            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-        except (OSError, SyntaxError, UnicodeError):
+            tree = ast.parse(_read_python(path), filename=str(path))
+        except (LookupError, OSError, SyntaxError, UnicodeError) as exc:
+            errors.append(f"{path.relative_to(root)}: cannot parse smoke module: {exc}")
             continue
         modules: list[str] = []
         for node in ast.walk(tree):
@@ -172,6 +280,12 @@ def discover_curated_smoke_lessons(root: Path | None = None) -> set[tuple[str, s
             parts = module.split(".")
             if len(parts) >= 3 and parts[0] == "tracks" and parts[2].startswith("lesson_"):
                 lessons.add((parts[1], parts[2]))
+    return lessons, errors
+
+
+def discover_curated_smoke_lessons(root: Path | None = None) -> set[tuple[str, str]]:
+    root = root or repo_root()
+    lessons, _ = _inspect_curated_smoke_lessons(root)
     return lessons
 
 
@@ -246,6 +360,10 @@ def validate_lesson_contracts(root: Path | None = None) -> list[str]:
     contracts = discover_lesson_contracts(root)
     by_key = {contract.key: contract for contract in contracts}
     errors: list[str] = []
+    if not (root / "tracks").is_dir():
+        errors.append("lesson tracks directory is missing: tracks")
+    elif not contracts:
+        errors.append("lesson tracks directory contains no lesson_* directories")
 
     for contract in contracts:
         label = f"{contract.track}/{contract.lesson}"
@@ -257,11 +375,36 @@ def validate_lesson_contracts(root: Path | None = None) -> list[str]:
             errors.append(
                 f"{label}: expected exactly one train.py/run.py entrypoint, found {entrypoints}"
             )
+        if not contract.track.isidentifier() or keyword.iskeyword(contract.track):
+            errors.append(f"{label}: track name is not an importable Python identifier")
+        if not contract.lesson.isidentifier() or keyword.iskeyword(contract.lesson):
+            errors.append(f"{label}: lesson name is not an importable Python identifier")
+        if not contract.has_track_init:
+            errors.append(f"{label}: track is missing __init__.py")
         if not contract.has_init:
             errors.append(f"{label}: missing __init__.py")
+        if not contract.has_readme:
+            errors.append(f"{label}: missing required README.md")
+        if contract.model_source == SOURCE_MISSING:
+            errors.append(f"{label}: missing model.py without a declared alternate model source")
+        if contract.data_source == SOURCE_MISSING:
+            errors.append(f"{label}: missing data.py without a declared alternate data source")
         if contract.parse_error:
             errors.append(f"{label}: entrypoint cannot be parsed: {contract.parse_error}")
             continue
+        for source_name, source in (
+            ("model", contract.model_source),
+            ("data", contract.data_source),
+        ):
+            if _is_shared_source(source) and source not in contract.imported_modules:
+                errors.append(
+                    f"{label}: declared shared {source_name} source {source!r} "
+                    "is not imported by the entrypoint"
+                )
+        if contract.model_source == SOURCE_NOT_APPLICABLE and contract.entrypoint_kind != "run":
+            errors.append(f"{label}: model source may be not-applicable only for a run entrypoint")
+        if contract.entrypoint is not None and not contract.has_main_guard:
+            errors.append(f"{label}: entrypoint is missing an executable __main__ guard")
         if contract.entrypoint_kind == "train":
             missing = sorted(REQUIRED_TRAIN_FLAGS.difference(contract.cli_flags))
             if missing:
@@ -273,7 +416,8 @@ def validate_lesson_contracts(root: Path | None = None) -> list[str]:
         if contract.offline_mode == OFFLINE_EXTERNAL_ONLY:
             errors.append(f"{label}: --dataset is exposed without an explicit fake option")
 
-    smoke_lessons = discover_curated_smoke_lessons(root)
+    smoke_lessons, smoke_errors = _inspect_curated_smoke_lessons(root)
+    errors.extend(smoke_errors)
     unknown_smoke_lessons = sorted(smoke_lessons.difference(by_key))
     for track, lesson in unknown_smoke_lessons:
         errors.append(f"smoke suite references an unknown lesson: {track}/{lesson}")
@@ -309,15 +453,28 @@ def format_summary(contracts: list[LessonContract], root: Path | None = None) ->
     covered_tracks = {track for track, _ in smoke_lessons}
     explicit_fake = sum(contract.offline_mode == OFFLINE_EXPLICIT_FAKE for contract in contracts)
     built_in = sum(contract.offline_mode == OFFLINE_BUILT_IN for contract in contracts)
+    external_only = sum(contract.offline_mode == OFFLINE_EXTERNAL_ONLY for contract in contracts)
+    model_sources = Counter(_source_kind(contract.model_source) for contract in contracts)
+    data_sources = Counter(_source_kind(contract.data_source) for contract in contracts)
+
+    def format_sources(sources: Counter[str]) -> str:
+        order = (SOURCE_LOCAL, "shared", SOURCE_INLINE, SOURCE_NOT_APPLICABLE, SOURCE_MISSING)
+        return ", ".join(
+            f"{sources[kind]} {kind}" for kind in order if sources[kind] or kind == SOURCE_MISSING
+        )
+
+    readme_count = sum(contract.has_readme for contract in contracts)
     return "\n".join(
         [
             f"lesson contracts: {len(contracts)} lessons across {len(tracks)} tracks",
             f"- entrypoints: {sum(contract.entrypoint_kind == 'train' for contract in contracts)} train, "
             f"{sum(contract.entrypoint_kind == 'run' for contract in contracts)} run",
-            f"- offline interfaces: {explicit_fake} explicit --dataset fake, {built_in} built-in data",
-            f"- optional structure gaps: {sum(not contract.has_model for contract in contracts)} model.py, "
-            f"{sum(not contract.has_data for contract in contracts)} data.py, "
-            f"{sum(not contract.has_readme for contract in contracts)} README.md",
+            f"- offline interfaces: {explicit_fake} explicit --dataset fake, {built_in} built-in data, "
+            f"{external_only} external-only",
+            f"- required README.md: {readme_count}/{len(contracts)} present "
+            f"({len(contracts) - readme_count} missing)",
+            f"- model sources: {format_sources(model_sources)}",
+            f"- data sources: {format_sources(data_sources)}",
             f"- curated smoke: {len(smoke_lessons)}/{len(contracts)} lessons, "
             f"{len(covered_tracks)}/{len(tracks)} tracks",
         ]
@@ -338,16 +495,25 @@ def main(argv: list[str] | None = None) -> int:
 
     root = repo_root()
     contracts = discover_lesson_contracts(root)
+    errors = validate_lesson_contracts(root) if args.check else []
     if args.json:
-        print(
-            json.dumps([asdict(contract) for contract in contracts], ensure_ascii=False, indent=2)
-        )
+        payload: object
+        if args.check:
+            payload = {
+                "contracts": [asdict(contract) for contract in contracts],
+                "errors": errors,
+                "ok": not errors,
+            }
+        else:
+            payload = [asdict(contract) for contract in contracts]
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         print(format_summary(contracts, root))
 
     if not args.check:
         return 0
-    errors = validate_lesson_contracts(root)
+    if args.json:
+        return 0 if not errors else 1
     if errors:
         print(f"lesson contracts: FAILED ({len(errors)} errors)")
         for error in errors:

@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -62,6 +63,64 @@ def test_pointcloud_forecasting_batch_contract_and_loss_smoke() -> None:
     assert float(parts["forecast_loss"]) >= 0.0
     assert float(parts["step_mae"]) >= 0.0
     loss.backward()
+
+
+@pytest.mark.parametrize("forecast_horizon", [1, 4, 5])
+def test_pointcloud_forecasting_model_honors_explicit_horizon(
+    forecast_horizon: int,
+) -> None:
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.model import (
+        ModelConfig,
+        build_model,
+    )
+
+    model = build_model(
+        ModelConfig(
+            in_channels=3,
+            forecast_horizon=forecast_horizon,
+            arch="trajpoint_forecast:trajpoint_forecast_small",
+        )
+    )
+    outputs = model(torch.randn(2, 4, 24, 3))
+
+    assert model.horizon == forecast_horizon
+    assert tuple(outputs["forecast"].shape) == (2, forecast_horizon, 24, 3)
+
+
+def test_pointcloud_forecasting_small_model_defaults_to_data_horizon_two() -> None:
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.model import (
+        ModelConfig,
+        build_model,
+    )
+
+    model = build_model(ModelConfig())
+    outputs = model(torch.randn(2, 4, 24, 3))
+
+    assert model.horizon == 2
+    assert tuple(outputs["forecast"].shape) == (2, 2, 24, 3)
+
+
+@pytest.mark.parametrize("forecast_horizon", [0, -1])
+def test_pointcloud_forecasting_rejects_nonpositive_horizon(forecast_horizon: int) -> None:
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.model import (
+        ModelConfig,
+        build_model,
+    )
+
+    with pytest.raises(ValueError, match="forecast_horizon must be >= 1"):
+        build_model(ModelConfig(forecast_horizon=forecast_horizon))
+
+
+def test_pointcloud_forecasting_cli_shares_horizon_between_data_and_model(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from tracks.pointcloud.lesson_32_compact_pointcloud_forecasting.train import parse_args
+
+    monkeypatch.setattr(sys, "argv", ["train", "--forecast-horizon", "5"])
+    _, data_cfg, model_cfg = parse_args()
+
+    assert data_cfg.forecast_horizon == 5
+    assert model_cfg.forecast_horizon == 5
 
 
 def test_pointcloud_forecasting_training_smoke(

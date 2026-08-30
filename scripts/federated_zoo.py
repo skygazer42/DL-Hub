@@ -20,7 +20,7 @@ def _summarize(obj) -> str:
 def _print_lines(lines: Iterable[str], *, limit: int = 80) -> None:
     from dlhub.cli_utils import print_limited
 
-    print_limited(lines, limit=limit)
+    print_limited(lines, limit=limit, annotate_fidelity=True)
 
 
 def parse_args() -> argparse.Namespace:

@@ -4,7 +4,12 @@ icon: material/paw
 
 # Model Zoo 总览
 
-全领域统一模型注册表 --- 纯 PyTorch 本地实现，无需下载预训练权重，**8 600+ 可构建注册 ID** 一行切换（当前实测 8611，`python scripts/project_stats.py --json` 可复核）。注册数量描述接口覆盖，不等同于独立论文复现数量；命名、数据和验证边界见[实现契约](../implementation-contract.md)，机制对齐情况见 [Model Zoo 保真度审计](fidelity.md)。
+全领域统一构建配置注册表 --- 无需下载预训练权重，**8 600+ 可构建注册 ID** 一行切换
+（当前实测 8611，`python scripts/project_stats.py --json` 可复核）。注册数量描述接口覆盖，
+不等同于独立实现或论文复现数量；当前源码含 1,970 个 direct baseline wrapper，其中 100 个
+完成逐组人工审计，1,870 个依据直接委托事实保守标为 source-inferred `baseline-alias`，0 个
+未分类。命名、数据和验证边界见[实现契约](../implementation-contract.md)，逐源码状态见
+[Model Zoo 保真度审计](fidelity.md)和[全量 baseline 清单](baseline-inventory.json)。
 
 ---
 
@@ -24,7 +29,7 @@ icon: material/paw
 
     ---
 
-    **814** 注册 ID / 49 个注册族
+    **814** 注册 ID / 49 个注册组
 
     [:octicons-arrow-right-24: NLP Zoo](nlp-zoo.md)
 
@@ -32,7 +37,7 @@ icon: material/paw
 
     ---
 
-    **64** 注册 ID / 30 个注册族
+    **64** 注册 ID / 30 个注册组
 
     [:octicons-arrow-right-24: Point Cloud Zoo](pointcloud-zoo.md)
 
@@ -40,7 +45,7 @@ icon: material/paw
 
     ---
 
-    **210** 注册 ID / 70 个注册族
+    **210** 注册 ID / 70 个注册组
 
     [:octicons-arrow-right-24: VLM Zoo](vlm-zoo.md)
 
@@ -48,7 +53,7 @@ icon: material/paw
 
     ---
 
-    GAN **44 族 / 132 IDs** + Diffusion **32 族 / 96 IDs**
+    GAN **44 注册组 / 132 IDs** + Diffusion **32 注册组 / 96 IDs**
 
     [:octicons-arrow-right-24: Generative Zoo](generative-zoo.md)
 
@@ -66,7 +71,7 @@ icon: material/paw
 
 ## Zoo 子系统总览（22 个子系统）
 
-| 领域 | 子系统 | 算法族 | CLI 脚本 |
+| 领域 | 子系统 | 注册组 | CLI 脚本 |
 |:-----|:------|:-------|:---------|
 | Vision | Backbones | 220 模块 / 791 IDs | `scripts/vision_zoo.py` |
 | Vision | Detection (2D) | 132 | `scripts/detection_zoo.py` |
@@ -107,9 +112,11 @@ icon: material/paw
 
 所有 Zoo 遵循相同的设计模式：
 
-### 一文件一注册族
+### 一文件一注册组
 
-每个注册族通常对应一个独立 Python 文件，包含其变体构建逻辑；部分教学型注册族会共享轻量基线。文件名和注册名用于定位实现，不构成论文级复现承诺，差异见[保真度审计](fidelity.md)。
+每个注册组通常对应一个独立 Python 文件，包含其变体构建逻辑；一个文件不自动等于一种独立计算
+机制，部分教学注册组会共享轻量基线。文件名和注册名用于定位构建入口，不构成论文级复现承诺，
+差异见[保真度审计](fidelity.md)。
 
 ```text
 dlhub/
@@ -118,8 +125,8 @@ dlhub/
       resnet.py        # ResNet-18 / 34 / 50 / 101 / 152 …
       vit.py           # ViT-Ti / S / B / L / H …
       convnext.py      # ConvNeXt-T / S / B / L / XL …
-    detection/         # 2D 检测算法族（一文件一族）
-    mot/               # 多目标跟踪算法族
+    detection/         # 2D 检测注册组（一文件一组）
+    mot/               # 多目标跟踪注册组
   nlp/
     algorithms/
       bert.py          # BERT-Tiny / Mini / Small / Base / Large …
@@ -127,7 +134,7 @@ dlhub/
 
 ### Lazy Import
 
-所有算法族仅在实际构建时才触发对应文件的导入，保证启动零开销。
+所有注册组仅在实际构建时才触发对应文件的导入，保证启动零开销。
 
 ### 统一接口
 
@@ -175,6 +182,7 @@ model = build_local_model("dl:resnet50", in_channels=3, num_classes=10)
 | 页面 | 说明 |
 |:-----|:----|
 | [保真度审计](fidelity.md) | 已审计实现的机制对齐等级、证据与下一步 |
+| [Baseline 清单](baseline-inventory.json) | 1,970 个 direct baseline wrapper 的源码、helper 与审计状态 |
 | [Vision Zoo](vision-zoo.md) | CNN、Transformer、MLP、Hybrid 等视觉主干及 8 个下游子系统 |
 | [NLP Zoo](nlp-zoo.md) | Transformer、RNN、CNN、MLP 等文本编码器 |
 | [Point Cloud Zoo](pointcloud-zoo.md) | 点云主干及 3D Detection / Segmentation / Tracking |

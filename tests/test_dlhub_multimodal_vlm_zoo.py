@@ -10,7 +10,7 @@ def _sum_tensor_means(x):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
     if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
-    raise TypeError(f"Unsupported output type in VLM zoo smoke: {type(x)!r}")
+    raise TypeError(f"Unsupported output type in VLM zoo contract: {type(x)!r}")
 
 
 def test_vlm_zoo_lists_20_families_3_variants() -> None:
@@ -43,7 +43,7 @@ def test_vlm_zoo_lists_20_families_3_variants() -> None:
         ("vlm:qwen_vl_tiny", True),
     ],
 )
-def test_vlm_zoo_build_and_forward_smoke(arch_id: str, expect_generated: bool) -> None:
+def test_vlm_zoo_build_and_forward_contract(arch_id: str, expect_generated: bool) -> None:
     from dlhub.multimodal.vlm_zoo import build_local_model
 
     model = build_local_model(
@@ -65,6 +65,8 @@ def test_vlm_zoo_build_and_forward_smoke(arch_id: str, expect_generated: bool) -
     assert int(out["logits"].shape[0]) == 2
     if expect_generated:
         assert "generated_tokens" in out
+        assert "token_logits" in out
         assert tuple(out["generated_tokens"].shape) == (2, 16)
+        assert tuple(out["token_logits"].shape) == (2, 16, 128)
     loss = _sum_tensor_means(out)
     assert torch.isfinite(loss)

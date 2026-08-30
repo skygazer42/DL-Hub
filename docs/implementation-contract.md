@@ -46,7 +46,8 @@ benchmark 复现。
 5. **分层验证**：静态 contract 检查仓库结构；smoke 检查最短链路；针对性测试验证本次修改
    的关键行为；只有正式数据、训练配方和指标对齐后才谈 benchmark。
 6. **留下证据**：Model Zoo 注册量只表示可寻址配置。源码审计结果进入保真度台账，记录
-   已实现机制、缺失机制与下一步，而不是靠类名推断完成度。
+   已实现机制、缺失机制与下一步，而不是靠类名推断完成度；数据路由、运行快照和正式
+   benchmark 结果分别进入[数据与 Benchmark 证据](benchmarks/index.md)。
 
 ## 从基线走向参考实现
 
@@ -68,6 +69,7 @@ python scripts/narrative_check.py
 # 检查课程结构与 Model Zoo 保真度元数据
 python scripts/lesson_contracts.py --check
 python scripts/model_fidelity.py --check
+python scripts/benchmark_profiles.py --check
 
 # 一次运行 lint 与以上静态/元数据检查（不启动 pytest）
 make verify

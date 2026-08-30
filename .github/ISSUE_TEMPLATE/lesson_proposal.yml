@@ -1,0 +1,114 @@
+name: Lesson 提案
+description: 提议新增或实质扩展一个可离线验证的课程
+title: "[Lesson]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Lesson 应形成“问题 → 数据 → 模型 → 训练/评估 → 产物 → 验证”的完整链路。
+        请不要提交私有数据、个人样本或受限权重；优先设计 fake 或 synthetic 离线路径。
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 Lesson、Roadmap 和 Issue，确认没有等价入口。
+          required: true
+        - label: 提案包含无网络、纯 CPU 的最小验证路径。
+          required: true
+
+  - type: dropdown
+    id: track
+    attributes:
+      label: 目标 Track
+      options:
+        - foundations
+        - vision
+        - nlp
+        - gnn
+        - pointcloud
+        - generative
+        - llm
+        - multimodal
+        - 不确定
+    validations:
+      required: true
+
+  - type: input
+    id: lesson_name
+    attributes:
+      label: 建议的 Lesson 名称
+      placeholder: lesson_XX_compact_method_name
+    validations:
+      required: true
+
+  - type: textarea
+    id: learning_goal
+    attributes:
+      label: 学习目标与问题定义
+      description: 说明输入、输出、学习目标，以及它相对现有课程新增了什么。
+    validations:
+      required: true
+
+  - type: textarea
+    id: mechanism
+    attributes:
+      label: 核心计算机制
+      description: 列出应在源码和行为中可观察的关键机制，不要只给论文名或模型尺寸。
+    validations:
+      required: true
+
+  - type: textarea
+    id: data_plan
+    attributes:
+      label: 离线数据方案
+      description: 说明使用显式 --dataset fake，还是内置 synthetic 数据，以及标签生成规则。
+    validations:
+      required: true
+
+  - type: dropdown
+    id: entrypoint
+    attributes:
+      label: 入口类型
+      options:
+        - train.py
+        - run.py
+        - 不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: execution
+    attributes:
+      label: 建议命令与运行产物
+      description: 给出 CPU 短运行命令，并说明 config、metrics、checkpoint 或其他输出。
+      placeholder: python -m tracks.<track>.<lesson>.train --device cpu --max-steps 2 --run-name smoke
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 分层验收计划
+      description: 区分静态 contract、smoke、针对性行为测试和 benchmark；只承诺本提案能证明的层级。
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: 新依赖或外部资源
+      description: 如无请写“无”。若需要下载数据/权重，说明许可、可选性和离线替代方案。
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: claims
+    attributes:
+      label: 声明边界
+      options:
+        - label: 我不会把 smoke、随机输入前向或 synthetic 数据结果描述成论文 benchmark 复现。
+          required: true
+        - label: 如果论文名仅委托给通用基线，我会使用 baseline-alias，而不是声称论文机制已实现。
+          required: true

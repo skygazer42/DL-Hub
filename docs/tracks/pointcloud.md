@@ -158,8 +158,10 @@ flowchart LR
 
 ## Point Cloud Backbone Zoo
 
-!!! note "64 注册 ID 可供切换"
-    Point Cloud Zoo 包含 **30 个算法族 / 64 个注册 ID**，涵盖点集模型、图模型、MLP 模型、Transformer 和卷积模型。
+!!! note "64 个本地构建配置"
+    Point Cloud Zoo 提供 **30 个方法注册组 / 64 个注册 ID**，用于定位点集、图、MLP、
+    Transformer 和卷积方法；是否保留标签对应机制以
+    [Model Zoo 保真度审计](../zoo/fidelity.md)为准。
 
 ```bash
 # 列出所有可用架构

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from torch import nn
 
-from ._common import build_baseline_diffusion_family, smoke_test_diffusion
+from ._common import build_compact_diffusion_family, smoke_test_diffusion
 
 _VARIANTS: dict[str, dict[str, int]] = {
     "latent_diffusion_tiny": {"width": 72, "depth": 2, "latent": 96},
@@ -21,7 +21,7 @@ def build_latent_diffusion_diffusion(
     width_mult: float = 1.0,
     dropout: float = 0.0,
 ) -> nn.Module:
-    return build_baseline_diffusion_family(
+    return build_compact_diffusion_family(
         family="latent_diffusion",
         variants=_VARIANTS,
         in_channels=int(in_channels),

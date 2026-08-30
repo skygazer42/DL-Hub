@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_baseline_model, smoke_test_model
+from ._common import build_compact_registration_model, validate_registration_model
 
 _VARIANTS = {
     "geoformer_reg_tiny": {"width": 24, "depth": 1},
@@ -9,7 +9,7 @@ _VARIANTS = {
 
 
 def build_geoformer_reg_registrar(*, variant: str = "geoformer_reg_small", width_mult: float = 1.0):
-    return build_baseline_model(
+    return build_compact_registration_model(
         family="geoformer_reg",
         variants=_VARIANTS,
         variant=str(variant),
@@ -18,4 +18,4 @@ def build_geoformer_reg_registrar(*, variant: str = "geoformer_reg_small", width
 
 
 if __name__ == "__main__":
-    smoke_test_model(build_geoformer_reg_registrar, "geoformer_reg_tiny")
+    validate_registration_model(build_geoformer_reg_registrar, "geoformer_reg_tiny")

@@ -26,6 +26,12 @@
 
     pytest 使用、冒烟测试、CI 集成
 
+-   :material-file-certificate-outline: **[数据与 Benchmark 证据](../benchmarks/index.md)**
+
+    ---
+
+    339 门数据路由、真实数据 profile、运行证明与声明边界
+
 </div>
 
 ---

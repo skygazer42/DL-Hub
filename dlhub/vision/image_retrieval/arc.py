@@ -1,6 +1,6 @@
 from __future__ import annotations
 from torch import nn
-from ._common import build_baseline_retrieval_model, smoke_test_retrieval
+from ._common import build_compact_retrieval_model, smoke_test_retrieval
 
 _VARIANTS = {
     "arc_tiny": {"width": 24, "depth": 1, "embed": 128},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_arc_retrieval_model(
     *, in_channels: int, variant: str = "arc_small", width_mult: float = 1.0
 ) -> nn.Module:
-    return build_baseline_retrieval_model(
+    return build_compact_retrieval_model(
         family="arc",
         variants=_VARIANTS,
         in_channels=int(in_channels),

@@ -1,0 +1,404 @@
+{
+  "inventory_sha256": "cfb45b601cdcb912bf2f692d87c097d367825827abdda0a9edfd9c4375a39dd5",
+  "profiles": [
+    {
+      "budget_policy": {
+        "allowed_overrides": [
+          "--dataset",
+          "--device",
+          "--run-name",
+          "--seed"
+        ],
+        "forbidden_overrides": [
+          "--max-*",
+          "--batch-size",
+          "--epochs",
+          "--steps",
+          "--num-samples"
+        ],
+        "rule": "use each entrypoint's checked-in defaults"
+      },
+      "cases": [
+        {
+          "command_template": [
+            "{python}",
+            "-m",
+            "tracks.generative.lesson_01_vae_mnist.train",
+            "--dataset",
+            "mnist",
+            "--seed",
+            "{seed}",
+            "--device",
+            "{device}",
+            "--run-name",
+            "{run_name}"
+          ],
+          "default_budget": {
+            "batch_size": 128,
+            "epochs": 5,
+            "val_fraction": 0.1
+          },
+          "entrypoint": "tracks/generative/lesson_01_vae_mnist/train.py",
+          "entrypoint_default_dataset": "fake",
+          "implementation_sha256": "13facc45a8a922779fa17d0d253b3f6ec035f2b05f7d64e93105d92983c93fb5",
+          "lesson_id": "generative/lesson_01_vae_mnist",
+          "module": "tracks.generative.lesson_01_vae_mnist.train",
+          "required_artifacts": [
+            "checkpoints/checkpoint.pt",
+            "config.json",
+            "logs/train.log",
+            "metrics.jsonl"
+          ],
+          "required_metrics": [
+            "train_loss",
+            "train_recon",
+            "train_kl",
+            "val_loss"
+          ],
+          "source_paths": [
+            "tracks/generative/lesson_01_vae_mnist/__init__.py",
+            "tracks/generative/lesson_01_vae_mnist/data.py",
+            "tracks/generative/lesson_01_vae_mnist/model.py",
+            "tracks/generative/lesson_01_vae_mnist/train.py",
+            "dlhub/data/mnist.py",
+            "dlhub/data/splits.py",
+            "dlhub/seed.py",
+            "dlhub/paths.py"
+          ],
+          "split_contract": "official MNIST train split; deterministic 90/10 train/validation split"
+        },
+        {
+          "command_template": [
+            "{python}",
+            "-m",
+            "tracks.generative.lesson_02_gan_mnist.train",
+            "--dataset",
+            "mnist",
+            "--seed",
+            "{seed}",
+            "--device",
+            "{device}",
+            "--run-name",
+            "{run_name}"
+          ],
+          "default_budget": {
+            "batch_size": 128,
+            "epochs": 10
+          },
+          "entrypoint": "tracks/generative/lesson_02_gan_mnist/train.py",
+          "entrypoint_default_dataset": "fake",
+          "implementation_sha256": "f0b3d913e3c7abb46fab16393a387bca5c90392bf421a563d3ccf85aca2ccc67",
+          "lesson_id": "generative/lesson_02_gan_mnist",
+          "module": "tracks.generative.lesson_02_gan_mnist.train",
+          "required_artifacts": [
+            "checkpoints/checkpoint.pt",
+            "config.json",
+            "logs/train.log",
+            "metrics.jsonl"
+          ],
+          "required_metrics": [
+            "d_loss",
+            "g_loss"
+          ],
+          "source_paths": [
+            "tracks/generative/lesson_02_gan_mnist/__init__.py",
+            "tracks/generative/lesson_02_gan_mnist/data.py",
+            "tracks/generative/lesson_02_gan_mnist/model.py",
+            "tracks/generative/lesson_02_gan_mnist/train.py",
+            "dlhub/data/mnist.py",
+            "dlhub/data/splits.py",
+            "dlhub/seed.py",
+            "dlhub/paths.py"
+          ],
+          "split_contract": "official MNIST train split; no validation split"
+        },
+        {
+          "command_template": [
+            "{python}",
+            "-m",
+            "tracks.generative.lesson_03_compact_diffusion_mnist.train",
+            "--dataset",
+            "mnist",
+            "--seed",
+            "{seed}",
+            "--device",
+            "{device}",
+            "--run-name",
+            "{run_name}"
+          ],
+          "default_budget": {
+            "batch_size": 128,
+            "epochs": 5,
+            "num_diffusion_steps": 20,
+            "num_sample_steps": null,
+            "val_fraction": 0.1
+          },
+          "entrypoint": "tracks/generative/lesson_03_compact_diffusion_mnist/train.py",
+          "entrypoint_default_dataset": "fake",
+          "implementation_sha256": "a4e7997e1fb89b528bf300887d3ef330da1426758be4415304c0fcad3e94e7fb",
+          "lesson_id": "generative/lesson_03_compact_diffusion_mnist",
+          "module": "tracks.generative.lesson_03_compact_diffusion_mnist.train",
+          "required_artifacts": [
+            "checkpoints/checkpoint.pt",
+            "config.json",
+            "logs/train.log",
+            "metrics.jsonl"
+          ],
+          "required_metrics": [
+            "train_noise_mse",
+            "val_noise_mse"
+          ],
+          "source_paths": [
+            "tracks/generative/lesson_03_compact_diffusion_mnist/__init__.py",
+            "tracks/generative/lesson_03_compact_diffusion_mnist/data.py",
+            "tracks/generative/lesson_03_compact_diffusion_mnist/model.py",
+            "tracks/generative/lesson_03_compact_diffusion_mnist/train.py",
+            "dlhub/data/mnist.py",
+            "dlhub/data/splits.py",
+            "dlhub/seed.py",
+            "dlhub/paths.py"
+          ],
+          "split_contract": "official MNIST train split; deterministic 90/10 train/validation split"
+        },
+        {
+          "command_template": [
+            "{python}",
+            "-m",
+            "tracks.generative.lesson_05_compact_consistency_model.train",
+            "--dataset",
+            "mnist",
+            "--seed",
+            "{seed}",
+            "--device",
+            "{device}",
+            "--run-name",
+            "{run_name}"
+          ],
+          "default_budget": {
+            "batch_size": 128,
+            "epochs": 5,
+            "num_discretization_steps": 20,
+            "num_sample_steps": 1,
+            "val_fraction": 0.1
+          },
+          "entrypoint": "tracks/generative/lesson_05_compact_consistency_model/train.py",
+          "entrypoint_default_dataset": "fake",
+          "implementation_sha256": "d73ad234f3ed1b8195d072a569983f317560e77538128777e7fb34a209969c9d",
+          "lesson_id": "generative/lesson_05_compact_consistency_model",
+          "module": "tracks.generative.lesson_05_compact_consistency_model.train",
+          "required_artifacts": [
+            "checkpoints/checkpoint.pt",
+            "config.json",
+            "logs/train.log",
+            "metrics.jsonl"
+          ],
+          "required_metrics": [
+            "train_consistency_mse",
+            "val_consistency_mse"
+          ],
+          "source_paths": [
+            "tracks/generative/lesson_05_compact_consistency_model/__init__.py",
+            "tracks/generative/lesson_05_compact_consistency_model/data.py",
+            "tracks/generative/lesson_05_compact_consistency_model/model.py",
+            "tracks/generative/lesson_05_compact_consistency_model/train.py",
+            "dlhub/data/mnist.py",
+            "dlhub/data/splits.py",
+            "dlhub/seed.py",
+            "dlhub/paths.py"
+          ],
+          "split_contract": "official MNIST train split; deterministic 90/10 train/validation split"
+        },
+        {
+          "command_template": [
+            "{python}",
+            "-m",
+            "tracks.vision.lesson_01_mnist_lenet.train",
+            "--dataset",
+            "mnist",
+            "--seed",
+            "{seed}",
+            "--device",
+            "{device}",
+            "--run-name",
+            "{run_name}"
+          ],
+          "default_budget": {
+            "batch_size": 64,
+            "epochs": 1
+          },
+          "entrypoint": "tracks/vision/lesson_01_mnist_lenet/train.py",
+          "entrypoint_default_dataset": "mnist",
+          "implementation_sha256": "01a6057a2121e250d7b9384f6969c2fc9b20d181b03f39033ce1b1c117aa0f9f",
+          "lesson_id": "vision/lesson_01_mnist_lenet",
+          "module": "tracks.vision.lesson_01_mnist_lenet.train",
+          "required_artifacts": [
+            "checkpoints/checkpoint.pt",
+            "config.json",
+            "logs/train.log",
+            "metrics.jsonl"
+          ],
+          "required_metrics": [
+            "train_loss",
+            "train_acc",
+            "eval_loss",
+            "eval_acc"
+          ],
+          "source_paths": [
+            "tracks/vision/lesson_01_mnist_lenet/__init__.py",
+            "tracks/vision/lesson_01_mnist_lenet/data.py",
+            "tracks/vision/lesson_01_mnist_lenet/model.py",
+            "tracks/vision/lesson_01_mnist_lenet/train.py",
+            "dlhub/data/mnist.py",
+            "dlhub/data/splits.py",
+            "dlhub/seed.py",
+            "dlhub/paths.py"
+          ],
+          "split_contract": "official MNIST train and test splits"
+        },
+        {
+          "command_template": [
+            "{python}",
+            "-m",
+            "tracks.vision.lesson_02_mnist_mlp.train",
+            "--dataset",
+            "mnist",
+            "--seed",
+            "{seed}",
+            "--device",
+            "{device}",
+            "--run-name",
+            "{run_name}"
+          ],
+          "default_budget": {
+            "batch_size": 128,
+            "epochs": 1
+          },
+          "entrypoint": "tracks/vision/lesson_02_mnist_mlp/train.py",
+          "entrypoint_default_dataset": "mnist",
+          "implementation_sha256": "584f041f517821f74af299b96f08ba8fbe4c30cb827dbcc93cab96128a3d2464",
+          "lesson_id": "vision/lesson_02_mnist_mlp",
+          "module": "tracks.vision.lesson_02_mnist_mlp.train",
+          "required_artifacts": [
+            "checkpoints/checkpoint.pt",
+            "config.json",
+            "logs/train.log",
+            "metrics.jsonl"
+          ],
+          "required_metrics": [
+            "train_loss",
+            "train_acc",
+            "eval_loss",
+            "eval_acc"
+          ],
+          "source_paths": [
+            "tracks/vision/lesson_02_mnist_mlp/__init__.py",
+            "tracks/vision/lesson_02_mnist_mlp/data.py",
+            "tracks/vision/lesson_02_mnist_mlp/model.py",
+            "tracks/vision/lesson_02_mnist_mlp/train.py",
+            "dlhub/data/mnist.py",
+            "dlhub/data/splits.py",
+            "dlhub/seed.py",
+            "dlhub/paths.py"
+          ],
+          "split_contract": "official MNIST train and test splits"
+        },
+        {
+          "command_template": [
+            "{python}",
+            "-m",
+            "tracks.vision.lesson_03_mnist_alexnet.train",
+            "--dataset",
+            "mnist",
+            "--seed",
+            "{seed}",
+            "--device",
+            "{device}",
+            "--run-name",
+            "{run_name}"
+          ],
+          "default_budget": {
+            "batch_size": 128,
+            "epochs": 1
+          },
+          "entrypoint": "tracks/vision/lesson_03_mnist_alexnet/train.py",
+          "entrypoint_default_dataset": "mnist",
+          "implementation_sha256": "aadcef026e0eab9b1c8e473c5943f2a446373f0346288e114f5c3d20265e2df5",
+          "lesson_id": "vision/lesson_03_mnist_alexnet",
+          "module": "tracks.vision.lesson_03_mnist_alexnet.train",
+          "required_artifacts": [
+            "checkpoints/checkpoint.pt",
+            "config.json",
+            "logs/train.log",
+            "metrics.jsonl"
+          ],
+          "required_metrics": [
+            "train_loss",
+            "train_acc",
+            "eval_loss",
+            "eval_acc"
+          ],
+          "source_paths": [
+            "tracks/vision/lesson_03_mnist_alexnet/__init__.py",
+            "tracks/vision/lesson_03_mnist_alexnet/data.py",
+            "tracks/vision/lesson_03_mnist_alexnet/model.py",
+            "tracks/vision/lesson_03_mnist_alexnet/train.py",
+            "dlhub/data/mnist.py",
+            "dlhub/data/splits.py",
+            "dlhub/seed.py",
+            "dlhub/paths.py"
+          ],
+          "split_contract": "official MNIST train and test splits"
+        }
+      ],
+      "dataset": {
+        "download_or_local_cache_required": true,
+        "integrity_contract": "record SHA-256 for every local dataset file in the completed report; torchvision also performs its declared resource-integrity checks",
+        "kind": "real-public-dataset",
+        "name": "MNIST",
+        "official_test_examples": 10000,
+        "official_train_examples": 60000,
+        "provider": "torchvision.datasets.MNIST"
+      },
+      "paper_comparable": false,
+      "planned_runs": 21,
+      "profile_id": "mnist-real-v1",
+      "profile_sha256": "f8a4e62dedd5aa9bcbe5218b4142af036287a99084a992f77bc2fae296d994ea",
+      "purpose": "real-data execution evidence for the repository's seven MNIST-capable lessons",
+      "report_contract": {
+        "claim_limit": "a complete report is real-MNIST execution evidence, not a paper benchmark",
+        "completion_rule": "all 21 lesson/seed runs pass with hashes, artifacts, and finite required metrics",
+        "required_run_fields": [
+          "lesson_id",
+          "seed",
+          "state",
+          "command",
+          "artifacts",
+          "metrics"
+        ],
+        "required_source_hashes": [
+          "source_sha256",
+          "git_diff_sha256"
+        ],
+        "required_top_level": [
+          "schema_version",
+          "profile_id",
+          "profile_sha256",
+          "status",
+          "source_snapshot",
+          "environment",
+          "dataset_files",
+          "runs",
+          "summary"
+        ]
+      },
+      "seeds": [
+        41,
+        42,
+        43
+      ],
+      "status": "defined-not-executed"
+    }
+  ],
+  "schema_version": 1,
+  "truth_policy": "Profiles describe planned reproducible executions. Only a validated report may change an execution claim from planned to observed."
+}

@@ -6,6 +6,8 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from ._atomic import atomic_write
+
 if TYPE_CHECKING:
     import torch
 
@@ -26,7 +28,6 @@ def save_checkpoint(
     import torch
 
     out_path = Path(path)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
 
     payload: dict[str, Any] = {
         "model_state": model.state_dict(),
@@ -36,10 +37,12 @@ def save_checkpoint(
     if optimizer is not None:
         payload["optimizer_state"] = optimizer.state_dict()
 
-    # State-dict serialization is intentional; every library read uses the restricted loader below.
-    # nosemgrep: trailofbits.python.pickles-in-pytorch.pickles-in-pytorch
-    torch.save(payload, out_path)
-    return out_path
+    def write(handle) -> None:
+        # State-dict serialization is intentional; every library read uses the restricted loader.
+        # nosemgrep: trailofbits.python.pickles-in-pytorch.pickles-in-pytorch
+        torch.save(payload, handle)
+
+    return atomic_write(out_path, write)
 
 
 def load_checkpoint(

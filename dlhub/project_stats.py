@@ -53,6 +53,10 @@ class ProjectStats:
     zoo_modules: int = 0
     zoo_audited_groups: int = 0
     zoo_audited_artifacts: int = 0
+    baseline_wrappers: int = 0
+    baseline_audited_wrappers: int = 0
+    baseline_inferred_alias_wrappers: int = 0
+    baseline_unreviewed_wrappers: int = 0
 
     @property
     def lessons_total(self) -> int:
@@ -102,7 +106,7 @@ def compute_stats(repo_root: str | Path | None = None) -> ProjectStats:
     federated_ids = arches("dlhub.federated_zoo")
 
     from dlhub.vision.backbones.catalog import list_backbone_modules
-    from dlhub.zoo_fidelity import summarize_fidelity
+    from dlhub.zoo_fidelity import build_baseline_inventory, summarize_fidelity
 
     total = 0
     zoo_modules = 0
@@ -115,6 +119,9 @@ def compute_stats(repo_root: str | Path | None = None) -> ProjectStats:
         total += len(list(lister()))
 
     fidelity = summarize_fidelity()
+    baseline_inventory = build_baseline_inventory(root)
+    baseline_summary = baseline_inventory["summary"]
+    assert isinstance(baseline_summary, dict)
     return ProjectStats(
         lessons_by_track=lessons,
         test_files=test_files,
@@ -132,6 +139,12 @@ def compute_stats(repo_root: str | Path | None = None) -> ProjectStats:
         zoo_modules=zoo_modules,
         zoo_audited_groups=fidelity["audited_groups"],
         zoo_audited_artifacts=fidelity["audited_artifacts"],
+        baseline_wrappers=int(baseline_summary["total_wrappers"]),
+        baseline_audited_wrappers=int(baseline_summary["audited_wrappers"]),
+        baseline_inferred_alias_wrappers=int(
+            baseline_summary["source_inferred_alias_wrappers"]
+        ),
+        baseline_unreviewed_wrappers=int(baseline_summary["unreviewed_wrappers"]),
     )
 
 
@@ -178,19 +191,25 @@ def render_zoo_overview(stats: ProjectStats) -> str:
         ("Point Cloud Zoo", f"{stats.pointcloud_zoo_ids} 注册 ID", "docs/zoo/pointcloud-zoo.md"),
         (
             "VLM Zoo",
-            f"{stats.vlm_zoo_ids} 注册 ID / {stats.vlm_families} 架构族",
+            f"{stats.vlm_zoo_ids} 注册 ID / {stats.vlm_families} 注册组",
             "docs/zoo/vlm-zoo.md",
         ),
-        ("GAN Zoo", f"{stats.gan_families} 架构族", "docs/zoo/generative-zoo.md"),
-        ("Diffusion Zoo", f"{stats.diffusion_families} 架构族", "docs/zoo/generative-zoo.md"),
-        ("Federated Zoo", f"{stats.federated_families} 联邦策略族", "docs/zoo/federated-zoo.md"),
+        ("GAN Zoo", f"{stats.gan_families} 注册组", "docs/zoo/generative-zoo.md"),
+        ("Diffusion Zoo", f"{stats.diffusion_families} 注册组", "docs/zoo/generative-zoo.md"),
+        (
+            "Federated Zoo",
+            f"{stats.federated_families} 策略注册组",
+            "docs/zoo/federated-zoo.md",
+        ),
     ]
     lines = ["| Zoo | 规模 | 文档 |", "|---|---|---|"]
     for name, size, doc in rows:
         lines.append(f"| {name} | {size} | [{doc}]({doc}) |")
     lines.append(
         f"| **全部 {stats.zoo_modules} 个 zoo 模块合计** | **{stats.total_zoo_ids} 注册 ID / "
-        f"{stats.zoo_audited_artifacts} 已审计源码入口** | "
+        f"{stats.zoo_audited_artifacts} 已审计源码入口 / "
+        f"{stats.baseline_inferred_alias_wrappers} 源码推断 baseline-alias / "
+        f"{stats.baseline_unreviewed_wrappers} 未分类 wrapper** | "
         "[docs/zoo/](docs/zoo/index.md) |"
     )
     return "\n".join(lines) + "\n"

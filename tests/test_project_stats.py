@@ -111,8 +111,27 @@ def test_stats_lower_bounds(stats) -> None:
         assert getattr(stats, name) >= minimum, name
     assert stats.zoo_modules > 0
     assert stats.total_zoo_ids > 0
+    assert stats.baseline_wrappers > 0
+    assert stats.baseline_audited_wrappers > 0
+    assert stats.baseline_inferred_alias_wrappers > 0
+    assert stats.baseline_unreviewed_wrappers == 0
+    assert (
+        stats.baseline_audited_wrappers
+        + stats.baseline_inferred_alias_wrappers
+        + stats.baseline_unreviewed_wrappers
+        == stats.baseline_wrappers
+    )
 
 
 def test_family_counting_matches_variant_structure(stats) -> None:
     # Each family currently ships tiny/small/base variants.
     assert stats.vlm_zoo_ids == 3 * stats.vlm_families
+
+
+def test_zoo_overview_uses_registration_not_implementation_counts(stats) -> None:
+    rendered = project_stats.render_zoo_overview(stats)
+
+    assert "注册组" in rendered
+    assert "架构族" not in rendered
+    assert f"{stats.baseline_inferred_alias_wrappers} 源码推断 baseline-alias" in rendered
+    assert f"{stats.baseline_unreviewed_wrappers} 未分类 wrapper" in rendered

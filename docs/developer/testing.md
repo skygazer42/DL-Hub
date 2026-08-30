@@ -3,20 +3,40 @@
 DL-Hub 使用静态契约、精选 smoke、针对性 pytest 和完整 CI 四层验证。
 默认从改动能证明的最小范围开始；测试数量不是目标，结论与改动范围匹配才是目标。
 
+pytest 配置只维护在根目录 `pyproject.toml` 的 `[tool.pytest.ini_options]`；默认启用未知配置与未知 marker 严格检查，不再维护第二份 `pytest.ini`。
+
 完整分层定义见 [实现契约](../implementation-contract.md)。
 
 ---
 
 ## 运行测试
 
-### 日常改动：先做静态验证
+### 日常改动：先做快速仓库验证
 
 ```bash
-# lint + lesson contract + 命名叙事 + Model Zoo 保真度元数据
+# lint + lesson contract + 生成统计 + Zoo 完整性/保真度 + 命名叙事
 make verify
+
+# 单独确认 README / docs 的生成统计块没有漂移（make verify 已包含）
+make stats
+
+# 单独复核全部本地 Zoo 注册表（make verify 已包含）
+python scripts/zoo_integrity.py --check
+
+# 复核 339 门数据/benchmark 分类、真实数据 profile 和历史运行证明
+make evidence
+
+# 更强的手工检查：额外构建六个领域代表并运行前向/模拟
+python scripts/zoo_integrity.py --check --smoke
+
+# 全量运行 339 个 lesson 的 python -m ... --help（通常约 4–7 分钟，不属于 make verify）
+make lesson-entrypoints
 ```
 
 这些检查不训练模型。随后只运行与修改文件直接相关的测试：
+
+`make lesson-entrypoints` 使用 CPU、离线环境变量和隔离的临时 cwd/缓存/输出目录；
+它不做 socket 级网络阻断，因此证明的是入口导入与 CLI 帮助路径，不是完整训练或绝对断网。
 
 ```bash
 # 单个测试文件
@@ -31,6 +51,8 @@ pytest -q tests/test_kmeans.py::test_kmeans_clusters_separable_points
 - 改动训练链路：运行对应 lesson 的 smoke 或短训练测试。
 - 改动共享底层模块：运行该模块测试和受影响的代表性 track 测试。
 - 改动注册表/发现逻辑：运行对应 Zoo、统计或 lesson contract 测试。
+- 改动文档或 MkDocs 配置：运行 `make docs`，确保 strict 构建通过。
+- 改动依赖、打包或发布元数据：运行 `make package-smoke`。
 - 发布前或 CI：运行 `pytest -q` / `make test` 完整套件。
 
 ### 查看测试覆盖率
@@ -125,11 +147,11 @@ DL-Hub 使用 **GitHub Actions** 进行持续集成。
 
 ```mermaid
 graph LR
-    A[Push / PR] --> B[Lint]
-    B --> C[Lesson Contracts]
-    C --> D[Narrative + Fidelity]
-    D --> E[Unit Tests]
-    E --> F[Report]
+    A[Push / PR] --> B[Python 3.10 仓库门禁]
+    B --> C[sdist / wheel + 隔离安装校验]
+    C --> D[Python 3.10 完整测试]
+    A --> E[Python 3.12 完整测试]
+    A --> F[文档改动: MkDocs strict]
 ```
 
 ### CI 检查项
@@ -138,11 +160,28 @@ graph LR
 |------|------|------|
 | Lint | `make lint` | Ruff 静态检查 |
 | Lesson Contracts | `make contract` | 全量入口、核心 CLI、文档命令与精选 Smoke 覆盖 |
+| Generated Stats | `make stats` | 检查 README 与文档统计块是否匹配当前仓库 |
+| Zoo Integrity | `make zoo-integrity` | 全量注册表离线导入、ID、排序与 builder 映射 |
 | Narrative | `make narrative` | 命名边界与 lesson 路径一致性 |
 | Fidelity | `make fidelity` | Model Zoo 审计元数据与源码证据 |
+| Evidence | `make evidence` | 339 门数据/benchmark 分类、真实数据 profile 与历史运行证明 |
 | Tests | `pytest -q` | 全量单元测试 |
+| Package | `make package` | 构建 sdist/wheel 并用 Twine 校验元数据 |
+| Package Smoke | `make package-smoke` | 隔离安装 wheel，并从 sdist 隔离重建、安装和验证同一发行边界 |
+| Docs | `make docs` | 严格构建 MkDocs；文档 PR 合并前执行 |
 
-`make smoke` 是本地或发布前的代表性运行验证，目前不在常规 GitHub Actions 中重复执行。
+`python-ci.yml` 的单一矩阵定义覆盖最低支持版本 3.10 和兼容版本 3.12；只有最低版本执行
+仓库、统计和打包门禁，两个版本都运行完整测试。`make smoke` 是本地或发布前的代表性运行
+验证，目前不在常规 GitHub Actions 中重复执行。
+
+### Actions 供应链与权限边界
+
+- 所有外部 `uses:` 都固定到官方 release 对应的完整 commit SHA；同行版本注释供审阅，也让 Dependabot 在更新 SHA 时同步维护可读版本。
+- `.github/dependabot.yml` 的 `github-actions` 生态会按月检查 Action 更新；不要把固定 SHA 手工退回可移动的 major tag。
+- 普通 CI 和文档构建只授予 `contents: read`，checkout 不把 token 持久化到本地 Git 配置。
+- PR（包括 fork PR）只构建和测试，不上传或部署 Pages；Pages 写权限与 OIDC 只授予 `deploy` job。
+- 手动触发可验证任意分支的文档，但只有 `main` 且仓库已启用 Pages 时才会发布；同一 ref 的旧构建会取消，进行中的生产部署不会被新运行中断。
+- Python job 最长运行 60 分钟，文档构建和部署分别限制为 20 与 10 分钟。
 
 !!! warning "PR 合并前提"
 

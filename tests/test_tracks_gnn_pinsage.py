@@ -8,7 +8,10 @@ def test_gnn_pinsage_encode_and_loss_smoke() -> None:
         DataConfig,
         build_baseline_recommender_data,
     )
-    from tracks.gnn.lesson_10_pinsage_compact_recommender.model import ModelConfig, PinSAGEItemEncoder
+    from tracks.gnn.lesson_10_pinsage_compact_recommender.model import (
+        ModelConfig,
+        PinSAGEItemEncoder,
+    )
 
     data = build_baseline_recommender_data(
         DataConfig(
@@ -41,3 +44,17 @@ def test_gnn_pinsage_encode_and_loss_smoke() -> None:
 
     loss = model.loss(center=center, pos=pos, neg=neg_repr)
     assert torch.isfinite(loss)
+
+
+def test_gnn_pinsage_sampling_preserves_cpu_generator_sequence_on_target_device() -> None:
+    from tracks.gnn.lesson_10_pinsage_compact_recommender.train import _sample_item_ids
+
+    expected_gen = torch.Generator().manual_seed(123)
+    expected = torch.randint(0, 17, (5, 3), generator=expected_gen)
+    actual_gen = torch.Generator().manual_seed(123)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    actual = _sample_item_ids(high=17, size=(5, 3), gen=actual_gen, device=device)
+
+    assert actual.device.type == device.type
+    assert torch.equal(actual.cpu(), expected)

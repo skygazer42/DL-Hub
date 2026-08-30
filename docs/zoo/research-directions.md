@@ -5,21 +5,23 @@ icon: material/compass-outline
 # Research Directions / 研究方向
 
 除各领域主 Zoo 外，`dlhub/` 还收录了 100+ 个研究方向子领域，每个方向为一个独立包
-（当前每个方向 10 个算法族，本地实现无需下载权重）。下表按批次列出全部方向与包路径；
-注册名只表示统一入口，具体实现等级以保真度审计为准。
+（当前每个方向 10 个方法注册标签，本地入口无需下载权重）。下表按批次列出全部方向与包路径；
+注册名只表示统一入口；direct baseline wrapper 会依据源码调用保守标为 `baseline-alias`，
+其中只有带审计 key 的条目完成了逐组人工核对，具体等级以
+[保真度审计](fidelity.md)和[baseline 清单](baseline-inventory.json)为准。
 
 !!! tip "如何使用"
 
     大部分方向在包的上级目录附带 `<方向名>_zoo.py` 构建入口
     （如 `dlhub/vision/blur_detection_zoo.py`、`dlhub/generative/world_models_zoo.py`），
-    遵循与主 Zoo 相同的一文件一算法族设计模式；
-    其余方向以独立算法族包的形式提供，由对应 track lesson 与测试直接引用。
+    遵循与主 Zoo 相同的一文件一注册组布局；一文件只代表可定位入口，不自动代表独立机制；
+    其余方向以方法注册包的形式提供，由对应 track lesson 与测试直接引用。
 
 ---
 
 ## Research Directions / 研究方向（一）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | ReID / 行人重识别 | 10 | `dlhub/vision/reid/` |
 | OCR / 文字识别 | 10 | `dlhub/vision/ocr/` |
@@ -34,7 +36,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（二）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | HOI Detection / 人物交互检测 | 10 | `dlhub/vision/hoi_detection/` |
 | Weakly Supervised Detection / 弱监督检测 | 10 | `dlhub/vision/weakly_supervised_detection/` |
@@ -49,7 +51,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（三）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Text Detection / 文本检测 | 10 | `dlhub/vision/text_detection/` |
 | Text Recognition / 文本识别 | 10 | `dlhub/vision/text_recognition/` |
@@ -64,7 +66,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（四）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Image Matting / 图像抠图 | 10 | `dlhub/vision/image_matting/` |
 | Image Harmonization / 图像协调 | 10 | `dlhub/vision/image_harmonization/` |
@@ -79,7 +81,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（五）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Image Editing / 图像编辑 | 10 | `dlhub/vision/image_editing/` |
 | Multi-focus Fusion / 多焦点图像融合 | 10 | `dlhub/vision/multi_focus_fusion/` |
@@ -94,7 +96,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（六）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Low-light Enhancement / 低光增强 | 10 | `dlhub/vision/low_light_enhancement/` |
 | Image Colorization / 图像上色 | 10 | `dlhub/vision/image_colorization/` |
@@ -109,7 +111,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（七）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Optical Flow / 光流估计 | 10 | `dlhub/vision/optical_flow/` |
 | Person Search / 行人搜索 | 10 | `dlhub/vision/person_search/` |
@@ -124,7 +126,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（八）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Image Quality Assessment / 图像质量评估 | 10 | `dlhub/vision/image_quality_assessment/` |
 | Aesthetic Assessment / 美学评分 | 10 | `dlhub/vision/aesthetic_assessment/` |
@@ -139,7 +141,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（九）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Image Quality Assessment / 图像质量评估 | 10 | `dlhub/vision/image_quality_assessment/` |
 | Aesthetic Assessment / 美学评分 | 10 | `dlhub/vision/aesthetic_assessment/` |
@@ -154,7 +156,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Edge Detection / 边缘检测 | 10 | `dlhub/vision/edge_detection/` |
 | Line Segment Detection / 线段检测 | 10 | `dlhub/vision/line_segment_detection/` |
@@ -169,7 +171,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十一）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Edge Detection / 边缘检测 | 10 | `dlhub/vision/edge_detection/` |
 | Line Segment Detection / 线段检测 | 10 | `dlhub/vision/line_segment_detection/` |
@@ -184,7 +186,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十二）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Visual Prompting / 视觉提示建模 | 10 | `dlhub/vision/visual_prompting/` |
 | Visual Place Recognition / 视觉地点识别 | 10 | `dlhub/vision/visual_place_recognition/` |
@@ -199,7 +201,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十三）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Video Frame Interpolation / 视频插帧 | 10 | `dlhub/vision/video_frame_interpolation/` |
 | Video Stabilization / 视频稳像 | 10 | `dlhub/vision/video_stabilization/` |
@@ -214,7 +216,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十四）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Image Relighting / 图像重照明 | 10 | `dlhub/vision/image_relighting/` |
 | Transparent Object Segmentation / 透明物体分割 | 10 | `dlhub/vision/transparent_object_segmentation/` |
@@ -229,7 +231,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十五）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Image Deraining / 图像去雨 | 10 | `dlhub/vision/image_deraining/` |
 | Shadow Detection / 阴影检测 | 10 | `dlhub/vision/shadow_detection/` |
@@ -244,7 +246,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十六）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Image Deweathering / 图像去天气 | 10 | `dlhub/vision/image_deweathering/` |
 | Transparent Depth Estimation / 透明体深度估计 | 10 | `dlhub/vision/transparent_depth_estimation/` |
@@ -259,7 +261,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十七）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Pedestrian Detection / 行人检测 | 10 | `dlhub/vision/pedestrian_detection/` |
 | Road Scene Understanding / 道路场景理解 | 10 | `dlhub/vision/road_scene_understanding/` |
@@ -274,7 +276,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十八）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Hand Pose Estimation / 手部姿态估计 | 10 | `dlhub/vision/hand_pose_estimation/` |
 | Gesture Recognition / 手势识别 | 10 | `dlhub/vision/gesture_recognition/` |
@@ -289,7 +291,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（十九）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Anchor-Free Detection / Anchor-Free 检测 | 10 | `dlhub/vision/anchor_free_detection/` |
 | Keypoint Regression / 关键点回归 | 10 | `dlhub/vision/keypoint_regression/` |
@@ -304,7 +306,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（二十）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Open Vocabulary Detection / 开放词表检测 | 10 | `dlhub/vision/open_vocabulary_detection/` |
 | Few-Shot Segmentation / 小样本分割 | 10 | `dlhub/vision/few_shot_segmentation/` |
@@ -319,7 +321,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（二十一）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Infrared Small Target Detection / 红外小目标检测 | 10 | `dlhub/vision/infrared_small_target_detection/` |
 | Blur Detection / 模糊检测 | 10 | `dlhub/vision/blur_detection/` |
@@ -334,7 +336,7 @@ icon: material/compass-outline
 
 ## Research Directions / 研究方向（二十二）
 
-| 方向 | 当前家族数 | 包路径 |
+| 方向 | 当前注册标签数 | 包路径 |
 |------|-----------|--------|
 | Mirror Segmentation / 镜面分割 | 10 | `dlhub/vision/mirror_segmentation/` |
 | Hand Segmentation / 手部分割 | 10 | `dlhub/vision/hand_segmentation/` |

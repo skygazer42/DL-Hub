@@ -20,7 +20,7 @@ flowchart LR
     L03 --> L10["**09-26**\n条件扩散与图像恢复"]
     L10 --> L27["**27-44**\n参照引导与编辑"]
     L27 --> L45["**45-51**\n视频 / 3D / 世界模型"]
-    L03 --> ZOO["Generative Zoo\nGAN 24 族 + Diffusion 12 族"]
+    L03 --> ZOO["Generative Zoo\nGAN 44 注册组 + Diffusion 32 注册组"]
 
     style L01 fill:#dc2626,color:#fff
     style L03 fill:#7c3aed,color:#fff
@@ -204,8 +204,11 @@ python -m tracks.generative.lesson_02_gan_mnist.train \
 
 ## Generative Zoo
 
-!!! note "GAN 24 族 + Diffusion 12 族"
-    Generative Zoo 提供了完整的生成模型架构库，从经典 DCGAN 到前沿 Diffusion Models，所有实现均为纯 PyTorch 教学代码。
+!!! note "GAN 与 Diffusion 教学注册目录"
+    Generative Zoo 按经典 DCGAN 到现代 Diffusion 的方法时间线提供本地构建入口；注册标签不等于
+    对应论文的独立实现。Diffusion 中 10 个代表路径为 `compact`，22 个标签仍是
+    `baseline-alias`；当前机制等级、共享 baseline 和缺失项以
+    [Model Zoo 保真度审计](../zoo/fidelity.md)为准。
 
 ```bash
 # GAN Zoo
@@ -219,7 +222,7 @@ python scripts/diffusion_zoo.py --search ddpm
 python scripts/diffusion_zoo.py --smoke dldiff:ddpm_tiny
 ```
 
-??? info "GAN 架构分类（点击展开）"
+??? info "GAN 方法标签分类（点击展开）"
 
     | 类别 | 代表架构 | 特点 |
     |:-----|:---------|:-----|
@@ -229,7 +232,7 @@ python scripts/diffusion_zoo.py --smoke dldiff:ddpm_tiny
     | **高分辨率** | ProGAN, StyleGAN, StyleGAN2, StyleGAN3 | 渐进式高质量生成 |
     | **轻量级** | LightGAN, FastGAN | 训练高效的生成模型 |
 
-??? info "Diffusion 架构分类（点击展开）"
+??? info "Diffusion 方法标签分类（点击展开）"
 
     | 类别 | 代表架构 | 特点 |
     |:-----|:---------|:-----|

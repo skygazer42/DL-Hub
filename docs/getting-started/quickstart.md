@@ -11,8 +11,8 @@ git clone https://github.com/skygazer42/DL-Hub.git
 cd DL-Hub
 python -m venv .venv && source .venv/bin/activate
 # CPU 示例；CUDA/macOS 命令请按安装指南选择
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-pip install -e ".[vision]"
+python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -e ".[vision]"
 ```
 
 !!! note "详细安装步骤"

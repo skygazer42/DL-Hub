@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._common import build_baseline_model, smoke_test_model
+from ._common import build_compact_registration_model, validate_registration_model
 
 _VARIANTS = {
     "pointnetlk_tiny": {"width": 24, "depth": 1},
@@ -9,10 +9,10 @@ _VARIANTS = {
 
 
 def build_pointnetlk_registrar(*, variant: str = "pointnetlk_small", width_mult: float = 1.0):
-    return build_baseline_model(
+    return build_compact_registration_model(
         family="pointnetlk", variants=_VARIANTS, variant=str(variant), width_mult=float(width_mult)
     )
 
 
 if __name__ == "__main__":
-    smoke_test_model(build_pointnetlk_registrar, "pointnetlk_tiny")
+    validate_registration_model(build_pointnetlk_registrar, "pointnetlk_tiny")

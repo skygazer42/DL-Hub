@@ -64,7 +64,9 @@ class DETRMask(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(enc_layer, num_layers=el)
+        self.encoder = nn.TransformerEncoder(
+            enc_layer, num_layers=el, enable_nested_tensor=False
+        )
 
         self.query = nn.Parameter(torch.randn(nq, dm) * 0.02)
         self.cross = nn.ModuleList(
