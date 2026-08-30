@@ -16,6 +16,7 @@ def test_action_recognition_zoo_lists_20_plus_arches() -> None:
 
     arches = list_local_arches()
     assert len(arches) >= 20
+    assert arches == sorted(arches)
 
     assert "dlactv:c3d_tiny" in arches
     assert "dlactv:tsn_tiny" in arches

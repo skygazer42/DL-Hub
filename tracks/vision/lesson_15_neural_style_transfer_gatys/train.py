@@ -1,10 +1,12 @@
 import argparse
+import shutil
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 import torch
 
+from dlhub.checkpoint import save_checkpoint
 from dlhub.config import append_jsonl, dataclass_to_dict, write_json
 from dlhub.device import resolve_device
 from dlhub.logging import get_logger
@@ -94,6 +96,7 @@ def run_style_transfer(run_cfg: RunConfig, data_cfg: DataConfig) -> int:
     )
     logger = get_logger("vision.style_transfer_gatys", log_file=paths.logs_dir / "run.log")
     paths.run_dir.mkdir(parents=True, exist_ok=True)
+    paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
     logger.info("Device: %s (%s)", device_info.name, device_info.torch_device)
     logger.info("Arch: %s", run_cfg.arch)
@@ -139,6 +142,23 @@ def run_style_transfer(run_cfg: RunConfig, data_cfg: DataConfig) -> int:
         paths.run_dir / "stylized.pt",
     )
     _maybe_save_image(stylized[:1], paths.run_dir / "stylized.png")
+    checkpoint_path = save_checkpoint(
+        paths.checkpoints_dir / "checkpoint.pt",
+        model=model,
+        optimizer=None,
+        epoch=int(run_cfg.steps),
+        extra={
+            "track": "vision",
+            "lesson": "lesson_15_neural_style_transfer_gatys",
+            "checkpoint_role": "encoder snapshot for result provenance",
+            "resume_supported": False,
+            "optimized_result": "stylized.pt",
+        },
+    )
+    logger.info(
+        "Saved provenance checkpoint to %s (not resumable optimization state)", checkpoint_path
+    )
+    shutil.copyfile(paths.logs_dir / "run.log", paths.logs_dir / "train.log")
     return 0
 
 

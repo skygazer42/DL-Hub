@@ -56,10 +56,11 @@
 
 | 操作系统 | 支持状态 |
 |---------|---------|
-| **Linux** (Ubuntu 20.04+) | :material-check-circle: 完全支持 |
-| **macOS** (12 Monterey+) | :material-check-circle: 完全支持 |
-| **Windows** (10/11) | :material-check-circle: 完全支持 |
+| **Linux** (x86_64) | :material-check-circle: 本轮已实测 Linux/ext4、CUDA 和 339 个默认课程入口 |
+| **macOS** (Apple Silicon) | :material-check-circle: 原生 `macos-15` ARM64 / MPS 张量、训练和 checkpoint 已实测 |
+| **Windows** (原生) | :material-check-circle: 原生 `windows-2025` / NTFS、并发文件操作和一门离线课程已实测 |
 
 !!! note "Windows 用户"
 
-    建议使用 WSL2 或 Anaconda 环境以获得最佳体验。
+    建议使用 WSL2 或 Anaconda 环境。WSL2 属于 Linux 路径，不能替代原生 Windows
+    文件系统与课程运行证据；原生 Windows 成功范围和边界见[平台运行门禁](../developer/platform-runtime.md)。

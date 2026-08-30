@@ -1,0 +1,96 @@
+name: Bug 报告
+description: 提交可复现的代码、文档、打包或运行问题
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。安全漏洞或疑似漏洞不要公开提交，请改用仓库的 [安全政策](https://github.com/skygazer42/DL-Hub/security/policy)。
+        请只提供最小、脱敏的复现；不要粘贴令牌、私有数据、个人信息、私有仓库地址或来源不明的 checkpoint。
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 Issue，没有找到同一问题。
+          required: true
+        - label: 这不是安全漏洞；如有疑问，我会先按安全政策私下报告。
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响范围
+      options:
+        - dlhub 核心工具
+        - Lesson / Track
+        - Model Zoo
+        - ML 算法或优化工具箱
+        - 文档
+        - 打包、依赖或 CI
+        - 不确定
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: 相关路径或入口
+      description: 给出最小定位信息，例如模块、Lesson 路径或命令；不要包含私有绝对路径。
+      placeholder: dlhub/checkpoint.py 或 tracks/vision/lesson_01_mnist_lenet/train.py
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 实际行为与预期行为
+      description: 分别说明发生了什么，以及你期望发生什么。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 最小复现
+      description: 使用 synthetic/fake 输入，给出从干净仓库状态开始的最短命令和输入。
+      placeholder: |
+        1. 安装方式：...
+        2. 运行：python ...
+        3. 观察到：...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境
+      description: 只列相关版本；请脱敏用户名、主目录、镜像凭据和私有地址。
+      placeholder: |
+        OS: Ubuntu 24.04
+        Python: 3.10.x
+        PyTorch: 2.x
+        安装方式: editable / wheel
+        CPU/CUDA/MPS: CPU
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 已脱敏日志或 traceback
+      description: 保留完整异常链，但删除令牌、个人数据、私有路径和无关大段输出。
+      render: shell
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: 已尝试的验证
+      description: 列出已运行命令及结果，例如 targeted pytest、make verify、make docs 或 make package-smoke。
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 其他上下文
+      description: 可提供公开链接或最小截图；不要上传私有数据集或未知来源的模型文件。

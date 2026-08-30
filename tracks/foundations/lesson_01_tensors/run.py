@@ -1,11 +1,21 @@
+import argparse
+
 import torch
 
 
-def main() -> int:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Demonstrate core PyTorch tensor shapes and operations."
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
     if __package__ is None:
         raise RuntimeError(
             "Run from repo root as module: python -m tracks.foundations.lesson_01_tensors.run"
         )
+    parse_args(argv)
 
     x = torch.randn(2, 3, dtype=torch.float32)
     y = torch.randn(3, dtype=torch.float32)

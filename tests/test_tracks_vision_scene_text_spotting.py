@@ -6,6 +6,39 @@ import pytest
 torch = pytest.importorskip("torch")
 
 
+def test_scene_text_spotting_default_dataset_is_exhaustive_and_deterministic() -> None:
+    from tracks.vision.lesson_85_synthetic_scene_text_spotting.data import (
+        DataConfig,
+        SyntheticSceneTextSpottingDataset,
+    )
+
+    dataset = SyntheticSceneTextSpottingDataset(DataConfig())
+    assert len(dataset) == 1536
+    for index in range(len(dataset)):
+        first_image, first_target = dataset[index]
+        second_image, second_target = dataset[index]
+        assert tuple(first_image.shape) == (1, 40, 40)
+        assert torch.isfinite(first_image).all()
+        assert torch.equal(first_image, second_image)
+        assert all(torch.equal(first_target[key], second_target[key]) for key in first_target)
+
+
+def test_scene_text_spotting_glyphs_fit_minimum_image_with_long_text() -> None:
+    from tracks.vision.lesson_85_synthetic_scene_text_spotting.data import (
+        DataConfig,
+        SyntheticSceneTextSpottingDataset,
+    )
+
+    dataset = SyntheticSceneTextSpottingDataset(
+        DataConfig(num_samples=256, image_size=32, text_length=12, seed=91)
+    )
+    for index in range(len(dataset)):
+        image, target = dataset[index]
+        assert tuple(image.shape) == (1, 32, 32)
+        assert tuple(target["text_tokens"].shape) == (12,)
+        assert torch.isfinite(image).all()
+
+
 def test_vision_scene_text_spotting_batch_contract_and_loss_smoke() -> None:
     from tracks.vision.lesson_85_synthetic_scene_text_spotting.data import (
         DataConfig,

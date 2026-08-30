@@ -8,7 +8,7 @@ description: 从 CLIP 到 LLaVA 与人脸/手部 VLM 推理 — 58 个 Lesson �
 !!! abstract "赛道概览"
     **58 个 Lesson** · 预计 4-6 周 · 从 CLIP 双塔对齐到 LLaVA 指令跟随、开放词汇检测、时序定位与人脸/手部 VLM 推理
 
-    Multimodal 赛道是 DL-Hub 最前沿的方向，覆盖视觉语言模型（VLM）的完整演进脉络。从对比学习（CLIP）出发，经过跨模态融合（BLIP）、视觉指令跟随（LLaVA）、开放词汇检测（OWL-ViT）、文档理解（OCR VLM）、视频时序定位（2D-TAN），再延伸到具身问答、多模态推理、视频检索、音频文本理解、音视融合、HOI、视线估计，以及人物属性识别、人脸身份识别与验证推理、手部姿态与手势推理。配套 **70 个 VLM 架构族**可供深入探索。
+    Multimodal 赛道按视觉语言方法的演进脉络组织教学主题。从对比学习（CLIP）出发，经过跨模态融合（BLIP）、视觉指令跟随（LLaVA）、开放词汇检测（OWL-ViT）、文档理解（OCR VLM）、视频时序定位（2D-TAN），再延伸到具身问答、多模态推理、视频检索、音频文本理解、音视融合、HOI、视线估计，以及人物属性识别、人脸身份识别与验证推理、手部姿态与手势推理。配套 **70 个 VLM 注册组**用于定位教学入口；是否包含对应论文机制以 fidelity 审计为准。
 
 ---
 
@@ -224,8 +224,11 @@ flowchart LR
 
 ## VLM Zoo
 
-!!! note "70 个视觉语言模型族"
-    VLM Zoo 涵盖从 2021 年 CLIP 到 2025 年最新模型的 **70 个 VLM 架构族**（教学实现 + 时间线），所有实现均为纯 PyTorch 教学代码。
+!!! note "70 个视觉语言方法注册组"
+    VLM Zoo 按 2021 年 CLIP 到 2025 年方法时间线提供 **70 个 VLM 注册组**。公共核心已支持
+    真实图像/Token 与四条多模态计算路径；其中 12 个代表入口为 `compact`，其余 58 个仍是
+    `baseline-alias`，不能按 70 个独立论文架构计数；逐项状态以
+    [Model Zoo 保真度审计](../zoo/fidelity.md)为准。
 
 ```bash
 # 列出所有 VLM 架构
@@ -241,7 +244,7 @@ python scripts/vlm_zoo.py --timeline
 python scripts/vlm_zoo.py --smoke dlvlm:clip_tiny
 ```
 
-??? info "VLM Zoo — 70 个视觉语言模型族完整列表（点击展开）"
+??? info "VLM Zoo — 70 个视觉语言方法注册标签（点击展开）"
 
     | Family | 年份 | 核心创新 |
     |:-------|:----:|:---------|
@@ -349,7 +352,7 @@ python scripts/vlm_zoo.py --smoke dlvlm:clip_tiny
 
 | 方向 | 说明 |
 |:-----|:-----|
-| :material-flask: **Model Zoo 探索** | 深入 [VLM Zoo](../zoo/vlm-zoo.md) 的 70 个架构族，对比不同设计范式 |
+| :material-flask: **Model Zoo 探索** | 浏览 [VLM Zoo](../zoo/vlm-zoo.md) 的 70 个注册标签，并结合 fidelity 状态区分时间线名称与已实现机制 |
 | :material-book-open: **论文阅读** | 阅读 `resources/pdfs/llms/` 下的 50+ 篇论文 |
 | :material-code-tags: **贡献新 Lesson** | 参考 [贡献指南](../developer/contributing.md) 提交 PR |
 | :material-refresh: **回顾复习** | 回到 [赛道总览](index.md) 制定复习计划 |

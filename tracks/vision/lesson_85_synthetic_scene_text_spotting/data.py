@@ -25,7 +25,11 @@ class SpottingVocab:
         return {token: idx for idx, token in enumerate(self.id_to_token)}
 
     def to_dict(self) -> dict[str, object]:
-        return {"pad_id": int(self.pad_id), "alphabet": self.alphabet, "token_to_id": self.token_to_id}
+        return {
+            "pad_id": int(self.pad_id),
+            "alphabet": self.alphabet,
+            "token_to_id": self.token_to_id,
+        }
 
 
 @dataclass(frozen=True)
@@ -44,10 +48,10 @@ class DataConfig:
 def _char_template(char_id: int) -> np.ndarray:
     rng = np.random.default_rng(13_357 + int(char_id) * 10_003)
     template = (rng.random((7, 5)) > 0.48).astype(np.float32)
-    template[0, :] = (char_id % 2)
-    template[-1, :] = ((char_id // 2) % 2)
-    template[:, 0] = ((char_id // 3) % 2)
-    template[:, -1] = ((char_id // 5) % 2)
+    template[0, :] = char_id % 2
+    template[-1, :] = (char_id // 2) % 2
+    template[:, 0] = (char_id // 3) % 2
+    template[:, -1] = (char_id // 5) % 2
     template[3, 2] = 1.0
     return template
 
@@ -99,13 +103,26 @@ class SyntheticSceneTextSpottingDataset:
 
         cell_w = max(4, (x1 - x0 - 2) // text_length)
         baseline = y0 + (y1 - y0) // 2 + 4
+        inner_box_height = y1 - y0 - 2
+        inner_box_width = x1 - x0 - 2
         for pos, token in enumerate(text_tokens.tolist()):
             template = _char_template(int(token))
-            scale_y = 2
+            scale_y = max(1, inner_box_height // int(template.shape[0]))
             scale_x = max(1, (cell_w - 2) // template.shape[1])
             glyph = np.kron(template, np.ones((scale_y, scale_x), dtype=np.float32))
             gh, gw = glyph.shape
-            start_y = int(np.clip(baseline - gh + int(rng.integers(-1, 2)), y0 + 1, y1 - gh - 1))
+            if gh > inner_box_height or gw > inner_box_width:
+                raise RuntimeError(
+                    f"glyph shape {(gh, gw)} does not fit text box interior "
+                    f"{(inner_box_height, inner_box_width)}"
+                )
+            start_y = int(
+                np.clip(
+                    baseline - gh + int(rng.integers(-1, 2)),
+                    y0 + 1,
+                    y1 - gh - 1,
+                )
+            )
             cell_x0 = x0 + 1 + pos * cell_w
             start_x = int(np.clip(cell_x0 + (cell_w - gw) // 2, x0 + 1, x1 - gw - 1))
             image[start_y : start_y + gh, start_x : start_x + gw] -= 0.72 * glyph

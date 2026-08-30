@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 安全漏洞（请勿公开）
+    url: https://github.com/skygazer42/DL-Hub/security/policy
+    about: 查看私密报告入口与脱敏要求，不要在公开 Issue 中披露漏洞细节。

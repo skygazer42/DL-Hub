@@ -14,16 +14,20 @@ DL-Hub/
 │   ├── generative/    #   生成模型赛道
 │   ├── llm/           #   LLM 赛道
 │   └── multimodal/    #   多模态赛道
-├── ml_algorithms/      # 纯 NumPy ML 算法（27+ 个经典算法）
+├── ml_algorithms/      # 纯 NumPy ML 算法（当前 31 个）
 ├── optimization/       # 优化工具箱（Optimizer/Scheduler/Loss/Metric + 元启发式）
 ├── scripts/            # 辅助脚本（冒烟验证、Zoo CLI）
 ├── docs/               # MkDocs 文档源文件
 ├── resources/          # 保留资料（PDF 论文笔记）
-├── tests/              # 400+ 测试文件
+├── tests/              # pytest 测试与仓库契约
+├── .github/            # CI、文档部署与依赖更新配置
+├── pyproject.toml      # 打包、依赖和 Python 工具配置的事实源
 ├── mkdocs.yml          # 文档配置
 ├── Makefile            # 常用命令入口
-└── requirements*.txt   # 依赖清单
+└── requirements*.txt   # 指向 pyproject extras 的兼容入口
 ```
+
+wheel 中可导入的项目包仅包含 `dlhub*`。sdist 还会携带 README、许可证、构建元数据和测试源码，用于从源码重建与校验，但安装后仍只暴露 `dlhub*`；`tracks/`、`Llms/`、`scripts/` 等仓库内容需要从仓库根目录运行。边界由 `pyproject.toml` 的 package discovery 配置定义。
 
 ---
 

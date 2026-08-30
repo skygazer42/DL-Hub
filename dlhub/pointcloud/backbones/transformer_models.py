@@ -200,7 +200,11 @@ class PCTClassifier(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=int(cfg.depth))
+        self.encoder = nn.TransformerEncoder(
+            encoder_layer,
+            num_layers=int(cfg.depth),
+            enable_nested_tensor=False,
+        )
         self.norm = nn.LayerNorm(d)
         self.head = nn.Sequential(
             nn.Linear(d, d),
@@ -352,7 +356,11 @@ class PointPatchTransformerClassifier(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=int(cfg.depth))
+        self.encoder = nn.TransformerEncoder(
+            encoder_layer,
+            num_layers=int(cfg.depth),
+            enable_nested_tensor=False,
+        )
         self.norm = nn.LayerNorm(int(d))
         self.head = nn.Sequential(
             nn.Linear(int(d), int(d)),

@@ -120,6 +120,7 @@ nav:
     - 5 分钟体验: getting-started/quickstart.md
   - 学习赛道:
     - tracks/index.md
+    - 学习路线图: ROADMAP.md
     - 基础赛道: tracks/foundations.md
     - 视觉赛道: tracks/vision.md
     - NLP 赛道: tracks/nlp.md
@@ -140,6 +141,7 @@ nav:
     - Research Directions: zoo/research-directions.md
   - Topic Coverage: topic-coverage.md
   - 实现契约: implementation-contract.md
+  - 数据与 Benchmark 证据: benchmarks/index.md
   - ML 算法:
     - ml-algorithms/index.md
     - 监督学习: ml-algorithms/supervised.md
@@ -148,7 +150,12 @@ nav:
   - 开发者:
     - developer/index.md
     - 项目结构: developer/structure.md
+    - 运行与实验约定: CONVENTIONS.md
+    - 代码规范: STYLEGUIDE.md
     - 贡献指南: developer/contributing.md
+    - 安全响应: https://github.com/skygazer42/DL-Hub/security/policy
     - 测试指南: developer/testing.md
+    - 平台运行门禁: developer/platform-runtime.md
+    - 发布检查: developer/release.md
   - 更新日志: changelog.md
   - FAQ: faq.md

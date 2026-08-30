@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ._common import build_baseline_vision_direction, smoke_test_direction
+from ._common import build_compact_layout_generator, validate_layout_generator
 
 _VARIANTS = {
     "layoutvae_baseline_tiny": {"width": 24, "depth": 1},
@@ -12,7 +12,7 @@ _VARIANTS = {
 def build_layoutvae_baseline_layout_generator(
     *, in_channels: int, variant: str = "layoutvae_baseline_small", width_mult: float = 1.0
 ):
-    return build_baseline_vision_direction(
+    return build_compact_layout_generator(
         family="layoutvae_baseline",
         variants=_VARIANTS,
         in_channels=int(in_channels),
@@ -22,4 +22,6 @@ def build_layoutvae_baseline_layout_generator(
 
 
 if __name__ == "__main__":
-    smoke_test_direction(build_layoutvae_baseline_layout_generator, "layoutvae_baseline_tiny")
+    validate_layout_generator(
+        build_layoutvae_baseline_layout_generator, "layoutvae_baseline_tiny"
+    )

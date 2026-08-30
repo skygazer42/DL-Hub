@@ -123,7 +123,11 @@ def run_training(cfg: TrainConfig) -> int:
         model=model,
         optimizer=None,
         epoch=cfg.num_layers,
-        extra={"track": "gnn", "lesson": "lesson_05_label_propagation_cora"},
+        extra={
+            "track": "gnn",
+            "lesson": "lesson_05_label_propagation_cora",
+            "model_free": True,
+        },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)
     return 0

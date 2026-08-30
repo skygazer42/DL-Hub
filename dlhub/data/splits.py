@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import operator
+
 import numpy as np
 
 
@@ -6,6 +8,15 @@ import numpy as np
 class SplitIndices:
     train: list[int]
     val: list[int]
+
+
+def _integer(name: str, value: int) -> int:
+    if isinstance(value, bool):
+        raise TypeError(f"{name} must be an integer, not bool")
+    try:
+        return operator.index(value)
+    except TypeError as exc:
+        raise TypeError(f"{name} must be an integer") from exc
 
 
 def train_val_split_indices(
@@ -16,15 +27,19 @@ def train_val_split_indices(
     This helper is intentionally NumPy-only so it works even when torch isn't installed.
     """
 
-    n = int(n)
-    if n <= 0:
-        raise ValueError(f"n must be positive, got {n}")
+    n = _integer("n", n)
+    if n < 2:
+        raise ValueError(f"n must contain at least 2 samples, got {n}")
 
     val_fraction = float(val_fraction)
-    if not 0.0 < val_fraction < 1.0:
+    if not np.isfinite(val_fraction) or not 0.0 < val_fraction < 1.0:
         raise ValueError(f"val_fraction must be in (0, 1), got {val_fraction}")
 
-    rng = np.random.default_rng(int(seed))
+    seed = _integer("seed", seed)
+    if seed < 0:
+        raise ValueError(f"seed must be >= 0, got {seed}")
+
+    rng = np.random.default_rng(seed)
     indices = np.arange(n, dtype=np.int64)
     rng.shuffle(indices)
 

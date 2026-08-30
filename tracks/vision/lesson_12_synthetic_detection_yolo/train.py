@@ -326,6 +326,17 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             },
         )
 
+    save_checkpoint(
+        paths.checkpoints_dir / "checkpoint.pt",
+        model=model,
+        optimizer=optimizer,
+        epoch=int(train_cfg.epochs),
+        extra={
+            "train_cfg": dataclass_to_dict(train_cfg),
+            "data_cfg": dataclass_to_dict(data_cfg),
+        },
+    )
+
     logger.info("Done. Run dir: %s", paths.run_dir)
     return 0
 

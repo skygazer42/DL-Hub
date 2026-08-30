@@ -164,7 +164,9 @@ class JepaPointPretrainer(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(enc_layer, num_layers=int(encoder_depth))
+        self.encoder = nn.TransformerEncoder(
+            enc_layer, num_layers=int(encoder_depth), enable_nested_tensor=False
+        )
         self.enc_norm = nn.LayerNorm(int(d))
 
         self.enc_to_dec = (
@@ -186,7 +188,9 @@ class JepaPointPretrainer(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.decoder = nn.TransformerEncoder(dec_layer, num_layers=int(decoder_depth))
+        self.decoder = nn.TransformerEncoder(
+            dec_layer, num_layers=int(decoder_depth), enable_nested_tensor=False
+        )
         self.dec_norm = nn.LayerNorm(int(dd))
 
         k = int(group_size)

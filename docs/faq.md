@@ -10,7 +10,7 @@
 
 ```bash
 cd DL-Hub
-pip install -r requirements-dev.txt
+python -m pip install -e ".[vision]"
 python -m tracks.vision.lesson_01_mnist_lenet.train --dataset fake
 ```
 
@@ -99,7 +99,7 @@ DL-Hub 是一个**学习项目**，核心目标是让你理解训练过程的每
 1. Fork 仓库
 2. 创建功能分支
 3. 编写代码和测试
-4. 运行 `make lint && make test`
+4. 运行 `make check`，并按改动范围补充 `make docs` 或 `make smoke`
 5. 提交 Pull Request
 
 ---
@@ -140,15 +140,15 @@ python scripts/vision_zoo.py --smoke
 
 ```bash
 # 安装基础工具
-pip install -e .
+python -m pip install -e .
 
 # 按赛道安装
-pip install -e ".[vision]"
-pip install -e ".[nlp]"
-pip install -e ".[gnn]"
+python -m pip install -e ".[vision]"
+python -m pip install -e ".[nlp]"
+python -m pip install -e ".[gnn]"
 
 # 安装全部运行时依赖
-pip install -e ".[all]"
+python -m pip install -e ".[all]"
 ```
 
 !!! note "当前约定"

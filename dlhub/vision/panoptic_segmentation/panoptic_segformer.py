@@ -63,7 +63,9 @@ class PanopticSegFormer(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(enc_layer, num_layers=d)
+        self.encoder = nn.TransformerEncoder(
+            enc_layer, num_layers=d, enable_nested_tensor=False
+        )
 
         self.semantic_head = nn.Sequential(
             ConvBNAct(dim, dim, kernel_size=3, stride=1, act="relu"),

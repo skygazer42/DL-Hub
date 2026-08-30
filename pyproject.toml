@@ -1,21 +1,42 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77", "wheel>=0.41"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "dlhub"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Reusable deep-learning utilities behind the DL-Hub lesson tracks"
+readme = "README.md"
+license = "MIT"
 authors = [{ name = "skygazer42", email = "207829897@qq.com" }]
 requires-python = ">=3.10"
+keywords = ["deep-learning", "education", "pytorch", "model-zoo"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Education",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Education",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
   "numpy>=1.24",
 ]
 
+[project.urls]
+Homepage = "https://github.com/skygazer42/DL-Hub"
+Documentation = "https://skygazer42.github.io/DL-Hub"
+Repository = "https://github.com/skygazer42/DL-Hub.git"
+Issues = "https://github.com/skygazer42/DL-Hub/issues"
+
 [project.optional-dependencies]
 # Legacy requirements files forward to these extras; versions live here only.
 dev = [
+  "build>=1.2",
+  "twine>=5.0",
   "pytest>=7.0",
+  "pytest-cov>=4.1",
   "ruff>=0.9",
   "black>=24.0",
   "isort>=5.12",
@@ -23,6 +44,7 @@ dev = [
   "tomli>=2.0; python_version < '3.11'",
 ]
 docs = [
+  "mkdocs>=1.6,<2",
   "mkdocs-material>=9.5",
   "mkdocs-minify-plugin>=0.8",
 ]
@@ -67,6 +89,9 @@ all = [
 # are lesson content meant to be run from the repo root (see docs/CONVENTIONS.md).
 include = ["dlhub*"]
 
+[tool.setuptools.dynamic]
+version = { attr = "dlhub.__about__.__version__" }
+
 [tool.black]
 line-length = 100
 target-version = ["py310"]
@@ -90,3 +115,8 @@ select = ["E", "F", "UP"]
 ignore = [
   "E501", # line length handled by black
 ]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = ["-q", "-ra", "--strict-config", "--strict-markers"]

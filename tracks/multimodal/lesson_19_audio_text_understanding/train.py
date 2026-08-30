@@ -36,7 +36,7 @@ class TrainConfig:
 
 def parse_args() -> tuple[TrainConfig, DataConfig]:
     parser = argparse.ArgumentParser(
-        description="Lesson 01 (Multimodal): CLIP-style compact retrieval with synthetic pairs."
+        description="Lesson 19 (Multimodal): compact audio-text understanding."
     )
 
     parser.add_argument("--num-samples", type=int, default=512)
@@ -133,7 +133,9 @@ def _run_epoch(
         else:
             with torch.no_grad():
                 outputs = model(batch)
-                loss = clip_contrastive_loss(outputs["logits_per_image"], outputs["logits_per_text"])
+                loss = clip_contrastive_loss(
+                    outputs["logits_per_image"], outputs["logits_per_text"]
+                )
 
         if is_train:
             loss.backward()
@@ -192,10 +194,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
 
     paths = build_run_paths(
         track="multimodal",
-        lesson="lesson_01_clip_compact_retrieval",
+        lesson="lesson_19_audio_text_understanding",
         run_name=train_cfg.run_name,
     )
-    logger = get_logger("multimodal.clip_compact", log_file=paths.logs_dir / "train.log")
+    logger = get_logger(
+        "multimodal.audio_text_understanding", log_file=paths.logs_dir / "train.log"
+    )
     paths.run_dir.mkdir(parents=True, exist_ok=True)
     paths.checkpoints_dir.mkdir(parents=True, exist_ok=True)
 
@@ -290,7 +294,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
         epoch=int(train_cfg.epochs),
         extra={
             "track": "multimodal",
-            "lesson": "lesson_01_clip_compact_retrieval",
+            "lesson": "lesson_19_audio_text_understanding",
             "vocab_size": vocab.size,
         },
     )
@@ -302,7 +306,7 @@ def main() -> int:
     if __package__ is None:
         raise RuntimeError(
             "Please run this lesson from the repo root as a module:\n"
-            "  python -m tracks.multimodal.lesson_01_clip_compact_retrieval.train"
+            "  python -m tracks.multimodal.lesson_19_audio_text_understanding.train"
         )
 
     train_cfg, data_cfg = parse_args()

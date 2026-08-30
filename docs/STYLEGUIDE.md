@@ -57,5 +57,5 @@ make verify
 ## 依赖管理
 
 - `pyproject.toml` 的 `dependencies` / `optional-dependencies` 是唯一依赖契约。
-- 赛道使用 `pip install -e ".[vision]"`、`.[nlp]` 等 extra。
+- 赛道使用 `python -m pip install -e ".[vision]"`、`.[nlp]` 等 extra。
 - `requirements*.txt` 只作为旧命令的转发入口，不再维护重复版本。

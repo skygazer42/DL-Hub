@@ -10,7 +10,7 @@ def _sum_tensor_means(x):
         return sum((_sum_tensor_means(v) for v in x.values()), start=torch.tensor(0.0))
     if isinstance(x, list | tuple):
         return sum((_sum_tensor_means(v) for v in x), start=torch.tensor(0.0))
-    raise TypeError(f"Unsupported output type in diffusion zoo smoke: {type(x)!r}")
+    raise TypeError(f"Unsupported output type in diffusion zoo contract: {type(x)!r}")
 
 
 def test_diffusion_zoo_lists_12_families_3_variants() -> None:
@@ -35,7 +35,7 @@ def test_diffusion_zoo_lists_12_families_3_variants() -> None:
         "diff:flow_matching_tiny",
     ],
 )
-def test_diffusion_zoo_build_and_forward_smoke(arch_id: str) -> None:
+def test_diffusion_zoo_build_and_forward_contract(arch_id: str) -> None:
     from dlhub.generative.diffusion_zoo import build_local_model
 
     model = build_local_model(

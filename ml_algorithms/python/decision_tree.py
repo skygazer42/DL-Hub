@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+import operator
 
 import numpy as np
 
@@ -65,6 +66,40 @@ class DecisionTreeBase:
     def fit(self, x: np.ndarray, y: np.ndarray):
         x = np.asarray(x, dtype=np.float64)
         y = np.asarray(y)
+        if x.ndim != 2:
+            raise ValueError("x must be a 2D array of shape (n_samples, n_features)")
+        if x.shape[0] == 0 or x.shape[1] == 0:
+            raise ValueError("x must contain at least one sample and one feature")
+        if y.ndim != 1:
+            raise ValueError("y must be a 1D array")
+        if x.shape[0] != y.shape[0]:
+            raise ValueError("x and y must have the same number of samples")
+        if not np.all(np.isfinite(x)):
+            raise ValueError("x must contain only finite values")
+        if np.issubdtype(y.dtype, np.number) and not np.all(np.isfinite(y)):
+            raise ValueError("y must contain only finite values")
+
+        if isinstance(self.max_depth, bool):
+            raise ValueError("max_depth must be a non-negative integer")
+        try:
+            max_depth = operator.index(self.max_depth)
+        except TypeError as exc:
+            raise ValueError("max_depth must be a non-negative integer") from exc
+        if max_depth < 0:
+            raise ValueError("max_depth must be >= 0")
+
+        if isinstance(self.min_samples_split, bool):
+            raise ValueError("min_samples_split must be an integer >= 2")
+        try:
+            min_samples_split = operator.index(self.min_samples_split)
+        except TypeError as exc:
+            raise ValueError("min_samples_split must be an integer >= 2") from exc
+        if min_samples_split < 2:
+            raise ValueError("min_samples_split must be >= 2")
+
+        self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.n_features_in_ = int(x.shape[1])
         self.root = self._build_tree(x, y, 0)
         return self
 
@@ -76,7 +111,15 @@ class DecisionTreeBase:
         return self._predict_one(node.right, sample)
 
     def predict(self, x: np.ndarray) -> np.ndarray:
+        if self.root is None:
+            raise RuntimeError(f"{type(self).__name__} is not fitted; call fit() first")
         x = np.asarray(x, dtype=np.float64)
+        if x.ndim != 2:
+            raise ValueError("x must be a 2D array of shape (n_samples, n_features)")
+        if x.shape[1] != self.n_features_in_:
+            raise ValueError(f"x must have {self.n_features_in_} features, got {x.shape[1]}")
+        if not np.all(np.isfinite(x)):
+            raise ValueError("x must contain only finite values")
         return np.array([self._predict_one(self.root, sample) for sample in x])
 
     def _criterion(self, y: np.ndarray) -> float:

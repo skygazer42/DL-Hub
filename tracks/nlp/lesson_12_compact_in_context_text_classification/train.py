@@ -120,8 +120,12 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
 
     metrics_path = paths.run_dir / "metrics.jsonl"
     for epoch in range(1, int(train_cfg.epochs) + 1):
-        train_acc = _run_epoch(model=model, loader=train_loader, max_batches=train_cfg.max_train_batches)
-        eval_acc = _run_epoch(model=model, loader=val_loader, max_batches=train_cfg.max_eval_batches)
+        train_acc = _run_epoch(
+            model=model, loader=train_loader, max_batches=train_cfg.max_train_batches
+        )
+        eval_acc = _run_epoch(
+            model=model, loader=val_loader, max_batches=train_cfg.max_eval_batches
+        )
         logger.info(
             "Epoch %d/%d | train acc %.3f | eval acc %.3f",
             epoch,
@@ -146,6 +150,7 @@ def run_training(train_cfg: TrainConfig, data_cfg: DataConfig) -> int:
             "track": "nlp",
             "lesson": "lesson_12_compact_in_context_text_classification",
             "gradient_updates": False,
+            "model_free": True,
         },
     )
     logger.info("Saved checkpoint to %s", ckpt_path)

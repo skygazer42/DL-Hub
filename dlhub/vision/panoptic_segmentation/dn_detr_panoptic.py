@@ -80,7 +80,9 @@ class DNDTRPanoptic(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(enc_layer, num_layers=el)
+        self.encoder = nn.TransformerEncoder(
+            enc_layer, num_layers=el, enable_nested_tensor=False
+        )
 
         self.query = nn.Parameter(torch.randn(nq, dm) * 0.02)
         self.dn_query = nn.Parameter(torch.randn(max(1, ndn), dm) * 0.02) if ndn > 0 else None

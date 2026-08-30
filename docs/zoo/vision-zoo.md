@@ -4,14 +4,21 @@ icon: material/eye
 
 # Vision Zoo
 
-> **220 个 backbone 模块 / 791 Architecture IDs** --- 覆盖从经典 CNN 到最新 Vision Transformer 的全部视觉主干网络，外加 8 个下游任务子系统。
+> **220 个 backbone 源码模块 / 791 注册 ID** --- 索引经典 CNN、Vision Transformer 与下游
+> 任务的本地构建入口；模块名和注册名不自动代表论文机制已审计。
+
+!!! warning "注册目录不是独立实现清单"
+
+    下表按方法标签组织时间线和构建入口。“核心创新”描述标签所指方法，不表示当前源码已经包含
+    全部对应机制；实际等级以[保真度审计](fidelity.md)和
+    [baseline 清单](baseline-inventory.json)为准。
 
 ---
 
 ## CLI 快速上手
 
 ```bash
-# 列出所有可用架构（本地实现的 ID 使用 `dl:` 前缀）
+# 列出所有可用注册 ID（本地入口使用 `dl:` 前缀）
 python scripts/vision_zoo.py --list
 
 # 模糊搜索
@@ -23,7 +30,7 @@ python scripts/vision_zoo.py --smoke dl:resnet50
 
 ---
 
-## Backbone 架构分类
+## Backbone 注册标签分类
 
 | 类别 | 代表算法 | 约计数量 |
 |:-----|:---------|:---------|
@@ -51,7 +58,7 @@ python scripts/vision_zoo.py --smoke dl:resnet50
 
 经典卷积神经网络奠定了深度学习视觉领域的基础。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | AlexNet | alexnet | 首个大规模 CNN，ReLU + Dropout |
 | VGG | vgg11, vgg13, vgg16, vgg19 (+BN) | 统一 3x3 卷积堆叠 |
@@ -63,7 +70,7 @@ python scripts/vision_zoo.py --smoke dl:resnet50
 
 面向移动端与边缘设备设计的轻量级架构。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | MobileNet | v1, v2, v3_small/large, v4 | Depthwise Separable Conv |
 | EfficientNet | b0~b7, v2_s/m/l | Compound Scaling |
@@ -74,7 +81,7 @@ python scripts/vision_zoo.py --smoke dl:resnet50
 
 基于 Self-Attention 的视觉模型已成为主流。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | ViT | vit_tiny/small/base/large/huge | Patch Embedding + Transformer |
 | DeiT | deit_tiny/small/base | 数据高效训练 + Distillation Token |
@@ -86,7 +93,7 @@ python scripts/vision_zoo.py --smoke dl:resnet50
 
 在保持 Transformer 精度的同时降低计算成本。
 
-| 算法族 | 关键变体 | 核心创新 |
+| 方法标签 | 关键变体 | 标签所指创新 |
 |:------|:---------|:---------|
 | EfficientViT | efficientvit_b0~b3, m0~m5 | Cascaded Group Attention |
 | TinyViT | tinyvit_5m/11m/21m | 知识蒸馏 + 小模型设计 |
@@ -99,7 +106,7 @@ python scripts/vision_zoo.py --smoke dl:resnet50
 
 ### Detection Zoo 2D
 
-> 132 个算法族 --- 覆盖 Anchor-based、Anchor-free、Transformer-based、轻量级检测器。
+> 132 个注册标签 --- 索引 Anchor-based、Anchor-free、Transformer-based、轻量级检测器方法。
 
 ```bash
 python scripts/detection_zoo.py --list
@@ -115,7 +122,7 @@ python scripts/detection_zoo.py --smoke dldet:fcos_tiny
 
 ### Instance Segmentation Zoo
 
-> 50 个算法族 --- 实例级像素分割。
+> 50 个注册标签 --- 索引实例级像素分割方法。
 
 ```bash
 python scripts/instance_segmentation_zoo.py --list
@@ -131,7 +138,7 @@ python scripts/instance_segmentation_zoo.py --smoke dlinst:mask_rcnn_tiny
 
 ### Panoptic Segmentation Zoo
 
-> 50 个算法族 --- 统一语义分割与实例分割。
+> 50 个注册标签 --- 索引语义分割与实例分割方法。
 
 ```bash
 python scripts/panoptic_segmentation_zoo.py --list
@@ -147,7 +154,7 @@ python scripts/panoptic_segmentation_zoo.py --smoke dlpan:panoptic_fpn_tiny
 
 ### Lane Detection Zoo
 
-> 44 个算法族 --- 车道线检测，Anchor / Parametric / Segmentation / Keypoint / Transformer 五大范式。
+> 44 个注册标签 --- 索引车道线检测的 Anchor / Parametric / Segmentation / Keypoint / Transformer 范式。
 
 ```bash
 python scripts/lane_detection_zoo.py --list
@@ -163,7 +170,7 @@ python scripts/lane_detection_zoo.py --smoke dllane:laneatt_tiny
 
 ### Co-segmentation Zoo
 
-> 26 个算法族 --- 协同分割（Group / Pair 级别），从多张图像中发现共同目标。
+> 26 个注册标签 --- 索引 Group / Pair 级协同分割方法。
 
 ```bash
 python scripts/co_segmentation_zoo.py --list
@@ -178,7 +185,8 @@ python scripts/co_segmentation_zoo.py --smoke coseg:clip_coseg_tiny
 
 ### Fine-Grained Recognition Zoo
 
-> 112 个算法族 --- 细粒度图像识别（FGVC），Bilinear / Part-based / Transformer / Prompt / CLIP / MLLM reasoning；本地实现无需下载权重，具体实现等级以保真度审计为准。
+> 112 个注册标签 --- 索引细粒度图像识别的 Bilinear / Part-based / Transformer / Prompt /
+> CLIP / MLLM reasoning 方法；具体实现等级以保真度审计为准。
 
 ```bash
 python scripts/fine_grained_recognition_zoo.py --list
@@ -196,7 +204,8 @@ python scripts/fine_grained_recognition_zoo.py --smoke dlfgvc:fine_r1_tiny
 
 ### Action Recognition Zoo
 
-> 62 个算法族 --- 行为识别，Video (NCTHW，`dlactv:` 前缀) + Skeleton (NCTV，`dlacts:` 前缀)；本地实现无需下载权重，具体实现等级以保真度审计为准。
+> 62 个注册标签 --- 索引 Video (NCTHW，`dlactv:` 前缀) + Skeleton
+> (NCTV，`dlacts:` 前缀) 行为识别方法；具体实现等级以保真度审计为准。
 
 ```bash
 python scripts/action_recognition_zoo.py --list
@@ -215,7 +224,7 @@ python scripts/action_recognition_zoo.py --smoke dlacts:stgcn_tiny
 
 ### MOT Zoo
 
-> 100 个算法族 --- 2D 单相机多目标跟踪，每族 `tiny/small/base` 三档变体。
+> 100 个注册标签 --- 索引 2D 单相机多目标跟踪方法，每个标签有 `tiny/small/base` 三档配置。
 
 ```bash
 python scripts/mot_zoo.py --list

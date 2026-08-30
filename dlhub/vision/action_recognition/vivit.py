@@ -64,7 +64,9 @@ class ViViTVideoClassifier(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.spatial = nn.TransformerEncoder(spatial_layer, num_layers=sd)
+        self.spatial = nn.TransformerEncoder(
+            spatial_layer, num_layers=sd, enable_nested_tensor=False
+        )
 
         # Temporal stage works on per-frame embeddings.
         self.cls_token = nn.Parameter(torch.zeros(1, 1, e))
@@ -79,7 +81,9 @@ class ViViTVideoClassifier(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.temporal = nn.TransformerEncoder(temporal_layer, num_layers=td)
+        self.temporal = nn.TransformerEncoder(
+            temporal_layer, num_layers=td, enable_nested_tensor=False
+        )
 
         self.norm = nn.LayerNorm(e)
         self.dropout = nn.Dropout(float(dropout))

@@ -2,6 +2,11 @@
 
 import subprocess
 import sys
+from pathlib import Path
+
+import pytest
+
+from scripts import run_lesson
 
 from _run_lesson_helpers import _repo_root
 
@@ -136,6 +141,91 @@ def test_run_lesson_describes_lesson_specific_cli() -> None:
     assert "Offline data: built in" in proc.stdout
     assert "\n- --dataset\n" not in proc.stdout
     assert "--epochs" in proc.stdout
+
+
+def test_run_lesson_module_mode_can_describe_contract() -> None:
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "scripts.run_lesson",
+            "gnn",
+            "lesson_01_compact_graph_classification",
+            "--describe",
+        ],
+        cwd=str(_repo_root()),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "Entrypoint: tracks.gnn.lesson_01_compact_graph_classification.train" in proc.stdout
+
+
+def test_run_lesson_rejects_unknown_implicit_option_with_suggestion() -> None:
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "scripts/run_lesson.py",
+            "vision",
+            "lesson_01_mnist_lenet",
+            "--dry-rnu",
+        ],
+        cwd=str(_repo_root()),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 2
+    assert "unrecognized option '--dry-rnu'" in proc.stderr
+    assert "--dry-run" in proc.stderr
+
+
+def test_run_lesson_explicit_separator_forwards_verbatim_options() -> None:
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "scripts/run_lesson.py",
+            "vision",
+            "lesson_01_mnist_lenet",
+            "--dry-run",
+            "--",
+            "--future-lesson-flag",
+            "value with spaces",
+        ],
+        cwd=str(_repo_root()),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "--future-lesson-flag 'value with spaces'" in proc.stdout
+
+
+def test_run_lesson_unknown_track_list_has_actionable_suggestion() -> None:
+    proc = subprocess.run(
+        [sys.executable, "scripts/run_lesson.py", "vission", "--list"],
+        cwd=str(_repo_root()),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 2
+    assert "Did you mean track 'vision'?" in proc.stderr
+
+
+def test_resolve_entrypoint_rejects_ambiguous_lesson(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    tracks_dir = tmp_path / "tracks"
+    lesson_dir = tracks_dir / "vision" / "lesson_01_example"
+    lesson_dir.mkdir(parents=True)
+    (lesson_dir / "train.py").write_text("", encoding="utf-8")
+    (lesson_dir / "run.py").write_text("", encoding="utf-8")
+    monkeypatch.setattr(run_lesson, "_tracks_dir", lambda: tracks_dir)
+
+    with pytest.raises(FileNotFoundError, match="Ambiguous entrypoint"):
+        run_lesson.resolve_entrypoint_module("vision", "lesson_01_example")
 
 
 def test_run_lesson_lists_lessons_for_multimodal_track() -> None:

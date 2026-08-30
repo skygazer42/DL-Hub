@@ -62,7 +62,9 @@ class SETRPanoptic(nn.Module):
             batch_first=True,
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(enc_layer, num_layers=d)
+        self.encoder = nn.TransformerEncoder(
+            enc_layer, num_layers=d, enable_nested_tensor=False
+        )
 
         self.decoder = nn.Sequential(
             nn.Conv2d(dim, dim, kernel_size=1, bias=True),

@@ -1,0 +1,55 @@
+{
+  "attestation_sha256": "7c5c09e1d7310e23030c1f6b970354a7d70bb1dd26dc044af9806d515fe55bde",
+  "claim_boundary": {
+    "does_not_prove": [
+      "real-dataset training",
+      "paper benchmark parity",
+      "paper-faithful model implementations",
+      "Windows or MPS full-curriculum execution"
+    ],
+    "paper_benchmark_evidence": false,
+    "proves": "default-budget offline lesson execution and artifact contracts on the recorded Linux/CUDA snapshot",
+    "real_data_executed": false
+  },
+  "evidence_kind": "historical-complete-default-offline-runtime-attestation",
+  "execution": {
+    "device": "cuda",
+    "device_details": {
+      "cuda_index": 0,
+      "cuda_name": "NVIDIA GeForce RTX 3070 Ti",
+      "cuda_total_memory_bytes": 8218804224,
+      "requested": "cuda",
+      "resolved": "cuda"
+    },
+    "network_policy": "offline env + Python AF_INET/AF_INET6 blocked",
+    "serial": true
+  },
+  "inventory_sha256": "502451551af1098a1e1f798b5381c977f5dd87cbc38e08ec729dc7cced22fd6e",
+  "observed": {
+    "commands_selecting_fake": 7,
+    "commands_with_max_limit_flags": 0,
+    "elapsed_seconds_sum": 2956.985647,
+    "lessons": 339,
+    "metric_records": 2633,
+    "passed": 339,
+    "positive_cuda_peak_train_lessons": 337,
+    "single_attempt_lessons": 339,
+    "validated_train_artifacts": 338
+  },
+  "report": {
+    "created_at": "2026-08-30T06:00:58.092544+00:00",
+    "path": "outputs/runtime-audit/runs/full-cuda-defaults-339-final-20260830/report.json",
+    "sha256": "42a2387b8ef0fa63556da22a1e7968f8fe8d44af097245cbc782eb00f5a1ed88",
+    "status": "complete",
+    "updated_at": "2026-08-30T06:54:33.572030+00:00"
+  },
+  "schema_version": 1,
+  "source_snapshot": {
+    "git_diff_sha256": "022d15cce27b339db8eb2dd817147744639f7666256ce2e67f100600f4fb8f99",
+    "git_head": "48158404fbd6bea65e226f07531cda4b24d78dbe",
+    "git_status_sha256": "2332192b9ded6b44246a6819eaba751d64b432ce40ce790ac8829ed9d542c483",
+    "source_bytes": 16082981,
+    "source_file_count": 6315,
+    "source_sha256": "956e8c029a23868c66b3efdc025323797a127760b1656a495e8b46c672059ed3"
+  }
+}

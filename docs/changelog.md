@@ -4,6 +4,22 @@
 
 ---
 
+## 2026-08-30 · 全仓可靠性、课程与发行体系升级
+
+- 核心运行时补齐原子配置/检查点写入、单次 JSONL 追加、路径组件约束、可重复 logger、严格设备解析与可配置确定性种子；训练循环增强批次容器兼容、零批次语义、动态分割 IoU 和全 ignore 标签处理。
+- NumPy 损失、指标、优化器、调度器与经典 KNN/KMeans/决策树补齐形状、有限值、拟合状态和事务性更新边界，并为高风险数值路径增加回归测试。
+- 339 个 lesson 全部具备 README；课程启动器新增入口歧义、参数契约与安全模块名检查，并提供独立的 339 入口 `--help` 全量门禁。Conditional GAN 增加有界验证循环及训练/验证损失验收。
+- 新增 Model Zoo 完整性门禁，核对 123 个模块、8611 个唯一注册 ID、构建器与动态变体绑定，并对六个代表领域执行有限值前向；保真度台账由 80 个源码入口提升到 110 个。
+- `pyproject.toml` 改为从 `dlhub.__about__.__version__` 读取单一版本源，并补齐 README、许可证、项目链接与发布分类元数据。
+- 开发/文档 extras 补齐直接使用的 build、Twine、pytest-cov 与 MkDocs 依赖；`Makefile` 新增严格文档、打包、双隔离 wheel/sdist 安装和一键发布前检查。
+- Python CI 保留 3.10 最低版本全套门禁，并增加 3.12 完整测试、pip 缓存、依赖一致性检查和构建产物留存。
+- 文档工作流开始在 PR 上执行 `mkdocs build --strict`，部署权限只授予 Pages deploy job；增加每月 Python 与 Actions 依赖更新。
+- 收敛旧版 `RUNNING.md` / `STRUCTURE.md` 重复快照，刷新 8 赛道路线图与开发者发布文档。
+- 删除会遮蔽 pyproject 配置的旧 `pytest.ini`，严格 marker/config 规则统一到 `pyproject.toml`。
+- wheel/sdist 门禁现在检查路径穿越、链接/特殊文件、凭据与私钥特征、内容边界、大小上限及元数据一致性；README 图片改用绝对 URL，确保发行页长描述可渲染。
+
+---
+
 ## 2026-07-28 · 实现语义与仓库叙事重构
 
 - 课程与模型规模统一使用 `compact`，程序生成输入统一使用 `synthetic`，共享实现统一使用 `baseline`；维护代码不再保留旧的随意规模标签或双重兼容导入。

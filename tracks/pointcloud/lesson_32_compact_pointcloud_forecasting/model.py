@@ -9,6 +9,7 @@ from torch import nn
 @dataclass(frozen=True)
 class ModelConfig:
     in_channels: int = 3
+    forecast_horizon: int = 2
     arch: str = "trajpoint_forecast:trajpoint_forecast_small"
     variant: str = ""
     width_mult: float = 1.0
@@ -36,15 +37,18 @@ def build_model(cfg: ModelConfig) -> nn.Module:
             build_trajpoint_forecast_forecasting_model,
         )
 
-        return build_trajpoint_forecast_forecasting_model(
+        forecast_horizon = int(cfg.forecast_horizon)
+        if forecast_horizon < 1:
+            raise ValueError("forecast_horizon must be >= 1")
+        model = build_trajpoint_forecast_forecasting_model(
             in_channels=int(cfg.in_channels),
             variant=str(variant) if variant else "trajpoint_forecast_small",
             width_mult=float(cfg.width_mult),
         )
+        model.horizon = forecast_horizon
+        return model
 
-    raise ValueError(
-        f"Unknown arch: {arch_raw!r}. Supported: trajpoint_forecast:<variant>"
-    )
+    raise ValueError(f"Unknown arch: {arch_raw!r}. Supported: trajpoint_forecast:<variant>")
 
 
 def forecasting_loss(

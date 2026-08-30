@@ -200,7 +200,9 @@ class TinyTransformerEncoder(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(layer, num_layers=int(num_layers))
+        self.encoder = nn.TransformerEncoder(
+            layer, num_layers=int(num_layers), enable_nested_tensor=False
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # x: (B,N,D)

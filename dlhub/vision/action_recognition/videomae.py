@@ -81,7 +81,9 @@ class VideoMAEVideoClassifier(nn.Module):
             activation="gelu",
             norm_first=True,
         )
-        self.encoder = nn.TransformerEncoder(layer, num_layers=d)
+        self.encoder = nn.TransformerEncoder(
+            layer, num_layers=d, enable_nested_tensor=False
+        )
         self.norm = nn.LayerNorm(e)
         self.dropout = nn.Dropout(float(dropout))
         self.head = nn.Linear(e, int(num_classes))

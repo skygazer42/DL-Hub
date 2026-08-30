@@ -52,7 +52,9 @@ class CompactTransformerSummarizer(nn.Module):
             batch_first=True,
         )
         self.encoder = nn.TransformerEncoder(
-            encoder_layer, num_layers=int(cfg.num_encoder_layers)
+            encoder_layer,
+            num_layers=int(cfg.num_encoder_layers),
+            enable_nested_tensor=False,
         )
         self.decoder = nn.TransformerDecoder(
             decoder_layer, num_layers=int(cfg.num_decoder_layers)

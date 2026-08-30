@@ -1,3 +1,6 @@
+import os
+import stat
+
 import pytest
 
 torch = pytest.importorskip("torch")
@@ -85,3 +88,45 @@ def test_load_checkpoint_allows_explicit_trusted_legacy_fallback(monkeypatch, tm
 
     for expected, actual in zip(source.parameters(), target.parameters(), strict=True):
         torch.testing.assert_close(expected, actual)
+
+
+def test_interrupted_checkpoint_save_preserves_last_good_file_and_cleans_temp(
+    monkeypatch, tmp_path
+) -> None:
+    from dlhub.checkpoint import load_checkpoint, save_checkpoint
+
+    ckpt_path = tmp_path / "ckpt.pt"
+    model = torch.nn.Linear(3, 2)
+    save_checkpoint(ckpt_path, model=model, epoch=4, extra={"status": "last-good"})
+    original = ckpt_path.read_bytes()
+
+    def interrupt_save(payload, handle) -> None:
+        del payload
+        handle.write(b"partial-checkpoint")
+        raise KeyboardInterrupt("simulated interruption")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(torch, "save", interrupt_save)
+        with pytest.raises(KeyboardInterrupt, match="simulated interruption"):
+            save_checkpoint(ckpt_path, model=model, epoch=5)
+
+    assert ckpt_path.read_bytes() == original
+    assert list(tmp_path.iterdir()) == [ckpt_path]
+
+    restored = torch.nn.Linear(3, 2)
+    meta = load_checkpoint(ckpt_path, model=restored)
+    assert meta == {"epoch": 4, "extra": {"status": "last-good"}}
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX mode bits")
+def test_checkpoint_replacement_preserves_existing_mode(tmp_path) -> None:
+    from dlhub.checkpoint import save_checkpoint
+
+    ckpt_path = tmp_path / "ckpt.pt"
+    model = torch.nn.Linear(3, 2)
+    save_checkpoint(ckpt_path, model=model, epoch=1)
+    ckpt_path.chmod(0o640)
+
+    save_checkpoint(ckpt_path, model=model, epoch=2)
+
+    assert stat.S_IMODE(ckpt_path.stat().st_mode) == 0o640
