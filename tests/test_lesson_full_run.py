@@ -312,7 +312,9 @@ def test_source_snapshot_detects_content_drift(monkeypatch, tmp_path: Path) -> N
         full_run._assert_source_snapshot(tmp_path, snapshot)
 
 
-def test_runtime_environment_is_fully_under_data_runtime_root(audit_test_root: Path) -> None:
+def test_runtime_environment_is_fully_under_configured_runtime_root(
+    audit_test_root: Path,
+) -> None:
     case_root = audit_test_root / "case"
     bootstrap = full_run._prepare_bootstrap(audit_test_root, allow_network=False)
     with full_run._short_tmpdir(case_root) as tmpdir:
@@ -333,7 +335,7 @@ def test_runtime_environment_is_fully_under_data_runtime_root(audit_test_root: P
         assert tmpdir.is_symlink()
         assert tmpdir.resolve() == (case_root / "tmp").resolve()
 
-    assert str(audit_test_root).startswith("/data/")
+    assert audit_test_root.resolve().is_relative_to(full_run.default_runtime_root().resolve())
     for variable in (
         "DLHUB_OUTPUTS_DIR",
         "DLHUB_RUNTIME_AUDIT_GPU_METRICS_DIR",
@@ -538,7 +540,8 @@ def test_run_one_uses_short_tmpdir_for_long_paths_and_dataloader_workers(
     monkeypatch, audit_test_root: Path
 ) -> None:
     long_root = audit_test_root / "runs" / ("long-run-id-" + "x" * 96)
-    code = """
+    expected_runtime_root = str(long_root.resolve())
+    code = f"""
 import os
 import torch
 from torch.utils.data import DataLoader, TensorDataset
@@ -547,7 +550,7 @@ loader = DataLoader(TensorDataset(torch.arange(64)), batch_size=8, num_workers=2
 assert sum(int(batch[0].sum()) for batch in loader) == sum(range(64))
 tmpdir = os.environ["TMPDIR"]
 assert tmpdir.startswith("/tmp/dlh-")
-assert os.path.realpath(tmpdir).startswith("/data/")
+assert os.path.commonpath([os.path.realpath(tmpdir), {expected_runtime_root!r}]) == {expected_runtime_root!r}
 print(tmpdir)
 """
     monkeypatch.setattr(
